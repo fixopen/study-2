@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>直播课</title>
+    <link href="css/weui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/liveLesson.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <!--header-->
+    <div class="row liveLesson-header">
+        <div class="col-xs-1">
+            <a href="">&lt;</a>
+        </div>
+        <div class="col-xs-9" id="liveLesson-title"></div>
+        <div class="col-xs-2">
+            <a href="#">...</a>
+        </div>
+    </div>
+    <!--scetion-->
+    <!--schedule-->
+    <div class="row">
+        <div class="col-xs-12" style="background-color: #eeeeee">本周课程表</div>
+        <div class="col-xs-12" id="schedule">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>${week}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>上午</th>
+                    <td>${subject1}</td>
+                </tr>
+                <tr>
+                    <th>下午</th>
+                    <td>${subject2}</td>
+                </tr>
+                <tr>
+                    <th>晚上</th>
+                    <td>${subject3}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--class-->
+    <div class="row">
+        <div class="col-xs-12" style="background-color: #eeeeee">课程分类</div>
+        <div class="col-xs-12 action-cs">
+            <div class="btn-group-vertical action-c">
+                <button type="button" class="btn btn-default">语文</button>
+                <button type="button" class="btn btn-default">奥数</button>
+                <button type="button" class="btn btn-default">口语</button>
+            </div>
+        </div>
+    </div>
+    <!--details-->
+    <div class="row">
+        <div class="col-xs-12" style="background-color: #eeeeee">详情列表</div>
+        <div class="col-xs-12" id="liveLesson-detail"></div>
+        <!--<div class="col-xs-12" id="liveLesson-subject"></div>-->
+        <!--<div class="col-xs-12" id="play1"></div>-->
+        <!--<div class="col-xs-12" id="play2"></div>-->
+        <!--<div class="col-xs-12" id="play3"></div>-->
+    </div>
+    <div id="courseDetails"></div>
+    <!--footer-->
+    <div class="row">
+        <div class="col-xs-12" id="follow"></div>
+    </div>
+</div>
+<!--templates-->
+<template id="title-template">
+    <span>${title}</span>
+</template>
+<template id="schedule-template">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th></th>
+            <th>${week}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>上午</th>
+            <td>${subject1}</td>
+        </tr>
+        <tr>
+            <th>下午</th>
+            <td>${subject2}</td>
+        </tr>
+        <tr>
+            <th>晚上</th>
+            <td>${subject3}</td>
+        </tr>
+        </tbody>
+    </table>
+</template>
+<template id="subject-template">
+    <a href="#">
+        <span class="pull-left">${subject}</span>
+        <span class="pull-right">更多&gt;</span>
+        <hr>
+    </a>
+
+</template>
+<template id="play1-template">
+    <div>
+        <div class="action-cs">
+            <h2 class="action-c">第<span>${count}</span>讲</h2>
+            <h4>${title}</h4>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-xs-9">
+                    <p>已经播放<span>${time}</span>分钟</p>
+                </div>
+                <div class="col-xs-3">
+                    <span>${grade}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    赵老师主讲
+                </div>
+                <div class="col-xs-4">
+                    <span>11人正在收听</span>
+                </div>
+                <div class="col-xs-4 dropdown">
+                    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">课程详情</button>
+                    <div class="dropdown-menu">
+                        <h4>课程简介</h4>
+                        <p>${}</p>
+                        <h4>主讲人简介</h4>
+                        <p>${teacher-description}</p>
+                        <h4>上线时间</h4>
+                        <p>${}</p>
+                        <h4>课程时长</h4>
+                        <p>${}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="play2-template">
+    <div>
+        <div class="action-cs">
+            <h2 class="action-c">第<span>${count}</span>讲</h2>
+            <h4>${title}</h4>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-xs-9">
+                    <p>还有<span>${time}</span>分钟即将播放</p>
+                </div>
+                <div class="col-xs-3">
+                    <span>${grade}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    赵老师主讲
+                </div>
+                <div class="col-xs-4">
+                    <span>11人想听</span>
+                </div>
+                <div class="col-xs-4 dropdown">
+                    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">课程详情</button>
+                    <div class="dropdown-menu">
+                        <h4>课程简介</h4>
+                        <p>${}</p>
+                        <h4>主讲人简介</h4>
+                        <p>${teacher-description}</p>
+                        <h4>上线时间</h4>
+                        <p>${}</p>
+                        <h4>课程时长</h4>
+                        <p>${}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="play3-template">
+    <div>
+        <div class="action-cs">
+            <h2 class="action-c">第<span>${count}</span>讲</h2>
+            <h4>${title}</h4>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-xs-9">
+                </div>
+                <div class="col-xs-3">
+                    <span>${grade}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    ${teacher}
+                </div>
+                <div class="col-xs-4">
+                    <span>11人观看</span>
+                </div>
+                <div class="col-xs-4 dropdown">
+                    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">课程详情</button>
+                    <div class="dropdown-menu">
+                        <h4>课程简介</h4>
+                        <p>${}</p>
+                        <h4>主讲人简介</h4>
+                        <p>${teacher-description}</p>
+                        <h4>上线时间</h4>
+                        <p>${}</p>
+                        <h4>课程时长</h4>
+                        <p>${}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!--<template id="courseDetails-template">-->
+<!--<h4>课程简介</h4>-->
+<!--<p>${}</p>-->
+<!--<h4>主讲人简介</h4>-->
+<!--<p>${teacher-description}</p>-->
+<!--<h4>上线时间</h4>-->
+<!--<p>${}</p>-->
+<!--<h4>课程时长</h4>-->
+<!--<p>${}</p>-->
+<!--</template>-->
+<template id="follow-template">
+    <div class="action-cs">
+        <div class="row action-c">
+            <div class="col-xs-12">
+                <p>${title1}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <img src="${imgsrc}" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${title2}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step1}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step2}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step3}</p>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/liveLesson.js"></script>
+</body>
+</html>

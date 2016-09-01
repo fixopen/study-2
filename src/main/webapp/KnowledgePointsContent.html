@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>知识点录入</title>
+</head>
+<h1>知识点录入页面</h1>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<table border="1">
+    <tr>
+        <th>序号</th>
+        <th>科目</th>
+        <th>年级</th>
+        <th>标题</th>
+        <th>知识点</th>
+        <th>知识点路径</th>
+        <th>直播路径</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td><input type="text" id="order"/></td>
+        <td><select id="subjectId"></select></td>
+        <td>
+            <select id="grade">
+                <option value="20">低年级</option>
+                <option value="21">高年级</option>
+            </select>
+        </td>
+        <td><select id="volumeId"></select>
+        </td>
+        <td><input type="text" id="title2"/> <select id="titleselect"></select>
+        </td>
+        <td><input type="text" id="storePath"/> <select id="storePathselect"></select>
+        </td>
+        <td><input type="text" id="videoUrl"/> <select id="VideoUrlselect"></select>
+        </td>
+        <td><input type="button" id="append" value="添加"/>
+            <button id="update">修改</button>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+
+    let subjects = []//定义一个全局变量subject[]
+    let KnowledgePointId = 0//定义一个全局变量currentID
+
+    $(function () {
+        let getGrade = function () {
+            let g = document.getElementById('grade')
+            return g.value
+        }
+
+        let fillVolume = function () {
+            $("#volumeId").empty();
+            s = $('#subjectId').val()
+            g = getGrade() //$('#gradexx').val()
+            for (let i = 0; i < subjects.length; ++i) {
+                if (subjects[i].id == s) {
+                    switch (g) {
+                        case '20':
+                            for (let j = 0; j < subjects[i].low.length; ++j) {
+                                $("#volumeId").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            }
+                            break
+                        case '21':
+                            for (let j = 0; j < subjects[i].high.length; ++j) {
+                                $("#volumeId").append('<option value="' + subjects[i].high[j].id + '">' + subjects[i].high[j].title + '</option>')
+                            }
+                            break
+                        default:
+                            break
+                    }
+                    break
+                }
+            }
+        }
+
+        $.ajax({
+            type: "get",
+            url: "api/subjects",
+            dataType: "json",
+            async: false,
+            success: function (a) {
+                subjects = a
+                for (let i = 0; i < a.length; ++i) {
+                    filter = {
+                        subjectId: subjects[i].id,
+                        grade: 20
+                    }
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        dataType: 'json',
+                        async: false,
+                        success: function (vs) {
+                            subjects[i].low = vs
+                        }
+                    })
+                    filter.grade = 21
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        dataType: 'json',
+                        async: false,
+                        success: function (vs) {
+                            subjects[i].high = vs
+                        }
+                    })
+
+                    $("#subjectId").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
+                }
+                fillVolume()
+            }
+        });
+
+        /* $('#volumeId').on('change', function(e) {
+         currentId = $('#titleservlet').val()
+         let selectedVolumeTitle = document.getElementById('titleservlet')
+         let opt = selectedVolumeTitle.options.item(selectedVolumeTitle.selectedIndex)
+         $('#title').val(opt.text)
+         }) */
+
+        $('#subjectId').on('change', function (e) {
+            fillVolume()
+        })
+
+        $('#grade').on('change', function (e) {
+            fillVolume()
+        })
+
+        $('#append').on('click', function (e) {
+            let data = {};
+            data.order = $('#order').val()
+            data.subjectId = $('#subjectId').val()
+            data.grade = getGrade()
+            data.volumeId = $('#volumeId').val()
+            data.title = $('#title2').val()
+            data.storePath = $('#storePath').val()
+            data.videoUrl = $('#videoUrl').val()
+            $.ajax({
+                type: "post",
+                url: "api/knowledgePoints",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (flag) {
+                    alert(JSON.stringify(flag))//得到数据
+                    KnowledgePointId = flag.id
+                    for (let i = 0; i < subjects.length; ++i) {
+                        if (subjects[i].id == flag.subjectId) {
+                            switch (flag.grade) {
+                                case 20:
+                                    subjects[i].low.push(flag)
+                                    break
+                                case 21:
+                                    subjects[i].high.push(flag)
+                                    break
+                                default:
+                                    alert('grade error')
+                                    break
+                            }
+                            break
+                        }
+                    }
+                    fillVolume()
+                }
+            });
+        })
+
+
+        $('#update').on('click', function (e) {
+            let pd = {};
+
+            pd.order = $('#order').val()
+            pd.subjectId = $('#subjectId').val()
+            pd.grade = getGrade()
+            pd.volumeId = $('#volumeId').val()
+            pd.title = $('#title2').val()
+            pd.storePath = $('#storePath').val()
+            pd.videoUrl = $('#videoUrl').val()
+            $.ajax({
+                type: "put",
+                url: "api/knowledgePoints/" + KnowledgePointId,
+                data: JSON.stringify(pd),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (flag) {
+                    //alert(JSON.stringify(flag))//得到数据
+                    for (let i = 0; i < subjects.length; ++i) {
+                        if (subjects[i].id == flag.subjectId) {
+                            switch (flag.grade) {
+                                case 20:
+                                    for (let j = 0; j < subjects[i].low.length; ++j) {
+                                        if (subjects[i].low[j].id == knowledgePoints) {
+                                            subjects[i].low[j] = flag
+                                            break
+                                        }
+                                    }
+                                    break
+                                case 21:
+                                    for (let j = 0; j < subjects[i].high.length; ++j) {
+                                        if (subjects[i].high[j].id == knowledgePoints) {
+                                            subjects[i].high[j] = flag
+                                            break
+                                        }
+                                    }
+                                    break
+                                default:
+                                    alert('grade error')
+                                    break
+                            }
+                            break
+                        }
+                    }
+                    fillVolume()
+                }
+            });
+        })
+    });
+</script>
+</body>
+</html>

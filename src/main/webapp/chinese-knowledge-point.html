@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chinese Knowledge Point</title>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<section id="title"></section>
+<section>
+    <h2>选文赏析</h2>
+    <ul id="origin"></ul>
+</section>
+<section id="content"></section>
+<section id="video"></section>
+<section>
+    <h2>闯关练习</h2>
+    <dl id="problems"></dl>
+</section>
+<section id="interaction"></section>
+<section>
+    <span>写留言<img src="pen.jpg" alt="写留言"/></span>
+    <section id="comments"></section>
+</section>
+<template id="title-template">
+    <h1>${title}</h1>
+</template>
+<template id="origin-template">
+    <article>
+        <section>${content}</section>
+        <address>${source}</address>
+    </article>
+    <!-- ... -->
+</template>
+<template id="content-text-template">
+    <p>${content}</p>
+    <!-- ... -->
+</template>
+<template id="content-image-template">
+    <span>
+    <img src="${href}" alt="${description}"/>
+        </span>
+    <!-- ... -->
+</template>
+<template id="video-template">
+    <span>
+    <video src="${href}">
+        <img src="${coverHref}" alt="${coverDescription}"/>
+    </video>
+        </span>
+</template>
+<template id="problem-option-template">
+    <li>${option}</li>
+</template>
+<template id="problem-template">
+    <div>
+        <dt><span>${type}</span>${title}</dt>
+        <dd>
+            <ol type="A" data-ext-point="options"></ol>
+        </dd>
+    </div>
+    <!-- ... -->
+</template>
+<template id="interaction-template">
+    <div>
+        <span>阅读</span><span>${readCount}</span>
+        <span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>
+        <a href="${previous}">previous</a><a href="${next}">next</a>
+    </div>
+</template>
+<template id="comment-template">
+    <article>
+        <img src="${avatar}" alt=""/>
+        <span>${name}</span>
+        <span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>
+        <section>${content}</section>
+        <time>${time}</time>
+    </article>
+    <!-- ... -->
+</template>
+<script>
+    $(function () {
+        let data = {
+            title: '放荡不羁名垂青史的竹林七贤',
+            origins: [
+                {
+                    content: '陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
+                    source: ' ——【南朝】刘义庆《世说新语·任诞》'
+                },
+                {
+                    content: '刘伶恒纵酒放达，或脱衣裸形在屋中，人见讥之，伶曰：“我以天地为栋宇，屋室为裈衣，诸君何为入我裈中？”',
+                    source: ' ——【南朝】刘义庆《世说新语·任诞》'
+                }
+            ],
+            contents: [
+                {
+                    type: 'text',
+                    content: '魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？'
+                },
+                {
+                    type: 'image',
+                    href: '',
+                    description: '竹林七贤魅力担当——嵇康'
+                },
+                {
+                    type: 'text',
+                    content: '魏晋的名士们身体力行地向我们展示了一种耀眼的答案：他们轻视礼教，率直放诞，清俊通脱，喝酒纵歌，崇尚老庄，超然物外，成为了那阴森时期最为清亮的一抹颜色，在历史上绽放出令人神往的辉光，于是，他们的风度便成了“魏晋风度”。'
+                },
+                {
+                    type: 'text',
+                    content: '说起魏晋风度，必须要提到魏晋风度的最佳言人，也就是竹林七贤。所谓竹林七贤，就是常常在聚集在竹林，一起喝酒纵歌的七个人，他们分别是阮籍、嵇康、山涛、刘伶、阮咸、向秀、王戎，他们都有着共同的特点，那就是不拘礼法、特立独行，当然也都非常非常的有才华。'
+                },
+                {
+                    type: 'text',
+                    content: '竹林七贤中，最具有人格魅力的，当属嵇康了吧！嵇康身材高大，仪容俊美，精通音律，文采卓然。这样优秀的一个人，不喜结交权贵，拒绝涉足官场，选择在竹林中打铁谋生，真是超然物外，不为世俗所拘呀！见到他的人都称赞他的气度：“萧萧肃肃，爽朗清举”。后来因为得罪了小人，而被定罪处死，在行刑之时，一个超级的震撼的场面出现了：三千太学生集体为嵇康请愿，请求赦免嵇康之罪，并让嵇康当他们的老师。唉，可惜统治者并没有答应太学生们的请求，仍要赴死的嵇康面色不变，取出一把琴，弹了一曲慷慨动人的《广陵散》，然后从容赴死，真是从生到死，都那么酷帅啊！'
+                },
+                {
+                    type: 'text',
+                    content: '竹林七贤中另一位名声赫赫的个性大咖，那便是阮籍了。阮籍有一个最最拿手的特技，那就是“青白眼”！阮籍不经常说话，却常常用眼睛来帮自己表态.'
+                },
+                {
+                    type: 'text',
+                    content: '对待讨厌的人，就用白眼，对待喜欢的人，便用青眼。据说，阮籍的母亲去世后，嵇康的哥哥嵇喜前来致哀，而嵇喜是在朝为官的礼法之士，阮籍非常不喜欢他. 便当面赏他一个大大的白眼，而当嵇康带着酒、夹了琴登门时，阮籍立刻转白眼为青眼，亲热非常地迎了上去。阮籍的青白眼还真是好恶鲜明啊！'
+                },
+                {
+                    type: 'text',
+                    content: '在竹林七贤中，还有一位最最放诞、最最不羁的人，他就是刘伶！刘伶很丑，但很有性格，常常脱掉衣服，一丝不挂地在屋中饮酒，当有客人来访时，面对奇葩的刘伶，客人当然会嘲笑他的不雅之举，可是刘伶却对客人说：“天地就是我的房屋，而房屋就是我的衣裤，哎呀，你为什么跑到我的裤子里来啦？”真是极端的潇洒放达啊！'
+                },
+                {
+                    type: 'image',
+                    href: '',
+                    description: '竹林七贤放荡之最——刘伶'
+                },
+                {
+                    type: 'text',
+                    content: '此外，七贤中的山涛，极重信义，向秀，妙解《庄子》，阮咸，精善琵琶，王戎，吝啬精明，也是各有各的独特，各有各的闪光亮点。总之，竹林七贤展示着潇洒超脱，诠释着魏晋风度，完全是中国历史上最最闪亮的组合之一呢！'
+                }
+            ],
+            video: {
+                href: '',
+                coverHref: '',
+                coverDescription: '塞花飘客泪,边柳挂乡愁'
+            },
+            problems: [
+                {
+                    type: '单选题',
+                    title: '“萧萧肃肃，爽朗清举”是古人对谁的赞誉？',
+                    options: [{option: '阮籍'}, {option: '嵇康'}, {option: '山涛'}, {option: '阮咸'}]
+                },
+                {
+                    type: '多选题',
+                    title: '以下哪些人被认为是“魏晋风度”的代表？',
+                    options: [{option: '嵇喜'}, {option: '王戎'}, {option: '曹操'}, {option: '阮籍'}]
+                },
+                {
+                    type: '多选题',
+                    title: '诸子百家中，最受“竹林七贤”喜欢的是谁？',
+                    options: [{option: '庄子'}, {option: '孟子'}, {option: '孔子'}, {option: '老子'}]
+                }
+            ],
+            interaction: {
+                readCount: 10000,
+                likeCount: 3000,
+                previous: '',
+                next: ''
+            },
+            comments: [
+                {
+                    avatar: '',
+                    name: '张三',
+                    likeCount: 20,
+                    content: '潇洒人生',
+                    time: '一天前'
+                },
+                {
+                    avatar: '',
+                    name: '李四',
+                    likeCount: 20,
+                    content: '不知所谓',
+                    time: '三天前'
+                }
+            ]
+        }
+
+        let doc = document
+
+        let getTemplate = function (templateId) {
+            let result
+            let template = doc.getElementById(templateId)
+            if (template) {
+                result = template.content.children[0]
+            }
+            return result
+        }
+
+        let bind = function (element, data) {
+            element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
+                let result = ''
+                if (variable) {
+                    result = data[variable]
+                }
+                return result
+            })
+        }
+
+        let proc = function (option) {
+            let template = option.template
+            if (!template) {
+                template = getTemplate(option.templateId)
+            }
+            let templates
+            if (option.alterTemplates) {
+                templates = []
+                for (let i = 0; i < option.alterTemplates.length; ++i) {
+                    let template = getTemplate(option.alterTemplates[i].templateId)
+                    if (template) {
+                        templates.push({type: option.alterTemplates[i].type, template: template})
+                    }
+                }
+            }
+            let container = option.container
+            if (!container) {
+                container = doc.getElementById(option.containerId)
+            }
+            if ((template || templates) && container) {
+                if (Array.isArray(option.data)) {
+                    let secondTemplate
+                    if (option.secondBind) {
+                        secondTemplate = getTemplate(option.secondBind.templateId)
+                    }
+                    for (let i = 0; i < option.data.length; ++i) {
+                        let element
+                        if (template) {
+                            element = template.cloneNode(true)
+                        } else if (templates) {
+                            for (let j = 0; j < templates.length; ++j) {
+                                if (option.data[i].type == templates[j].type) {
+                                    element = templates[j].template.cloneNode(true)
+                                    break
+                                }
+                            }
+                        }
+                        bind(element, option.data[i])
+                        if (option.secondBind) {
+                            let secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]')
+                            proc({
+                                container: secondContainer,
+                                template: secondTemplate,
+                                data: option.data[i][option.secondBind.dataFieldName]
+                            })
+                        }
+                        container.appendChild(element)
+                    }
+                } else {
+                    let element = template.cloneNode(true)
+                    bind(element, option.data)
+                    if (option.secondBind) {
+                        let secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]')
+                        proc({
+                            container: secondContainer,
+                            templateId: option.secondBind.templateId,
+                            data: option.data[option.secondBind.dataFieldName]
+                        })
+                    }
+                    container.appendChild(element)
+                }
+            }
+        }
+
+        proc({
+            templateId: 'title-template',
+            data: data,
+            containerId: 'title'
+        })
+
+        proc({
+            templateId: 'origin-template',
+            data: data.origins,
+            containerId: 'origin'
+        })
+
+        proc({
+            data: data.contents,
+            containerId: 'content',
+            alterTemplates: [
+                {type: 'text', templateId: 'content-text-template'},
+                {type: 'image', templateId: 'content-image-template'}
+            ]
+        })
+
+        proc({
+            templateId: 'video-template',
+            data: data.video,
+            containerId: 'video'
+        })
+
+        proc({
+            templateId: 'problem-template',
+            data: data.problems,
+            containerId: 'problems',
+            secondBind: {
+                extPoint: 'options',
+                dataFieldName: 'options',
+                templateId: 'problem-option-template'
+            }
+        })
+
+        proc({
+            templateId: 'interaction-template',
+            data: data.interaction,
+            containerId: 'interaction'
+        })
+
+        proc({
+            templateId: 'comment-template',
+            data: data.comments,
+            containerId: 'comments'
+        })
+    })
+</script>
+</body>
+</html>

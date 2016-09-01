@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>册名录入页面</title>
+</head>
+<body>
+<h1>册名录入页面</h1>
+<script type="text/javascript" src="jquery.min.js"></script>
+<table border="1">
+    <tr>
+        <th>科目</th>
+        <th>年级</th>
+        <th>标题</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td><select id="show"></select></td>
+        <td><select id="gradexx">
+            <option value="20">低年级</option>
+            <option value="21">高年级</option>
+        </select></td>
+        <td><input type="text" id="title"/> <select id="titleservlet"></select>
+        </td>
+        <td><input type="button" id="append" value="添加"/>
+            <button id="update">修改</button>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+
+    let subjects = []//定义一个全局变量subject[]
+    let currentId = 0//定义一个全局变量currentID
+
+    $(function () {
+        let getGrade = function () {
+            let g = document.getElementById('gradexx')
+            return g.value
+        }
+
+        let fillVolume = function () {
+            $('#title').val('')
+            $("#titleservlet").empty();
+            s = $('#show').val()
+            g = getGrade() //$('#gradexx').val()
+            for (let i = 0; i < subjects.length; ++i) {
+                if (subjects[i].id == s) {
+                    switch (g) {
+                        case '20':
+                            for (let j = 0; j < subjects[i].low.length; ++j) {
+                                $("#titleservlet").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            }
+                            break
+                        case '21':
+                            for (let j = 0; j < subjects[i].high.length; ++j) {
+                                $("#titleservlet").append('<option value="' + subjects[i].high[j].id + '">' + subjects[i].high[j].title + '</option>')
+                            }
+                            break
+                        default:
+                            break
+                    }
+                    break
+                }
+            }
+        }
+
+        $.ajax({
+            type: "get",
+            url: "api/subjects",
+            dataType: "json",
+            async: false,
+            success: function (a) {
+                subjects = a
+                for (let i = 0; i < a.length; ++i) {
+                    filter = {
+                        subjectId: subjects[i].id,
+                        grade: 20
+                    }
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        dataType: 'json',
+                        async: false,
+                        success: function (vs) {
+                            subjects[i].low = vs
+                        }
+                    })
+                    filter.grade = 21
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        dataType: 'json',
+                        async: false,
+                        success: function (vs) {
+                            subjects[i].high = vs
+                        }
+                    })
+
+                    $("#show").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
+                }
+                fillVolume()
+            }
+        });
+
+        $('#titleservlet').on('change', function (e) {
+            currentId = $('#titleservlet').val()
+            let selectedVolumeTitle = document.getElementById('titleservlet')
+            let opt = selectedVolumeTitle.options.item(selectedVolumeTitle.selectedIndex)
+            $('#title').val(opt.text)
+        })
+
+        $('#show').on('change', function (e) {
+            fillVolume()
+        })
+
+        $('#gradexx').on('change', function (e) {
+            fillVolume()
+        })
+
+        $('#append').on('click', function (e) {
+            let data = {};
+            data.subjectId = $('#show').val()
+            data.grade = getGrade()
+            data.title = $('#title').val()
+            $.ajax({
+                type: "post",
+                url: "api/volumes",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (flag) {
+                    //alert(JSON.stringify(flag))//得到数据
+                    currentId = flag.id
+                    for (let i = 0; i < subjects.length; ++i) {
+                        if (subjects[i].id == flag.subjectId) {
+                            switch (flag.grade) {
+                                case 20:
+                                    subjects[i].low.push(flag)
+                                    break
+                                case 21:
+                                    subjects[i].high.push(flag)
+                                    break
+                                default:
+                                    alert('grade error')
+                                    break
+                            }
+                            break
+                        }
+                    }
+                    fillVolume()
+                }
+            });
+        })
+
+
+        $('#update').on('click', function (e) {
+            let pd = {};
+            pd.subjectId = $('#show').val()
+            pd.grade = getGrade()
+            pd.title = $('#title').val()
+            $.ajax({
+                type: "put",
+                url: "api/volumes/" + currentId,
+                data: JSON.stringify(pd),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (flag) {
+                    //alert(JSON.stringify(flag))//得到数据
+                    for (let i = 0; i < subjects.length; ++i) {
+                        if (subjects[i].id == flag.subjectId) {
+                            switch (flag.grade) {
+                                case 20:
+                                    for (let j = 0; j < subjects[i].low.length; ++j) {
+                                        if (subjects[i].low[j].id == currentId) {
+                                            subjects[i].low[j] = flag
+                                            break
+                                        }
+                                    }
+                                    break
+                                case 21:
+                                    for (let j = 0; j < subjects[i].high.length; ++j) {
+                                        if (subjects[i].high[j].id == currentId) {
+                                            subjects[i].high[j] = flag
+                                            break
+                                        }
+                                    }
+                                    break
+                                default:
+                                    alert('grade error')
+                                    break
+                            }
+                            break
+                        }
+                    }
+                    fillVolume()
+                }
+            });
+        })
+    });
+</script>
+</body>
+</html>

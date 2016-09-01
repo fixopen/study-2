@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>奥数知识点</title>
+    <link href="css/weui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mathStudyKnowledge.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <!--header-->
+    <div class="row mathStudyKnowledge-header">
+        <div class="col-xs-1">
+            <a href="">&lt;</a>
+        </div>
+        <div class="col-xs-9" id="mathStudyKnowledge-title"></div>
+        <div class="col-xs-2">
+            <a href="#" id="">...</a>
+        </div>
+    </div>
+    <!--section-->
+    <div class="row">
+        <div class="col-xs-12" style="background-color: #eeeeee">奥数知识点</div>
+        <div class="col-xs-12" id="mathStudyKnowledge-section"></div>
+
+    </div>
+    <!--footer-->
+    <div class="row">
+        <div class="col-xs-12" id="follow"></div>
+    </div>
+</div>
+<!--templates-->
+<template id="title-template">
+    <span>${title}</span>
+</template>
+<template id="section-template">
+    <div class="row">
+        <div class="col-xs-3">
+            <img src="${imgsrc}" alt="">
+        </div>
+        <div class="col-xs-9">
+            <div class="row">
+                <div class="col-xs-12">
+                    <a href="#">${title}</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <span>阅读</span><i class="action-count">${readCount}</i>
+                </div>
+                <div class="col-xs-6">
+                    <span class="glyphicon glyphicon-thumbs-up"></span><i class="action-count">${likeCount}</i>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="follow-template">
+    <div class="action-cs">
+        <div class="row action-c">
+            <div class="col-xs-12">
+                <p>${title1}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <img src="${imgsrc}" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${title2}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step1}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step2}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step3}</p>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/mathStudyKnowledge.js"></script>
+</body>
+</html>

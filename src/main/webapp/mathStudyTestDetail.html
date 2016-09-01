@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>挑战百分百</title>
+    <link href="css/weui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mathStudyTestDetail.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <!--header-->
+    <div class="row mathStudyTestDetail-header">
+        <div class="col-xs-1">
+            <a href="">&lt;</a>
+        </div>
+        <div class="col-xs-9" id="mathStudyTestDetail-title"></div>
+        <div class="col-xs-2">
+            <a href="#" id="">...</a>
+        </div>
+    </div>
+    <!--section-->
+    <div class="row">
+        <div class="col-xs-12 action-cs">
+            <h3 class="action-c">挑战百分百</h3>
+        </div>
+        <div class="col-xs-12" id="mathStudyTestDetail-topic"></div>
+        <div class="col-xs-12 dropdown">
+            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">参考答案</button>
+            <div class="dropdown-menu" id="mathStudyTestDetail-answer">
+            </div>
+        </div>
+    </div>
+    <!--readLike-->
+    <div class="row">
+        <div class="col-xs-12" id="mathStudyTestDetail-readLike">
+        </div>
+    </div>
+    <!--footer-->
+    <div class="row">
+        <div class="col-xs-12">
+            <span class="pull-right">写留言</span>
+        </div>
+        <div class="col-xs-12" id="mathStudyTestDetail-msg"></div>
+    </div>
+</div>
+<!--templates-->
+<template id="title-template">
+    <span>${title}</span>
+</template>
+<template id="topic-template">
+    <div class="row">
+        <div class="col-xs-12">
+            <p>${topic1}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <img src="${topiclimg}" alt="">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <span class="glyphicon glyphicon-star-empty"></span><span>${option1}</span>
+        </div>
+        <div class="col-xs-6">
+            <span class="glyphicon glyphicon-star-empty"></span><span>${option2}</span>
+        </div>
+        <div class="col-xs-6">
+            <span class="glyphicon glyphicon-star-empty"></span><span>${option3}</span>
+        </div>
+        <div class="col-xs-6">
+            <span class="glyphicon glyphicon-star-empty"></span><span>${option4}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="${videoLink}" class="btn">点击观看视频解答</a>
+        </div>
+    </div>
+</template>
+<template id="answer-template">
+    <div class="row">
+        <div class="col-xs-3">
+            <p>1<span>${answer1}</span></p>
+        </div>
+        <div class="col-xs-3">
+            <p>2<span>${answer2}</span></p>
+        </div>
+        <div class="col-xs-3">
+            <p>3<span>${answer3}</span></p>
+        </div>
+        <div class="col-xs-3">
+            <p>4<span>${answer4}</span></p>
+        </div>
+        <div class="col-xs-3">
+            <p>5<span>${answer5}</span></p>
+        </div>
+        <div class="col-xs-3">
+            <p>6<span>${answer6}</span></p>
+        </div>
+        <div class="col-xs-3">
+            <p>7<span>${answer7}</span></p>
+        </div>
+    </div>
+</template>
+<template id="readLike-template">
+    <div class="row">
+        <div class="col-xs-3">
+            <span>阅读</span><i class="action-count">${readCount}</i>
+        </div>
+        <div class="col-xs-3">
+            <span class="glyphicon glyphicon-thumbs-up"></span><i class="action-count">${likeCount}</i>
+        </div>
+        <div class="col-xs-6">
+            <span class="pull-right">投诉</span>
+        </div>
+    </div>
+</template>
+<template id="msg-template">
+    <div class="row">
+        <div class="col-xs-2">
+            <img src="${imgsrc}" alt="">
+        </div>
+        <div class="col-xs-10">
+            <div class="row">
+                <div class="col-xs-10">
+                    <p>${msgName}</p>
+                </div>
+                <div class="col-xs-2">
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>${msgValue}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>${msgTime}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/mathStudyTestDetail.js"></script>
+</body>
+</html>
