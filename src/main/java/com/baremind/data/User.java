@@ -43,10 +43,10 @@ public class User {
     private Long sex;
 
     @Column(name = "site")
-    private int site;
+    private String site;
 
     @Column(name = "amount")
-    private String amount;
+    private float amount;
 
     @Column(name = "school")
     private String school;
@@ -72,11 +72,11 @@ public class User {
     @Column(name = "update_time")
     private Date updateTime;
 
-    public int getSite() {
+    public String getSite() {
         return site;
     }
 
-    public void setSite(int site) {
+    public void setSite(String site) {
         this.site = site;
     }
 
@@ -208,11 +208,11 @@ public class User {
         this.sex = sex;
     }
 
-    public String getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

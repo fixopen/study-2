@@ -23,7 +23,7 @@ public class Users {
 
     static void queryBalance() {
         //http://IP:PORT/msg/QueryBalance?account=a&pswd=p
-        
+
 //        return body
 //        20130303180000,0
 //        1234567,1000
@@ -71,7 +71,7 @@ public class Users {
 //        118 用户没有相应的发送权限
 //        119 用户已过期
 //        120 测试内容不是白名单
-        
+
 
         SendMessageResult result = new SendMessageResult();
         // Default instance of client
@@ -111,7 +111,7 @@ public class Users {
     @Path("smsStateNotification")
     public SmsState smsStateNotification() {
         //http://pushUrl?receiver=admin&pswd=12345&msgid=12345&reportTime=1012241002&mobile=13900210021&status=DELIVRD
-        
+
 //        DELIVRD 短消息转发成功
 //        EXPIRED 短消息超过有效期
 //        UNDELIV 短消息是不可达的
@@ -194,10 +194,8 @@ public class Users {
             result = Response.status(404).build();
             User existuser = JPAEntry.getObject(User.class, "id", id);
             if (existuser != null) {
-                String amount = user.getAmount();
-                if (amount != null) {
-                    existuser.setAmount(amount);
-                }
+                float amount = user.getAmount();
+                existuser.setAmount(amount);
                 Date birthday = user.getBirthday();
                 if (birthday != null) {
                     existuser.setBirthday(birthday);
@@ -266,8 +264,8 @@ public class Users {
                 if (updateTime != null) {
                     existuser.setUpdateTime(updateTime);
                 }
-                int site = user.getSite();
-                if (site != 0) {
+                String site = user.getSite();
+                if (site != null) {
                     existuser.getSite();
                 }
                 JPAEntry.genericPut(existuser);

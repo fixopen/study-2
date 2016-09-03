@@ -63,13 +63,10 @@ public class WechatUser {
     private String info;
 
     @Column(name = "subscribe")
-    private int subscribe ;
+    private int subscribe;
 
     @Column(name = "language")
     private String language;
-
-    @Column(name = "headimgurl")
-    private String headimgurl;
 
     @Column(name = "subscribe_time")
     private int subscribeTime;
@@ -81,7 +78,6 @@ public class WechatUser {
     private int groupId;
 
 
-
     public String getLanguage() {
         return language;
     }
@@ -89,16 +85,6 @@ public class WechatUser {
     public void setLanguage(String language) {
         this.language = language;
     }
-
-    public String getHeadimgurl() {
-        return headimgurl;
-    }
-
-    public void setHeadimgurl(String headimgurl) {
-        this.headimgurl = headimgurl;
-    }
-
-
 
     public String getRemark() {
         return remark;
@@ -259,6 +245,4 @@ public class WechatUser {
     public void setInfo(String info) {
         this.info = info;
     }
-
-
 }
