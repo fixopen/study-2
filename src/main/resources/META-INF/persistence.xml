@@ -18,6 +18,7 @@
         <class>com.baremind.data.Subject</class>
         <class>com.baremind.data.Tag</class>
         <class>com.baremind.data.User</class>
+        <class>com.baremind.data.ValidationCode</class>
         <class>com.baremind.data.Video</class>
         <class>com.baremind.data.Volume</class>
         <class>com.baremind.data.WechatUser</class>

@@ -56,6 +56,8 @@ public class Cards {
     }
     */
 
+    private static String token = "xiaoyuzhishi20160907";
+
     @POST
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
     @Produces(MediaType.APPLICATION_JSON)
@@ -63,6 +65,20 @@ public class Cards {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             try {
+//                Map<String, String> args = new HashMap<>();
+//                String queryString = request.getQueryString();
+//                String[] params = queryString.split("&");
+//                for (String param : params) {
+//                    String[] pair = param.split("=");
+//                    args.put(pair[0], pair[1]);
+//                }
+//                String[] origin = {args.get("timestamp"), args.get("nonce"), token};
+//                Collections.sort(origin);
+//                String v = origin[0] + origin[1] + origin[2];
+//                String sign = SHA1.digest(v);
+//                if (sign.equals(args.get("signature"))) {
+//                    return Response.ok(args.get("echostr")).build();
+//                }
                 byte[] buffer = new byte[4 * 1024];
                 //String uploadedFileLocation = Securities.config.ZIP_FILES + IdGenerator.getNewId() + ".csv";
                 String uploadedFileLocation = "tempFilename.csv";

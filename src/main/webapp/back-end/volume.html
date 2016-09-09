@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>册名录入页面</h1>
-<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery.min.js"></script>
 <table border="1">
     <tr>
         <th>科目</th>
@@ -66,7 +66,7 @@
 
         $.ajax({
             type: "get",
-            url: "api/subjects",
+            url: "/api/subjects",
             dataType: "json",
             async: false,
             success: function (a) {
@@ -78,7 +78,7 @@
                     }
                     $.ajax({
                         type: "get",
-                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        url: '/api/volumes?filter=' + JSON.stringify(filter),
                         dataType: 'json',
                         async: false,
                         success: function (vs) {
@@ -88,7 +88,7 @@
                     filter.grade = 21
                     $.ajax({
                         type: "get",
-                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        url: '/api/volumes?filter=' + JSON.stringify(filter),
                         dataType: 'json',
                         async: false,
                         success: function (vs) {
@@ -124,10 +124,10 @@
             data.title = $('#title').val()
             $.ajax({
                 type: "post",
-                url: "api/volumes",
+                url: "/api/volumes",
                 data: JSON.stringify(data),
                 dataType: "json",
-                contentType: "application/json",
+                contentType: "application/json; charset=utf-8",
                 success: function (flag) {
                     //alert(JSON.stringify(flag))//得到数据
                     currentId = flag.id
@@ -160,10 +160,10 @@
             pd.title = $('#title').val()
             $.ajax({
                 type: "put",
-                url: "api/volumes/" + currentId,
+                url: "/api/volumes/" + currentId,
                 data: JSON.stringify(pd),
                 dataType: "json",
-                contentType: "application/json",
+                contentType: "application/json; charset=utf-8",
                 success: function (flag) {
                     //alert(JSON.stringify(flag))//得到数据
                     for (let i = 0; i < subjects.length; ++i) {

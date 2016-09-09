@@ -139,7 +139,7 @@ if (!window.JSON) {
 }
 
 var g = function () {
-    //do nothing, only a name
+    //append selector
 }
 
 g.getTemplate = function (type) {
