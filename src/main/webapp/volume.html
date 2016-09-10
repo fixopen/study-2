@@ -29,40 +29,40 @@
 </table>
 <script type="text/javascript">
 
-    let subjects = []//定义一个全局变量subject[]
-    let currentId = 0//定义一个全局变量currentID
+    var subjects = []//定义一个全局变量subject[]
+    var currentId = 0//定义一个全局变量currentID
 
     $(function () {
-        let getGrade = function () {
-            let g = document.getElementById('gradexx')
+        var getGrade = function () {
+            var g = document.getElementById('gradexx')
             return g.value
-        }
+        };
 
-        let fillVolume = function () {
-            $('#title').val('')
+        var fillVolume = function () {
+            $('#title').val('');
             $("#titleservlet").empty();
-            s = $('#show').val()
-            g = getGrade() //$('#gradexx').val()
-            for (let i = 0; i < subjects.length; ++i) {
+            s = $('#show').val();
+            g = getGrade(); //$('#gradexx').val()
+            for (var i = 0; i < subjects.length; ++i) {
                 if (subjects[i].id == s) {
                     switch (g) {
                         case '20':
-                            for (let j = 0; j < subjects[i].low.length; ++j) {
+                            for (var j = 0; j < subjects[i].low.length; ++j) {
                                 $("#titleservlet").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
                             }
-                            break
+                            break;
                         case '21':
-                            for (let j = 0; j < subjects[i].high.length; ++j) {
+                            for (var j = 0; j < subjects[i].high.length; ++j) {
                                 $("#titleservlet").append('<option value="' + subjects[i].high[j].id + '">' + subjects[i].high[j].title + '</option>')
                             }
-                            break
+                            break;
                         default:
                             break
                     }
                     break
                 }
             }
-        }
+        };
 
         $.ajax({
             type: "get",
@@ -70,12 +70,12 @@
             dataType: "json",
             async: false,
             success: function (a) {
-                subjects = a
-                for (let i = 0; i < a.length; ++i) {
+                subjects = a;
+                for (var i = 0; i < a.length; ++i) {
                     filter = {
                         subjectId: subjects[i].id,
                         grade: 20
-                    }
+                    };
                     $.ajax({
                         type: "get",
                         url: 'api/volumes?filter=' + JSON.stringify(filter),
@@ -84,8 +84,8 @@
                         success: function (vs) {
                             subjects[i].low = vs
                         }
-                    })
-                    filter.grade = 21
+                    });
+                    filter.grade = 21;
                     $.ajax({
                         type: "get",
                         url: 'api/volumes?filter=' + JSON.stringify(filter),
@@ -94,7 +94,7 @@
                         success: function (vs) {
                             subjects[i].high = vs
                         }
-                    })
+                    });
 
                     $("#show").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
                 }
@@ -103,90 +103,90 @@
         });
 
         $('#titleservlet').on('change', function (e) {
-            currentId = $('#titleservlet').val()
-            let selectedVolumeTitle = document.getElementById('titleservlet')
-            let opt = selectedVolumeTitle.options.item(selectedVolumeTitle.selectedIndex)
+            currentId = $('#titleservlet').val();
+            var selectedVolumeTitle = document.getElementById('titleservlet');
+            var opt = selectedVolumeTitle.options.item(selectedVolumeTitle.selectedIndex);
             $('#title').val(opt.text)
-        })
+        });
 
         $('#show').on('change', function (e) {
             fillVolume()
-        })
+        });
 
         $('#gradexx').on('change', function (e) {
             fillVolume()
-        })
+        });
 
         $('#append').on('click', function (e) {
-            let data = {};
-            data.subjectId = $('#show').val()
-            data.grade = getGrade()
-            data.title = $('#title').val()
+            var data = {};
+            data.subjectId = $('#show').val();
+            data.grade = getGrade();
+            data.title = $('#title').val();
             $.ajax({
                 type: "post",
                 url: "api/volumes",
                 data: JSON.stringify(data),
                 dataType: "json",
-                contentType: "application/json",
+                contentType: "application/json;charset=utf-8",
                 success: function (flag) {
                     //alert(JSON.stringify(flag))//得到数据
-                    currentId = flag.id
-                    for (let i = 0; i < subjects.length; ++i) {
+                    currentId = flag.id;
+                    for (var i = 0; i < subjects.length; ++i) {
                         if (subjects[i].id == flag.subjectId) {
                             switch (flag.grade) {
                                 case 20:
-                                    subjects[i].low.push(flag)
-                                    break
+                                    subjects[i].low.push(flag);
+                                    break;
                                 case 21:
-                                    subjects[i].high.push(flag)
-                                    break
+                                    subjects[i].high.push(flag);
+                                    break;
                                 default:
-                                    alert('grade error')
+                                    alert('grade error');
                                     break
                             }
-                            break
+                            break;
                         }
                     }
                     fillVolume()
                 }
             });
-        })
+        });
 
 
         $('#update').on('click', function (e) {
-            let pd = {};
-            pd.subjectId = $('#show').val()
-            pd.grade = getGrade()
-            pd.title = $('#title').val()
+            var pd = {};
+            pd.subjectId = $('#show').val();
+            pd.grade = getGrade();
+            pd.title = $('#title').val();
             $.ajax({
                 type: "put",
                 url: "api/volumes/" + currentId,
                 data: JSON.stringify(pd),
                 dataType: "json",
-                contentType: "application/json",
+                contentType: "application/json;charset=utf-8",
                 success: function (flag) {
                     //alert(JSON.stringify(flag))//得到数据
-                    for (let i = 0; i < subjects.length; ++i) {
+                    for (var i = 0; i < subjects.length; ++i) {
                         if (subjects[i].id == flag.subjectId) {
                             switch (flag.grade) {
                                 case 20:
-                                    for (let j = 0; j < subjects[i].low.length; ++j) {
+                                    for (var j = 0; j < subjects[i].low.length; ++j) {
                                         if (subjects[i].low[j].id == currentId) {
-                                            subjects[i].low[j] = flag
+                                            subjects[i].low[j] = flag;
                                             break
                                         }
                                     }
-                                    break
+                                    break;
                                 case 21:
-                                    for (let j = 0; j < subjects[i].high.length; ++j) {
+                                    for (var j = 0; j < subjects[i].high.length; ++j) {
                                         if (subjects[i].high[j].id == currentId) {
-                                            subjects[i].high[j] = flag
+                                            subjects[i].high[j] = flag;
                                             break
                                         }
                                     }
-                                    break
+                                    break;
                                 default:
-                                    alert('grade error')
+                                    alert('grade error');
                                     break
                             }
                             break

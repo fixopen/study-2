@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>排课</title>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/moment.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="moment.js"></script>
 </head>
 <body>
 <form enctype="multipart/formdata">
-<input type="file">
+    <input type="file">
 </form>
 <template id="scheduler-template">
     <tr>
@@ -204,9 +204,55 @@
     </thead>
     <tbody id="Saturday" class="scheduler-list"></tbody>
 </table>
-
 <script language="javascript" type="text/javascript">
     $(function () {
+        $.ajax({
+            type: "get",
+            url: 'api/schedulers/this-week',
+            dataType: 'json',
+            async: false,
+            success: function (vs) {
+                //alert(JSON.stringify(vs))//得到数据
+                for (var i = 0; i < vs.length; ++i) {
+                    switch (vs[i].day) {
+                        case 0:
+                            String
+                            var tr = "<tr>" +
+                                    "<td>" + vs[i].startTime + "</td>" +
+                                    "<td>" + vs[i].endTime + "</td>" +
+                                    "<td>" + vs[i].title + "</td>" +
+                                    "<td>" + vs[i].subjectId + "</td>" +
+                                    "<td>" + vs[i].duration + "</td>" +
+                                    "<td>" + vs[i].description + "</td>" +
+                                    "<td>" + vs[i].grade + "</td>" +
+                                    "<td>" + vs[i].teacher + "</td>" +
+                                    "<td>" + vs[i].teacherDescription + "</td>" +
+                                    "<td>" + vs[i].state + "</td>" +
+                                    "</tr>";
+                            $("#Sunday").append(tr)
+                            break;
+                        case 1:
+                            $("#Monday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 2:
+                            $("#Tuesday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 3:
+                            $("#Wednesday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 4:
+                            $("#Thursday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 5:
+                            $("#Friday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 6:
+                            $("#Saturday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                    }
+                }
+            }
+        })
         const days = [0, 1, 2, 3, 4, 5, 6]
         const weeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
         let dayIndex = 0
@@ -258,16 +304,10 @@
                 }
 
                 let startTimeArray = startTimeValue.split(":")
-                //alert(startTimeArray)
                 let startDate = new Date(year.value, month, day, startTimeArray[0], startTimeArray[1])
-                //let startDate = moment([year, month, day, startTimeArray[0], startTimeArray[1]])
-                //alert(startDate)
 
                 let endTimeArray = endTimeValue.split(":")
-                //alert(endTimeArray)
                 let endDate = new Date(year.value, month, day, endTimeArray[0], endTimeArray[1])
-                //let endDate = moment([year, month, day, endTimeArray[0], endTimeArray[1]])
-                //alert(endDate)
 
                 if (startDate >= endDate) {
                     alert('开始时间不能大于结束时间')
@@ -303,7 +343,7 @@
                         url: "api/schedulers",
                         data: JSON.stringify(scheduler),
                         dataType: "json",
-                        contentType: "application/json",
+                        contentType: "application/json;charset=utf-8",
                         success: function (schedulerItem) {
                             button.dataset.id = schedulerItem.id
                         }
@@ -314,7 +354,7 @@
                         url: "api/schedulers/" + id,
                         data: JSON.stringify(scheduler),
                         dataType: "json",
-                        contentType: "application/json",
+                        contentType: "application/json;charset=utf-8",
                         success: function (schedulerItem) {
                             //do nothing
                         }

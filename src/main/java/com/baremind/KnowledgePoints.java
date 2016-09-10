@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
 
-@Path("knowledge-points")
+@Path("knowledgePoints")
 public class KnowledgePoints {
     @POST//添
     @Consumes(MediaType.APPLICATION_JSON)

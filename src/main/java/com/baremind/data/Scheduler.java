@@ -1,9 +1,11 @@
 package com.baremind.data;
 
 
-import java.util.Date;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.sql.Time;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -27,11 +29,11 @@ public class Scheduler {
     @Column(name = "state")
     private int state;
 
-    @Column(name = "start_time")
-    private Date startTime;
+    @Column(name = "start_time", columnDefinition = "time")
+    private Time startTime;
 
-    @Column(name = "end_time")
-    private Date endTime;
+    @Column(name = "end_time", columnDefinition = "time")
+    private Time endTime;
 
     @Column(name = "duration")
     private Integer duration;
@@ -86,19 +88,19 @@ public class Scheduler {
         this.state = state;
     }
 
-    public Date getStartTime() {
+    public Time getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public Time getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
 

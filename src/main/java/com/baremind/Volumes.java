@@ -17,13 +17,20 @@ public class Volumes {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createVolume(@CookieParam("sessionId") String sessionId, Volume volume) {
+    public Response createVolume(@CookieParam("sessionId") String sessionId, /*byte[] volumeInfo*/ Volume volume) {
+
         Response result = Response.status(401).build();
+        //Volume volume = null;
+        //try {
+        //volume = new Gson().fromJson(new String(volumeInfo, "UTF-8"), Volume.class);
+        //} catch (JsonSyntaxException | UnsupportedEncodingException e) {
         if (JPAEntry.isLogining(sessionId)) {
             volume.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(volume);
             result = Response.ok(volume).build();
         }
+        //e.printStackTrace();
+        //}
         return result;
     }
 

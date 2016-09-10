@@ -5,7 +5,7 @@
     <title>知识点录入</title>
 </head>
 <h1>知识点录入页面</h1>
-<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.min.js"></script>
 <table border="1">
     <tr>
         <th>序号</th>
@@ -30,9 +30,9 @@
         </td>
         <td><input type="text" id="title"/> <select id="titleselect"></select>
         </td>
-        <td><input type="text" id="storePath"/> <select id="storePathselect"></select>
+        <td><input type="text" id="storePath"/>
         </td>
-        <td><input type="text" id="videoUrl"/> <select id="VideoUrlselect"></select>
+        <td><input type="text" id="videoUrl"/>
         </td>
         <td><input type="button" id="append" value="添加"/>
             <button id="update">修改</button>
@@ -118,44 +118,6 @@
             }
         }
 
-        /* $.ajax({
-         type:"get",
-         url:"api/subjects",
-         dataType:"json",
-         async:false,
-         success:function(a){
-         subjects = a
-         for (let i = 0; i < a.length; ++i) {
-         filter = {
-         subjectId: subjects[i].id,
-         grade: 20
-         }
-         $.ajax({
-         type: "get",
-         url: 'api/volumes?filter=' + JSON.stringify(filter),
-         dataType: 'json',
-         async: false,
-         success:function(vs) {
-         subjects[i].low = vs
-         }
-         })
-         filter.grade = 21
-         $.ajax({
-         type: "get",
-         url: 'api/volumes?filter=' + JSON.stringify(filter),
-         dataType: 'json',
-         async: false,
-         success:function(vs) {
-         subjects[i].high = vs
-         }
-         })
-
-         $("#subjectId").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
-         }
-         fillVolume()
-         }
-         }); */
-
         $.ajax({
             type: "get",
             url: "api/knowledgePoints",
@@ -183,6 +145,7 @@
                         }
                     })
                     filter.grade = 21
+                    delete filter.volumeId
                     $.ajax({
                         type: "get",
                         url: 'api/knowledgePoints?filter=' + JSON.stringify(filter),
@@ -193,18 +156,18 @@
                         }
                     })
 
-                    $("#subjectId").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
+                    $("#subjectId").append('<option value="' + knowledgePoints[i].id + '">' + knowledgePoints[i].name + '</option>')
                 }
                 fillVolume()
             }
         });
 
-        /* $('#volumeId').on('change', function(e) {
-         currentId = $('#titleservlet').val()
-         let selectedVolumeTitle = document.getElementById('titleservlet')
-         let opt = selectedVolumeTitle.options.item(selectedVolumeTitle.selectedIndex)
-         $('#title').val(opt.text)
-         }) */
+        $('#volumeId').on('change', function (e) {
+            currentId = $('#titleselect').val()
+            let selectedVolumeTitle = document.getElementById('titleselect')
+            let opt = selectedVolumeTitle.options.item(selectedVolumeTitle.selectedIndex)
+            $('#title').val(opt.text)
+        })
 
         $('#subjectId').on('change', function (e) {
             fillVolume()
@@ -228,7 +191,7 @@
                 url: "api/knowledgePoints",
                 data: JSON.stringify(data),
                 dataType: "json",
-                contentType: "application/json",
+                contentType: "application/json;charset=utf-8",
                 success: function (flag) {
                     alert(JSON.stringify(flag))//得到数据
                     KnowledgePointId = flag.id
@@ -269,7 +232,7 @@
                 url: "api/knowledgePoints/" + KnowledgePointId,
                 data: JSON.stringify(pd),
                 dataType: "json",
-                contentType: "application/json",
+                contentType: "application/json;charset=utf-8",
                 success: function (flag) {
                     //alert(JSON.stringify(flag))//得到数据
                     for (let i = 0; i < subjects.length; ++i) {
@@ -306,3 +269,198 @@
 </script>
 </body>
 </html>
+
+
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>册名录入页面</title>
+</head>
+<body>
+<h1>册名录入页面</h1>
+<script type="text/javascript" src="jquery.min.js"></script>
+<table border="1">
+    <tr>
+        <th>科目</th>
+        <th>年级</th>
+        <th>标题</th>
+        <th>知识点</th>
+    </tr>
+    <tr>
+        <td>
+            <select id="show"></select>
+        </td>
+        <td>
+            <select id="gradexx">
+            <option value="20">低年级</option>
+            <option value="21">高年级</option>
+            </select>
+        </td>
+        <td>
+            <select id="titleservlet"></select>
+        </td>
+        <td>
+            <select id="knowledgePointsServlet"></select>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+
+    var subjects = []//定义一个全局变量subject[]
+    var currentId = 0//定义一个全局变量currentID
+    var vold = []
+    $(function () {
+        var getGrade = function () {
+            var g = document.getElementById('gradexx')
+            return g.value
+        };
+
+        var fillVolume = function () {
+            alert(JSON.stringify(vold))
+            $("#titleservlet").empty();
+            s = $('#show').val();
+            g = getGrade(); //$('#gradexx').val()
+            for (var i = 0; i < subjects.length; ++i) {
+                if (subjects[i].id == s) {
+                    switch (g) {
+                        case '20':
+                            /*
+                            * [{"id":1,"subjectId":1,"volumeId":1,"grade":20,"title":"语文低年级第一册知识点一","order":1}]
+                            * [{"id":5,"subjectId":3,"volumeId":3,"grade":20,"title":"口语低年级第一册知识点一","order":5}]
+                            * [{"id":3,"subjectId":2,"volumeId":2,"grade":20,"title":"奥数低年级第一册知识点一","order":3}]
+                            * */
+                            for (var j = 0; j < subjects[i].low.length; ++j) {
+                                $("#titleservlet").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+
+                            }
+
+                            break;
+                        case '21':
+                            for (var j = 0; j < subjects[i].high.length; ++j) {
+                                $("#titleservlet").append('<option value="' + subjects[i].high[j].id + '">' + subjects[i].high[j].title + '</option>')
+
+                            }
+                            //alert(JSON.stringify(vold))
+                            break;
+                        default:
+                            break
+                    }
+                    break
+                }
+            }
+        };
+knowledgePoint = function(){
+    //[{"id":1,"subjectId":1,"grade":20,"title":"语文低年级第一册"}]
+
+    alert(JSON.stringify(subjects[i].low[j].id))
+    alert(JSON.stringify(subjects[j].low))
+    for(var x = 0; x < subjects[j].low.length; ++x){
+        alert(JSON.stringify(subjects[j].low[x].volumeId))
+        if(subjects[j].low[x].volumeId == subjects[i].low[j].id){
+            $("#knowledgePointsServlet").append('<option value="'+subjects[j].low[x].id+'">'+ subjects[j].low[x].title +'</option>')
+        }
+    }
+
+    if(vs[j].volumeId = subjects[i].low[j].id){
+        for(var x = 0; x < vs[j].low.length; ++x){
+            $("#knowledgePointsServlet").append('<option value="'+vs[j].low[x].id+'">'+ vs[j].low[x].title +'</option>')
+        }
+    }
+
+
+
+
+}
+        $.ajax({
+            type: "get",
+            url: "api/subjects",
+            dataType: "json",
+            async: false,
+            success: function (a) {
+                subjects = a;
+                for (var i = 0; i < a.length; ++i) {
+                    filter = {
+                        subjectId: subjects[i].id,
+                        grade: 20
+                    };
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        dataType: 'json',
+                        async: false,
+                        success: function (vs) {
+                            subjects[i].low = vs
+                            //alert(JSON.stringify(vs))
+                            $.ajax({
+                                type:"get",
+                                url:'api/knowledgePoints?filter=' + JSON.stringify(filter),
+                                dataType: 'json',
+                                async : false,
+                                success: function(volumes){
+                                   // subjects[] = volumes
+                                    //subjects[x].vs = volumes
+
+                                    //{"id":1,"subjectId":1,"volumeId":1,"grade":20,"title":"语文低年级第一册知识点一","order":1}
+
+                                    //{"id":5,"subjectId":3,"volumeId":3,"grade":20,"title":"口语低年级第一册知识点一","order":5}
+
+                                    //{"id":3,"subjectId":2,"volumeId":2,"grade":20,"title":"奥数低年级第一册知识点一","order":3}
+
+                                    //subjects[j].low = volumes
+                                    //alert(JSON.stringify(vold))
+                                }
+                            })
+                        }
+                    });
+                    filter.grade = 21;
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        dataType: 'json',
+                        async: false,
+                        success: function (vs) {
+                            subjects[i].high = vs
+                            $.ajax({
+                                type:"get",
+                                url:'api/knowledgePoints?filter=' + JSON.stringify(filter),
+                                dataType: 'json',
+                                async : false,
+                                success: function(volumes){
+                                    vold = volumes
+                                   // subjects[x].vs = volumes
+
+                                    //{"id":2,"subjectId":1,"volumeId":2,"grade":21,"title":"语文高年级第一册知识点一","order":2}
+                                    //{"id":6,"subjectId":3,"volumeId":6,"grade":21,"title":"口语高年级第一册知识点一","order":6}
+                                    //{"id":4,"subjectId":2,"volumeId":4,"grade":21,"title":"奥数高年级第一册知识点一","order":4}
+                                    //subjects[j].low = volumes
+                                    //alert(JSON.stringify(vold))
+                                }
+                            })
+                        }
+                    });
+
+                    $("#show").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
+                }
+                fillVolume()
+            }
+        });
+
+        $('#show').on('change', function (e) {
+            fillVolume()
+        });
+
+        $('#gradexx').on('change', function (e) {
+            fillVolume()
+        });
+
+        $('#titleservlet').on('change', function (e) {
+            fillVolume()
+        });
+    });
+</script>
+</body>
+</html>
+
+-->

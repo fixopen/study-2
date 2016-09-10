@@ -17,11 +17,6 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
     @Context
     HttpServletRequest request;
 
-    @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        request.setCharacterEncoding("UTF-8");
-    }
-
     public static Map<String, Object> getFilters(String filter) {
         Map<String, Object> result = null;
         if (filter != "") {
@@ -34,5 +29,10 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
             }
         }
         return result;
+    }
+
+    @Override
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+        request.setCharacterEncoding("UTF-8");
     }
 }

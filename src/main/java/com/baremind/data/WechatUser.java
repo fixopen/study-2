@@ -1,11 +1,10 @@
 package com.baremind.data;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by lenovo on 2016/8/17.
@@ -56,20 +55,17 @@ public class WechatUser {
     @Column(name = "head")
     private String head;
 
-    @Column(name = "privilege")
-    private String[] privilege;
+    //@Column(name = "privilege", columnDefinition = "character varying(64)[]")
+    //private String[] privilege;
 
-    @Column(name = "info")
+    @Column(name = "info", columnDefinition = "character varying")
     private String info;
 
     @Column(name = "subscribe")
-    private int subscribe ;
+    private int subscribe;
 
     @Column(name = "language")
     private String language;
-
-    @Column(name = "headimgurl")
-    private String headimgurl;
 
     @Column(name = "subscribe_time")
     private int subscribeTime;
@@ -81,7 +77,6 @@ public class WechatUser {
     private int groupId;
 
 
-
     public String getLanguage() {
         return language;
     }
@@ -89,16 +84,6 @@ public class WechatUser {
     public void setLanguage(String language) {
         this.language = language;
     }
-
-    public String getHeadimgurl() {
-        return headimgurl;
-    }
-
-    public void setHeadimgurl(String headimgurl) {
-        this.headimgurl = headimgurl;
-    }
-
-
 
     public String getRemark() {
         return remark;
@@ -244,13 +229,13 @@ public class WechatUser {
         this.head = head;
     }
 
-    public String[] getPrivilege() {
-        return privilege;
-    }
-
-    public void setPrivilege(String[] privilege) {
-        this.privilege = privilege;
-    }
+//    public String[] getPrivilege() {
+//        return privilege;
+//    }
+//
+//    public void setPrivilege(String[] privilege) {
+//        this.privilege = privilege;
+//    }
 
     public String getInfo() {
         return info;
