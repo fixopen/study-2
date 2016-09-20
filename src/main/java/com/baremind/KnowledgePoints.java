@@ -1,6 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.KnowledgePoint;
+import com.baremind.data.*;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +54,67 @@ public class KnowledgePoints {
             KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (knowledgePoint != null) {
                 result = Response.ok(new Gson().toJson(knowledgePoint)).build();
+            }
+        }
+        return result;
+    }
+
+    private int getOrder(List<KnowledgePointContentMap> maps, long id) {
+        int order = 0;
+        for (int j = 0; j < maps.size(); ++j) {
+            if (maps[j].getObjectId() == id) {
+                order = j;
+                break;
+            }
+        }
+        return order;
+    }
+
+    @GET
+    @Path("{id}/contents")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Map<String, Object> conditions = new HashMap<>();
+            conditions.put("knowledgePointId", id);
+
+            List<Text> texts = JPAEntry.getList(Text.class, conditions);
+            List<Image> problemsimages = JPAEntry.getList(Image.class, conditions);
+
+            Video video = JPAEntry.getObject(Video.class, "knowledgePointId", id);
+
+            List<Problem> problems = JPAEntry.getList(Problem.class, conditions);
+
+            List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
+
+            int count = texts.size() + images.size();
+
+            List<Object> result = new ArrayList<>(count);
+
+            List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions);
+
+            for (int i = 0; i < texts.size(); ++i) {
+                int order = getOrder(maps, texts[i].getId());
+                result.add(order, texts[i]);
+            }
+            for (int i = 0; i < images.size(); ++i) {
+                int order = getOrder(maps, images[i].getId());
+                result.add(order, images[i]);
+            }
+            result.add(video);
+            for (int i = 0; i < problems.size(); ++i) {
+                int order = getOrder(maps, problems[i].getId());
+                result.add(order, problems[i]);
+            }
+            for (int i = 0; i < comments.size(); ++i) {
+                int order = getOrder(maps, comments[i].getId());
+                result.add(order, comments[i]);
+            }
+
+            if (!result.isEmpty()) {
+                result = Response.ok(new Gson().toJson(result)).build();
             }
         }
         return result;

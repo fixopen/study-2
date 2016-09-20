@@ -1,6 +1,7 @@
 package com.baremind;
 
 import com.baremind.data.Subject;
+import com.baremind.data.Volume;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -9,6 +10,7 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +54,42 @@ public class Subjects {
             Subject subject = JPAEntry.getObject(Subject.class, "id", id);
             if (subject != null) {
                 result = Response.ok(new Gson().toJson(subject)).build();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/low/volumes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLowVolumesBySubjectId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Map<String, Object> conditions = new HashMap<>();
+            conditions.put("subjectId", id);
+            conditions.put("grade", 20);
+            List<Volume> volumes = JPAEntry.getList(Volume.class, conditions);
+            if (!volumes.isEmpty()) {
+                result = Response.ok(new Gson().toJson(volumes)).build();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/high/volumes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getHighVolumesBySubjectId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Map<String, Object> conditions = new HashMap<>();
+            conditions.put("subjectId", id);
+            conditions.put("grade", 21);
+            List<Volume> volumes = JPAEntry.getList(Volume.class, conditions);
+            if (!volumes.isEmpty()) {
+                result = Response.ok(new Gson().toJson(volumes)).build();
             }
         }
         return result;

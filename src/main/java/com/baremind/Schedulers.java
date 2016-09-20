@@ -55,7 +55,7 @@ public class Schedulers {
         return result;
     }
 
-    @GET //根据id查询课表
+    @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
@@ -67,6 +67,17 @@ public class Schedulers {
         return result;
     }
 
+    @GET //获取classroom-key
+    @Path("key")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getKey(@CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            String key = "";
+            result = Response.ok("{\"key\":\"" + key + "\"}").build();
+        }
+        return result;
+    }
 
     @POST //添加课表
     @Consumes(MediaType.APPLICATION_JSON)

@@ -15,6 +15,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -65,35 +67,18 @@ public class Cards {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             try {
-//                Map<String, String> args = new HashMap<>();
-//                String queryString = request.getQueryString();
-//                String[] params = queryString.split("&");
-//                for (String param : params) {
-//                    String[] pair = param.split("=");
-//                    args.put(pair[0], pair[1]);
-//                }
-//                String[] origin = {args.get("timestamp"), args.get("nonce"), token};
-//                Collections.sort(origin);
-//                String v = origin[0] + origin[1] + origin[2];
-//                String sign = SHA1.digest(v);
-//                if (sign.equals(args.get("signature"))) {
-//                    return Response.ok(args.get("echostr")).build();
-//                }
-                byte[] buffer = new byte[4 * 1024];
-                //String uploadedFileLocation = Securities.config.ZIP_FILES + IdGenerator.getNewId() + ".csv";
                 String uploadedFileLocation = "tempFilename.csv";
                 File csvFile = new File(uploadedFileLocation);
                 FileOutputStream w = new FileOutputStream(csvFile);
                 ServletInputStream servletInputStream = request.getInputStream();
-                for (; ; ) {
-                    int receiveLength = servletInputStream.read(buffer);
-                    if (receiveLength == -1) {
-                        break;
-                    }
-                    w.write(buffer, 0, receiveLength);
-                }
-                w.close();
+                CharacterEncodingFilter.saveFile(w, servletInputStream);
                 parseAndInsert(uploadedFileLocation);
+                try {
+                    Response.temporaryRedirect(new URI("...")).build();
+                    Response.seeOther(new URI("...")).build();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

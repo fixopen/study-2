@@ -6,15 +6,44 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Path("medias")
 public class Medias {
+    @POST //import
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response importCardsViaFormData(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                String uploadedFileLocation = "tempFilename.jpg";
+                File csvFile = new File(uploadedFileLocation);
+                FileOutputStream w = new FileOutputStream(csvFile);
+                Part p = request.getPart("file");
+                String contentType = p.getContentType();
+                //can use contentType for images table!!
+                InputStream servletInputStream = p.getInputStream();
+                CharacterEncodingFilter.saveFile(w, servletInputStream);
+            } catch (IOException | ServletException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

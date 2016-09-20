@@ -24,9 +24,15 @@
         <class>com.baremind.data.WechatUser</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://139.129.214.229:5432/study" />
+            <property name="javax.persistence.jdbc.user" value="postgres" />
+            <property name="javax.persistence.jdbc.password" value="postgres" />
+            <!--
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/study" />
             <property name="javax.persistence.jdbc.user" value="fixopen" />
             <property name="javax.persistence.jdbc.password" value="123456" />
+            -->
+
             <!-- EclipseLink should create the database schema automatically -->
             <!--
             <property name="eclipselink.ddl-generation" value="create-tables" />

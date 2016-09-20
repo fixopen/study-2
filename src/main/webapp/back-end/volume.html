@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>册名录入页面</title>
+    <volumeTitle>册名录入页面</volumeTitle>
 </head>
 <body>
 <h1>册名录入页面</h1>
@@ -15,64 +15,59 @@
         <th>操作</th>
     </tr>
     <tr>
-        <td><select id="show"></select></td>
-        <td><select id="gradexx">
+        <td><select id="subject"></select></td>
+        <td><select id="grade">
             <option value="20">低年级</option>
             <option value="21">高年级</option>
         </select></td>
-        <td><input type="text" id="title"/> <select id="titleservlet"></select>
+        <td><input type="text" id="volumeTitle"/> <select id="volumeTitleChoice"></select>
         </td>
         <td><input type="button" id="append" value="添加"/>
             <button id="update">修改</button>
         </td>
     </tr>
 </table>
+
+<button id="appendText" data-type="text">append Text</button>
+<button id="appendImage" data-type="image">append image</button>
+<button id="appendVideo" data-type="video">append video</button>
+<button id="appendProblem" data-type="problem">append problem</button>
+
+<button id="movePrevious">^</button>
+<button id="moveNext">V</button>
+<button id="submit">submit</button>
+<button id="save">save</button>
+
+<div id="contents">
+    <input type="text" data-type="text" data-id=""/>
+    <input type="file" data-type="image" data-id=""/>
+    <input type="file" data-type="video" data-id=""/>
+    <input type="file" data-type="problem" data-id=""/>
+</div>
+
 <script type="text/javascript">
 
-    let subjects = []//定义一个全局变量subject[]
-    let currentId = 0//定义一个全局变量currentID
+    let subjects = []
+    let currentSubjectIndex = 0
+    let currentSubject
+    let currentGradeIndex = 0
+    let currentGrade = 20
+    let currentVolumeIndex = 0
+    let currentVolume
 
     $(function () {
-        let getGrade = function () {
-            let g = document.getElementById('gradexx')
-            return g.value
-        }
-
-        let fillVolume = function () {
-            $('#title').val('')
-            $("#titleservlet").empty();
-            s = $('#show').val()
-            g = getGrade() //$('#gradexx').val()
-            for (let i = 0; i < subjects.length; ++i) {
-                if (subjects[i].id == s) {
-                    switch (g) {
-                        case '20':
-                            for (let j = 0; j < subjects[i].low.length; ++j) {
-                                $("#titleservlet").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
-                            }
-                            break
-                        case '21':
-                            for (let j = 0; j < subjects[i].high.length; ++j) {
-                                $("#titleservlet").append('<option value="' + subjects[i].high[j].id + '">' + subjects[i].high[j].title + '</option>')
-                            }
-                            break
-                        default:
-                            break
-                    }
-                    break
-                }
-            }
-        }
-
         $.ajax({
             type: "get",
             url: "/api/subjects",
             dataType: "json",
-            async: false,
-            success: function (a) {
-                subjects = a
-                for (let i = 0; i < a.length; ++i) {
-                    filter = {
+            async: true,
+            success: function (subjectData) {
+                subjects = subjectData
+                let subjectSelect = document.getElementById('subject')
+                for (let i = 0; i < subjects.length; ++i) {
+                    subjects[i].low = []
+                    subjects[i].high = []
+                    let filter = {
                         subjectId: subjects[i].id,
                         grade: 20
                     }
@@ -80,9 +75,9 @@
                         type: "get",
                         url: '/api/volumes?filter=' + JSON.stringify(filter),
                         dataType: 'json',
-                        async: false,
-                        success: function (vs) {
-                            subjects[i].low = vs
+                        async: true,
+                        success: function (volumes) {
+                            subjects[i].low = volumes
                         }
                     })
                     filter.grade = 21
@@ -90,113 +85,282 @@
                         type: "get",
                         url: '/api/volumes?filter=' + JSON.stringify(filter),
                         dataType: 'json',
-                        async: false,
-                        success: function (vs) {
-                            subjects[i].high = vs
+                        async: true,
+                        success: function (volumes) {
+                            subjects[i].high = volumes
                         }
                     })
-
-                    $("#show").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
+                    let option = document.createElement('option')
+                    option.setAttribute("value", subjects[i].id)
+                    option.appendChild(document.createTextNode(subjects[i].name))
+                    subjectSelect.appendChild(option)
                 }
-                fillVolume()
+                currentSubjectIndex = 0
+                subjectSelect.selectedIndex = currentSubjectIndex
+                currentSubject = subjectSelect.value
+
+                let gradeSelect = document.getElementById('grade')
+                currentGradeIndex = 0
+                gradeSelect.selectedIndex = currentGradeIndex
+                currentGrade = gradeSelect.value
+
+                let volumeSelect = document.getElementById('volumeTitleChoice')
+                volumeSelect.innerHTML = ''
+                let gradeName = 'low'
+                switch (currentGrade) {
+                    case 21:
+                    case '21':
+                        gradeName = 'high'
+                        break
+                    default:
+                        break
+                }
+                for (let i = 0; i < subjects[currentSubjectIndex][gradeName].length; ++i) {
+                    let option = document.createElement('option')
+                    option.setAttribute("value", subjects[currentSubjectIndex][gradeName][i].id)
+                    option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][i].title))
+                    volumeSelect.appendChild(option)
+                }
+
+                currentVolumeIndex = 0
+                volumeSelect.selectedIndex = currentVolumeIndex
+                currentVolume = volumeSelect.value
+
+                let opt = volumeSelect.options.item(currentVolumeIndex)
+                let volume = document.getElementById('volumeTitle')
+                volume.value = opt.text
             }
-        });
-
-        $('#titleservlet').on('change', function (e) {
-            currentId = $('#titleservlet').val()
-            let selectedVolumeTitle = document.getElementById('titleservlet')
-            let opt = selectedVolumeTitle.options.item(selectedVolumeTitle.selectedIndex)
-            $('#title').val(opt.text)
         })
 
-        $('#show').on('change', function (e) {
-            fillVolume()
+        $('#subject').on('change', function (e) {
+            currentSubjectIndex = e.target.selectedIndex
+            currentSubject = e.target.value
+
+            let gradeSelect = document.getElementById('grade')
+            currentGradeIndex = 0
+            gradeSelect.selectedIndex = currentGradeIndex
+            currentGrade = gradeSelect.value
+
+            let volumeSelect = document.getElementById('volumeTitleChoice')
+            volumeSelect.innerHTML = ''
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+            for (let i = 0; i < subjects[currentSubjectIndex][gradeName].length; ++i) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][i].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][i].title))
+                volumeSelect.appendChild(option)
+            }
+
+            currentVolumeIndex = 0
+            volumeSelect.selectedIndex = currentVolumeIndex
+            currentVolume = volumeSelect.value
+
+            let volume = document.getElementById('volumeTitle')
+            volume.value = ''
+            let opt = volumeSelect.options.item(currentVolumeIndex)
+            volume.value = opt.text
         })
 
-        $('#gradexx').on('change', function (e) {
-            fillVolume()
+        $('#grade').on('change', function (e) {
+            currentGradeIndex = e.target.selectedIndex
+            currentGrade = e.target.value
+
+            let volumeSelect = document.getElementById('volumeTitleChoice')
+            volumeSelect.innerHTML = ''
+
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+            for (let i = 0; i < subjects[currentSubjectIndex][gradeName].length; ++i) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][i].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][i].title))
+                volumeSelect.appendChild(option)
+            }
+
+            currentVolumeIndex = 0
+            volumeSelect.selectedIndex = currentVolumeIndex
+            currentVolume = volumeSelect.value
+
+            let volume = document.getElementById('volumeTitle')
+            volume.value = ''
+            let opt = volumeSelect.options.item(currentVolumeIndex)
+            volume.value = opt.text
+        })
+
+        $('#volumeTitleChoice').on('change', function (e) {
+            let volumeSelect = e.target
+            currentVolumeIndex = volumeSelect.selectedIndex
+            currentVolume = volumeSelect.value
+
+            let volume = document.getElementById('volumeTitle')
+            volume.value = ''
+            let opt = volumeSelect.options.item(currentVolumeIndex)
+            volume.value = opt.text
         })
 
         $('#append').on('click', function (e) {
-            let data = {};
-            data.subjectId = $('#show').val()
-            data.grade = getGrade()
-            data.title = $('#title').val()
+            let volumeTitle = document.getElementById('volumeTitle')
+            let data = {
+                subjectId: currentSubject,
+                grade: currentGrade,
+                volumeTitle: volumeTitle.value
+            }
             $.ajax({
                 type: "post",
                 url: "/api/volumes",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success: function (flag) {
-                    //alert(JSON.stringify(flag))//得到数据
-                    currentId = flag.id
-                    for (let i = 0; i < subjects.length; ++i) {
-                        if (subjects[i].id == flag.subjectId) {
-                            switch (flag.grade) {
-                                case 20:
-                                    subjects[i].low.push(flag)
-                                    break
-                                case 21:
-                                    subjects[i].high.push(flag)
-                                    break
-                                default:
-                                    alert('grade error')
-                                    break
-                            }
+                success: function (volume) {
+                    currentVolume = volume.id
+                    let gradeName = 'low'
+                    switch (currentGrade) {
+                        case 21:
+                        case '21':
+                            gradeName = 'high'
                             break
-                        }
+                        default:
+                            break
                     }
-                    fillVolume()
+                    subjects[currentSubjectIndex][gradeName].push(volume)
                 }
-            });
+            })
         })
-
 
         $('#update').on('click', function (e) {
-            let pd = {};
-            pd.subjectId = $('#show').val()
-            pd.grade = getGrade()
-            pd.title = $('#title').val()
+            let volumeTitle = document.getElementById('volumeTitle')
+            let volumeData = {
+                subjectId: currentSubject,
+                grade: currentGrade,
+                volumeTitle: volumeTitle.value
+            }
             $.ajax({
                 type: "put",
-                url: "/api/volumes/" + currentId,
-                data: JSON.stringify(pd),
+                url: "/api/volumes/" + currentVolume,
+                data: JSON.stringify(volumeData),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success: function (flag) {
-                    //alert(JSON.stringify(flag))//得到数据
-                    for (let i = 0; i < subjects.length; ++i) {
-                        if (subjects[i].id == flag.subjectId) {
-                            switch (flag.grade) {
-                                case 20:
-                                    for (let j = 0; j < subjects[i].low.length; ++j) {
-                                        if (subjects[i].low[j].id == currentId) {
-                                            subjects[i].low[j] = flag
-                                            break
-                                        }
-                                    }
-                                    break
-                                case 21:
-                                    for (let j = 0; j < subjects[i].high.length; ++j) {
-                                        if (subjects[i].high[j].id == currentId) {
-                                            subjects[i].high[j] = flag
-                                            break
-                                        }
-                                    }
-                                    break
-                                default:
-                                    alert('grade error')
-                                    break
-                            }
+                success: function (volumeData) {
+                    let gradeName = 'low'
+                    switch (currentGrade) {
+                        case 21:
+                        case '21':
+                            gradeName = 'high'
                             break
+                        default:
+                            break
+                    }
+                    subjects[currentSubjectIndex][gradeName][currentVolumeIndex] = volumeData
+                    let volumeSelect = document.getElementById('volumeTitleChoice')
+                    let opt = volumeSelect.options.item(currentVolumeIndex)
+                    let volume = document.getElementById('volumeTitle')
+                    opt.innerText = volume.value
+                }
+            })
+        })
+
+        let currentSelectedElement
+
+        let contents = document.getElementById('contents')
+        contents.addEventListener('click', function(e) {
+            currentSelectedElement = e.target
+        }, false)
+
+        let appendText = document.getElementById('appendText')
+        appendText.addEventListener('click', function(e) {
+            let textArea = document.createElement('input')
+            textArea.setAttribute('data-identity', orderValue)
+            textArea.setAttribute("data-id", '')
+            textArea.setAttribute("data-type", 'text')
+            contents.appendChild(textArea)
+            currentSelectedElement = textArea
+        }, false)
+
+        let movePrevious = document.getElementById('movePrevious')
+        movePrevious.addEventListener('click', function(e) {
+            let c = currentSelectedElement.parentNode
+            let previousSibling = currentSelectedElement.previousElementSibling
+            c.removeChild(currentSelectedElement)
+            c.insertBefore(currentSelectedElement, previousSibling)
+        }, false)
+
+        let moveNext = document.getElementById('moveNext')
+        moveNext.addEventListener('click', function(e) {
+            let c = currentSelectedElement.parentNode
+            let nextNextSibling = currentSelectedElement.nextElementSibling.nextElementSibling
+            c.removeChild(currentSelectedElement)
+            c.insertBefore(currentSelectedElement, nextNextSibling)
+        }, false)
+
+        let submit = document.getElementById('submit')
+        submit.addEventListener('click', function(e) {
+            switch (currentSelectedElement.dataset.type) {
+                case 'text':
+                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                        //put
+                    } else {
+                        //post
+                        success: function(data) {
+                            let id = data.id
+                            currentSelectedElement.dataset.id = id
                         }
                     }
-                    fillVolume()
+                    break
+            }
+        }, false)
+
+        let save = document.getElementById('save')
+        save.addEventListener('click', function(e) {
+            //$(currentSelectedElement).val()
+
+            let children = contents.children
+            for (let i = 0; i < children.length; ++i) {
+//                let action = '/api/texts'
+//                let data = ''
+//                switch (children[i].dataset.type) {
+//                    case 'text':
+//                        data = children[i].value
+//                        break
+//                    case 'image':
+//                        action = '/api/images'
+//                        data = children[i].files[0]
+//                        break
+//                    case 'problem':
+//                        action = '/api/problems':
+//                        data = {} //
+//                        break
+//                }
+//                $.ajax({
+//                    type: 'post',
+//                    url: action,
+//                    data: data
+//                })
+                //id, knowledge_point_id, volume_id, type, text_id|image_id|problem_id|video_id, order
+                let data = {
+                    knowledge_point_id: 0,
+                    volume_id: 0,
+                    type: children[i].dataset.type,
+                    object_id: children[i].dataset.id,
+                    order: i + 1
                 }
-            });
-        })
-    });
+            }
+        }, false)
+    })
 </script>
 </body>
 </html>

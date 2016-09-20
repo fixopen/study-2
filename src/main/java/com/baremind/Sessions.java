@@ -28,6 +28,19 @@ public class Sessions {
         return result;
     }
 
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response destroySession(@CookieParam("sessionId") String sessionId, Session session) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            session.setId(IdGenerator.getNewId());
+            JPAEntry.genericPost(session);
+            result = Response.ok(session).build();
+        }
+        return result;
+    }
+
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessions(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
