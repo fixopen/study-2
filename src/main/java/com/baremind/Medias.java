@@ -32,6 +32,10 @@ public class Medias {
                 String uploadedFileLocation = "tempFilename.jpg";
                 File csvFile = new File(uploadedFileLocation);
                 FileOutputStream w = new FileOutputStream(csvFile);
+
+                request.setCharacterEncoding("UTF-8");
+                String content = request.getParameter("content");
+
                 Part p = request.getPart("file");
                 String contentType = p.getContentType();
                 //can use contentType for images table!!
