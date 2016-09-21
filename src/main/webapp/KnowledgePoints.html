@@ -12,6 +12,7 @@
         <th>科目</th>
         <th>年级</th>
         <th>标题</th>
+        <th>操作</th>
         <th>知识点</th>
         <th>操作</th>
     </tr>
@@ -23,10 +24,13 @@
         </select></td>
         <td><input type="text" id="volumeTitle"/> <select id="volumeTitleChoice"></select>
         </td>
+        <td><input type="button" id="appendvolumeTitle" value="添加"/>
+            <button id="updatevolumeTitle">修改</button>
+        </td>
         <td><input type="text" id="knowledgePointTitle"/> <select id="knowledgePointTitleChoice"></select>
         </td>
-        <td><input type="button" id="append" value="添加"/>
-            <button id="update">修改</button>
+        <td><input type="button" id="appendknowledgePointTitle" value="添加"/>
+            <button id="updateknowledgePointTitle">修改</button>
         </td>
     </tr>
 </table>
@@ -39,7 +43,6 @@
 <button id="appendProblem" data-type="problem">append problem</button>
 <button id="appendImageText" data-type="imagetext">append imagetext</button>
 <button id="appendQuote" data-type="quote">append quote</button>
-
 <button id="movePrevious">^</button>
 <button id="moveNext">V</button>
 <button id="submit">submit</button>
@@ -55,7 +58,7 @@
             <li><input type="text" data-type="option" data-identity="3"/></li>
             <li><input type="text" data-type="option" data-identity="4"/></li>
         </ol>
-        图片路径(手动输入)<input type="text" data-type="video"/>
+        视频路径(手动输入)<input type="text" data-type="video"/>
     </div>
 </template>
 <template id="imageText-template">
@@ -105,7 +108,7 @@
                         success: function (volumes) {
                             subjects[i].low = volumes
                             for (var j = 0; j < subjects[i].low.length; ++j) {
-
+                                subjects[i].low[j].vsid = []
                                 filterds = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].low[j].id,
@@ -118,7 +121,7 @@
                                     dataType: 'json',
                                     async : false,
                                     success: function(knowledgePoint){
-                                        volumes[j].vsid = knowledgePoint
+                                        subjects[i].low[j].vsid = knowledgePoint
 
                                     }
                                 })
@@ -133,7 +136,7 @@
                         success: function (volumes) {
                             subjects[i].high = volumes
                             for (var j = 0; j < subjects[i].high.length; ++j) {
-
+                                subjects[i].high[j].vsid = []
                                 filtergs = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].high[j].id,
@@ -146,7 +149,7 @@
                                     dataType: 'json',
                                     async : false,
                                     success: function(knowledgePoint){
-                                        volumes[j].vsid = knowledgePoint
+                                        subjects[i].high[j].vsid = knowledgePoint
 
                                     }
                                 })
@@ -196,19 +199,20 @@
                 //=============================================================
                 let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
                 knowledgePointSelect.innerHTML = ''
-                for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolume].vsid.length; ++j) {
+                for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
                     let option = document.createElement('option')
-                    option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolume].vsid[j].id)
-                    option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolume].vsid[j].title))
+                    option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].id)
+                    option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].title))
                     knowledgePointSelect.appendChild(option)
                 }
                 currentKnowledgePointIndex = 0
                 knowledgePointSelect.selectedIndex = currentKnowledgePointIndex
                 currentKnowledgePoint = knowledgePointSelect.value
-                opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
-                let knowledgePoint = document.getElementById('knowledgePointTitle')
-                knowledgePoint.value = opt.text
 
+                let knowledgePoint = document.getElementById('knowledgePointTitle')
+                knowledgePoint.value = ''
+                opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+                knowledgePoint.value = opt.text
             }
         });
 
@@ -246,9 +250,28 @@
             let volume = document.getElementById('volumeTitle')
             volume.value = ''
             let opt = volumeSelect.options.item(currentVolumeIndex)
-            volume.value = opt.text
+            if (opt) {
+                volume.value = opt.text
+            }
 
+            let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+            knowledgePointSelect.innerHTML = ''
+            for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].title))
+                knowledgePointSelect.appendChild(option)
+            }
+            currentKnowledgePointIndex = 0
+            knowledgePointSelect.selectedIndex = currentKnowledgePointIndex
+            currentKnowledgePoint = knowledgePointSelect.value
 
+            let knowledgePoint = document.getElementById('knowledgePointTitle')
+            knowledgePoint.value = ''
+            opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+            if (opt) {
+                knowledgePoint.value = opt.text
+            }
         })
 
         $('#grade').on('change', function (e) {
@@ -282,7 +305,29 @@
             let volume = document.getElementById('volumeTitle')
             volume.value = ''
             let opt = volumeSelect.options.item(currentVolumeIndex)
-            volume.value = opt.text
+            if (opt) {
+                volume.value = opt.text
+            }
+
+            let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+            knowledgePointSelect.innerHTML = ''
+            for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].title))
+                knowledgePointSelect.appendChild(option)
+            }
+            currentKnowledgePointIndex = 0
+            knowledgePointSelect.selectedIndex = currentKnowledgePointIndex
+            currentKnowledgePoint = knowledgePointSelect.value
+
+            let knowledgePoint = document.getElementById('knowledgePointTitle')
+            knowledgePoint.value = ''
+            opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+            if (opt) {
+                knowledgePoint.value = opt.text
+            }
+
         })
 
         $('#volumeTitleChoice').on('change', function (e) {
@@ -293,7 +338,51 @@
             let volume = document.getElementById('volumeTitle')
             volume.value = ''
             let opt = volumeSelect.options.item(currentVolumeIndex)
-            volume.value = opt.text
+            if (opt) {
+                volume.value = opt.text
+            }
+
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+
+            let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+            knowledgePointSelect.innerHTML = ''
+            for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].title))
+                knowledgePointSelect.appendChild(option)
+            }
+            currentKnowledgePointIndex = 0
+            knowledgePointSelect.selectedIndex = currentKnowledgePointIndex
+            currentKnowledgePoint = knowledgePointSelect.value
+
+            let knowledgePoint = document.getElementById('knowledgePointTitle')
+            knowledgePoint.value = ''
+            opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+            if (opt) {
+                knowledgePoint.value = opt.text
+            }
+
+        })
+
+        $('#knowledgePointTitleChoice').on('change', function (e) {
+           currentKnowledgePointIndex = e.target.selectedIndex
+            currentKnowledgePoint = e.target.value
+
+            let knowledgePoint = document.getElementById('knowledgePointTitle')
+            knowledgePoint.value = ''
+            opt = e.target.options.item(currentKnowledgePointIndex)
+            if (opt) {
+                knowledgePoint.value = opt.text
+            }
         })
 
         $('#append').on('click', function (e) {

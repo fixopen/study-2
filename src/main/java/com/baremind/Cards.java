@@ -69,7 +69,7 @@ public class Cards {
 
 
     private static String token = "xiaoyuzhishi20160907";
-    
+
     @POST //import
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
     public Response importCardsViaBareContent(@CookieParam("sessionId") String sessionId, byte[] contents) {
