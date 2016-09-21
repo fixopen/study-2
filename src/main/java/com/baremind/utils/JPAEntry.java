@@ -54,11 +54,22 @@ public class JPAEntry {
     }
 
     public static <T> List<T> getList(Class<T> type, Map<String, Object> conditions) {
+        return getList(type, conditions, null);
+    }
+
+    public static <T> List<T> getList(Class<T> type, Map<String, Object> conditions, Map<String, String> orders) {
         String jpql = "SELECT o FROM " + type.getSimpleName() + " o WHERE 1 = 1";
         if (conditions != null) {
             for (Map.Entry<String, Object> item : conditions.entrySet()) {
                 jpql += " AND o." + item.getKey() + " = :" + item.getKey();
             }
+        }
+        if (orders != null) {
+            jpql += " ORDER BY ";
+            for (Map.Entry<String, String> order : orders.entrySet()) {
+                jpql += order.getKey() + " " + order.getValue() + ", ";
+            }
+            jpql = jpql.substring(0, jpql.length() - 2);
         }
         EntityManager em = getEntityManager();
         TypedQuery<T> q = em.createQuery(jpql, type);
