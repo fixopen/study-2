@@ -142,11 +142,11 @@ let volumeId = getUrlParameter("volumeId")
     success: function(kps){
       knowledgePoints=kps;
       alert(JSON.stringify(kps))
-      // proc({
-      //   templateId: 'title2-template',
-      //   data:knowledgePoints[b-1] ,
-      //   containerId: 'title2'
-      // })
+      proc({
+        templateId: 'title2-template',
+        data:knowledgePoints[b-1] ,
+        containerId: 'title2'
+      })
     }
   })
   //alert(JSON.stringify(filterds))
@@ -170,11 +170,11 @@ let volumeId = getUrlParameter("volumeId")
   //     })
   //   }
   // })
-    proc({
-        templateId: 'title2-template',
-        data:knowledgePoints[b] ,
-        containerId: 'title2'
-    })
+  //   proc({
+  //       templateId: 'title2-template',
+  //       data:knowledgePoints[b] ,
+  //       containerId: 'title2'
+  //   })
   proc({
     templateId: 'title1-template',
     data: {"title1":knowledge_point_id},
