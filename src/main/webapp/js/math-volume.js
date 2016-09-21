@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 $(function () {
-=======
-$(document).ready(function() {
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
   // let data = {
   //   volumesL: [
   //           {id: 1, name: '钟表喊你吃饭啦', title: 'hhhh'},
@@ -25,7 +21,7 @@ $(document).ready(function() {
   //           {id: 8, name: 'hight', title: 'ewr23'}
   //       ]
   // }
-<<<<<<< HEAD
+
 
     let volumesL;
     filter = {
@@ -57,50 +53,22 @@ $(document).ready(function() {
             volumesH = vs
         }
     });
-=======
-    let subjects = [];
 
-    // $.get('api/subjects', function(ss) {
-    //     subjects = ss;
-    //     alert(JSON.stringify(subjects))
-    //     for (let i = 0; i < subjects.length; ++i) {
-            let filter = {
-                subjectId: 2,
-                grade: 20
-            }
-            // alert(JSON.stringify(filter))
-            $.get('api/volumes?filter=' + JSON.stringify(filter), function(vs) {
-                alert(JSON.stringify(vs))
-                subjects.low = vs
-            })
-            filter.grade = 21;
-            // alert(JSON.stringify(filter))
-            $.get('api/volumes?filter=' + JSON.stringify(filter), function(vss) {
-                subjects.high = vss
-                alert(JSON.stringify(subjects.high ))
-            })
-        // }
-    // })
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
 
 
   proc({
     templateId: 'volumes-template',
-<<<<<<< HEAD
+
     data: volumesL,
-=======
-    data: subjects[i].low,
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+
     containerId: 'volumes-low'
   })
 
   proc({
     templateId: 'volumes-template',
-<<<<<<< HEAD
+
     data: volumesH,
-=======
-    data: subjects[i].high,
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+
     containerId: 'volumes-hight'
   })
 
