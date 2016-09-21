@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.KnowledgePoint;
 import com.baremind.data.Volume;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -9,6 +10,7 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +61,23 @@ public class Volumes {
             Volume volume = JPAEntry.getObject(Volume.class, "id", id);
             if (volume != null) {
                 result = Response.ok(new Gson().toJson(volume)).build();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/knowledge-points")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Map<String, Object> conditions = new HashMap<>();
+            conditions.put("volumeId", id);
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions);
+            if (!knowledgePoints.isEmpty()) {
+                result = Response.ok(new Gson().toJson(knowledgePoints)).build();
             }
         }
         return result;

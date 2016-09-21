@@ -11,7 +11,10 @@ import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> 3c103f9a47921cec408eb3dd28748ee69820f375
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -247,6 +250,67 @@ public class KnowledgePoints {
             if (knowledgePoint != null) {
                 result = Response.ok(new Gson().toJson(knowledgePoint)).build();
             }
+        }
+        return result;
+    }
+
+//    private int getOrder(List<KnowledgePointContentMap> maps, long id) {
+//        int order = 0;
+//        for (int i = 0; i < maps.size(); ++i) {
+//            if (maps.get(i).getObjectId() == id) {
+//                order = i;
+//                break;
+//            }
+//        }
+//        return order;
+//    }
+
+    @GET
+    @Path("{id}/contents")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Map<String, Object> conditions = new HashMap<>();
+            conditions.put("knowledgePointId", id);
+
+//            List<Text> texts = JPAEntry.getList(Text.class, conditions);
+//            List<Image> images = JPAEntry.getList(Image.class, conditions);
+//
+//            Video video = JPAEntry.getObject(Video.class, "knowledgePointId", id);
+//
+//            List<Problem> problems = JPAEntry.getList(Problem.class, conditions);
+//
+//            List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
+//
+//            int count = texts.size() + images.size();
+//
+//            List<Object> r = new ArrayList<>(count);
+//
+//            List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions);
+//
+//            for (int i = 0; i < texts.size(); ++i) {
+//                int order = getOrder(maps, texts.get(i).getId());
+//                r.add(order, texts.get(i));
+//            }
+//            for (int i = 0; i < images.size(); ++i) {
+//                int order = getOrder(maps, images.get(i).getId());
+//                r.add(order, images.get(i));
+//            }
+//            r.add(video);
+//            for (int i = 0; i < problems.size(); ++i) {
+//                int order = getOrder(maps, problems.get(i).getId());
+//                r.add(order, problems.get(i));
+//            }
+//            for (int i = 0; i < comments.size(); ++i) {
+//                int order = getOrder(maps, comments.get(i).getId());
+//                r.add(order, comments.get(i));
+//            }
+//
+//            if (!result.isEmpty()) {
+//                result = Response.ok(new Gson().toJson(r)).build();
+//            }
         }
         return result;
     }

@@ -18,13 +18,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+<<<<<<< HEAD
 import java.util.Date;
+=======
+>>>>>>> 3c103f9a47921cec408eb3dd28748ee69820f375
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Path("medias")
 public class Medias {
+<<<<<<< HEAD
     @POST
 //    @Path("file")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -81,6 +85,27 @@ public class Medias {
                 e.printStackTrace();
             } catch (ServletException e) {
 
+=======
+    @POST //import
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response importCardsViaFormData(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                String uploadedFileLocation = "tempFilename.jpg";
+                File csvFile = new File(uploadedFileLocation);
+                FileOutputStream w = new FileOutputStream(csvFile);
+
+                request.setCharacterEncoding("UTF-8");
+                String content = request.getParameter("content");
+
+                Part p = request.getPart("file");
+                String contentType = p.getContentType();
+                //can use contentType for images table!!
+                InputStream servletInputStream = p.getInputStream();
+                CharacterEncodingFilter.saveFile(w, servletInputStream);
+            } catch (IOException | ServletException e) {
+>>>>>>> 3c103f9a47921cec408eb3dd28748ee69820f375
                 e.printStackTrace();
             }
         }

@@ -24,6 +24,8 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -67,37 +69,7 @@ public class Cards {
 
 
     private static String token = "xiaoyuzhishi20160907";
-
-    /*@POST //import
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response importCardsViaFormData(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            try {
-                byte[] buffer = new byte[4 * 1024];
-                String uploadedFileLocation = "tempFilename.jpg";
-                File csvFile = new File(uploadedFileLocation);
-                FileOutputStream w = new FileOutputStream(csvFile);
-                Part p = request.getPart("file");
-                String contentType = p.getContentType();
-                //can use contentType for images table!!
-                InputStream servletInputStream = p.getInputStream();
-                for (; ; ) {
-                    int receiveLength = servletInputStream.read(buffer);
-                    if (receiveLength == -1) {
-                        break;
-                    }
-                    w.write(buffer, 0, receiveLength);
-                }
-                w.close();
-            } catch (IOException | ServletException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-*/
-
+    
     @POST //import
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
     public Response importCardsViaBareContent(@CookieParam("sessionId") String sessionId, byte[] contents) {
