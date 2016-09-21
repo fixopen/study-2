@@ -79,6 +79,10 @@ public class KnowledgePoints {
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("knowledgePointId", id);
 
+//            Map<String, String> orders = new HashMap<>();
+//            orders.put("\"order\"", "ASC");
+//            List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions, orders);
+
 //            List<Text> texts = JPAEntry.getList(Text.class, conditions);
 //            List<Image> images = JPAEntry.getList(Image.class, conditions);
 //
