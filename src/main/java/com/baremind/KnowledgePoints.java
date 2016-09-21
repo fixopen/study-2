@@ -31,6 +31,17 @@ public class KnowledgePoints {
         return result;
     }
 
+    private <T> List<T> findItems(List<T> container, Predicate<T> p) {
+        List<T> result = new ArrayList<T>();
+        for (int j = 0; j < container.size(); ++j) {
+            T textItem = container.get(j);
+            if (p.test(textItem)) {
+                result.add(textItem);
+            }
+        }
+        return result;
+    }
+
     private String join(List<String> ids) {
         String result = "";
         boolean isFirst = true;
@@ -51,13 +62,11 @@ public class KnowledgePoints {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
                 Map<String, Object> conditions = new HashMap<>();
                 conditions.put("KnowledgePointId", id);
                 List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions);
-
 
                 List<String> textIds = new ArrayList<>();
                 List<String> imageIds = new ArrayList<>();
@@ -110,6 +119,14 @@ public class KnowledgePoints {
                 Query pq = em.createNativeQuery(problemquery, Problem.class);
                 List<Problem> problemObjects = pq.getResultList();
 
+                String problemoptionsquery = "SELECT * FROM problems_options WHERE problems_id IN ( " + join(problemIds) + " )";
+                Query pqoption = em.createNativeQuery(problemoptionsquery, ProblemsOption.class);
+                List<ProblemsOption> problemoptionObjects = pqoption.getResultList();
+
+                String problemsstandardanswersquery = "SELECT * FROM problems_standard_answers WHERE problems_id IN ( " + join(problemIds) + " )";
+                Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemsStandardAnswer.class);
+                List<ProblemsStandardAnswer> problemstandardanswersObjects = pqsan.getResultList();
+
                 String imageTextquery = "SELECT * FROM image_texts WHERE id IN ( " + join(imageTextIds) + " )";
                 Query itq = em.createNativeQuery(imageTextquery, ImageText.class);
                 List<ImageText> imageTextObject = itq.getResultList();
@@ -119,6 +136,8 @@ public class KnowledgePoints {
                 List<Quote> quoteObject = qq.getResultList();
 
                 List<Object> r = new ArrayList<Object>();
+                List<Object> problemr3 = new ArrayList<Object>();
+                List<Object> quoter4 = new ArrayList<Object>();
                 for (int i = 0; i < maps.size(); ++i) {
                     final KnowledgePointContentMap item = maps.get(i);
                     switch (item.getType()) {
@@ -134,77 +153,86 @@ public class KnowledgePoints {
                             Image im = findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
                             Map<String, Object> itm = new HashMap<>();
                             itm.put("id", im.getId());
+                            itm.put("type", "image");
                             itm.put("description", "");
                             itm.put("href", im.getStorePath());
                             r.add(itm);
-
                             break;
-//
-//                        {"comments":[],
-//                         "contents":[{"id":96623475621888,"type":"text","content":"闃挎柉钂傝姮"},
-//                                    {"id":96623476277248,"type":"text","content":"鏆楀閫㈢伅"},
-//                         {"description":"","id":96623476146176,"href":"d:/1474357241063.png"}],
-//                         "interaction":{"likeCount":0,"readCount":0},
-//                         "video":{"id":96623476736000,"storePath":"鍙戝灏�"},
-//                         "title":"璇枃浣庡勾绾х浜屽唽鐭ヨ瘑鐐逛竴",
-//                         "quotes":[{"id":96623478964224,"content":"闃挎柉钂傝姮","source":"澶ф硶甯�"}],
-//                         "problems":[{"id":96623477850112,"subjectId":1,"volumeId":1,"knowledgePointId":5,"title":"鍙戝灏�","videoUrl":" 闃挎柉钂傝姮"}]}
-//                    case "video":
-//                        r.add(findItem(videoObjects, (video) -> video.getId() == item.getObjectId()));
-//                        break;
-//                    case "problem":
-//                        r.add(findItem(problemObjects, (problem) -> problem.getId() == item.getObjectId()));
-//                        break;
-//                    case "imageText":
-//                        r.add(findItem(imageTextObject, (imageText) -> imageText.getId() == item.getObjectId()));
-//                        break;
-//                    case "quote":
-//                        r.add(findItem(quoteObject, (quote) -> quote.getId() == item.getObjectId()));
-//                        break;
+
+                        case "imageText":
+                            ImageText ITe = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
+                            Map<String, Object> items = new HashMap<>();
+                            items.put("id", ITe.getId());
+                            items.put("type", "imageText");
+                            items.put("content", ITe.getContent());
+                            items.put("href", ITe.getStorePath());
+                            r.add(items);
+                            break;
+                        case "problem":
+                            Problem pie = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
+                            List<ProblemsOption> pieo = findItems(problemoptionObjects, (problemoption) -> problemoption.getProblemsId().longValue() == item.getObjectId().longValue());
+                            List<ProblemsStandardAnswer> dfs = findItems(problemstandardanswersObjects, (problemstandardanswers) -> problemstandardanswers.getProblemsId().longValue() == item.getObjectId().longValue());
+                            Map<String, Object> piems = new HashMap<>();
+                            piems.put("id", pie.getId());
+                            if(dfs.size() > 1){
+                                piems.put("type", "多选题");
+                            }else {
+                                piems.put("type", "单选题");
+                            }
+                            piems.put("options", pieo);
+                            piems.put("title", pie.getTitle());
+                            problemr3.add(piems);
+                            break;
+                        case "quote":
+                            Quote ique = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
+                            Map<String, Object> iquems = new HashMap<>();
+                            iquems.put("id", ique.getId());
+                            iquems.put("content", ique.getContent());
+                            iquems.put("source", ique.getSource());
+                            quoter4.add(iquems);
+                            break;
 
                     }
                 }
-
                 Map<String, Object> r2 = new HashMap<>();
                 r2.put("title", p.getTitle());
-                r2.put("quotes", quoteObject);
+                r2.put("quotes", quoter4);
                 r2.put("contents", r);
                 if (!videoObjects.isEmpty()) {
                     r2.put("video", videoObjects.get(0));
                 }
-
+                //===============================================================
                 Map<String, Object> interaction = new HashMap<>();
-
                 int readCount = 0;
                 interaction.put("readCount", readCount);
-
                 int likeCount = 0;
                 /*String statsLikes = "SELECT COUNT(*) AS count FROM likes WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
                 Query lq = em.createNativeQuery(statsLikes, Video.class);
                 List likeCountList = lq.getResultList(); //->Object[]->count*/
                 interaction.put("likeCount", 0);
-
-           /* interaction.put("previous", previous);
-            interaction.put("next", next);*/
-
+               /* interaction.put("previous", previous);
+                interaction.put("next", next);*/
+                //===============================================================
                 r2.put("interaction", interaction);
-                r2.put("problems", problemObjects);
+                r2.put("problems", problemr3);
                 //em.getTransaction().commit();
-
+                //==================================================
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
+                //评论
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-
                 r2.put("comments", comments);
-
-
+                //==================================================
                 if (!r.isEmpty()) {
                     result = Response.ok(new Gson().toJson(r2)).build();
                 }
             }
         }
         return result;
+        //                    case "video":
+//                        r.add(findItem(videoObjects, (video) -> video.getId() == item.getObjectId()));
+//                        break;
     }
 
 
@@ -251,7 +279,7 @@ public class KnowledgePoints {
         return result;
     }
 
-   @PUT //根据id修改
+    @PUT //根据id修改
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
