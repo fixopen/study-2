@@ -66,7 +66,10 @@ public class KnowledgePoints {
             if (p != null) {
                 Map<String, Object> conditions = new HashMap<>();
                 conditions.put("KnowledgePointId", id);
-                List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions);
+
+                Map<String, String> orders = new HashMap<>();
+                orders.put("\"order\"", "ASC");
+                List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions, orders);
 
                 List<String> textIds = new ArrayList<>();
                 List<String> imageIds = new ArrayList<>();
@@ -225,10 +228,12 @@ public class KnowledgePoints {
                 r2.put("comments", comments);
                 //==================================================
                 if (!r.isEmpty()) {
-                    result = Response.ok(new Gson().toJson(r2)).build();
+                    String v = new Gson().toJson(r2);
+                    result = Response.ok(v, "application/json; charset=utf-8").build();
                 }
             }
         }
+
         return result;
         //                    case "video":
 //                        r.add(findItem(videoObjects, (video) -> video.getId() == item.getObjectId()));
