@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Z-直播课-课程表</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait">
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="../../js/basic.js"></script>
+    <script src="../../js/jquery.min.js"></script>
+
+
+</head>
+<body>
+<div class="wrap">
+    <!-- main -->
+    <div class="rain-main">
+        <header class="timetable-hd"></header>
+        <!-- 课程表内容 -->
+        <table class="timetable-main">
+            <tr class="tableTitle">
+                <td></td>
+                <td>上午</td>
+                <td>下午</td>
+                <td>晚上</td>
+            </tr>
+            <tbody id="timetable" class="weekRoll"></tbody>
+        </table>
+
+        <!-- 固定底部 -->
+        <div class="timetable-bd"></div>
+    </div>
+</div>
+
+
+<template id="timetable-template">
+    <tr>
+        <td>${week}</td>
+        <td data-ext-point="morning"></td>
+        <td data-ext-point="afternoon"></td>
+        <td data-ext-point="evening"></td>
+    </tr>
+</template>
+<template id="item-template">
+    <div>${itemClass}</div>
+</template>
+
+<script>
+    $(function () {
+        let data =
+                [
+            {
+                week: '一',
+                morning: [{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+                afternoon: [{itemClass:'英语(8:00-10:00)'}],
+                evening:[{itemClass:'英语(8:00-10:00)'}]
+            },
+            {
+                week: '二',
+                morning: [{itemClass:'英语(11:00-10:00)'}],
+                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+                evening:[{itemClass:'英语(11:00-10:00)'}]
+            },
+
+            {
+                week: '三',
+                morning: [{itemClass:'英语(11:00-10:00)'}],
+                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+                evening:[{itemClass:'英语(11:00-10:00)'}]
+            },
+
+            {
+                week: '四',
+                morning: [{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}],
+                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+                evening:[{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}]
+            },
+
+            {
+                week: '五',
+                morning: [{itemClass:'英语(8:00-10:00)'}],
+                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+                evening:[{itemClass:'英语(8:00-10:00)'}]
+            },
+
+            {
+                week: '六',
+                morning: [{itemClass:'英语(8:00-10:00)'}],
+                afternoon: [{itemClass:'英语(8:00-10:00)'}],
+                evening:[{itemClass:'英语(8:00-10:00)'}]
+            },
+            {
+                week: '七',
+                morning:[{itemClass:'英语(8:00-10:00)'}],
+                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+                evening:[{itemClass:'英语(8:00-10:00)'}]
+
+            }
+        ]
+        proc({
+            templateId: 'timetable-template',
+            data: data,
+            containerId: 'timetable',
+            secondBind: [
+                {
+                    extPoint: 'morning',
+                    dataFieldName: 'morning',
+                    templateId: 'item-template'
+                },
+                {
+                    extPoint: 'afternoon',
+                    dataFieldName: 'afternoon',
+                    templateId: 'item-template'
+                },
+                {
+                    extPoint: 'evening',
+                    dataFieldName: 'evening',
+                    templateId: 'item-template'
+                }
+            ]
+
+        })
+
+
+
+    })
+</script>
+
+</body>
+</html>

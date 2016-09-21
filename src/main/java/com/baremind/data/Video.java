@@ -30,9 +30,9 @@ public class Video {
     @Column(name = "store_path")
     private String storePath;
 
-    @Column(name = "duration")
-    private int duration;
-
+  /*  @Column(name = "duration")
+    private Long duration;
+*/
     @Column(name = "bit_rate")
     private Double bitRate;
 
@@ -84,13 +84,13 @@ public class Video {
         this.storePath = storePath;
     }
 
-    public int getDuration() {
+  /*  public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
-    }
+    }*/
 
     public Double getBitRate() {
         return bitRate;

@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.Image;
 import com.baremind.data.Media;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -17,31 +18,66 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Path("medias")
 public class Medias {
-    @POST //import
+
+    @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response importCardsViaFormData(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             try {
-                String uploadedFileLocation = "tempFilename.jpg";
-                File csvFile = new File(uploadedFileLocation);
-                FileOutputStream w = new FileOutputStream(csvFile);
-
-                request.setCharacterEncoding("UTF-8");
-                String content = request.getParameter("content");
-
+                byte[] buffer = new byte[4 * 1024];
                 Part p = request.getPart("file");
                 String contentType = p.getContentType();
-                //can use contentType for images table!!
-                InputStream servletInputStream = p.getInputStream();
-                CharacterEncodingFilter.saveFile(w, servletInputStream);
-            } catch (IOException | ServletException e) {
+                InputStream inputStream = p.getInputStream();
+                long now=new Date().getTime();
+                //文件后缀名
+                String prefix=contentType.substring(contentType.lastIndexOf("/")+1);
+                //System.out.println("文件后缀名"+prefix);
+                if(prefix!="jpg"  ||  prefix!="jpeg"  ||  prefix!="gif"  ||  prefix!="ai"  ||  prefix!="pdg"){
+                    String uploadedFileLocation = "d:/"+now+"."+""+prefix+"";
+                    File csvFile = new File(uploadedFileLocation);
+                    FileOutputStream w = new FileOutputStream(csvFile);
+                    for (; ; ) {
+                        int receiveLength = inputStream.read(buffer);
+                        if (receiveLength == -1) {
+                            break;
+                        }
+                        w.write(buffer, 0, receiveLength);
+                    }
+
+                    String fileName=csvFile.getName();
+
+                    w.close();
+
+                    Image image = new Image();
+                    image.setId(IdGenerator.getNewId());
+                    image.setExt(prefix);
+                    image.setMimeType(contentType);
+                    image.setName(fileName);
+                    image.setSize(csvFile.length());
+                    image.setStorePath(uploadedFileLocation);
+                    JPAEntry.genericPost(image);
+
+                    result = Response.ok(new Gson().toJson(image)).build();
+
+                }else{
+
+                    result = Response.status(415).build();
+                    //上传图片的格式不正确
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServletException e) {
                 e.printStackTrace();
             }
         }

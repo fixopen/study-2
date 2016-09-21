@@ -26,17 +26,15 @@
     let  b = parseInt(id)
     let  knowledgePoints;
 
-        filter={
-        // volumesId: a,
-        knowledgePointsId:b
-        }
+
+    // "apiolumes/" + b+"/",
     $.ajax({
         type:"get",
-        url:'api/knowledgePoints?filter=' + JSON.stringify(filter),
+        url:'api/knowledgePoints/'+b+'/contents',
         dataType: 'json',
         async : false,
         success: function(kps){
-            knowledgePoints=kps;
+          //  knowledgePoints=kps;
             alert(JSON.stringify(kps))
         }
     })

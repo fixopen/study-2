@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Time;
 import java.util.*;
 
 //GET /api/schedulers/this-week
@@ -111,7 +112,7 @@ public class Schedulers {
                     existScheduler.setDuration(duration);
                 }
 
-                Date endTime = scheduler.getEndTime();
+                Time endTime = scheduler.getEndTime();
                 if (endTime != null) {
                     existScheduler.setEndTime(endTime);
                 }
@@ -121,7 +122,7 @@ public class Schedulers {
                     existScheduler.setGrade(grade);
                 }
 
-                Date startTime = scheduler.getStartTime();
+                Time startTime = scheduler.getStartTime();
                 if (startTime != null) {
                     existScheduler.setStartTime(startTime);
                 }

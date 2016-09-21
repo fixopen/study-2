@@ -1,19 +1,28 @@
 package com.baremind;
 
-import com.baremind.data.Card;
+import com.baremind.data.*;
+import com.baremind.data.Image;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+
+import java.awt.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,8 +32,8 @@ import java.util.Map;
 
 @Path("cards")
 public class Cards {
-    /*
-    @POST //import
+
+    /*@POST //import
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response importCardsViaFormData(@CookieParam("sessionId") String sessionId, @FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail) {
         Response result = Response.status(401).build();
@@ -32,6 +41,7 @@ public class Cards {
             //final ClientConfig clientConfig = new ClientConfig();
             //clientConfig.register(MultiPartFeature.class);
             //Client client = ClientBuilder.newClient(clientConfig);
+        	System.out.println("我进来了");
             String uploadedFileLocation = "/var/tmp/" + fileDetail.getFileName();
             writeToFile(uploadedInputStream, uploadedFileLocation);
             parseAndInsert(uploadedFileLocation);
@@ -55,36 +65,10 @@ public class Cards {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    */
+    }*/
+
 
     private static String token = "xiaoyuzhishi20160907";
-
-    @POST
-    @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            try {
-                String uploadedFileLocation = "tempFilename.csv";
-                File csvFile = new File(uploadedFileLocation);
-                FileOutputStream w = new FileOutputStream(csvFile);
-                ServletInputStream servletInputStream = request.getInputStream();
-                CharacterEncodingFilter.saveFile(w, servletInputStream);
-                parseAndInsert(uploadedFileLocation);
-                try {
-                    Response.temporaryRedirect(new URI("...")).build();
-                    Response.seeOther(new URI("...")).build();
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
 
     @POST //import
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})

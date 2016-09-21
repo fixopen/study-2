@@ -1,9 +1,11 @@
 package com.baremind.data;
 
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-
-import javax.persistence.*;
 
 /**
  * Created by lenovo on 2016/8/18.

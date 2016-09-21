@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>主页</title>
-    <link href="weui/weui.min.css" rel="stylesheet">
-    <link href="bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="index.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>语文</title>
+	<!-- 禁止拉伸和全屏设置 -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
+    <meta name="format-detection" content="telphone=no" />
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/touch.js"></script>
+    <script type="text/javascript" src="js/selector.js"></script>
+    <script src="js/qiehuan.js"></script>
+
+    <script src="js/turnOne.js"></script>
 </head>
 <body>
+<<<<<<< HEAD
 <div class="container">
     <!--header-->
     <div class="row index-header">
@@ -73,66 +83,81 @@
             </a>
             <div class="media-body">
                 <h4>${imgtitle}</h4>
+=======
+
+	<div class="wrap">
+        <div class="rain-main">
+
+            <!--级别-->
+            <div class="bao_dul">
+                <ul class="table_ul">
+                    <li class="table_li li_one">
+                        <a class="lione_zi" href="#" onclick="low()" id="1">1-2年级</a>
+                        <img class="lione_zimg" src="img/bird.png" alt="">
+                    </li>
+                    <li class="table_li">
+                        <a class="lione_zi" href="#" onclick="high()" id="2">3-6年级</a>
+                        <img class="lione_zimg" src="img/bird.png" alt="">
+                    </li>
+                </ul>
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
             </div>
-        </li>
-        <hr>
-        <li class="media " id="img3">
-            <a class="pull-right" href="#">
-                <img class="media-object" src="${imgsrc}" alt="">
-            </a>
-            <div class="media-body">
-                <h4>${imgtitle}</h4>
+            <!--书名列表-->
+            <div>
+                <ul  class="neir_div0 div0_one neir0_UL" id="mathStudy-volumesL"></ul>
+                <ul  class="neir_div0 div0_two neir0_UL" id="mathStudy-volumesH"></ul>
             </div>
-        </li>
-        <hr>
-        <li class="media" id="img4">
-            <a class="pull-right" href="#">
-                <img class="media-object" src="${imgsrc}" alt="">
-            </a>
-            <div class="media-body">
-                <h4>${imgtitle}</h4>
-            </div>
-        </li>
-    </ul>
-</template>
-<template id="footer-template">
-    <div class="btn-group " style="width: 100%">
-        <button type="button" class="btn btn-default" style="width: 16%">
-            <span>图标</span>
-        </button>
-        <button type="button" class="btn btn-default" style="width: 28%" id="liveLesson">直播课</button>
-        <div class="btn-group dropup " style="width: 28%">
-            <button type="button" class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown" style="width: 100%">
-                学习
-            </button>
-            <ul class="dropdown-menu" role="menu" style="width:100%">
-                <li><a href="#" style="text-align: center" id="chinese">语文</a></li>
-                <li class="divider"></li>
-                <li><a href="#" style="text-align: center" id="math">奥数</a></li>
-                <li class="divider"></li>
-                <li><a href="#" style="text-align: center" id="english">口语</a></li>
-                <li class="divider"></li>
-                <li><a href="#" style="text-align: center" id="youngClass">少年作家班</a></li>
-            </ul>
-        </div>
-        <div class="btn-group dropup " style="width: 28%">
-            <button type="button" class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown" style="width: 100%">
-                我的
-            </button>
-            <ul class="dropdown-menu" role="menu" style="width:100%">
-                <li><a href="#" style="text-align: center" id="cardNumbe">添加卡号</a></li>
-                <li class="divider"></li>
-                <li><a href="#" style="text-align: center" id="accountNumbe">我的账号</a></li>
-                <li class="divider"></li>
-                <li><a href="#" style="text-align: center" id="myStudy">我的学习</a></li>
-            </ul>
         </div>
     </div>
+<template id="volumes-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi"  data-id="${id}" data-type="volume" href="KnowledgePointsIndex.html?volumeId=${id}&grade=${grade}" >${title}</a>
+
+        </div>
+    </li>
 </template>
-<script src="jquery/jquery.min.js"></script>
-<script src="bootstrap/bootstrap.min.js"></script>
-<script src="index.js"></script>
+    <script type="text/javascript" src="js/turnOne.js"></script>
+
+<script type="text/javascript">
+//	var subjects = []//定义一个全局变量subject[]
+//    $(function(){
+//
+//		})
+//	})
+		/*function low(){
+			filter = {
+				subjectId: 1,
+				grade: 20
+			};
+			$.ajax({
+				type: "get",
+				url: 'api/volumes?filter=' + JSON.stringify(filter),
+				async: false,
+				success: function (vs) {
+					alert("低年级："+JSON.stringify(vs))
+
+				}
+			});
+
+		}
+		function high(){
+			filter = {
+				subjectId: 1,
+				grade: 21
+			};
+			$.ajax({
+				type: "get",
+				url: 'api/volumes?filter=' + JSON.stringify(filter),
+				async: false,
+				success: function (vs) {
+					alert("高年级："+JSON.stringify(vs))
+				}
+			});
+		}*/
+
+
+
+</script>
 </body>
 </html>

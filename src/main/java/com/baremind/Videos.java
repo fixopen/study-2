@@ -95,11 +95,11 @@ public class Videos {
                     existvideo.setStorePath(storePath);
                 }
 
-                int duration = video.getDuration();
+               /* Long duration = video.getDuration();
                 if (duration != 0) {
                     existvideo.setDuration(duration);
                 }
-
+*/
                 Double bitRate = video.getBitRate();
                 if (bitRate != null) {
                     existvideo.setBitRate(bitRate);
