@@ -61,8 +61,8 @@
                 //"type": "view",
                 //"url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx92dec5e98645bd1d&redirect_uri=http%3A%2F%2F139.129.214.229%2FvalidationCode.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect",
                 //"key": "ID_USER",
-                "type": "click",
                 "name": "我的",
+                "type": "click",
                 //"url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx92dec5e98645bd1d&redirect_uri=http%3A%2F%2F139.129.214.229%2FvalidationCode.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect",
                 "key": "ID_USER",
                 //"redirect": "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=CODE&grant_type=authorization_code",
@@ -103,11 +103,11 @@
     }
 
     let currentMenu
-  //  createCustomMenu
+//    createCustomMenu
     let save = document.getElementById('save')
     save.addEventListener('click', function (e) {
-   //     if (currentMenu.dataset.id == 'user') {
-    //        menus.buttons[2].key = document.getElementById('content').value
+  //  if (currentMenu.dataset.id == 'user') {
+   //       menus.buttons[2].key = document.getElementById('content').value
     //    }
         $.ajax({
             url: "api/public-account/custom-menu",

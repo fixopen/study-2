@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.PostgreSQLTextArray;
 import com.baremind.data.Problem;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -79,19 +80,19 @@ public class Problems {
                 if (knowledgePointId != null) {
                     existproblem.setKnowledgePointId(knowledgePointId);
                 }
-                String[] options = problem.getOptions();
+                /*List<String> options = problem.getOptions();
                 if (options != null) {
                     existproblem.setOptions(options);
                 }
-                int order = problem.getOrder();
+               *//* int order = problem.getOrder();
                 if (order != 0) {
                     existproblem.setOrder(order);
-                }
+                }*//*
 
                 int[] standardAnswers = problem.getStandardAnswers();
                 if (standardAnswers != null) {
                     existproblem.setStandardAnswers(standardAnswers);
-                }
+                }*/
 
                 Long subjectId = problem.getSubjectId();
                 if (subjectId != null) {
@@ -106,7 +107,7 @@ public class Problems {
                 if (volumeId != null) {
                     existproblem.setVolumeId(volumeId);
                 }
-                JPAEntry.genericPut(problem);
+                JPAEntry.genericPut(existproblem);
                 result = Response.ok(existproblem).build();
             }
         }

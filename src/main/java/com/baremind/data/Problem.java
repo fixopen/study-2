@@ -1,13 +1,15 @@
 package com.baremind.data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.eclipse.persistence.annotations.Array;
+import org.eclipse.persistence.annotations.Struct;
+
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by lenovo on 2016/8/18.
  */
+//@Struct(name = "problems")
 @Entity
 @Table(name = "problems")
 public class Problem {
@@ -27,14 +29,37 @@ public class Problem {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "options ")
-    private String[] options;
+   /* //@Column(name = "options")
+    @Array(databaseType="text[]")
+    private List<String> options;*/
 
-    @Column(name = "standard_answers")
-    private int[] standardAnswers;
+//    @SuppressWarnings("JpaAttributeTypeInspection")
+//    @Column(name = "options", columnDefinition = "name[]")
+//    @Convert(converter = ListToArrayConverter.class)
+//    private List<String> options;
 
-    @Column(name = "order")
-    private int order;
+//    @Transient
+//    private String[] transferOptions;
+
+//    void f() {
+//        if (object instanceof UUID) {
+//            PGobject pg = new PGobject();
+//            pg.setType("uuid");
+//            try {
+//                pg.setValue(object.toString());
+//            } catch (SQLException e) {
+//                logger.error("Failed to convert value: " + object, e);
+//            }
+//            return pg;
+//        }
+//        return null;
+//    }
+
+    /*@Column(name = "standard_answers")
+    private int[] standardAnswers;*/
+
+    /*@Column(name = "order")
+    private int order;*/
 
     @Column(name = "store_path")
     private String storePath;
@@ -42,6 +67,7 @@ public class Problem {
     @Column(name = "video_url")
     private String videoUrl;
 
+    //{"videoUrl":"/data","storePath":"d:/1474270688455.jpeg","standardAnswers":[0,1],"options":["das","asdf","afds","adf"],"title":"dfas","knowledgePointId":5,"volumeId":1,"subjectId":1}
     public Long getId() {
         return id;
     }
@@ -82,11 +108,11 @@ public class Problem {
         this.title = title;
     }
 
-    public String[] getOptions() {
+   /* public List<String> getOptions() {
         return options;
     }
 
-    public void setOptions(String[] options) {
+    public void setOptions(List<String> options) {
         this.options = options;
     }
 
@@ -97,15 +123,15 @@ public class Problem {
     public void setStandardAnswers(int[] standardAnswers) {
         this.standardAnswers = standardAnswers;
     }
+*/
+    /* public int getOrder() {
+         return order;
+     }
 
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
+     public void setOrder(int order) {
+         this.order = order;
+     }
+ */
     public String getStorePath() {
         return storePath;
     }

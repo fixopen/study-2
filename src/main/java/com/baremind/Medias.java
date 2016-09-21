@@ -1,20 +1,92 @@
 package com.baremind;
 
+import com.baremind.data.Image;
 import com.baremind.data.Media;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Path("medias")
 public class Medias {
+    @POST
+//    @Path("file")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                byte[] buffer = new byte[4 * 1024];
+                Part p = request.getPart("file");
+                String contentType = p.getContentType();
+                InputStream inputStream = p.getInputStream();
+                long now=new Date().getTime();
+                //文件后缀名
+                String prefix=contentType.substring(contentType.lastIndexOf("/")+1);
+                //System.out.println("文件后缀名"+prefix);
+                if(prefix!="jpg"  ||  prefix!="jpeg"  ||  prefix!="gif"  ||  prefix!="ai"  ||  prefix!="pdg"){
+                    String uploadedFileLocation = "d:/"+now+"."+""+prefix+"";
+                    File csvFile = new File(uploadedFileLocation);
+                    FileOutputStream w = new FileOutputStream(csvFile);
+                    for (; ; ) {
+                        int receiveLength = inputStream.read(buffer);
+                        if (receiveLength == -1) {
+                            break;
+                        }
+                        w.write(buffer, 0, receiveLength);
+                    }
+
+                    String fileName=csvFile.getName();
+
+                    w.close();
+
+                    Image image = new Image();
+                    image.setId(IdGenerator.getNewId());
+                    image.setExt(prefix);
+                    image.setMimeType(contentType);
+                    image.setName(fileName);
+                    image.setSize(csvFile.length());
+                    image.setStorePath(uploadedFileLocation);
+                    JPAEntry.genericPost(image);
+
+                    result = Response.ok(new Gson().toJson(image)).build();
+                    // result = Response.sendRedirect("URL");
+//                    //parseAndInsert(uploadedFileLocation);"{\"filename\":\""+now+".jpg\"}"
+//                    result = Response.ok("{\"filename\":\""+now+".jpg\"}").build();
+                }else{
+                    //.jpg .jpeg .gif .ai .pdg
+                    result = Response.status(415).build();
+                    //上传图片的格式不正确
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServletException e) {
+
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

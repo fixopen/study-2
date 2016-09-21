@@ -1,0 +1,68 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type="number"] {
+   -moz-appearance: textfield;
+}
+.header{
+    width: 100%;
+    height: 7.28125rem;
+    text-align: center;
+    padding-top: 1.40625rem;
+    background-color: #f1f1f1;
+}
+.header_img{
+    width: 21.5625rem;
+    height: 7.28125rem;
+}
+.mine_zilo{
+    margin: 1.25rem 0.9375rem 1.875rem;
+    position: relative;
+    top: -1.5625rem;
+}
+.mine_zUl{
+    border: 1px solid #e5e5e5;
+    border-bottom: none;
+    border-radius: 0.46875rem;
+    background-color: #fff;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+}
+.mine_zuli{
+    height: 3.71875rem;
+    line-height: 3.71875rem;
+    padding: 0 0.9375rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+.mine_leftsp{
+    display: inline-block;
+    color: #ccc;
+    font-size: 0.9375rem;
+    width: 4.75rem;
+    text-align: left;
+}
+.mine_rightip{
+    display: inline-block;
+    color: #888;
+    font-size: 1.0rem;
+    height: 1.8125rem;
+    margin-left: 1.5625rem;
+}
+.bottom_bdiv{
+    width: 100%;
+    text-align: center;
+}
+.bottom_btn{
+    display: inline-block;
+    color: #888;
+    width: 100%;
+    height: 3.75rem;
+    line-height: 3.75rem;
+    text-align: center;
+    text-decoration: underline;
+    background-color: #e5e5e5;
+    border-radius: 0.625rem;
+    margin-top: 0.625rem;
+}

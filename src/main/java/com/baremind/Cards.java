@@ -1,16 +1,28 @@
 package com.baremind;
 
-import com.baremind.data.Card;
+import com.baremind.data.*;
+import com.baremind.data.Image;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+
+import java.awt.*;
 import java.io.*;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +30,8 @@ import java.util.Map;
 
 @Path("cards")
 public class Cards {
-    /*
-    @POST //import
+
+    /*@POST //import
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response importCardsViaFormData(@CookieParam("sessionId") String sessionId, @FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail) {
         Response result = Response.status(401).build();
@@ -27,56 +39,13 @@ public class Cards {
             //final ClientConfig clientConfig = new ClientConfig();
             //clientConfig.register(MultiPartFeature.class);
             //Client client = ClientBuilder.newClient(clientConfig);
+        	System.out.println("我进来了");
             String uploadedFileLocation = "/var/tmp/" + fileDetail.getFileName();
             writeToFile(uploadedInputStream, uploadedFileLocation);
             parseAndInsert(uploadedFileLocation);
             result = Response.status(200).build();
         }
         return result;
-    }
-    */
-
-    private Response importCardsProc(String sessionId, byte[] contents, String uploadedFileLocation) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            writeToFile(contents, uploadedFileLocation);
-            parseAndInsert(uploadedFileLocation);
-            result = Response.status(200).build();
-        }
-        return result;
-    }
-
-    @POST //import
-    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
-    public Response importCardsViaBareContent(@CookieParam("sessionId") String sessionId, byte[] contents) {
-        String uploadedFileLocation = "tempFilename.csv";
-        return importCardsProc(sessionId, contents, uploadedFileLocation);
-    }
-
-    @POST //import
-    @Consumes(MediaType.TEXT_PLAIN)
-    public Response importCardsViaText(@CookieParam("sessionId") String sessionId, byte[] contents) {
-        String uploadedFileLocation = "tempFilename.csv";
-        return importCardsProc(sessionId, contents, uploadedFileLocation);
-    }
-
-    @POST //import
-    @Consumes("text/csv")
-    public Response importCardsViaCsv(@CookieParam("sessionId") String sessionId, byte[] contents) {
-        String uploadedFileLocation = "tempFilename.csv";
-        return importCardsProc(sessionId, contents, uploadedFileLocation);
-    }
-
-    // save uploaded file to new location
-    private void writeToFile(byte[] data, String uploadedFileLocation) {
-        try {
-            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-            out.write(data);
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     // save uploaded file to new location
@@ -89,6 +58,64 @@ public class Cards {
             while ((read = uploadedInputStream.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
+
+    private static String token = "xiaoyuzhishi20160907";
+
+    /*@POST //import
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response importCardsViaFormData(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                byte[] buffer = new byte[4 * 1024];
+                String uploadedFileLocation = "tempFilename.jpg";
+                File csvFile = new File(uploadedFileLocation);
+                FileOutputStream w = new FileOutputStream(csvFile);
+                Part p = request.getPart("file");
+                String contentType = p.getContentType();
+                //can use contentType for images table!!
+                InputStream servletInputStream = p.getInputStream();
+                for (; ; ) {
+                    int receiveLength = servletInputStream.read(buffer);
+                    if (receiveLength == -1) {
+                        break;
+                    }
+                    w.write(buffer, 0, receiveLength);
+                }
+                w.close();
+            } catch (IOException | ServletException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+*/
+
+    @POST //import
+    @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
+    public Response importCardsViaBareContent(@CookieParam("sessionId") String sessionId, byte[] contents) {
+        String uploadedFileLocation = "tempFilename.csv";
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            writeToFile(contents, uploadedFileLocation);
+            parseAndInsert(uploadedFileLocation);
+            result = Response.ok("{\"state\":\"ok\"}").build();
+        }
+        return result;
+    }
+
+    // save uploaded file to new location
+    private void writeToFile(byte[] data, String uploadedFileLocation) {
+        try {
+            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+            out.write(data);
             out.flush();
             out.close();
         } catch (IOException e) {
@@ -109,8 +136,9 @@ public class Cards {
                     continue;
                 }
                 String[] fields = record.split(",");
-                String command = "INSERT INTO cards (no, password) VALUES ('" + fields[1] + "', '" + fields[2] + "')";
-                Query q = em.createNamedQuery(command);
+                Long id = IdGenerator.getNewId();
+                String command = "INSERT INTO cards (id, no, password) VALUES (" + id.toString() + ", '" + fields[1] + "', '" + fields[2] + "')";
+                Query q = em.createNativeQuery(command);
                 q.executeUpdate();
             }
             em.getTransaction().commit();

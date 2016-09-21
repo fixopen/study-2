@@ -244,6 +244,4 @@ public class WechatUser {
     public void setInfo(String info) {
         this.info = info;
     }
-
-
 }
