@@ -1,0 +1,1026 @@
+<<<<<<< HEAD
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery-form.js"></script>
+    <title>ajax文件上传</title>
+
+
+    <script type="text/javascript">
+        $("#tf").ajaxSubmit();
+    </script>
+</head>
+
+<body>
+<form id="tf">
+    <input type="file" name="file"/>
+    <input type="button" value="提" onclick="test();"/>
+</form>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <volumeTitle>册名录入页面</volumeTitle>
+</head>
+<body>
+<h1>册名录入页面</h1>
+<script type="text/javascript" src="jquery.min.js"></script>
+<table border="1">
+    <tr>
+        <th>科目</th>
+        <th>年级</th>
+        <th>标题</th>
+        <th>操作</th>
+        <th>知识点</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td><select id="subject"></select></td>
+        <td><select id="grade">
+            <option value="20">低年级</option>
+            <option value="21">高年级</option>
+        </select></td>
+        <td><input type="text" id="volumeTitle"/> <select id="volumeTitleChoice"></select>
+        </td>
+        <td><input type="button" id="appendvolumeTitle" value="添加"/>
+            <button id="updatevolumeTitle">修改</button>
+        </td>
+        <td><input type="text" id="knowledgePointTitle"/> <select id="knowledgePointTitleChoice"></select>
+        </td>
+        <td><input type="button" id="appendknowledgePointTitle" value="添加"/>
+            <button id="updateknowledgePointTitle">修改</button>
+        </td>
+    </tr>
+</table>
+<div id="contents">
+
+</div>
+<button id="appendText" data-type="text">append Text</button>
+<button id="appendImage" data-type="image">append image</button>
+<button id="appendVideo" data-type="video">append video</button>
+<button id="appendProblem" data-type="problem">append problem</button>
+<button id="appendImageText" data-type="imagetext">append imagetext</button>
+<button id="appendQuote" data-type="quote">append quote</button>
+<button id="movePrevious">^</button>
+<button id="moveNext">V</button>
+<button id="submit">submit</button>
+<button id="save">save</button>
+<template id="problem-template">
+    <div data-type="problem">
+        问题<textarea data-type="title"></textarea>
+        图片<input type="file" data-type="image"/>
+        标准答案<input type="text" data-type="standardAnswers"/>
+        <ol>
+            <li><input type="text" data-type="option" data-identity="1"/></li>
+            <li><input type="text" data-type="option" data-identity="2"/></li>
+            <li><input type="text" data-type="option" data-identity="3"/></li>
+            <li><input type="text" data-type="option" data-identity="4"/></li>
+        </ol>
+        视频路径(手动输入)<input type="text" data-type="video"/>
+    </div>
+</template>
+<template id="imageText-template">
+    <div data-type="imageText">
+        图片<input type="file" data-type="image"/>
+        文本<textarea data-type="content"></textarea>
+    </div>
+</template><template id="quote-template">
+    <div data-type="quote">
+        段落<textarea data-type="content"></textarea>
+        出处<textarea data-type="source"></textarea>
+    </div>
+</template>
+
+<script type="text/javascript">
+
+    let subjects = []
+    let currentSubjectIndex = 0
+    let currentSubject
+    let currentGradeIndex = 0
+    let currentGrade = 20
+    let currentVolumeIndex = 0
+    let currentVolume
+    let currentKnowledgePointIndex = 0
+    let currentKnowledgePoint
+
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "api/subjects",
+            dataType: "json",
+            async: false,
+            success: function (subjectData) {
+                subjects = subjectData;
+                let subjectSelect = document.getElementById('subject')
+                for (var i = 0; i < subjectData.length; ++i) {
+                    subjects[i].low = []
+                    subjects[i].high = []
+                    filter = {
+                        subjectId: subjects[i].id,
+                        grade: 20
+                    };
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        async: false,
+                        success: function (volumes) {
+                            subjects[i].low = volumes
+                            for (var j = 0; j < subjects[i].low.length; ++j) {
+                                subjects[i].low[j].vsid = []
+                                filterds = {
+                                    subjectId: subjects[i].id,
+                                    volumeId: subjects[i].low[j].id,
+                                    grade: 20
+                                };
+
+                                $.ajax({
+                                    type:"get",
+                                    url:'api/knowledgePoints?filter=' + JSON.stringify(filterds),
+                                    dataType: 'json',
+                                    async : false,
+                                    success: function(knowledgePoint){
+                                        subjects[i].low[j].vsid = knowledgePoint
+
+                                    }
+                                })
+                            }
+                        }
+                    });
+                    filter.grade = 21;
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        async: false,
+                        success: function (volumes) {
+                            subjects[i].high = volumes
+                            for (var j = 0; j < subjects[i].high.length; ++j) {
+                                subjects[i].high[j].vsid = []
+                                filtergs = {
+                                    subjectId: subjects[i].id,
+                                    volumeId: subjects[i].high[j].id,
+                                    grade: 21
+                                };
+
+                                $.ajax({
+                                    type:"get",
+                                    url:'api/knowledgePoints?filter=' + JSON.stringify(filtergs),
+                                    dataType: 'json',
+                                    async : false,
+                                    success: function(knowledgePoint){
+                                        subjects[i].high[j].vsid = knowledgePoint
+
+                                    }
+                                })
+                            }
+                        }
+                    })
+                    let option = document.createElement('option')
+                    option.setAttribute("value", subjects[i].id)
+                    option.appendChild(document.createTextNode(subjects[i].name))
+                    subjectSelect.appendChild(option)
+                }
+                currentSubjectIndex = 0
+                subjectSelect.selectedIndex = currentSubjectIndex
+                currentSubject = subjectSelect.value
+
+                let gradeSelect = document.getElementById('grade')
+                currentGradeIndex = 0
+                gradeSelect.selectedIndex = currentGradeIndex
+                currentGrade = gradeSelect.value
+
+                let volumeSelect = document.getElementById('volumeTitleChoice')
+                volumeSelect.innerHTML = ''
+                let gradeName = 'low'
+                switch (currentGrade) {
+                    case 21:
+                    case '21':
+                        gradeName = 'high'
+                        break
+                    default:
+                        break
+                }
+                for (let j = 0; j < subjects[currentSubjectIndex][gradeName].length; ++j) {
+                    let option = document.createElement('option')
+                    option.setAttribute("value", subjects[currentSubjectIndex][gradeName][j].id)
+                    option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][j].title))
+                    volumeSelect.appendChild(option)
+                }
+
+                currentVolumeIndex = 0
+                volumeSelect.selectedIndex = currentVolumeIndex
+                currentVolume = volumeSelect.value
+
+                let opt = volumeSelect.options.item(currentVolumeIndex)
+                let volume = document.getElementById('volumeTitle')
+                volume.value = opt.text
+
+                //=============================================================
+                let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+                knowledgePointSelect.innerHTML = ''
+                for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
+                    let option = document.createElement('option')
+                    option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].id)
+                    option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].title))
+                    knowledgePointSelect.appendChild(option)
+                }
+                currentKnowledgePointIndex = 0
+                knowledgePointSelect.selectedIndex = currentKnowledgePointIndex
+                currentKnowledgePoint = knowledgePointSelect.value
+
+                let knowledgePoint = document.getElementById('knowledgePointTitle')
+                knowledgePoint.value = ''
+                opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+                knowledgePoint.value = opt.text
+            }
+        });
+
+        $('#subject').on('change', function (e) {
+            currentSubjectIndex = e.target.selectedIndex
+            currentSubject = e.target.value
+
+            let gradeSelect = document.getElementById('grade')
+            currentGradeIndex = 0
+            gradeSelect.selectedIndex = currentGradeIndex
+            currentGrade = gradeSelect.value
+
+            let volumeSelect = document.getElementById('volumeTitleChoice')
+            volumeSelect.innerHTML = ''
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+            for (let i = 0; i < subjects[currentSubjectIndex][gradeName].length; ++i) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][i].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][i].title))
+                volumeSelect.appendChild(option)
+            }
+
+            currentVolumeIndex = 0
+            volumeSelect.selectedIndex = currentVolumeIndex
+            currentVolume = volumeSelect.value
+
+            let volume = document.getElementById('volumeTitle')
+            volume.value = ''
+            let opt = volumeSelect.options.item(currentVolumeIndex)
+            if (opt) {
+                volume.value = opt.text
+            }
+
+            let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+            knowledgePointSelect.innerHTML = ''
+            for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].title))
+                knowledgePointSelect.appendChild(option)
+            }
+            currentKnowledgePointIndex = 0
+            knowledgePointSelect.selectedIndex = currentKnowledgePointIndex
+            currentKnowledgePoint = knowledgePointSelect.value
+
+            let knowledgePoint = document.getElementById('knowledgePointTitle')
+            knowledgePoint.value = ''
+            opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+            if (opt) {
+                knowledgePoint.value = opt.text
+            }
+        })
+
+        $('#grade').on('change', function (e) {
+            currentGradeIndex = e.target.selectedIndex
+            currentGrade = e.target.value
+
+            let volumeSelect = document.getElementById('volumeTitleChoice')
+            volumeSelect.innerHTML = ''
+
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+
+            for (let i = 0; i < subjects[currentSubjectIndex][gradeName].length; ++i) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][i].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][i].title))
+                volumeSelect.appendChild(option)
+            }
+
+            currentVolumeIndex = 0
+            volumeSelect.selectedIndex = currentVolumeIndex
+            currentVolume = volumeSelect.value
+
+            let volume = document.getElementById('volumeTitle')
+            volume.value = ''
+            let opt = volumeSelect.options.item(currentVolumeIndex)
+            if (opt) {
+                volume.value = opt.text
+            }
+
+            let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+            knowledgePointSelect.innerHTML = ''
+            for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].title))
+                knowledgePointSelect.appendChild(option)
+            }
+            currentKnowledgePointIndex = 0
+            knowledgePointSelect.selectedIndex = currentKnowledgePointIndex
+            currentKnowledgePoint = knowledgePointSelect.value
+
+            let knowledgePoint = document.getElementById('knowledgePointTitle')
+            knowledgePoint.value = ''
+            opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+            if (opt) {
+                knowledgePoint.value = opt.text
+            }
+
+        })
+
+        $('#volumeTitleChoice').on('change', function (e) {
+            let volumeSelect = e.target
+            currentVolumeIndex = volumeSelect.selectedIndex
+            currentVolume = volumeSelect.value
+
+            let volume = document.getElementById('volumeTitle')
+            volume.value = ''
+            let opt = volumeSelect.options.item(currentVolumeIndex)
+            if (opt) {
+                volume.value = opt.text
+            }
+
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+
+            let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+            knowledgePointSelect.innerHTML = ''
+            for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
+                let option = document.createElement('option')
+                option.setAttribute("value", subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].id)
+                option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid[j].title))
+                knowledgePointSelect.appendChild(option)
+            }
+            currentKnowledgePointIndex = 0
+            knowledgePointSelect.selectedIndex = currentKnowledgePointIndex
+            currentKnowledgePoint = knowledgePointSelect.value
+
+            let knowledgePoint = document.getElementById('knowledgePointTitle')
+            knowledgePoint.value = ''
+            opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+            if (opt) {
+                knowledgePoint.value = opt.text
+            }
+
+        })
+
+        $('#knowledgePointTitleChoice').on('change', function (e) {
+           currentKnowledgePointIndex = e.target.selectedIndex
+            currentKnowledgePoint = e.target.value
+
+            let knowledgePoint = document.getElementById('knowledgePointTitle')
+            knowledgePoint.value = ''
+            opt = e.target.options.item(currentKnowledgePointIndex)
+            if (opt) {
+                knowledgePoint.value = opt.text
+            }
+        })
+
+        $('#appendvolumeTitle').on('click', function (e) {
+            let volumeTitle = document.getElementById('volumeTitle')
+            let data = {
+                subjectId: currentSubject,
+                grade: currentGrade,
+                title: volumeTitle.value
+            }
+            alert(JSON.stringify(data))
+            $.ajax({
+                type: "post",
+                url: "api/volumes",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (volume) {
+                    currentVolume = volume.id
+                    let gradeName = 'low'
+                    switch (currentGrade) {
+                        case 21:
+                        case '21':
+                            gradeName = 'high'
+                            break
+                        default:
+                            break
+                    }
+                    subjects[currentSubjectIndex][gradeName].push(volume)
+                    alert("添加成功")
+                },
+                error:function(){
+                    alert("添加失败")
+                }
+            })
+        })
+
+        $('#updatevolumeTitle').on('click', function (e) {
+            let volumeTitle = document.getElementById('volumeTitle')
+            let volumeData = {
+                subjectId: currentSubject,
+                grade: currentGrade,
+                title: volumeTitle.value
+            }
+            $.ajax({
+                type: "put",
+                url: "api/volumes/" + currentVolume,
+                data: JSON.stringify(volumeData),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (volumeData) {
+                    let gradeName = 'low'
+                    switch (currentGrade) {
+                        case 21:
+                        case '21':
+                            gradeName = 'high'
+                            break
+                        default:
+                            break
+                    }
+                    subjects[currentSubjectIndex][gradeName][currentVolumeIndex] = volumeData
+                    let volumeSelect = document.getElementById('volumeTitleChoice')
+                    let opt = volumeSelect.options.item(currentVolumeIndex)
+                    let volume = document.getElementById('volumeTitle')
+                    opt.innerText = volume.value
+                    alert("修改成功")
+                },
+                error:function(){
+                    alert("修改失败")
+                }
+            })
+        })
+
+        $('#appendknowledgePointTitle').on('click', function (e) {
+            let knowledgePointTitle = document.getElementById('knowledgePointTitle')
+            let data = {
+                subjectId: currentSubject,
+                grade: currentGrade,
+                volumeId: currentVolume,
+                title: knowledgePointTitle.value
+            }
+            $.ajax({
+                type: "post",
+                url: "api/knowledgePoints",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (knowledgePoint) {
+                    alert("添加成功")
+                    currentKnowledgePoint = knowledgePoint.id
+                    let gradeName = 'low'
+                    switch (currentGrade) {
+                        case 21:
+                        case '21':
+                            gradeName = 'high'
+                            break
+                        default:
+                            break
+                    }
+
+                    subjects[currentSubjectIndex][gradeName][currentVolumeIndex].push(knowledgePoint)
+
+                },
+                error:function(){
+                    alert("添加失败")
+                }
+            })
+        })
+
+        $('#updateknowledgePointTitle').on('click', function (e) {
+            let knowledgePointTitle = document.getElementById('knowledgePointTitle')
+            let knowledgePointData = {
+                subjectId: currentSubject,
+                grade: currentGrade,
+                volumeId: currentVolume,
+                title: knowledgePointTitle.value
+            }
+            $.ajax({
+                type: "put",
+                url: "api/knowledgePoints/" + currentKnowledgePoint,
+                data: JSON.stringify(knowledgePointData),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (knowledgePointData) {
+                    alert("修改成功")
+                    let gradeName = 'low'
+                    switch (currentGrade) {
+                        case 21:
+                        case '21':
+                            gradeName = 'high'
+                            break
+                        default:
+                            break
+                    }
+                    subjects[currentSubjectIndex][gradeName][currentVolumeIndex][currentKnowledgePointIndex] = knowledgePointData
+                    let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+                    let opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+                    let knowledgePoint = document.getElementById('knowledgePointTitleChoice')
+                    opt.innerText = knowledgePoint.value
+
+                },
+                error:function(){
+                    alert("修改失败")
+                }
+            })
+        })
+//=========================================================================================
+        let currentSelectedElement
+
+        let contents = document.getElementById('contents')
+        contents.addEventListener('click', function(e) {
+            let change = true
+            if (currentSelectedElement.dataset.type == 'problem' || currentSelectedElement.dataset.type == 'imageText' || currentSelectedElement.dataset.type == 'quote') {
+                let elm = e.target
+                while (true) {
+                    if (elm == currentSelectedElement) {
+                        change = false
+                        break
+                    } else if (elm == document.body) {
+                        break
+                    } else {
+                        elm = elm.parentNode
+                    }
+                }
+            }
+            if (change) {
+                currentSelectedElement = e.target
+            }
+        }, false)
+
+        let movePrevious = document.getElementById('movePrevious')
+        movePrevious.addEventListener('click', function(e) {
+            let c = currentSelectedElement.parentNode
+            let previousSibling = currentSelectedElement.previousElementSibling
+            c.removeChild(currentSelectedElement)
+            c.insertBefore(currentSelectedElement, previousSibling)
+        }, false)
+
+        let moveNext = document.getElementById('moveNext')
+        moveNext.addEventListener('click', function(e) {
+            let c = currentSelectedElement.parentNode
+            let nextNextSibling = currentSelectedElement.nextElementSibling.nextElementSibling
+            c.removeChild(currentSelectedElement)
+            c.insertBefore(currentSelectedElement, nextNextSibling)
+        }, false)
+
+
+        let appendText = document.getElementById('appendText')
+        appendText.addEventListener('click', function(e) {
+            let textArea = document.createElement('textarea')
+            let orderValue = 1
+            textArea.setAttribute('data-identity', orderValue)
+            textArea.setAttribute("data-id", '')
+            textArea.setAttribute("data-type", 'text')
+            contents.appendChild(textArea)
+            currentSelectedElement = textArea
+        }, false)
+
+        let appendImage = document.getElementById('appendImage')
+        appendImage.addEventListener('click', function(e) {
+            let ImageArea = document.createElement('input')
+            let orderValue = 1
+            ImageArea.setAttribute('data-identity', orderValue)
+            ImageArea.setAttribute("data-id", '')
+            ImageArea.setAttribute("data-type", 'image')
+            ImageArea.setAttribute("name", 'file')
+            ImageArea.setAttribute("type", 'file')
+            ImageArea.setAttribute("id", 'file')
+            contents.appendChild(ImageArea)
+            currentSelectedElement = ImageArea
+        }, false)
+
+        let appendVideo = document.getElementById('appendVideo')
+        appendVideo.addEventListener('click', function(e) {
+            let VideoArea = document.createElement('input')
+            let orderValue = 1
+            VideoArea.setAttribute('data-identity', orderValue)
+            VideoArea.setAttribute("data-id", '')
+            VideoArea.setAttribute("data-type", 'video')
+            contents.appendChild(VideoArea)
+            currentSelectedElement = VideoArea
+        }, false)
+
+        let appendProblem = document.getElementById('appendProblem')
+        appendProblem.addEventListener('click', function(e) {
+            let pt = document.getElementById('problem-template')
+            let p = pt.content.children[0].cloneNode(true)
+            contents.appendChild(p)
+            currentSelectedElement = p
+        }, false)
+
+        let appendImageText = document.getElementById('appendImageText')
+        appendImageText.addEventListener('click', function(e) {
+            let pt = document.getElementById('imageText-template')
+            let p = pt.content.children[0].cloneNode(true)
+            contents.appendChild(p)
+            currentSelectedElement = p
+        }, false)
+
+        let appendQuote = document.getElementById('appendQuote')
+        appendQuote.addEventListener('click', function(e) {
+            let pt = document.getElementById('quote-template')
+            let p = pt.content.children[0].cloneNode(true)
+            contents.appendChild(p)
+            currentSelectedElement = p
+        }, false)
+
+        let submit = document.getElementById('submit')
+        submit.addEventListener('click', function(e) {
+            switch (currentSelectedElement.dataset.type) {
+                case 'text':
+                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                        //put
+                        currentId = currentSelectedElement.dataset.id
+                        var data = {};
+                        data.content = currentSelectedElement.value
+                        $.ajax({
+                            type: "put",
+                            url: "api/texts/" + currentId,
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (volumeData) {
+                                alert(JSON.stringify(volumeData))
+                                alert("修改成功")
+                            }
+                        })
+
+                    } else {
+                        //post
+                        var data = {};
+                        data.content = currentSelectedElement.value
+                        $.ajax({
+                            type: "post",
+                            url: "api/texts",
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (text) {
+                                alert(JSON.stringify(text))
+
+                                currentSelectedElement.dataset.id = text.id
+                                alert("添加成功")
+                            }
+                        })
+                    }
+                    break;
+                case 'image':
+                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                        //put
+                        currentId = currentSelectedElement.dataset.id
+
+                        var formData = new FormData();
+                        formData.append("file", document.getElementById('file').files[0]);
+                        var request = new XMLHttpRequest();
+                        request.onreadystatechange = function() {
+                            if (request.status == 200) {
+                                returndata = JSON.parse(request.responseText)
+                                currentSelectedElement.dataset.id = returndata.id
+                            }
+                        }
+                        request.open("POST", "api/medias/");
+                        request.send(formData);
+                    }else{
+                        var formData = new FormData();
+                        formData.append("file", document.getElementById('file').files[0]);
+                        var request = new XMLHttpRequest();
+                        request.onreadystatechange = function() {
+                            if (request.status == 200) {
+                                returndata = JSON.parse(request.responseText)
+                                currentSelectedElement.dataset.id = returndata.id
+                            }
+                        }
+                        request.open("POST", "api/medias");
+                        request.send(formData);
+
+                    }
+                    break;
+                case 'video':
+                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                        //put
+                        currentId = currentSelectedElement.dataset.id
+                        var data = {};
+                        data.storePath = currentSelectedElement.value
+
+                        $.ajax({
+                            type: "put",
+                            url: "api/videos/" + currentId,
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (volumeData) {
+                                alert(JSON.stringify(volumeData))
+                            }
+                        })
+
+                    } else {
+                        alert("添加成功")
+                        //post
+                        var data = {};
+                        data.storePath = currentSelectedElement.value
+                        $.ajax({
+                            type: "post",
+                            url: "api/videos",
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (videos) {
+                                alert(JSON.stringify(videos))
+                                currentSelectedElement.dataset.id = videos.id
+                            }
+                        })
+                    }
+                    break;
+                case'problem':
+                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                        alert("修改")
+                        delete currentSelectedElement.dataset.id
+
+                    } else {
+                        if(currentSelectedElement.querySelector('[data-type="image"').files.length == 0){
+                            //===================================
+                            alert("如果不选这个图片（没有图片路径）走这个添加")
+                            var data = {
+                                videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
+                                title: currentSelectedElement.querySelector('[data-type="title"').value,
+                                knowledgePointId: parseInt(currentKnowledgePoint),
+                                volumeId: parseInt(currentVolume),
+                                subjectId: parseInt(currentSubject)
+                            };
+                            $.ajax({
+                                type: "post",
+                                url: "api/problems",
+                                data: JSON.stringify(data),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (text) {
+                                    alert(text.id)
+                                    currentSelectedElement.dataset.id = text.id
+                                    let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"').value
+                                    //1,2,3,4 //1 2 3 4 //1234
+                                    let answers = []
+                                    let sas = standardAnswer.split(',')
+                                    for (let i = 0; i < sas.length; ++i) {
+                                        answers=(parseInt(sas[i]) - 1)
+                                        let fil={
+                                            problemsId: parseInt(currentSelectedElement.dataset.id),
+                                            name:answers
+                                        }
+                                        // alert(JSON.stringify(fil))
+                                        $.ajax({
+                                            type: "post",
+                                            url: "api/problems-standard-answers",
+                                            data: JSON.stringify(fil),
+                                            dataType: "json",
+                                            async: false,
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (ProblemsStandardAnswers) {
+                                                //alert(JSON.stringify(ProblemStandardAnswers))
+                                            }
+                                        })
+                                    }
+                                    let options = currentSelectedElement.querySelectorAll('[data-type="option"')
+                                    let opti = [options[0].value, options[1].value, options[2].value, options[3].value]
+                                    alert(JSON.stringify(opti))
+                                    for(var i in opti){
+                                        fil={
+                                            problemsId: parseInt(currentSelectedElement.dataset.id),
+                                            name:opti[i]
+                                        }
+                                        alert(JSON.stringify(fil))
+                                        $.ajax({
+                                            type: "post",
+                                            url: "api/problems-options",
+                                            data: JSON.stringify(fil),
+                                            dataType: "json",
+                                            async: false,
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (problemsoptions) {
+                                                alert(JSON.stringify(problemsoptions))
+                                            }
+                                        })
+                                    }
+
+
+                                }
+                            })
+                        }else{
+                            //===================================
+                            alert("如果选中图片走这个添加")
+                            var formData = new FormData();
+                            formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
+                            var request = new XMLHttpRequest();
+                            request.onreadystatechange = function() {
+                                if (request.status == 200) {
+                                    returndata = JSON.parse(request.responseText)
+                                    currentSelectedElement.querySelector('[data-type="image"').dataset.storePath = returndata.storePath
+                                    var data = {
+                                        videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
+                                        storePath: currentSelectedElement.querySelector('[data-type="image"').dataset.storePath,
+                                        title: currentSelectedElement.querySelector('[data-type="title"').value,
+                                        knowledgePointId: parseInt(currentKnowledgePoint),
+                                        volumeId: parseInt(currentVolume),
+                                        subjectId: parseInt(currentSubject)
+                                    };
+                                    $.ajax({
+                                        type: "post",
+                                        url: "api/problems",
+                                        data: JSON.stringify(data),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (text) {
+                                            alert(text.id)
+                                            currentSelectedElement.dataset.id = text.id
+                                            let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"').value
+                                            //1,2,3,4 //1 2 3 4 //1234
+                                            let answers = []
+                                            let sas = standardAnswer.split(',')
+                                            for (let i = 0; i < sas.length; ++i) {
+                                                answers=(parseInt(sas[i]) - 1)
+                                                let fil={
+                                                    problemsId: parseInt(currentSelectedElement.dataset.id),
+                                                    name:answers
+                                                }
+                                                // alert(JSON.stringify(fil))
+                                                $.ajax({
+                                                    type: "post",
+                                                    url: "api/problems-standard-answers",
+                                                    data: JSON.stringify(fil),
+                                                    dataType: "json",
+                                                    async: false,
+                                                    contentType: "application/json; charset=utf-8",
+                                                    success: function (ProblemsStandardAnswers) {
+                                                        //alert(JSON.stringify(ProblemStandardAnswers))
+                                                    }
+                                                })
+                                            }
+                                            let options = currentSelectedElement.querySelectorAll('[data-type="option"')
+                                            let opti = [options[0].value, options[1].value, options[2].value, options[3].value]
+                                            alert(JSON.stringify(opti))
+                                            for(var i in opti){
+                                                fil={
+                                                    problemsId: parseInt(currentSelectedElement.dataset.id),
+                                                    name:opti[i]
+                                                }
+                                                alert(JSON.stringify(fil))
+                                                $.ajax({
+                                                    type: "post",
+                                                    url: "api/problems-options",
+                                                    data: JSON.stringify(fil),
+                                                    dataType: "json",
+                                                    async: false,
+                                                    contentType: "application/json; charset=utf-8",
+                                                    success: function (problemsoptions) {
+                                                        alert(JSON.stringify(problemsoptions))
+                                                    }
+                                                })
+                                            }
+
+
+                                        }
+                                    })
+                                }
+                            }
+                            request.open("POST", "api/medias");
+                            request.send(formData);
+
+                        }
+
+                    }
+                    break;
+                case 'imageText':
+                    if(currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')){
+                    alert("dasf")
+                        delete currentSelectedElement.dataset.id
+                        var formData = new FormData();
+                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
+                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"').value);
+                        var request = new XMLHttpRequest();
+                        request.onreadystatechange = function() {
+                            if (request.status == 200) {
+                                returndata = JSON.parse(request.responseText)
+                                alert(JSON.stringify(returndata))
+                            }
+                        }
+                        request.open("POST", "api/image-texts");
+                        request.send(formData);
+
+                    }else{
+                        //////////*********************************
+                        var formData = new FormData();
+                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
+                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"').value);
+                        var request = new XMLHttpRequest();
+                        request.onreadystatechange = function() {
+                            if (request.status == 200) {
+                                returndata = JSON.parse(request.responseText)
+                                alert(JSON.stringify(returndata))
+                                currentSelectedElement.dataset.id = returndata.id
+                            }
+                        }
+                        request.open("POST", "api/image-texts");
+                        request.send(formData);
+
+                    }
+                    break;
+                case 'quote':
+                    if(currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')){
+                        currentId = currentSelectedElement.dataset.id
+                        let data={
+                            content: currentSelectedElement.querySelector('[data-type="content"').value,
+                            source: currentSelectedElement.querySelector('[data-type="source"').value
+                        }
+                        $.ajax({
+                            type: "put",
+                            url: "api/quotes/" + currentId,
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (quote) {
+                                alert(JSON.stringify(quote))
+                            }
+                        })
+                    }else{
+                        let data={
+                            content: currentSelectedElement.querySelector('[data-type="content"').value,
+                            source: currentSelectedElement.querySelector('[data-type="source"').value
+                        }
+                        alert(JSON.stringify(data))
+                        //{"content":"第一的腰包","source":"——礼拜"}
+                        $.ajax({
+                            type: "post",
+                            url: "api/quotes",
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (quote) {
+                                alert(JSON.stringify(quote))
+                                currentSelectedElement.dataset.id = quote.id
+                            }
+                        })
+                    }
+                    break;
+            }
+        }, false)
+
+        let save = document.getElementById('save')
+        save.addEventListener('click', function(e) {
+            let children = contents.children
+            for (let i = 0; i < children.length; ++i) {
+                //id, knowledge_point_id, volume_id, type, text_id|image_id|problem_id|video_id, order
+                let data = {
+                    knowledgePointId: parseInt(currentKnowledgePoint),
+                    volumeId: parseInt(currentVolume),
+                    grade: parseInt(currentGrade),
+                    subjectId: parseInt(currentSubject),
+                    type: children[i].dataset.type,
+                    order: i + 1,
+                    objectId: children[i].dataset.id
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "api/knowledge-point-content-maps",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (text) {
+                        alert(JSON.stringify(text))
+                    }
+                })
+            }
+        }, false)
+
+
+    })
+
+</script>
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+</body>
+</html>

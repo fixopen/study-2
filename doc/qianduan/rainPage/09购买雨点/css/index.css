@@ -1,0 +1,167 @@
+/*@Author: zhaoxq*/
+.charge-explain{
+	background-color: #ffba00;
+	text-align: center;
+	color: #fff;
+	font-size: 0.6875rem;
+	padding: 0.4375rem 0.3125rem;
+	box-sizing: border-box;
+	margin-bottom: 0.65625rem;
+}
+.charge-main{
+	padding: 0 0.9375rem;
+}
+/* account-number */
+.account-number{
+	margin-bottom: 2.8125rem;
+	font-size: 1.0rem;
+	color: #ffba00;
+	padding-left: 0.625rem;
+	box-sizing: border-box;
+}
+
+.account-label{
+	font-size: 1.0rem;
+	color: #ffba00;
+	padding-left: 0.625rem;
+	box-sizing: border-box;
+}
+.charge-box{
+	position: relative;
+	display: inline-block;
+	width: 80%;
+	z-index: 9;
+}
+.charge-number{
+	width: 100%;
+	height: 2.5rem;
+	border: 1px solid #ffbc07;
+	border-radius: 8px;
+	box-sizing: border-box;
+	background: #fff url(../images/xl.png) no-repeat 95% center;
+	-webkit-background-size: 1.4375rem 0.8125rem;
+	background-size: 1.4375rem 0.8125rem;
+	padding: 0 2.34375rem 0 0.5rem;
+	font-size: 1.0rem;
+	color: #666;
+	white-space: nowrap;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	outline: none;
+}
+.charge-ul{
+	position: absolute;
+	left: 0;
+	top: 2.46875rem;
+	width: 100%;
+	border: 1px solid #ffbc07;
+	border-radius: 0 0 8px 8px;
+	box-sizing: border-box;
+	background-color: #fff;
+	overflow: hidden;
+	padding: 0 0.5625rem;
+	display: none;
+}
+.charge-li{
+	height: 2.34375rem;
+	line-height: 2.34375rem;
+	border-bottom: 1px solid #ddd;
+	white-space: nowrap;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-size: 1.0rem;
+	color: #999;
+}
+.charge-li:last-child{
+	border-bottom: none;
+}
+
+/* charge-area */
+.charge-btn{
+	position: absolute;
+	top: -1.96875rem;
+	left: 0;
+	width: 6.3125rem;
+	height: 3.84375rem;
+	background: url(../images/charge.png) no-repeat center;
+	-webkit-background-size: 6.3125rem 3.84375rem;
+	background-size: 6.3125rem 3.84375rem;
+}
+.rain-drop-ul{
+	overflow: hidden;
+}
+.rain-drop-li{
+	float: left;
+	width: 30%;
+	height: 5.03125rem;
+	background: url(../images/yudian.png) no-repeat center;
+	-webkit-background-size: auto 5.03125rem;
+	background-size: auto 5.03125rem;
+	text-align: center;
+	padding-top: 1.0rem;
+	box-sizing: border-box;
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: #b68f51;
+	margin: 0 0 0.625rem 0.8125rem;
+}
+.rain-drop-li:first-child{
+	margin-left: 0;
+}
+.rain-drop-li:nth-child(4){
+	margin-left: 0;
+}
+.rain-drop-li.cur{
+	background: url(../images/yudian-cur.png) no-repeat center;
+	-webkit-background-size: auto 5.03125rem;
+	background-size: auto 5.03125rem;
+}
+.price{
+	text-align: center;
+	vertical-align: middle;
+}
+.price img{
+	width: 10.3125rem;
+	height: 1.0rem;
+}
+
+/* pay */
+.wechat-btn,.alipay-btn{
+	width: 100%;
+	text-align: center;
+	color: #fff;
+	font-size: 1.25rem;
+	margin-bottom: 1.25rem;
+	border-radius: 10px;
+	padding: 0.53125rem 0;
+}
+.wechat-btn{
+	background-color: #86c610;
+}
+.alipay-btn{
+	background-color: #2595c9;
+}
+.wechat-span{
+	position: relative;
+	top: 0.1875rem;
+	display: inline-block;
+	width: 1.8125rem;
+	height: 1.46875rem;
+	background: url(../images/weixin.png) no-repeat center;
+	-webkit-background-size: 1.8125rem 1.46875rem;
+	background-size: 1.8125rem 1.46875rem;
+	margin-right: 0.625rem;
+}
+.alipay-span{
+	position: relative;
+	top: 0.3125rem;
+	display: inline-block;
+	width: 1.375rem;
+	height: 1.53125rem;
+	background: url(../images/alipay.png) no-repeat center;
+	-webkit-background-size: 1.375rem 1.53125rem;
+	background-size: 1.375rem 1.53125rem;
+	margin-right: 0.46875rem;
+}

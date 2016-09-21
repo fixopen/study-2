@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数学-课程详情</title>
+	<!-- 禁止拉伸和全屏设置 -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
+    <meta name="format-detection" content="telphone=no" />
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/math-knowledge-point-detail.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/touch.js"></script>
+    <script type="text/javascript" src="js/selector.js"></script>
+    <script type="text/javascript" src="js/basic.js"></script>
+    <script type="text/javascript" src="js/math-detail.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <!--title-->
+        <h3 class="head_h3">
+           <span class="head_himg"> 挑战<span id="title1" ></span></span>
+        </h3>
+        <h3 class="head_h3_s" id="title2">
+            <!--<span>简单的图形数量规律</span>-->
+        </h3>
+        <!--section-->
+        <div class="rain-main">
+            <!--lead-->
+            <div class="daoyu_div">
+                <img class="daoyu_dquan" src="img/math2.png" alt="">
+                <div class="daoyu_xxku" id="challenge">
+                    <!--欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。赶紧开始吧！-->
+                </div>
+            </div>
+            <div class="biaoti_div">
+                <span class="biti_span">最强讲解</span>
+            </div>
+            <!--最强讲解-->
+            <div class="mulu_div youKuang">
+                <div id="content"></div>
+                <div id="video"></div>
+                <!--<img class="muld_images" src="img/math5.png" alt="">-->
+            </div>
+            <div class="biaoti_div">
+                <span class="biti_chuagun">最强大脑</span>
+            </div>
+            <!--最强大脑-->
+            <div class="mulu_div lixiKu">
+                <ul class="mld_xiaoUl" id="strongest-brain"></ul>
+
+            </div>
+            <div class="lian_jie">
+                <span class="lianjie lianjie01"></span>
+                <span class="lianjie lianjie02"></span>
+            </div>
+            <!--脑力大PK-->
+            <div class="mulu_div lixiKu lixi_martop">
+                <div class="bdiv_Pk">
+                    <img class="naoli_pk" src="img/math8.png" alt="">
+                </div>
+                <ul class="mld_xiaoUl" id="pk">
+                </ul>
+                <p class="zongjie_p">将你的智慧结晶写在这里吧。</p>
+                <textarea class="zongjie_txt" name="" id="" cols="" rows=""></textarea>
+            </div>
+            <!--readlike-->
+            <div class="mulu_div lixi_Nomar" id="interaction">
+
+            </div>
+        </div>
+        <!--message-->
+        <div class="mulu_bottom">
+            <div class="muluBn_top">
+                <a class="mulu_botBtn" href="#">写留言</a>
+            </div>
+            <div id="comments"></div>
+
+        </div>
+    </div>
+    <!--templates-->
+    <template id="title1-template" >
+        <span>${title1}</span>
+    </template>
+    <template id="title2-template">
+        <span>${title}</span>
+    </template>
+    <template id="challenge-template">
+        <p>${content}</p>
+    </template>
+    <template id="content-text-template">
+        <p class="mulu_dp">
+            ${content}
+        </p>
+    </template>
+    <template id="content-image-template">
+        <div>
+        <img class="math_01" src="${href}" alt="">
+        <p class="mulu_dp math_color">
+           ${content}
+        </p>
+        </div>
+    </template>
+    <template id="video-template">
+        <div>
+        <img class="muld_images" src="${coverHref}" alt="${coverDescription}">
+        <video>
+        </video>
+        </div>
+    </template>
+    <template id="strongest-brain-option-template">
+        <!--<li>${option}</li>-->
+        <li class="mld_daanLi">
+            <span class="daan_quan">${name}</span>
+            <input type="radio" class="daana" name="daan1">
+            <label >${option}</label>
+        </li>
+    </template>
+    <template id="strongest-brain-template">
+        <!--<div>-->
+            <!--<dt><span>${type}</span>${title}</dt>-->
+            <!--<dd>-->
+                <!--<ol type="A" data-ext-point="options"></ol>-->
+                <!--<div data-ext-point="explain"></div>-->
+            <!--</dd>-->
+        <!--</div>-->
+        <!--<ul class="mld_xiaoUl">-->
+            <li class="mld_Ulli">
+                <div>${title}</div>
+                <img class="ceshi_ti1" src="${img}" alt="">
+                <ol class="mld_daanUl" data-ext-point="options" type="A"></ol>
+                <div data-ext-point="explain"></div>
+            </li>
+        <!--</ul>-->
+    </template>
+    <template id="pk-template">
+        <div>
+            <li class="mld_Ulli">
+            <div>${title}</div>
+            <ol class="mld_daanUl" data-ext-point="options"></ol>
+        </div>
+    </template>
+    <template id="pk-option-template">
+        <li class="mld_daanLi">
+            <span class="daan_quan">${name}</span>
+            <input type="radio" id="daan_s3A" class="daana" name="daan3">
+            <label for="daan_s3A">${option}</label>
+        </li>
+    </template>
+    <template id="interaction-template">
+        <div>
+            <ul class="ul01_flet">
+                <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+                <li><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span></li>
+            </ul>
+            <ul class="ul01_riht">
+                <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
+                <li><a class="ul01_aBtn" href="${next}">下一节课</a></li>
+            </ul>
+        </div>
+    </template>
+    <template id="comment-template">
+        <ul class="muluBn_center">
+            <li class="liuyan_li lion_01">
+                <img src="${avatar}" alt="">
+            </li>
+            <li class="liuyan_li lion_02">
+                <ul class="topUl">
+                    <li class="topUl_top">
+                        <div class="litop_fleft">${name}</div>
+                        <div class="litop_friht"><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span></div>
+                    </li>
+                    <li class="topUl_center tcmar_top">
+                        ${content}
+                    </li>
+                    <li class="topUl_bottom tcmar_top">
+                        <div class="litop_fleft">${time}</div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </template>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>语文-目录</title>
+	<!-- 禁止拉伸和全屏设置 -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
+    <meta name="format-detection" content="telphone=no" />
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+	<link rel="stylesheet" href="css/common.css">
+<<<<<<< HEAD
+    <link rel="stylesheet" href="css/KnowledgePointIndex.css">
+=======
+    <link rel="stylesheet" href="css/style.css">
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/touch.js"></script>
+    <script type="text/javascript" src="js/selector.js"></script>
+    <script type="text/javascript" src="js/basic.js"></script>
+
+    <script type="text/javascript" src="jquery.min.js"></script>
+
+</head>
+<body>
+    <div class="wrap">
+        <div class="biaoti_div" id="title"></div>
+        
+        <div class="rain-main">
+            <div class="mulu_div">
+                <ul class="cont_sul" id="volume"></ul>
+            </div>
+        </div>
+    </div>
+
+<template id="title-template">
+    <span class="biti_span">${title}</span>
+</template>
+<template id="volume-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="#">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
+            <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
+        </div>
+        <img src="img/fenjie.png" alt="">
+    </li>
+</template>
+<<<<<<< HEAD
+    <template id="volumes-template">
+        <li class="neir_li">
+            <div class="neir_lidiv">
+                <a class="neir_pzi"  data-id="${id}" data-type="volume" href="KnowledgePointsIndex.html?volumeId=${id}&grade=${grade}" >${title}</a>
+
+            </div>
+            <>
+    </template>
+=======
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+    <script>
+        $(function () {
+            //location.reload()
+            //html利用js接受url传递来的参数。 比如:x.htm?abc=222。
+            //htm中可以利用js获取到abc的值222。代码如下：
+
+            var url=window.location.href;
+            //alert(url)
+            //http://localhost:8080/KnowledgePointsIndex.html?volumeId=1&grade=20
+            var volumeId=url.indexOf('=');
+            if (volumeId>-1){
+               volumeId=url.substring(volumeId+1);
+            }
+            volumeId = volumeId.substring(0,volumeId.indexOf('&'))
+            var grade = url.indexOf('&grade=');
+            if(grade>-1){
+                grade=url.substring(grade+7);
+
+            }
+          var  a = parseInt(volumeId)
+          var  b = parseInt(grade)
+<<<<<<< HEAD
+            var volumes
+=======
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+
+            filterds = {
+                subjectId: 1,
+                volumeId: a,
+                grade: b
+            };
+            $.ajax({
+                type:"get",
+                url:'api/knowledgePoints?filter=' + JSON.stringify(filterds),
+                dataType: 'json',
+                async : false,
+                success: function(knowledgePoints){
+                    alert("知识点"+JSON.stringify(knowledgePoints))
+                }
+            })
+
+
+<<<<<<< HEAD
+//            let data ={
+//                title:'哈哈！这些奇葩的作家',
+//                volumes:[
+//                        {
+//                            name:'白居易的诗情画意',
+//                            readCount:'85',
+//                            likeCount:'435'
+//                        },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'4765',
+//                        likeCount:'563'
+//                    },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'562',
+//                        likeCount:'564563'
+//                    },
+//                    {
+//                        name:'白居易的诗情画意',
+//                        readCount:'565546',
+//                        likeCount:'56356'
+//                    },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'796879',
+//                        likeCount:'-078'
+//                    },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'576',
+//                        likeCount:'-7875'
+//                    },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'6748',
+//                        likeCount:'6746'
+//                    },
+//                    {
+//                        name:'白居易的诗情画意',
+//                        readCount:'8968',
+//                        likeCount:'96'
+//                    },
+//                    {
+//                        name:'白居易的诗情画意',
+//                        readCount:'5455',
+//                        likeCount:'7751'
+//                    }
+//                ]
+//            }
+
+            proc({
+                templateId: 'title-template',
+                data:volumes[a-1],
+=======
+            let data ={
+                title:'哈哈！这些奇葩的作家',
+                volumes:[
+                        {
+                            name:'白居易的诗情画意',
+                            readCount:'85',
+                            likeCount:'435'
+                        },
+                    {
+                        name:'杜甫的家国抱负',
+                        readCount:'4765',
+                        likeCount:'563'
+                    },
+                    {
+                        name:'杜甫的家国抱负',
+                        readCount:'562',
+                        likeCount:'564563'
+                    },
+                    {
+                        name:'白居易的诗情画意',
+                        readCount:'565546',
+                        likeCount:'56356'
+                    },
+                    {
+                        name:'杜甫的家国抱负',
+                        readCount:'796879',
+                        likeCount:'-078'
+                    },
+                    {
+                        name:'杜甫的家国抱负',
+                        readCount:'576',
+                        likeCount:'-7875'
+                    },
+                    {
+                        name:'杜甫的家国抱负',
+                        readCount:'6748',
+                        likeCount:'6746'
+                    },
+                    {
+                        name:'白居易的诗情画意',
+                        readCount:'8968',
+                        likeCount:'96'
+                    },
+                    {
+                        name:'白居易的诗情画意',
+                        readCount:'5455',
+                        likeCount:'7751'
+                    }
+                ]
+            }
+
+            proc({
+                templateId: 'title-template',
+                data: data,
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+                containerId: 'title'
+            })
+            proc({
+                templateId: 'volume-template',
+<<<<<<< HEAD
+                data: knowledgePoints,
+=======
+                data: data.volumes,
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+                containerId: 'volume'
+            })
+
+
+
+        })
+    </script>
+</body>
+</html>

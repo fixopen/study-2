@@ -1,0 +1,125 @@
+/* @Author: zhaoxq*/
+
+/* 输入框部分-start */
+/* discuss-answer */
+.discuss-answer{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	box-sizing: border-box;
+}
+.discuss-area{
+	max-height: 7.5rem;
+	margin-bottom: 1.0rem;
+	overflow: scroll;
+}
+.question{
+	padding: 0 1.5625rem;
+	font-size: 0.90625rem;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+.questioner{
+	float: left;
+	color: #ffa230;
+	width: 20%;
+	text-align: right;
+}
+.problem{
+	float: left;
+	color: #fff;
+	width: 80%;
+}
+
+/* input-area */
+.input-area{
+	padding: 0 1.25rem 1.375rem;
+	box-sizing: border-box;
+	overflow: hidden;
+	position: relative;
+}
+.full-screen-btn{
+	width: 2.1875rem;
+	height: 2.1875rem;
+	border: 1px solid rgba(255,255,255,.5);
+	border-radius: 50%;
+	background: rgba(0,0,0,0.5) url(../images/full-btn.png) no-repeat center;
+	-webkit-background-size: 17px 17px;
+	background-size: 17px 17px;
+}
+.msg-btn{
+	width: 2.1875rem;
+	height: 2.1875rem;
+	border: 1px solid rgba(255,255,255,.5);
+	border-radius: 50%;
+	background: rgba(0,0,0,0.5) url(../images/msg-btn.png) no-repeat center;
+	-webkit-background-size: 18px 16px;
+	background-size: 18px 16px;
+}
+.time-length{
+	position: absolute;
+	top: 0.3125rem;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	width: 60%;
+	height: 1.6875rem;
+	line-height: 1.6875rem;
+	border: 1px solid rgba(255,255,255,.5);
+	border-radius: 15px;
+	background-color: rgba(0,0,0,0.5);
+	padding: 0 0.5rem;
+	box-sizing: border-box;
+	color: #fff;
+	overflow: hidden;
+	font-size: 0.6875rem;
+
+}
+.time-length i{
+	font-size: 0.75rem;
+	color: #ffa230;
+	font-family: "苹方";
+}
+
+/* 表情 */
+.expression{
+	width: 1.71875rem;
+	height: 1.6875rem;
+	background: url(../images/biaoqing.png) no-repeat center;
+	-webkit-background-size: 1.71875rem 1.6875rem;
+	background-size: 1.71875rem 1.6875rem;
+}
+.send-btn{
+	width: 3.40625rem;
+	height: 1.59375rem;
+	line-height: 1.59375rem;
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	color: #fff;
+	font-size: 0.875rem;
+}
+.ask-input{
+	position: absolute;
+	left: 55%;
+	transform: translateX(-50%);
+	width: 45%;
+	height: 1.6875rem;
+	padding: 0 0.5rem;
+	box-sizing: border-box;
+	color: #fff;
+}
+.ask-input textarea{ 
+	width: 100%;
+	height: auto;
+	font-size: 0.8125rem;
+	color: #fff;
+	line-height: 1.6875rem;
+	background-color: rgba(0, 0, 0, 0.0);
+	font-family: "苹方";
+}
+
+/* 输入框部分-end */

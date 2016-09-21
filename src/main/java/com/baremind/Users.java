@@ -19,14 +19,20 @@ import java.util.*;
 
 @Path("users")
 public class Users {
-    /*
-    账号：zhibo1
-    密码：Tch243450
-    内容：xxxxxx（动态验证码）,请在3分钟内使用
-    */
-    static String hostname = "http://222.73.117.158";
-    static String username = "jiekou-clcs-13";
-    static String password = "THYnk464hu";
+    //<<<<<<< HEAD
+    static String hostname = "https://sapi.253.com";
+    static String username = "zhibo1";
+    static String password = "Tch243450";
+//=======
+//    /*
+//    账号：zhibo1
+//    密码：Tch243450
+//    内容：xxxxxx（动态验证码）,请在3分钟内使用
+//    */
+//    static String hostname = "http://222.73.117.158";
+//    static String username = "jiekou-clcs-13";
+//    static String password = "THYnk464hu";
+//>>>>>>> origin/master
 
     @GET
     @Path("telephones/{telephone}/code")
@@ -114,45 +120,45 @@ public class Users {
         return result;
     }
 
-    public static class ActiveCard {
-        private String cardCode;
-        private String password;
-        private String phonecode;
-        private String validationCode;
-
-        public String getCardCode() {
-            return cardCode;
-        }
-
-        public void setCardCode(String cardCode) {
-            this.cardCode = cardCode;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getPhonecode() {
-            return phonecode;
-        }
-
-        public void setPhonecode(String phonecode) {
-            this.phonecode = phonecode;
-        }
-
-        public String getValidationCode() {
-            return validationCode;
-        }
-
-        public void setValidationCode(String validationCode) {
-            this.validationCode = validationCode;
-        }
-
-    }
+//    public static class ActiveCard {
+//        private String cardCode;
+//        private String password;
+//        private String phonecode;
+//        private String validationCode;
+//
+//        public String getCardCode() {
+//            return cardCode;
+//        }
+//
+//        public void setCardCode(String cardCode) {
+//            this.cardCode = cardCode;
+//        }
+//
+//        public String getPassword() {
+//            return password;
+//        }
+//
+//        public void setPassword(String password) {
+//            this.password = password;
+//        }
+//
+//        public String getPhonecode() {
+//            return phonecode;
+//        }
+//
+//        public void setPhonecode(String phonecode) {
+//            this.phonecode = phonecode;
+//        }
+//
+//        public String getValidationCode() {
+//            return validationCode;
+//        }
+//
+//        public void setValidationCode(String validationCode) {
+//            this.validationCode = validationCode;
+//        }
+//
+//    }
 
     @POST
     @Path("cards")
@@ -225,13 +231,7 @@ public class Users {
 //        
     }
 
-    public static class SendMessageResult {
-        public String time;
-        public String code;
-        public String messageId;
-    }
-
-    public static SendMessageResult sendMessage(String telephoneNumber, String validInfo) {
+    public static SendMessageResult sendMessage(String phoneNumber, String validInfo) {
         //platform: http://222.73.117.158/msg/index.jsp
         //username: jiekou-clcs-13
         //password: THYnk464hu
@@ -239,6 +239,32 @@ public class Users {
 
         //resptime,respstatus
         //msgid
+//<<<<<<< HEAD
+//        respstatus
+//        * 代码 说明
+//        0 提交成功
+//        101 无此用户
+//        102 密码错
+//        103 提交过快（提交速度超过流速限制）
+//        104 系统忙（因平台侧原因，暂时无法处理提交的短信）
+//        105 敏感短信（短信内容包含敏感词）
+//        106 消息长度错（>536或<=0）
+//        107 包含错误的手机号码
+//        108 手机号码个数错（群发>50000或<=0;单发>200或<=0）
+//        109 无发送额度（该用户可用短信数已使用完）
+//        110 不在发送时间内
+//        111 超出该账户当月发送额度限制
+//        112 无此产品，用户没有订购该产品
+//        113 extno格式错（非数字或者长度不对）
+//        115 自动审核驳回
+//        116 签名不合法，未带签名（用户必须带签名的前提下）
+//        117 IP地址认证错,请求调用的IP地址不是系统登记的IP地址
+//        118 用户没有相应的发送权限
+//        119 用户已过期
+//        120 测试内容不是白名单
+
+//=======
+//>>>>>>> origin/master
 
         SendMessageResult result = new SendMessageResult();
         // Default instance of client
@@ -247,7 +273,7 @@ public class Users {
             .path("/msg/HttpBatchSendSM")
             .queryParam("account", username)
             .queryParam("pswd", password)
-            .queryParam("mobile", telephoneNumber)
+            .queryParam("mobile", phoneNumber)
             .queryParam("msg", validInfo)
             .queryParam("needstatus", true)
             .request("text/plain").get();
@@ -268,14 +294,97 @@ public class Users {
         return result;
     }
 
-    public static class SmsState {
-        public String receiver;
-        public String password;
-        public String messageId;
-        public String reportTime;
-        public String mobile;
-        public String status;
-    }
+//    @GET
+//    @Path("telephones/{telephone}/code")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response queryValidCode(@PathParam("telephone") String telephone) {
+//        Random rand = new Random();
+//        int x = rand.nextInt(899999);
+//        int y = x + 100000;
+//        String sjs = String.valueOf(y);
+//        Date now = new Date();
+//        ValidationCode message = new ValidationCode();
+//        message.setId(IdGenerator.getNewId());
+//        message.setPhoneNumber(telephone);
+//        message.setValidCode(sjs);
+//        message.setTimestamp(now);
+//        JPAEntry.genericPost(message);
+//        //sendMessage(telephone, sjs + "(动态验证码),请在3分钟内使用");
+//        return Response.ok("{\"state\":\"ok\"}").build();
+//    }
+
+//    @POST
+//    @Path("cards")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response queryValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
+//        Response result = Response.status(500).build();
+//        //默认有数据库表有多个用户名和密码重复的数据
+//        Map<String, Object> condition = new HashMap<>();
+//        condition.put("no", ac.cardCode);
+//        condition.put("password", ac.password);
+//        List<Card> cs = JPAEntry.getList(Card.class, condition);
+//        switch (cs.size()) {
+//            case 0:
+//                result = Response.status(404).build();
+//                //找不到用户名和密码
+//                break;
+//            case 1:
+//                //step2: query valid table, va   lid valid code
+//                Map<String, Object> ValidationCodecondition = new HashMap<>();
+//                ValidationCodecondition.put("phoneNumber", ac.phonecode);
+//                ValidationCodecondition.put("validCode", ac.validationCode);
+//                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
+//                switch (validationCodes.size()) {
+//                    case 0:
+//                        result = Response.status(401).build();
+//                        //找不到该手机号和验证码
+//                        break;
+//                    case 1:
+//                        Date now = new Date();
+//                        Date sendTime = validationCodes.get(0).getTimestamp();
+//                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
+//                            result = Response.status(410).build();
+//                            //一验证码时间超时
+//                        } else {
+//                            //step3.0: query sessions table, get user.id
+////                            Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
+////                            if (s == null) {
+////                                result = Response.status(412).build();
+////                                //缺少sessionID
+////                            } else {
+//                                //step3: update cards table, state, amount, cards'user_id -> user.id
+//                                Card card = new Card();
+//                                Card c = cs.get(0);
+//                                if (c.getUserId() == null) {
+//                                    c.setActiveTime(now);
+//                                    c.setEndTime(now);
+//                                    c.setAmount(588.0);
+//                                    c.setUserId(ac.getUserId());
+//                                    JPAEntry.genericPut(c);
+//                                    result = Response.ok().build();
+//                                    //代码执行成功
+//                                } else {
+//                                    result = Response.status(405).build();
+//                                }
+////                            }
+//                        }
+//                        break;
+//                    default:
+//                        result = Response.status(520).build();
+//                        //数据库表有多个手机号和验证码重复的数据
+//                        break;
+//                }
+//                EntityManager em = JPAEntry.getEntityManager();
+//                em.getTransaction().begin();
+//                for (ValidationCode validationCode : validationCodes) {
+//                    em.remove(validationCode);
+//                }
+//                em.getTransaction().commit();
+//                break;
+//        }
+//        return result;
+//    }
 
     @GET
     @Path("smsStateNotification")
@@ -291,17 +400,8 @@ public class Users {
 //        ERR:104 系统忙
 //        REJECT 审核驳回
 //        其他 网关内部状态
-//        
+//
         return null;
-    }
-
-    public static class SmsReceiverState {
-        public String receiver;
-        public String password;
-        public String message;
-        public String moTime;
-        public String mobile;
-        public String destinationCode;
     }
 
     @GET
@@ -364,14 +464,21 @@ public class Users {
             result = Response.status(404).build();
             User existuser = JPAEntry.getObject(User.class, "id", id);
             if (existuser != null) {
-                //User user;
-                //try {
-                //    user = new Gson().fromJson(new String(userInfo, "UTF-8"), User.class);
-                //} catch (UnsupportedEncodingException e) {
-                //    e.printStackTrace();
-                //}
+//<<<<<<< HEAD
                 float amount = user.getAmount();
+                //if (amount != null) {
                 existuser.setAmount(amount);
+                //}
+//=======
+//                //User user;
+//                //try {
+//                //    user = new Gson().fromJson(new String(userInfo, "UTF-8"), User.class);
+//                //} catch (UnsupportedEncodingException e) {
+//                //    e.printStackTrace();
+//                //}
+//                float amount = user.getAmount();
+//                existuser.setAmount(amount);
+//>>>>>>> origin/master
                 Date birthday = user.getBirthday();
                 if (birthday != null) {
                     existuser.setBirthday(birthday);
@@ -449,5 +556,103 @@ public class Users {
             }
         }
         return result;
+    }
+
+    public static class SendMessageResult {
+        public String time;
+        public String code;
+        public String messageId;
+    }
+
+    public static class SmsState {
+        public String receiver;
+        public String password;
+        public String messageId;
+        public String reportTime;
+        public String mobile;
+        public String status;
+    }
+
+    /*@GET
+    @Path("telephones/{telephone}/code")
+    public Response queryValidCode(@PathParam("telephone") String telephone) {
+        //step0: generate valid code
+        Random rand = new Random();
+        String sjs = "";
+//        for (int i = 0; i < 6; i++) {
+//            sjs += rand.nextInt(10);
+//        }
+        int x = rand.nextInt(899999);
+        int y = x + 100000;
+        sjs = String.valueOf(y);
+        Date now = new Date();
+        //step1: record phoneNumber & validCode & timestamp
+        ValidationCode message = new ValidationCode();
+        message.setId(IdGenerator.getNewId());
+        message.setPhoneNumber(telephone);
+        message.setValidCode(sjs);
+        message.setTimestamp(now);
+        JPAEntry.genericPost(message);
+        //step2: sendMessage(phoneNumber, "" + validCode + "")
+        sendMessage(telephone, "【小雨知时】" + sjs + "(动态验证码),请在3分钟内使用");
+
+        return Response.ok().build();
+    }
+*/
+    public static class ActiveCard {
+        private String cardCode;
+        private String password;
+        private String phonecode;
+        private String validationCode;
+        private Long userId;
+
+        public String getCardCode() {
+            return cardCode;
+        }
+
+        public void setCardCode(String cardCode) {
+            this.cardCode = cardCode;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getPhonecode() {
+            return phonecode;
+        }
+
+        public void setPhonecode(String phonecode) {
+            this.phonecode = phonecode;
+        }
+
+        public String getValidationCode() {
+            return validationCode;
+        }
+
+        public void setValidationCode(String validationCode) {
+            this.validationCode = validationCode;
+        }
+
+        public Long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Long userId) {
+            this.userId = userId;
+        }
+    }
+
+    public static class SmsReceiverState {
+        public String receiver;
+        public String password;
+        public String message;
+        public String moTime;
+        public String mobile;
+        public String destinationCode;
     }
 }

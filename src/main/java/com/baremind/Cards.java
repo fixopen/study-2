@@ -5,26 +5,23 @@ import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Path("cards")
 public class Cards {
-    /*
-    @POST //import
+
+    /*@POST //import
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response importCardsViaFormData(@CookieParam("sessionId") String sessionId, @FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail) {
         Response result = Response.status(401).build();
@@ -32,6 +29,7 @@ public class Cards {
             //final ClientConfig clientConfig = new ClientConfig();
             //clientConfig.register(MultiPartFeature.class);
             //Client client = ClientBuilder.newClient(clientConfig);
+        	System.out.println("我进来了");
             String uploadedFileLocation = "/var/tmp/" + fileDetail.getFileName();
             writeToFile(uploadedInputStream, uploadedFileLocation);
             parseAndInsert(uploadedFileLocation);
@@ -55,32 +53,30 @@ public class Cards {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    */
-
-    private static String token = "xiaoyuzhishi20160907";
+    }*/
 
     @POST
-    @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
+    @Path("generate")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+    public Response cardsGenerator(@CookieParam("sessionId") String sessionId, byte[] contents) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             try {
-                String uploadedFileLocation = "tempFilename.csv";
-                File csvFile = new File(uploadedFileLocation);
-                FileOutputStream w = new FileOutputStream(csvFile);
-                ServletInputStream servletInputStream = request.getInputStream();
-                CharacterEncodingFilter.saveFile(w, servletInputStream);
-                parseAndInsert(uploadedFileLocation);
-                try {
-                    Response.temporaryRedirect(new URI("...")).build();
-                    Response.seeOther(new URI("...")).build();
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                Map<String, Object> q = new Gson().fromJson(new String(contents, StandardCharsets.UTF_8.toString()), new TypeToken<Map<String, Object>>() {
+                }.getType());
+                Long start = (Long) q.get("start");
+                Long count = (Long) q.get("count");
+                for (int i = 0; i < count; ++i) {
+                    //generate card no
+                    //generate random number
+                    //record to database
+                    //write to file
                 }
-            } catch (IOException e) {
+                result = Response.ok("{\"state\":\"ok\"}").build();
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
+                result = Response.status(400).build();
             }
         }
         return result;
