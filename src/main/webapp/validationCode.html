@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -202,4 +203,210 @@
 
 </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>W-我的-设置-添加新卡-发送后页面</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait">
+<!-- 解析queryString -->
+   <!-- code = "ss";
+    ajax({
+      回调{
+    "access_token":"ACCESS_TOKEN",
+    "expires_in":7200,
+    "refresh_token":"REFRESH_TOKEN",
+    "openid":"OPENID",
+    "scope":"SCOPE",
+    "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
+    $.ajax({
+            后台
+            回调{
+            let userid
+        }
+    })
+     }
+    })
+    "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=CODE&grant_type=authorization_code",
+-->
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<body>
+<div id="sss">
+<div class="wrap">
+    <!-- main -->
+    <div class="set-main">
+        <ul class="set-ul">
+            <li class="set-li">
+                <span class="set-span">卡号</span>
+                <input type="text" placeholder="请输入卡号" id="cardCode" required pattern="\d+">
+            </li>
+            <li class="set-li">
+                <span class="set-span">密码</span>
+                <input type="password" placeholder="请输入密码" id="password" required>
+            </li>
+            <li class="set-li">
+                <span class="set-span">手机号</span>
+                <input type="tel" placeholder="请输入手机号" id="phonecode" required pattern="\d+">
+                <input type="button" class="send-btn cur" value="获取手机验证码" id="phone_btn">
+            </li>
+            <li class="set-li">
+                <span class="set-span">验证码</span>
+                <input type="text" placeholder="请输入验证码" id="validationCode" required pattern="\d{6}">
+            </li>
+        </ul>
+        <div class="tip" id="tipid">卡片验证码将发送至此手机!
+
+        </div>
+
+        <div class="btn-box">
+            <a href="javascript:void(0)" onclick="post()" class="save-btn">确 认</a>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    //style="visibility: none;"
+
+    document.getElementById("sss").style.visibility="hidden";//隐藏
+
+    let userid
+    let getUrlParameter = function (name) {
+        var result = null
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)") //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg) //匹配目标参数
+        if (r != null) {
+            result = decodeURI(r[2])
+        }
+        alert(result)
+        return result //返回参数值
+    }
+
+//    $.ajax({
+//        type: "get",
+//        url: 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + getUrlParameter('code') + '&grant_type=authorization_code',
+//        dataType: 'json',
+//        async: false,
+//        success: function (a) {
+    var a = {};
+    a.access_token = "1";
+    a.expires_in = 7200;
+    a.refresh_token = "3";
+    a.openid = "ozD1Zw9VD2K3zdR5Jv9Tb_PTGO7k";
+    a.scope = "5";
+    a.unionid = "6";
+            $.ajax({
+                type: "put",
+                url: "api/wechat-users",
+                data: JSON.stringify(a),
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (b) {
+
+                    userid = b.userId
+                    document.getElementById("sss").style.visibility="visible";//显示
+                },
+                error: function(r) {
+                    alert('error' + r.status + r.statusText)
+                }
+            })
+//        }
+//    });
+
+
+    function post() {
+        var data = {};
+        data.cardCode = $('#cardCode').val()
+        data.password = $('#password').val()
+        data.phonecode = $('#phonecode').val()
+        data.validationCode = $('#validationCode').val()
+        data.userId = userId
+        $.ajax({
+            type: "post",
+            url: "api/users/cards",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (data) {
+                window.location.href = 'Gold.html';
+            },
+            error: function (r) {
+                // alert("返回失败结果集=" + r.statusText);
+                switch (r.status) {
+                    case 500:
+                        document.getElementById("tipid").innerHTML = "后台错误500，请联系程序猿叔叔。email：15210038357@163.com";
+                        break;
+                    case 412:
+                        document.getElementById("tipid").innerHTML = "请返回的我的首页";
+                        break;
+                    case 520:
+                        document.getElementById("tipid").innerHTML = "后台错误520，请联系程序猿叔叔。email：15210038357@163.com";
+                        break;
+                    case 404:
+                        document.getElementById("tipid").innerHTML = "用户名或密码错误";
+                        break;
+                    case 405:
+                        document.getElementById("tipid").innerHTML = "不可以重复激活";
+                        break;
+                    case 401:
+                        document.getElementById("tipid").innerHTML = "手机号或验证码错误";
+                        break;
+                    case 410:
+                        document.getElementById("tipid").innerHTML = "验证码超时";
+                        break;
+                    case 200:
+                        window.location.href = 'Gold.html';
+                        break;
+                }
+            }
+        })
+    }
+
+
+    let invoke = document.getElementById('phone_btn')
+    if (invoke != null) {
+        let timeoutId
+        let printnr = 60
+        invoke.addEventListener('click', function (e) {
+            let proc = function () {
+                e.target.value = " (" + printnr + ")秒后\n重新发送";
+                --printnr
+                if (printnr == 0) {
+                    e.target.value = " 重新发送 ";
+                    clearInterval(timeoutId)
+                }
+            }
+            var phonecode = $('#phonecode').val()
+            $.ajax({
+                type: "get",
+                url: "api/users/telephones/" + phonecode + "/code",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    document.getElementById("tipid").innerHTML = "发送成功，请注意查收";
+                },
+                error: function (r) {
+                    //alert("返回失败结果集=" + r.statusText);
+                    alert(r.responseText);
+                    document.getElementById("tipid").innerHTML = "发送失败，请重新获取验证码";
+                }
+            })
+            timeoutId = setInterval(proc, 1000);
+        }, false)
+    }
+
+
+</script>
+</body>
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
 </html>
