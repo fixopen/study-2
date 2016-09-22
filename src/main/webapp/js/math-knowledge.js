@@ -136,9 +136,10 @@ $(function () {
         dataType: 'json',
         async : false,
         success: function(kps){
+            alert(JSON.stringify(kps))
             knowledgePoints=kps;
             //alert("知识点"+JSON.stringify(kps))
-            // alert(JSON.stringify(kps))
+
             proc({
                 data: knowledgePoints,
                 containerId: 'knowledge-point',

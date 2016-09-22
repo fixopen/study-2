@@ -133,8 +133,7 @@ let volumeId = getUrlParameter("volumeId")
 
   let  a = parseInt(volumeId)
   let  b = parseInt(id)
-  let  knowledgePoints;
-
+  let  data;
 
   $.ajax({
     type:"get",
@@ -142,27 +141,33 @@ let volumeId = getUrlParameter("volumeId")
     dataType: 'json',
     async : false,
     success: function(kps){
-      knowledgePoints=kps;
+      data=kps;
+      for (let i = 0; i < data.problems.length; ++i) {
+        let p = data.problems[i]
+        if (p.options && (p.options.length == 4)) {
+          p.options[0].title = 'A'
+          p.options[1].title = 'B'
+          p.options[2].title = 'C'
+          p.options[3].title = 'D'
+        }
+      }
       alert(JSON.stringify(kps))
+      console.info(kps)
       proc({
         templateId: 'title2-template',
-        data:knowledgePoints[a],
+        data:data,
         containerId: 'title2'
       })
-      proc({
-        templateId: 'title1-template',
-        data: {"title1":knowledge_point_id},
-        containerId: 'title1'
-      })
-      proc({
-        templateId: 'title2-template',
-        data:knowledgePoints[a] ,
-        containerId: 'title2'
-      })
+      // proc({
+      //   templateId: 'title1-template',
+      //   data: {"title1":id},
+      //   containerId: 'title1'
+      // })
+
 
       proc({
         templateId: 'challenge-template',
-        data: data.challenge,
+        data: data.quotes,
         containerId: 'challenge'
       })
 
@@ -172,7 +177,7 @@ let volumeId = getUrlParameter("volumeId")
         containerId: 'content',
         alterTemplates: [
           {type: 'text', templateId: 'content-text-template'},
-          {type: 'image', templateId: 'content-image-template'}
+          {type: 'imageText', templateId: 'content-image-template'}
         ]
       })
 
@@ -184,7 +189,7 @@ let volumeId = getUrlParameter("volumeId")
 
       proc({
         templateId: 'strongest-brain-template',
-        data: data.strongestBrains,
+        data: data.problems,
         containerId: 'strongest-brain',
         secondBind: [
           {
@@ -202,7 +207,7 @@ let volumeId = getUrlParameter("volumeId")
 
       proc({
         templateId: 'pk-template',
-        data: data.pk,
+        data: data.problems,
         containerId: 'pk',
         secondBind: [
           {

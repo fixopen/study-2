@@ -101,40 +101,53 @@ public class KnowledgePoints {
                 }
 
                 EntityManager em = JPAEntry.getEntityManager();
-                //em.getTransaction().begin();
+                List<Text> textObjects = null;
+                if (!textIds.isEmpty()) {
+                    String textquery = "SELECT id, content FROM texts WHERE id IN ( " + join(textIds) + " )";
+                    Query tq = em.createNativeQuery(textquery, Text.class);
+                    textObjects = tq.getResultList();
+                }
+                List<Image> imageObjects = null;
+                if (!imageIds.isEmpty()) {
+                    String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
+                    Query iq = em.createNativeQuery(imagequery, Image.class);
+                    imageObjects = iq.getResultList();
+                }
+                List<Video> videoObjects = null;
+                if (!videoIds.isEmpty()) {
+                    String videoquery = "SELECT * FROM videos WHERE id IN ( " + join(videoIds) + " )";
+                    Query vq = em.createNativeQuery(videoquery, Video.class);
+                    videoObjects = vq.getResultList();
+                }
+                List<Problem> problemObjects = null;
+                List<ProblemOption> problemoptionObjects = null;
+                List<ProblemStandardAnswer> problemstandardanswersObjects = null;
+                if (!problemIds.isEmpty()) {
+                    String problemquery = "SELECT * FROM problems WHERE id IN ( " + join(problemIds) + " )";
+                    Query pq = em.createNativeQuery(problemquery, Problem.class);
+                    problemObjects = pq.getResultList();
 
-                String textquery = "SELECT id, content FROM texts WHERE id IN ( " + join(textIds) + " )";
-                Query tq = em.createNativeQuery(textquery, Text.class);
-                List<Text> textObjects = tq.getResultList();
+                    String problemoptionsquery = "SELECT * FROM problem_options WHERE problem_id IN ( " + join(problemIds) + " )";
+                    Query pqoption = em.createNativeQuery(problemoptionsquery, ProblemOption.class);
+                    problemoptionObjects = pqoption.getResultList();
 
-                String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
-                Query iq = em.createNativeQuery(imagequery, Image.class);
-                List<Image> imageObjects = iq.getResultList();
+                    String problemsstandardanswersquery = "SELECT * FROM problem_standard_answers WHERE problem_id IN ( " + join(problemIds) + " )";
+                    Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemStandardAnswer.class);
+                    problemstandardanswersObjects = pqsan.getResultList();
 
-                String videoquery = "SELECT * FROM videos WHERE id IN ( " + join(videoIds) + " )";
-                Query vq = em.createNativeQuery(videoquery, Video.class);
-                List<Video> videoObjects = vq.getResultList();
-
-                String problemquery = "SELECT * FROM problems WHERE id IN ( " + join(problemIds) + " )";
-                Query pq = em.createNativeQuery(problemquery, Problem.class);
-                List<Problem> problemObjects = pq.getResultList();
-
-
-                String problemoptionsquery = "SELECT * FROM problem_options WHERE problem_id IN ( " + join(problemIds) + " )";
-                Query pqoption = em.createNativeQuery(problemoptionsquery, ProblemOption.class);
-                List<ProblemOption> problemoptionObjects = pqoption.getResultList();
-
-                String problemsstandardanswersquery = "SELECT * FROM problem_standard_answers WHERE problem_id IN ( " + join(problemIds) + " )";
-                Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemStandardAnswer.class);
-                List<ProblemStandardAnswer> problemstandardanswersObjects = pqsan.getResultList();
-
-                String imageTextquery = "SELECT * FROM image_texts WHERE id IN ( " + join(imageTextIds) + " )";
-                Query itq = em.createNativeQuery(imageTextquery, ImageText.class);
-                List<ImageText> imageTextObject = itq.getResultList();
-
-                String quotequery = "SELECT * FROM quotes WHERE id IN ( " + join(quoteIds) + " )";
-                Query qq = em.createNativeQuery(quotequery, Quote.class);
-                List<Quote> quoteObject = qq.getResultList();
+                }
+                List<ImageText> imageTextObject = null;
+                if (!imageTextIds.isEmpty()) {
+                    String imageTextquery = "SELECT * FROM image_texts WHERE id IN ( " + join(imageTextIds) + " )";
+                    Query itq = em.createNativeQuery(imageTextquery, ImageText.class);
+                    imageTextObject = itq.getResultList();
+                }
+                List<Quote> quoteObject = null;
+                if (!quoteIds.isEmpty()) {
+                    String quotequery = "SELECT * FROM quotes WHERE id IN ( " + join(quoteIds) + " )";
+                    Query qq = em.createNativeQuery(quotequery, Quote.class);
+                    quoteObject = qq.getResultList();
+                }
 
                 List<Object> r = new ArrayList<>();
                 List<Object> problemr3 = new ArrayList<>();
@@ -142,56 +155,65 @@ public class KnowledgePoints {
                 for (final KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
-                            Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
-                            Map<String, Object> tm = new HashMap<>();
-                            tm.put("id", t.getId());
-                            tm.put("content", t.getContent());
-                            tm.put("type", "text");
-                            r.add(tm);
+                            if (textObjects != null) {
+                                Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> tm = new HashMap<>();
+                                tm.put("id", t.getId());
+                                tm.put("content", t.getContent());
+                                tm.put("type", "text");
+                                r.add(tm);
+                            }
                             break;
                         case "image":
-                            Image im = findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
-                            Map<String, Object> itm = new HashMap<>();
-                            itm.put("id", im.getId());
-                            itm.put("type", "image");
-                            itm.put("description", "");
-                            itm.put("href", im.getStorePath());
-                            r.add(itm);
+                            if (imageObjects != null) {
+                                Image im = findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> itm = new HashMap<>();
+                                itm.put("id", im.getId());
+                                itm.put("type", "image");
+                                itm.put("description", "");
+                                itm.put("href", im.getStorePath());
+                                r.add(itm);
+                            }
                             break;
 
                         case "imageText":
-                            ImageText ITe = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
-                            Map<String, Object> items = new HashMap<>();
-                            items.put("id", ITe.getId());
-                            items.put("type", "imageText");
-                            items.put("content", ITe.getContent());
-                            items.put("href", ITe.getStorePath());
-                            r.add(items);
+                            if (imageTextObject != null) {
+                                ImageText ITe = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> items = new HashMap<>();
+                                items.put("id", ITe.getId());
+                                items.put("type", "imageText");
+                                items.put("content", ITe.getContent());
+                                items.put("href", ITe.getStorePath());
+                                r.add(items);
+                            }
                             break;
                         case "problem":
-                            Problem pie = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
+                            if (problemObjects != null || problemoptionObjects != null || problemstandardanswersObjects != null) {
+                                Problem pie = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
+                                List<ProblemOption> pieo = findItems(problemoptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
+                                List<ProblemStandardAnswer> dfs = findItems(problemstandardanswersObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
 
-                            List<ProblemOption> pieo = findItems(problemoptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
-                            List<ProblemStandardAnswer> dfs = findItems(problemstandardanswersObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
-
-                            Map<String, Object> piems = new HashMap<>();
-                            piems.put("id", pie.getId());
-                            if (dfs.size() > 1) {
-                                piems.put("type", "多选题");
-                            } else {
-                                piems.put("type", "单选题");
+                                Map<String, Object> piems = new HashMap<>();
+                                piems.put("id", pie.getId());
+                                if (dfs.size() > 1) {
+                                    piems.put("type", "多选题");
+                                } else {
+                                    piems.put("type", "单选题");
+                                }
+                                piems.put("options", pieo);
+                                piems.put("title", pie.getTitle());
+                                problemr3.add(piems);
+                                break;
                             }
-                            piems.put("options", pieo);
-                            piems.put("title", pie.getTitle());
-                            problemr3.add(piems);
-                            break;
                         case "quote":
-                            Quote ique = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
-                            Map<String, Object> iquems = new HashMap<>();
-                            iquems.put("id", ique.getId());
-                            iquems.put("content", ique.getContent());
-                            iquems.put("source", ique.getSource());
-                            quoter4.add(iquems);
+                            if (quoteObject != null) {
+                                Quote ique = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> iquems = new HashMap<>();
+                                iquems.put("id", ique.getId());
+                                iquems.put("content", ique.getContent());
+                                iquems.put("source", ique.getSource());
+                                quoter4.add(iquems);
+                            }
                             break;
 
                     }
@@ -200,7 +222,7 @@ public class KnowledgePoints {
                 r2.put("title", p.getTitle());
                 r2.put("quotes", quoter4);
                 r2.put("contents", r);
-                if (!videoObjects.isEmpty()) {
+                if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     r2.put("video", videoObjects.get(0));
                 }
                 //===============================================================
