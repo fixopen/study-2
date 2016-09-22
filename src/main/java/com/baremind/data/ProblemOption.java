@@ -9,14 +9,14 @@ import javax.persistence.Table;
  * Created by User on 2016/9/19.
  */
 @Entity
-@Table(name = "problems_options")
+@Table(name = "problem_options")
 public class ProblemOption {
     @Id
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "problems_id")
-    private Long problemsId;
+    @Column(name = "problem_id")
+    private Long problemId;
 
     @Column(name = "name")
     private String name;
@@ -29,12 +29,12 @@ public class ProblemOption {
         this.id = id;
     }
 
-    public Long getProblemsId() {
-        return problemsId;
+    public Long getProblemId() {
+        return problemId;
     }
 
-    public void setProblemsId(Long problemsId) {
-        this.problemsId = problemsId;
+    public void setProblemId(Long problemId) {
+        this.problemId = problemId;
     }
 
     public String getName() {

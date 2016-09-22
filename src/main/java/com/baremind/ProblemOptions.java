@@ -78,9 +78,9 @@ public class ProblemOptions {
                     existmedia.setName(name);
                 }
 
-                Long problemsId = problemsOption.getProblemsId();
-                if (problemsId != null) {
-                    existmedia.setProblemsId(problemsId);
+                Long problemId = problemsOption.getProblemId();
+                if (problemId != null) {
+                    existmedia.setProblemId(problemId);
                 }
 
                 JPAEntry.genericPut(existmedia);

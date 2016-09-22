@@ -22,10 +22,6 @@ public class Users {
     static String hostname = "https://sapi.253.com";
     static String username = "zhibo1";
     static String password = "Tch243450";
-//    static String hostname = "http://222.73.117.158";
-//    static String username = "jiekou-clcs-13";
-//    static String password = "THYnk464hu";
-
     @GET
     @Path("telephones/{telephone}/code")
     @Produces(MediaType.APPLICATION_JSON)
