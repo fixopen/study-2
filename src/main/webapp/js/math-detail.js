@@ -125,6 +125,7 @@ $(function () {
   // if(id>-1){
   //   id=url.substring(id+4);
   // }
+
 let volumeId = getUrlParameter("volumeId")
   let id = getUrlParameter("id")
   //  alert(id);
@@ -134,9 +135,10 @@ let volumeId = getUrlParameter("volumeId")
   let  b = parseInt(id)
   let  knowledgePoints;
 
+
   $.ajax({
     type:"get",
-    url:'api/knowledgePoints?filter=' + JSON.stringify({subjectId:2,volumeId:a}),
+    url:"api/knowledgePoints/"+b+"/contents",
     dataType: 'json',
     async : false,
     success: function(kps){
@@ -144,11 +146,86 @@ let volumeId = getUrlParameter("volumeId")
       alert(JSON.stringify(kps))
       proc({
         templateId: 'title2-template',
-        data:knowledgePoints[b-1] ,
+        data:knowledgePoints[a],
         containerId: 'title2'
+      })
+      proc({
+        templateId: 'title1-template',
+        data: {"title1":knowledge_point_id},
+        containerId: 'title1'
+      })
+      proc({
+        templateId: 'title2-template',
+        data:knowledgePoints[a] ,
+        containerId: 'title2'
+      })
+
+      proc({
+        templateId: 'challenge-template',
+        data: data.challenge,
+        containerId: 'challenge'
+      })
+
+
+      proc({
+        data: data.contents,
+        containerId: 'content',
+        alterTemplates: [
+          {type: 'text', templateId: 'content-text-template'},
+          {type: 'image', templateId: 'content-image-template'}
+        ]
+      })
+
+      proc({
+        templateId: 'video-template',
+        data: data.video,
+        containerId: 'video'
+      })
+
+      proc({
+        templateId: 'strongest-brain-template',
+        data: data.strongestBrains,
+        containerId: 'strongest-brain',
+        secondBind: [
+          {
+            extPoint: 'options',
+            dataFieldName: 'options',
+            templateId: 'strongest-brain-option-template'
+          },
+          {
+            extPoint: 'explain',
+            dataFieldName: 'video',
+            templateId: 'video-template'
+          }
+        ]
+      })
+
+      proc({
+        templateId: 'pk-template',
+        data: data.pk,
+        containerId: 'pk',
+        secondBind: [
+          {
+            extPoint: 'options',
+            dataFieldName: 'options',
+            templateId: 'pk-option-template'
+          }]
+      })
+
+      proc({
+        templateId: 'interaction-template',
+        data: data.interaction,
+        containerId: 'interaction'
+      })
+
+      proc({
+        templateId: 'comment-template',
+        data: data.comments,
+        containerId: 'comments'
       })
     }
   })
+})
   //alert(JSON.stringify(filterds))
   // $.ajax({
   //   type:"get",
@@ -170,79 +247,5 @@ let volumeId = getUrlParameter("volumeId")
   //     })
   //   }
   // })
-  //   proc({
-  //       templateId: 'title2-template',
-  //       data:knowledgePoints[b] ,
-  //       containerId: 'title2'
-  //   })
-  proc({
-    templateId: 'title1-template',
-    data: {"title1":knowledge_point_id},
-    containerId: 'title1'
-  })
 
 
-  // proc({
-  //   templateId: 'challenge-template',
-  //   data: data.challenge,
-  //   containerId: 'challenge'
-  // })
-  //
-  //
-  // proc({
-  //   data: data.contents,
-  //   containerId: 'content',
-  //   alterTemplates: [
-  //     {type: 'text', templateId: 'content-text-template'},
-  //     {type: 'image', templateId: 'content-image-template'}
-  //   ]
-  // })
-  //
-  // proc({
-  //   templateId: 'video-template',
-  //   data: data.video,
-  //   containerId: 'video'
-  // })
-  //
-  // proc({
-  //   templateId: 'strongest-brain-template',
-  //   data: data.strongestBrains,
-  //   containerId: 'strongest-brain',
-  //   secondBind: [
-  //     {
-  //       extPoint: 'options',
-  //       dataFieldName: 'options',
-  //       templateId: 'strongest-brain-option-template'
-  //     },
-  //     {
-  //       extPoint: 'explain',
-  //       dataFieldName: 'video',
-  //       templateId: 'video-template'
-  //     }
-  //   ]
-  // })
-  //
-  // proc({
-  //   templateId: 'pk-template',
-  //   data: data.pk,
-  //   containerId: 'pk',
-  //   secondBind: [
-  //     {
-  //       extPoint: 'options',
-  //       dataFieldName: 'options',
-  //       templateId: 'pk-option-template'
-  //     }]
-  // })
-  //
-  // proc({
-  //   templateId: 'interaction-template',
-  //   data: data.interaction,
-  //   containerId: 'interaction'
-  // })
-  //
-  // proc({
-  //   templateId: 'comment-template',
-  //   data: data.comments,
-  //   containerId: 'comments'
-  // })
-})

@@ -1,5 +1,15 @@
 let doc = document
 
+let getUrlParameter = function (name) {
+    var result = null
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)") //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg) //匹配目标参数
+    if (r != null) {
+        result = decodeURI(r[2])
+    }
+    return result //返回参数值
+}
+
 let getTemplate = function (templateId) {
     let result
     let template = doc.getElementById(templateId)
