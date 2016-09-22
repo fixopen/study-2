@@ -103,9 +103,12 @@ public class KnowledgePoints {
                 EntityManager em = JPAEntry.getEntityManager();
                 //em.getTransaction().begin();
 
-                String textquery = "SELECT id, content FROM texts WHERE id IN ( " + join(textIds) + " )";
-                Query tq = em.createNativeQuery(textquery, Text.class);
-                List<Text> textObjects = tq.getResultList();
+                List<Text> textObjects = null;
+                if (!textIds.isEmpty()) {
+                    String textquery = "SELECT id, content FROM texts WHERE id IN ( " + join(textIds) + " )";
+                    Query tq = em.createNativeQuery(textquery, Text.class);
+                    textObjects = tq.getResultList();
+                }
 
                 String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
                 Query iq = em.createNativeQuery(imagequery, Image.class);
@@ -142,12 +145,14 @@ public class KnowledgePoints {
                 for (final KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
-                            Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
-                            Map<String, Object> tm = new HashMap<>();
-                            tm.put("id", t.getId());
-                            tm.put("content", t.getContent());
-                            tm.put("type", "text");
-                            r.add(tm);
+                            if (textObjects != null) {
+                                Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> tm = new HashMap<>();
+                                tm.put("id", t.getId());
+                                tm.put("content", t.getContent());
+                                tm.put("type", "text");
+                                r.add(tm);
+                            }
                             break;
                         case "image":
                             Image im = findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
