@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Settings</title>
+</head>
+
+<script type="text/javascript" src="../jquery/jquery.min.js"></script>
+<body>
+<ol>
+    <li>公告</li>
+    <li>
+        学习
+        <ol>
+            <li>直播课</li>
+            <li>语文</li>
+            <li>数学</li>
+            <li>英语</li>
+        </ol>
+    </li>
+    <li data-id="user">我的</li>
+</ol>
+<input type="text" id="content"/>
+<input type="button" id="save" value="save"/>
+<script>
+    let menus = {
+        "button": [
+            {
+                "type": "view",
+                "name": "公告",
+                "url": "http://mp.weixin.qq.com/s?__biz=MzI3NzQwNTY0NA==&mid=100000048&idx=1&sn=6619a67d545fa282c2137dbdb8fb80b2&scene=18#wechat_redirect",
+                "sub_button": []
+            },
+            {
+                "name": "学习",
+                "sub_button": [
+                    {
+                        "type": "view",
+                        "name": "直播课",
+                        "url": "http://mp.weixin.qq.com/s?__biz=MzI3NzQwNTY0NA==&mid=100000054&idx=1&sn=38339583bdd1571d4d3341acce609ac9&scene=18#wechat_redirect"
+                    },
+                    {
+                        "type": "view",
+                        "name": "语文",
+                        "url": "http://mp.weixin.qq.com/s?__biz=MzI3NzQwNTY0NA==&mid=100000069&idx=1&sn=37f66a978cf20d86e510ab919085a970&scene=18#wechat_redirect"
+                    },
+                    {
+                        "type": "view",
+                        "name": "数学",
+                        "url": "http://mp.weixin.qq.com/s?__biz=MzI3NzQwNTY0NA==&mid=100000072&idx=1&sn=db2168fa6ee5cb20cecfb69fb8b0bf01&scene=18#wechat_redirect"
+                    },
+                    {
+                        "type": "view",
+                        "name": "英语",
+                        "url": "http://mp.weixin.qq.com/s?__biz=MzI3NzQwNTY0NA==&mid=100000065&idx=1&sn=4e3665c3275be52e4ad84e314031fc90&scene=18#wechat_redirect"
+                    }
+                ]
+            },
+            {
+                "name": "我的",
+                "type": "view",
+                //"type": "click",
+                "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx92dec5e98645bd1d&redirect_uri=http%3A%2F%2Fxiaoyuzhishi.com%2FvalidationCode.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect",
+                "key": "ID_USER",
+                /*{
+                    "access_token":"ACCESS_TOKEN",
+                    "expires_in":7200,
+                    "refresh_token":"REFRESH_TOKEN",
+                    "openid":"OPENID",
+                    "scope":"SCOPE",
+                    "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
+                }*/
+                //https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN
+                /*{
+                 "access_token":"ACCESS_TOKEN",
+                 "expires_in":7200,
+                 "refresh_token":"REFRESH_TOKEN",
+                 "openid":"OPENID",
+                 "scope":"SCOPE"
+                 }*/
+                //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+                /*{
+                 "openid":" OPENID",
+                 " nickname": NICKNAME,
+                 "sex":"1",
+                 "province":"PROVINCE"
+                 "city":"CITY",
+                 "country":"COUNTRY",
+                 "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46",
+                 "privilege":[
+                 "PRIVILEGE1"
+                 "PRIVILEGE2"
+                 ],
+                 "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
+                 }*/
+                //"encodingRedirect": "https%3A%2F%2Fapi.weixin.qq.com%2Fsns%2Foauth2%2Faccess_token%3Fappid%3Dwx92dec5e98645bd1d%26secret%3Dd3b30c3ae79c322bc54c93d0ff75210b%26grant_type%3Dauthorization_code"
+            }
+        ]
+    }
+
+    let currentMenu
+    let save = document.getElementById('save')
+    save.addEventListener('click', function (e) {
+        $.ajax({
+            url: "/api/public-account/custom-menu",
+            type: 'post',
+            data: JSON.stringify(menus),
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,
+            success: function (r) {
+                alert('success')
+            },
+            error: function (r) {
+                alert('error')
+            }
+        })
+    })
+</script>
+</body>
+</html>

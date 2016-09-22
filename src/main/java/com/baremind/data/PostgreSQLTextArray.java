@@ -16,6 +16,7 @@ public class PostgreSQLTextArray implements java.sql.Array, Serializable {
 
     /**
      * Initializing constructor
+     *
      * @param stringArray
      */
     public PostgreSQLTextArray(String[] stringArray) {
@@ -33,14 +34,15 @@ public class PostgreSQLTextArray implements java.sql.Array, Serializable {
 
     /**
      * This static method can be used to convert an string array to string representation of PostgreSQL text array.
+     *
      * @param stringArray source String array
      * @return string representation of a given text array
      */
     public static String stringArrayToPostgreSQLTextArray(String[] stringArray) {
         final int arrayLength;
-        if ( stringArray == null ) {
+        if (stringArray == null) {
             return NULL;
-        } else if ( ( arrayLength = stringArray.length ) == 0 ) {
+        } else if ((arrayLength = stringArray.length) == 0) {
             return "{}";
         }
         // count the string length and if need to quote
@@ -48,24 +50,24 @@ public class PostgreSQLTextArray implements java.sql.Array, Serializable {
         boolean[] shouldQuoteArray = new boolean[stringArray.length];
         for (int si = 0; si < arrayLength; si++) {
             // count the comma after the first element
-            if ( si > 0 )  neededBufferLentgh++;
+            if (si > 0) neededBufferLentgh++;
 
             boolean shouldQuote;
             final String s = stringArray[si];
-            if ( s == null ) {
+            if (s == null) {
                 neededBufferLentgh += 4;
                 shouldQuote = false;
             } else {
                 final int l = s.length();
                 neededBufferLentgh += l;
-                if ( l == 0 || s.equalsIgnoreCase(NULL) ) {
+                if (l == 0 || s.equalsIgnoreCase(NULL)) {
                     shouldQuote = true;
                 } else {
                     shouldQuote = false;
                     // scan for commas and quotes
                     for (int i = 0; i < l; i++) {
                         final char ch = s.charAt(i);
-                        switch(ch) {
+                        switch (ch) {
                             case '"':
                             case '\\':
                                 shouldQuote = true;
@@ -79,7 +81,7 @@ public class PostgreSQLTextArray implements java.sql.Array, Serializable {
                                 shouldQuote = true;
                                 break;
                             default:
-                                if ( Character.isWhitespace(ch) ) {
+                                if (Character.isWhitespace(ch)) {
                                     shouldQuote = true;
                                 }
                                 break;
@@ -87,7 +89,7 @@ public class PostgreSQLTextArray implements java.sql.Array, Serializable {
                     }
                 }
                 // count the quotes
-                if ( shouldQuote ) neededBufferLentgh += 2;
+                if (shouldQuote) neededBufferLentgh += 2;
             }
             shouldQuoteArray[si] = shouldQuote;
         }
@@ -97,18 +99,18 @@ public class PostgreSQLTextArray implements java.sql.Array, Serializable {
         sb.append('{');
         for (int si = 0; si < arrayLength; si++) {
             final String s = stringArray[si];
-            if ( si > 0 ) sb.append(',');
-            if ( s == null ) {
+            if (si > 0) sb.append(',');
+            if (s == null) {
                 sb.append(NULL);
             } else {
                 final boolean shouldQuote = shouldQuoteArray[si];
-                if ( shouldQuote ) sb.append('"');
+                if (shouldQuote) sb.append('"');
                 for (int i = 0, l = s.length(); i < l; i++) {
                     final char ch = s.charAt(i);
-                    if ( ch == '"' || ch == '\\' ) sb.append('\\');
+                    if (ch == '"' || ch == '\\') sb.append('\\');
                     sb.append(ch);
                 }
-                if ( shouldQuote ) sb.append('"');
+                if (shouldQuote) sb.append('"');
             }
         }
         sb.append('}');

@@ -1,7 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.ProblemsOption;
-import com.baremind.data.ProblemsStandardAnswer;
+import com.baremind.data.ProblemStandardAnswer;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -22,7 +21,7 @@ public class ProblemStandardAnswers {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMedia(@CookieParam("sessionId") String sessionId, ProblemsStandardAnswer problemsStandardAnswer) {
+    public Response createMedia(@CookieParam("sessionId") String sessionId, ProblemStandardAnswer problemsStandardAnswer) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             problemsStandardAnswer.setId(IdGenerator.getNewId());
@@ -39,7 +38,7 @@ public class ProblemStandardAnswers {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<ProblemsStandardAnswer> problemsStandardAnswer = JPAEntry.getList(ProblemsStandardAnswer.class, filterObject);
+            List<ProblemStandardAnswer> problemsStandardAnswer = JPAEntry.getList(ProblemStandardAnswer.class, filterObject);
             if (!problemsStandardAnswer.isEmpty()) {
                 result = Response.ok(new Gson().toJson(problemsStandardAnswer)).build();
             }
@@ -54,7 +53,7 @@ public class ProblemStandardAnswers {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            ProblemsStandardAnswer problemsStandardAnswer = JPAEntry.getObject(ProblemsStandardAnswer.class, "id", id);
+            ProblemStandardAnswer problemsStandardAnswer = JPAEntry.getObject(ProblemStandardAnswer.class, "id", id);
             if (problemsStandardAnswer != null) {
                 result = Response.ok(new Gson().toJson(problemsStandardAnswer)).build();
             }
@@ -66,13 +65,13 @@ public class ProblemStandardAnswers {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMedia(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemsStandardAnswer problemsStandardAnswer) {
+    public Response updateMedia(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemStandardAnswer problemsStandardAnswer) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>(1);
             filterObject.put("id", id);
-            ProblemsStandardAnswer existmedia = JPAEntry.getObject(ProblemsStandardAnswer.class, "id", id);
+            ProblemStandardAnswer existmedia = JPAEntry.getObject(ProblemStandardAnswer.class, "id", id);
             if (existmedia != null) {
                 Long name = problemsStandardAnswer.getName();
                 if (name != 0) {

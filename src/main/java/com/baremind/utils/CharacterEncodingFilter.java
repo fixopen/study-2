@@ -33,11 +33,6 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
         return result;
     }
 
-/*<<<<<<< HEAD*/
-    @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        request.setCharacterEncoding("UTF-8");
-/*=======
     public static void saveFile(FileOutputStream w, InputStream servletInputStream) throws IOException {
         byte[] buffer = new byte[4 * 1024];
         for (; ; ) {
@@ -48,6 +43,10 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
             w.write(buffer, 0, receiveLength);
         }
         w.close();
->>>>>>> 3c103f9a47921cec408eb3dd28748ee69820f375*/
+    }
+
+    @Override
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+        request.setCharacterEncoding("UTF-8");
     }
 }

@@ -1,7 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.Media;
-import com.baremind.data.ProblemsOption;
+import com.baremind.data.ProblemOption;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -22,7 +21,7 @@ public class ProblemOptions {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMedia(@CookieParam("sessionId") String sessionId, ProblemsOption problemsOption) {
+    public Response createMedia(@CookieParam("sessionId") String sessionId, ProblemOption problemsOption) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             problemsOption.setId(IdGenerator.getNewId());
@@ -39,7 +38,7 @@ public class ProblemOptions {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<ProblemsOption> problemsOptions = JPAEntry.getList(ProblemsOption.class, filterObject);
+            List<ProblemOption> problemsOptions = JPAEntry.getList(ProblemOption.class, filterObject);
             if (!problemsOptions.isEmpty()) {
                 result = Response.ok(new Gson().toJson(problemsOptions)).build();
             }
@@ -54,7 +53,7 @@ public class ProblemOptions {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            ProblemsOption problemsOption = JPAEntry.getObject(ProblemsOption.class, "id", id);
+            ProblemOption problemsOption = JPAEntry.getObject(ProblemOption.class, "id", id);
             if (problemsOption != null) {
                 result = Response.ok(new Gson().toJson(problemsOption)).build();
             }
@@ -66,13 +65,13 @@ public class ProblemOptions {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMedia(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemsOption problemsOption) {
+    public Response updateMedia(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemOption problemsOption) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>(1);
             filterObject.put("id", id);
-            ProblemsOption existmedia = JPAEntry.getObject(ProblemsOption.class, "id", id);
+            ProblemOption existmedia = JPAEntry.getObject(ProblemOption.class, "id", id);
             if (existmedia != null) {
                 String name = problemsOption.getName();
                 if (name != null) {

@@ -132,7 +132,7 @@ $(function () {
     //alert(JSON.stringify(filterds))
     $.ajax({
         type:"get",
-        url:'api/knowledge-points?filter=' + JSON.stringify(filterds),
+        url:'api/knowledgePoints?filter=' + JSON.stringify(filterds),
         dataType: 'json',
         async : false,
         success: function(kps){

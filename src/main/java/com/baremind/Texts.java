@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @Path("texts")
 public class Texts {
-    @POST 
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createComment(@CookieParam("sessionId") String sessionId, Text text) {
@@ -73,7 +73,7 @@ public class Texts {
             result = Response.status(404).build();
             Text existvolume = JPAEntry.getObject(Text.class, "id", id);
             if (existvolume != null) {
-                String content =  text.getContent();
+                String content = text.getContent();
                 if (content != null) {
                     existvolume.setContent(content);
                 }

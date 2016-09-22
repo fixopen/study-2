@@ -1,9 +1,6 @@
 package com.baremind;
 
-//<<<<<<< HEAD
 import com.baremind.data.User;
-//=======
-//>>>>>>> origin/master
 import com.baremind.data.WechatUser;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -157,7 +154,7 @@ public class WechatUsers {
                         wechatUser.setToken((String) wu.get(key));
                         break;
                     case "expires_in":
-                        Date expiry = new Date(new Date().getTime() + ((Double)wu.get(key)).longValue());
+                        Date expiry = new Date(new Date().getTime() + ((Double) wu.get(key)).longValue());
                         wechatUser.setExpiry(expiry);
                         break;
                     case "refresh_token":
