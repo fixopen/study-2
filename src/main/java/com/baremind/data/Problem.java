@@ -108,22 +108,22 @@ public class Problem {
         this.title = title;
     }
 
-   /* public List<String> getOptions() {
-        return options;
-    }
+    /* public List<String> getOptions() {
+         return options;
+     }
 
-    public void setOptions(List<String> options) {
-        this.options = options;
-    }
+     public void setOptions(List<String> options) {
+         this.options = options;
+     }
 
-    public int[] getStandardAnswers() {
-        return standardAnswers;
-    }
+     public int[] getStandardAnswers() {
+         return standardAnswers;
+     }
 
-    public void setStandardAnswers(int[] standardAnswers) {
-        this.standardAnswers = standardAnswers;
-    }
-*/
+     public void setStandardAnswers(int[] standardAnswers) {
+         this.standardAnswers = standardAnswers;
+     }
+ */
     /* public int getOrder() {
          return order;
      }

@@ -71,11 +71,11 @@ public class Quotes {
             result = Response.status(404).build();
             Quote existvolume = JPAEntry.getObject(Quote.class, "id", id);
             if (existvolume != null) {
-                String content =  quote.getContent();
+                String content = quote.getContent();
                 if (content != null) {
                     existvolume.setContent(content);
                 }
-                String source =  quote.getSource();
+                String source = quote.getSource();
                 if (source != null) {
                     existvolume.setSource(source);
                 }

@@ -102,7 +102,7 @@ public class KnowledgePointContentMaps {
                 if (type != null) {
                     existproblem.setType(type);
                 }
-                
+
                 JPAEntry.genericPut(existproblem);
                 result = Response.ok(existproblem).build();
             }

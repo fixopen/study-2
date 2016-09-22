@@ -30,9 +30,9 @@ public class Video {
     @Column(name = "store_path")
     private String storePath;
 
-  /*  @Column(name = "duration")
-    private Long duration;
-*/
+    /*  @Column(name = "duration")
+      private Long duration;
+  */
     @Column(name = "bit_rate")
     private Double bitRate;
 

@@ -21,8 +21,7 @@ import java.util.function.Predicate;
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
-        for (int j = 0; j < container.size(); ++j) {
-            T textItem = container.get(j);
+        for (T textItem : container) {
             if (p.test(textItem)) {
                 result = textItem;
                 break;
@@ -32,9 +31,8 @@ public class KnowledgePoints {
     }
 
     private <T> List<T> findItems(List<T> container, Predicate<T> p) {
-        List<T> result = new ArrayList<T>();
-        for (int j = 0; j < container.size(); ++j) {
-            T textItem = container.get(j);
+        List<T> result = new ArrayList<>();
+        for (T textItem : container) {
             if (p.test(textItem)) {
                 result.add(textItem);
             }
@@ -45,11 +43,11 @@ public class KnowledgePoints {
     private String join(List<String> ids) {
         String result = "";
         boolean isFirst = true;
-        for (int i = 0; i < ids.size(); ++i) {
+        for (String id : ids) {
             if (!isFirst) {
                 result += ", ";
             }
-            result += ids.get(i);
+            result += id;
             isFirst = false;
         }
         return result;
@@ -79,8 +77,7 @@ public class KnowledgePoints {
                 List<String> quoteIds = new ArrayList<>();
 
 
-                for (int i = 0; i < maps.size(); ++i) {
-                    KnowledgePointContentMap item = maps.get(i);
+                for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
                             textIds.add(item.getObjectId().toString());
@@ -122,13 +119,14 @@ public class KnowledgePoints {
                 Query pq = em.createNativeQuery(problemquery, Problem.class);
                 List<Problem> problemObjects = pq.getResultList();
 
-                String problemoptionsquery = "SELECT * FROM problems_options WHERE problems_id IN ( " + join(problemIds) + " )";
-                Query pqoption = em.createNativeQuery(problemoptionsquery, ProblemsOption.class);
-                List<ProblemsOption> problemoptionObjects = pqoption.getResultList();
 
-                String problemsstandardanswersquery = "SELECT * FROM problems_standard_answers WHERE problems_id IN ( " + join(problemIds) + " )";
-                Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemsStandardAnswer.class);
-                List<ProblemsStandardAnswer> problemstandardanswersObjects = pqsan.getResultList();
+                String problemoptionsquery = "SELECT * FROM problem_options WHERE problem_id IN ( " + join(problemIds) + " )";
+                Query pqoption = em.createNativeQuery(problemoptionsquery, ProblemOption.class);
+                List<ProblemOption> problemoptionObjects = pqoption.getResultList();
+
+                String problemsstandardanswersquery = "SELECT * FROM problem_standard_answers WHERE problem_id IN ( " + join(problemIds) + " )";
+                Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemStandardAnswer.class);
+                List<ProblemStandardAnswer> problemstandardanswersObjects = pqsan.getResultList();
 
                 String imageTextquery = "SELECT * FROM image_texts WHERE id IN ( " + join(imageTextIds) + " )";
                 Query itq = em.createNativeQuery(imageTextquery, ImageText.class);
@@ -138,11 +136,10 @@ public class KnowledgePoints {
                 Query qq = em.createNativeQuery(quotequery, Quote.class);
                 List<Quote> quoteObject = qq.getResultList();
 
-                List<Object> r = new ArrayList<Object>();
-                List<Object> problemr3 = new ArrayList<Object>();
-                List<Object> quoter4 = new ArrayList<Object>();
-                for (int i = 0; i < maps.size(); ++i) {
-                    final KnowledgePointContentMap item = maps.get(i);
+                List<Object> r = new ArrayList<>();
+                List<Object> problemr3 = new ArrayList<>();
+                List<Object> quoter4 = new ArrayList<>();
+                for (final KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
                             Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
@@ -173,13 +170,15 @@ public class KnowledgePoints {
                             break;
                         case "problem":
                             Problem pie = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
-                            List<ProblemsOption> pieo = findItems(problemoptionObjects, (problemoption) -> problemoption.getProblemsId().longValue() == item.getObjectId().longValue());
-                            List<ProblemsStandardAnswer> dfs = findItems(problemstandardanswersObjects, (problemstandardanswers) -> problemstandardanswers.getProblemsId().longValue() == item.getObjectId().longValue());
+
+                            List<ProblemOption> pieo = findItems(problemoptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
+                            List<ProblemStandardAnswer> dfs = findItems(problemstandardanswersObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
+
                             Map<String, Object> piems = new HashMap<>();
                             piems.put("id", pie.getId());
-                            if(dfs.size() > 1){
+                            if (dfs.size() > 1) {
                                 piems.put("type", "多选题");
-                            }else {
+                            } else {
                                 piems.put("type", "单选题");
                             }
                             piems.put("options", pieo);
@@ -212,10 +211,7 @@ public class KnowledgePoints {
                 /*String statsLikes = "SELECT COUNT(*) AS count FROM likes WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
                 Query lq = em.createNativeQuery(statsLikes, Video.class);
                 List likeCountList = lq.getResultList(); //->Object[]->count*/
-                interaction.put("likeCount", 0);
-               /* interaction.put("previous", previous);
-                interaction.put("next", next);*/
-                //===============================================================
+                interaction.put("likeCount", likeCount);
                 r2.put("interaction", interaction);
                 r2.put("problems", problemr3);
                 //em.getTransaction().commit();
@@ -235,9 +231,6 @@ public class KnowledgePoints {
         }
 
         return result;
-        //                    case "video":
-//                        r.add(findItem(videoObjects, (video) -> video.getId() == item.getObjectId()));
-//                        break;
     }
 
 
