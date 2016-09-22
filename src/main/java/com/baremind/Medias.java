@@ -22,45 +22,45 @@ import java.util.*;
 
 @Path("medias")
 public class Medias {
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            try {
-                Part p = request.getPart("file");
-                String contentType = p.getContentType();
-                InputStream inputStream = p.getInputStream();
-                long now = new Date().getTime();
-                String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
-                if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
-                    String fileName = now + "." + postfix;
-                    String uploadedFileLocation = "d:/" + fileName;
-                    File file = new File(uploadedFileLocation);
-                    FileOutputStream w = new FileOutputStream(file);
-                    CharacterEncodingFilter.saveFile(w, inputStream);
-
-                    Image image = new Image();
-                    image.setId(IdGenerator.getNewId());
-                    image.setExt(postfix);
-                    image.setMimeType(contentType);
-                    image.setName(fileName);
-                    image.setSize(file.length());
-                    image.setStorePath(uploadedFileLocation);
-                    JPAEntry.genericPost(image);
-
-                    result = Response.ok(new Gson().toJson(image)).build();
-                } else {
-                    result = Response.status(415).build();
-                    //上传图片的格式不正确
-                }
-            } catch (IOException | ServletException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
+//    @POST
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+//        Response result = Response.status(401).build();
+//        if (JPAEntry.isLogining(sessionId)) {
+//            try {
+//                Part p = request.getPart("file");
+//                String contentType = p.getContentType();
+//                InputStream inputStream = p.getInputStream();
+//                long now = new Date().getTime();
+//                String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
+//                if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
+//                    String fileName = now + "." + postfix;
+//                    String uploadedFileLocation = "d:/" + fileName;
+//                    File file = new File(uploadedFileLocation);
+//                    FileOutputStream w = new FileOutputStream(file);
+//                    CharacterEncodingFilter.saveFile(w, inputStream);
+//
+//                    Image image = new Image();
+//                    image.setId(IdGenerator.getNewId());
+//                    image.setExt(postfix);
+//                    image.setMimeType(contentType);
+//                    image.setName(fileName);
+//                    image.setSize(file.length());
+//                    image.setStorePath(uploadedFileLocation);
+//                    JPAEntry.genericPost(image);
+//
+//                    result = Response.ok(new Gson().toJson(image)).build();
+//                } else {
+//                    result = Response.status(415).build();
+//                    //上传图片的格式不正确
+//                }
+//            } catch (IOException | ServletException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return result;
+//    }
 
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
