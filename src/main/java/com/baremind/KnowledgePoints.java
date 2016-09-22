@@ -134,7 +134,6 @@ public class KnowledgePoints {
                     String problemsstandardanswersquery = "SELECT * FROM problem_standard_answers WHERE problem_id IN ( " + join(problemIds) + " )";
                     Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemStandardAnswer.class);
                     problemstandardanswersObjects = pqsan.getResultList();
-
                 }
                 List<ImageText> imageTextObject = null;
                 if (!imageTextIds.isEmpty()) {
