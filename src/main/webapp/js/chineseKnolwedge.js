@@ -38,18 +38,16 @@
         volumeId: a,
         grade: b
     };
-//            let contents=[];
     $.ajax({
         type:"get",
-        url:'api/knowledge-points?filter=' + JSON.stringify(filterds),
+        url:'api/knowledgePoints?filter=' + JSON.stringify(filterds),
         dataType: 'json',
         async : false,
         success: function(kps){
             knowledgePoints=kps;
-           // alert(JSON.stringify(kps))
+            alert(JSON.stringify(kps))
         }
     })
-
 
 
 

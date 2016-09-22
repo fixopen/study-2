@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 a{ 
     color: #444;
 }
@@ -6,7 +5,48 @@ a{
     text-align: center;
     font-size: 1.0625rem;
     font-weight: bold;
-    padding: 1.5rem 0 0.8rem;
+    padding-top: 1.5rem;
+}
+.head_h3_s{
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: bold;
+    padding-bottom: 0.8rem;
+}
+.head_himg{
+    display: inline-block;
+    width: 6.03125rem;
+    height: 2.125rem;
+    line-height: 2.125rem;
+    text-align: center;
+    font-weight: normal;
+    margin: 0 auto 0.625rem;
+    background: url('../img/math1.png') 0 0 no-repeat;
+    background-size: 6.03125rem 2.125rem;
+}
+.daoyu_div{
+    margin: 0 auto;
+    line-height: 1.875rem;
+    padding: 0.3125rem;
+    border-radius: 0.625rem;
+    background-color: #fffae8;
+    overflow: hidden;
+}
+.daoyu_dquan{
+    float: left;
+    width:1.9375rem;
+    height: 0.65625rem;
+    position: relative;
+    top: -0.3125rem;
+    z-index: 2;
+}
+.daoyu_xxku{
+    padding: 0.625rem;
+    text-indent: 2em;
+    border: 1.5px dashed #fae1e1;
+    border-radius: 0.625rem;
+    background: url('../img/math3.png') right bottom no-repeat;
+    background-size: 2.71875rem 2.5625rem;
 }
 .biti_span{
     display: inline-block;
@@ -28,6 +68,7 @@ a{
     top: -1.25rem;
     line-height: 1.875rem;
     padding-top:1.25rem;
+    box-sizing: border-box;
     overflow: hidden;
 }
 .youKuang{
@@ -37,20 +78,19 @@ a{
     box-shadow:inset 0rem 0rem 0.5rem #f2e5ba;
     border-radius: 0.3125rem;
     background-color: #fffcf2;
-    box-sizing: border-box;
 }
-.mulu_dp{
+.math_01{
+    width: 17.78125rem;
+    height: 10.8125rem;
+    padding-left: 0.625rem;
+}
+.math_color{
+    color: #fe6568;
     text-indent: 2em;
-    margin-bottom:1rem;
+    position: relative;
+    top: -1.25rem;
 }
-.mulu_dp span{
-    display: block;
-    text-align: right;
-}
-.muld_images{
-    width: 100%;
-}
-/* 闯关练习 */
+/* 最强大脑 */
 .biti_chuagun{
     display: inline-block;
     font-size: 1.0rem;
@@ -61,7 +101,7 @@ a{
     background: url('../img/sunshine.png') 0 0 no-repeat;
     background-size: 8.96875rem 2.9375rem;
     position: relative;
-    top: 0.3125rem;
+    top: 0.625rem;
     z-index: 2;
 }
 .lixiKu{
@@ -70,7 +110,17 @@ a{
     box-shadow:inset 0rem 0rem 0.5rem #bae3f2;
     border-radius: 0.3125rem;
     background-color: #f2fdff;
+    margin-top: 0.625rem;
     box-sizing: border-box;
+}
+.lixi_martop{
+    padding-top: 0;
+    margin-top: 0;
+    position: relative;
+    top: -2.75rem;
+}
+.lixi_Nomar{
+    padding-top: 0;
 }
 
 ul.mld_xiaoUl{
@@ -79,7 +129,6 @@ ul.mld_xiaoUl{
 li.mld_Ulli{
     list-style-position: outside;
     line-height: 2.5rem;
-    list-style:none;
 }
 .mld_liImg{
     width: 2.1875rem;
@@ -129,9 +178,13 @@ li.mld_Ulli{
     position: relative;
 }
 
+.muld_images{
+    width: 100%;
+}
+
 .ul01_flet{
-    color: #aaa;
     float: left;
+    color: #aaa;
 }
 .ul01_flet li{
     float: left;
@@ -154,6 +207,66 @@ li.mld_Ulli{
 }
 .ul01_aBtn{
     color: #24cbd1;
+}
+.ceshi_ti1{
+    width: 11.96875rem;
+    height: 5.03125rem;
+}
+.ceshi_ti2{
+    width: 12.1875rem;
+    height: 3.3125rem;
+}
+
+.lian_jie{
+    position: relative;
+    top: 0;
+    z-index: 13;
+}
+.lianjie{
+    display: inline-block;
+    position: relative;
+    top: -2.0165rem;
+    z-index: 13;
+    width: 0.5rem;
+    height: 1.75rem;
+    background: url('../img/lianjie.png') 0 0 no-repeat;
+    background-size: 0.5rem 1.75rem;
+}
+.lianjie01{
+    float: left;
+    position: relative;
+    left: 2.5rem;
+}
+.lianjie02{
+    float: right;
+    position: relative;
+    right: 2.5rem;
+}
+/* 脑力大PK */
+.bdiv_Pk{
+    width: 8.375rem;
+    margin: 1.875rem auto 0;
+}
+.naoli_pk{
+    width: 8.375rem;
+    height: 2.59375rem;
+    margin: 0 auto;
+}
+.zongjie_p{
+    color: #fe6568;
+    margin-top: 0.625rem;
+}
+.zongjie_txt{
+    color: #444;
+    font-size: 0.9375rem;
+    font-family: "苹方";
+    width: 100%;
+    line-height: 1rem;
+    min-height: 5.0rem;
+    text-indent: 2em;
+    padding: 0.625rem 0.3125rem;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 /* 留言 */
 .mulu_bottom{
@@ -226,111 +339,3 @@ li.mld_Ulli{
     left: 0;
     z-index: -1;
 }
-=======
-.bao_dul{
-    width: 100%;
-    height: 7.8125rem;
-    background: url('../img/tree.png') center bottom no-repeat;
-    background-size: 19.375rem;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 0.625rem;
-}
-.table_ul{
-    width: 15.375rem;
-    margin: 0 auto;
-    position:relative;
-    top: 1.5625rem;
-}
-.table_li{
-    font-family: "苹方";
-    color: #fff;
-    float: left;
-    font-size:1.0625rem;
-    width: 7.1875rem;
-    height: 2.8125rem;
-    line-height: 2.8125rem;
-    text-align: center;
-    background-color:#23cbd1;
-    border-radius:0px 15px 0px 15px;
-}
-.li_one{
-    margin-right: 1rem;
-    background-color:#fe6569;
-}
-.lione_zi{
-    color: #fff;
-    letter-spacing: 0.3225rem;
-}
-.lione_zimg{
-    display: none;
-    width: 2.125rem;
-    height: 1.9375rem;
-    position: relative;
-    top: -4.0625rem;
-    left: -3.1875rem;
-}
-
-.neir_div0{
-    width: 100%;
-    margin: 0 auto;
-    margin-top: -0.7rem;
-    border: 1px solid #ffc500;
-    box-shadow:inset 0rem 0rem 0.5rem #f2e5ba;
-    border-radius: 0.3125rem;
-    box-sizing: border-box;
-    position: relative;
-    top: -0.625rem;
-    left: 0rem;
-}
-.div0_one{
-    display: none;
-}
-.div0_two{
-    display: none;
-}
-.neir0_UL{
-    padding: 1.5625rem 0.625rem;
-    box-sizing: border-box;
-}
-.neir_li{
-    padding: 0.15625rem;
-    margin: 0.625rem;
-    background-color: #ebfffb;
-    border-radius: 1.25rem;
-}
-.neir_lidiv{
-    border: 1.5px dashed #ffc500;
-    border-radius: 1.25rem;
-}
-.neir_pzi{
-    color: #444;
-    display: inline-block;
-    max-width: 14.0625rem;
-    padding-left: 2.1875rem;
-    font-size:1.0625rem;
-    margin: 0.625rem 1.09375rem;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    background: url('../img/flower.png') 0 0.15625rem no-repeat;
-    background-size:1.1875rem 1.125rem; 
-}
-.li2Tu{
-    background-color: #fff7eb;
-}
-.li3Tu{
-    background-color: #eaffe3;
-}
-.li4Tu{
-    background-color: #feeded;
-}
-.rotateX{
-    -webkit-transform:perspective(800px) rotateX(60deg);
-    -moz-transform:perspective(800px) rotateX(60deg);
-    position:absolute;
-    left:30px;
-    top:-10px;
-    opacity: 0.5;
-} 
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845

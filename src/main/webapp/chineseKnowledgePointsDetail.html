@@ -108,20 +108,21 @@
     </template>
     <template id="content-img-template">
         <span>
-        <img class="muld_images" src="${imgHref}" alt="${description}">
+        <img class="muld_images" src="${href}" alt="${description}">
         </span>
     </template>
     <template id="video-template">
         <span>
-           <a href="${href}"> <img src="${coverHref}" alt="${coverDescription}"/></a>
-            <!--<video src=""></video>-->
+           <a href="#"> <img src="${storePath}"/></a>
+            <!--<video src="${storePath}"></video>-->
+             <!--alt="${coverDescription}-->
         </span>
 
     </template>
     <template id="problem-template">
                  <li class="mld_Ulli">
                     <div>
-                        <img class="mld_liImg" src="${href}" alt="${description}">${title}
+                        <img class="mld_liImg" src="${href}" alt="${type}">${title}
                     </div>
                     <ul class="mld_daanUl" data-ext-point="options"></ul>
                 </li>
@@ -129,9 +130,9 @@
     </template>
     <template id="problem-option-template" >
         <li class="mld_daanLi">
-            <span class="daan_quan">${name}</span>
+            <span class="daan_quan">${title}</span>
             <input type="radio" id="daan_s3A" class="daana" name="daan3">
-            <label for="daan_s3A">${option}</label>
+            <label for="daan_s3A">${name}</label>
         </li>
     </template>
     <template id="interaction-template">
@@ -141,8 +142,10 @@
                 <li><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span></li>
             </ul>
             <ul class="ul01_riht">
-                <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
-                <li><a class="ul01_aBtn" href="${next}">下一节课</a></li>
+                <!--<li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>-->
+                <li class="ul01_fli"><a class="ul01_aBtn" href="chineseKnowledgePointsDetail.html?volumeId=a&id=b">上一节课</a></li>
+                <!--<li><a class="ul01_aBtn" href="${next}">下一节课</a></li>-->
+                <li><a class="ul01_aBtn" href="chineseKnowledgePointsDetail.html?volumeId=a&id=b">下一节课</a></li>
             </ul>
         </div>
     </template>

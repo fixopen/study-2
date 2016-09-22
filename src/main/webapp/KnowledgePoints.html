@@ -385,16 +385,17 @@
             }
         })
 
-        $('#append').on('click', function (e) {
+        $('#appendvolumeTitle').on('click', function (e) {
             let volumeTitle = document.getElementById('volumeTitle')
             let data = {
                 subjectId: currentSubject,
                 grade: currentGrade,
-                volumeTitle: volumeTitle.value
+                title: volumeTitle.value
             }
+            alert(JSON.stringify(data))
             $.ajax({
                 type: "post",
-                url: "/api/volumes",
+                url: "api/volumes",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -410,20 +411,24 @@
                             break
                     }
                     subjects[currentSubjectIndex][gradeName].push(volume)
+                    alert("添加成功")
+                },
+                error:function(){
+                    alert("添加失败")
                 }
             })
         })
 
-        $('#update').on('click', function (e) {
+        $('#updatevolumeTitle').on('click', function (e) {
             let volumeTitle = document.getElementById('volumeTitle')
             let volumeData = {
                 subjectId: currentSubject,
                 grade: currentGrade,
-                volumeTitle: volumeTitle.value
+                title: volumeTitle.value
             }
             $.ajax({
                 type: "put",
-                url: "/api/volumes/" + currentVolume,
+                url: "api/volumes/" + currentVolume,
                 data: JSON.stringify(volumeData),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -442,6 +447,84 @@
                     let opt = volumeSelect.options.item(currentVolumeIndex)
                     let volume = document.getElementById('volumeTitle')
                     opt.innerText = volume.value
+                    alert("修改成功")
+                },
+                error:function(){
+                    alert("修改失败")
+                }
+            })
+        })
+
+        $('#appendknowledgePointTitle').on('click', function (e) {
+            let knowledgePointTitle = document.getElementById('knowledgePointTitle')
+            let data = {
+                subjectId: currentSubject,
+                grade: currentGrade,
+                volumeId: currentVolume,
+                title: knowledgePointTitle.value
+            }
+            $.ajax({
+                type: "post",
+                url: "api/knowledgePoints",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (knowledgePoint) {
+                    alert("添加成功")
+                    currentKnowledgePoint = knowledgePoint.id
+                    let gradeName = 'low'
+                    switch (currentGrade) {
+                        case 21:
+                        case '21':
+                            gradeName = 'high'
+                            break
+                        default:
+                            break
+                    }
+
+                    subjects[currentSubjectIndex][gradeName][currentVolumeIndex].push(knowledgePoint)
+
+                },
+                error:function(){
+                    alert("添加失败")
+                }
+            })
+        })
+
+        $('#updateknowledgePointTitle').on('click', function (e) {
+            let knowledgePointTitle = document.getElementById('knowledgePointTitle')
+            let knowledgePointData = {
+                subjectId: currentSubject,
+                grade: currentGrade,
+                volumeId: currentVolume,
+                title: knowledgePointTitle.value
+            }
+            $.ajax({
+                type: "put",
+                url: "api/knowledgePoints/" + currentKnowledgePoint,
+                data: JSON.stringify(knowledgePointData),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (knowledgePointData) {
+                    alert("修改成功")
+                    let gradeName = 'low'
+                    switch (currentGrade) {
+                        case 21:
+                        case '21':
+                            gradeName = 'high'
+                            break
+                        default:
+                            break
+                    }
+                    subjects[currentSubjectIndex][gradeName][currentVolumeIndex][currentKnowledgePointIndex] = knowledgePointData
+                    let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
+                    let opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
+                    let knowledgePoint = document.getElementById('knowledgePointTitleChoice')
+                    opt.innerText = knowledgePoint.value
+
+                },
+                error:function(){
+                    alert("修改失败")
                 }
             })
         })
@@ -918,5 +1001,6 @@
     })
 
 </script>
+
 </body>
 </html>

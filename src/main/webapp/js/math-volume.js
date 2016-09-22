@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function () {
   // let data = {
   //   volumesL: [
   //           {id: 1, name: '钟表喊你吃饭啦', title: 'hhhh'},
@@ -21,40 +21,54 @@ $(document).ready(function() {
   //           {id: 8, name: 'hight', title: 'ewr23'}
   //       ]
   // }
-    let subjects = [];
 
-    // $.get('api/subjects', function(ss) {
-    //     subjects = ss;
-    //     alert(JSON.stringify(subjects))
-    //     for (let i = 0; i < subjects.length; ++i) {
-            let filter = {
-                subjectId: 2,
-                grade: 20
-            }
-            // alert(JSON.stringify(filter))
-            $.get('api/volumes?filter=' + JSON.stringify(filter), function(vs) {
-                alert(JSON.stringify(vs))
-                subjects.low = vs
-            })
-            filter.grade = 21;
-            // alert(JSON.stringify(filter))
-            $.get('api/volumes?filter=' + JSON.stringify(filter), function(vss) {
-                subjects.high = vss
-                alert(JSON.stringify(subjects.high ))
-            })
-        // }
-    // })
+
+    let volumesL;
+    filter = {
+        subjectId: 2,
+        grade: 20
+    };
+    $.ajax({
+        type: "get",
+        url: 'api/volumes?filter=' + JSON.stringify(filter),
+        success: function (vs) {
+            alert( JSON.stringify(vs))
+            console.info(vs)
+            volumesL= vs;
+
+        },
+        async: false
+    });
+    alert(volumesL)
+    let volumesH;
+    filter = {
+        subjectId: 2,
+        grade: 21
+    };
+    $.ajax({
+        type: "get",
+        url: 'api/volumes?filter=' + JSON.stringify(filter),
+        async: false,
+        success: function (vs) {
+            volumesH = vs
+        }
+    });
+
 
 
   proc({
     templateId: 'volumes-template',
-    data: subjects[i].low,
+
+    data: volumesL,
+
     containerId: 'volumes-low'
   })
 
   proc({
     templateId: 'volumes-template',
-    data: subjects[i].high,
+
+    data: volumesH,
+
     containerId: 'volumes-hight'
   })
 

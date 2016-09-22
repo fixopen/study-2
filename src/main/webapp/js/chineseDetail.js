@@ -24,7 +24,7 @@
    //  alert(id);
     let  a = parseInt(volumeId)
     let  b = parseInt(id)
-    let  knowledgePoints;
+    let  data;
 
 
     // "apiolumes/" + b+"/",
@@ -34,8 +34,16 @@
         dataType: 'json',
         async : false,
         success: function(kps){
-          //  knowledgePoints=kps;
-            alert(JSON.stringify(kps))
+           data=kps;
+            for (let i = 0; i < data.problems.length; ++i) {
+                let p = data.problems[i]
+                p.options[0].title = 'A'
+                p.options[1].title = 'B'
+                p.options[2].title = 'C'
+                p.options[3].title = 'D'
+            }
+            alert(JSON.stringify(kps));
+            console.info(kps)
         }
     })
 
@@ -50,103 +58,7 @@
     //     }
     // })
 
-//     let knowledgePointsContent;
-//     let texts,images,videos,problems;
-//     filter={
-//         volumesId: a,
-//         knowledgePointsId:b
-//     }
-//     alert(JSON.stringify(filter));
-//
-//
-// //            let contents=[];
-//     $.ajax({
-//         type:"get",
-// //                url:'api/texts?filter=' + JSON.stringify(filter),
-//         url:'api/texts',
-//         dataType: 'json',
-//         async : false,
-//         success: function(ts){
-//             alert(JSON.stringify(ts));
-//         //    console.info(ts);
-// //                    for(let i=0;i<ts.length;i++){
-// //                        let tempObj={};
-// //                        tempObj.type='text';
-// //                        tempObj.content=ts[i].content;
-// //                        contents.push(tempObj);
-// //                     }
-//             texts=ts;
-// //                    console.log(contents);
-// //                    alert(contents);
-//         }})
-//
-//
 
-//            $.ajax({
-//                type:"get",
-////                url:'api/knowledgePointContentMaps?filter=' + JSON.stringify(filter),
-//                url:'api/knowledgePointContentMaps',
-//                dataType: 'json',
-//                async : false,
-//                success: function(cs){
-//                   alert(JSON.stringify(cs))
-//                    knowledgePointsContent=cs;
-//                }
-//            })
-//     $.ajax({
-//         type:"get",
-// //                url:'api/images?filter=' + JSON.stringify(filter),
-//         url:'api/images',
-//         dataType: 'json',
-//         async : false,
-//         success: function(is){
-//             alert(JSON.stringify(is))
-//             //console.info(is);
-//             images=is;
-// //                    for(let i=0;i<is.length;i++){
-// //                        let temObj={};
-// //                        temObj.type='image';
-// //                        temObj.imgHref=is[i].storePath;
-// //                        contents.push(temObj);
-// //                    }
-// //                    console.log(contents);
-// //                    alert(contents);
-//         }
-//     })
-//
-//     $.ajax({
-//         type:"get",
-// //                url:'api/images?videos=' + JSON.stringify(filter),
-//         url:'api/videos',
-//         dataType: 'json',
-//         async : false,
-//         success: function(vs){
-//             //  alert(JSON.stringify(vs))
-//             videos=vs;
-//         }
-//     })
-//            $.ajax({
-//                type:"get",
-////                url:'api/problems?filter=' + JSON.stringify(filter),
-//                url:'api/problems',
-//                dataType: 'json',
-//                async : false,
-//                success: function(ps){
-//                   // alert(JSON.stringify(ps))
-//                    problems=ps;
-//                }
-//            })
-//            $.ajax({
-//                type:"get",
-//                url:'api/contents',
-//                dataType: 'json',
-//                data : JSON.stringify(filter),
-//                async : false,
-//                success: function(cs){
-//                    alert(JSON.stringify(cs))
-//                    knowledgePointsContent=cs;
-//                }
-//            })
 
 //            let data = {
 //                title: '放荡不羁名垂青史的竹林七贤',
@@ -169,7 +81,7 @@
 //                        type: 'image',
 //                        imgHref: 'img/video1.png',
 //                        description: '竹林七贤魅力担当——嵇康'
-//                    },
+//                    },0
 //                    {
 //                        type: 'text',
 //                        content: '魏晋的名士们身体力行地向我们展示了一种耀眼的答案：他们轻视礼教，率直放诞，清俊通脱，喝酒纵歌，崇尚老庄，超然物外，成为了那阴森时期最为清亮的一抹颜色，在历史上绽放出令人神往的辉光，于是，他们的风度便成了“魏晋风度”。'
@@ -262,49 +174,49 @@
 
     proc({
         templateId: 'title-template',
-        data: knowledgePoints,
+        data: data,
         containerId: 'title'
     })
 
-//            proc({
-//                templateId: 'origin-template',
-//                data: data.origins,
-//                containerId: 'origin'
-//            })
+           proc({
+               templateId: 'origin-template',
+               data: data.quotes,
+               containerId: 'origin'
+           })
     proc({
-        data: contents,
+        data: data.contents,
         containerId: 'content',
         alterTemplates: [
             {type: 'text', templateId: 'content-text-template'},
             {type: 'image', templateId: 'content-img-template'}
         ]
     })
-//            proc({
-//                templateId: 'video-template',
-//                data: data.video,
-//                containerId: 'video'
-//            })
-//
-//            proc({
-//                templateId: 'problem-template',
-//                data: data.problems,
-//                containerId: 'problem',
-//                secondBind: {
-//                    extPoint: 'options',
-//                    dataFieldName: 'options',
-//                    templateId: 'problem-option-template'
-//                }
-//            })
-//
-//            proc({
-//                templateId: 'interaction-template',
-//                data: data.interaction,
-//                containerId: 'interaction'
-//            })
-//
-//            proc({
-//                templateId: 'comment-template',
-//                data: data.comments,
-//                containerId: 'comments'
-//            })
+           proc({
+               templateId: 'video-template',
+               data: data.video,
+               containerId: 'video'
+           })
+
+           proc({
+               templateId: 'problem-template',
+               data: data.problems,
+               containerId: 'problem',
+               secondBind: {
+                   extPoint: 'options',
+                   dataFieldName: 'options',
+                   templateId: 'problem-option-template'
+               }
+           })
+
+           proc({
+               templateId: 'interaction-template',
+               data: data.interaction,
+               containerId: 'interaction'
+           })
+
+           proc({
+               templateId: 'comment-template',
+               data: data.comments,
+               containerId: 'comments'
+           })
 })

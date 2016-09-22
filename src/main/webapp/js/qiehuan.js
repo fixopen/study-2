@@ -65,9 +65,7 @@ $(document).ready(function() {
 		}
 
 	})
-<<<<<<< HEAD
 
-=======
 	let volumesL
 	// $.ajax({
 	// 	type: "get",
@@ -87,7 +85,7 @@ $(document).ready(function() {
 					async: false,
 					success: function (vs) {
 						volumesL= vs
-						alert()
+
 						//
 					}
 				})
@@ -304,6 +302,6 @@ $(document).ready(function() {
 		data: volumesH,
 		containerId: 'mathStudy-volumesH'
 	})
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+
 
 });

@@ -10,7 +10,11 @@
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
 	<link rel="stylesheet" href="css/common.css">
+<<<<<<< HEAD
+    <link rel="stylesheet" href="css/KnowledgePointIndex.css">
+=======
     <link rel="stylesheet" href="css/style.css">
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
 
     <!-- 引入js -->
     <script type="text/javascript" src="js/zepto.min.js"></script>
@@ -47,6 +51,17 @@
         <img src="img/fenjie.png" alt="">
     </li>
 </template>
+<<<<<<< HEAD
+    <template id="volumes-template">
+        <li class="neir_li">
+            <div class="neir_lidiv">
+                <a class="neir_pzi"  data-id="${id}" data-type="volume" href="KnowledgePointsIndex.html?volumeId=${id}&grade=${grade}" >${title}</a>
+
+            </div>
+            <>
+    </template>
+=======
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
     <script>
         $(function () {
             //location.reload()
@@ -68,6 +83,10 @@
             }
           var  a = parseInt(volumeId)
           var  b = parseInt(grade)
+<<<<<<< HEAD
+            var volumes
+=======
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
 
             filterds = {
                 subjectId: 1,
@@ -85,6 +104,62 @@
             })
 
 
+<<<<<<< HEAD
+//            let data ={
+//                title:'哈哈！这些奇葩的作家',
+//                volumes:[
+//                        {
+//                            name:'白居易的诗情画意',
+//                            readCount:'85',
+//                            likeCount:'435'
+//                        },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'4765',
+//                        likeCount:'563'
+//                    },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'562',
+//                        likeCount:'564563'
+//                    },
+//                    {
+//                        name:'白居易的诗情画意',
+//                        readCount:'565546',
+//                        likeCount:'56356'
+//                    },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'796879',
+//                        likeCount:'-078'
+//                    },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'576',
+//                        likeCount:'-7875'
+//                    },
+//                    {
+//                        name:'杜甫的家国抱负',
+//                        readCount:'6748',
+//                        likeCount:'6746'
+//                    },
+//                    {
+//                        name:'白居易的诗情画意',
+//                        readCount:'8968',
+//                        likeCount:'96'
+//                    },
+//                    {
+//                        name:'白居易的诗情画意',
+//                        readCount:'5455',
+//                        likeCount:'7751'
+//                    }
+//                ]
+//            }
+
+            proc({
+                templateId: 'title-template',
+                data:volumes[a-1],
+=======
             let data ={
                 title:'哈哈！这些奇葩的作家',
                 volumes:[
@@ -139,11 +214,16 @@
             proc({
                 templateId: 'title-template',
                 data: data,
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
                 containerId: 'title'
             })
             proc({
                 templateId: 'volume-template',
+<<<<<<< HEAD
+                data: knowledgePoints,
+=======
                 data: data.volumes,
+>>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
                 containerId: 'volume'
             })
 
