@@ -1513,7 +1513,7 @@ public class PublicAccounts {
     </xml>
     */
     /*
-    * <xml>
+    <xml>
         <ToUserName><![CDATA[toUser]]></ToUserName>
         <FromUserName><![CDATA[fromUser]]></FromUserName>
         <CreateTime>12345678</CreateTime>

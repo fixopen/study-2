@@ -5,7 +5,7 @@
     <title>Menu Settings</title>
 </head>
 
-<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery.min.js"></script>
 <body>
 <ol>
     <li>公告</li>
@@ -57,15 +57,11 @@
                 ]
             },
             {
-                //"name": "我的",
-                //"type": "view",
-                //"url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx92dec5e98645bd1d&redirect_uri=http%3A%2F%2F139.129.214.229%2FvalidationCode.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect",
-                //"key": "ID_USER",
                 "name": "我的",
-                "type": "click",
-                //"url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx92dec5e98645bd1d&redirect_uri=http%3A%2F%2F139.129.214.229%2FvalidationCode.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect",
+                "type": "view",
+                //"type": "click",
+                "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx92dec5e98645bd1d&redirect_uri=http%3A%2F%2F139.129.214.229%2FvalidationCode.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect",
                 "key": "ID_USER",
-                //"redirect": "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=CODE&grant_type=authorization_code",
                 /*{
                     "access_token":"ACCESS_TOKEN",
                     "expires_in":7200,
@@ -90,7 +86,7 @@
                  "province":"PROVINCE"
                  "city":"CITY",
                  "country":"COUNTRY",
-                 "headimgurl":    "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46",
+                 "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46",
                  "privilege":[
                  "PRIVILEGE1"
                  "PRIVILEGE2"
@@ -98,19 +94,15 @@
                  "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
                  }*/
                 //"encodingRedirect": "https%3A%2F%2Fapi.weixin.qq.com%2Fsns%2Foauth2%2Faccess_token%3Fappid%3Dwx92dec5e98645bd1d%26secret%3Dd3b30c3ae79c322bc54c93d0ff75210b%26grant_type%3Dauthorization_code"
-            },
+            }
         ]
     }
 
     let currentMenu
-//    createCustomMenu
     let save = document.getElementById('save')
     save.addEventListener('click', function (e) {
-  //  if (currentMenu.dataset.id == 'user') {
-   //       menus.buttons[2].key = document.getElementById('content').value
-    //    }
         $.ajax({
-            url: "api/public-account/custom-menu",
+            url: "/api/public-account/custom-menu",
             type: 'post',
             data: JSON.stringify(menus),
             dataType: 'json',

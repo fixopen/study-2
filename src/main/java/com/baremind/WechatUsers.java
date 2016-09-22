@@ -1,10 +1,6 @@
 package com.baremind;
 
-//<<<<<<< HEAD
-
 import com.baremind.data.User;
-//=======
-//>>>>>>> origin/master
 import com.baremind.data.WechatUser;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -22,10 +18,6 @@ import java.util.Map;
 
 @Path("wechat-users")
 public class WechatUsers {
-    //<<<<<<< HEAD
-//
-//=======
-//>>>>>>> origin/master
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
