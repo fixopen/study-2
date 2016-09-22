@@ -19,21 +19,9 @@ import java.util.*;
 
 @Path("users")
 public class Users {
-//<<<<<<< HEAD
     static String hostname = "https://sapi.253.com";
     static String username = "zhibo1";
     static String password = "Tch243450";
-//=======
-//    /*
-//    账号：zhibo1
-//    密码：Tch243450
-//    内容：xxxxxx（动态验证码）,请在3分钟内使用
-//    */
-//    static String hostname = "http://222.73.117.158";
-//    static String username = "jiekou-clcs-13";
-//    static String password = "THYnk464hu";
-//>>>>>>> origin/master
-
     @GET
     @Path("telephones/{telephone}/code")
     @Produces(MediaType.APPLICATION_JSON)
@@ -239,7 +227,6 @@ public class Users {
 
         //resptime,respstatus
         //msgid
-//<<<<<<< HEAD
 //        respstatus
 //        * 代码 说明
 //        0 提交成功
@@ -262,9 +249,6 @@ public class Users {
 //        118 用户没有相应的发送权限
 //        119 用户已过期
 //        120 测试内容不是白名单
-
-//=======
-//>>>>>>> origin/master
 
         SendMessageResult result = new SendMessageResult();
         // Default instance of client
@@ -293,25 +277,6 @@ public class Users {
         }
         return result;
     }
-
-//    @GET
-//    @Path("telephones/{telephone}/code")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response queryValidCode(@PathParam("telephone") String telephone) {
-//        Random rand = new Random();
-//        int x = rand.nextInt(899999);
-//        int y = x + 100000;
-//        String sjs = String.valueOf(y);
-//        Date now = new Date();
-//        ValidationCode message = new ValidationCode();
-//        message.setId(IdGenerator.getNewId());
-//        message.setPhoneNumber(telephone);
-//        message.setValidCode(sjs);
-//        message.setTimestamp(now);
-//        JPAEntry.genericPost(message);
-//        //sendMessage(telephone, sjs + "(动态验证码),请在3分钟内使用");
-//        return Response.ok("{\"state\":\"ok\"}").build();
-//    }
 
 //    @POST
 //    @Path("cards")
@@ -464,21 +429,16 @@ public class Users {
             result = Response.status(404).build();
             User existuser = JPAEntry.getObject(User.class, "id", id);
             if (existuser != null) {
-//<<<<<<< HEAD
                 float amount = user.getAmount();
-                //if (amount != null) {
                 existuser.setAmount(amount);
+                //User user;
+                //try {
+                //    user = new Gson().fromJson(new String(userInfo, "UTF-8"), User.class);
+                //} catch (UnsupportedEncodingException e) {
+                //    e.printStackTrace();
                 //}
-//=======
-//                //User user;
-//                //try {
-//                //    user = new Gson().fromJson(new String(userInfo, "UTF-8"), User.class);
-//                //} catch (UnsupportedEncodingException e) {
-//                //    e.printStackTrace();
-//                //}
-//                float amount = user.getAmount();
-//                existuser.setAmount(amount);
-//>>>>>>> origin/master
+                //float amount = user.getAmount();
+                //existuser.setAmount(amount);
                 Date birthday = user.getBirthday();
                 if (birthday != null) {
                     existuser.setBirthday(birthday);
@@ -573,32 +533,6 @@ public class Users {
         public String status;
     }
 
-    /*@GET
-    @Path("telephones/{telephone}/code")
-    public Response queryValidCode(@PathParam("telephone") String telephone) {
-        //step0: generate valid code
-        Random rand = new Random();
-        String sjs = "";
-//        for (int i = 0; i < 6; i++) {
-//            sjs += rand.nextInt(10);
-//        }
-        int x = rand.nextInt(899999);
-        int y = x + 100000;
-        sjs = String.valueOf(y);
-        Date now = new Date();
-        //step1: record phoneNumber & validCode & timestamp
-        ValidationCode message = new ValidationCode();
-        message.setId(IdGenerator.getNewId());
-        message.setPhoneNumber(telephone);
-        message.setValidCode(sjs);
-        message.setTimestamp(now);
-        JPAEntry.genericPost(message);
-        //step2: sendMessage(phoneNumber, "" + validCode + "")
-        sendMessage(telephone, "【小雨知时】" + sjs + "(动态验证码),请在3分钟内使用");
-
-        return Response.ok().build();
-    }
-*/
     public static class ActiveCard {
         private String cardCode;
         private String password;

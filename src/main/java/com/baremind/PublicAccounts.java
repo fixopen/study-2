@@ -45,6 +45,8 @@ public class PublicAccounts {
     static String AppID = "wx92dec5e98645bd1d";
     static String AppSecret = "d3b30c3ae79c322bc54c93d0ff75210b";
     private static String token = "xiaoyuzhishi20160907";
+    //private static String token = "xiaoyuzhishi20160907";
+
 
     public static void setAccessToken(String token) {
         accesstoken = token;
@@ -308,7 +310,7 @@ public class PublicAccounts {
 
     Response userClickMine(String openId) {
         WechatUser u = JPAEntry.getObject(WechatUser.class, "openId", openId);
-        if(u == null){
+        if (u == null) {
             WechatUserInfo userInfo = getUserInfo(openId);
             WechatUser user = new WechatUser();
             user.setId(IdGenerator.getNewId());
@@ -489,7 +491,7 @@ public class PublicAccounts {
     @Path("token")
     public Response processAll(@Context HttpServletRequest request, byte[] contents) {
        /* String s;
-		try {
+        try {
 			s = new String(contents, "UTF-8");
 			System.out.println("s=========================="+s);
 		} catch (UnsupportedEncodingException e1) {
@@ -506,7 +508,7 @@ public class PublicAccounts {
         Response result = Response.status(400).build();
         Map<String, String> args = new HashMap<>();
         String queryString = request.getQueryString();
-        System.out.println("queryString="+queryString);
+        System.out.println("queryString=" + queryString);
         String[] params = queryString.split("&");
         for (String param : params) {
             String[] pair = param.split("=");
@@ -540,7 +542,7 @@ public class PublicAccounts {
                                             String eventKey = p.Infos.get("EventKey");
                                             switch (eventKey) {
                                                 case "ID_USER":
-                                                	//点击菜单拉取消息时的事件推送
+                                                    //点击菜单拉取消息时的事件推送
                                                     result = userClickMine(p.FromUserName);
                                                     break;
                                                 default:
@@ -1511,7 +1513,7 @@ public class PublicAccounts {
     </xml>
     */
     /*
-    * <xml>
+    <xml>
         <ToUserName><![CDATA[toUser]]></ToUserName>
         <FromUserName><![CDATA[fromUser]]></FromUserName>
         <CreateTime>12345678</CreateTime>

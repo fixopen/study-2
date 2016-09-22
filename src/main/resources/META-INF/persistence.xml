@@ -23,8 +23,8 @@
         <class>com.baremind.data.Volume</class>
         <class>com.baremind.data.WechatUser</class>
         <class>com.baremind.data.Text</class>
-        <class>com.baremind.data.ProblemsOption</class>
-        <class>com.baremind.data.ProblemsStandardAnswer</class>
+        <class>com.baremind.data.ProblemOption</class>
+        <class>com.baremind.data.ProblemStandardAnswer</class>
         <class>com.baremind.data.KnowledgePointContentMap</class>
         <class>com.baremind.data.Quote</class>
         <class>com.baremind.data.ImageText</class>

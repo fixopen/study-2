@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Path("images")
-public class Images {  
+public class Images {
 
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)

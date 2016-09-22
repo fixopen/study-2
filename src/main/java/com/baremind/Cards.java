@@ -1,31 +1,19 @@
 package com.baremind;
 
-import com.baremind.data.*;
-import com.baremind.data.Image;
+import com.baremind.data.Card;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-
-import java.awt.*;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -67,8 +55,32 @@ public class Cards {
         }
     }*/
 
-
-    private static String token = "xiaoyuzhishi20160907";
+    @POST
+    @Path("generate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response cardsGenerator(@CookieParam("sessionId") String sessionId, byte[] contents) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                Map<String, Object> q = new Gson().fromJson(new String(contents, StandardCharsets.UTF_8.toString()), new TypeToken<Map<String, Object>>() {
+                }.getType());
+                Long start = (Long) q.get("start");
+                Long count = (Long) q.get("count");
+                for (int i = 0; i < count; ++i) {
+                    //generate card no
+                    //generate random number
+                    //record to database
+                    //write to file
+                }
+                result = Response.ok("{\"state\":\"ok\"}").build();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                result = Response.status(400).build();
+            }
+        }
+        return result;
+    }
 
     @POST //import
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})

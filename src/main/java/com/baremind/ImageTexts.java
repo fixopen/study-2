@@ -44,12 +44,12 @@ public class ImageTexts {
 
                 String contentType = p.getContentType();
                 InputStream inputStream = p.getInputStream();
-                long now=new Date().getTime();
+                long now = new Date().getTime();
                 //文件后缀名
-                String prefix=contentType.substring(contentType.lastIndexOf("/")+1);
+                String prefix = contentType.substring(contentType.lastIndexOf("/") + 1);
                 //System.out.println("文件后缀名"+prefix);
-                if(prefix!="jpg"  ||  prefix!="jpeg"  ||  prefix!="gif"  ||  prefix!="ai"  ||  prefix!="pdg"){
-                    String uploadedFileLocation = "d:/"+now+"."+""+prefix+"";
+                if (prefix != "jpg" || prefix != "jpeg" || prefix != "gif" || prefix != "ai" || prefix != "pdg") {
+                    String uploadedFileLocation = "d:/" + now + "." + "" + prefix + "";
                     File csvFile = new File(uploadedFileLocation);
                     FileOutputStream w = new FileOutputStream(csvFile);
                     for (; ; ) {
@@ -60,7 +60,7 @@ public class ImageTexts {
                         w.write(buffer, 0, receiveLength);
                     }
 
-                    String fileName=csvFile.getName();
+                    String fileName = csvFile.getName();
 
                     w.close();
 
@@ -77,7 +77,7 @@ public class ImageTexts {
                     // result = Response.sendRedirect("URL");
 //                    //parseAndInsert(uploadedFileLocation);"{\"filename\":\""+now+".jpg\"}"
 //                    result = Response.ok("{\"filename\":\""+now+".jpg\"}").build();
-                }else{
+                } else {
                     //.jpg .jpeg .gif .ai .pdg
                     result = Response.status(415).build();
                     //上传图片的格式不正确
