@@ -39,10 +39,9 @@
             </li>
         </ul>
         <div class="tip" id="tipid">卡片验证码将发送至此手机!
-            </div>
-            <div class="btn-box">
-                <a href="javascript:void(0)" onclick="post()" class="save-btn">确 认</a>
-            </div>
+        </div>
+        <div class="btn-box">
+            <a href="javascript:void(0)" onclick="post()" class="save-btn">确 认</a>
         </div>
     </div>
 </div>
@@ -66,6 +65,7 @@
         dataType: 'json',
         async: false,
         success: function (a) {
+            alert('get wechat token success')
             // var a = {};
             // a.access_token = "1";
             // a.expires_in = 7200;
@@ -80,13 +80,18 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (b) {
+                    alert('get user id success [' + b.userId + ']')
                     userId = b.userId
                     document.getElementById("warp").style.visibility = "visible" //显示
                 },
                 error: function (r) {
+                    alert('get user id error [' + r.status + ']')
                     alert('error' + r.status + r.statusText)
                 }
             })
+        },
+        error: function(r) {
+            alert('get wechat token error [' + r.status + ']')
         }
     })
 
