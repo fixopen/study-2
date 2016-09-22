@@ -15,8 +15,8 @@ public class ProblemsStandardAnswer {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "problems_id")
-    private Long problemsId;
+    @Column(name = "problem_id")
+    private Long problemId;
 
     @Column(name = "name")
     private Long name;
@@ -29,12 +29,12 @@ public class ProblemsStandardAnswer {
         this.id = id;
     }
 
-    public Long getProblemsId() {
-        return problemsId;
+    public Long getProblemId() {
+        return problemId;
     }
 
-    public void setProblemsId(Long problemsId) {
-        this.problemsId = problemsId;
+    public void setProblemId(Long problemId) {
+        this.problemId = problemId;
     }
 
     public Long getName() {

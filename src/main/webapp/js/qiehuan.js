@@ -66,14 +66,6 @@ $(document).ready(function() {
 
 	})
 	let volumesL
-	// $.ajax({
-	// 	type: "get",
-	// 	url: "api/subjects",
-	// 	dataType: "json",
-	// 	async: false,
-	// 	success: function (a) {
-	// 		volumesL = a;
-	// 		for (var i = 0; i < a.length; ++i) {
 				filter = {
 					subjectId: 1,
 					grade: 20
@@ -84,14 +76,10 @@ $(document).ready(function() {
 					async: false,
 					success: function (vs) {
 						volumesL= vs
-						alert()
-						//
+
 					}
 				})
-	// 		}
-	// 	}
-	// })
-	// alert(JSON.stringify(volumesL))
+
 	let volumesH
 	filter = {
 		subjectId: 1,
@@ -102,69 +90,12 @@ $(document).ready(function() {
 		url: 'api/volumes?filter=' + JSON.stringify(filter),
 		async: false,
 		success: function (vs) {
-			// alert(JSON.stringify(vs))
-			volumesH = vs
-			/*for (let j = 0; j < vs.length; j++) {
-				volumesH[j].high = vs[j].title
 
-			}*/
-			//alert(JSON.stringify(subjects[i].low))
+			volumesH = vs
+
 		}
 	})
-	//alert(JSON.stringify(volumesH))
-	//alert(JSON.stringify(volumesH))
-	 /*= {
-		volumesL: [
-			{id: 1, name: '的催收发货', title: 'hhhh'},
-			{id: 2, name: '电磁阀才打得过法律', title: 'sdt'},
-			{id: 3, name: '没客人高热健康', title: 'xxxx'},
-			{id: 4, name: 'xiao', title: 'jjjj'},
-			{id: 5, name: 'xiao', title: 'ddds'},
-			{id: 6, name: 'xiao', title: 'hhhh'},
-			{id: 7, name: 'xiao', title: 'vccvcv'},
-			{id: 8, name: 'xiao', title: 'ewr23'}
-		],
-		volumesH: [
-			{id: 1, name: 'hight', title: 'hhhh'},
-			{id: 2, name: 'hight', title: 'sdt'},
-			{id: 3, name: 'hight', title: 'xxxx'},
-			{id: 4, name: 'hight', title: 'jjjj'},
-			{id: 5, name: 'hight', title: 'ddds'},
-			{id: 6, name: 'hight', title: 'hhhh'},
-			{id: 7, name: 'hight', title: 'vccvcv'},
-			{id: 8, name: 'hight', title: 'ewr23'}
-		],
-	}*/
-/*
-	g.bind = function (element, data) {
-		element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, letiable) {
-			if (!letiable) {
-				return ""
-			}
-			return data[letiable];
-		});
-		return element
-	};*/
 
-	//let volumes = document.getElementById('volumes-template');
-	//low
-	//let lvolumes = document.getElementById('mathStudy-volumesL');
-	/*for (let i = 0; i < volumesL.length; i++) {
-		/!*let vvolumes = volumes.content.children[0].cloneNode(true);
-		g.bind(vvolumes, g.volumesL[i]);
-		lvolumes.appendChild(vvolumes);*!/
-		alert(volumesL[i].name)
-
-	}
-
-	//hight
-	//let hvolumes = document.getElementById('mathStudy-volumesH');
-	for (let i = 0; i < volumesH.length; i++) {
-		/!*let vvolumes = volumes.content.children[0].cloneNode(true);
-		g.bind(vvolumes, g.volumesH[i]);
-		hvolumes.appendChild(vvolumes);*!/
-		alert(volumesL[i].name)
-	}*/
 	let doc = document
 
 	let getTemplate = function (templateId) {

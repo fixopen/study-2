@@ -1,7 +1,7 @@
 package com.baremind;
 
-import com.baremind.data.Media;
 import com.baremind.data.ProblemsOption;
+import com.baremind.data.ProblemsStandardAnswer;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -17,17 +17,17 @@ import java.util.Map;
 /**
  * Created by User on 2016/9/19.
  */
-@Path("problems-options")
-public class ProblemsOptions {
+@Path("problems-standard-answers")
+public class ProblemStandardAnswers {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMedia(@CookieParam("sessionId") String sessionId, ProblemsOption problemsOption) {
+    public Response createMedia(@CookieParam("sessionId") String sessionId, ProblemsStandardAnswer problemsStandardAnswer) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            problemsOption.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(problemsOption);
-            result = Response.ok(problemsOption).build();
+            problemsStandardAnswer.setId(IdGenerator.getNewId());
+            JPAEntry.genericPost(problemsStandardAnswer);
+            result = Response.ok(problemsStandardAnswer).build();
         }
         return result;
     }
@@ -39,9 +39,9 @@ public class ProblemsOptions {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<ProblemsOption> problemsOptions = JPAEntry.getList(ProblemsOption.class, filterObject);
-            if (!problemsOptions.isEmpty()) {
-                result = Response.ok(new Gson().toJson(problemsOptions)).build();
+            List<ProblemsStandardAnswer> problemsStandardAnswer = JPAEntry.getList(ProblemsStandardAnswer.class, filterObject);
+            if (!problemsStandardAnswer.isEmpty()) {
+                result = Response.ok(new Gson().toJson(problemsStandardAnswer)).build();
             }
         }
         return result;
@@ -54,9 +54,9 @@ public class ProblemsOptions {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            ProblemsOption problemsOption = JPAEntry.getObject(ProblemsOption.class, "id", id);
-            if (problemsOption != null) {
-                result = Response.ok(new Gson().toJson(problemsOption)).build();
+            ProblemsStandardAnswer problemsStandardAnswer = JPAEntry.getObject(ProblemsStandardAnswer.class, "id", id);
+            if (problemsStandardAnswer != null) {
+                result = Response.ok(new Gson().toJson(problemsStandardAnswer)).build();
             }
         }
         return result;
@@ -66,22 +66,22 @@ public class ProblemsOptions {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMedia(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemsOption problemsOption) {
+    public Response updateMedia(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemsStandardAnswer problemsStandardAnswer) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>(1);
             filterObject.put("id", id);
-            ProblemsOption existmedia = JPAEntry.getObject(ProblemsOption.class, "id", id);
+            ProblemsStandardAnswer existmedia = JPAEntry.getObject(ProblemsStandardAnswer.class, "id", id);
             if (existmedia != null) {
-                String name = problemsOption.getName();
-                if (name != null) {
+                Long name = problemsStandardAnswer.getName();
+                if (name != 0) {
                     existmedia.setName(name);
                 }
 
-                Long problemsId = problemsOption.getProblemsId();
-                if (problemsId != null) {
-                    existmedia.setProblemsId(problemsId);
+                Long problemId = problemsStandardAnswer.getProblemId();
+                if (problemId != null) {
+                    existmedia.setProblemId(problemId);
                 }
 
                 JPAEntry.genericPut(existmedia);

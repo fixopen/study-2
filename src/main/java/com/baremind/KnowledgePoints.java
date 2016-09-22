@@ -122,11 +122,11 @@ public class KnowledgePoints {
                 Query pq = em.createNativeQuery(problemquery, Problem.class);
                 List<Problem> problemObjects = pq.getResultList();
 
-                String problemoptionsquery = "SELECT * FROM problems_options WHERE problems_id IN ( " + join(problemIds) + " )";
+                String problemoptionsquery = "SELECT * FROM problem_options WHERE problem_id IN ( " + join(problemIds) + " )";
                 Query pqoption = em.createNativeQuery(problemoptionsquery, ProblemsOption.class);
                 List<ProblemsOption> problemoptionObjects = pqoption.getResultList();
 
-                String problemsstandardanswersquery = "SELECT * FROM problems_standard_answers WHERE problems_id IN ( " + join(problemIds) + " )";
+                String problemsstandardanswersquery = "SELECT * FROM problem_standard_answers WHERE problem_id IN ( " + join(problemIds) + " )";
                 Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemsStandardAnswer.class);
                 List<ProblemsStandardAnswer> problemstandardanswersObjects = pqsan.getResultList();
 
@@ -173,8 +173,8 @@ public class KnowledgePoints {
                             break;
                         case "problem":
                             Problem pie = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
-                            List<ProblemsOption> pieo = findItems(problemoptionObjects, (problemoption) -> problemoption.getProblemsId().longValue() == item.getObjectId().longValue());
-                            List<ProblemsStandardAnswer> dfs = findItems(problemstandardanswersObjects, (problemstandardanswers) -> problemstandardanswers.getProblemsId().longValue() == item.getObjectId().longValue());
+                            List<ProblemsOption> pieo = findItems(problemoptionObjects, (problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
+                            List<ProblemsStandardAnswer> dfs = findItems(problemstandardanswersObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
                             Map<String, Object> piems = new HashMap<>();
                             piems.put("id", pie.getId());
                             if(dfs.size() > 1){

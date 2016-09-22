@@ -19,20 +19,9 @@ import java.util.*;
 
 @Path("users")
 public class Users {
-//<<<<<<< HEAD
     static String hostname = "https://sapi.253.com";
     static String username = "zhibo1";
     static String password = "Tch243450";
-//=======
-//    /*
-//    账号：zhibo1
-//    密码：Tch243450
-//    内容：xxxxxx（动态验证码）,请在3分钟内使用
-//    */
-//    static String hostname = "http://222.73.117.158";
-//    static String username = "jiekou-clcs-13";
-//    static String password = "THYnk464hu";
-//>>>>>>> origin/master
 
     @GET
     @Path("telephones/{telephone}/code")
