@@ -12,6 +12,7 @@
             background-color: #b2b2b2;
         }
     </style>
+    <script src="util.js"></script>
 </head>
 <body>
 <h1>册名录入页面</h1>
@@ -119,7 +120,7 @@
                             subjects[i].low = volumes
                             for (var j = 0; j < subjects[i].low.length; ++j) {
                                 subjects[i].low[j].vsid = []
-                                filterds = {
+                                let filterds = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].low[j].id,
                                     grade: 20

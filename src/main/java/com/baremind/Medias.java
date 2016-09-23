@@ -36,6 +36,7 @@ public class Medias {
                 String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
                 if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
                     String fileName = now + "." + postfix;
+                    //String pp;
                     String uploadedFileLocation = "d:/" + fileName;
                     File file = new File(uploadedFileLocation);
                     FileOutputStream w = new FileOutputStream(file);
@@ -47,6 +48,7 @@ public class Medias {
                     image.setMimeType(contentType);
                     image.setName(fileName);
                     image.setSize(file.length());
+                    //String vp;
                     image.setStorePath(uploadedFileLocation);
                     JPAEntry.genericPost(image);
 
