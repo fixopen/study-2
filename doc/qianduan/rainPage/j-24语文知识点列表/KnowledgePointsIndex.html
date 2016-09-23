@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>语文-目录</title>
-	<!-- 禁止拉伸和全屏设置 -->
-  	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
-    <meta name="format-detection" content="telphone=no" />
+    <meta charset="UTF-8">
+    <title>语文-目录</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telphone=no"/>
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="../../css/global.css">
-	<link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/common.css">
     <link rel="stylesheet" href="css/style.css">
 
     <!-- 引入js -->
@@ -20,15 +22,15 @@
 
 </head>
 <body>
-    <div class="wrap">
-        <div class="biaoti_div" id="title"></div>
-        
-        <div class="rain-main">
-            <div class="mulu_div">
-                <ul class="cont_sul" id="volume"></ul>
-            </div>
+<div class="wrap">
+    <div class="biaoti_div" id="title"></div>
+
+    <div class="rain-main">
+        <div class="mulu_div">
+            <ul class="cont_sul" id="volume"></ul>
         </div>
     </div>
+</div>
 
 <template id="title-template">
     <span class="biti_span">${title}</span>
@@ -45,74 +47,73 @@
         <img src="img/fenjie.png" alt="">
     </li>
 </template>
-    <script>
-        $(function () {
+<script>
+    $(function () {
 
-            let data ={
-                title:'哈哈！这些奇葩的作家',
-                volumes:[
-                        {
-                            name:'白居易的诗情画意',
-                            readCount:'85',
-                            likeCount:'435'
-                        },
-                    {
-                        name:'杜甫的家国抱负',
-                        readCount:'4765',
-                        likeCount:'563'
-                    },
-                    {
-                        name:'杜甫的家国抱负',
-                        readCount:'562',
-                        likeCount:'564563'
-                    },
-                    {
-                        name:'白居易的诗情画意',
-                        readCount:'565546',
-                        likeCount:'56356'
-                    },
-                    {
-                        name:'杜甫的家国抱负',
-                        readCount:'796879',
-                        likeCount:'-078'
-                    },
-                    {
-                        name:'杜甫的家国抱负',
-                        readCount:'576',
-                        likeCount:'-7875'
-                    },
-                    {
-                        name:'杜甫的家国抱负',
-                        readCount:'6748',
-                        likeCount:'6746'
-                    },
-                    {
-                        name:'白居易的诗情画意',
-                        readCount:'8968',
-                        likeCount:'96'
-                    },
-                    {
-                        name:'白居易的诗情画意',
-                        readCount:'5455',
-                        likeCount:'7751'
-                    }
-                ]
-            }
+        let data = {
+            title: '哈哈！这些奇葩的作家',
+            volumes: [
+                {
+                    name: '白居易的诗情画意',
+                    readCount: '85',
+                    likeCount: '435'
+                },
+                {
+                    name: '杜甫的家国抱负',
+                    readCount: '4765',
+                    likeCount: '563'
+                },
+                {
+                    name: '杜甫的家国抱负',
+                    readCount: '562',
+                    likeCount: '564563'
+                },
+                {
+                    name: '白居易的诗情画意',
+                    readCount: '565546',
+                    likeCount: '56356'
+                },
+                {
+                    name: '杜甫的家国抱负',
+                    readCount: '796879',
+                    likeCount: '-078'
+                },
+                {
+                    name: '杜甫的家国抱负',
+                    readCount: '576',
+                    likeCount: '-7875'
+                },
+                {
+                    name: '杜甫的家国抱负',
+                    readCount: '6748',
+                    likeCount: '6746'
+                },
+                {
+                    name: '白居易的诗情画意',
+                    readCount: '8968',
+                    likeCount: '96'
+                },
+                {
+                    name: '白居易的诗情画意',
+                    readCount: '5455',
+                    likeCount: '7751'
+                }
+            ]
+        }
 
-            proc({
-                templateId: 'title-template',
-                data: data,
-                containerId: 'title'
-            })
-            proc({
-                templateId: 'volume-template',
-                data: data.volumes,
-                containerId: 'volume'
-            })
-
-
-
+        proc({
+            templateId: 'title-template',
+            data: data,
+            containerId: 'title'
         })
-    </script>
+        proc({
+            templateId: 'volume-template',
+            data: data.volumes,
+            containerId: 'volume'
+        })
+
+
+    })
+</script>
 </body>
 </html>

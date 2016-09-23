@@ -22,6 +22,7 @@ public class Users {
     static String hostname = "https://sapi.253.com";
     static String username = "zhibo1";
     static String password = "Tch243450";
+
     @GET
     @Path("telephones/{telephone}/code")
     @Produces(MediaType.APPLICATION_JSON)

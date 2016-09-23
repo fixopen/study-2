@@ -1,31 +1,34 @@
 /*@Author:zhaoxq*/
 
 /* 电脑同步 */
-.pc-sync-box{
-	padding: 10px;
-}
-.pc-sync{
-	width: 100%;
-	height: 11.875rem;
-	border-radius: 10px;
-	background-color: #fff;
-	box-shadow: 6px 10px 0 rgba(164, 164, 164, 0.5);
-	overflow: hidden;
-	margin-bottom: 30px;
-}
-.pc-sync img{
-	width: 100%;
-	height: 100%;
+.pc-sync-box {
+    padding: 10px;
 }
 
-.live-detail{
-	width: 100%;
-	border-radius: 10px;
-	background-color: #fff;
-	overflow: hidden;
-	box-sizing: border-box;
+.pc-sync {
+    width: 100%;
+    height: 11.875rem;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 6px 10px 0 rgba(164, 164, 164, 0.5);
+    overflow: hidden;
+    margin-bottom: 30px;
 }
-.live-detail img{
-	width: 100%;
-	height: 100%;
+
+.pc-sync img {
+    width: 100%;
+    height: 100%;
+}
+
+.live-detail {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #fff;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.live-detail img {
+    width: 100%;
+    height: 100%;
 }

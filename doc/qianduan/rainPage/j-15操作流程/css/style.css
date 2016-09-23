@@ -1,4 +1,4 @@
-.userTou{
+.userTou {
     font-family: "苹方";
     font-size: 1.0625rem;
     font-weight: bold;
@@ -13,21 +13,24 @@
     background-size: 20.125rem 5.1875rem;
 }
 
-.user_liuc{
+.user_liuc {
     width: 100%;
     margin: 0 auto;
 }
-.daYi{
+
+.daYi {
     font-family: "苹方";
     font-size: 0.9375rem;
-    font-weight: bold; 
+    font-weight: bold;
     margin-bottom: 0.3125rem;
 }
-.daEr{
+
+.daEr {
     font-family: "苹方";
     font-size: 0.9375rem;
 }
-.daEr_li{
+
+.daEr_li {
     text-indent: 2em;
     line-height: 1.4rem;
 }

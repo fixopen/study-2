@@ -36,7 +36,9 @@ public class Medias {
                 String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
                 if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
                     String fileName = now + "." + postfix;
-                    String uploadedFileLocation = "d:/" + fileName;
+                    String pyshicalpath = Properties.getPropertyValue("physicalpath");
+                    String uploadedFileLocation =  pyshicalpath + fileName;
+
                     File file = new File(uploadedFileLocation);
                     FileOutputStream w = new FileOutputStream(file);
                     CharacterEncodingFilter.saveFile(w, inputStream);
@@ -46,8 +48,9 @@ public class Medias {
                     image.setExt(postfix);
                     image.setMimeType(contentType);
                     image.setName(fileName);
-                    image.setSize(file.length());
-                    image.setStorePath(uploadedFileLocation);
+                    image.setSize(p.getSize());
+                    String virtualPath = Properties.getPropertyValue("virtualpath") + fileName;
+                    image.setStorePath(virtualPath);
                     JPAEntry.genericPost(image);
 
                     result = Response.ok(new Gson().toJson(image)).build();

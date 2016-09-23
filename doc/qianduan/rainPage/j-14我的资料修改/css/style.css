@@ -1,29 +1,34 @@
-.mine_zilo{
+.mine_zilo {
     margin-top: 1.25rem;
 }
-.mine_zUl{
+
+.mine_zUl {
     background-color: #fff;
     border-top: 1px solid #e5e5e5;
     position: relative;
     overflow: hidden;
 }
-.mine_zuli{
+
+.mine_zuli {
     height: 3.71875rem;
     line-height: 3.71875rem;
     padding: 0 0.9375rem;
     border-bottom: 1px solid #e5e5e5;
 }
-.mine_errli{
+
+.mine_errli {
     background-color: #fff5f5;
     border-top: 1px solid #fe6568;
     border-bottom: 1px solid #fe6568;
 }
-.mine_leftsp{
+
+.mine_leftsp {
     display: inline-block;
     width: 4.375rem;
     text-align: left;
 }
-.mine_rightip{
+
+.mine_rightip {
     display: inline-block;
     color: #888;
     font-size: 1.0rem;
@@ -32,7 +37,8 @@
     margin-left: 1.5625rem;
     background-color: transparent;
 }
-.mine_yanma{
+
+.mine_yanma {
     display: inline-block;
     color: #fff;
     font-size: 0.9375rem;

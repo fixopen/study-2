@@ -1,12 +1,12 @@
-(function($) {
-    $(function() {
+(function ($) {
+    $(function () {
 
         // Setting default value
         Cookies.set("mode", "lesson");
 
         var maxRateSlider = createSlider();
 
-        $("#videoOptionsModal").on("hide.bs.modal", function() {
+        $("#videoOptionsModal").on("hide.bs.modal", function () {
             var resolution = $("#resolution").val() || '480p';
             var maxFrameRate = $("#maxFrameRate").val() || 15;
             var maxBitRate = maxRateSlider.slider("getValue") || 750;
@@ -26,7 +26,7 @@
                 //$("#roleHost").prop("checked", true);
             }
 
-            $("input[type='radio']").change(function(e) {
+            $("input[type='radio']").change(function (e) {
                 var name = $(e.target).prop("name"),
                     value = $(e.target).val();
 
@@ -34,23 +34,23 @@
             });
         }());
 
-        $("#join-meeting").click(function(e) {
+        $("#join-meeting").click(function (e) {
             e.preventDefault();
             var roomName = $("#room-name").val(),
                 role = Cookies.get("role") || 'host';
             if (roomName) {
                 Cookies.set("roomName", roomName);
                 if (role === 'host') {
-                    window.location.href="whiteboard-host.html";
+                    window.location.href = "whiteboard-host.html";
                 } else {
-                    window.location.href="whiteboard-guest.html";
+                    window.location.href = "whiteboard-guest.html";
                 }
             } else {
                 $("#room-name").addClass("required-field");
             }
         });
 
-        $("#resolution").change(function(e) {
+        $("#resolution").change(function (e) {
             var resolution = $(e.target).val(),
                 bitRateRange;
             if (resolution) {
@@ -83,7 +83,7 @@
                 min: range[0],
                 max: range[1]
             })
-            .slider('setValue', bitRate);
+                .slider('setValue', bitRate);
 
             return slider;
         }

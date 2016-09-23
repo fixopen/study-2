@@ -1,13 +1,15 @@
-a{ 
+a {
     color: #444;
 }
-.head_h3{
+
+.head_h3 {
     text-align: center;
     font-size: 1.0625rem;
     font-weight: bold;
     padding: 1.5rem 0 0;
 }
-.head_himg{
+
+.head_himg {
     display: inline-block;
     color: #fff;
     width: 7.1875rem;
@@ -19,13 +21,14 @@ a{
     background: url('../img/math1.png') 0 0 no-repeat;
     background-size: 7.1875rem 2.53125rem;
 }
-.mulu_div{
+
+.mulu_div {
     width: 100%;
     margin: 0 auto;
     line-height: 1.875rem;
-    padding:1.5625rem 0.625rem 0.625rem 0.625rem;
+    padding: 1.5625rem 0.625rem 0.625rem 0.625rem;
     border: 1px solid #ffc500;
-    box-shadow:inset 0rem 0rem 0.5rem #f2e5ba;
+    box-shadow: inset 0rem 0rem 0.5rem #f2e5ba;
     border-radius: 0.3125rem;
     background-color: #fffcf2;
     margin-top: 0.3125rem;
@@ -33,10 +36,11 @@ a{
     position: relative;
 }
 
-.mld_Ulli{
+.mld_Ulli {
     line-height: 2.5rem;
 }
-.daan_quan{
+
+.daan_quan {
     display: inline-block;
     width: 1.5625rem;
     height: 1.5625rem;
@@ -46,45 +50,50 @@ a{
     border-radius: 50%;
     margin-right: 0.25rem;
 }
-.mld_daanUl{
+
+.mld_daanUl {
     overflow: hidden;
 }
-.mld_daanLi{
+
+.mld_daanLi {
     float: left;
     margin-right: 3.75rem;
     position: relative;
 }
 
-.muld_images{
+.muld_images {
     width: 100%;
 }
 
-.lian_jie{
+.lian_jie {
     width: 100%;
     position: absolute;
     bottom: -1.145rem;
     z-index: 13;
 }
-.lianjie{
+
+.lianjie {
     display: inline-block;
     width: 0.5rem;
     height: 1.75rem;
     background: url('../img/lianjie.png') 0 0 no-repeat;
     background-size: 0.5rem 1.75rem;
 }
-.lianjie01{
+
+.lianjie01 {
     float: left;
     position: relative;
     left: 1.25rem;
 }
-.lianjie02{
+
+.lianjie02 {
     float: right;
     position: relative;
     right: 2.5rem;
 }
 
 /* 答案 */
-.daana{
+.daana {
     width: 100%;
     min-height: 1.5625rem;
     position: absolute;

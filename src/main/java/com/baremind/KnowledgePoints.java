@@ -76,7 +76,6 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
 
-
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -148,9 +147,9 @@ public class KnowledgePoints {
                     quoteObject = qq.getResultList();
                 }
 
-                List<Object> r = new ArrayList<>();
-                List<Object> problemr3 = new ArrayList<>();
-                List<Object> quoter4 = new ArrayList<>();
+                List<Object> orderedContents = new ArrayList<>();
+                List<Object> orderedProblems = new ArrayList<>();
+                List<Object> orderedQuotes = new ArrayList<>();
                 for (final KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -160,7 +159,7 @@ public class KnowledgePoints {
                                 tm.put("id", t.getId());
                                 tm.put("content", t.getContent());
                                 tm.put("type", "text");
-                                r.add(tm);
+                                orderedContents.add(tm);
                             }
                             break;
                         case "image":
@@ -171,10 +170,9 @@ public class KnowledgePoints {
                                 itm.put("type", "image");
                                 itm.put("description", "");
                                 itm.put("href", im.getStorePath());
-                                r.add(itm);
+                                orderedContents.add(itm);
                             }
                             break;
-
                         case "imageText":
                             if (imageTextObject != null) {
                                 ImageText ITe = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
@@ -183,7 +181,7 @@ public class KnowledgePoints {
                                 items.put("type", "imageText");
                                 items.put("content", ITe.getContent());
                                 items.put("href", ITe.getStorePath());
-                                r.add(items);
+                                orderedContents.add(items);
                             }
                             break;
                         case "problem":
@@ -201,7 +199,7 @@ public class KnowledgePoints {
                                 }
                                 piems.put("options", pieo);
                                 piems.put("title", pie.getTitle());
-                                problemr3.add(piems);
+                                orderedProblems.add(piems);
                                 break;
                             }
                         case "quote":
@@ -211,20 +209,24 @@ public class KnowledgePoints {
                                 iquems.put("id", ique.getId());
                                 iquems.put("content", ique.getContent());
                                 iquems.put("source", ique.getSource());
-                                quoter4.add(iquems);
+                                orderedQuotes.add(iquems);
                             }
                             break;
-
                     }
                 }
                 Map<String, Object> r2 = new HashMap<>();
                 r2.put("title", p.getTitle());
+<<<<<<< HEAD
                 r2.put("quotes", quoter4);
                 r2.put("contents", r);
+=======
+                r2.put("quotes", orderedQuotes);
+                r2.put("contents", orderedContents);
+>>>>>>> 1a74c96216438d186373902632b1188fcacf4820
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     r2.put("video", videoObjects.get(0));
                 }
-                //===============================================================
+
                 Map<String, Object> interaction = new HashMap<>();
                 int readCount = 0;
                 interaction.put("readCount", readCount);
@@ -234,20 +236,17 @@ public class KnowledgePoints {
                 List likeCountList = lq.getResultList(); //->Object[]->count*/
                 interaction.put("likeCount", likeCount);
                 r2.put("interaction", interaction);
-                r2.put("problems", problemr3);
-                //em.getTransaction().commit();
-                //==================================================
+
+                r2.put("problems", orderedProblems);
+
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
-                //评论
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
                 r2.put("comments", comments);
-                //==================================================
-                if (!r.isEmpty()) {
-                    String v = new Gson().toJson(r2);
-                    result = Response.ok(v, "application/json; charset=utf-8").build();
-                }
+
+                String v = new Gson().toJson(r2);
+                result = Response.ok(v, "application/json; charset=utf-8").build();
             }
         }
 

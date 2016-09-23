@@ -54,12 +54,12 @@
         <!-- video-list -->
         <div id="live-broadcast">
             <div class="subject-list cur">
-                <ul class="video-list"  id="chinese"></ul>
+                <ul class="video-list" id="chinese"></ul>
             </div>
-            <div class="subject-list" >
-                <ul class="video-list"  id="math"></ul>
+            <div class="subject-list">
+                <ul class="video-list" id="math"></ul>
             </div>
-            <div class="subject-list"  >
+            <div class="subject-list">
                 <ul class="video-list" id="english"></ul>
             </div>
         </div>
@@ -83,73 +83,73 @@
 
 <template id="live-broadcast-template" class="video-list" data-type="subjects">
     <ul>
-    <li class="video-list-li">
-        <div class="video-list-play">
-            <a href="${src}">
-                <img src="${backgroundImage}" alt="">
-                <div class="video-list-mask">
+        <li class="video-list-li">
+            <div class="video-list-play">
+                <a href="${src}">
+                    <img src="${backgroundImage}" alt="">
+                    <div class="video-list-mask">
                         <span class="live-radio">
                             <img src="images/zb-live.png" alt="">
                             <!--图片会随着具体情况改变-->
                         </span>
-                    <div class="play-btn">
-                        <img src="images/live-play.png" alt="">
-                        <!--图片会随着具体情况改变-->
+                        <div class="play-btn">
+                            <img src="images/live-play.png" alt="">
+                            <!--图片会随着具体情况改变-->
+                        </div>
+                        <div class="course-box">
+                            <h3 class="live-title">
+                                第<span>${lessonOrder}</span>讲
+                            </h3>
+                            <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
+                                     onmouseout=this.start()>${description}
+                            </marquee>
+                        </div>
                     </div>
-                    <div class="course-box">
-                        <h3 class="live-title">
-                            第<span>${lessonOrder}</span>讲
+                </a>
+            </div>
+            <div class="course-intro">
+                <div class="course-intro-in">
+                    <div class="course-time course-speaker">
+                        已播放<i>10</i>分钟&nbsp;
+                        <!--时间需要服务器自己计算-->
+                        <i>${teacher}</i>主讲
+                        <span class="fr">${grade}</span>
+                    </div>
+                    <div class="tear-course course-speaker">
+                        <div class="fl"><i>${watcherCount}</i>人正在听</div>
+                        <div class="course-detail-btn fr">
+                            课程详情<br>
+                            <img src="images/xiala-btn.png" alt="">
+                        </div>
+                    </div>
+                    <div class="course-detail">
+                        <h3 class="sml-tit brief1">
+                            <img src="images/abc.png" alt="">
+                            课程简介
                         </h3>
-                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>${description}
-                        </marquee>
+                        <p data-ext-point="detailList"></p>
+
+                        <h3 class="sml-tit brief2">
+                            <img src="images/zjr_btn.png" alt="">
+                            主讲人简介
+                        </h3>
+                        <p class="tim2">${teacherInfo}</p>
+
+                        <h3 class="sml-tit brief3">
+                            <img src="images/sxsj_btn.png" alt="">
+                            上线时间
+                        </h3>
+                        <p>${onlineTime}</p>
+
+                        <h3 class="sml-tit brief4">
+                            <img src="images/cksc_btn.png" alt="">
+                            课程时长
+                        </h3>
+                        <p>${courseDuration}</p>
                     </div>
-                </div>
-            </a>
-        </div>
-        <div class="course-intro">
-            <div class="course-intro-in">
-                <div class="course-time course-speaker">
-                    已播放<i>10</i>分钟&nbsp;
-                    <!--时间需要服务器自己计算-->
-                    <i>${teacher}</i>主讲
-                    <span class="fr">${grade}</span>
-                </div>
-                <div class="tear-course course-speaker">
-                    <div class="fl"><i>${watcherCount}</i>人正在听</div>
-                    <div class="course-detail-btn fr">
-                        课程详情<br>
-                        <img src="images/xiala-btn.png" alt="">
-                    </div>
-                </div>
-                <div class="course-detail">
-                    <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p data-ext-point="detailList"></p>
-
-                    <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2">${teacherInfo}</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>${onlineTime}</p>
-
-                    <h3 class="sml-tit brief4">
-                        <img src="images/cksc_btn.png" alt="">
-                        课程时长
-                    </h3>
-                    <p>${courseDuration}</p>
                 </div>
             </div>
-        </div>
-    </li>
+        </li>
     </ul>
 </template>
 <template id="list-template">

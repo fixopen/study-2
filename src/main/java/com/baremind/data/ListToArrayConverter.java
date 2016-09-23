@@ -3,7 +3,6 @@ package com.baremind.data;
 //import org.postgresql.jdbc4.Jdbc4Array;
 
 import javax.persistence.AttributeConverter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

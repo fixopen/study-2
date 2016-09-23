@@ -1,19 +1,22 @@
-a{ 
+a {
     color: #444;
 }
-.head_h3{
+
+.head_h3 {
     text-align: center;
     font-size: 1.0625rem;
     font-weight: bold;
     padding-top: 1.5rem;
 }
-.head_h3_s{
+
+.head_h3_s {
     text-align: center;
     font-size: 1.0625rem;
     font-weight: bold;
     padding-bottom: 0.8rem;
 }
-.head_himg{
+
+.head_himg {
     display: inline-block;
     width: 6.03125rem;
     height: 2.125rem;
@@ -24,7 +27,8 @@ a{
     background: url('../img/math1.png') 0 0 no-repeat;
     background-size: 6.03125rem 2.125rem;
 }
-.daoyu_div{
+
+.daoyu_div {
     margin: 0 auto;
     line-height: 1.875rem;
     padding: 0.3125rem;
@@ -32,15 +36,17 @@ a{
     background-color: #fffae8;
     overflow: hidden;
 }
-.daoyu_dquan{
+
+.daoyu_dquan {
     float: left;
-    width:1.9375rem;
+    width: 1.9375rem;
     height: 0.65625rem;
     position: relative;
     top: -0.3125rem;
     z-index: 2;
 }
-.daoyu_xxku{
+
+.daoyu_xxku {
     padding: 0.625rem;
     text-indent: 2em;
     border: 1.5px dashed #fae1e1;
@@ -48,7 +54,8 @@ a{
     background: url('../img/math3.png') right bottom no-repeat;
     background-size: 2.71875rem 2.5625rem;
 }
-.biti_span{
+
+.biti_span {
     display: inline-block;
     font-size: 1.0rem;
     width: 8.96875rem;
@@ -61,37 +68,42 @@ a{
     top: 0.3125rem;
     z-index: 2;
 }
-.mulu_div{
+
+.mulu_div {
     width: 100%;
     margin: 0 auto;
     position: relative;
     top: -1.25rem;
     line-height: 1.875rem;
-    padding-top:1.25rem;
+    padding-top: 1.25rem;
     box-sizing: border-box;
     overflow: hidden;
 }
-.youKuang{
+
+.youKuang {
     color: #064c42;
-    padding:1.5625rem 0.625rem 0.625rem 0.625rem;
+    padding: 1.5625rem 0.625rem 0.625rem 0.625rem;
     border: 1px solid #ffc500;
-    box-shadow:inset 0rem 0rem 0.5rem #f2e5ba;
+    box-shadow: inset 0rem 0rem 0.5rem #f2e5ba;
     border-radius: 0.3125rem;
     background-color: #fffcf2;
 }
-.math_01{
+
+.math_01 {
     width: 17.78125rem;
     height: 10.8125rem;
     padding-left: 0.625rem;
 }
-.math_color{
+
+.math_color {
     color: #fe6568;
     text-indent: 2em;
     position: relative;
     top: -1.25rem;
 }
+
 /* 最强大脑 */
-.biti_chuagun{
+.biti_chuagun {
     display: inline-block;
     font-size: 1.0rem;
     width: 8.96875rem;
@@ -104,40 +116,46 @@ a{
     top: 0.625rem;
     z-index: 2;
 }
-.lixiKu{
-    padding:1.5625rem 0.625rem 0.625rem 0.625rem;
+
+.lixiKu {
+    padding: 1.5625rem 0.625rem 0.625rem 0.625rem;
     border: 1px solid #36c4ff;
-    box-shadow:inset 0rem 0rem 0.5rem #bae3f2;
+    box-shadow: inset 0rem 0rem 0.5rem #bae3f2;
     border-radius: 0.3125rem;
     background-color: #f2fdff;
     margin-top: 0.625rem;
     box-sizing: border-box;
 }
-.lixi_martop{
+
+.lixi_martop {
     padding-top: 0;
     margin-top: 0;
     position: relative;
     top: -2.75rem;
 }
-.lixi_Nomar{
+
+.lixi_Nomar {
     padding-top: 0;
 }
 
-ul.mld_xiaoUl{
+ul.mld_xiaoUl {
     list-style-type: demical;
 }
-li.mld_Ulli{
+
+li.mld_Ulli {
     list-style-position: outside;
     line-height: 2.5rem;
 }
-.mld_liImg{
+
+.mld_liImg {
     width: 2.1875rem;
     height: 0.9375rem;
     margin-right: 0.46875rem;
     position: relative;
     top: 0.15625rem;
 }
-.daan_quan{
+
+.daan_quan {
     display: inline-block;
     width: 1.5625rem;
     height: 1.5625rem;
@@ -147,7 +165,8 @@ li.mld_Ulli{
     border-radius: 50%;
     margin-right: 0.25rem;
 }
-.daan_error{
+
+.daan_error {
     float: left;
     position: relative;
     top: -1.625rem;
@@ -155,7 +174,8 @@ li.mld_Ulli{
     width: 1.625rem;
     height: 1.625rem;
 }
-.daan_true{
+
+.daan_true {
     float: left;
     position: relative;
     top: -1.625rem;
@@ -163,66 +183,80 @@ li.mld_Ulli{
     width: 1.625rem;
     height: 1.625rem;
 }
-.daanLi_error{
+
+.daanLi_error {
     color: #fe6568;
 }
-.daanLi_true{
+
+.daanLi_true {
     color: #24cbd1;
 }
-.mld_daanUl{
+
+.mld_daanUl {
     overflow: hidden;
 }
-.mld_daanLi{
+
+.mld_daanLi {
     float: left;
     margin-right: 3.75rem;
     position: relative;
 }
 
-.muld_images{
+.muld_images {
     width: 100%;
 }
 
-.ul01_flet{
+.ul01_flet {
     float: left;
     color: #aaa;
 }
-.ul01_flet li{
+
+.ul01_flet li {
     float: left;
 }
-.ul01_fli{
+
+.ul01_fli {
     margin-right: 0.9375rem;
 }
-.ul01_count{
+
+.ul01_count {
     margin-left: 0.3125rem;
 }
-.ul01_imgzan{
+
+.ul01_imgzan {
     width: 1.0625rem;
     height: 1.0625rem;
 }
-.ul01_riht{
+
+.ul01_riht {
     float: right;
 }
-.ul01_riht li{
+
+.ul01_riht li {
     float: left;
 }
-.ul01_aBtn{
+
+.ul01_aBtn {
     color: #24cbd1;
 }
-.ceshi_ti1{
+
+.ceshi_ti1 {
     width: 11.96875rem;
     height: 5.03125rem;
 }
-.ceshi_ti2{
+
+.ceshi_ti2 {
     width: 12.1875rem;
     height: 3.3125rem;
 }
 
-.lian_jie{
+.lian_jie {
     position: relative;
     top: 0;
     z-index: 13;
 }
-.lianjie{
+
+.lianjie {
     display: inline-block;
     position: relative;
     top: -2.0165rem;
@@ -232,31 +266,37 @@ li.mld_Ulli{
     background: url('../img/lianjie.png') 0 0 no-repeat;
     background-size: 0.5rem 1.75rem;
 }
-.lianjie01{
+
+.lianjie01 {
     float: left;
     position: relative;
     left: 2.5rem;
 }
-.lianjie02{
+
+.lianjie02 {
     float: right;
     position: relative;
     right: 2.5rem;
 }
+
 /* 脑力大PK */
-.bdiv_Pk{
+.bdiv_Pk {
     width: 8.375rem;
     margin: 1.875rem auto 0;
 }
-.naoli_pk{
+
+.naoli_pk {
     width: 8.375rem;
     height: 2.59375rem;
     margin: 0 auto;
 }
-.zongjie_p{
+
+.zongjie_p {
     color: #fe6568;
     margin-top: 0.625rem;
 }
-.zongjie_txt{
+
+.zongjie_txt {
     color: #444;
     font-size: 0.9375rem;
     font-family: "苹方";
@@ -268,8 +308,9 @@ li.mld_Ulli{
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
 /* 留言 */
-.mulu_bottom{
+.mulu_bottom {
     width: 100%;
     padding: 0.9375rem;
     background-color: #f1f1f1;
@@ -278,60 +319,73 @@ li.mld_Ulli{
     box-sizing: border-box;
     overflow: hidden;
 }
-.muluBn_top{
-    height:2.5rem;
+
+.muluBn_top {
+    height: 2.5rem;
     overflow: hidden;
 }
-.mulu_botBtn{
+
+.mulu_botBtn {
     color: #24cbd1;
-    font-size:0.9375rem;
+    font-size: 0.9375rem;
     float: right;
     padding-right: 1.25rem;
     background: url('../img/write.png') right center no-repeat;
     background-size: 0.84375rem 0.84375rem;
 }
-.muluBn_center{
+
+.muluBn_center {
     margin: 1.5625rem 0 0.9375rem;
     overflow: hidden;
 }
-.liuyan_li{
+
+.liuyan_li {
     float: left;
     margin-left: 0.625rem;
 }
-.lion_01{
+
+.lion_01 {
     width: 16%;
 }
-.lion_01 img{
+
+.lion_01 img {
     width: 100%;
     text-align: center;
 }
-.lion_02{
+
+.lion_02 {
     width: 78%;
 }
-.topUl{
+
+.topUl {
     overflow: hidden;
 }
-.topUl_top{
+
+.topUl_top {
     width: 100%;
     overflow: hidden;
 }
-.litop_fleft{
+
+.litop_fleft {
     color: #aaa;
     float: left;
 }
-.litop_friht{
+
+.litop_friht {
     color: #aaa;
     float: right;
 }
-.center{
+
+.center {
     font-size: 0.9375rem;
 }
-.tcmar_top{
+
+.tcmar_top {
     margin-top: 0.3125rem;
 }
 
 /* 答案 */
-.daana{
+.daana {
     width: 100%;
     min-height: 1.5625rem;
     position: absolute;
