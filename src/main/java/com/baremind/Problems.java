@@ -1,6 +1,5 @@
 package com.baremind;
 
-import com.baremind.data.PostgreSQLTextArray;
 import com.baremind.data.Problem;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;

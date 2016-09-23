@@ -1,13 +1,15 @@
-a{ 
+a {
     color: #444;
 }
-.head_h3{
+
+.head_h3 {
     text-align: center;
     font-size: 1.0625rem;
     font-weight: bold;
     padding: 1.5rem 0 0.8rem;
 }
-.biti_span{
+
+.biti_span {
     display: inline-block;
     font-size: 1.0rem;
     width: 8.96875rem;
@@ -20,37 +22,43 @@ a{
     top: 0.3125rem;
     z-index: 2;
 }
-.mulu_div{
+
+.mulu_div {
     width: 100%;
     margin: 0 auto;
     position: relative;
     top: -1.25rem;
     line-height: 1.875rem;
-    padding-top:1.25rem;
+    padding-top: 1.25rem;
     overflow: hidden;
 }
-.youKuang{
+
+.youKuang {
     color: #064c42;
-    padding:1.5625rem 0.625rem 0.625rem 0.625rem;
+    padding: 1.5625rem 0.625rem 0.625rem 0.625rem;
     border: 1px solid #ffc500;
-    box-shadow:inset 0rem 0rem 0.5rem #f2e5ba;
+    box-shadow: inset 0rem 0rem 0.5rem #f2e5ba;
     border-radius: 0.3125rem;
     background-color: #fffcf2;
     box-sizing: border-box;
 }
-.mulu_dp{
+
+.mulu_dp {
     text-indent: 2em;
-    margin-bottom:1rem;
+    margin-bottom: 1rem;
 }
-.mulu_dp span{
+
+.mulu_dp span {
     display: block;
     text-align: right;
 }
-.muld_images{
+
+.muld_images {
     width: 100%;
 }
+
 /* 闯关练习 */
-.biti_chuagun{
+.biti_chuagun {
     display: inline-block;
     font-size: 1.0rem;
     width: 8.96875rem;
@@ -63,31 +71,35 @@ a{
     top: 0.3125rem;
     z-index: 2;
 }
-.lixiKu{
-    padding:1.5625rem 0.625rem 0.625rem 0.625rem;
+
+.lixiKu {
+    padding: 1.5625rem 0.625rem 0.625rem 0.625rem;
     border: 1px solid #36c4ff;
-    box-shadow:inset 0rem 0rem 0.5rem #bae3f2;
+    box-shadow: inset 0rem 0rem 0.5rem #bae3f2;
     border-radius: 0.3125rem;
     background-color: #f2fdff;
     box-sizing: border-box;
 }
 
-ul.mld_xiaoUl{
+ul.mld_xiaoUl {
     list-style-type: demical;
 }
-li.mld_Ulli{
+
+li.mld_Ulli {
     list-style-position: outside;
     line-height: 2.5rem;
-    list-style:none;
+    list-style: none;
 }
-.mld_liImg{
+
+.mld_liImg {
     width: 2.1875rem;
     height: 0.9375rem;
     margin-right: 0.46875rem;
     position: relative;
     top: 0.15625rem;
 }
-.daan_quan{
+
+.daan_quan {
     display: inline-block;
     width: 1.5625rem;
     height: 1.5625rem;
@@ -97,7 +109,8 @@ li.mld_Ulli{
     border-radius: 50%;
     margin-right: 0.25rem;
 }
-.daan_error{
+
+.daan_error {
     float: left;
     position: relative;
     top: -1.625rem;
@@ -105,7 +118,8 @@ li.mld_Ulli{
     width: 1.625rem;
     height: 1.625rem;
 }
-.daan_true{
+
+.daan_true {
     float: left;
     position: relative;
     top: -1.625rem;
@@ -113,49 +127,61 @@ li.mld_Ulli{
     width: 1.625rem;
     height: 1.625rem;
 }
-.daanLi_error{
+
+.daanLi_error {
     color: #fe6568;
 }
-.daanLi_true{
+
+.daanLi_true {
     color: #24cbd1;
 }
-.mld_daanUl{
+
+.mld_daanUl {
     overflow: hidden;
 }
-.mld_daanLi{
+
+.mld_daanLi {
     float: left;
     margin-right: 3.75rem;
     position: relative;
 }
 
-.ul01_flet{
+.ul01_flet {
     color: #aaa;
     float: left;
 }
-.ul01_flet li{
+
+.ul01_flet li {
     float: left;
 }
-.ul01_fli{
+
+.ul01_fli {
     margin-right: 0.9375rem;
 }
-.ul01_count{
+
+.ul01_count {
     margin-left: 0.3125rem;
 }
-.ul01_imgzan{
+
+.ul01_imgzan {
     width: 1.0625rem;
     height: 1.0625rem;
 }
-.ul01_riht{
+
+.ul01_riht {
     float: right;
 }
-.ul01_riht li{
+
+.ul01_riht li {
     float: left;
 }
-.ul01_aBtn{
+
+.ul01_aBtn {
     color: #24cbd1;
 }
+
 /* 留言 */
-.mulu_bottom{
+.mulu_bottom {
     width: 100%;
     padding: 0.9375rem;
     background-color: #f1f1f1;
@@ -164,60 +190,73 @@ li.mld_Ulli{
     box-sizing: border-box;
     overflow: hidden;
 }
-.muluBn_top{
-    height:2.5rem;
+
+.muluBn_top {
+    height: 2.5rem;
     overflow: hidden;
 }
-.mulu_botBtn{
+
+.mulu_botBtn {
     color: #24cbd1;
-    font-size:0.9375rem;
+    font-size: 0.9375rem;
     float: right;
     padding-right: 1.25rem;
     background: url('../img/write.png') right center no-repeat;
     background-size: 0.84375rem 0.84375rem;
 }
-.muluBn_center{
+
+.muluBn_center {
     margin: 1.5625rem 0 0.9375rem;
     overflow: hidden;
 }
-.liuyan_li{
+
+.liuyan_li {
     float: left;
     margin-left: 0.625rem;
 }
-.lion_01{
+
+.lion_01 {
     width: 16%;
 }
-.lion_01 img{
+
+.lion_01 img {
     width: 100%;
     text-align: center;
 }
-.lion_02{
+
+.lion_02 {
     width: 78%;
 }
-.topUl{
+
+.topUl {
     overflow: hidden;
 }
-.topUl_top{
+
+.topUl_top {
     width: 100%;
     overflow: hidden;
 }
-.litop_fleft{
+
+.litop_fleft {
     color: #aaa;
     float: left;
 }
-.litop_friht{
+
+.litop_friht {
     color: #aaa;
     float: right;
 }
-.center{
+
+.center {
     font-size: 0.9375rem;
 }
-.tcmar_top{
+
+.tcmar_top {
     margin-top: 0.3125rem;
 }
 
 /* 答案 */
-.daana{
+.daana {
     width: 100%;
     min-height: 1.5625rem;
     position: absolute;

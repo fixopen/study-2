@@ -1,71 +1,82 @@
 /*@Author: zhaoxq*/
-.study-record{
-	padding: 2.65625rem 0.9375rem 1.75rem;
-	box-sizing: border-box;
+.study-record {
+    padding: 2.65625rem 0.9375rem 1.75rem;
+    box-sizing: border-box;
 }
-.book{
-	position: absolute;
-	top: -1.40625rem;
-	left: -0.09375rem;
-	width: 4.78125rem;
-	height: 2.9375rem;
-	background: url(../images/book.png) no-repeat center;
-	-webkit-background-size: cover;
-	background-size: cover;
+
+.book {
+    position: absolute;
+    top: -1.40625rem;
+    left: -0.09375rem;
+    width: 4.78125rem;
+    height: 2.9375rem;
+    background: url(../images/book.png) no-repeat center;
+    -webkit-background-size: cover;
+    background-size: cover;
 }
-.pen{
-	position: absolute;
-	bottom: -0.65625rem;
-	right: -0.0625rem;
-	width: 2.3125rem;
-	height: 4.1875rem;
-	background: url(../images/pen.png) no-repeat center;
-	-webkit-background-size: cover;
-	background-size: cover;
+
+.pen {
+    position: absolute;
+    bottom: -0.65625rem;
+    right: -0.0625rem;
+    width: 2.3125rem;
+    height: 4.1875rem;
+    background: url(../images/pen.png) no-repeat center;
+    -webkit-background-size: cover;
+    background-size: cover;
 }
-.study-record-ul{
-	overflow: hidden;
-	padding-bottom: 2.0rem;
+
+.study-record-ul {
+    overflow: hidden;
+    padding-bottom: 2.0rem;
 }
-.study-record-li{
-	width: 100%;
-	height: 6.03125rem;
-	background-position: center;
-	margin-bottom: 1.5625rem;
-	padding: 2.4375rem 2.0625rem 0 1.5625rem;
-	box-sizing: border-box;
-	font-size: 1.875rem;
-	text-align: center;
+
+.study-record-li {
+    width: 100%;
+    height: 6.03125rem;
+    background-position: center;
+    margin-bottom: 1.5625rem;
+    padding: 2.4375rem 2.0625rem 0 1.5625rem;
+    box-sizing: border-box;
+    font-size: 1.875rem;
+    text-align: center;
 }
-.you{
-	float: right;
-	padding-top: 0.15625rem;
-	box-sizing: border-box;
+
+.you {
+    float: right;
+    padding-top: 0.15625rem;
+    box-sizing: border-box;
 }
-.study-record-li:nth-child(1){
-	background: url(../images/li-bg1.png) no-repeat;
-	-webkit-background-size: 100% 6.03125rem;
-	background-size: 100% 6.03125rem;
-	color: #600b11;
+
+.study-record-li:nth-child(1) {
+    background: url(../images/li-bg1.png) no-repeat;
+    -webkit-background-size: 100% 6.03125rem;
+    background-size: 100% 6.03125rem;
+    color: #600b11;
 }
-.study-record-li:nth-child(2){
-	background: url(../images/li-bg2.png) no-repeat;
-	-webkit-background-size: 100% 6.03125rem;
-	background-size: 100% 6.03125rem;
-	color: #0e4952;
+
+.study-record-li:nth-child(2) {
+    background: url(../images/li-bg2.png) no-repeat;
+    -webkit-background-size: 100% 6.03125rem;
+    background-size: 100% 6.03125rem;
+    color: #0e4952;
 }
-.study-record-li:nth-child(3){
-	background: url(../images/li-bg3.png) no-repeat;
-	-webkit-background-size: 100% 6.03125rem;
-	background-size: 100% 6.03125rem;
-	color: #424505;
+
+.study-record-li:nth-child(3) {
+    background: url(../images/li-bg3.png) no-repeat;
+    -webkit-background-size: 100% 6.03125rem;
+    background-size: 100% 6.03125rem;
+    color: #424505;
 }
-.study-record-li:nth-child(1).cur{
-	background-image: url(../images/li-bg1-cur.png);
+
+.study-record-li:nth-child(1).cur {
+    background-image: url(../images/li-bg1-cur.png);
 }
-.study-record-li:nth-child(2).cur{
-	background-image: url(../images/li-bg2-cur.png);
+
+.study-record-li:nth-child(2).cur {
+    background-image: url(../images/li-bg2-cur.png);
 }
-.study-record-li:nth-child(3).cur{
-	background-image: url(../images/li-bg3-cur.png);
+
+.study-record-li:nth-child(3).cur {
+    background-image: url(../images/li-bg3-cur.png);
 }

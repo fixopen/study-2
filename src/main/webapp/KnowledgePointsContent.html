@@ -1,230 +1,313 @@
 <!DOCTYPE html>
 <html>
 <head>
-<<<<<<< HEAD
-<meta charset="UTF-8">
-<title>知识点录入</title>
-=======
-	<meta charset="UTF-8">
-	<title>知识点录入</title>
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+    <<<<<<< HEAD
+    <meta charset="UTF-8">
+    <title>知识点录入</title>
+    =======
+    <meta charset="UTF-8">
+    <title>知识点录入</title>
+    >>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
 </head>
 <h1>知识点录入页面</h1>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript" src="jquery-form.js"></script>
 <body>
 <<<<<<< HEAD
-	<table border="1">
-		<tr>
-			<th>科目</th>
-			<th>年级</th>
-			<th>标题</th>
-			<th>知识点</th>
-		</tr>
-		<tr>
-			<td><select id="show"></select></td>
-			<td><select id="gradexx">
-					<option value="20">低年级</option>
-					<option value="21">高年级</option>
-			</select></td>
-			<td><select id="titleservlet"></select></td>
-			<td><select id="knowledgePointsServlet"></select></td>
-		</tr>
-	</table>
-	<script>
-	i=1;
-	function submitText(i){
-     var att = $(".txtArea"+i+"").val();
-		var atttxt = $(".txt"+i+"").val();
-	 console.log(att);
-=======
 <table border="1">
-	<tr>
-		<th>科目</th>
-		<th>年级</th>
-		<th>标题</th>
-		<th>知识点</th>
-	</tr>
-	<tr>
-		<td><select id="show"></select></td>
-		<td><select id="gradexx">
-			<option value="20">低年级</option>
-			<option value="21">高年级</option>
-		</select></td>
-		<td><select id="titleservlet"></select></td>
-		<td><select id="knowledgePointsServlet"></select></td>
-	</tr>
+    <tr>
+        <th>科目</th>
+        <th>年级</th>
+        <th>标题</th>
+        <th>知识点</th>
+    </tr>
+    <tr>
+        <td><select id="show"></select></td>
+        <td><select id="gradexx">
+            <option value="20">低年级</option>
+            <option value="21">高年级</option>
+        </select></td>
+        <td><select id="titleservlet"></select></td>
+        <td><select id="knowledgePointsServlet"></select></td>
+    </tr>
 </table>
-
-<button id="appendText" data-type="text">append Text</button>
-<button id="appendImage" data-type="image">append image</button>
-<button id="appendVideo" data-type="video">append video</button>
-<button id="appendProblem" data-type="problem">append problem</button>
-
-<button id="movePrevious">^</button>
-<button id="moveNext">V</button>
-<button id="submit">submit</button>
-<button id="save">save</button>
 <script>
-	i=1;
-	let returndata;
-	function submitText(i){
-		var att = $(".txtArea"+i+"").val();
-		var atttxt = $(".txt"+i+"").val();
-		console.log(att);
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
-		knowledgePointsids = $("#knowledgePointsServlet").val()
-		volumeids = $("#titleservlet").val()
-		var data = {};
-		data.konwledgePointsId = knowledgePointsids
-		data.volumesId = volumeids
-		data.type = "text"
-		data.cont = att
-		data.orde = atttxt
-		//{"cont":"是打发","id":96578285469696,"konwledgePointsId":1,"orde":1,"type":"text","volumesId":1}
-		$.ajax({
-			type: "post",
-			url: "api/contents",
-			data: JSON.stringify(data),
-			dataType: "json",
-			contentType: "application/json;charset=utf-8",
-			success: function (flag) {
-				alert(JSON.stringify(flag))
-			}
-		})
-	}
-<<<<<<< HEAD
-=======
+    i = 1;
+    function submitText(i) {
+        var att = $(".txtArea" + i + "").val();
+        var atttxt = $(".txt" + i + "").val();
+        console.log(att);
+    ======
+        =
+    <
+        table
+        border = "1" >
+                < tr >
+                < th > 科目 < / th >
+                < th > 年级 < / th >
+                < th > 标题 < / th >
+                < th > 知识点 < / th >
+                < / tr >
+                < tr >
+                < td > < select
+        id = "show" > < / select > < /
+        td >
+        < td > < select
+        id = "gradexx" >
+                < option
+        value = "20" > 低年级 < / option >
+                < option
+        value = "21" > 高年级 < / option >
+                < / select > < /
+        td >
+        < td > < select
+        id = "titleservlet" > < / select > < /
+        td >
+        < td > < select
+        id = "knowledgePointsServlet" > < / select > < /
+        td >
+        < / tr >
+        < / table >
 
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
-	function addrow(){
-		i++;
-		str=document.all.mytable.outerHTML;
-		str=str.substring(0,str.length-16);
-		str+='<tr><td><textarea id="i" class="txtArea'+i+'" name="txtArea" size="21" rows="6" cols="100%"></textarea><input placeholder="序号" class="txt'+i+'" /><button onclick="submitText('+i+')" value="确认">确认</button></td></tr></tbody></table>';
-		document.all.mytable.outerHTML=str;
-	}
-	a=1;
-<<<<<<< HEAD
-	function addimage(){
-		/* a++; */
+        < button
+        id = "appendText"
+        data - type = "text" > append
+        Text < / button >
+        < button
+        id = "appendImage"
+        data - type = "image" > append
+        image < / button >
+        < button
+        id = "appendVideo"
+        data - type = "video" > append
+        video < / button >
+        < button
+        id = "appendProblem"
+        data - type = "problem" > append
+        problem < / button >
 
-		$("#shows").append("<form action='api/cards/file' method='post' enctype='multi-part/form-data'> <input type='file' value='选择文件' name='file' > <input type='submit' /></form>")
-	}
+        < button
+        id = "movePrevious" > ^ < / button >
+                < button
+        id = "moveNext" > V < / button >
+                < button
+        id = "submit" > submit < / button >
+                < button
+        id = "save" > save < / button >
+        < script >
+        i = 1;
+        let returndata;
 
-	function doUpload() {
-		var formData = new FormData($( "#uploadForm" )[0]);
-		$.ajax({
-			url: 'http://localhost:8080/api/cards/file' ,
-			type: 'POST',
-			data: formData,
-			async: false,
-			cache: false,
-			contentType: "image/jpeg",
-			processData: false,
-			success: function (returndata) {
-				alert(JSON.stringify(returndata))
-				alert("成功 ");
-				$.ajax({
-					type:""
-				})
-			},
-			error: function (returndata) {
+        function submitText(i) {
+            var att = $(".txtArea" + i + "").val();
+            var atttxt = $(".txt" + i + "").val();
+            console.log(att);
+        >>>>>>>
+            43500
+            dc9a62f29b4070abe57d8e23cc385996845
+            knowledgePointsids = $("#knowledgePointsServlet").val()
+            volumeids = $("#titleservlet").val()
+            var data = {};
+            data.konwledgePointsId = knowledgePointsids
+            data.volumesId = volumeids
+            data.type = "text"
+            data.cont = att
+            data.orde = atttxt
+            //{"cont":"是打发","id":96578285469696,"konwledgePointsId":1,"orde":1,"type":"text","volumesId":1}
+            $.ajax({
+                type: "post",
+                url: "api/contents",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (flag) {
+                    alert(JSON.stringify(flag))
+                }
+            })
+        }
 
-					alert(JSON.stringify(returndata))
-					alert("失败");
+    <<<<<<<
+        HEAD
+        === === =
 
-				/*alert(returndata);*/
+    >>>>>>>
+        43500
+        dc9a62f29b4070abe57d8e23cc385996845
+        function addrow() {
+            i++;
+            str = document.all.mytable.outerHTML;
+            str = str.substring(0, str.length - 16);
+            str += '<tr><td><textarea id="i" class="txtArea' + i + '" name="txtArea" size="21" rows="6" cols="100%"></textarea><input placeholder="序号" class="txt' + i + '" /><button onclick="submitText(' + i + ')" value="确认">确认</button></td></tr></tbody></table>';
+            document.all.mytable.outerHTML = str;
+        }
 
-			}
-		});
-	}
-	</script>
-<div STYLE="border-style:solid;border-width:1pt; border-color:red">
-=======
-	function submitTimg(a){
+        a = 1;
+    <<<<<<<
+        HEAD
+        function addimage() {
+            /* a++; */
 
-		//var att = $(".imgArea"+a+"").val();
-		var atttxt = $(".img"+a+"").val();
-		//console.log(att);
-		knowledgePointsids = $("#knowledgePointsServlet").val()
-		volumeids = $("#titleservlet").val()
-		var data = {};
-		data.konwledgePointsId = knowledgePointsids
-		data.volumesId = volumeids
-		data.type = "img"
-		data.cont = returndata
-		data.orde = atttxt
-		alert(JSON.stringify(data))
-		//{"cont":"是打发","id":96578285469696,"konwledgePointsId":1,"orde":1,"type":"text","volumesId":1}
-		$.ajax({
-			type: "post",
-			url: "api/contents",
-			data: JSON.stringify(data),
-			dataType: "json",
-			contentType: "application/json;charset=utf-8",
-			success: function (flag) {
-				alert(JSON.stringify(flag))
-			}
-		})
-	}
-	function addimage(){
-		a++;
-		str=document.all.mytable.outerHTML;
-		str=str.substring(0,str.length-16);
-		str+='<tr><td><input type="file" name="file" id="file"/><input type="button"  onclick="doUpload()" value="点击上传"/><input placeholder="序号" class="img'+a+'" /><button onclick="submitTimg('+a+')" value="确认">确认</button></td></tr></tbody></table>';
-		document.all.mytable.outerHTML=str;
-	}
+            $("#shows").append("<form action='api/cards/file' method='post' enctype='multi-part/form-data'> <input type='file' value='选择文件' name='file' > <input type='submit' /></form>")
+        }
 
-	function doUpload() {
-		var formData = new FormData();
-		formData.append("file", document.getElementById('file').files[0]);
-		var request = new XMLHttpRequest();
-		request.open("POST", "api/devices/file");
-		request.send(formData);
-		request.onreadystatechange = function() {
-			if (request.status == 200) {
-				returndata = request.responseText
-				alert(returndata)
+        function doUpload() {
+            var formData = new FormData($("#uploadForm")[0]);
+            $.ajax({
+                url: 'http://localhost:8080/api/cards/file',
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: "image/jpeg",
+                processData: false,
+                success: function (returndata) {
+                    alert(JSON.stringify(returndata))
+                    alert("成功 ");
+                    $.ajax({
+                        type: ""
+                    })
+                },
+                error: function (returndata) {
 
-			}
-		}
-	}
+                    alert(JSON.stringify(returndata))
+                    alert("失败");
 
+                    /*alert(returndata);*/
 
+                }
+            });
+        }
 </script>
+<div STYLE="border-style:solid;border-width:1pt; border-color:red">
+    =======
+    function submitTimg(a){
 
-<div id="contents" STYLE="border-style:solid;border-width:1pt; border-color:red">
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
-	<table id=mytable>
-		<tr>
-		</tr>
-	</table>
-	<div id="shows" ></div>
+    //var att = $(".imgArea"+a+"").val();
+    var atttxt = $(".img"+a+"").val();
+    //console.log(att);
+    knowledgePointsids = $("#knowledgePointsServlet").val()
+    volumeids = $("#titleservlet").val()
+    var data = {};
+    data.konwledgePointsId = knowledgePointsids
+    data.volumesId = volumeids
+    data.type = "img"
+    data.cont = returndata
+    data.orde = atttxt
+    alert(JSON.stringify(data))
+    //{"cont":"是打发","id":96578285469696,"konwledgePointsId":1,"orde":1,"type":"text","volumesId":1}
+    $.ajax({
+    type: "post",
+    url: "api/contents",
+    data: JSON.stringify(data),
+    dataType: "json",
+    contentType: "application/json;charset=utf-8",
+    success: function (flag) {
+    alert(JSON.stringify(flag))
+    }
+    })
+    }
+    function addimage(){
+    a++;
+    str=document.all.mytable.outerHTML;
+    str=str.substring(0,str.length-16);
+    str+='
+    <tr>
+        <td><input type="file" name="file" id="file"/><input type="button" onclick="doUpload()" value="点击上传"/><input
+                placeholder="序号" class="img'+a+'"/>
+            <button onclick="submitTimg('+a+')" value="确认">确认</button>
+        </td>
+    </tr>
+    </tbody></table>';
+    document.all.mytable.outerHTML=str;
+    }
 
-<<<<<<< HEAD
-	<!--<form action='api/cards/file' method='POST'  enctype='multi-part/form-data'>-->
-		<!--<input type='file' value='选择文件' name='file' >-->
-		<!--<input type='submit' />-->
-	<!--</form>-->
-	<!--<form action="api/cards/file" method="post" enctype="multi-part/form-data">
-		Select a file : <input type="file" name="file" value="选择文件"/>
-		<input type="submit"/>
-	</form>-->
-	<form id= "uploadForm">
-		<p >指定文件名： <input type="text" name="filename" value= ""/></p >
-		<p >上传文件： <input type="file" name="file"/></p>
-		<input type="button" value="上传" onclick="doUpload()" />
-	</form>
-=======
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+    function doUpload() {
+    var formData = new FormData();
+    formData.append("file", document.getElementById('file').files[0]);
+    var request = new XMLHttpRequest();
+    request.open("POST", "api/devices/file");
+    request.send(formData);
+    request.onreadystatechange = function() {
+    if (request.status == 200) {
+    returndata = request.responseText
+    alert(returndata)
 
-	<input type=button value="增加文本域"  onclick=addrow()>
-	<input type=button value="添加上传图片框" onclick=addimage()>
+    }
+    }
+    }
 
-</div>
-<<<<<<< HEAD
-	<script type="text/javascript">
+
+    </script>
+
+    <
+    div
+    id = "contents"
+    STYLE = "border-style:solid;border-width:1pt; border-color:red" >
+            >>> >>> > 43500
+    dc9a62f29b4070abe57d8e23cc385996845
+    < table
+    id = mytable >
+            < tr >
+            < / tr >
+            < / table >
+            < div
+    id = "shows" > < / div >
+
+            << < < < < < HEAD
+            <!--<form action='api/cards/file' method='POST'  enctype='multi-part/form-data'>-->
+            <!--<input type='file' value='选择文件' name='file' >-->
+            <!--<input type='submit' />-->
+            < !-- < / form > -- >
+            < !-- < form
+    action = "api/cards/file"
+    method = "post"
+    enctype = "multi-part/form-data" >
+            Select
+    a
+    file : <
+    input
+    type = "file"
+    name = "file"
+    value = "选择文件" / >
+            < input
+    type = "submit" / >
+            < / form > -- >
+            < form
+    id = "uploadForm" >
+            < p > 指定文件名
+    ： <
+    input
+    type = "text"
+    name = "filename"
+    value = "" / > < / p >
+            < p > 上传文件
+    ： <
+    input
+    type = "file"
+    name = "file" / > < / p >
+            < input
+    type = "button"
+    value = "上传"
+    onclick = "doUpload()" / >
+    < / form >
+    === === =
+    >>>>>>>
+    43500
+    dc9a62f29b4070abe57d8e23cc385996845
+
+    < input
+    type = button
+    value = "增加文本域"
+    onclick = addrow() >
+            < input
+    type = button
+    value = "添加上传图片框"
+    onclick = addimage() >
+
+            < / div >
+            << < < < < < HEAD
+            < script
+    type = "text/javascript" >
     var subjects = []//定义一个全局变量subject[]
     var currentId = 0//定义一个全局变量currentID
     $(function () {
@@ -235,7 +318,7 @@
         };
 
         var fillVolume = function () {
-alert(JSON.stringify(subjects))
+            alert(JSON.stringify(subjects))
 
             $("#titleservlet").empty();
             $("#knowledgePointsServlet").empty();
@@ -248,8 +331,8 @@ alert(JSON.stringify(subjects))
                             for (var j = 0; j < subjects[i].low.length; ++j) {//第一  3
                                 $("#titleservlet").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
                                 let tid = $('#titleservlet').val();
-                                for(var k in subjects[i].low[j].vsid){
-                                    if(subjects[i].low[j].vsid[k].volumeId==tid){
+                                for (var k in subjects[i].low[j].vsid) {
+                                    if (subjects[i].low[j].vsid[k].volumeId == tid) {
                                         // alert(subjects[i].low[j].vsid[k])
                                         // console.log(subjects[i].low[j].vsid[k])
                                         $("#knowledgePointsServlet").append('<option value="' + subjects[i].low[j].vsid[k].id + '">' + subjects[i].low[j].vsid[k].title + '</option>')
@@ -261,8 +344,8 @@ alert(JSON.stringify(subjects))
                             for (var j = 0; j < subjects[i].high.length; ++j) {
                                 $("#titleservlet").append('<option value="' + subjects[i].high[j].id + '">' + subjects[i].high[j].title + '</option>')
                                 let tid = $('#titleservlet').val();
-                                for(var k = 0; k < subjects[i].high[j].vsid.length; ++k){
-                                    if(subjects[i].high[j].vsid[k].volumeId == tid){
+                                for (var k = 0; k < subjects[i].high[j].vsid.length; ++k) {
+                                    if (subjects[i].high[j].vsid[k].volumeId == tid) {
                                         $("#knowledgePointsServlet").append('<option value="' + subjects[i].high[j].vsid[k].id + '">' + subjects[i].high[j].vsid[k].title + '</option>')
                                         knowledgePointsContent();
                                     }
@@ -306,11 +389,11 @@ alert(JSON.stringify(subjects))
                                 };
                                 //alert("filterds"+JSON.stringify(filterds))
                                 $.ajax({
-                                    type:"get",
-                                    url:'api/knowledgePoints?filter=' + JSON.stringify(filterds),
+                                    type: "get",
+                                    url: 'api/knowledgePoints?filter=' + JSON.stringify(filterds),
                                     dataType: 'json',
-                                    async : false,
-                                    success: function(volumes){
+                                    async: false,
+                                    success: function (volumes) {
                                         vs[j].vsid = volumes
                                         //alert("低"+JSON.stringify(vs[i].vsid))
                                         //alert(JSON.stringify(vs[i].vsid))
@@ -335,11 +418,11 @@ alert(JSON.stringify(subjects))
                                 };
                                 //alert("filtergs"+JSON.stringify(filtergs))
                                 $.ajax({
-                                    type:"get",
-                                    url:'api/knowledgePoints?filter=' + JSON.stringify(filtergs),
+                                    type: "get",
+                                    url: 'api/knowledgePoints?filter=' + JSON.stringify(filtergs),
                                     dataType: 'json',
-                                    async : false,
-                                    success: function(volumes){
+                                    async: false,
+                                    success: function (volumes) {
                                         vs[j].vsid = volumes
                                         //alert("低"+JSON.stringify(vs[i].vsid))
                                         //alert(JSON.stringify(vs[i].vsid))
@@ -357,8 +440,6 @@ alert(JSON.stringify(subjects))
         });
 
 
-
-
         $('#show').on('change', function (e) {
             fillVolume()
         })
@@ -373,152 +454,157 @@ alert(JSON.stringify(subjects))
         })
 
         /* var ajaxFormOption = {
-                type: "post",  //提交方式  
-                dataType: "json", //数据类型  
-                url: "api/contents/formFile", //请求url  
-                success: function (data) { //提交成功的回调函数  
-                    alert(data)
-                }
-        } */
+         type: "post",  //提交方式
+         dataType: "json", //数据类型
+         url: "api/contents/formFile", //请求url
+         success: function (data) { //提交成功的回调函数
+         alert(data)
+         }
+         } */
     });
-=======
-<script type="text/javascript">
-	var subjects = []//定义一个全局变量subject[]
-	var currentId = 0//定义一个全局变量currentID
-	$(function () {
-		var getGrade = function () {
-			var g = document.getElementById('gradexx')
-			return g.value
-		};
-		var fillVolume = function () {
-			$("#titleservlet").empty();
-			$("#knowledgePointsServlet").empty();
-			s = $('#show').val();
-			g = getGrade();
-			for (var i = 0; i < subjects.length; ++i) {
-				if (subjects[i].id == s) {
-					switch (g) {
-						case '20':
-							for (var j = 0; j < subjects[i].low.length; ++j) {
-								$("#titleservlet").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
-								let tid = $('#titleservlet').val();
-								for(var k in subjects[i].low[j].vsid){
-									if(subjects[i].low[j].vsid[k].volumeId==tid){
-										$("#knowledgePointsServlet").append('<option value="' + subjects[i].low[j].vsid[k].id + '">' + subjects[i].low[j].vsid[k].title + '</option>')
-									}
-								}
-							}
-							break;
-						case '21':
-							for (var j = 0; j < subjects[i].high.length; ++j) {
-								$("#titleservlet").append('<option value="' + subjects[i].high[j].id + '">' + subjects[i].high[j].title + '</option>')
-								let tid = $('#titleservlet').val();
-								for(var k = 0; k < subjects[i].high[j].vsid.length; ++k){
-									if(subjects[i].high[j].vsid[k].volumeId == tid){
-										$("#knowledgePointsServlet").append('<option value="' + subjects[i].high[j].vsid[k].id + '">' + subjects[i].high[j].vsid[k].title + '</option>')
-										knowledgePointsContent();
-									}
-								}
-							}
+    ======
+    =
+    <
+    script
+    type = "text/javascript" >
+    var subjects = []//定义一个全局变量subject[]
+    var currentId = 0//定义一个全局变量currentID
+    $(function () {
+        var getGrade = function () {
+            var g = document.getElementById('gradexx')
+            return g.value
+        };
+        var fillVolume = function () {
+            $("#titleservlet").empty();
+            $("#knowledgePointsServlet").empty();
+            s = $('#show').val();
+            g = getGrade();
+            for (var i = 0; i < subjects.length; ++i) {
+                if (subjects[i].id == s) {
+                    switch (g) {
+                        case '20':
+                            for (var j = 0; j < subjects[i].low.length; ++j) {
+                                $("#titleservlet").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                                let tid = $('#titleservlet').val();
+                                for (var k in subjects[i].low[j].vsid) {
+                                    if (subjects[i].low[j].vsid[k].volumeId == tid) {
+                                        $("#knowledgePointsServlet").append('<option value="' + subjects[i].low[j].vsid[k].id + '">' + subjects[i].low[j].vsid[k].title + '</option>')
+                                    }
+                                }
+                            }
+                            break;
+                        case '21':
+                            for (var j = 0; j < subjects[i].high.length; ++j) {
+                                $("#titleservlet").append('<option value="' + subjects[i].high[j].id + '">' + subjects[i].high[j].title + '</option>')
+                                let tid = $('#titleservlet').val();
+                                for (var k = 0; k < subjects[i].high[j].vsid.length; ++k) {
+                                    if (subjects[i].high[j].vsid[k].volumeId == tid) {
+                                        $("#knowledgePointsServlet").append('<option value="' + subjects[i].high[j].vsid[k].id + '">' + subjects[i].high[j].vsid[k].title + '</option>')
+                                        knowledgePointsContent();
+                                    }
+                                }
+                            }
 
-							break;
-						default:
-							break
-					}
-					break
-				}
-			}
-		};
+                            break;
+                        default:
+                            break
+                    }
+                    break
+                }
+            }
+        };
 
-		$.ajax({
-			type: "get",
-			url: "api/subjects",
-			dataType: "json",
-			async: false,
-			success: function (a) {
-				subjects = a;
-				for (var i = 0; i < a.length; ++i) {
-					filter = {
-						subjectId: subjects[i].id,
-						grade: 20
-					};
-					$.ajax({
-						type: "get",
-						url: 'api/volumes?filter=' + JSON.stringify(filter),
-						async: false,
-						success: function (vs) {
-							subjects[i].low = vs
-							for (var j = 0; j < subjects[i].low.length; ++j) {
+        $.ajax({
+            type: "get",
+            url: "api/subjects",
+            dataType: "json",
+            async: false,
+            success: function (a) {
+                subjects = a;
+                for (var i = 0; i < a.length; ++i) {
+                    filter = {
+                        subjectId: subjects[i].id,
+                        grade: 20
+                    };
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        async: false,
+                        success: function (vs) {
+                            subjects[i].low = vs
+                            for (var j = 0; j < subjects[i].low.length; ++j) {
 
-								filterds = {
-									subjectId: subjects[i].id,
-									volumeId: subjects[i].low[j].id,
-									grade: 20
-								};
+                                filterds = {
+                                    subjectId: subjects[i].id,
+                                    volumeId: subjects[i].low[j].id,
+                                    grade: 20
+                                };
 
-								$.ajax({
-									type:"get",
-									url:'api/knowledgePoints?filter=' + JSON.stringify(filterds),
-									dataType: 'json',
-									async : false,
-									success: function(volumes){
-										vs[j].vsid = volumes
+                                $.ajax({
+                                    type: "get",
+                                    url: 'api/knowledgePoints?filter=' + JSON.stringify(filterds),
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (volumes) {
+                                        vs[j].vsid = volumes
 
-									}
-								})
-							}
-						}
-					});
-					filter.grade = 21;
-					$.ajax({
-						type: "get",
-						url: 'api/volumes?filter=' + JSON.stringify(filter),
-						async: false,
-						success: function (vs) {
-							subjects[i].high = vs
-							for (var j = 0; j < subjects[i].high.length; ++j) {
+                                    }
+                                })
+                            }
+                        }
+                    });
+                    filter.grade = 21;
+                    $.ajax({
+                        type: "get",
+                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        async: false,
+                        success: function (vs) {
+                            subjects[i].high = vs
+                            for (var j = 0; j < subjects[i].high.length; ++j) {
 
-								filtergs = {
-									subjectId: subjects[i].id,
-									volumeId: subjects[i].high[j].id,
-									grade: 21
-								};
+                                filtergs = {
+                                    subjectId: subjects[i].id,
+                                    volumeId: subjects[i].high[j].id,
+                                    grade: 21
+                                };
 
-								$.ajax({
-									type:"get",
-									url:'api/knowledgePoints?filter=' + JSON.stringify(filtergs),
-									dataType: 'json',
-									async : false,
-									success: function(volumes){
-										vs[j].vsid = volumes
-									}
-								})
-							}
-						}
-					})
-					$("#show").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
-				}
-				fillVolume()
-			}
-		});
+                                $.ajax({
+                                    type: "get",
+                                    url: 'api/knowledgePoints?filter=' + JSON.stringify(filtergs),
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (volumes) {
+                                        vs[j].vsid = volumes
+                                    }
+                                })
+                            }
+                        }
+                    })
+                    $("#show").append('<option value="' + a[i].id + '">' + a[i].name + '</option>')
+                }
+                fillVolume()
+            }
+        });
 
-		$('#show').on('change', function (e) {
-			fillVolume()
-		})
+        $('#show').on('change', function (e) {
+            fillVolume()
+        })
 
-		$('#gradexx').on('change', function (e) {
-			fillVolume()
-		})
+        $('#gradexx').on('change', function (e) {
+            fillVolume()
+        })
 
-		$('#titleservlet').on('change', function (e) {
+        $('#titleservlet').on('change', function (e) {
 
-			fillVolume()
-		})
+            fillVolume()
+        })
 
-	});
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
+    });
+    >>>>>>>
+    43500
+    dc9a62f29b4070abe57d8e23cc385996845
 
-</script>
+    </script>
 </body>
 </html>
 <<<<<<< HEAD

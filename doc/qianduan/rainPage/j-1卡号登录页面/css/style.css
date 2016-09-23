@@ -1,20 +1,23 @@
-.header{
+.header {
     width: 100%;
     height: 7.28125rem;
     text-align: center;
     padding-top: 1.40625rem;
     background-color: #f1f1f1;
 }
-.header_img{
+
+.header_img {
     width: 21.5625rem;
     height: 7.28125rem;
 }
-.mine_zilo{
+
+.mine_zilo {
     margin: 1.25rem 0.9375rem 1.875rem;
     position: relative;
     top: -1.5625rem;
 }
-.mine_zUl{
+
+.mine_zUl {
     border: 1px solid #e5e5e5;
     border-bottom: none;
     border-radius: 0.46875rem;
@@ -22,13 +25,15 @@
     margin-bottom: 0.625rem;
     overflow: hidden;
 }
-.mine_zuli{
+
+.mine_zuli {
     height: 3.71875rem;
     line-height: 3.71875rem;
     padding: 0 0.9375rem;
     border-bottom: 1px solid #e5e5e5;
 }
-.mine_leftsp{
+
+.mine_leftsp {
     display: inline-block;
     color: #ccc;
     font-size: 0.9375rem;
@@ -41,15 +46,18 @@
     top: 0.325rem;
     left: 0.3125rem;
 }
-.lfet01{
+
+.lfet01 {
     background: url('../img/ren.png') 0 center no-repeat;
     background-size: 1.09375rem 1.34375rem;
 }
-.lfet02{
+
+.lfet02 {
     background: url('../img/suo.png') 0 center no-repeat;
     background-size: 1.09375rem 1.34375rem;
 }
-.mine_rightip{
+
+.mine_rightip {
     display: inline-block;
     color: #888;
     font-size: 1.0rem;
@@ -57,23 +65,26 @@
     margin-left: 1.5625rem;
 }
 
-.frwa_mia{
+.frwa_mia {
     width: 100%;
     text-align: right;
     height: 2.5rem;
     overflow: hidden;
 }
-.wang_mima{
+
+.wang_mima {
     float: right;
     color: #24cbd1;
     font-size: 0.9375rem;
     text-decoration: underline;
 }
-.bottom_bdiv{
+
+.bottom_bdiv {
     width: 100%;
     text-align: center;
 }
-.bottom_btn{
+
+.bottom_btn {
     display: inline-block;
     color: #888;
     width: 100%;

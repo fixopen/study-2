@@ -1,53 +1,62 @@
 /* @Author:zhaoxq*/
-.set-main{
-	padding-top: 0.625rem;
+.set-main {
+    padding-top: 0.625rem;
 }
-.set-ul{
-	overflow: hidden;
-	background-color: #fff;
-	border-top: 1px solid #e5e5e5;
+
+.set-ul {
+    overflow: hidden;
+    background-color: #fff;
+    border-top: 1px solid #e5e5e5;
 }
-.set-li{
-	height: 3.6875rem;
-	line-height: 3.6875rem;
-	padding: 0 1.0rem;
-	box-sizing: border-box;
-	font-size: 1.0625rem;	
-	border-bottom: 1px solid #e5e5e5;
-	color: #444;
+
+.set-li {
+    height: 3.6875rem;
+    line-height: 3.6875rem;
+    padding: 0 1.0rem;
+    box-sizing: border-box;
+    font-size: 1.0625rem;
+    border-bottom: 1px solid #e5e5e5;
+    color: #444;
 }
-.set-span{
-	display: inline-block;
-	width: 5.625rem;
+
+.set-span {
+    display: inline-block;
+    width: 5.625rem;
 }
-.set-input{
-	width: 65%;
-	height: 97%;
-	font-size: 1.0rem;
-	padding: 0 0.3125rem;
-	box-sizing: border-box;
+
+.set-input {
+    width: 65%;
+    height: 97%;
+    font-size: 1.0rem;
+    padding: 0 0.3125rem;
+    box-sizing: border-box;
 }
-.btn-box{
-	padding: 1.5625rem 0.9375rem 0;
+
+.btn-box {
+    padding: 1.5625rem 0.9375rem 0;
 }
-.save-btn,.cancel-btn{
-	display: block;
-	height: 3.75rem;
-	line-height: 3.75rem;
-	border-radius: 5px;
-	text-align: center;
-	text-decoration: underline;
-	font-size: 1.0625rem;
+
+.save-btn, .cancel-btn {
+    display: block;
+    height: 3.75rem;
+    line-height: 3.75rem;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: underline;
+    font-size: 1.0625rem;
 }
-.save-btn{
-	background-color: #fe6568;
-	color: #fff;
-	margin-bottom: 0.53125rem;
+
+.save-btn {
+    background-color: #fe6568;
+    color: #fff;
+    margin-bottom: 0.53125rem;
 }
-.cancel-btn{
-	background-color: #ccc;
-	color: #666;
+
+.cancel-btn {
+    background-color: #ccc;
+    color: #666;
 }
-.save-btn:hover,.cancel-btn:hover{
-	text-decoration: underline;
+
+.save-btn:hover, .cancel-btn:hover {
+    text-decoration: underline;
 }

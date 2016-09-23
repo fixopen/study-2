@@ -57,6 +57,15 @@ public class Properties {
         return result;
     }
 
+    public static String getPropertyValue(String name) {
+        String result = null;
+        Property property = JPAEntry.getObject(Property.class, "name", name);
+        if (property != null) {
+            result = property.getValue();
+        }
+        return result;
+    }
+
     @PUT //根据id修改
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
