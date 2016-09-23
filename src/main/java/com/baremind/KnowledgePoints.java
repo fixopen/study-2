@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-@Path("knowledgePoints")
+@Path("knowledge—points")
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
@@ -269,7 +269,9 @@ public class KnowledgePoints {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("\"order\"", "ASC");
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject, orders);
             if (!knowledgePoints.isEmpty()) {
                 result = Response.ok(new Gson().toJson(knowledgePoints)).build();
             }

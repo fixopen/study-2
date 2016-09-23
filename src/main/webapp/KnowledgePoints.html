@@ -128,7 +128,7 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledgePoints?filter=' + JSON.stringify(filterds),
+                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filterds),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
@@ -156,7 +156,7 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledgePoints?filter=' + JSON.stringify(filtergs),
+                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filtergs),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
@@ -468,15 +468,28 @@
 
         $('#appendknowledgePointTitle').on('click', function (e) {
             let knowledgePointTitle = document.getElementById('knowledgePointTitle')
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+            let kps = subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid
+            let order = kps[kps.length - 1].order + 1
             let data = {
                 subjectId: currentSubject,
                 grade: currentGrade,
                 volumeId: currentVolume,
-                title: knowledgePointTitle.value
+                title: knowledgePointTitle.value,
+                order: order
             }
+
             $.ajax({
                 type: "post",
-                url: "api/knowledgePoints",
+                url: "api/knowledge—points",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -517,12 +530,11 @@
             }
             $.ajax({
                 type: "put",
-                url: "api/knowledgePoints/" + currentKnowledgePoint,
+                url: "api/knowledge—points/" + currentKnowledgePoint,
                 data: JSON.stringify(knowledgePointData),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (knowledgePointData) {
-                    alert("修改成功")
                     let gradeName = 'low'
                     switch (currentGrade) {
                         case 21:
@@ -535,9 +547,10 @@
                     subjects[currentSubjectIndex][gradeName][currentVolumeIndex][currentKnowledgePointIndex] = knowledgePointData
                     let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
                     let opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
-                    let knowledgePoint = document.getElementById('knowledgePointTitleChoice')
-                    opt.innerText = knowledgePoint.value
-
+                    let knowledgePoints = document.getElementById('knowledgePointTitle')
+                    alert(knowledgePoints.value)
+                    opt.innerText = knowledgePoints.value
+                    alert("修改成功")
                 },
                 error: function () {
                     alert("修改失败")
@@ -550,7 +563,7 @@
         let contents = document.getElementById('contents')
         contents.addEventListener('click', function (e) {
             let elm = e.target
-            for (;;) {
+            for (; ;) {
                 if (elm.parentNode == e.currentTarget) {
                     break
                 }
@@ -843,7 +856,7 @@
                                                 success: function (problemsoptions) {
                                                     alert("添加成功")
                                                 },
-                                                error:function (problemsoptions) {
+                                                error: function (problemsoptions) {
                                                     alert("添加失败")
                                                 }
                                             })
@@ -918,9 +931,9 @@
                                                         async: false,
                                                         contentType: "application/json; charset=utf-8",
                                                         success: function (problemsoptions) {
-                                                          alert("添加成功")
+                                                            alert("添加成功")
                                                         },
-                                                        error:function (problemsoptions) {
+                                                        error: function (problemsoptions) {
                                                             alert("添加失败")
                                                         }
                                                     })
@@ -987,7 +1000,7 @@
                             success: function (quote) {
                                 alert("修改成功")
                             },
-                            error:function (quote) {
+                            error: function (quote) {
                                 alert("修改失败")
                             }
                         })
@@ -1008,7 +1021,7 @@
                                 alert("添加成功")
                                 currentSelectedElement.dataset.id = quote.id
                             },
-                            error:function (quote) {
+                            error: function (quote) {
                                 alert("修改失败")
                             }
                         })
@@ -1023,7 +1036,7 @@
         save.addEventListener('click', function (e) {
             if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                 alert("不能重复提交")
-            }else{
+            } else {
                 let children = contents.children
                 for (let i = 0; i < children.length; ++i) {
                     //id, knowledge_point_id, volume_id, type, text_id|image_id|problem_id|video_id, order
