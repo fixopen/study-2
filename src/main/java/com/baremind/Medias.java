@@ -38,6 +38,7 @@ public class Medias {
                     String fileName = now + "." + postfix;
                     String pyshicalpath = Properties.getPropertyValue("physicalpath");
                     String uploadedFileLocation =  pyshicalpath + fileName;
+
                     File file = new File(uploadedFileLocation);
                     FileOutputStream w = new FileOutputStream(file);
                     CharacterEncodingFilter.saveFile(w, inputStream);
