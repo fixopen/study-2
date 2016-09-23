@@ -1,10 +1,9 @@
 package com.baremind.data;
 
-import org.eclipse.persistence.annotations.Array;
-import org.eclipse.persistence.annotations.Struct;
-
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by lenovo on 2016/8/18.

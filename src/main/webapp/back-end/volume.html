@@ -238,6 +238,12 @@
                             break
                     }
                     subjects[currentSubjectIndex][gradeName].push(volume)
+                    let volumeSelect = document.getElementById('volumeTitleChoice')
+                    let option = document.createElement('option')
+                    option.setAttribute("value", subjects[currentSubjectIndex][gradeName][i].id)
+                    //option.dataset.order = volume.order
+                    option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][i].title))
+                    volumeSelect.appendChild(option)
                 }
             })
         })
@@ -277,12 +283,12 @@
         let currentSelectedElement
 
         let contents = document.getElementById('contents')
-        contents.addEventListener('click', function(e) {
+        contents.addEventListener('click', function (e) {
             currentSelectedElement = e.target
         }, false)
 
         let appendText = document.getElementById('appendText')
-        appendText.addEventListener('click', function(e) {
+        appendText.addEventListener('click', function (e) {
             let textArea = document.createElement('input')
             textArea.setAttribute('data-identity', orderValue)
             textArea.setAttribute("data-id", '')
@@ -292,7 +298,7 @@
         }, false)
 
         let movePrevious = document.getElementById('movePrevious')
-        movePrevious.addEventListener('click', function(e) {
+        movePrevious.addEventListener('click', function (e) {
             let c = currentSelectedElement.parentNode
             let previousSibling = currentSelectedElement.previousElementSibling
             c.removeChild(currentSelectedElement)
@@ -300,7 +306,7 @@
         }, false)
 
         let moveNext = document.getElementById('moveNext')
-        moveNext.addEventListener('click', function(e) {
+        moveNext.addEventListener('click', function (e) {
             let c = currentSelectedElement.parentNode
             let nextNextSibling = currentSelectedElement.nextElementSibling.nextElementSibling
             c.removeChild(currentSelectedElement)
@@ -308,14 +314,14 @@
         }, false)
 
         let submit = document.getElementById('submit')
-        submit.addEventListener('click', function(e) {
+        submit.addEventListener('click', function (e) {
             switch (currentSelectedElement.dataset.type) {
                 case 'text':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         //put
                     } else {
                         //post
-                        success: function(data) {
+                        success: function (data) {
                             let id = data.id
                             currentSelectedElement.dataset.id = id
                         }
@@ -325,8 +331,13 @@
         }, false)
 
         let save = document.getElementById('save')
-        save.addEventListener('click', function(e) {
+        save.addEventListener('click', function (e) {
             //$(currentSelectedElement).val()
+
+            //subjects[..][gradeName][volumn..].vsid[subjects[..][gradeName][volumn..].vsid.length - 1].order + 1
+            //let kps = subjects[..][gradeName][volumn..].vsid
+            //kps[kps.length - 1].order + 1
+            //let kps = subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid //[currentKnowledgePointIndex]
 
             let children = contents.children
             for (let i = 0; i < children.length; ++i) {

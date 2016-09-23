@@ -18,9 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by User on 2016/9/20.
@@ -29,61 +27,43 @@ import java.util.Map;
 public class ImageTexts {
 
     @POST
-//    @Path("file")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             try {
-                byte[] buffer = new byte[4 * 1024];
                 Part p = request.getPart("file");
-
-                request.setCharacterEncoding("UTF-8");
-                String content = request.getParameter("content");
-
                 String contentType = p.getContentType();
                 InputStream inputStream = p.getInputStream();
                 long now = new Date().getTime();
-                //文件后缀名
-                String prefix = contentType.substring(contentType.lastIndexOf("/") + 1);
-                //System.out.println("文件后缀名"+prefix);
-                if (prefix != "jpg" || prefix != "jpeg" || prefix != "gif" || prefix != "ai" || prefix != "pdg") {
-                    String uploadedFileLocation = "d:/" + now + "." + "" + prefix + "";
-                    File csvFile = new File(uploadedFileLocation);
-                    FileOutputStream w = new FileOutputStream(csvFile);
-                    for (; ; ) {
-                        int receiveLength = inputStream.read(buffer);
-                        if (receiveLength == -1) {
-                            break;
-                        }
-                        w.write(buffer, 0, receiveLength);
-                    }
+                String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
+                if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
+                    String fileName = now + "." + postfix;
+                    String pyshicalpath = Properties.getPropertyValue("physicalpath");
+                    String uploadedFileLocation = pyshicalpath + fileName;
+                    File file = new File(uploadedFileLocation);
+                    FileOutputStream w = new FileOutputStream(file);
+                    CharacterEncodingFilter.saveFile(w, inputStream);
 
-                    String fileName = csvFile.getName();
-
-                    w.close();
-
+                    String content = request.getParameter("content");
+                    content = new String(content.getBytes("ISO-8859-1"),"UTF-8");
                     ImageText imageText = new ImageText();
                     imageText.setId(IdGenerator.getNewId());
-                    imageText.setExt(prefix);
+                    imageText.setExt(postfix);
                     imageText.setMimeType(contentType);
                     imageText.setName(fileName);
-                    imageText.setSize(csvFile.length());
-                    imageText.setStorePath(uploadedFileLocation);
+                    imageText.setSize(p.getSize());
+                    String virtualPath = Properties.getPropertyValue("virtualpath") + fileName;
+                    imageText.setStorePath(virtualPath);
                     imageText.setContent(content);
                     JPAEntry.genericPost(imageText);
+
                     result = Response.ok(new Gson().toJson(imageText)).build();
-                    // result = Response.sendRedirect("URL");
-//                    //parseAndInsert(uploadedFileLocation);"{\"filename\":\""+now+".jpg\"}"
-//                    result = Response.ok("{\"filename\":\""+now+".jpg\"}").build();
                 } else {
-                    //.jpg .jpeg .gif .ai .pdg
                     result = Response.status(415).build();
                     //上传图片的格式不正确
                 }
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServletException e) {

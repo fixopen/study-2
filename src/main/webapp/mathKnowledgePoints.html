@@ -1,11 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>数学-目录</title>
-	<!-- 禁止拉伸和全屏设置 -->
-  	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
-    <meta name="format-detection" content="telphone=no" />
+    <meta charset="UTF-8">
+    <title>数学-目录</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telphone=no"/>
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
@@ -19,52 +21,52 @@
 
 </head>
 <body>
-    <div class="wrap">
-        <div class="rain-main">
-            <div class="biaoti_div" id="title">
-                <!--<span class="biti_span">横式问题找怪物</span>-->
-            </div>
-            <div class="mulu_div" id="whole_width" style="margin-bottom: 0.3125rem;">
-                <ul class="cont_sul" id="knowledge-point">
-                </ul>
-            </div>
+<div class="wrap">
+    <div class="rain-main">
+        <div class="biaoti_div" id="title">
+            <!--<span class="biti_span">横式问题找怪物</span>-->
+        </div>
+        <div class="mulu_div" id="whole_width" style="margin-bottom: 0.3125rem;">
+            <ul class="cont_sul" id="knowledge-point">
+            </ul>
         </div>
     </div>
-    <!--templates-->
-    <template id="title-template">
-        <span class="biti_span" >${title}</span>
-    </template>
-    <template id="knowledge-point-template">
-        <li class="neir_li">
-            <div class="neir_lidiv">
-                <!--<a class="neir_pzi" href="#">${title}</a>-->
-                <a class="neir_pzi"  href="mathKnowledgePointsDetail.html?volumeId=${id}&id=${id}" >${title}</a>
-            </div>
-            <div class="neir_ridiv">
-                <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
-                <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
-            </div>
-            <img src="img/fenjie.png" alt="">
-        </li>
-    </template>
-    <template id="knowledge-test-template">
-        <li class="neir_li_li">
-            <div class="neir_lidiv">
-                <!--<a class="neir_pzi daTi" href="#">${title}</a>-->
-                <a class="neir_pzi" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${id}" >${title}</a>
-            </div>
-            <div class="neir_ridiv">
-                <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
-                <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
-            </div>
-            <div class="lian_jie" >
-                <span class="lianjie lianjie01"></span>
-                <div class="split_line" id="split_line"></div>
-                <span class="lianjie lianjie02"></span>
-            </div>
-        </li>
-    </template>
-    <script type="text/javascript" src="js/basic.js"></script>
-    <script type="text/javascript" src="js/math-knowledge.js"></script>
+</div>
+<!--templates-->
+<template id="title-template">
+    <span class="biti_span">${title}</span>
+</template>
+<template id="knowledge-point-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <!--<a class="neir_pzi" href="#">${title}</a>-->
+            <a class="neir_pzi" href="mathKnowledgePointsDetail.html?volumeId=${id}&id=${id}">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
+            <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
+        </div>
+        <img src="img/fenjie.png" alt="">
+    </li>
+</template>
+<template id="knowledge-test-template">
+    <li class="neir_li_li">
+        <div class="neir_lidiv">
+            <!--<a class="neir_pzi daTi" href="#">${title}</a>-->
+            <a class="neir_pzi" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${id}">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
+            <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
+        </div>
+        <div class="lian_jie">
+            <span class="lianjie lianjie01"></span>
+            <div class="split_line" id="split_line"></div>
+            <span class="lianjie lianjie02"></span>
+        </div>
+    </li>
+</template>
+<script type="text/javascript" src="js/basic.js"></script>
+<script type="text/javascript" src="js/math-knowledge.js"></script>
 </body>
 </html>

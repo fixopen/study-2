@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-@Path("knowledgePoints")
+@Path("knowledge—points")
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
@@ -76,7 +76,6 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
 
-
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -134,7 +133,10 @@ public class KnowledgePoints {
                     String problemsstandardanswersquery = "SELECT * FROM problem_standard_answers WHERE problem_id IN ( " + join(problemIds) + " )";
                     Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemStandardAnswer.class);
                     problemstandardanswersObjects = pqsan.getResultList();
+<<<<<<< HEAD
 
+=======
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                 }
                 List<ImageText> imageTextObject = null;
                 if (!imageTextIds.isEmpty()) {
@@ -149,9 +151,9 @@ public class KnowledgePoints {
                     quoteObject = qq.getResultList();
                 }
 
-                List<Object> r = new ArrayList<>();
-                List<Object> problemr3 = new ArrayList<>();
-                List<Object> quoter4 = new ArrayList<>();
+                List<Object> orderedContents = new ArrayList<>();
+                List<Object> orderedProblems = new ArrayList<>();
+                List<Object> orderedQuotes = new ArrayList<>();
                 for (final KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -161,7 +163,11 @@ public class KnowledgePoints {
                                 tm.put("id", t.getId());
                                 tm.put("content", t.getContent());
                                 tm.put("type", "text");
+<<<<<<< HEAD
                                 r.add(tm);
+=======
+                                orderedContents.add(tm);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                             }
                             break;
                         case "image":
@@ -172,10 +178,13 @@ public class KnowledgePoints {
                                 itm.put("type", "image");
                                 itm.put("description", "");
                                 itm.put("href", im.getStorePath());
+<<<<<<< HEAD
                                 r.add(itm);
+=======
+                                orderedContents.add(itm);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                             }
                             break;
-
                         case "imageText":
                             if (imageTextObject != null) {
                                 ImageText ITe = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
@@ -184,7 +193,11 @@ public class KnowledgePoints {
                                 items.put("type", "imageText");
                                 items.put("content", ITe.getContent());
                                 items.put("href", ITe.getStorePath());
+<<<<<<< HEAD
                                 r.add(items);
+=======
+                                orderedContents.add(items);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                             }
                             break;
                         case "problem":
@@ -202,7 +215,11 @@ public class KnowledgePoints {
                                 }
                                 piems.put("options", pieo);
                                 piems.put("title", pie.getTitle());
+<<<<<<< HEAD
                                 problemr3.add(piems);
+=======
+                                orderedProblems.add(piems);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                                 break;
                             }
                         case "quote":
@@ -212,20 +229,23 @@ public class KnowledgePoints {
                                 iquems.put("id", ique.getId());
                                 iquems.put("content", ique.getContent());
                                 iquems.put("source", ique.getSource());
+<<<<<<< HEAD
                                 quoter4.add(iquems);
+=======
+                                orderedQuotes.add(iquems);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                             }
                             break;
-
                     }
                 }
                 Map<String, Object> r2 = new HashMap<>();
                 r2.put("title", p.getTitle());
-                r2.put("quotes", quoter4);
-                r2.put("contents", r);
-                if (!videoObjects.isEmpty()) {
+                r2.put("quotes", orderedQuotes);
+                r2.put("contents", orderedContents);
+                if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     r2.put("video", videoObjects.get(0));
                 }
-                //===============================================================
+
                 Map<String, Object> interaction = new HashMap<>();
                 int readCount = 0;
                 interaction.put("readCount", readCount);
@@ -235,20 +255,17 @@ public class KnowledgePoints {
                 List likeCountList = lq.getResultList(); //->Object[]->count*/
                 interaction.put("likeCount", likeCount);
                 r2.put("interaction", interaction);
-                r2.put("problems", problemr3);
-                //em.getTransaction().commit();
-                //==================================================
+
+                r2.put("problems", orderedProblems);
+
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
-                //评论
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
                 r2.put("comments", comments);
-                //==================================================
-                if (!r.isEmpty()) {
-                    String v = new Gson().toJson(r2);
-                    result = Response.ok(v, "application/json; charset=utf-8").build();
-                }
+
+                String v = new Gson().toJson(r2);
+                result = Response.ok(v, "application/json; charset=utf-8").build();
             }
         }
 
@@ -276,7 +293,9 @@ public class KnowledgePoints {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("\"order\"", "ASC");
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject, orders);
             if (!knowledgePoints.isEmpty()) {
                 result = Response.ok(new Gson().toJson(knowledgePoints)).build();
             }

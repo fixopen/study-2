@@ -1,25 +1,29 @@
-.mine_zilo{
+.mine_zilo {
     margin: 1.25rem 0 1.875rem;
 }
-.mine_zUl{
+
+.mine_zUl {
     background-color: #fff;
     border-top: 1px solid #e5e5e5;
     margin-bottom: 1.25rem;
     overflow: hidden;
 }
-.mine_zuli{
+
+.mine_zuli {
     height: 3.71875rem;
     line-height: 3.71875rem;
     padding: 0 0.9375rem;
     border-bottom: 1px solid #e5e5e5;
     position: relative;
 }
-.mine_leftsp{
+
+.mine_leftsp {
     display: inline-block;
     width: 6.875rem;
     text-align: left;
 }
-.mine_rightip{
+
+.mine_rightip {
     display: inline-block;
     color: #888;
     font-size: 1.0rem;
@@ -30,15 +34,17 @@
     top: 0;
     right: 2.5rem;
 }
-.mine_touimg{
+
+.mine_touimg {
     width: 2.5rem;
     height: 2.5rem;
     position: absolute;
     top: 0.625rem;
     right: 2.5rem;
 }
-.mine_rightimg{
-    width:0.46875rem;
+
+.mine_rightimg {
+    width: 0.46875rem;
     height: 0.71875rem;
     position: absolute;
     top: 1.5rem;
