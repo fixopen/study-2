@@ -10,10 +10,6 @@
     <version>1.0-SNAPSHOT</version>
     <name>study</name>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
     <build>
         <finalName>study</finalName>
         <plugins>
@@ -29,26 +25,6 @@
             </plugin>
         </plugins>
     </build>
-<<<<<<< HEAD
-=======
-	<build>
-		<finalName>study</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
-				<inherited>true</inherited>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
->>>>>>> 43500dc9a62f29b4070abe57d8e23cc385996845
-=======
->>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
 
     <dependencyManagement>
         <dependencies>
