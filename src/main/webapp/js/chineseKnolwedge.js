@@ -40,7 +40,7 @@
     };
     $.ajax({
         type:"get",
-        url:'api/knowledgePoints?filter=' + JSON.stringify(filterds),
+        url:'api/knowledge—points?filter=' + JSON.stringify(filterds),
         dataType: 'json',
         async : false,
         success: function(kps){

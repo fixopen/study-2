@@ -30,7 +30,7 @@
     // "apiolumes/" + b+"/",
     $.ajax({
         type:"get",
-        url:'api/knowledge-points/'+b+'/contents',
+        url:'api/knowledge—points/'+b+'/contents',
         dataType: 'json',
         async : false,
         success: function(kps){
