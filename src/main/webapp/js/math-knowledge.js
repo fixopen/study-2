@@ -134,16 +134,11 @@ $(function () {
         type: "get",
         url: 'api/knowledgePoints?filter=' + JSON.stringify(filterds),
         dataType: 'json',
-<<<<<<< HEAD
-        async : false,
-        success: function(kps){
-            alert(JSON.stringify(kps))
-            knowledgePoints=kps;
-=======
+
         async: false,
         success: function (kps) {
             knowledgePoints = kps;
->>>>>>> 1a74c96216438d186373902632b1188fcacf4820
+
             //alert("知识点"+JSON.stringify(kps))
 
             proc({
