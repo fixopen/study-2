@@ -226,7 +226,6 @@
                 knowledgePoint.value = opt.text
             }
         });
-
         $('#subject').on('change', function (e) {
             currentSubjectIndex = e.target.selectedIndex
             currentSubject = e.target.value
@@ -398,12 +397,24 @@
 
         $('#appendvolumeTitle').on('click', function (e) {
             let volumeTitle = document.getElementById('volumeTitle')
+
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+            let cs = subjects[currentSubjectIndex][gradeName]
+            let order = cs[cs.length - 1].order + 1
             let data = {
                 subjectId: currentSubject,
                 grade: currentGrade,
-                title: volumeTitle.value
+                title: volumeTitle.value,
+                order: order
             }
-            alert(JSON.stringify(data))
             $.ajax({
                 type: "post",
                 url: "api/volumes",
@@ -422,6 +433,12 @@
                             break
                     }
                     subjects[currentSubjectIndex][gradeName].push(volume)
+                    let volumeSelect = document.getElementById('volumeTitleChoice')
+                    let option = document.createElement('option')
+                    option.setAttribute("value", currentVolume)
+                    option.appendChild(document.createTextNode(volume.title))
+                    volumeSelect.appendChild(option)
+                    volumeSelect.selectedIndex = volumeSelect.options.length - 1
                     alert("添加成功")
                 },
                 error: function () {

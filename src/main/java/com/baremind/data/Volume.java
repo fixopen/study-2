@@ -24,6 +24,17 @@ public class Volume {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "\"order\"")
+    private int order;
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     public Long getId() {
         return id;
     }

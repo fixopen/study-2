@@ -22,17 +22,11 @@ public class Volumes {
     public Response createVolume(@CookieParam("sessionId") String sessionId, /*byte[] volumeInfo*/ Volume volume) {
 
         Response result = Response.status(401).build();
-        //Volume volume = null;
-        //try {
-        //volume = new Gson().fromJson(new String(volumeInfo, "UTF-8"), Volume.class);
-        //} catch (JsonSyntaxException | UnsupportedEncodingException e) {
         if (JPAEntry.isLogining(sessionId)) {
             volume.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(volume);
             result = Response.ok(volume).build();
         }
-        //e.printStackTrace();
-        //}
         return result;
     }
 
@@ -43,7 +37,9 @@ public class Volumes {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Volume> volumes = JPAEntry.getList(Volume.class, filterObject);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("\"order\"", "ASC");
+            List<Volume> volumes = JPAEntry.getList(Volume.class, filterObject, orders);
             if (!volumes.isEmpty()) {
                 result = Response.ok(new Gson().toJson(volumes)).build();
             }
