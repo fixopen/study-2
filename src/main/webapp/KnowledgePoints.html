@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <volumeTitle>后台录入页面</volumeTitle>
+    <title>后台录入页面</title>
     <style>
         .active {
             background-color: yellow;
@@ -108,7 +108,7 @@
                 for (var i = 0; i < subjectData.length; ++i) {
                     subjects[i].low = []
                     subjects[i].high = []
-                    filter = {
+                    let filter = {
                         subjectId: subjects[i].id,
                         grade: 20
                     };
@@ -120,7 +120,7 @@
                             subjects[i].low = volumes
                             for (var j = 0; j < subjects[i].low.length; ++j) {
                                 subjects[i].low[j].vsid = []
-                                let filterds = {
+                                let filter = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].low[j].id,
                                     grade: 20
@@ -128,7 +128,7 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filterds),
+                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
@@ -148,7 +148,7 @@
                             subjects[i].high = volumes
                             for (var j = 0; j < subjects[i].high.length; ++j) {
                                 subjects[i].high[j].vsid = []
-                                filtergs = {
+                                let filter = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].high[j].id,
                                     grade: 21
@@ -156,7 +156,7 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filtergs),
+                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
@@ -223,10 +223,11 @@
                 let knowledgePoint = document.getElementById('knowledgePointTitle')
                 knowledgePoint.value = ''
                 opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
-                knowledgePoint.value = opt.text
+                if (opt) {
+                    knowledgePoint.value = opt.text
+                }
             }
         });
-
         $('#subject').on('change', function (e) {
             currentSubjectIndex = e.target.selectedIndex
             currentSubject = e.target.value
@@ -394,16 +395,34 @@
             if (opt) {
                 knowledgePoint.value = opt.text
             }
+            document.getElementById("buttons").style.visibility = "hidden";//隐藏
         })
 
         $('#appendvolumeTitle').on('click', function (e) {
             let volumeTitle = document.getElementById('volumeTitle')
+
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+            let cs = subjects[currentSubjectIndex][gradeName]
+            let order = 1
+            if(cs.length != 0){
+                order = cs[cs.length - 1].order + 1
+            }
+
+
             let data = {
                 subjectId: currentSubject,
                 grade: currentGrade,
-                title: volumeTitle.value
+                title: volumeTitle.value,
+                order: order
             }
-            alert(JSON.stringify(data))
             $.ajax({
                 type: "post",
                 url: "api/volumes",
@@ -421,7 +440,14 @@
                         default:
                             break
                     }
+                    volume.vsid = []
                     subjects[currentSubjectIndex][gradeName].push(volume)
+                    let volumeSelect = document.getElementById('volumeTitleChoice')
+                    let option = document.createElement('option')
+                    option.setAttribute("value", currentVolume)
+                    option.appendChild(document.createTextNode(volume.title))
+                    volumeSelect.appendChild(option)
+                    volumeSelect.selectedIndex = volumeSelect.options.length - 1
                     alert("添加成功")
                 },
                 error: function () {
@@ -453,6 +479,7 @@
                         default:
                             break
                     }
+                    volumeData.vsid = subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid
                     subjects[currentSubjectIndex][gradeName][currentVolumeIndex] = volumeData
                     let volumeSelect = document.getElementById('volumeTitleChoice')
                     let opt = volumeSelect.options.item(currentVolumeIndex)
@@ -478,7 +505,11 @@
                     break
             }
             let kps = subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid
-            let order = kps[kps.length - 1].order + 1
+            let order = 1
+            if(kps.length != 0){
+                order = kps[kps.length - 1].order + 1
+            }
+
             let data = {
                 subjectId: currentSubject,
                 grade: currentGrade,
@@ -576,28 +607,7 @@
                 currentSelectedElement = elm
                 currentSelectedElement.addClass('active')
             }
-//            if (elm.dataset) {
-//                if ((elm.dataset.type == 'problem') ||
-//                        (elm.dataset.type == 'imageText') ||
-//                        (elm.dataset.type == 'quote')) {
-//                }
-//            }
-//            while (true) {
-//                if (elm == currentSelectedElement) {
-//                    change = false
-//                    break
-//                } else if (elm == e.currentTarget) {
-//                    break
-//                }
-//                elm = elm.parentNode
-//            }
-//            if (change) {
-//                if (currentSelectedElement) {
-//                    currentSelectedElement.removeClass('active')
-//                }
-//                currentSelectedElement = e.target
-//                currentSelectedElement.addClass('active')
-//            }
+
         }, false)
 
         let movePrevious = document.getElementById('movePrevious')
@@ -1035,36 +1045,38 @@
 
         let save = document.getElementById('save')
         save.addEventListener('click', function (e) {
-            if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+            let children = contents.children
+            for (let i = 0; i < children.length; ++i) {
+                //id, knowledge_point_id, volume_id, type, text_id|image_id|problem_id|video_id, order
+                let data = {
+                    knowledgePointId: parseInt(currentKnowledgePoint),
+                    volumeId: parseInt(currentVolume),
+                    grade: parseInt(currentGrade),
+                    subjectId: parseInt(currentSubject),
+                    type: children[i].dataset.type,
+                    order: i + 1,
+                    objectId: children[i].dataset.id
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "api/knowledge-point-content-maps",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (kpcm) {
+                        //currentSelectedElement.dataset.id =kpcm.id
+                        alert("添加成功")
+                        document.getElementById("buttons").style.visibility = "hidden";//隐藏
+                    }
+                })
+            }
+            /*if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                 alert("不能重复提交")
             } else {
-                let children = contents.children
-                for (let i = 0; i < children.length; ++i) {
-                    //id, knowledge_point_id, volume_id, type, text_id|image_id|problem_id|video_id, order
-                    let data = {
-                        knowledgePointId: parseInt(currentKnowledgePoint),
-                        volumeId: parseInt(currentVolume),
-                        grade: parseInt(currentGrade),
-                        subjectId: parseInt(currentSubject),
-                        type: children[i].dataset.type,
-                        order: i + 1,
-                        objectId: children[i].dataset.id
-                    }
 
-                    $.ajax({
-                        type: "post",
-                        url: "api/knowledge-po/json; charset=utint-content-maps",
-                        data: JSON.stringify(data),
-                        dataType: "json",
-                        contentType: "applicationf-8",
-                        async: false,
-                        success: function (save) {
-                            currentSelectedElement.dataset.id = save.id
-                            alert("添加成功")
-                        }
-                    })
-                }
-            }
+            }*/
         }, false)
     })
 </script>

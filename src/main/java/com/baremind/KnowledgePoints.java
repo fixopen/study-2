@@ -76,6 +76,7 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
 
+
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -106,6 +107,12 @@ public class KnowledgePoints {
                     Query tq = em.createNativeQuery(textquery, Text.class);
                     textObjects = tq.getResultList();
                 }
+
+                   /* String statsLikes = "SELECT COUNT(l) AS count FROM likes l WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
+                    Query lq = em.createNativeQuery(statsLikes, Video.class);
+                    List likeCountList = lq.getResultList();
+                    System.out.println(likeCountList);
+*/
                 List<Image> imageObjects = null;
                 if (!imageIds.isEmpty()) {
                     String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
@@ -216,33 +223,31 @@ public class KnowledgePoints {
                             break;
                     }
                 }
-                Map<String, Object> r2 = new HashMap<>();
-                r2.put("title", p.getTitle());
-                r2.put("quotes", orderedQuotes);
-                r2.put("contents", orderedContents);
+                Map<String, Object> totalResult = new HashMap<>();
+                totalResult.put("title", p.getTitle());
+                totalResult.put("quotes", orderedQuotes);
+                totalResult.put("contents", orderedContents);
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
-                    r2.put("video", videoObjects.get(0));
+                    totalResult.put("video", videoObjects.get(0));
                 }
 
                 Map<String, Object> interaction = new HashMap<>();
                 int readCount = 0;
                 interaction.put("readCount", readCount);
                 int likeCount = 0;
-                /*String statsLikes = "SELECT COUNT(*) AS count FROM likes WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
-                Query lq = em.createNativeQuery(statsLikes, Video.class);
-                List likeCountList = lq.getResultList(); //->Object[]->count*/
+                /* //->Object[]->count*/
                 interaction.put("likeCount", likeCount);
-                r2.put("interaction", interaction);
+                totalResult.put("interaction", interaction);
 
-                r2.put("problems", orderedProblems);
+                totalResult.put("problems", orderedProblems);
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                r2.put("comments", comments);
+                totalResult.put("comments", comments);
 
-                String v = new Gson().toJson(r2);
+                String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
             }
         }
