@@ -216,13 +216,10 @@ public class KnowledgePoints {
                 }
                 Map<String, Object> r2 = new HashMap<>();
                 r2.put("title", p.getTitle());
-<<<<<<< HEAD
-                r2.put("quotes", quoter4);
-                r2.put("contents", r);
-=======
+
                 r2.put("quotes", orderedQuotes);
                 r2.put("contents", orderedContents);
->>>>>>> 1a74c96216438d186373902632b1188fcacf4820
+
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     r2.put("video", videoObjects.get(0));
                 }
