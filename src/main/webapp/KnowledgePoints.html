@@ -108,7 +108,7 @@
                 for (var i = 0; i < subjectData.length; ++i) {
                     subjects[i].low = []
                     subjects[i].high = []
-                    filter = {
+                    let filter = {
                         subjectId: subjects[i].id,
                         grade: 20
                     };
@@ -120,7 +120,7 @@
                             subjects[i].low = volumes
                             for (var j = 0; j < subjects[i].low.length; ++j) {
                                 subjects[i].low[j].vsid = []
-                                let filterds = {
+                                let filter = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].low[j].id,
                                     grade: 20
@@ -128,7 +128,7 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filterds),
+                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
@@ -148,7 +148,7 @@
                             subjects[i].high = volumes
                             for (var j = 0; j < subjects[i].high.length; ++j) {
                                 subjects[i].high[j].vsid = []
-                                filtergs = {
+                                let filter = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].high[j].id,
                                     grade: 21
@@ -156,7 +156,7 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filtergs),
+                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
@@ -223,7 +223,9 @@
                 let knowledgePoint = document.getElementById('knowledgePointTitle')
                 knowledgePoint.value = ''
                 opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
-                knowledgePoint.value = opt.text
+                if (opt) {
+                    knowledgePoint.value = opt.text
+                }
             }
         });
         $('#subject').on('change', function (e) {
