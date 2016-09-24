@@ -228,6 +228,7 @@
                 }
             }
         });
+        alert(JSON.stringify(subjects))
         $('#subject').on('change', function (e) {
             currentSubjectIndex = e.target.selectedIndex
             currentSubject = e.target.value
@@ -834,7 +835,7 @@
                                                 problemsId: parseInt(currentSelectedElement.dataset.id),
                                                 name: answers
                                             }
-                                            // alert(JSON.stringify(fil))
+                                            alert(JSON.stringify(fil))
                                             $.ajax({
                                                 type: "post",
                                                 url: "api/problems-standard-answers",
@@ -855,7 +856,7 @@
                                                 problemsId: parseInt(currentSelectedElement.dataset.id),
                                                 name: opti[i]
                                             }
-
+                                            alert(JSON.stringify(fil))
                                             $.ajax({
                                                 type: "post",
                                                 url: "api/problems-options",
