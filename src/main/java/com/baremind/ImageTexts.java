@@ -47,7 +47,7 @@ public class ImageTexts {
                     CharacterEncodingFilter.saveFile(w, inputStream);
 
                     String content = request.getParameter("content");
-                    content = new String(content.getBytes("ISO-8859-1"),"UTF-8");
+                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
                     ImageText imageText = new ImageText();
                     imageText.setId(IdGenerator.getNewId());
                     imageText.setExt(postfix);
