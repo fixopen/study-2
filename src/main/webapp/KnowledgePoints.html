@@ -128,12 +128,11 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filter),
+                                    url: 'api/knowledge-points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
                                         subjects[i].low[j].vsid = knowledgePoint
-
                                     }
                                 })
                             }
@@ -156,22 +155,23 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledge—points?filter=' + JSON.stringify(filter),
+                                    url: 'api/knowledge-points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
                                         subjects[i].high[j].vsid = knowledgePoint
-
                                     }
                                 })
                             }
                         }
                     })
+
                     let option = document.createElement('option')
                     option.setAttribute("value", subjects[i].id)
                     option.appendChild(document.createTextNode(subjects[i].name))
                     subjectSelect.appendChild(option)
                 }
+
                 currentSubjectIndex = 0
                 subjectSelect.selectedIndex = currentSubjectIndex
                 currentSubject = subjectSelect.value
@@ -207,7 +207,6 @@
                 let volume = document.getElementById('volumeTitle')
                 volume.value = opt.text
 
-                //=============================================================
                 let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
                 knowledgePointSelect.innerHTML = ''
                 for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
@@ -227,7 +226,8 @@
                     knowledgePoint.value = opt.text
                 }
             }
-        });
+        })
+
         $('#subject').on('change', function (e) {
             currentSubjectIndex = e.target.selectedIndex
             currentSubject = e.target.value
@@ -588,7 +588,7 @@
                 }
             })
         })
-//=========================================================================================
+
         let currentSelectedElement
 
         let contents = document.getElementById('contents')
@@ -625,7 +625,6 @@
             c.removeChild(currentSelectedElement)
             c.insertBefore(currentSelectedElement, nextNextSibling)
         }, false)
-
 
         let appendText = document.getElementById('appendText')
         appendText.addEventListener('click', function (e) {
