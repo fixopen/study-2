@@ -76,6 +76,7 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
 
+
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -106,6 +107,7 @@ public class KnowledgePoints {
                     Query tq = em.createNativeQuery(textquery, Text.class);
                     textObjects = tq.getResultList();
                 }
+
                 List<Image> imageObjects = null;
                 if (!imageIds.isEmpty()) {
                     String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
