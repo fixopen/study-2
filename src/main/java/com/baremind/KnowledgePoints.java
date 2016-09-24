@@ -76,6 +76,7 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
 
+
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -106,6 +107,12 @@ public class KnowledgePoints {
                     Query tq = em.createNativeQuery(textquery, Text.class);
                     textObjects = tq.getResultList();
                 }
+
+                   /* String statsLikes = "SELECT COUNT(l) AS count FROM likes l WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
+                    Query lq = em.createNativeQuery(statsLikes, Video.class);
+                    List likeCountList = lq.getResultList();
+                    System.out.println(likeCountList);
+*/
                 List<Image> imageObjects = null;
                 if (!imageIds.isEmpty()) {
                     String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
@@ -226,9 +233,7 @@ public class KnowledgePoints {
                 int readCount = 0;
                 interaction.put("readCount", readCount);
                 int likeCount = 0;
-                /*String statsLikes = "SELECT COUNT(*) AS count FROM likes WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
-                Query lq = em.createNativeQuery(statsLikes, Video.class);
-                List likeCountList = lq.getResultList(); //->Object[]->count*/
+                /* //->Object[]->count*/
                 interaction.put("likeCount", likeCount);
                 totalResult.put("interaction", interaction);
 
