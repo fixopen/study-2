@@ -108,11 +108,12 @@ public class KnowledgePoints {
                     textObjects = tq.getResultList();
                 }
 
-                   /* String statsLikes = "SELECT COUNT(l) AS count FROM likes l WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
-                    Query lq = em.createNativeQuery(statsLikes, Video.class);
+                   String statsLikes = "SELECT COUNT(l) AS count FROM likes l WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
+
+                /*Query lq = em.createNativeQuery(statsLikes, Video.class);
                     List likeCountList = lq.getResultList();
-                    System.out.println(likeCountList);
-*/
+                    System.out.println(likeCountList);*/
+
                 List<Image> imageObjects = null;
                 if (!imageIds.isEmpty()) {
                     String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
