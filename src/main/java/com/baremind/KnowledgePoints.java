@@ -133,6 +133,10 @@ public class KnowledgePoints {
                     String problemsstandardanswersquery = "SELECT * FROM problem_standard_answers WHERE problem_id IN ( " + join(problemIds) + " )";
                     Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemStandardAnswer.class);
                     problemstandardanswersObjects = pqsan.getResultList();
+<<<<<<< HEAD
+
+=======
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                 }
                 List<ImageText> imageTextObject = null;
                 if (!imageTextIds.isEmpty()) {
@@ -159,7 +163,11 @@ public class KnowledgePoints {
                                 tm.put("id", t.getId());
                                 tm.put("content", t.getContent());
                                 tm.put("type", "text");
+<<<<<<< HEAD
+                                r.add(tm);
+=======
                                 orderedContents.add(tm);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                             }
                             break;
                         case "image":
@@ -170,7 +178,11 @@ public class KnowledgePoints {
                                 itm.put("type", "image");
                                 itm.put("description", "");
                                 itm.put("href", im.getStorePath());
+<<<<<<< HEAD
+                                r.add(itm);
+=======
                                 orderedContents.add(itm);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                             }
                             break;
                         case "imageText":
@@ -181,7 +193,11 @@ public class KnowledgePoints {
                                 items.put("type", "imageText");
                                 items.put("content", ITe.getContent());
                                 items.put("href", ITe.getStorePath());
+<<<<<<< HEAD
+                                r.add(items);
+=======
                                 orderedContents.add(items);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                             }
                             break;
                         case "problem":
@@ -199,7 +215,11 @@ public class KnowledgePoints {
                                 }
                                 piems.put("options", pieo);
                                 piems.put("title", pie.getTitle());
+<<<<<<< HEAD
+                                problemr3.add(piems);
+=======
                                 orderedProblems.add(piems);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                                 break;
                             }
                         case "quote":
@@ -209,7 +229,11 @@ public class KnowledgePoints {
                                 iquems.put("id", ique.getId());
                                 iquems.put("content", ique.getContent());
                                 iquems.put("source", ique.getSource());
+<<<<<<< HEAD
+                                quoter4.add(iquems);
+=======
                                 orderedQuotes.add(iquems);
+>>>>>>> dcb6aa6a15e4c35548d9346432edf70a22707006
                             }
                             break;
                     }
