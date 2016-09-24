@@ -23,7 +23,7 @@ public class Like {
     private String objectType;
 
     @Column(name = "object_id")
-    private Long ObjectId;
+    private Long objectId;
 
     @Column(name = "create_time")
     private Date createTime;
@@ -53,11 +53,11 @@ public class Like {
     }
 
     public Long getObjectId() {
-        return ObjectId;
+        return objectId;
     }
 
     public void setObjectId(Long objectId) {
-        ObjectId = objectId;
+        this.objectId = objectId;
     }
 
     public Date getCreateTime() {

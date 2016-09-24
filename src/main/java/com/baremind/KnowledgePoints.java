@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-@Path("knowledge—points")
+@Path("knowledge-points")
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
@@ -107,12 +107,6 @@ public class KnowledgePoints {
                     Query tq = em.createNativeQuery(textquery, Text.class);
                     textObjects = tq.getResultList();
                 }
-
-                   String statsLikes = "SELECT COUNT(l) AS count FROM likes l WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
-
-                /*Query lq = em.createNativeQuery(statsLikes, Video.class);
-                    List likeCountList = lq.getResultList();
-                    System.out.println(likeCountList);*/
 
                 List<Image> imageObjects = null;
                 if (!imageIds.isEmpty()) {
@@ -233,9 +227,10 @@ public class KnowledgePoints {
                 Map<String, Object> interaction = new HashMap<>();
                 int readCount = 0;
                 interaction.put("readCount", readCount);
-                int likeCount = 0;
-                /* //->Object[]->count*/
-                interaction.put("likeCount", likeCount);
+                String statsLikes = "SELECT COUNT(l) FROM Like l WHERE l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
+                Query lq = em.createQuery(statsLikes, Long.class);
+                Long likeCountObject = (Long)lq.getSingleResult();
+                interaction.put("likeCount", likeCountObject);
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
