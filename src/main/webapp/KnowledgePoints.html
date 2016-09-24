@@ -520,7 +520,7 @@
 
             $.ajax({
                 type: "post",
-                url: "api/knowledge—points",
+                url: "api/knowledge-points",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -561,7 +561,7 @@
             }
             $.ajax({
                 type: "put",
-                url: "api/knowledge—points/" + currentKnowledgePoint,
+                url: "api/knowledge-points/" + currentKnowledgePoint,
                 data: JSON.stringify(knowledgePointData),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -803,7 +803,6 @@
                 case'problem':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         alert("问题不提供修改功能")
-
                     } else {
                         if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
                             if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
@@ -813,69 +812,55 @@
                                     knowledgePointId: parseInt(currentKnowledgePoint),
                                     volumeId: parseInt(currentVolume),
                                     subjectId: parseInt(currentSubject)
-                                };
+                                }
                                 $.ajax({
                                     type: "post",
                                     url: "api/problems",
                                     data: JSON.stringify(data),
                                     dataType: "json",
                                     contentType: "application/json; charset=utf-8",
-                                    success: function (text) {
-
-                                        currentSelectedElement.dataset.id = text.id
+                                    success: function (problem) {
+                                        currentSelectedElement.dataset.id = problem.id
                                         let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
-                                        //1,2,3,4 //1 2 3 4 //1234
-                                        let answers = []
                                         let sas = standardAnswer.split(',')
                                         for (let i = 0; i < sas.length; ++i) {
-                                            answers = (parseInt(sas[i]) - 1)
-                                            let fil = {
-                                                problemsId: parseInt(currentSelectedElement.dataset.id),
-                                                name: answers
+                                            let answerItem = {
+                                                problemId: problem.id,
+                                                name: parseInt(sas[i]) - 1
                                             }
-                                            // alert(JSON.stringify(fil))
                                             $.ajax({
                                                 type: "post",
-                                                url: "api/problems-standard-answers",
-                                                data: JSON.stringify(fil),
+                                                url: "api/problem-standard-answers",
+                                                data: JSON.stringify(answerItem),
                                                 dataType: "json",
                                                 async: false,
-                                                contentType: "application/json; charset=utf-8",
-                                                success: function (ProblemsStandardAnswers) {
-
-                                                }
+                                                contentType: "application/json; charset=utf-8"
                                             })
                                         }
-                                        let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
-                                        let opti = [options[0].value, options[1].value, options[2].value, options[3].value]
 
-                                        for (var i in opti) {
-                                            fil = {
-                                                problemsId: parseInt(currentSelectedElement.dataset.id),
-                                                name: opti[i]
+                                        let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
+                                        let optValues = [options[0].value, options[1].value, options[2].value, options[3].value]
+
+                                        for (let i = 0; i < optValues.length; ++i) {
+                                            let option = {
+                                                problemId: problem.id,
+                                                name: optValues[i]
                                             }
 
                                             $.ajax({
                                                 type: "post",
-                                                url: "api/problems-options",
-                                                data: JSON.stringify(fil),
+                                                url: "api/problem-options",
+                                                data: JSON.stringify(option),
                                                 dataType: "json",
                                                 async: false,
                                                 contentType: "application/json; charset=utf-8",
-                                                success: function (problemsoptions) {
-
-                                                },
-                                                error: function (problemsoptions) {
-                                                    alert("添加失败")
-                                                }
                                             })
                                         }
                                         alert("添加成功")
                                     }
                                 })
                             } else {
-
-                                var formData = new FormData();
+                                let formData = new FormData();
                                 formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
                                 var request = new XMLHttpRequest();
                                 request.onreadystatechange = function () {
@@ -889,76 +874,62 @@
                                             knowledgePointId: parseInt(currentKnowledgePoint),
                                             volumeId: parseInt(currentVolume),
                                             subjectId: parseInt(currentSubject)
-                                        };
+                                        }
                                         $.ajax({
                                             type: "post",
                                             url: "api/problems",
                                             data: JSON.stringify(data),
                                             dataType: "json",
                                             contentType: "application/json; charset=utf-8",
-                                            success: function (text) {
-
-                                                currentSelectedElement.dataset.id = text.id
+                                            success: function (problem) {
+                                                currentSelectedElement.dataset.id = problem.id
                                                 let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
-                                                //1,2,3,4 //1 2 3 4 //1234
-                                                let answers = []
                                                 let sas = standardAnswer.split(',')
                                                 for (let i = 0; i < sas.length; ++i) {
-                                                    answers = (parseInt(sas[i]) - 1)
-                                                    let fil = {
-                                                        problemsId: parseInt(currentSelectedElement.dataset.id),
-                                                        name: answers
+                                                    let answerItem = {
+                                                        problemId: problem.id,
+                                                        name: parseInt(sas[i]) - 1
                                                     }
 
                                                     $.ajax({
                                                         type: "post",
-                                                        url: "api/problems-standard-answers",
-                                                        data: JSON.stringify(fil),
+                                                        url: "api/problem-standard-answers",
+                                                        data: JSON.stringify(answerItem),
                                                         dataType: "json",
                                                         async: false,
-                                                        contentType: "application/json; charset=utf-8",
-                                                        success: function (ProblemsStandardAnswers) {
-
-                                                        }
+                                                        contentType: "application/json; charset=utf-8"
                                                     })
                                                 }
+
                                                 let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
-                                                let opti = [options[0].value, options[1].value, options[2].value, options[3].value]
+                                                let optValues = [options[0].value, options[1].value, options[2].value, options[3].value]
 
-                                                for (var i in opti) {
-                                                    fil = {
-                                                        problemsId: parseInt(currentSelectedElement.dataset.id),
-                                                        name: opti[i]
+                                                for (let i = 0; i < optValues.length; ++i) {
+                                                    let option = {
+                                                        problemId: problem.id,
+                                                        name: optValues[i]
                                                     }
 
                                                     $.ajax({
                                                         type: "post",
-                                                        url: "api/problems-options",
-                                                        data: JSON.stringify(fil),
+                                                        url: "api/problem-options",
+                                                        data: JSON.stringify(option),
                                                         dataType: "json",
                                                         async: false,
-                                                        contentType: "application/json; charset=utf-8",
-                                                        success: function (problemsoptions) {
-
-                                                        },
-                                                        error: function (problemsoptions) {
-                                                            alert("添加失败")
-                                                        }
+                                                        contentType: "application/json; charset=utf-8"
                                                     })
                                                 }
-
-
                                             }
                                         })
                                     }
                                 }
-                                request.open("POST", "api/medias");
-                                request.send(formData);
+                                request.open("POST", "api/medias")
+                                request.send(formData)
                                 alert("添加成功")
                             }
                         }
                     }
-                    break;
+                    break
                 case 'imageText':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         alert("dasf")
