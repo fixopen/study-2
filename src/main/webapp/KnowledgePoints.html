@@ -806,10 +806,10 @@
 
                     } else {
                         if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
-                            if (currentSelectedElement.querySelector('[data-type="image"').files.length == 0) {
+                            if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
                                 var data = {
                                     videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
-                                    title: currentSelectedElement.querySelector('[data-type="title"').value,
+                                    title: currentSelectedElement.querySelector('[data-type="title"]').value,
                                     knowledgePointId: parseInt(currentKnowledgePoint),
                                     volumeId: parseInt(currentVolume),
                                     subjectId: parseInt(currentSubject)
@@ -823,7 +823,7 @@
                                     success: function (text) {
 
                                         currentSelectedElement.dataset.id = text.id
-                                        let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"').value
+                                        let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
                                         //1,2,3,4 //1 2 3 4 //1234
                                         let answers = []
                                         let sas = standardAnswer.split(',')
@@ -846,7 +846,7 @@
                                                 }
                                             })
                                         }
-                                        let options = currentSelectedElement.querySelectorAll('[data-type="option"')
+                                        let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
                                         let opti = [options[0].value, options[1].value, options[2].value, options[3].value]
 
                                         for (var i in opti) {
@@ -863,30 +863,29 @@
                                                 async: false,
                                                 contentType: "application/json; charset=utf-8",
                                                 success: function (problemsoptions) {
-                                                    alert("添加成功")
+
                                                 },
                                                 error: function (problemsoptions) {
                                                     alert("添加失败")
                                                 }
                                             })
                                         }
-
-
+                                        alert("添加成功")
                                     }
                                 })
                             } else {
 
                                 var formData = new FormData();
-                                formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
+                                formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
                                 var request = new XMLHttpRequest();
                                 request.onreadystatechange = function () {
                                     if (request.status == 200) {
                                         returndata = JSON.parse(request.responseText)
-                                        currentSelectedElement.querySelector('[data-type="image"').dataset.storePath = returndata.storePath
+                                        currentSelectedElement.querySelector('[data-type="image"]').dataset.storePath = returndata.storePath
                                         var data = {
                                             videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
-                                            storePath: currentSelectedElement.querySelector('[data-type="image"').dataset.storePath,
-                                            title: currentSelectedElement.querySelector('[data-type="title"').value,
+                                            storePath: currentSelectedElement.querySelector('[data-type="image"]').dataset.storePath,
+                                            title: currentSelectedElement.querySelector('[data-type="title"]').value,
                                             knowledgePointId: parseInt(currentKnowledgePoint),
                                             volumeId: parseInt(currentVolume),
                                             subjectId: parseInt(currentSubject)
@@ -900,7 +899,7 @@
                                             success: function (text) {
 
                                                 currentSelectedElement.dataset.id = text.id
-                                                let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"').value
+                                                let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
                                                 //1,2,3,4 //1 2 3 4 //1234
                                                 let answers = []
                                                 let sas = standardAnswer.split(',')
@@ -923,7 +922,7 @@
                                                         }
                                                     })
                                                 }
-                                                let options = currentSelectedElement.querySelectorAll('[data-type="option"')
+                                                let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
                                                 let opti = [options[0].value, options[1].value, options[2].value, options[3].value]
 
                                                 for (var i in opti) {
@@ -940,7 +939,7 @@
                                                         async: false,
                                                         contentType: "application/json; charset=utf-8",
                                                         success: function (problemsoptions) {
-                                                            alert("添加成功")
+
                                                         },
                                                         error: function (problemsoptions) {
                                                             alert("添加失败")
@@ -955,6 +954,7 @@
                                 }
                                 request.open("POST", "api/medias");
                                 request.send(formData);
+                                alert("添加成功")
                             }
                         }
                     }
@@ -964,8 +964,8 @@
                         alert("dasf")
                         delete currentSelectedElement.dataset.id
                         var formData = new FormData();
-                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
-                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"').value);
+                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
+                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"]').value);
                         var request = new XMLHttpRequest();
                         request.onreadystatechange = function () {
                             if (request.status == 200) {
@@ -978,8 +978,8 @@
                         alert("修改成功")
                     } else {
                         var formData = new FormData();
-                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
-                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"').value);
+                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
+                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"]').value);
                         var request = new XMLHttpRequest();
                         request.onreadystatechange = function () {
                             if (request.status == 200) {
@@ -997,8 +997,8 @@
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         currentId = currentSelectedElement.dataset.id
                         let data = {
-                            content: currentSelectedElement.querySelector('[data-type="content"').value,
-                            source: currentSelectedElement.querySelector('[data-type="source"').value
+                            content: currentSelectedElement.querySelector('[data-type="content"]').value,
+                            source: currentSelectedElement.querySelector('[data-type="source"]').value
                         }
                         $.ajax({
                             type: "put",
@@ -1015,8 +1015,8 @@
                         })
                     } else {
                         let data = {
-                            content: currentSelectedElement.querySelector('[data-type="content"').value,
-                            source: currentSelectedElement.querySelector('[data-type="source"').value
+                            content: currentSelectedElement.querySelector('[data-type="content"]').value,
+                            source: currentSelectedElement.querySelector('[data-type="source"]').value
                         }
                         alert(JSON.stringify(data))
                         //{"content":"第一的腰包","source":"——礼拜"}
