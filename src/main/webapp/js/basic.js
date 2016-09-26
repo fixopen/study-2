@@ -10,6 +10,7 @@ let getUrlParameter = function (name) {
     return result //返回参数值
 }
 
+
 let getTemplate = function (templateId) {
     let result
     let template = doc.getElementById(templateId)

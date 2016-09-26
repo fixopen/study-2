@@ -161,7 +161,9 @@ public class KnowledgePoints {
                                 tm.put("id", t.getId());
                                 tm.put("content", t.getContent());
                                 tm.put("type", "text");
+
                                 orderedContents.add(tm);
+
                             }
                             break;
                         case "image":
