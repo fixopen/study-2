@@ -18,7 +18,7 @@ $(document).ready(function() {
     url: 'api/volumes?filter=' + JSON.stringify(filter),
     async: false,
     success: function (vs) {
-    // alert(JSON.stringify(vs))
+     alert(JSON.stringify(vs))
       volumesL= vs
     }
   })
