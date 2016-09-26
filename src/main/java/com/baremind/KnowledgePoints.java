@@ -11,10 +11,7 @@ import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Path("knowledge-points")
@@ -62,6 +59,18 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
+
+                if (JPAEntry.isLogining(sessionId)) {
+                    Log log = new Log();
+                    log.setId(IdGenerator.getNewId());
+                    log.setUserId(IdGenerator.getNewId());
+                    log.setAction("read");
+                    log.setObjectId(id);
+                    log.setObjectType("knowledge-point");
+                    log.setCreateTime(new Date());
+                    JPAEntry.genericPost(log);
+                }
+
                 Map<String, Object> conditions = new HashMap<>();
                 conditions.put("KnowledgePointId", id);
 
@@ -101,6 +110,7 @@ public class KnowledgePoints {
                 }
 
                 EntityManager em = JPAEntry.getEntityManager();
+
                 List<Text> textObjects = null;
                 if (!textIds.isEmpty()) {
                     String textquery = "SELECT id, content FROM texts WHERE id IN ( " + join(textIds) + " )";
@@ -161,7 +171,9 @@ public class KnowledgePoints {
                                 tm.put("id", t.getId());
                                 tm.put("content", t.getContent());
                                 tm.put("type", "text");
+
                                 orderedContents.add(tm);
+
                             }
                             break;
                         case "image":
@@ -216,10 +228,12 @@ public class KnowledgePoints {
                             break;
                     }
                 }
+
                 Map<String, Object> totalResult = new HashMap<>();
                 totalResult.put("title", p.getTitle());
                 totalResult.put("quotes", orderedQuotes);
                 totalResult.put("contents", orderedContents);
+
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     totalResult.put("video", videoObjects.get(0));
                 }
@@ -227,7 +241,7 @@ public class KnowledgePoints {
                 Map<String, Object> interaction = new HashMap<>();
                 int readCount = 0;
                 interaction.put("readCount", readCount);
-                String statsLikes = "SELECT COUNT(l) FROM Like l WHERE l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
+                String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
                 Query lq = em.createQuery(statsLikes, Long.class);
                 Long likeCountObject = (Long)lq.getSingleResult();
                 interaction.put("likeCount", likeCountObject);
