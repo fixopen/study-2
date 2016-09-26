@@ -3,6 +3,7 @@ package com.baremind.utils;
 import com.baremind.data.Session;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,32 +100,34 @@ public class JPAEntry {
     }
 
     public static boolean isLogining(String sessionId) {
-        boolean result = false;
-        Session s = isLogining(sessionId, a -> {
-           //a.setLastOperationTime(new Date());
-           //genericPut(a);
-           result = true;
+        final Map<String, Boolean> r = new HashMap<>();
+        r.put("value", false);
+        isLogining(sessionId, a -> {
+           a.setLastOperationTime(new Date());
+           genericPut(a);
+           r.put("value", true);
         });
-        return result;
+        //@@
+        r.put("value", true);
+        //@@
+        return r.get("value");
     }
 
     public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
         Session s = getObject(Session.class, "identity", sessionId);
-        //@@
-        s = new Session();
-        //@@
         if (s != null) {
             touchFunction.accept(s);
         }
     }
 
     public static Long getLoginId(String sessionId) {
-        Long result = 0;
+        final Map<String, Long> r = new HashMap<>();
+        r.put("value", 0l);
         isLogining(sessionId, a -> {
-           //a.setLastOperationTime(new Date());
-           //genericPut(a);
-           result = a.getUserId();
+           a.setLastOperationTime(new Date());
+           genericPut(a);
+           r.put("value", a.getUserId());
         });
-        return result;
+        return r.get("value");
     }
 }
