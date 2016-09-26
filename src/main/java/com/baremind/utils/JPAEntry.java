@@ -1,5 +1,6 @@
 package com.baremind.utils;
 
+import com.baremind.data.Log;
 import com.baremind.data.Session;
 
 import javax.persistence.*;
@@ -129,5 +130,16 @@ public class JPAEntry {
            r.put("value", a.getUserId());
         });
         return r.get("value");
+    }
+
+    public static void log(Long userId, String action, String objectType, Long objectId) {
+        Log log = new Log();
+        log.setId(IdGenerator.getNewId());
+        log.setUserId(userId);
+        log.setAction(action);
+        log.setObjectType(objectType);
+        log.setObjectId(objectId);
+        log.setCreateTime(new Date());
+        genericPost(log);
     }
 }
