@@ -7,9 +7,13 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,11 +73,33 @@ public class Volumes {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
+
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("volumeId", id);
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("\"order\"", "ASC");
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions , orders);
+            /*int readCount = 0;
+            knowledgePoints.add("likeCount",likeCountObject);
+            knowledgePoints.add("readCount",readCount);*/
             if (!knowledgePoints.isEmpty()) {
-                result = Response.ok(new Gson().toJson(knowledgePoints)).build();
+                List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
+                for (KnowledgePoint kp : knowledgePoints) {
+
+                    EntityManager em = JPAEntry.getEntityManager();
+                    String statsLikes = "SELECT COUNT(l) FROM Like l WHERE l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
+                    Query lq = em.createQuery(statsLikes, Long.class);
+                    Long likeCountObject = (Long)lq.getSingleResult();
+
+                    Map<String, Object> kpm = new HashMap<>();
+                    kpm.put("id", kp.getId());
+                    kpm.put("name", kp.getTitle());
+                    kpm.put("likeCount", likeCountObject);
+                    kpm.put("readCount", 0);
+                    kpsm.add(kpm);
+                }
+                //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id
+                result = Response.ok(new Gson().toJson(kpsm)).build();
             }
         }
         return result;

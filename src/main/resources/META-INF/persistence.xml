@@ -28,6 +28,7 @@
         <class>com.baremind.data.KnowledgePointContentMap</class>
         <class>com.baremind.data.Quote</class>
         <class>com.baremind.data.ImageText</class>
+        <class>com.baremind.data.Log</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://139.129.214.229:5432/study"/>
