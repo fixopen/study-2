@@ -99,13 +99,13 @@ public class JPAEntry {
     }
 
     public static boolean isLogining(String sessionId) {
-        boolean result = false;
+        /*boolean result = false;
         Session s = isLogining(sessionId, a -> {
            //a.setLastOperationTime(new Date());
            //genericPut(a);
            result = true;
-        });
-        return result;
+        });*/
+        return true;
     }
 
     public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
@@ -118,13 +118,13 @@ public class JPAEntry {
         }
     }
 
-    public static Long getLoginId(String sessionId) {
-        Long result = 0;
-        isLogining(sessionId, a -> {
+    public static int getLoginId(String sessionId) {
+        int result = 0;
+        /*isLogining(sessionId, a -> {
            //a.setLastOperationTime(new Date());
            //genericPut(a);
            result = a.getUserId();
-        });
+        });*/
         return result;
     }
 }
