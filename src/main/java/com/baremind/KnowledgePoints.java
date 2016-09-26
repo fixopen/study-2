@@ -63,7 +63,7 @@ public class KnowledgePoints {
                 if (JPAEntry.isLogining(sessionId)) {
                     Log log = new Log();
                     log.setId(IdGenerator.getNewId());
-                    log.setUserId(IdGenerator.getNewId());
+                    log.setUserId(1l);
                     log.setAction("read");
                     log.setObjectId(id);
                     log.setObjectType("knowledge-point");
@@ -239,12 +239,18 @@ public class KnowledgePoints {
                 }
 
                 Map<String, Object> interaction = new HashMap<>();
-                int readCount = 0;
-                interaction.put("readCount", readCount);
-                String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
+
+
+                String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
                 Query lq = em.createQuery(statsLikes, Long.class);
                 Long likeCountObject = (Long)lq.getSingleResult();
+
+                String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
+                Query rq = em.createQuery(statsReads, Long.class);
+                Long readCount = (Long)rq.getSingleResult();
+
                 interaction.put("likeCount", likeCountObject);
+                interaction.put("readCount", readCount);
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
