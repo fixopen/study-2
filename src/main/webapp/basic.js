@@ -60,7 +60,7 @@ let proc = function (option) {
             return element
         }
         //proc second bind
-        let procSecond = function (element) {
+        let procSecond = function (element, data) {
             if (option.secondBind) {
                 //prepare second templates
                 let secondTemplates = []
@@ -91,14 +91,14 @@ let proc = function (option) {
                         proc({
                             container: element.querySelector('*[data-ext-point="' + option.secondBind[i].extPoint + '"]'),
                             template: getSecondTemplate(secondTemplates, option.secondBind[i].extPoint),
-                            data: option.data[option.secondBind[i].dataFieldName]
+                            data: data[option.secondBind[i].dataFieldName]
                         })
                     }
                 } else {
                     proc({
                         container: element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]'),
                         template: getSecondTemplate(secondTemplates, option.secondBind.extPoint),
-                        data: option.data[option.secondBind.dataFieldName]
+                        data: data[option.secondBind.dataFieldName]
                     })
                 }
             }
@@ -108,7 +108,7 @@ let proc = function (option) {
                 let element = cloneElement(option.data[i].type)
                 if (element) {
                     bind(element, option.data[i])
-                    procSecond(element)
+                    procSecond(element, option.data[i])
                     container.appendChild(element)
                 }
             }
@@ -116,7 +116,7 @@ let proc = function (option) {
             let element = cloneElement()
             if (element) {
                 bind(element, option.data)
-                procSecond(element)
+                procSecond(element, option.data)
                 container.appendChild(element)
             }
         }
