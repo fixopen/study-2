@@ -1,4 +1,5 @@
 ﻿$(function () {
+
     let volumeId = g.getUrlParameter('volumeId')
     $.ajax({
         type: 'get',
@@ -93,4 +94,5 @@
             })
         }
     })
+
 })
