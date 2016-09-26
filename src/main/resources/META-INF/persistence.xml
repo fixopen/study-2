@@ -29,13 +29,10 @@
         <class>com.baremind.data.Quote</class>
         <class>com.baremind.data.ImageText</class>
         <properties>
-
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://139.129.214.229:5432/study"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="postgres"/>
-
         </properties>
-
     </persistence-unit>
 </persistence>

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-@Path("knowledgePoints")
+@Path("knowledge-points")
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
@@ -76,6 +76,7 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
 
+
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -106,6 +107,7 @@ public class KnowledgePoints {
                     Query tq = em.createNativeQuery(textquery, Text.class);
                     textObjects = tq.getResultList();
                 }
+
                 List<Image> imageObjects = null;
                 if (!imageIds.isEmpty()) {
                     String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
@@ -214,35 +216,34 @@ public class KnowledgePoints {
                             break;
                     }
                 }
-                Map<String, Object> r2 = new HashMap<>();
-                r2.put("title", p.getTitle());
 
-                r2.put("quotes", orderedQuotes);
-                r2.put("contents", orderedContents);
+                Map<String, Object> totalResult = new HashMap<>();
+                totalResult.put("title", p.getTitle());
+                totalResult.put("quotes", orderedQuotes);
+                totalResult.put("contents", orderedContents);
 
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
-                    r2.put("video", videoObjects.get(0));
+                    totalResult.put("video", videoObjects.get(0));
                 }
 
                 Map<String, Object> interaction = new HashMap<>();
                 int readCount = 0;
                 interaction.put("readCount", readCount);
-                int likeCount = 0;
-                /*String statsLikes = "SELECT COUNT(*) AS count FROM likes WHERE object_type = 'knowledge-point' AND object_id = " + id.toString();
-                Query lq = em.createNativeQuery(statsLikes, Video.class);
-                List likeCountList = lq.getResultList(); //->Object[]->count*/
-                interaction.put("likeCount", likeCount);
-                r2.put("interaction", interaction);
+                String statsLikes = "SELECT COUNT(l) FROM Like l WHERE l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
+                Query lq = em.createQuery(statsLikes, Long.class);
+                Long likeCountObject = (Long)lq.getSingleResult();
+                interaction.put("likeCount", likeCountObject);
+                totalResult.put("interaction", interaction);
 
-                r2.put("problems", orderedProblems);
+                totalResult.put("problems", orderedProblems);
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                r2.put("comments", comments);
+                totalResult.put("comments", comments);
 
-                String v = new Gson().toJson(r2);
+                String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
             }
         }
@@ -271,7 +272,9 @@ public class KnowledgePoints {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("\"order\"", "ASC");
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject, orders);
             if (!knowledgePoints.isEmpty()) {
                 result = Response.ok(new Gson().toJson(knowledgePoints)).build();
             }

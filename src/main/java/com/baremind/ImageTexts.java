@@ -42,12 +42,12 @@ public class ImageTexts {
                     String fileName = now + "." + postfix;
                     String pyshicalpath = Properties.getPropertyValue("physicalpath");
                     String uploadedFileLocation = pyshicalpath + fileName;
-//                    File file = new File(uploadedFileLocation);
-//                    FileOutputStream w = new FileOutputStream(file);
-//                    CharacterEncodingFilter.saveFile(w, inputStream);
+                    File file = new File(uploadedFileLocation);
+                    FileOutputStream w = new FileOutputStream(file);
+                    CharacterEncodingFilter.saveFile(w, inputStream);
 
                     String content = request.getParameter("content");
-                    content = new String(content.getBytes("ISO-8859-1"),"UTF-8");
+                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
                     ImageText imageText = new ImageText();
                     imageText.setId(IdGenerator.getNewId());
                     imageText.setExt(postfix);

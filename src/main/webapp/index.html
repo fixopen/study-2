@@ -22,7 +22,6 @@
     <script src="js/turnOne.js"></script>
 </head>
 <body>
-
 <div class="wrap">
     <div class="rain-main">
 
@@ -44,16 +43,103 @@
             <ul class="neir_div0 div0_one neir0_UL" id="mathStudy-volumesL"></ul>
             <ul class="neir_div0 div0_two neir0_UL" id="mathStudy-volumesH"></ul>
         </div>
+        <div class="wrap">
+            <div class="rain-main">
+
+                <!--级别-->
+                <div class="bao_dul">
+                    <ul class="table_ul">
+                        <li class="table_li li_one">
+                            <a class="lione_zi" href="#" onclick="low()" id="1">1-2年级</a>
+                            <img class="lione_zimg" src="img/bird.png" alt="">
+                        </li>
+                        <li class="table_li">
+                            <a class="lione_zi" href="#" onclick="high()" id="2">3-6年级</a>
+                            <img class="lione_zimg" src="img/bird.png" alt="">
+                        </li>
+                    </ul>
+
+                </div>
+                <!--书名列表-->
+                <div>
+                    <ul class="neir_div0 div0_one neir0_UL" id="mathStudy-volumesL"></ul>
+                    <ul class="neir_div0 div0_two neir0_UL" id="mathStudy-volumesH"></ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<template id="volumes-template">
-    <li class="neir_li">
-        <div class="neir_lidiv">
-            <a class="neir_pzi" data-id="${id}" data-type="volume"
-               href="KnowledgePointsIndex.html?volumeId=${id}&grade=${grade}">${title}</a>
-
+<div class="container">
+    <!--header-->
+    <div class="row index-header">
+        <div class="col-xs-1">
+            <a href=""></a>
         </div>
-    </li>
+        <div class="col-xs-9" id="index-title"></div>
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-default btn-sm index-button" id="user">
+                <span class="glyphicon glyphicon-user"></span>
+            </button>
+        </div>
+    </div>
+    <!--time-->
+    <div class="row">
+        <div class="col-xs-12 index-times" id="index-time">
+        </div>
+    </div>
+    <!--section-->
+    <div class="row" id="index-section"></div>
+    <!--footer-->
+    <div class="row">
+        <div class="col-xs-12" id="index-footer" style="padding-left: 0px;padding-right: 0px;"></div>
+    </div>
+</div>
+<!--templates-->
+<template id="title-template">
+    <span>${title}</span>
+</template>
+<template id="time-template">
+    <span class="index-time">${time}</span>
+</template>
+<template id="image-ad">
+    <div class="col-xs-12">
+        <p>${imgtitle}</p>
+        <img src="${imgsrc}" alt="${imgtitle}"/>
+    </div>
+</template>
+<template id="subject-ad">
+    <div class="col-xs-12">
+        <img src="${imgsrc}" alt="${imgtitle}" class="pull-right"/>
+        <p class="pull-left">${imgtitle}</p>
+    </div>
+</template>
+<template id="section-template">
+    <ul class="media-list index-ul">
+        <li class="media index-li" id="img1">
+            <a href="#">
+                <img class="media-object index-img" src="${imgsrc}" alt="">
+            </a>
+            <div class="media-body index-div">
+                <h4 class="index-bc">${imgtitle}</h4>
+            </div>
+        </li>
+        <hr>
+        <li class="media" id="img2">
+            <a class="pull-right" href="#">
+                <img class="media-object" src="${imgsrc}" alt="">
+            </a>
+            <div class="media-body">
+
+
+                <template id="volumes-template">
+        <li class="neir_li">
+            <div class="neir_lidiv">
+                <a class="neir_pzi" data-id="${id}" data-type="volume"
+                   href="KnowledgePointsIndex.html?volumeId=${id}&grade=${grade}">${title}</a>
+
+            </div>
+        </li>
+    </ul>
 </template>
 <script type="text/javascript" src="js/turnOne.js"></script>
 </body>

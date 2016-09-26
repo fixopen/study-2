@@ -238,6 +238,12 @@
                             break
                     }
                     subjects[currentSubjectIndex][gradeName].push(volume)
+                    let volumeSelect = document.getElementById('volumeTitleChoice')
+                    let option = document.createElement('option')
+                    option.setAttribute("value", subjects[currentSubjectIndex][gradeName][i].id)
+                    //option.dataset.order = volume.order
+                    option.appendChild(document.createTextNode(subjects[currentSubjectIndex][gradeName][i].title))
+                    volumeSelect.appendChild(option)
                 }
             })
         })
@@ -327,6 +333,11 @@
         let save = document.getElementById('save')
         save.addEventListener('click', function (e) {
             //$(currentSelectedElement).val()
+
+            //subjects[..][gradeName][volumn..].vsid[subjects[..][gradeName][volumn..].vsid.length - 1].order + 1
+            //let kps = subjects[..][gradeName][volumn..].vsid
+            //kps[kps.length - 1].order + 1
+            //let kps = subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid //[currentKnowledgePointIndex]
 
             let children = contents.children
             for (let i = 0; i < children.length; ++i) {

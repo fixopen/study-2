@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <volumeTitle>后台录入页面</volumeTitle>
+    <title>后台录入页面</title>
     <style>
         .active {
             background-color: yellow;
@@ -108,7 +108,7 @@
                 for (var i = 0; i < subjectData.length; ++i) {
                     subjects[i].low = []
                     subjects[i].high = []
-                    filter = {
+                    let filter = {
                         subjectId: subjects[i].id,
                         grade: 20
                     };
@@ -120,7 +120,7 @@
                             subjects[i].low = volumes
                             for (var j = 0; j < subjects[i].low.length; ++j) {
                                 subjects[i].low[j].vsid = []
-                                let filterds = {
+                                let filter = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].low[j].id,
                                     grade: 20
@@ -128,12 +128,11 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledgePoints?filter=' + JSON.stringify(filterds),
+                                    url: 'api/knowledge-points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
                                         subjects[i].low[j].vsid = knowledgePoint
-
                                     }
                                 })
                             }
@@ -148,7 +147,7 @@
                             subjects[i].high = volumes
                             for (var j = 0; j < subjects[i].high.length; ++j) {
                                 subjects[i].high[j].vsid = []
-                                filtergs = {
+                                let filter = {
                                     subjectId: subjects[i].id,
                                     volumeId: subjects[i].high[j].id,
                                     grade: 21
@@ -156,22 +155,23 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledgePoints?filter=' + JSON.stringify(filtergs),
+                                    url: 'api/knowledge-points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
                                         subjects[i].high[j].vsid = knowledgePoint
-
                                     }
                                 })
                             }
                         }
                     })
+
                     let option = document.createElement('option')
                     option.setAttribute("value", subjects[i].id)
                     option.appendChild(document.createTextNode(subjects[i].name))
                     subjectSelect.appendChild(option)
                 }
+
                 currentSubjectIndex = 0
                 subjectSelect.selectedIndex = currentSubjectIndex
                 currentSubject = subjectSelect.value
@@ -207,7 +207,6 @@
                 let volume = document.getElementById('volumeTitle')
                 volume.value = opt.text
 
-                //=============================================================
                 let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
                 knowledgePointSelect.innerHTML = ''
                 for (let j = 0; j < subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid.length; ++j) {
@@ -223,8 +222,11 @@
                 let knowledgePoint = document.getElementById('knowledgePointTitle')
                 knowledgePoint.value = ''
                 opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
-                knowledgePoint.value = opt.text
+                if (opt) {
+                    knowledgePoint.value = opt.text
+                }
             }
+
         });
 
         $('#subject').on('change', function (e) {
@@ -394,16 +396,34 @@
             if (opt) {
                 knowledgePoint.value = opt.text
             }
+            document.getElementById("buttons").style.visibility = "hidden";//隐藏
         })
 
         $('#appendvolumeTitle').on('click', function (e) {
             let volumeTitle = document.getElementById('volumeTitle')
+
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+            let cs = subjects[currentSubjectIndex][gradeName]
+            let order = 1
+            if(cs.length != 0){
+                order = cs[cs.length - 1].order + 1
+            }
+
+
             let data = {
                 subjectId: currentSubject,
                 grade: currentGrade,
-                title: volumeTitle.value
+                title: volumeTitle.value,
+                order: order
             }
-            alert(JSON.stringify(data))
             $.ajax({
                 type: "post",
                 url: "api/volumes",
@@ -421,7 +441,14 @@
                         default:
                             break
                     }
+                    volume.vsid = []
                     subjects[currentSubjectIndex][gradeName].push(volume)
+                    let volumeSelect = document.getElementById('volumeTitleChoice')
+                    let option = document.createElement('option')
+                    option.setAttribute("value", currentVolume)
+                    option.appendChild(document.createTextNode(volume.title))
+                    volumeSelect.appendChild(option)
+                    volumeSelect.selectedIndex = volumeSelect.options.length - 1
                     alert("添加成功")
                 },
                 error: function () {
@@ -453,6 +480,7 @@
                         default:
                             break
                     }
+                    volumeData.vsid = subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid
                     subjects[currentSubjectIndex][gradeName][currentVolumeIndex] = volumeData
                     let volumeSelect = document.getElementById('volumeTitleChoice')
                     let opt = volumeSelect.options.item(currentVolumeIndex)
@@ -468,15 +496,32 @@
 
         $('#appendknowledgePointTitle').on('click', function (e) {
             let knowledgePointTitle = document.getElementById('knowledgePointTitle')
+            let gradeName = 'low'
+            switch (currentGrade) {
+                case 21:
+                case '21':
+                    gradeName = 'high'
+                    break
+                default:
+                    break
+            }
+            let kps = subjects[currentSubjectIndex][gradeName][currentVolumeIndex].vsid
+            let order = 1
+            if(kps.length != 0){
+                order = kps[kps.length - 1].order + 1
+            }
+
             let data = {
                 subjectId: currentSubject,
                 grade: currentGrade,
                 volumeId: currentVolume,
-                title: knowledgePointTitle.value
+                title: knowledgePointTitle.value,
+                order: order
             }
+
             $.ajax({
                 type: "post",
-                url: "api/knowledgePoints",
+                url: "api/knowledge-points",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -517,12 +562,11 @@
             }
             $.ajax({
                 type: "put",
-                url: "api/knowledgePoints/" + currentKnowledgePoint,
+                url: "api/knowledge-points/" + currentKnowledgePoint,
                 data: JSON.stringify(knowledgePointData),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (knowledgePointData) {
-                    alert("修改成功")
                     let gradeName = 'low'
                     switch (currentGrade) {
                         case 21:
@@ -535,22 +579,23 @@
                     subjects[currentSubjectIndex][gradeName][currentVolumeIndex][currentKnowledgePointIndex] = knowledgePointData
                     let knowledgePointSelect = document.getElementById('knowledgePointTitleChoice')
                     let opt = knowledgePointSelect.options.item(currentKnowledgePointIndex)
-                    let knowledgePoint = document.getElementById('knowledgePointTitleChoice')
-                    opt.innerText = knowledgePoint.value
-
+                    let knowledgePoints = document.getElementById('knowledgePointTitle')
+                    alert(knowledgePoints.value)
+                    opt.innerText = knowledgePoints.value
+                    alert("修改成功")
                 },
                 error: function () {
                     alert("修改失败")
                 }
             })
         })
-//=========================================================================================
+
         let currentSelectedElement
 
         let contents = document.getElementById('contents')
         contents.addEventListener('click', function (e) {
             let elm = e.target
-            for (;;) {
+            for (; ;) {
                 if (elm.parentNode == e.currentTarget) {
                     break
                 }
@@ -563,28 +608,7 @@
                 currentSelectedElement = elm
                 currentSelectedElement.addClass('active')
             }
-//            if (elm.dataset) {
-//                if ((elm.dataset.type == 'problem') ||
-//                        (elm.dataset.type == 'imageText') ||
-//                        (elm.dataset.type == 'quote')) {
-//                }
-//            }
-//            while (true) {
-//                if (elm == currentSelectedElement) {
-//                    change = false
-//                    break
-//                } else if (elm == e.currentTarget) {
-//                    break
-//                }
-//                elm = elm.parentNode
-//            }
-//            if (change) {
-//                if (currentSelectedElement) {
-//                    currentSelectedElement.removeClass('active')
-//                }
-//                currentSelectedElement = e.target
-//                currentSelectedElement.addClass('active')
-//            }
+
         }, false)
 
         let movePrevious = document.getElementById('movePrevious')
@@ -602,7 +626,6 @@
             c.removeChild(currentSelectedElement)
             c.insertBefore(currentSelectedElement, nextNextSibling)
         }, false)
-
 
         let appendText = document.getElementById('appendText')
         appendText.addEventListener('click', function (e) {
@@ -781,171 +804,141 @@
                 case'problem':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         alert("问题不提供修改功能")
-
                     } else {
                         if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
-                            if (currentSelectedElement.querySelector('[data-type="image"').files.length == 0) {
+                            if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
                                 var data = {
                                     videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
-                                    title: currentSelectedElement.querySelector('[data-type="title"').value,
+                                    title: currentSelectedElement.querySelector('[data-type="title"]').value,
                                     knowledgePointId: parseInt(currentKnowledgePoint),
                                     volumeId: parseInt(currentVolume),
                                     subjectId: parseInt(currentSubject)
-                                };
+                                }
                                 $.ajax({
                                     type: "post",
                                     url: "api/problems",
                                     data: JSON.stringify(data),
                                     dataType: "json",
                                     contentType: "application/json; charset=utf-8",
-                                    success: function (text) {
-
-                                        currentSelectedElement.dataset.id = text.id
-                                        let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"').value
-                                        //1,2,3,4 //1 2 3 4 //1234
-                                        let answers = []
+                                    success: function (problem) {
+                                        currentSelectedElement.dataset.id = problem.id
+                                        let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
                                         let sas = standardAnswer.split(',')
                                         for (let i = 0; i < sas.length; ++i) {
-                                            answers = (parseInt(sas[i]) - 1)
-                                            let fil = {
-                                                problemsId: parseInt(currentSelectedElement.dataset.id),
-                                                name: answers
+                                            let answerItem = {
+                                                problemId: problem.id,
+                                                name: parseInt(sas[i]) - 1
                                             }
-                                            // alert(JSON.stringify(fil))
                                             $.ajax({
                                                 type: "post",
-                                                url: "api/problems-standard-answers",
-                                                data: JSON.stringify(fil),
+                                                url: "api/problem-standard-answers",
+                                                data: JSON.stringify(answerItem),
                                                 dataType: "json",
                                                 async: false,
-                                                contentType: "application/json; charset=utf-8",
-                                                success: function (ProblemsStandardAnswers) {
-
-                                                }
-                                            })
-                                        }
-                                        let options = currentSelectedElement.querySelectorAll('[data-type="option"')
-                                        let opti = [options[0].value, options[1].value, options[2].value, options[3].value]
-
-                                        for (var i in opti) {
-                                            fil = {
-                                                problemsId: parseInt(currentSelectedElement.dataset.id),
-                                                name: opti[i]
-                                            }
-
-                                            $.ajax({
-                                                type: "post",
-                                                url: "api/problems-options",
-                                                data: JSON.stringify(fil),
-                                                dataType: "json",
-                                                async: false,
-                                                contentType: "application/json; charset=utf-8",
-                                                success: function (problemsoptions) {
-                                                    alert("添加成功")
-                                                },
-                                                error:function (problemsoptions) {
-                                                    alert("添加失败")
-                                                }
+                                                contentType: "application/json; charset=utf-8"
                                             })
                                         }
 
+                                        let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
+                                        let optValues = [options[0].value, options[1].value, options[2].value, options[3].value]
 
+                                        for (let i = 0; i < optValues.length; ++i) {
+                                            let option = {
+                                                problemId: problem.id,
+                                                name: optValues[i]
+                                            }
+                                            $.ajax({
+                                                type: "post",
+                                                url: "api/problem-options",
+                                                data: JSON.stringify(option),
+                                                dataType: "json",
+                                                async: false,
+                                                contentType: "application/json; charset=utf-8",
+                                            })
+                                        }
+                                        alert("添加成功")
                                     }
                                 })
                             } else {
-
-                                var formData = new FormData();
-                                formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
+                                let formData = new FormData();
+                                formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
                                 var request = new XMLHttpRequest();
                                 request.onreadystatechange = function () {
                                     if (request.status == 200) {
                                         returndata = JSON.parse(request.responseText)
-                                        currentSelectedElement.querySelector('[data-type="image"').dataset.storePath = returndata.storePath
+                                        currentSelectedElement.querySelector('[data-type="image"]').dataset.storePath = returndata.storePath
                                         var data = {
                                             videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
-                                            storePath: currentSelectedElement.querySelector('[data-type="image"').dataset.storePath,
-                                            title: currentSelectedElement.querySelector('[data-type="title"').value,
+                                            storePath: currentSelectedElement.querySelector('[data-type="image"]').dataset.storePath,
+                                            title: currentSelectedElement.querySelector('[data-type="title"]').value,
                                             knowledgePointId: parseInt(currentKnowledgePoint),
                                             volumeId: parseInt(currentVolume),
                                             subjectId: parseInt(currentSubject)
-                                        };
+                                        }
                                         $.ajax({
                                             type: "post",
                                             url: "api/problems",
                                             data: JSON.stringify(data),
                                             dataType: "json",
                                             contentType: "application/json; charset=utf-8",
+                                            success: function (problem) {
+                                                currentSelectedElement.dataset.id = problem.id
+                                                let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
 
-                                            success: function (text) {
-
-                                                currentSelectedElement.dataset.id = text.id
-                                                let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"').value
-                                                //1,2,3,4 //1 2 3 4 //1234
-                                                let answers = []
                                                 let sas = standardAnswer.split(',')
                                                 for (let i = 0; i < sas.length; ++i) {
-                                                    answers = (parseInt(sas[i]) - 1)
-                                                    let fil = {
-                                                        problemsId: parseInt(currentSelectedElement.dataset.id),
-                                                        name: answers
+                                                    let answerItem = {
+                                                        problemId: problem.id,
+                                                        name: parseInt(sas[i]) - 1
                                                     }
 
                                                     $.ajax({
                                                         type: "post",
-                                                        url: "api/problems-standard-answers",
-                                                        data: JSON.stringify(fil),
+                                                        url: "api/problem-standard-answers",
+                                                        data: JSON.stringify(answerItem),
                                                         dataType: "json",
                                                         async: false,
-                                                        contentType: "application/json; charset=utf-8",
-                                                        success: function (ProblemsStandardAnswers) {
-
-                                                        }
+                                                        contentType: "application/json; charset=utf-8"
                                                     })
 
                                                 }
-                                                let options = currentSelectedElement.querySelectorAll('[data-type="option"')
-                                                let opti = [options[0].value, options[1].value, options[2].value, options[3].value]
 
-                                                for (var i in opti) {
-                                                    fil = {
-                                                        problemsId: parseInt(currentSelectedElement.dataset.id),
-                                                        name: opti[i]
+                                                let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
+                                                let optValues = [options[0].value, options[1].value, options[2].value, options[3].value]
+
+                                                for (let i = 0; i < optValues.length; ++i) {
+                                                    let option = {
+                                                        problemId: problem.id,
+                                                        name: optValues[i]
                                                     }
 
                                                     $.ajax({
                                                         type: "post",
-                                                        url: "api/problems-options",
-                                                        data: JSON.stringify(fil),
+                                                        url: "api/problem-options",
+                                                        data: JSON.stringify(option),
                                                         dataType: "json",
                                                         async: false,
-                                                        contentType: "application/json; charset=utf-8",
-                                                        success: function (problemsoptions) {
-                                                          alert("添加成功")
-                                                        },
-                                                        error:function (problemsoptions) {
-                                                            alert("添加失败")
-                                                        }
+                                                        contentType: "application/json; charset=utf-8"
                                                     })
                                                 }
-
-
                                             }
                                         })
                                     }
                                 }
-                                request.open("POST", "api/medias");
-                                request.send(formData);
+                                request.open("POST", "api/medias")
+                                request.send(formData)
+                                alert("添加成功")
                             }
                         }
                     }
-                    break;
+                    break
                 case 'imageText':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         alert("dasf")
                         delete currentSelectedElement.dataset.id
                         var formData = new FormData();
-                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
-                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"').value);
+                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
+                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"]').value);
                         var request = new XMLHttpRequest();
                         request.onreadystatechange = function () {
                             if (request.status == 200) {
@@ -958,8 +951,8 @@
                         alert("修改成功")
                     } else {
                         var formData = new FormData();
-                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"').files[0]);
-                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"').value);
+                        formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
+                        formData.append("content", currentSelectedElement.querySelector('[data-type="content"]').value);
                         var request = new XMLHttpRequest();
                         request.onreadystatechange = function () {
                             if (request.status == 200) {
@@ -977,8 +970,8 @@
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         currentId = currentSelectedElement.dataset.id
                         let data = {
-                            content: currentSelectedElement.querySelector('[data-type="content"').value,
-                            source: currentSelectedElement.querySelector('[data-type="source"').value
+                            content: currentSelectedElement.querySelector('[data-type="content"]').value,
+                            source: currentSelectedElement.querySelector('[data-type="source"]').value
                         }
                         $.ajax({
                             type: "put",
@@ -989,14 +982,14 @@
                             success: function (quote) {
                                 alert("修改成功")
                             },
-                            error:function (quote) {
+                            error: function (quote) {
                                 alert("修改失败")
                             }
                         })
                     } else {
                         let data = {
-                            content: currentSelectedElement.querySelector('[data-type="content"').value,
-                            source: currentSelectedElement.querySelector('[data-type="source"').value
+                            content: currentSelectedElement.querySelector('[data-type="content"]').value,
+                            source: currentSelectedElement.querySelector('[data-type="source"]').value
                         }
                         alert(JSON.stringify(data))
                         //{"content":"第一的腰包","source":"——礼拜"}
@@ -1010,7 +1003,7 @@
                                 alert("添加成功")
                                 currentSelectedElement.dataset.id = quote.id
                             },
-                            error:function (quote) {
+                            error: function (quote) {
                                 alert("修改失败")
                             }
                         })
@@ -1019,40 +1012,43 @@
             }
             currentSelectedElement.removeClass('active')
             currentSelectedElement.addClass('saved')
+            //currentSelectedElement.querySelector('[data-type="text"]').setAttribute('readonly', 'readonly')
         }, false)
 
         let save = document.getElementById('save')
         save.addEventListener('click', function (e) {
-            if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
-                alert("不能重复提交")
-            }else{
-                let children = contents.children
-                for (let i = 0; i < children.length; ++i) {
-                    //id, knowledge_point_id, volume_id, type, text_id|image_id|problem_id|video_id, order
-                    let data = {
-                        knowledgePointId: parseInt(currentKnowledgePoint),
-                        volumeId: parseInt(currentVolume),
-                        grade: parseInt(currentGrade),
-                        subjectId: parseInt(currentSubject),
-                        type: children[i].dataset.type,
-                        order: i + 1,
-                        objectId: children[i].dataset.id
-                    }
-
-                    $.ajax({
-                        type: "post",
-                        url: "api/knowledge-po/json; charset=utint-content-maps",
-                        data: JSON.stringify(data),
-                        dataType: "json",
-                        contentType: "applicationf-8",
-                        async: false,
-                        success: function (save) {
-                            currentSelectedElement.dataset.id = save.id
-                            alert("添加成功")
-                        }
-                    })
+            let children = contents.children
+            for (let i = 0; i < children.length; ++i) {
+                //id, knowledge_point_id, volume_id, type, text_id|image_id|problem_id|video_id, order
+                let data = {
+                    knowledgePointId: parseInt(currentKnowledgePoint),
+                    volumeId: parseInt(currentVolume),
+                    grade: parseInt(currentGrade),
+                    subjectId: parseInt(currentSubject),
+                    type: children[i].dataset.type,
+                    order: i + 1,
+                    objectId: children[i].dataset.id
                 }
+
+                $.ajax({
+                    type: "post",
+                    url: "api/knowledge-point-content-maps",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (kpcm) {
+                        //currentSelectedElement.dataset.id =kpcm.id
+                        alert("添加成功")
+                        document.getElementById("buttons").style.visibility = "hidden";//隐藏
+                    }
+                })
             }
+            /*if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                alert("不能重复提交")
+            } else {
+
+            }*/
         }, false)
     })
 </script>

@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by User on 2016/9/19.
  */
-@Path("problems-options")
+@Path("problem-options")
 public class ProblemOptions {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
