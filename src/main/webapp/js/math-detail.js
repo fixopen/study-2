@@ -1,38 +1,28 @@
 $(function () {
 
-let volumeId = getUrlParameter("volumeId")
-  let id = getUrlParameter("id")
-  // let volumeId = getUrlParameter('volumeId')
-  // //  alert(id);
-  // let url=window.location.href;
-  // //       alert(url)
-  // //  http://localhost:8080/KnowledgePointsDetail.html?volumeId=1&id=1
-  //
-  // if (volumeId>-1){
-  //   volumeId=url.substring(volumeId+1);
-  // }
-  // volumeId = volumeId.substring(0,volumeId.indexOf('&'))
-  // //  alert(volumeId);
+  let volumeId = getUrlParameter("volumeId")
+  let knowledgePointList = []
 
-  // if(id>-1){
-  //   id=url.substring(id+4);
-  // }
-  alert(id);
-  alert(volumeId)
-  //  let volumeId = getUrlParameter("volumeId")
-  //  let id = getUrlParameter("id")
-  //  alert(id);
-  let  a = parseInt(volumeId)
-  let  b = parseInt(id)
-  let  data;
+  $.ajax({
+    type: 'get',
+    url: 'api/knowledge-points?filter=' + JSON.stringify({
+      volumeId: parseInt(volumeId)
+    }),
+    dataType: 'json',
+    success: function (knowledgePoints) {
+      knowledgePointList = knowledgePoints
+    }
+  })
+
+  let id = g.getUrlParameter('id')
 
   $.ajax({
     type:"get",
-    url:"api/knowledge-points/"+b+"/contents",
+    url: 'api/knowledge-points/' + id + '/contents',
     dataType: 'json',
     async : false,
-    success: function(kps){
-      data=kps;
+    success: function(data){
+      alert( JSON.stringify(data))
       for (let i = 0; i < data.problems.length; ++i) {
         let p = data.problems[i];
         if (p.options && (p.options.length == 4)) {
@@ -42,8 +32,12 @@ let volumeId = getUrlParameter("volumeId")
           p.options[3].title = 'D'
         }
       }
-      alert(JSON.stringify(kps));
-      console.info(kps);
+
+      proc({
+        templateId: 'title1-template',
+        data:order,
+        containerId: 'title1'
+      });
       proc({
         templateId: 'title2-template',
         data:data,

@@ -7,23 +7,23 @@ let getUrlParameter = function (name) {
     if (r != null) {
         result = decodeURI(r[2])
     }
-    return result //返回参数值
-}
+    return result; //返回参数值
+};
 
 
 let getTemplate = function (templateId) {
-    let result
-    let template = doc.getElementById(templateId)
+    let result;
+    let template = doc.getElementById(templateId);
     if (template) {
         result = template.content.children[0]
     }
     return result
-}
+};
 
 let bind = function (element, data) {
     if (element) {
         element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
-            let result = ''
+            let result = '';
             if (data && variable) {
                 result = data[variable]
             }
@@ -34,7 +34,7 @@ let bind = function (element, data) {
 
 let proc = function (option) {
     //prepare template
-    let template = option.template
+    let template = option.template;
     if (!template) {
         template = getTemplate(option.templateId)
     }
@@ -50,14 +50,14 @@ let proc = function (option) {
         }
     }
     //prepare container
-    let container = option.container
+    let container = option.container;
     if (!container) {
         container = doc.getElementById(option.containerId)
     }
     if ((template || templates) && container) {
         //clone element via template or alt templates
         let cloneElement = function (type) {
-            let element
+            let element;
             if (template) {
                 element = template.cloneNode(true)
             } else if (templates) {
@@ -69,22 +69,22 @@ let proc = function (option) {
                 }
             }
             return element
-        }
+        };
         //proc second bind
         let procSecond = function (data, element) {
             if (option.secondBind) {
                 //prepare second templates
-                let secondTemplates = []
+                let secondTemplates = [];
                 if (Array.isArray(option.secondBind)) {
                     for (let i = 0; i < option.secondBind.length; ++i) {
-                        let secondTemplate = getTemplate(option.secondBind[i].templateId)
+                        let secondTemplate = getTemplate(option.secondBind[i].templateId);
                         secondTemplates.push({
                             extPoint: option.secondBind[i].extPoint,
                             template: secondTemplate
                         })
                     }
                 } else {
-                    let secondTemplate = getTemplate(option.secondBind.templateId)
+                    let secondTemplate = getTemplate(option.secondBind.templateId);
                     secondTemplates.push({extPoint: option.secondBind.extPoint, template: secondTemplate})
                 }
                 //get second template from second templates

@@ -6,7 +6,7 @@ $(function () {
         if (r != null) {
             result = decodeURI(r[2])
         }
-        return result //返回参数值
+        return result;//返回参数值
     }
 
     proc({
