@@ -99,23 +99,32 @@ public class JPAEntry {
     }
 
     public static boolean isLogining(String sessionId) {
-        return true;
-        //return isLogining(sessionId, a -> {
-        //    a.setLastOperationTime(new Date());
-        //    genericPut(a);
-        //});
+        boolean result = false;
+        Session s = isLogining(sessionId, a -> {
+           //a.setLastOperationTime(new Date());
+           //genericPut(a);
+           result = true;
+        });
+        return result;
     }
 
-    public static boolean isLogining(String sessionId, Consumer<Session> touchFunction) {
-        boolean result = false;
+    public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
         Session s = getObject(Session.class, "identity", sessionId);
+        //@@
+        s = new Session();
+        //@@
         if (s != null) {
-            result = true;
             touchFunction.accept(s);
         }
-        //@@
-        result = true;
-        //@@
+    }
+
+    public static Long getLoginId(String sessionId) {
+        Long result = 0;
+        isLogining(sessionId, a -> {
+           //a.setLastOperationTime(new Date());
+           //genericPut(a);
+           result = a.getUserId();
+        });
         return result;
     }
 }
