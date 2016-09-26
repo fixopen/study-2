@@ -12,11 +12,12 @@
             background-color: #b2b2b2;
         }
     </style>
+
     <script src="../util.js"></script>
+    <script src="../jquery/jquery.min.js"></script>
 </head>
 <body>
 <h1>后台录入页面</h1>
-<script type="text/javascript" src="../jquery/jquery.min.js"></script>
 <table border="1">
     <tr>
         <th>科目</th>
@@ -99,7 +100,7 @@
     $(function () {
         $.ajax({
             type: "get",
-            url: "api/subjects",
+            url: "/api/subjects",
             dataType: "json",
             async: false,
             success: function (subjectData) {
@@ -114,7 +115,7 @@
                     };
                     $.ajax({
                         type: "get",
-                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        url: '/api/volumes?filter=' + JSON.stringify(filter),
                         async: false,
                         success: function (volumes) {
                             subjects[i].low = volumes
@@ -128,7 +129,7 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledge-points?filter=' + JSON.stringify(filter),
+                                    url: '/api/knowledge-points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
@@ -141,7 +142,7 @@
                     filter.grade = 21;
                     $.ajax({
                         type: "get",
-                        url: 'api/volumes?filter=' + JSON.stringify(filter),
+                        url: '/api/volumes?filter=' + JSON.stringify(filter),
                         async: false,
                         success: function (volumes) {
                             subjects[i].high = volumes
@@ -155,7 +156,7 @@
 
                                 $.ajax({
                                     type: "get",
-                                    url: 'api/knowledge-points?filter=' + JSON.stringify(filter),
+                                    url: '/api/knowledge-points?filter=' + JSON.stringify(filter),
                                     dataType: 'json',
                                     async: false,
                                     success: function (knowledgePoint) {
@@ -426,7 +427,7 @@
             }
             $.ajax({
                 type: "post",
-                url: "api/volumes",
+                url: "/api/volumes",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -466,7 +467,7 @@
             }
             $.ajax({
                 type: "put",
-                url: "api/volumes/" + currentVolume,
+                url: "/api/volumes/" + currentVolume,
                 data: JSON.stringify(volumeData),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -521,7 +522,7 @@
 
             $.ajax({
                 type: "post",
-                url: "api/knowledge-points",
+                url: "/api/knowledge-points",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -562,7 +563,7 @@
             }
             $.ajax({
                 type: "put",
-                url: "api/knowledge-points/" + currentKnowledgePoint,
+                url: "/api/knowledge-points/" + currentKnowledgePoint,
                 data: JSON.stringify(knowledgePointData),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -698,7 +699,7 @@
                         data.content = currentSelectedElement.value
                         $.ajax({
                             type: "put",
-                            url: "api/texts/" + currentId,
+                            url: "/api/texts/" + currentId,
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -715,7 +716,7 @@
                         data.content = currentSelectedElement.value
                         $.ajax({
                             type: "post",
-                            url: "api/texts",
+                            url: "/api/texts",
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -743,7 +744,7 @@
                                 currentSelectedElement.dataset.id = returndata.id
                             }
                         }
-                        request.open("POST", "api/medias/");
+                        request.open("POST", "/api/medias/");
                         request.send(formData);
                         alert("修改成功")
                     } else {
@@ -756,7 +757,7 @@
                                 currentSelectedElement.dataset.id = returndata.id
                             }
                         }
-                        request.open("POST", "api/medias");
+                        request.open("POST", "/api/medias");
                         request.send(formData);
                         alert("添加成功")
                     }
@@ -770,7 +771,7 @@
 
                         $.ajax({
                             type: "put",
-                            url: "api/videos/" + currentId,
+                            url: "/api/videos/" + currentId,
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -788,7 +789,7 @@
                         data.storePath = currentSelectedElement.value
                         $.ajax({
                             type: "post",
-                            url: "api/videos",
+                            url: "/api/videos",
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -816,7 +817,7 @@
                                 }
                                 $.ajax({
                                     type: "post",
-                                    url: "api/problems",
+                                    url: "/api/problems",
                                     data: JSON.stringify(data),
                                     dataType: "json",
                                     contentType: "application/json; charset=utf-8",
@@ -831,7 +832,7 @@
                                             }
                                             $.ajax({
                                                 type: "post",
-                                                url: "api/problem-standard-answers",
+                                                url: "/api/problem-standard-answers",
                                                 data: JSON.stringify(answerItem),
                                                 dataType: "json",
                                                 async: false,
@@ -849,7 +850,7 @@
                                             }
                                             $.ajax({
                                                 type: "post",
-                                                url: "api/problem-options",
+                                                url: "/api/problem-options",
                                                 data: JSON.stringify(option),
                                                 dataType: "json",
                                                 async: false,
@@ -877,7 +878,7 @@
                                         }
                                         $.ajax({
                                             type: "post",
-                                            url: "api/problems",
+                                            url: "/api/problems",
                                             data: JSON.stringify(data),
                                             dataType: "json",
                                             contentType: "application/json; charset=utf-8",
@@ -893,7 +894,7 @@
 
                                                     $.ajax({
                                                         type: "post",
-                                                        url: "api/problem-standard-answers",
+                                                        url: "/api/problem-standard-answers",
                                                         data: JSON.stringify(answerItem),
                                                         dataType: "json",
                                                         async: false,
@@ -912,7 +913,7 @@
 
                                                     $.ajax({
                                                         type: "post",
-                                                        url: "api/problem-options",
+                                                        url: "/api/problem-options",
                                                         data: JSON.stringify(option),
                                                         dataType: "json",
                                                         async: false,
@@ -923,7 +924,7 @@
                                         })
                                     }
                                 }
-                                request.open("POST", "api/medias")
+                                request.open("POST", "/api/medias")
                                 request.send(formData)
                                 alert("添加成功")
                             }
@@ -944,7 +945,7 @@
                                 alert(JSON.stringify(returndata))
                             }
                         }
-                        request.open("POST", "api/image-texts");
+                        request.open("POST", "/api/image-texts");
                         request.send(formData);
                         alert("修改成功")
                     } else {
@@ -959,7 +960,7 @@
                                 currentSelectedElement.dataset.id = returndata.id
                             }
                         }
-                        request.open("POST", "api/image-texts");
+                        request.open("POST", "/api/image-texts");
                         request.send(formData);
                         alert("添加成功")
                     }
@@ -973,7 +974,7 @@
                         }
                         $.ajax({
                             type: "put",
-                            url: "api/quotes/" + currentId,
+                            url: "/api/quotes/" + currentId,
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -993,7 +994,7 @@
                         //{"content":"第一的腰包","source":"——礼拜"}
                         $.ajax({
                             type: "post",
-                            url: "api/quotes",
+                            url: "/api/quotes",
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -1030,7 +1031,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "api/knowledge-point-content-maps",
+                    url: "/api/knowledge-point-content-maps",
                     data: JSON.stringify(data),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
