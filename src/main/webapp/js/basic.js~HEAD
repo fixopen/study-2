@@ -1,5 +1,15 @@
 let doc = document
 
+let getUrlParameter = function (name) {
+    var result = null
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)") //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg) //匹配目标参数
+    if (r != null) {
+        result = decodeURI(r[2])
+    }
+    return result //返回参数值
+}
+
 let getTemplate = function (templateId) {
     let result
     let template = doc.getElementById(templateId)
@@ -60,7 +70,7 @@ let proc = function (option) {
             return element
         }
         //proc second bind
-        let procSecond = function (element, data) {
+        let procSecond = function (data, element) {
             if (option.secondBind) {
                 //prepare second templates
                 let secondTemplates = []
@@ -108,7 +118,7 @@ let proc = function (option) {
                 let element = cloneElement(option.data[i].type)
                 if (element) {
                     bind(element, option.data[i])
-                    procSecond(element, option.data[i])
+                    procSecond(option.data[i], element)
                     container.appendChild(element)
                 }
             }
@@ -116,7 +126,7 @@ let proc = function (option) {
             let element = cloneElement()
             if (element) {
                 bind(element, option.data)
-                procSecond(element, option.data)
+                procSecond(option.data, element)
                 container.appendChild(element)
             }
         }

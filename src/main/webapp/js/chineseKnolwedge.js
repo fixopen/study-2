@@ -3,28 +3,41 @@
     //html利用js接受url传递来的参数。 比如:x.htm?abc=222。
     //htm中可以利用js获取到abc的值222。代码如下：
 
-    var url=window.location.href;
-    //alert(url)
-    //http://localhost:8080/KnowledgePointsIndex.html?volumeId=1&grade=20
-    var volumeId=url.indexOf('=');
-    if (volumeId>-1){
-        volumeId=url.substring(volumeId+1);
-    }
-    volumeId = volumeId.substring(0,volumeId.indexOf('&'))
-    var grade = url.indexOf('&grade=');
-    if(grade>-1){
-        grade=url.substring(grade+7);
-
-    }
+    // var url=window.location.href;
+    // //alert(url)
+    // //http://localhost:8080/KnowledgePointsIndex.html?volumeId=1&grade=20
+    // var volumeId=url.indexOf('=');
+    // if (volumeId>-1){
+    //     volumeId=url.substring(volumeId+1);
+    // }
+    // volumeId = volumeId.substring(0,volumeId.indexOf('&'))
+    // var grade = url.indexOf('&grade=');
+    // if(grade>-1){
+    //     grade=url.substring(grade+7);
+    //
+    // }
+    let volumeId = g.getUrlParameter('volumeId')
+    let grade = g.getUrlParameter('grade')
     var volumes;
+
+    filterds = {
+        subjectId: 1,
+        volumeId: a,
+        grade: b
+    };
     $.ajax({
         type:"get",
-        url:'api/volumes?' + JSON.stringify(volumeId),
+        url:'api/volumes?filter=' + JSON.stringify(filterds),
         dataType: 'json',
         async : false,
         success: function(vs){
             volumes=vs;
-        //  alert(JSON.stringify(vs))
+         alert(JSON.stringify(vs))
+            proc({
+                templateId: 'title-template',
+                data: volumes,
+                containerId: 'title'
+            })
         }
     })
     var  a = parseInt(volumeId)
@@ -34,18 +47,21 @@
 //            var volumes;
 
     filterds = {
-        subjectId: 1,
         volumeId: a,
-        grade: b
     };
     $.ajax({
         type:"get",
-        url:'api/knowledgePoints?filter=' + JSON.stringify(filterds),
+        url:'api/knowledge-points?filter=' + JSON.stringify(filterds),
         dataType: 'json',
         async : false,
         success: function(kps){
             knowledgePoints=kps;
             alert(JSON.stringify(kps))
+            proc({
+                templateId: 'volume-template',
+                data: knowledgePoints,
+                containerId: 'volume'
+            })
         }
     })
 
@@ -115,16 +131,8 @@
 //                ]
 //            }
 
-    proc({
-        templateId: 'title-template',
-        data: volumes[a-1],
-        containerId: 'title'
-    })
-    proc({
-        templateId: 'volume-template',
-        data: knowledgePoints,
-        containerId: 'volume'
-    })
+
+
 
 
 

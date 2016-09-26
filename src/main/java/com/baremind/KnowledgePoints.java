@@ -161,7 +161,9 @@ public class KnowledgePoints {
                                 tm.put("id", t.getId());
                                 tm.put("content", t.getContent());
                                 tm.put("type", "text");
+
                                 orderedContents.add(tm);
+
                             }
                             break;
                         case "image":
@@ -216,10 +218,12 @@ public class KnowledgePoints {
                             break;
                     }
                 }
+
                 Map<String, Object> totalResult = new HashMap<>();
                 totalResult.put("title", p.getTitle());
                 totalResult.put("quotes", orderedQuotes);
                 totalResult.put("contents", orderedContents);
+
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     totalResult.put("video", videoObjects.get(0));
                 }

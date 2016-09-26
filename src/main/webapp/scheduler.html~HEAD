@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>排课</title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="moment.js"></script>
+</head>
+<body>
+<form enctype="multipart/formdata">
+    <input type="file">
+</form>
+<template id="scheduler-template">
+    <tr>
+        <td><input class="startTime" type="time"></td>
+        <td><input class="endTime" type="time"></td>
+        <td><input type="text" class="title"></td>
+        <td><select class="subjectId">
+            <option value="1">语文</option>
+            <option value="2">奥数</option>
+            <option value="3">口语</option>
+        </select></td>
+        <td><input type="text" class="duration"></td>
+        <td><textarea class="description"></textarea></td>
+        <td><input type="text" class="grade"></td>
+        <td><input type="text" class="teacher"></td>
+        <td><textarea class="teacherdescription"></textarea></td>
+        <td><select class="state">
+            <option value="0">未直播</option>
+            <option value="1">直播中</option>
+            <option value="2">直播后</option>
+        </select></td>
+        <td>
+            <button class="submit" data-id="0">确定</button>
+        </td>
+    </tr>
+</template>
+
+<table border="1">
+    <tr>
+        <th>年</th>
+        <th>周</th>
+    </tr>
+    <tr>
+        <td>
+            <!-- <select id="year"></select> --> <input type="text" id="year">
+        </td>
+        <td>
+            <!-- <select id="week"></select> --> <input type="text" id="week">
+        </td>
+    </tr>
+</table>
+
+<table border="1">
+    <caption>星期日</caption>
+    <thead>
+    <tr>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>课标题</th>
+        <th>科目</th>
+        <th>时长</th>
+        <th>描述</th>
+        <th>年级</th>
+        <th>老师名称</th>
+        <th>老师描述</th>
+        <th>状态</th>
+        <th>操作
+            <button id="append" class="append" data-index="0">添加</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="Sunday" class="scheduler-list"></tbody>
+</table>
+
+<table border="1">
+    <caption>星期一</caption>
+    <thead>
+    <tr>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>课标题</th>
+        <th>科目</th>
+        <th>时长</th>
+        <th>描述</th>
+        <th>年级</th>
+        <th>老师名称</th>
+        <th>老师描述</th>
+        <th>状态</th>
+        <th>操作
+            <button class="append" data-index="1">添加</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="Monday" class="scheduler-list"></tbody>
+</table>
+
+<table border="1">
+    <caption>星期二</caption>
+    <thead>
+    <tr>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>课标题</th>
+        <th>科目</th>
+        <th>时长</th>
+        <th>描述</th>
+        <th>年级</th>
+        <th>老师名称</th>
+        <th>老师描述</th>
+        <th>状态</th>
+        <th>操作
+            <button class="append" data-index="2">添加</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="Tuesday" class="scheduler-list"></tbody>
+</table>
+
+<table border="1">
+    <caption>星期三</caption>
+    <thead>
+    <tr>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>课标题</th>
+        <th>科目</th>
+        <th>时长</th>
+        <th>描述</th>
+        <th>年级</th>
+        <th>老师名称</th>
+        <th>老师描述</th>
+        <th>状态</th>
+        <th>操作
+            <button class="append" data-index="3">添加</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="Wednesday" class="scheduler-list"></tbody>
+</table>
+
+<table border="1">
+    <caption>星期四</caption>
+    <thead>
+    <tr>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>课标题</th>
+        <th>科目</th>
+        <th>时长</th>
+        <th>描述</th>
+        <th>年级</th>
+        <th>老师名称</th>
+        <th>老师描述</th>
+        <th>状态</th>
+        <th>操作
+            <button class="append" data-index="4">添加</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="Thursday" class="scheduler-list"></tbody>
+</table>
+
+<table border="1">
+    <caption>星期五</caption>
+    <thead>
+    <tr>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>课标题</th>
+        <th>科目</th>
+        <th>时长</th>
+        <th>描述</th>
+        <th>年级</th>
+        <th>老师名称</th>
+        <th>老师描述</th>
+        <th>状态</th>
+        <th>操作
+            <button class="append" data-index="5">添加</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="Friday" class="scheduler-list"></tbody>
+</table>
+
+<table border="1">
+    <caption>星期六</caption>
+    <thead>
+    <tr>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>课标题</th>
+        <th>科目</th>
+        <th>时长</th>
+        <th>描述</th>
+        <th>年级</th>
+        <th>老师名称</th>
+        <th>老师描述</th>
+        <th>状态</th>
+        <th>操作
+            <button class="append" data-index="6">添加</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="Saturday" class="scheduler-list"></tbody>
+</table>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: 'api/schedulers/this-week',
+            dataType: 'json',
+            async: false,
+            success: function (vs) {
+                //alert(JSON.stringify(vs))//得到数据
+                for (var i = 0; i < vs.length; ++i) {
+                    switch (vs[i].day) {
+                        case 0:
+                            String
+                            var tr = "<tr>" +
+                                    "<td>" + vs[i].startTime + "</td>" +
+                                    "<td>" + vs[i].endTime + "</td>" +
+                                    "<td>" + vs[i].title + "</td>" +
+                                    "<td>" + vs[i].subjectId + "</td>" +
+                                    "<td>" + vs[i].duration + "</td>" +
+                                    "<td>" + vs[i].description + "</td>" +
+                                    "<td>" + vs[i].grade + "</td>" +
+                                    "<td>" + vs[i].teacher + "</td>" +
+                                    "<td>" + vs[i].teacherDescription + "</td>" +
+                                    "<td>" + vs[i].state + "</td>" +
+                                    "</tr>";
+                            $("#Sunday").append(tr)
+                            break;
+                        case 1:
+                            $("#Monday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 2:
+                            $("#Tuesday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 3:
+                            $("#Wednesday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 4:
+                            $("#Thursday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 5:
+                            $("#Friday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                        case 6:
+                            $("#Saturday").append('<option value="' + subjects[i].low[j].id + '">' + subjects[i].low[j].title + '</option>')
+                            break;
+                    }
+                }
+            }
+        })
+        const days = [0, 1, 2, 3, 4, 5, 6]
+        const weeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        let dayIndex = 0
+
+        let year = document.getElementById("year")
+        let week = document.getElementById("week")
+
+        function getYearAndWeek() {
+            let m = moment()
+            return {year: m.year(), week: m.week()}
+        }
+
+        let yw = getYearAndWeek()
+        year.value = yw.year
+        week.value = yw.week
+
+        $('.append').click(function (e) {
+            dayIndex = parseInt(e.currentTarget.dataset.index)
+            let st = document.getElementById('scheduler-template')
+            let nr = st.content.children[0].cloneNode(true)
+            let container = document.getElementById(weeks[dayIndex])
+            container.appendChild(nr)
+        })
+
+        $('.scheduler-list').on('click', function (e) {
+            let button = e.target
+            if (button.tagName == 'BUTTON') {
+                let m = moment().year(year.value).week(week.value).day(days[dayIndex])
+                let month = m.month()
+                let day = m.date()
+
+                let row = button.parentNode.parentNode
+                let startTime = row.querySelector('.startTime')
+                let endTime = row.querySelector('.endTime')
+                let duration = row.querySelector('.duration')
+
+                var startTimeValue = startTime.value.trim()
+                var endTimeValue = endTime.value.trim()
+
+                if (startTimeValue == "" || endTimeValue == "") {
+                    alert("时间不能为空")
+                    return
+                }
+
+                var reg = /^((20|21|22|23|[0-1]\d)\:[0-5][0-9])$/
+                if (!reg.test(startTimeValue) || !reg.test(endTimeValue)) {
+                    alert("您输入的时间格式不正确!")
+                    return
+                }
+
+                let startTimeArray = startTimeValue.split(":")
+                let startDate = new Date(year.value, month, day, startTimeArray[0], startTimeArray[1])
+
+                let endTimeArray = endTimeValue.split(":")
+                let endDate = new Date(year.value, month, day, endTimeArray[0], endTimeArray[1])
+
+                if (startDate >= endDate) {
+                    alert('开始时间不能大于结束时间')
+                    return
+                }
+
+                let durationValue = +endDate - +startDate
+                alert(durationValue)
+                //let durationValue = endDate.diff(startDate)
+                durationValue = durationValue / 1000
+                duration.value = durationValue + 's'
+
+                let scheduler = {
+                    day: days[dayIndex],
+                    year: year.value,
+                    week: week.value,
+                    startTime: startTimeValue,
+                    endTime: endTimeValue,
+                    duration: durationValue,
+                    description: row.querySelector('.description').value,
+                    subjectId: row.querySelector('.subjectId').value,
+                    grade: row.querySelector('.grade').value,
+                    teacher: row.querySelector('.teacher').value,
+                    teacherDescription: row.querySelector('.teacherdescription').value,
+                    state: row.querySelector('.state').value,
+                    title: row.querySelector('.title').value
+                }
+                alert(JSON.stringify(scheduler))
+                let id = button.dataset.id
+                if (id == 0) {
+                    $.ajax({
+                        type: "post",
+                        url: "api/schedulers",
+                        data: JSON.stringify(scheduler),
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function (schedulerItem) {
+                            button.dataset.id = schedulerItem.id
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        type: "put",
+                        url: "api/schedulers/" + id,
+                        data: JSON.stringify(scheduler),
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function (schedulerItem) {
+                            //do nothing
+                        }
+                    })
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>
