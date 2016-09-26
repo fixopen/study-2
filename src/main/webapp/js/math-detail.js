@@ -31,82 +31,99 @@ $(function () {
           p.options[2].title = 'C';
           p.options[3].title = 'D'
         }
+        proc({
+          templateId: 'title1-template',
+          data:order,
+          containerId: 'title1'
+        });
+        proc({
+          templateId: 'title2-template',
+          data:data,
+          containerId: 'title2'
+        });
+
+        proc({
+          templateId: 'challenge-template',
+          data: data.quotes,
+          containerId: 'challenge'
+        });
+
+
+        proc({
+          data: data.contents,
+          containerId: 'content',
+          alterTemplates: [
+            {type: 'text', templateId: 'content-text-template'},
+            {type: 'imageText', templateId: 'content-image-template'}
+          ]
+        });
+
+        proc({
+          templateId: 'video-template',
+          data: data.video,
+          containerId: 'video'
+        });
+
+        proc({
+          templateId: 'strongest-brain-template',
+          data: data.problems,
+          containerId: 'strongest-brain',
+          secondBind: [
+            {
+              extPoint: 'options',
+              dataFieldName: 'options',
+              templateId: 'strongest-brain-option-template'
+            },
+            {
+              extPoint: 'explain',
+              dataFieldName: 'video',
+              templateId: 'video-template'
+            }
+          ]
+        });
+
+        proc({
+          templateId: 'pk-template',
+          data: data.problems,
+          containerId: 'pk',
+          secondBind: [
+            {
+              extPoint: 'options',
+              dataFieldName: 'options',
+              templateId: 'pk-option-template'
+            }]
+        });
+        let baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
+        for (let i = 0; i < knowledgePointList.length; ++i) {
+          if (knowledgePointList[i].id == id) {
+            let prevIndex = i
+            let nextIndex = i
+            if (i > 0) {
+              prevIndex = i - 1
+            }
+            if (i < knowledgePointList.length - 2) {
+              nextIndex = i + 1
+            }
+            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id
+            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id
+            break
+          }
+        }
+
+        proc({
+          templateId: 'interaction-template',
+          data: data.interaction,
+          containerId: 'interaction'
+        });
+
+        proc({
+          templateId: 'comment-template',
+          data: data.comments,
+          containerId: 'comments'
+        })
       }
 
-      proc({
-        templateId: 'title1-template',
-        data:order,
-        containerId: 'title1'
-      });
-      proc({
-        templateId: 'title2-template',
-        data:data,
-        containerId: 'title2'
-      });
 
-      proc({
-        templateId: 'challenge-template',
-        data: data.quotes,
-        containerId: 'challenge'
-      });
-
-
-      proc({
-        data: data.contents,
-        containerId: 'content',
-        alterTemplates: [
-          {type: 'text', templateId: 'content-text-template'},
-          {type: 'imageText', templateId: 'content-image-template'}
-        ]
-      });
-
-      proc({
-        templateId: 'video-template',
-        data: data.video,
-        containerId: 'video'
-      });
-
-      proc({
-        templateId: 'strongest-brain-template',
-        data: data.problems,
-        containerId: 'strongest-brain',
-        secondBind: [
-          {
-            extPoint: 'options',
-            dataFieldName: 'options',
-            templateId: 'strongest-brain-option-template'
-          },
-          {
-            extPoint: 'explain',
-            dataFieldName: 'video',
-            templateId: 'video-template'
-          }
-        ]
-      });
-
-      proc({
-        templateId: 'pk-template',
-        data: data.problems,
-        containerId: 'pk',
-        secondBind: [
-          {
-            extPoint: 'options',
-            dataFieldName: 'options',
-            templateId: 'pk-option-template'
-          }]
-      });
-
-      proc({
-        templateId: 'interaction-template',
-        data: data.interaction,
-        containerId: 'interaction'
-      });
-
-      proc({
-        templateId: 'comment-template',
-        data: data.comments,
-        containerId: 'comments'
-      })
     }
   })
 })
