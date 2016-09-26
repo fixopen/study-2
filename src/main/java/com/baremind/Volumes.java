@@ -97,6 +97,7 @@ public class Volumes {
 
                     Map<String, Object> kpm = new HashMap<>();
                     kpm.put("id", kp.getId());
+                    kpm.put("volumeId",kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
                     kpm.put("likeCount", likeCount);
                     kpm.put("readCount", readCount);
