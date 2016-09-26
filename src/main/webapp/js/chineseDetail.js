@@ -1,14 +1,16 @@
 ﻿$(function () {
     let volumeId = g.getUrlParameter('volumeId')
     let knowledgePointList = []
-
+   // let volumesId=parseInt(g.getUrlParameter('volumeId'));
     $.ajax({
         type: 'get',
         url: 'api/knowledge-points?filter=' + JSON.stringify({
             volumeId: parseInt(volumeId)
         }),
+        // url:'api/volumes/'+volumesId+'/knowledge-points',
         dataType: 'json',
         success: function (knowledgePoints) {
+            alert(JSON.stringify(knowledgePoints))
             knowledgePointList = knowledgePoints
         }
     })
