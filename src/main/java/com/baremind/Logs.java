@@ -1,6 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.Like;
+import com.baremind.data.Log;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -18,12 +18,12 @@ public class Logs {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLike(@CookieParam("sessionId") String sessionId, Like like) {
+    public Response createLike(@CookieParam("sessionId") String sessionId, Log log) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            like.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(like);
-            result = Response.ok(like).build();
+            log.setId(IdGenerator.getNewId());
+            JPAEntry.genericPost(log);
+            result = Response.ok(log).build();
         }
         return result;
     }
@@ -35,9 +35,9 @@ public class Logs {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Like> likes = JPAEntry.getList(Like.class, filterObject);
-            if (!likes.isEmpty()) {
-                result = Response.ok(new Gson().toJson(likes)).build();
+            List<Log> logs = JPAEntry.getList(Log.class, filterObject);
+            if (!logs.isEmpty()) {
+                result = Response.ok(new Gson().toJson(logs)).build();
             }
         }
         return result;
@@ -50,9 +50,9 @@ public class Logs {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            Like like = JPAEntry.getObject(Like.class, "id", id);
-            if (like != null) {
-                result = Response.ok(new Gson().toJson(like)).build();
+            Log log = JPAEntry.getObject(Log.class, "id", id);
+            if (log != null) {
+                result = Response.ok(new Gson().toJson(log)).build();
             }
         }
         return result;
@@ -62,27 +62,27 @@ public class Logs {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Like like) {
+    public Response updateLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Log log) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            Like existlike = JPAEntry.getObject(Like.class, "id", id);
+            Log existlike = JPAEntry.getObject(Log.class, "id", id);
             if (existlike != null) {
-                String objectType = like.getObjectType();
+                String objectType = log.getObjectType();
                 if (objectType != null) {
                     existlike.setObjectType(objectType);
                 }
-                Long userId = like.getUserId();
+                Long userId = log.getUserId();
                 if (userId != null) {
                     existlike.setUserId(userId);
                 }
 
-                Date createTime = like.getCreateTime();
+                Date createTime = log.getCreateTime();
                 if (createTime != null) {
                     existlike.setCreateTime(createTime);
                 }
 
-                Long objectId = like.getObjectId();
+                Long objectId = log.getObjectId();
                 if (objectId != null) {
                     existlike.setObjectId(objectId);
                 }
