@@ -87,18 +87,19 @@ public class Volumes {
                 for (KnowledgePoint kp : knowledgePoints) {
 
                     EntityManager em = JPAEntry.getEntityManager();
-                    String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
+                    String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
                     Query lq = em.createQuery(statsLikes, Long.class);
-                    Long likeCountObject = (Long)lq.getSingleResult();
+                    Long likeCount = (Long)lq.getSingleResult();
 
-                    String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
+                    String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
                     Query rq = em.createQuery(statsReads, Long.class);
                     Long readCount = (Long)rq.getSingleResult();
-                    
+
                     Map<String, Object> kpm = new HashMap<>();
                     kpm.put("id", kp.getId());
+                    kpm.put("volumeId",kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
-                    kpm.put("likeCount", likeCountObject);
+                    kpm.put("likeCount", likeCount);
                     kpm.put("readCount", readCount);
                     kpsm.add(kpm);
                 }
