@@ -9,7 +9,6 @@
         <class>com.baremind.data.Device</class>
         <class>com.baremind.data.Image</class>
         <class>com.baremind.data.KnowledgePoint</class>
-        <class>com.baremind.data.Like</class>
         <class>com.baremind.data.Media</class>
         <class>com.baremind.data.Problem</class>
         <class>com.baremind.data.Property</class>
@@ -29,6 +28,7 @@
         <class>com.baremind.data.Quote</class>
         <class>com.baremind.data.ImageText</class>
         <class>com.baremind.data.Log</class>
+        <class>com.baremind.data.AnswerRecord</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://139.129.214.229:5432/study"/>
