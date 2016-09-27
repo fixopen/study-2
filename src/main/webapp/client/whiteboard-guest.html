@@ -7,11 +7,14 @@
     <meta name="author" content="Agora.io">
     <link rel="stylesheet" href="css/bundle.css?v=1.0">
     <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>、
+
     <![endif]-->
 </head>
 <body>
-<video webkit-playsinline id="video" controls style="width: 1024px">
+<img src="another.jpg" id="imgid" style="width: 100%">
+<div id="warp" style="display: none; /*visibility: hidden*/">
+<video webkit-playsinline id="video" controls style="width: 1024px">                                         
     <!--
     <source src="http://agorapull.8686c.com/live/11672-xiaoyu/playlist.m3u8" type="application/x-mpegURL">
     -->
@@ -28,6 +31,17 @@
 <script src="js/AgoraWBSDK-1.0.0.js"></script>
 <script src="js/script-guest.js"></script>
 -->
-<address>小雨直播,版权所有</address>
+<address id="font">小雨直播,版权所有</address>
+</div>
+<script>
+    window.addEventListener('load', function (e) {
+        let doc = document
+        let image = doc.getElementById('imgid')
+        image.addEventListener('click', function(e){
+            e.target.style.display = 'none'
+            doc.getElementById('warp').style.display = 'block'
+        }, false)
+    }, false)
+</script>
 </body>
 </html>
