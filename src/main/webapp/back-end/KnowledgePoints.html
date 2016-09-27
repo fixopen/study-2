@@ -398,6 +398,7 @@
                 knowledgePoint.value = opt.text
             }
             document.getElementById("buttons").style.visibility = "hidden";//隐藏
+            contents.innerHTML = ''
         })
 
         $('#appendvolumeTitle').on('click', function (e) {
@@ -1037,17 +1038,12 @@
                     contentType: "application/json; charset=utf-8",
                     async: false,
                     success: function (kpcm) {
-                        //currentSelectedElement.dataset.id =kpcm.id
-                        alert("添加成功")
-                        document.getElementById("buttons").style.visibility = "hidden";//隐藏
                     }
                 })
             }
-            /*if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
-                alert("不能重复提交")
-            } else {
-
-            }*/
+            document.getElementById("buttons").style.visibility = "hidden";//隐藏
+            contents.innerHTML = ''
+            alert("添加成功")
         }, false)
     })
 </script>

@@ -205,6 +205,7 @@ public class KnowledgePoints {
                                 piems.put("options", pieo);
                                 piems.put("standardAnswers", dfs);
                                 piems.put("title", pie.getTitle());
+                                piems.put("ProblemStandardAnswer", dfs);
                                 orderedProblems.add(piems);
                                 break;
                             }
