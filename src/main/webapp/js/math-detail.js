@@ -1,24 +1,74 @@
 
 function like() {
     let data ={
-        userId:1,
+        //userId: 1,
         objectType:'knowledge-point',
         objectId:g.getUrlParameter("id"),
         action:'like'
     }
+    // let data ={
+    //     //userId: 1,
+    //     objectType:'knowledge-point',
+    //     objectId:g.getUrlParameter("id"),
+    //     action:'unlike'
+    // }
+
     $.ajax({
         type: "post",
         url: "/api/logs",
         data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function (like) {
-            alert("JSON.stringify(data)")
+        success: function like() {
+            alert(JSON.stringify(data))
         }
     })
+
+    // $.ajax({
+    //     type: "post",
+    //     url: "/api/comments",
+    //     data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: '...'}),
+    //     dataType: "json",
+    //     contentType: "application/json; charset=utf-8",
+    //     success: function like() {
+    //         alert(JSON.stringify(data))
+    //     }
+    // })
 }
 
+
 $(function () {
+    // let liked = false
+    // $.ajax({
+    //     type: "get",
+    //     url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: id, action: 'like'}),
+    //     dataType: "json",
+    //     success: function like(like) {
+    //         liked = true
+    //     },
+    //     error: function like(unlike) {
+    //         liked = false
+    //     }
+    // })
+    // //change icon via liked state
+    // let icon = document.getElementById('icon')
+    // icon.addEventListener('click', function(e) {
+    //     if (liked) {
+    //         liked = false
+    //     // *   unlike
+    //     //     *   //event processor unlike
+    //     //     *       notification unlike
+    //     //     *       icon change to like, unliked
+    //     //     *       likeCount - 1
+    //     } else {
+    //         liked = true
+    //         //     *   like
+    //         //     *   //event processor like
+    //         //     *       notification like
+    //         // *       icon change to unlike, liked
+    //         // *       likeCount + 1
+    //     }
+    // }, false)
 
     let volumeId = g.getUrlParameter("volumeId");
     $.ajax({
@@ -83,9 +133,13 @@ $(function () {
                         containerId: 'video'
                     });
 
+                    //data.problems
+                    let pk = data.problems[data.problems.length - 1]
+                    let strongestBrains = data.problems.pop()
+
                     proc({
                         templateId: 'strongest-brain-template',
-                        data: data.problems,
+                        data: strongestBrains,
                         containerId: 'strongest-brain',
                         secondBind: [
                             {
@@ -103,7 +157,7 @@ $(function () {
 
                     proc({
                         templateId: 'pk-template',
-                        data: data.problems,
+                        data: pk,
                         containerId: 'pk',
                         secondBind: [
                             {
