@@ -28,9 +28,7 @@
     <h3 class="head_h3">
         <span class="head_himg"> 挑战<span id="title1"></span></span>
     </h3>
-    <h3 class="head_h3_s" id="title2">
-        <!--<span>简单的图形数量规律</span>-->
-    </h3>
+    <h3 class="head_h3_s" id="title2"></h3>
     <!--section-->
     <div class="rain-main">
         <!--lead-->
@@ -110,46 +108,38 @@
 <template id="video-template">
     <div>
         <img class="muld_images" src="${coverHref}" alt="${coverDescription}">
-        <video>
-        </video>
+        <video></video>
     </div>
 </template>
 <template id="strongest-brain-option-template">
     <!--<li>${option}</li>-->
     <li class="mld_daanLi">
-        <span class="daan_quan">${name}</span>
+        <span class="daan_quan">${title}</span>
         <input type="radio" class="daana" name="daan1">
-        <label>${option}</label>
+        <label>${name}</label>
     </li>
 </template>
 <template id="strongest-brain-template">
     <li class="mld_Ulli">
         <div>${title}</div>
         <img class="ceshi_ti1" src="${img}" alt="">
-        <ol class="mld_daanUl" data-ext-point="options" type="A"></ol>
+        <ol class="mld_daanUl" data-ext-point="options"></ol>
         <div data-ext-point="explain"></div>
     </li>
     <!--</ul>-->
 </template>
 <template id="pk-template">
-    <div>
-        <li class="mld_Ulli">
-            <div>${title}</div>
-            <ol class="mld_daanUl" data-ext-point="options"></ol>
-    </div>
-</template>
-<template id="pk-option-template">
-    <li class="mld_daanLi">
-        <span class="daan_quan">${name}</span>
-        <input type="radio" id="daan_s3A" class="daana" name="daan3">
-        <label for="daan_s3A">${option}</label>
+    <li class="mld_Ulli">
+        <div>${title}</div>
+        <ol class="mld_daanUl" data-ext-point="options"></ol>
     </li>
 </template>
+
 <template id="interaction-template">
     <div>
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
-            <li><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span></li>
+            <li><img class="ul01_imgzan" src="img/zan.png" alt="" onclick="like()"><span class="ul01_count">${likeCount}</span></li>
         </ul>
         <ul class="ul01_riht">
             <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
@@ -178,12 +168,11 @@
             </ul>
         </li>
     </ul>
-
-
 </template>
 
 
-<script type="text/javascript" src="js/basic.js"></script>
+<script type="text/javascript" src="basic.js"></script>
+<script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="js/math-detail.js"></script>
 </body>
 </html>
