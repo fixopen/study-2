@@ -91,7 +91,8 @@
         </div>
         <div class="mulu_bottom">
             <div class="muluBn_top">
-                <a class="mulu_botBtn" href="#">写留言</a>
+                <!--<a class="mulu_botBtn" href="#">写留言</a>-->
+                <span class="mulu_botBtn">写留言</span>
             </div>
             <span  id="comments"></span>
         </div>
@@ -120,13 +121,12 @@
 
     </template>
     <template id="problem-template">
-                 <li class="mld_Ulli">
-                    <div>
-                        <img class="mld_liImg" src="${href}" alt="${type}">${title}
-                    </div>
-                    <ul class="mld_daanUl" data-ext-point="options"></ul>
-                </li>
-
+         <li class="mld_Ulli">
+            <div>
+                <img class="mld_liImg" src="${href}" alt="${type}">${title}
+            </div>
+            <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        </li>
     </template>
     <template id="problem-option-template" >
         <li class="mld_daanLi">
@@ -139,13 +139,17 @@
         <div>
             <ul class="ul01_flet">
                 <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
-                <li><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span></li>
+                <li>
+                    <!--<img class="ul01_imgzan" src="img/zan.png" alt="">-->
+                    <!--<span class="ul01_count" id="likeCount">${likeCount}</span>-->
+
+                    <button type="button" class="click-like" onclick="addLike()"></button>
+                    <span class="ul01_count" id="likeCount">0</span>
+                </li>
             </ul>
             <ul class="ul01_riht">
                 <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
-                <!--<li class="ul01_fli"><a class="ul01_aBtn" href="chineseKnowledgePointsDetail.html?volumeId=a&id=b">上一节课</a></li>-->
                 <li><a class="ul01_aBtn" href="${next}">下一节课</a></li>
-                <!--<li><a class="ul01_aBtn" href="chineseKnowledgePointsDetail.html?volumeId=a&id=b">下一节课</a></li>-->
             </ul>
         </div>
     </template>
@@ -170,10 +174,18 @@
             </li>
         </ul>
     </template>
-
+    <script>
+        function addLike() {
+            let likeCount = $('#likeCount').html();
+//           console.log(likeCount)
+//            likeCount = parseInt(likeCount) + 1;
+            likeCount+=1;
+            console.log(likeCount)
+        }
+    </script>
     <!--script-->
     <script type="text/javascript" src="basic.js"></script>
-    <script src="util.js"></script>
+    <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript" src="js/chineseDetail.js"></script>
 </body>
 </html>

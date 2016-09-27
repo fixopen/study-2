@@ -99,7 +99,8 @@ li.mld_Ulli{
 .daan_error{
     float: left;
     position: relative;
-    top: -1.625rem;
+    /*top: -1.625rem;*/
+    top: 0;
     left: 0;
     width: 1.625rem;
     height: 1.625rem;
@@ -143,6 +144,14 @@ li.mld_Ulli{
 .ul01_imgzan{
     width: 1.0625rem;
     height: 1.0625rem;
+}
+.click-like{
+    width: 1.0625rem;
+    height: 1.0625rem;
+    background: url('../img/zan.png') 0 0 no-repeat;
+    background-size: 1.0625rem 1.0625rem;
+    position: relative;
+    top:-0.4375rem;
 }
 .ul01_riht{
     float: right;
