@@ -203,6 +203,7 @@ public class KnowledgePoints {
                                     piems.put("type", "单选题");
                                 }
                                 piems.put("options", pieo);
+                                piems.put("standardAnswers", dfs);
                                 piems.put("title", pie.getTitle());
                                 orderedProblems.add(piems);
                                 break;
