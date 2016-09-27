@@ -12,18 +12,21 @@
     <![endif]-->
 </head>
 <body>
-<img src="another.jpg" id="imgid" style="width: 100%">
+<img src="startup.jpg" id="imgid" style="width: 100%">
 <div id="warp" style="display: none; /*visibility: hidden*/">
-<video webkit-playsinline id="video" controls style="width: 1024px">                                         
+<video webkit-playsinline id="video" controls style="width: 1024px; margin-left: 11px;">
     <!--
     <source src="http://agorapull.8686c.com/live/11672-xiaoyu/playlist.m3u8" type="application/x-mpegURL">
     -->
     <source src="http://vid-11672.hls.chinanetcenter.broadcastapp.agoraio.cn/live/xiaoyu/playlist.m3u8" type="application/x-mpegURL">
 </video>
-<div id="wbGuest">
+<div id="wbGuest" >
   <iframe style="width: 1024px; height: 768px;"
           src="https://wb.agora.io/html/agora-wb.html?key=7070b797554944639c150ac925397253&amp;cname=xiaoyu&amp;role=guest&amp;width=1024&amp;height=768"></iframe>
 </div>
+    <div style="width: 1024px">
+        <address id="font" style="text-align: center" >小雨直播,版权所有</address>
+    </div>
 <!--
 <div id="videoContainer"></div>
 <script src="js/vendor-bundle.js"></script>
@@ -31,17 +34,17 @@
 <script src="js/AgoraWBSDK-1.0.0.js"></script>
 <script src="js/script-guest.js"></script>
 -->
-<address id="font">小雨直播,版权所有</address>
+
 </div>
-<script>
-    window.addEventListener('load', function (e) {
+<script type="application/ecmascript">
+    //window.addEventListener('load', function (e) {
         let doc = document
         let image = doc.getElementById('imgid')
         image.addEventListener('click', function(e){
             e.target.style.display = 'none'
             doc.getElementById('warp').style.display = 'block'
         }, false)
-    }, false)
+    //}, false)
 </script>
 </body>
 </html>

@@ -22,6 +22,7 @@ public class Logs {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             log.setId(IdGenerator.getNewId());
+            log.setCreateTime(new Date());
             JPAEntry.genericPost(log);
             result = Response.ok(log).build();
         }
