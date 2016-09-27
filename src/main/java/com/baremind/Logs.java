@@ -1,11 +1,14 @@
 package com.baremind;
 
 import com.baremind.data.Log;
+import com.baremind.data.ProblemStandardAnswer;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,6 +25,7 @@ public class Logs {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             log.setId(IdGenerator.getNewId());
+            log.setCreateTime(new Date());
             JPAEntry.genericPost(log);
             result = Response.ok(log).build();
         }
@@ -93,4 +97,23 @@ public class Logs {
         }
         return result;
     }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id){
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Log l = JPAEntry.getObject(Log.class, "id", id);
+            if (l != null) {
+                EntityManager em = JPAEntry.getEntityManager();
+                em.getTransaction().begin();
+                em.remove(l);
+                em.getTransaction().commit();
+                result = Response.ok(200).build();
+            }
+        }
+        return result;
+    }
+
 }
