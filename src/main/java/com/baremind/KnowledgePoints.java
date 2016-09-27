@@ -60,16 +60,7 @@ public class KnowledgePoints {
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
 
-                if (JPAEntry.isLogining(sessionId)) {
-                    Log log = new Log();
-                    log.setId(IdGenerator.getNewId());
-                    log.setUserId(1l);
-                    log.setAction("read");
-                    log.setObjectId(id);
-                    log.setObjectType("knowledge-point");
-                    log.setCreateTime(new Date());
-                    JPAEntry.genericPost(log);
-                }
+                JPAEntry.log(JPAEntry.getLoginId(sessionId), "read", "knowledge-point", id);
 
                 Map<String, Object> conditions = new HashMap<>();
                 conditions.put("KnowledgePointId", id);
