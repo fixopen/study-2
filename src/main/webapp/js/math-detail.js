@@ -1,4 +1,25 @@
+
+function like() {
+    let data ={
+        userId:1,
+        objectType:'knowledge-point',
+        objectId:g.getUrlParameter("id"),
+        action:'like'
+    }
+    $.ajax({
+        type: "post",
+        url: "/api/logs",
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (like) {
+            alert("JSON.stringify(data)")
+        }
+    })
+}
+
 $(function () {
+
     let volumeId = g.getUrlParameter("volumeId");
     $.ajax({
         type: 'get',
