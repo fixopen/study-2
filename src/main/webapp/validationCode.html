@@ -65,7 +65,7 @@
         dataType: 'json',
         async: false,
         success: function (a) {
-            alert('get wechat token success')
+            // alert('get wechat token success')
             // var a = {};
             // a.access_token = "1";
             // a.expires_in = 7200;
@@ -80,18 +80,18 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (b) {
-                    alert('get user id success [' + b.userId + ']')
+                    //alert('get user id success [' + b.userId + ']')
                     userId = b.userId
                     document.getElementById("warp").style.visibility = "visible" //显示
                 },
                 error: function (r) {
-                    alert('get user id error [' + r.status + ']')
-                    alert('error' + r.status + r.statusText)
+                    //alert('get user id error [' + r.status + ']')
+                    //alert('error' + r.status + r.statusText)
                 }
             })
         },
         error: function (r) {
-            alert('get wechat token error [' + r.status + ']')
+            //alert('get wechat token error [' + r.status + ']')
         }
     })
 
@@ -168,7 +168,7 @@
                     document.getElementById("tipid").innerHTML = "发送成功，请注意查收"
                 },
                 error: function (r) {
-                    alert(r.responseText)
+                    //alert(r.responseText)
                     document.getElementById("tipid").innerHTML = "发送失败，请重新获取验证码"
                 }
             })
