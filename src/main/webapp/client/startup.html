@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>直播</title>
+    <script src="/jquery/jquery.min.js"></script>
 </head>
 <body>
-
+<script>
+    $.ajax({
+        type: 'get',
+        url: '/api/class-rooms',
+        success: function(data) {
+            //
+        }
+    })
+</script>
 </body>
 </html>
