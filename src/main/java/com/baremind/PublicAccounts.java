@@ -9,6 +9,7 @@ import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -27,10 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -72,6 +70,137 @@ public class PublicAccounts {
             result = t.access_token;
         }
         return result;
+    }
+
+    @GET
+    @Path("validation")
+    @Produces(MediaType.TEXT_HTML)
+    public Response validation(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        String getTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=" + code + "&grant_type=authorization_code";
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+            .path("/sns/oauth2/access_token")
+            .queryParam("appid", AppID)
+            .queryParam("secret", AppSecret)
+            .queryParam("code", code)
+            .queryParam("grant_type", "authorization_code")
+            .request().get();
+        //Object r = response.getEntity();
+        String responseBody = response.readEntity(String.class);
+        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
+        }.getType());
+        WechatUser wechatUser = new WechatUser();
+        for (String key : wu.keySet()) {
+            switch (key) {
+                case "access_token":
+                    wechatUser.setToken((String) wu.get(key));
+                    break;
+                case "expires_in":
+                    Date expiry = new Date(new Date().getTime() + ((Double) wu.get(key)).longValue());
+                    wechatUser.setExpiry(expiry);
+                    break;
+                case "refresh_token":
+                    wechatUser.setRefreshToken((String) wu.get(key));
+                    break;
+                case "scope":
+                    break;
+                case "openid":
+                    wechatUser.setOpenId((String) wu.get(key));
+                    break;
+                case "unionid":
+                    wechatUser.setUnionId((String) wu.get(key));
+                    break;
+                default:
+                    break;
+            }
+        }
+        System.out.println(wechatUser.getOpenId());
+        WechatUser u = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
+        Date now = new Date();
+        Long userId = 0l;
+        if (u == null) {
+            userId = IdGenerator.getNewId();
+            User user = new User();
+            user.setId(userId);
+            user.setHead("");
+            user.setName("");
+            //user.setLoginName(us.nickname);
+            user.setSex(2l);
+            user.setCreateTime(now);
+            user.setUpdateTime(now);
+            user.setIsAdministrator(false);
+            user.setSite("http://www.xiaoyuzhishi.com");
+            user.setAmount(0.0f);
+            JPAEntry.genericPost(user);
+
+            wechatUser.setId(IdGenerator.getNewId());
+            wechatUser.setUserId(user.getId());
+            JPAEntry.genericPost(wechatUser);
+        } else {
+            userId = u.getUserId();
+            Date expiry = wechatUser.getExpiry();
+            if (expiry != null) {
+                u.setExpiry(expiry);
+            }
+            String head = wechatUser.getRefreshToken();
+            if (head != null) {
+                u.setRefreshToken(head);
+            }
+            String token = wechatUser.getToken();
+            if (token != null) {
+                u.setToken(token);
+            }
+            String unionId = wechatUser.getUnionId();
+            if (unionId != null) {
+                u.setUnionId(unionId);
+            }
+            JPAEntry.genericPut(u);
+        }
+
+        String nowString = now.toString();
+        byte[] sessionIdentity = Securities.digestor.digest(nowString);
+        String sessionString = Hex.bytesToHex(sessionIdentity);
+        Session s = JPAEntry.getObject(Session.class, "userId", userId);
+        if (s == null) {
+            s = new Session();
+            Long sessionId = IdGenerator.getNewId();
+            s.setId(sessionId);
+            s.setUserId(userId);
+            s.setIdentity(sessionString);
+            s.setLastOperationTime(now);
+            JPAEntry.genericPost(s);
+        } else {
+            s.setIdentity(sessionString);
+            s.setLastOperationTime(now);
+            JPAEntry.genericPut(s);
+        }
+
+        String result = "";
+        String filePath = request.getServletContext().getRealPath("/activeCard.html");
+        try {
+            FileReader fr = new FileReader(filePath);
+            char[] buffer = new char[4 * 1024];
+            for (; ; ) {
+                int length = fr.read(buffer);
+                if (length == -1) {
+                    break;
+                }
+                result += new String(buffer, 0, length);
+            }
+            result += userId.toString() + "\n";
+            String file2Path = request.getServletContext().getRealPath("/activeCard2.html");
+            FileReader fr2 = new FileReader(file2Path);
+            for (; ; ) {
+                int length = fr2.read(buffer);
+                if (length == -1) {
+                    break;
+                }
+                result += new String(buffer, 0, length);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Response.ok(result, "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
     }
 
     //获取微信服务器ID
