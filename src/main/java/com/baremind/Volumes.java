@@ -77,8 +77,8 @@ public class Volumes {
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("volumeId", id);
             Map<String, String> orders = new HashMap<>();
-            orders.put("\"order\"", "ASC");
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions , orders);
+            orders.put("order", "ASC");
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions ,orders);
             /*int readCount = 0;
             knowledgePoints.add("likeCount",likeCountObject);
             knowledgePoints.add("readCount",readCount);*/
