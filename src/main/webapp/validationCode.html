@@ -13,10 +13,12 @@
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/index.css">
+    <!--
     <script type="text/javascript" src="jquery/jquery.min.js"></script>
+    -->
 </head>
 <body>
-<div id="warp" class="wrap">
+<div id="warp" class="wrap" style="visibility: hidden">
     <!-- main -->
     <div class="set-main">
         <ul class="set-ul">
@@ -40,14 +42,10 @@
         </ul>
         <div class="tip" id="tipid">卡片验证码将发送至此手机!
         </div>
-        <div class="btn-box">
-            <a href="javascript:void(0)" onclick="post()" class="save-btn">确 认</a>
-        </div>
+        <div id="save" class="btn-box save-btn">确 认</div>
     </div>
 </div>
 <script>
-    document.getElementById("warp").style.visibility = "hidden";//隐藏
-
     let userId
     let getUrlParameter = function (name) {
         var result = null
@@ -59,62 +57,65 @@
         return result //返回参数值
     }
 
-    $.ajax({
-        type: "get",
-        url: 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + getUrlParameter('code') + '&grant_type=authorization_code',
-        dataType: 'json',
-        async: false,
-        success: function (a) {
-            // alert('get wechat token success')
-            // var a = {};
-            // a.access_token = "1";
-            // a.expires_in = 7200;
-            // a.refresh_token = "3";
-            // a.openid = "ozD1Zw9VD2K3zdR5Jv9Tb_PTGO7k";
-            // a.scope = "5";
-            // a.unionid = "6";
-            $.ajax({
-                type: "put",
-                url: "api/wechat-users",
-                data: JSON.stringify(a),
-                dataType: "json",
-                contentType: "application/json;charset=utf-8",
-                success: function (b) {
-                    //alert('get user id success [' + b.userId + ']')
-                    userId = b.userId
+    let code = getUrlParameter('code')
+    let getTokenUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + code + '&grant_type=authorization_code'
+
+    let ajax = function (method, url, headers, data, postProcess) {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                var result = {meta: {code: xhr.status, text: xhr.statusText}, data: null}
+                if (xhr.responseText[0] == '{' || xhr.responseText[0] == '[') {
+                    result.data = JSON.parse(xhr.responseText)
+                } else {
+                    result.data = xhr.responseText
+                }
+                postProcess(result)
+            }
+        }
+        xhr.open(method, url, false)
+        for (var i = 0, c = headers.length; i < c; ++i) {
+            xhr.setRequestHeader(headers[i].name, headers[i].value)
+        }
+        var sendContent = null
+        if (data != null) {
+            sendContent = JSON.stringify(data)
+        }
+        xhr.send(sendContent)
+    }
+
+    //document.getElementById("warp").style.visibility = "visible"
+
+    ajax('GET', getTokenUrl, [], null, function (tokenInfo) {
+        if (tokenInfo.meta.code < 400) {
+            ajax('PUT', 'api/wechat-users', [
+                {name: 'Content-Type', value: 'application/json;charset=utf-8'},
+                {name: 'Accept', value: 'application/json'},
+            ], tokenInfo, function(result) {
+                if (result.meta.code < 400) {
+                    userId = result.data.userId
                     document.getElementById("warp").style.visibility = "visible" //显示
-                },
-                error: function (r) {
-                    //alert('get user id error [' + r.status + ']')
-                    //alert('error' + r.status + r.statusText)
+                } else {
+                    alert(result.meta.code + result.data)
                 }
             })
-        },
-        error: function (r) {
-            //alert('get wechat token error [' + r.status + ']')
+        } else {
+            alert(tokenInfo.meta.code)
         }
     })
 
-
-    function post() {
-        var data = {};
-        data.cardCode = $('#cardCode').val()
-        data.password = $('#password').val()
-        data.phonecode = $('#phonecode').val()
-        data.validationCode = $('#validationCode').val()
-        data.userId = userId
-        $.ajax({
-            type: "post",
-            url: "api/users/cards",
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
-            success: function (data) {
-                window.location.href = 'Gold.html';
-            },
-            error: function (r) {
-                // alert("返回失败结果集=" + r.statusText);
-                switch (r.status) {
+    let saveButton = document.getElementById('save')
+    saveButton.addEventListener('click', function (e) {
+        var data = {userId: userId}
+        data.cardCode = document.getElementById('cardCode').value
+        data.password = document.getElementById('password').value
+        data.phonecode = document.getElementById('phonecode').value
+        data.validationCode = document.getElementById('validationCode').value
+        ajax('POST', 'api/users/cards', [{name: 'Content-Type', value: 'application/json'}], data, function(result) {
+            if (result.meta.code < 400) {
+                window.location.href = 'Gold.html'
+            } else {
+                switch (result.meta.code) {
                     case 500:
                         document.getElementById("tipid").innerHTML = "后台错误500，请联系程序猿叔叔。email：15210038357@163.com";
                         break;
@@ -142,7 +143,7 @@
                 }
             }
         })
-    }
+    }, false)
 
 
     let invoke = document.getElementById('phone_btn')
@@ -153,22 +154,16 @@
             let proc = function () {
                 e.target.value = " (" + printnr + ")秒后\n重新发送"
                 --printnr
-                if (printnr == 0) {
+                if (printnr <= 0) {
                     e.target.value = " 重新发送 "
                     clearInterval(timeoutId)
                 }
             }
-            var phonecode = $('#phonecode').val()
-            $.ajax({
-                type: "get",
-                url: "api/users/telephones/" + phonecode + "/code",
-                dataType: "json",
-                async: false,
-                success: function (data) {
+            var phonecode = document.getElementById('phonecode').value
+            ajax('GET', 'api/users/telephones/' + phonecode + '/code', [{name: 'Accept', value: 'application/json'}], function (r) {
+                if (r.meta.code < 400) {
                     document.getElementById("tipid").innerHTML = "发送成功，请注意查收"
-                },
-                error: function (r) {
-                    //alert(r.responseText)
+                } else {
                     document.getElementById("tipid").innerHTML = "发送失败，请重新获取验证码"
                 }
             })

@@ -9,7 +9,7 @@
 <video webkit-playsinline id="video" controls style="width: 1024px">
     <source src="http://vid-11672.hls.chinanetcenter.broadcastapp.agoraio.cn/live/xiaoyu/playlist.m3u8" type="application/x-mpegURL">
 </video>
-<ol id="messageArea"></ol>
+<ol id="messageArea" style="list-style: none"></ol>
 <div>
     <textarea id="message"></textarea>
     <button id="send">Send</button>
@@ -57,7 +57,7 @@
         })
     }
 
-    setInterval(refreshMessageArea, 1000)
+    setInterval(refreshMessageArea, 4000)
 </script>
 </body>
 </html>
