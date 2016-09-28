@@ -1,6 +1,6 @@
 function like() {
     let data ={
-        //userId: 1,
+        userId: 1,
         objectType:'knowledge-point',
         objectId:g.getUrlParameter("id"),
         action:'like'
