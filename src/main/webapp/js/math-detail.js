@@ -163,7 +163,7 @@ $(function () {
                             }
                         ]
                     });
-
+            // 上一个，下一个---------------------------------------------------------------
                     let baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
 
                     for (let i = 0; i < knowledgePointList.length; ++i) {
@@ -181,7 +181,7 @@ $(function () {
                             break
                         }
                     }
-
+            //-------------------------------------------------------------------------------
                     proc({
                         templateId: 'interaction-template',
                         data: data.interaction,
@@ -193,6 +193,7 @@ $(function () {
                         data: data.comments,
                         containerId: 'comments'
                     })
+            // 选项判错--------------------------------------------------------
                     let findProblem = function(problemId) {
                         let problem = null
                         for (let i = 0; i < data.problems.length; ++i) {
@@ -237,7 +238,7 @@ $(function () {
                     }
 
 
-                    let problemContainer = document.getElementById('problem')
+                    let problemContainer = document.getElementById('strongest-brain')
                     problemContainer.addEventListener('click', function (e) {
                         //e.currentTarget == problemContainer
                         let clickedElement = e.target
@@ -268,21 +269,30 @@ $(function () {
                                 }
                             }
                         }
+                        let data ={
+                            objectType:'knowledge-point',
+                            objectId:'problemId',
+                            objectName:'index',
+                            action:'click'
+                        }
+
+                        $.ajax({
+                            type: "post",
+                            url: 'api/answer-records',
+                            async: false,
+                            data: data,
+                            success: function (data) {
+                                alert(JSON.stringify(data))
+                            }
+                        })
                     }, false)
+            //-----------------------------------------------------------------------------------
 
                     //POST /api/problems/{id}/answers
                     // answer-records
                     //
                     //[1,3,4]
-                    $.ajax({
-                        type: "post",
-                        url: 'api/problems/' + id + '/answers',
-                        dataType: 'json',
-                        async: false,
-                        success: function (data) {
-                            alert(JSON.stringify(data))
-                        }
-                    })
+
                 }
             })
         }
