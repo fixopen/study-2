@@ -69,7 +69,9 @@ public class Subjects {
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("subjectId", id);
             conditions.put("grade", 20);
-            List<Volume> volumes = JPAEntry.getList(Volume.class, conditions);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("order", "ASC");
+            List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
                 result = Response.ok(new Gson().toJson(volumes)).build();
             }
@@ -87,7 +89,9 @@ public class Subjects {
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("subjectId", id);
             conditions.put("grade", 21);
-            List<Volume> volumes = JPAEntry.getList(Volume.class, conditions);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("order", "ASC");
+            List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
                 result = Response.ok(new Gson().toJson(volumes)).build();
             }
