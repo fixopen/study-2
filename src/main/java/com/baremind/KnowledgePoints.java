@@ -278,8 +278,8 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
-            orders.put("\"order\"", "ASC");
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject, orders);
+            orders.put("order", "ASC");
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject ,orders);
             if (!knowledgePoints.isEmpty()) {
                 result = Response.ok(new Gson().toJson(knowledgePoints)).build();
             }

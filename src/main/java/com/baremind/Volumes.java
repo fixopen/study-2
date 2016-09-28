@@ -78,7 +78,6 @@ public class Volumes {
             Map<String, String> orders = new HashMap<>();
             orders.put("order", "ASC");
             List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions, orders);
-
             if (!knowledgePoints.isEmpty()) {
                 List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
                 for (KnowledgePoint kp : knowledgePoints) {
