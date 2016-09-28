@@ -43,7 +43,7 @@ public class AnswerRecords {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
-            orders.put("\"order\"", "ASC");
+            orders.put("order", "ASC");
             List<AnswerRecord> answerRecords = JPAEntry.getList(AnswerRecord.class, filterObject, orders);
             if (!answerRecords.isEmpty()) {
                 result = Response.ok(new Gson().toJson(answerRecords)).build();
