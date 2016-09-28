@@ -166,16 +166,16 @@ li.mld_Ulli {
     margin-right: 0.25rem;
 }
 
-.daan_error {
+.daan_error{
     float: left;
     position: relative;
-    top: -1.625rem;
+    /*top: -1.625rem;*/
+    top: 0;
     left: 0;
     width: 1.625rem;
     height: 1.625rem;
 }
-
-.daan_true {
+.daan_true{
     float: left;
     position: relative;
     top: -1.625rem;
