@@ -76,7 +76,7 @@ public class PublicAccounts {
     @Path("validation")
     @Produces(MediaType.TEXT_HTML)
     public Response validation(@Context HttpServletRequest request, @QueryParam("code") String code) {
-        String getTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=" + code + "&grant_type=authorization_code";
+        //String getTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=" + code + "&grant_type=authorization_code";
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/sns/oauth2/access_token")

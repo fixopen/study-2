@@ -15,7 +15,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 /**
@@ -60,8 +61,15 @@ public class ClassRooms {
 
         JPAEntry.log(userId, "join", "class-room", classRoomId);
 
-        String filePath = request.getServletContext().getRealPath("/client/direct-play.html");
-        return Response.ok(new File(filePath), "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
+        Response result = null;
+        try {
+            result = Response.seeOther(new URI("/client/direct-play.html")).cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        //String filePath = request.getServletContext().getRealPath("/client/direct-play.html");
+        //return Response.ok(new File(filePath), "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
+        return result;
     }
 
     @POST

@@ -69,7 +69,7 @@ public class JPAEntry {
         if (orders != null) {
             jpql += " ORDER BY ";
             for (Map.Entry<String, String> order : orders.entrySet()) {
-                jpql += order.getKey() + " " + order.getValue() + ", ";
+                jpql += "o." + order.getKey() + " " + order.getValue() + ", ";
             }
             jpql = jpql.substring(0, jpql.length() - 2);
         }
@@ -104,8 +104,8 @@ public class JPAEntry {
         final Map<String, Boolean> r = new HashMap<>();
         r.put("value", false);
         isLogining(sessionId, a -> {
-           a.setLastOperationTime(new Date());
-           genericPut(a);
+           //a.setLastOperationTime(new Date());
+           //genericPut(a);
            r.put("value", true);
         });
         //@@
@@ -125,8 +125,8 @@ public class JPAEntry {
         final Map<String, Long> r = new HashMap<>();
         r.put("value", 0l);
         isLogining(sessionId, a -> {
-           a.setLastOperationTime(new Date());
-           genericPut(a);
+           //a.setLastOperationTime(new Date());
+           //genericPut(a);
            r.put("value", a.getUserId());
         });
         return r.get("value");
