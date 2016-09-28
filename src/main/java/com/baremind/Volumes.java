@@ -42,7 +42,7 @@ public class Volumes {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
-            orders.put("\"order\"", "ASC");
+            orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, filterObject, orders);
             if (!volumes.isEmpty()) {
                 result = Response.ok(new Gson().toJson(volumes)).build();

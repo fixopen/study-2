@@ -166,21 +166,48 @@
                                 }
                             }
                         }
+
+                        let data ={
+                            objectType:'knowledge-point',
+                            objectId:'problemId',
+                            objectName:'index',
+                            action:'click'
+                        }
+
+                        $.ajax({
+                            type: "post",
+                            url: 'api/answer-records',
+                            async: false,
+                            data: data,
+                            success: function (data) {
+                                alert(JSON.stringify(data))
+                            }
+                        })
+
                     }, false)
 
                     //POST /api/problems/{id}/answers
                    // answer-records
                     //
                     //[1,3,4]
-                    $.ajax({
-                        type: "post",
-                        url: 'api/problems/' + id + '/answers',
-                        dataType: 'json',
-                        async: false,
-                        success: function (data) {
-                            alert(JSON.stringify(data))
-                        }
-                    })
+                    // let problemId = clickedElement.parentNode.parentNode.dataset.id;
+                    // let index = getIndex(clickedElement.textContent)
+                    // let data ={
+                    //     objectType:'knowledge-point',
+                    //     objectId:'problemId',
+                    //     objectName:'index',
+                    //     action:'click'
+                    // }
+                    //
+                    // $.ajax({
+                    //     type: "post",
+                    //     url: 'api/answer-records',
+                    //     async: false,
+                    //     data: data,
+                    //     success: function (data) {
+                    //         alert(JSON.stringify(data))
+                    //     }
+                    // })
 
                     // $('.mld_daanLi').each(function(index, el) {
                     //     $(this).click(function() {
