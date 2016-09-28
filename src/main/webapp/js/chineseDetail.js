@@ -234,27 +234,6 @@ $(function () {
                                 }
                             }
                         }
-
-<<<<<<< HEAD
-=======
-                        let data = {
-                            objectType: 'knowledge-point',
-                            objectId: 'problemId',
-                            objectName: 'index',
-                            action: 'click'
-                        }
-
-                        $.ajax({
-                            type: "post",
-                            url: 'api/answer-records',
-                            async: false,
-                            data: data,
-                            success: function (data) {
-                                alert(JSON.stringify(data))
-                            }
-                        })
->>>>>>> 0ad9a596d493d4ffb8c26e9f1ca3459f6c590868
-
                     }, false)
 
                     //POST /api/problems/{id}/answers
