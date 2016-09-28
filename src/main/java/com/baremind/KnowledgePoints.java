@@ -66,7 +66,7 @@ public class KnowledgePoints {
                 conditions.put("KnowledgePointId", id);
 
                 Map<String, String> orders = new HashMap<>();
-                orders.put("\"order\"", "ASC");
+                orders.put("order", "ASC");
                 List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions, orders);
 
                 List<String> textIds = new ArrayList<>();
