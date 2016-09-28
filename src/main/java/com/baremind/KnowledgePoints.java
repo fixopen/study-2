@@ -66,7 +66,7 @@ public class KnowledgePoints {
                 conditions.put("KnowledgePointId", id);
 
                 Map<String, String> orders = new HashMap<>();
-                orders.put("\"order\"", "ASC");
+                orders.put("order", "ASC");
                 List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions, orders);
 
                 List<String> textIds = new ArrayList<>();
@@ -75,7 +75,6 @@ public class KnowledgePoints {
                 List<String> problemIds = new ArrayList<>();
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
-
 
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
@@ -162,9 +161,7 @@ public class KnowledgePoints {
                                 tm.put("id", t.getId());
                                 tm.put("content", t.getContent());
                                 tm.put("type", "text");
-
                                 orderedContents.add(tm);
-
                             }
                             break;
                         case "image":
@@ -205,10 +202,9 @@ public class KnowledgePoints {
                                 piems.put("options", pieo);
                                 piems.put("standardAnswers", dfs);
                                 piems.put("title", pie.getTitle());
-                                piems.put("ProblemStandardAnswer", dfs);
                                 orderedProblems.add(piems);
-                                break;
                             }
+                            break;
                         case "quote":
                             if (quoteObject != null) {
                                 Quote ique = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
@@ -233,14 +229,13 @@ public class KnowledgePoints {
 
                 Map<String, Object> interaction = new HashMap<>();
 
-
                 String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
                 Query lq = em.createQuery(statsLikes, Long.class);
-                Long likeCountObject = (Long)lq.getSingleResult();
+                Long likeCountObject = (Long) lq.getSingleResult();
 
                 String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
                 Query rq = em.createQuery(statsReads, Long.class);
-                Long readCount = (Long)rq.getSingleResult();
+                Long readCount = (Long) rq.getSingleResult();
 
                 interaction.put("likeCount", likeCountObject);
                 interaction.put("readCount", readCount);
@@ -258,7 +253,6 @@ public class KnowledgePoints {
                 result = Response.ok(v, "application/json; charset=utf-8").build();
             }
         }
-
         return result;
     }
 

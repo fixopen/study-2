@@ -1,7 +1,6 @@
 package com.baremind;
 
 import com.baremind.algorithm.Securities;
-import com.baremind.data.Property;
 import com.baremind.data.Session;
 import com.baremind.data.User;
 import com.baremind.data.WechatUser;
@@ -9,7 +8,6 @@ import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -28,7 +26,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -39,15 +40,14 @@ import java.util.*;
 @Path("public-account")
 public class PublicAccounts {
     static String hostname = "https://api.weixin.qq.com";
-    static String accesstoken = "";
-    static String AppID = "wx92dec5e98645bd1d";
-    static String AppSecret = "d3b30c3ae79c322bc54c93d0ff75210b";
-    private static String token = "xiaoyuzhishi20160907";
+    static String accessToken = "";
+    static String appID = "wx92dec5e98645bd1d";
+    static String secret = "d3b30c3ae79c322bc54c93d0ff75210b";
+    private static String token = "xiaoyuzhishi20160928";
     //private static String token = "xiaoyuzhishi20160907";
 
-
     public static void setAccessToken(String token) {
-        accesstoken = token;
+        accessToken = token;
     }
 
     //获取接口调用凭证
@@ -59,14 +59,14 @@ public class PublicAccounts {
         Response response = client.target(hostname)
             .path("/cgi-bin/token")
             .queryParam("grant_type", "client_credential")
-            .queryParam("appid", AppID)
-            .queryParam("secret", AppSecret)
+            .queryParam("appid", appID)
+            .queryParam("secret", secret)
             .request().get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("access_token")) {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
             AccessToken t = new Gson().fromJson(responseBody, AccessToken.class);
-            accesstoken = t.access_token;
+            accessToken = t.access_token;
             result = t.access_token;
         }
         return result;
@@ -76,131 +76,142 @@ public class PublicAccounts {
     @Path("validation")
     @Produces(MediaType.TEXT_HTML)
     public Response validation(@Context HttpServletRequest request, @QueryParam("code") String code) {
-        //String getTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=" + code + "&grant_type=authorization_code";
-        Client client = ClientBuilder.newClient();
-        Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", AppID)
-            .queryParam("secret", AppSecret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
-        //Object r = response.getEntity();
-        String responseBody = response.readEntity(String.class);
-        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
-        }.getType());
-        WechatUser wechatUser = new WechatUser();
-        for (String key : wu.keySet()) {
-            switch (key) {
-                case "access_token":
-                    wechatUser.setToken((String) wu.get(key));
-                    break;
-                case "expires_in":
-                    Date expiry = new Date(new Date().getTime() + ((Double) wu.get(key)).longValue());
-                    wechatUser.setExpiry(expiry);
-                    break;
-                case "refresh_token":
-                    wechatUser.setRefreshToken((String) wu.get(key));
-                    break;
-                case "scope":
-                    break;
-                case "openid":
-                    wechatUser.setOpenId((String) wu.get(key));
-                    break;
-                case "unionid":
-                    wechatUser.setUnionId((String) wu.get(key));
-                    break;
-                default:
-                    break;
-            }
-        }
-        System.out.println(wechatUser.getOpenId());
-        WechatUser u = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
-        Date now = new Date();
-        Long userId = 0l;
-        if (u == null) {
-            userId = IdGenerator.getNewId();
-            User user = new User();
-            user.setId(userId);
-            user.setHead("");
-            user.setName("");
-            //user.setLoginName(us.nickname);
-            user.setSex(2l);
-            user.setCreateTime(now);
-            user.setUpdateTime(now);
-            user.setIsAdministrator(false);
-            user.setSite("http://www.xiaoyuzhishi.com");
-            user.setAmount(0.0f);
-            JPAEntry.genericPost(user);
-
-            wechatUser.setId(IdGenerator.getNewId());
-            wechatUser.setUserId(user.getId());
-            JPAEntry.genericPost(wechatUser);
-        } else {
-            userId = u.getUserId();
-            Date expiry = wechatUser.getExpiry();
-            if (expiry != null) {
-                u.setExpiry(expiry);
-            }
-            String head = wechatUser.getRefreshToken();
-            if (head != null) {
-                u.setRefreshToken(head);
-            }
-            String token = wechatUser.getToken();
-            if (token != null) {
-                u.setToken(token);
-            }
-            String unionId = wechatUser.getUnionId();
-            if (unionId != null) {
-                u.setUnionId(unionId);
-            }
-            JPAEntry.genericPut(u);
-        }
-
-        String nowString = now.toString();
-        byte[] sessionIdentity = Securities.digestor.digest(nowString);
-        String sessionString = Hex.bytesToHex(sessionIdentity);
-        Session s = JPAEntry.getObject(Session.class, "userId", userId);
-        if (s == null) {
-            s = new Session();
-            Long sessionId = IdGenerator.getNewId();
-            s.setId(sessionId);
-            s.setUserId(userId);
-            s.setIdentity(sessionString);
-            s.setLastOperationTime(now);
-            JPAEntry.genericPost(s);
-        } else {
-            s.setIdentity(sessionString);
-            s.setLastOperationTime(now);
-            JPAEntry.genericPut(s);
-        }
-
-        String result = "";
-        String filePath = request.getServletContext().getRealPath("/activeCard.html");
-        try {
-            FileReader fr = new FileReader(filePath);
-            char[] buffer = new char[4 * 1024];
-            for (; ; ) {
-                int length = fr.read(buffer);
-                if (length == -1) {
-                    break;
-                }
-                result += new String(buffer, 0, length);
-            }
-            result += userId.toString() + "\n";
-            String file2Path = request.getServletContext().getRealPath("/activeCard2.html");
-            FileReader fr2 = new FileReader(file2Path);
-            for (; ; ) {
-                int length = fr2.read(buffer);
-                if (length == -1) {
-                    break;
-                }
-                result += new String(buffer, 0, length);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Response.ok(result, "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
+//        Client client = ClientBuilder.newClient();
+//        Response response = client.target(hostname)
+//            .path("/sns/oauth2/access_token")
+//            .queryParam("appid", appID)
+//            .queryParam("secret", secret)
+//            .queryParam("code", code)
+//            .queryParam("grant_type", "authorization_code")
+//            .request().get();
+//        //Object r = response.getEntity();
+//        String responseBody = response.readEntity(String.class);
+//        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
+//        }.getType());
+//        WechatUser wechatUser = new WechatUser();
+//        for (String key : wu.keySet()) {
+//            switch (key) {
+//                case "access_token":
+//                    wechatUser.setToken((String) wu.get(key));
+//                    break;
+//                case "expires_in":
+//                    Date expiry = new Date(new Date().getTime() + ((Double) wu.get(key)).longValue());
+//                    wechatUser.setExpiry(expiry);
+//                    break;
+//                case "refresh_token":
+//                    wechatUser.setRefreshToken((String) wu.get(key));
+//                    break;
+//                case "scope":
+//                    break;
+//                case "openid":
+//                    wechatUser.setOpenId((String) wu.get(key));
+//                    break;
+//                case "unionid":
+//                    wechatUser.setUnionId((String) wu.get(key));
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//        System.out.println(wechatUser.getOpenId());
+//        WechatUser u = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
+//        Date now = new Date();
+//        Long userId = 0l;
+//        if (u == null) {
+//            userId = IdGenerator.getNewId();
+//            User user = new User();
+//            user.setId(userId);
+//            user.setHead("");
+//            user.setName("");
+//            //user.setLoginName(us.nickname);
+//            user.setSex(2l);
+//            user.setCreateTime(now);
+//            user.setUpdateTime(now);
+//            user.setIsAdministrator(false);
+//            user.setSite("http://www.xiaoyuzhishi.com");
+//            user.setAmount(0.0f);
+//            JPAEntry.genericPost(user);
+//
+//            wechatUser.setId(IdGenerator.getNewId());
+//            wechatUser.setUserId(user.getId());
+//            JPAEntry.genericPost(wechatUser);
+//        } else {
+//            userId = u.getUserId();
+//            Date expiry = wechatUser.getExpiry();
+//            if (expiry != null) {
+//                u.setExpiry(expiry);
+//            }
+//            String head = wechatUser.getRefreshToken();
+//            if (head != null) {
+//                u.setRefreshToken(head);
+//            }
+//            String token = wechatUser.getToken();
+//            if (token != null) {
+//                u.setToken(token);
+//            }
+//            String unionId = wechatUser.getUnionId();
+//            if (unionId != null) {
+//                u.setUnionId(unionId);
+//            }
+//            JPAEntry.genericPut(u);
+//        }
+//
+//        String nowString = now.toString();
+//        byte[] sessionIdentity = Securities.digestor.digest(nowString);
+//        String sessionString = Hex.bytesToHex(sessionIdentity);
+//        Session s = JPAEntry.getObject(Session.class, "userId", userId);
+//        if (s == null) {
+//            s = new Session();
+//            Long sessionId = IdGenerator.getNewId();
+//            s.setId(sessionId);
+//            s.setUserId(userId);
+//            s.setIdentity(sessionString);
+//            s.setLastOperationTime(now);
+//            JPAEntry.genericPost(s);
+//        } else {
+//            s.setIdentity(sessionString);
+//            s.setLastOperationTime(now);
+//            JPAEntry.genericPut(s);
+//        }
+//
+//        String result = "";
+//        String filePath = request.getServletContext().getRealPath("/activeCard.html");
+//        try {
+//            FileReader fr = new FileReader(filePath);
+//            char[] buffer = new char[4 * 1024];
+//            for (; ; ) {
+//                int length = fr.read(buffer);
+//                if (length == -1) {
+//                    break;
+//                }
+//                result += new String(buffer, 0, length);
+//            }
+//            result += userId.toString() + "\n";
+//            String file2Path = request.getServletContext().getRealPath("/activeCard2.html");
+//            FileReader fr2 = new FileReader(file2Path);
+//            for (; ; ) {
+//                int length = fr2.read(buffer);
+//                if (length == -1) {
+//                    break;
+//                }
+//                result += new String(buffer, 0, length);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        String sessionString = "hahaha";
+        String result = "<!DOCTYPE html>\n" +
+            "<html lang=\"en\">\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\">\n" +
+            "    <title>test</title>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "<h1>Hello, world</h1>\n" +
+            "</body>\n" +
+            "</html>";
+        //return Response.ok(result, "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
+        return Response.ok(result, "text/html").build();
     }
 
     //获取微信服务器ID
@@ -234,7 +245,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/user/get")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .queryParam("next_openid", nextOpenid)
             .request().get();
         //{"total":2,"count":2,"data":{"openid":["","OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}
@@ -270,7 +281,7 @@ public class PublicAccounts {
             Client client = ClientBuilder.newClient();
             Response response = client.target(hostname)
                 .path("/cgi-bin/user/info")
-                .queryParam("access_token", accesstoken)
+                .queryParam("access_token", accessToken)
                 .queryParam("openid", openId)
                 .queryParam("lang", "zh_CN")
                 .request().get();
@@ -617,7 +628,6 @@ public class PublicAccounts {
     }
 
     @POST
-    @Path("token")
     public Response processAll(@Context HttpServletRequest request, byte[] contents) {
        /* String s;
         try {
@@ -706,41 +716,30 @@ public class PublicAccounts {
     }
 
     @GET
-    @Path("token")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response postToken(@Context HttpServletRequest request/*, JAXBElement<DeveloperValidation> tokens*/) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public Response validToken(@Context HttpServletRequest request/*, JAXBElement<DeveloperValidation> tokens*/) {
         Response result = Response.status(400).build();
         Map<String, String> args = new HashMap<>();
         String queryString = request.getQueryString();
-        Property property = new Property();
-        property.setId(IdGenerator.getNewId());
-        property.setName("QUERY-STRING");
-        property.setValue(queryString);
-        JPAEntry.genericPost(property);
         String[] params = queryString.split("&");
         for (String param : params) {
             String[] pair = param.split("=");
             args.put(pair[0], pair[1]);
         }
-        //==========================================
-
-        //==========================================
-        //计算示例
         String[] origin = {args.get("timestamp"), args.get("nonce"), token};
         Arrays.sort(origin);
         String v = origin[0] + origin[1] + origin[2];
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
-        byte[] digest = md.digest(v.getBytes("utf-8"));
-        String sign = Hex.bytesToHex(digest);
-        if (sign.equals(args.get("signature"))) {
-            result = Response.ok(args.get("echostr")).build();
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(v.getBytes("utf-8"));
+            String sign = Hex.bytesToHex(digest);
+            if (sign.equals(args.get("signature"))) {
+                result = Response.ok(args.get("echostr")).build();
+            }
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
         return result;
-    }
-
-    private Object bytesToHex(byte[] digest) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     //自定义菜单查询接口
@@ -751,7 +750,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/get")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().get();
         IPList ipList = response.readEntity(IPList.class);
         return result;
@@ -765,7 +764,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/menu/create")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -780,7 +779,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/menu/delete")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -796,7 +795,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/menu/addconditional")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -811,7 +810,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/menu/delconditional")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1152,7 +1151,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/menu/trymatch")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1166,7 +1165,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/get_current_selfmenu_info")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1354,7 +1353,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/customservice/kfaccount/add")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1368,7 +1367,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/customservice/kfaccount/update")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1382,7 +1381,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/customservice/kfaccount/del")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1397,7 +1396,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/customservice/kfaccount/uploadheadimg")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1410,7 +1409,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/customservice/kfaccount/getkflist")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1425,7 +1424,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/customservice/kfaccount/send")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(message);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1441,7 +1440,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/media/uploadimg")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(message);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1456,7 +1455,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/media/uploadnews")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(articles);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1469,7 +1468,7 @@ public class PublicAccounts {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/cgi-bin/message/custom/sendall")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request().post(articles);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
@@ -1477,7 +1476,7 @@ public class PublicAccounts {
     }
 
     private void prepare() {
-        if (accesstoken.equals("")) {
+        if (accessToken.equals("")) {
             getToken();
         }
     }
@@ -1623,7 +1622,7 @@ public class PublicAccounts {
         Entity<CustomMenu> em = Entity.json(t);
         Response response = client.target(hostname)
             .path("/cgi-bin/menu/create")
-            .queryParam("access_token", accesstoken)
+            .queryParam("access_token", accessToken)
             .request(MediaType.APPLICATION_JSON).post(em);
         GenericResult r = response.readEntity(GenericResult.class);
         return Response.ok(r).build();

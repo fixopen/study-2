@@ -9,7 +9,7 @@
 <video webkit-playsinline id="video" controls style="width: 1024px">
     <source src="http://vid-11672.hls.chinanetcenter.broadcastapp.agoraio.cn/live/xiaoyu/playlist.m3u8" type="application/x-mpegURL">
 </video>
-<ol id="messageArea" style="list-style: none"></ol>
+<ol id="messageArea" style="list-style: none; height: 150px; overflow: auto;"></ol>
 <div>
     <textarea id="message"></textarea>
     <button id="send">Send</button>
@@ -25,6 +25,10 @@
             messageItem.setAttribute("data-id", messages[i].id)
             messageItem.appendChild(document.createTextNode(messages[i].content))
             messageArea.appendChild(messageItem)
+            if (i == messages.length - 1) {
+                //messageItem.scrollIntoView(false);
+                messageArea.scrollTop = messageItem.offsetTop //Height = 100;
+            }
         }
     }
 
