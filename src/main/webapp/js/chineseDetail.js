@@ -1,4 +1,72 @@
-﻿$(function () {
+﻿// function like() {
+// //     let data ={
+//         userId: 1,
+//         objectType:'knowledge-point',
+//         objectId:g.getUrlParameter("id"),
+//         action:'like'
+//     }
+//     let data ={
+//         userId: 1,
+//         objectType:'knowledge-point',
+//         objectId:g.getUrlParameter("id"),
+//         action:'unlike'
+//     }
+//
+//     $.ajax({
+//         type: "post",
+//         url: "/api/logs",
+//         data: JSON.stringify(data),
+//         dataType: "json",
+//         contentType: "application/json; charset=utf-8",
+//         success: function like() {
+//             alert(JSON.stringify(data))
+//         }
+//     })
+//
+//     $.ajax({
+//         type: "post",
+//         url: "/api/comments",
+//         data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: '...'}),
+//         dataType: "json",
+//         contentType: "application/json; charset=utf-8",
+//         success: function like() {
+//             alert(JSON.stringify(data))
+//         }
+//     })
+// }
+
+$(function () {
+    let liked = false
+    $.ajax({
+        type: "get",
+        url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: id, action: 'like'}),
+        dataType: "json",
+        success: function like(like) {
+            liked = true
+        },
+        error: function like(unlike) {
+            liked = false
+        }
+    })
+    //change icon via liked state
+    let icon = document.getElementById('icon')
+    icon.addEventListener('click', function(e) {
+        if (liked) {
+            liked = false
+        // *   unlike
+        //     *   //event processor unlike
+        //     *       notification unlike
+        //     *       icon change to like, unliked
+        //     *       likeCount - 1
+        } else {
+            liked = true
+            //     *   like
+            //     *   //event processor like
+            //     *       notification like
+            // *       icon change to unlike, liked
+            // *       likeCount + 1
+        }
+    }, false)
 
     let volumeId = g.getUrlParameter('volumeId')
     $.ajax({
@@ -166,24 +234,6 @@
                                 }
                             }
                         }
-
-                        let data = {
-                            objectType: 'knowledge-point',
-                            objectId: 'problemId',
-                            objectName: 'index',
-                            action: 'click'
-                        }
-
-                        $.ajax({
-                            type: "post",
-                            url: 'api/answer-records',
-                            async: false,
-                            data: data,
-                            success: function (data) {
-                                alert(JSON.stringify(data))
-                            }
-                        })
-
                     }, false)
 
                     //POST /api/problems/{id}/answers
@@ -202,6 +252,25 @@
                     // $.ajax({
                     //     type: "post",
                     //     url: 'api/answer-records',
+                    //     data: JSON.stringify(data),
+                    //     async: false,
+                    //     dataType: "json",
+                    //     contentType: "application/json; charset=utf-8",
+                    //     success: function (data) {
+                    //         alert(JSON.stringify(data))
+                    //     }
+                    // })
+
+                    // let data ={
+                    //     objectType:'knowledge-point',
+                    //     objectId:'problemId',
+                    //     objectName:'index',
+                    //     action:'click'
+                    // }
+                    //
+                    // $.ajax({
+                    //     type: "post",
+                    //     url: 'api/answer-records',
                     //     async: false,
                     //     data: data,
                     //     success: function (data) {
@@ -209,17 +278,6 @@
                     //     }
                     // })
 
-                    // $('.mld_daanLi').each(function(index, el) {
-                    //     $(this).click(function() {
-                    //         if($(this).index()==1){
-                    //             $(this).addClass('daanLi_true')
-                    //             $(this).children('span').html('<img class="daan_error" src="img/true.png" alt="">')
-                    //         }else{
-                    //             $(this).addClass('daanLi_error')
-                    //             $(this).children('span').html('<img class="daan_error" src="img/error.png" alt="">')
-                    //         }
-                    //     })
-                    // })
                 }
             })
         }
