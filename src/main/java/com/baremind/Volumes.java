@@ -24,7 +24,6 @@ public class Volumes {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createVolume(@CookieParam("sessionId") String sessionId, /*byte[] volumeInfo*/ Volume volume) {
-
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             volume.setId(IdGenerator.getNewId());
@@ -78,10 +77,7 @@ public class Volumes {
             conditions.put("volumeId", id);
             Map<String, String> orders = new HashMap<>();
             orders.put("order", "ASC");
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions ,orders);
-            /*int readCount = 0;
-            knowledgePoints.add("likeCount",likeCountObject);
-            knowledgePoints.add("readCount",readCount);*/
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions, orders);
             if (!knowledgePoints.isEmpty()) {
                 List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
                 for (KnowledgePoint kp : knowledgePoints) {
@@ -89,15 +85,15 @@ public class Volumes {
                     EntityManager em = JPAEntry.getEntityManager();
                     String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
                     Query lq = em.createQuery(statsLikes, Long.class);
-                    Long likeCount = (Long)lq.getSingleResult();
+                    Long likeCount = (Long) lq.getSingleResult();
 
                     String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
                     Query rq = em.createQuery(statsReads, Long.class);
-                    Long readCount = (Long)rq.getSingleResult();
+                    Long readCount = (Long) rq.getSingleResult();
 
                     Map<String, Object> kpm = new HashMap<>();
                     kpm.put("id", kp.getId());
-                    kpm.put("volumeId",kp.getVolumeId());
+                    kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
                     kpm.put("likeCount", likeCount);
                     kpm.put("readCount", readCount);

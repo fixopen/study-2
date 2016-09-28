@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     //let subjectId  =  getUrlParameter('subjectId')
     $.ajax({
         type: "get",

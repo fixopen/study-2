@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by User on 2016/9/27.
  */
 @Entity
-@Table(name = "answerr_rcords")
+@Table(name = "answer_records")
 public class AnswerRecord {
     @Id
     @Column(name = "id")

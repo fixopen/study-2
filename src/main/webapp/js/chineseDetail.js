@@ -159,7 +159,7 @@ $(function () {
                         containerId: 'comments'
                     })
 
-                    let findProblem = function(problemId) {
+                    let findProblem = function (problemId) {
                         let problem = null
                         for (let i = 0; i < data.problems.length; ++i) {
                             if (data.problems[i].id == problemId) {
@@ -170,7 +170,7 @@ $(function () {
                         return problem
                     }
 
-                    let getIndex = function(content) {
+                    let getIndex = function (content) {
                         let index = -1
                         switch (content) {
                             case 'A':
@@ -191,7 +191,7 @@ $(function () {
                         return index
                     }
 
-                    let compareAnswer = function(index, standardAnswers) {
+                    let compareAnswer = function (index, standardAnswers) {
                         let finded = false
                         for (let j = 0; j < standardAnswers.length; ++j) {
                             if (index == standardAnswers[j].name) {
@@ -235,11 +235,30 @@ $(function () {
                             }
                         }
 
+<<<<<<< HEAD
+=======
+                        let data = {
+                            objectType: 'knowledge-point',
+                            objectId: 'problemId',
+                            objectName: 'index',
+                            action: 'click'
+                        }
+
+                        $.ajax({
+                            type: "post",
+                            url: 'api/answer-records',
+                            async: false,
+                            data: data,
+                            success: function (data) {
+                                alert(JSON.stringify(data))
+                            }
+                        })
+>>>>>>> 0ad9a596d493d4ffb8c26e9f1ca3459f6c590868
 
                     }, false)
 
                     //POST /api/problems/{id}/answers
-                   // answer-records
+                    // answer-records
                     //
                     //[1,3,4]
                     // let problemId = clickedElement.parentNode.parentNode.dataset.id;
@@ -285,23 +304,23 @@ $(function () {
         }
     })
 })
-    // {"comments":[],
-    //     "contents":[],
-    //     "interaction":{"likeCount":0,"readCount":76},
-    //     "title":"是神农",
-    //     "quotes":[],
-    //     "problems":[
-    //         {"options":[{"id":96647314735105,"problemId":96647314669568,"name":"11"},{"id":96647314735106,"problemId":96647314669568,"name":"22"},{"id":96647314735107,"problemId":96647314669568,"name":"33"},{"id":96647314735108,"problemId":96647314669568,"name":"44"}],
-    //             "id":96647314669568,
-    //             "type":"单选题",
-    //             "title":"1.神",
-    //             "ProblemStandardAnswer":[{"id":96647314735104,"problemId":96647314669568,"name":0}]
-    //         },
-    //        {"options":[{"id":96647316176898,"problemId":96647316176896,"name":"肃肃"},{"id":96647316176899,"problemId":96647316176896,"name":"物外"},{"id":96647316242432,"problemId":96647316176896,"name":"啊啊"},{"id":96647316242433,"problemId":96647316176896,"name":"吖吖"}],
-    //            "id":96647316176896,
-    //            "type":"单选题",
-    //            "title":"2.我",
-    //            "ProblemStandardAnswer":[{"id":96647316176897,"problemId":96647316176896,"name":1}]
-    //        }
-    //        ]
-    // }
+// {"comments":[],
+//     "contents":[],
+//     "interaction":{"likeCount":0,"readCount":76},
+//     "title":"是神农",
+//     "quotes":[],
+//     "problems":[
+//         {"options":[{"id":96647314735105,"problemId":96647314669568,"name":"11"},{"id":96647314735106,"problemId":96647314669568,"name":"22"},{"id":96647314735107,"problemId":96647314669568,"name":"33"},{"id":96647314735108,"problemId":96647314669568,"name":"44"}],
+//             "id":96647314669568,
+//             "type":"单选题",
+//             "title":"1.神",
+//             "ProblemStandardAnswer":[{"id":96647314735104,"problemId":96647314669568,"name":0}]
+//         },
+//        {"options":[{"id":96647316176898,"problemId":96647316176896,"name":"肃肃"},{"id":96647316176899,"problemId":96647316176896,"name":"物外"},{"id":96647316242432,"problemId":96647316176896,"name":"啊啊"},{"id":96647316242433,"problemId":96647316176896,"name":"吖吖"}],
+//            "id":96647316176896,
+//            "type":"单选题",
+//            "title":"2.我",
+//            "ProblemStandardAnswer":[{"id":96647316176897,"problemId":96647316176896,"name":1}]
+//        }
+//        ]
+// }

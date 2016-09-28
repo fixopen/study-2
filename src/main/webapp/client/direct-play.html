@@ -7,9 +7,10 @@
 </head>
 <body>
 <video webkit-playsinline id="video" controls style="width: 1024px">
-    <source src="http://vid-11672.hls.chinanetcenter.broadcastapp.agoraio.cn/live/xiaoyu/playlist.m3u8" type="application/x-mpegURL">
+    <source src="http://vid-11672.hls.chinanetcenter.broadcastapp.agoraio.cn/live/xiaoyu/playlist.m3u8"
+            type="application/x-mpegURL">
 </video>
-<ol id="messageArea" style="list-style: none"></ol>
+<ol id="messageArea" style="list-style: none; height: 150px; overflow: auto;"></ol>
 <div>
     <textarea id="message"></textarea>
     <button id="send">Send</button>
@@ -17,7 +18,7 @@
 <script>
     let messages = []
 
-    let showToMessageArea = function(messages) {
+    let showToMessageArea = function (messages) {
         let messageArea = document.getElementById('messageArea')
         messageArea.innerHTML = ''
         for (let i = 0; i < messages.length; ++i) {
@@ -25,11 +26,15 @@
             messageItem.setAttribute("data-id", messages[i].id)
             messageItem.appendChild(document.createTextNode(messages[i].content))
             messageArea.appendChild(messageItem)
+            if (i == messages.length - 1) {
+                //messageItem.scrollIntoView(false);
+                messageArea.scrollTop = messageItem.offsetTop //Height = 100;
+            }
         }
     }
 
     let send = document.getElementById('send')
-    send.addEventListener('click', function(e) {
+    send.addEventListener('click', function (e) {
         let content = document.getElementById('message')
         $.ajax({
             type: 'post',
@@ -37,7 +42,7 @@
             dataType: 'json',
             data: JSON.stringify({content: content.value}),
             contentType: "application/json; charset=utf-8",
-            success: function(comment) {
+            success: function (comment) {
                 messages.push(comment)
                 showToMessageArea(messages)
                 content.value = ''
@@ -45,12 +50,12 @@
         })
     })
 
-    let refreshMessageArea = function() {
+    let refreshMessageArea = function () {
         $.ajax({
             type: 'get',
             url: '/api/class-rooms/messages',
             dataType: 'json',
-            success: function(comments) {
+            success: function (comments) {
                 messages = comments
                 showToMessageArea(messages)
             }

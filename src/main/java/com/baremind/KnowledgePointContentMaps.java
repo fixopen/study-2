@@ -55,7 +55,6 @@ public class KnowledgePointContentMaps {
             KnowledgePointContentMap knowledgePointContentMapse = JPAEntry.getObject(KnowledgePointContentMap.class, "id", id);
             if (knowledgePointContentMapse != null) {
                 result = Response.ok(new Gson().toJson(knowledgePointContentMapse)).build();
-              
             }
         }
         return result;

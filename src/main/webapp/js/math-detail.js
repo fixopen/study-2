@@ -1,9 +1,17 @@
 function like() {
+<<<<<<< HEAD
     let data ={
         userId: 1,
         objectType:'knowledge-point',
         objectId:g.getUrlParameter("id"),
         action:'like'
+=======
+    let data = {
+        //userId: 1,
+        objectType: 'knowledge-point',
+        objectId: g.getUrlParameter("id"),
+        action: 'like'
+>>>>>>> 0ad9a596d493d4ffb8c26e9f1ca3459f6c590868
     }
     // let data ={
     //     //userId: 1,
@@ -78,7 +86,6 @@ $(function () {
         dataType: 'json',
         success: function (knowledgePointList) {
             let id = g.getUrlParameter('id');
-
 
 
             $.ajax({
