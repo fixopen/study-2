@@ -1,14 +1,12 @@
 package com.baremind;
 
 import com.baremind.data.Log;
-import com.baremind.data.ProblemStandardAnswer;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -100,7 +98,7 @@ public class Logs {
 
     @DELETE
     @Path("{id}")
-    public Response deleteLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id){
+    public Response deleteLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();

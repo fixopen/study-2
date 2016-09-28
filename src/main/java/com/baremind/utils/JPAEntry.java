@@ -104,9 +104,9 @@ public class JPAEntry {
         final Map<String, Boolean> r = new HashMap<>();
         r.put("value", false);
         isLogining(sessionId, a -> {
-           //a.setLastOperationTime(new Date());
-           //genericPut(a);
-           r.put("value", true);
+            //a.setLastOperationTime(new Date());
+            //genericPut(a);
+            r.put("value", true);
         });
         //@@
         r.put("value", true);
@@ -125,9 +125,9 @@ public class JPAEntry {
         final Map<String, Long> r = new HashMap<>();
         r.put("value", 0l);
         isLogining(sessionId, a -> {
-           //a.setLastOperationTime(new Date());
-           //genericPut(a);
-           r.put("value", a.getUserId());
+            //a.setLastOperationTime(new Date());
+            //genericPut(a);
+            r.put("value", a.getUserId());
         });
         return r.get("value");
     }

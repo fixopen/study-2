@@ -20,12 +20,10 @@ import java.util.Map;
 
 @Path("answer-records")
 public class AnswerRecords {
-
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createAnsewrRecords(@CookieParam("sessionId") String sessionId, AnswerRecord answerRecord) {
-
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             answerRecord.setId(IdGenerator.getNewId());
@@ -43,7 +41,7 @@ public class AnswerRecords {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
-            orders.put("\"order\"", "ASC");
+            orders.put("order", "ASC");
             List<AnswerRecord> answerRecords = JPAEntry.getList(AnswerRecord.class, filterObject, orders);
             if (!answerRecords.isEmpty()) {
                 result = Response.ok(new Gson().toJson(answerRecords)).build();
@@ -66,6 +64,7 @@ public class AnswerRecords {
         }
         return result;
     }
+
     @PUT //根据id修改
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -98,5 +97,4 @@ public class AnswerRecords {
         }
         return result;
     }
-
 }

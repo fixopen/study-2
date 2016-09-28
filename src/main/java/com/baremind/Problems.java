@@ -79,20 +79,6 @@ public class Problems {
                 if (knowledgePointId != null) {
                     existproblem.setKnowledgePointId(knowledgePointId);
                 }
-                /*List<String> options = problem.getOptions();
-                if (options != null) {
-                    existproblem.setOptions(options);
-                }
-               *//* int order = problem.getOrder();
-                if (order != 0) {
-                    existproblem.setOrder(order);
-                }*//*
-
-                int[] standardAnswers = problem.getStandardAnswers();
-                if (standardAnswers != null) {
-                    existproblem.setStandardAnswers(standardAnswers);
-                }*/
-
                 Long subjectId = problem.getSubjectId();
                 if (subjectId != null) {
                     existproblem.setSubjectId(subjectId);

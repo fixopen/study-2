@@ -91,7 +91,7 @@
             ajax('PUT', 'api/wechat-users', [
                 {name: 'Content-Type', value: 'application/json;charset=utf-8'},
                 {name: 'Accept', value: 'application/json'},
-            ], tokenInfo, function(result) {
+            ], tokenInfo, function (result) {
                 if (result.meta.code < 400) {
                     userId = result.data.userId
                     document.getElementById("warp").style.visibility = "visible" //显示
@@ -111,7 +111,7 @@
         data.password = document.getElementById('password').value
         data.phonecode = document.getElementById('phonecode').value
         data.validationCode = document.getElementById('validationCode').value
-        ajax('POST', 'api/users/cards', [{name: 'Content-Type', value: 'application/json'}], data, function(result) {
+        ajax('POST', 'api/users/cards', [{name: 'Content-Type', value: 'application/json'}], data, function (result) {
             if (result.meta.code < 400) {
                 window.location.href = 'Gold.html'
             } else {
@@ -160,7 +160,10 @@
                 }
             }
             var phonecode = document.getElementById('phonecode').value
-            ajax('GET', 'api/users/telephones/' + phonecode + '/code', [{name: 'Accept', value: 'application/json'}], function (r) {
+            ajax('GET', 'api/users/telephones/' + phonecode + '/code', [{
+                name: 'Accept',
+                value: 'application/json'
+            }], function (r) {
                 if (r.meta.code < 400) {
                     document.getElementById("tipid").innerHTML = "发送成功，请注意查收"
                 } else {
