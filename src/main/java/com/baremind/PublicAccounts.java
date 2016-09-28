@@ -1297,7 +1297,7 @@ public class PublicAccounts {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
     public Response replytextmessage(@CookieParam("sessionId") String sessionId, ReplyTextMessage replyTextMessage) {
-        //没有处理，记得要做处理
+
         return null;
     }
 
