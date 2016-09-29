@@ -51,6 +51,30 @@ public class KnowledgePoints {
     }
 
     @GET
+    @Path("{id}/like-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Long likeCount = Logs.getStatsCount("knowledge-point", id, "like");
+            result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/read-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReadCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Long readCount = Logs.getStatsCount("knowledge-point", id, "read");
+            result = Response.ok("{\"count\":" + readCount.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
     @Path("{id}/contents")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
@@ -255,7 +279,6 @@ public class KnowledgePoints {
         }
         return result;
     }
-
 
     @POST//添
     @Consumes(MediaType.APPLICATION_JSON)

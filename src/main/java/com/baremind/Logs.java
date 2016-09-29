@@ -12,7 +12,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,17 +33,30 @@ public class Logs {
 
     @GET
     @Path("{id}/count")
-    public Response getLikescount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return getLogsCount(sessionId, "knowledge-point", id, "like");
+    }
+
+    @GET
+    @Path("{objectType}/{objectId}/{action}/count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLogsCount(@CookieParam("sessionId") String sessionId, @PathParam("objectType") String objectType, @PathParam("objectId") Long objectId, @PathParam("action") String action) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            EntityManager em = JPAEntry.getEntityManager();
-            String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
-            Query lq = em.createQuery(statsLikes, Long.class);
-            Long likeCountObject = (Long) lq.getSingleResult();
-            result = Response.ok(new Gson().toJson(likeCountObject)).build();
+            Long count = getStatsCount(objectType, objectId, action);
+            result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
     }
+
+    public static Long getStatsCount(String objectType, Long objectId, String action) {
+        EntityManager em = JPAEntry.getEntityManager();
+        String stats = "SELECT COUNT(l) FROM Log l WHERE l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
+        Query q = em.createQuery(stats, Long.class);
+        return (Long) q.getSingleResult();
+    }
+
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLikes(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
@@ -59,6 +71,7 @@ public class Logs {
         }
         return result;
     }
+
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -127,5 +140,4 @@ public class Logs {
         }
         return result;
     }
-
 }
