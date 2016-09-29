@@ -109,45 +109,53 @@ public class Users {
         return result;
     }
 
-//    public static class ActiveCard {
-//        private String cardCode;
-//        private String password;
-//        private String phonecode;
-//        private String validationCode;
-//
-//        public String getCardCode() {
-//            return cardCode;
-//        }
-//
-//        public void setCardCode(String cardCode) {
-//            this.cardCode = cardCode;
-//        }
-//
-//        public String getPassword() {
-//            return password;
-//        }
-//
-//        public void setPassword(String password) {
-//            this.password = password;
-//        }
-//
-//        public String getPhonecode() {
-//            return phonecode;
-//        }
-//
-//        public void setPhonecode(String phonecode) {
-//            this.phonecode = phonecode;
-//        }
-//
-//        public String getValidationCode() {
-//            return validationCode;
-//        }
-//
-//        public void setValidationCode(String validationCode) {
-//            this.validationCode = validationCode;
-//        }
-//
-//    }
+    public static class ActiveCard {
+        private String cardCode;
+        private String password;
+        private String phonecode;
+        private String validationCode;
+        private Long userId;
+
+        public String getCardCode() {
+            return cardCode;
+        }
+
+        public void setCardCode(String cardCode) {
+            this.cardCode = cardCode;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getPhonecode() {
+            return phonecode;
+        }
+
+        public void setPhonecode(String phonecode) {
+            this.phonecode = phonecode;
+        }
+
+        public String getValidationCode() {
+            return validationCode;
+        }
+
+        public void setValidationCode(String validationCode) {
+            this.validationCode = validationCode;
+        }
+
+        public Long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Long userId) {
+            this.userId = userId;
+        }
+    }
 
     @POST
     @Path("cards")
@@ -205,6 +213,7 @@ public class Users {
         }
         return result;
     }
+
     @POST
     @Path("pccards")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -588,54 +597,6 @@ public class Users {
         public String reportTime;
         public String mobile;
         public String status;
-    }
-
-    public static class ActiveCard {
-        private String cardCode;
-        private String password;
-        private String phonecode;
-        private String validationCode;
-        private Long userId;
-
-        public String getCardCode() {
-            return cardCode;
-        }
-
-        public void setCardCode(String cardCode) {
-            this.cardCode = cardCode;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getPhonecode() {
-            return phonecode;
-        }
-
-        public void setPhonecode(String phonecode) {
-            this.phonecode = phonecode;
-        }
-
-        public String getValidationCode() {
-            return validationCode;
-        }
-
-        public void setValidationCode(String validationCode) {
-            this.validationCode = validationCode;
-        }
-
-        public Long getUserId() {
-            return userId;
-        }
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
     }
 
     public static class SmsReceiverState {

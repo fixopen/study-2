@@ -1,7 +1,6 @@
 package com.baremind;
 
 import com.baremind.data.Card;
-import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -21,41 +20,6 @@ import java.util.Map;
 
 @Path("cards")
 public class Cards {
-
-    /*@POST //import
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response importCardsViaFormData(@CookieParam("sessionId") String sessionId, @FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            //final ClientConfig clientConfig = new ClientConfig();
-            //clientConfig.register(MultiPartFeature.class);
-            //Client client = ClientBuilder.newClient(clientConfig);
-        	System.out.println("我进来了");
-            String uploadedFileLocation = "/var/tmp/" + fileDetail.getFileName();
-            writeToFile(uploadedInputStream, uploadedFileLocation);
-            parseAndInsert(uploadedFileLocation);
-            result = Response.status(200).build();
-        }
-        return result;
-    }
-
-    // save uploaded file to new location
-    private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
-        try {
-            //OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     @POST
     @Path("generate")
     @Consumes(MediaType.APPLICATION_JSON)
