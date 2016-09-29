@@ -561,16 +561,16 @@ g.renderPageNavigator = function (pageIndexContainer, pageSize, currentPage, tot
     }
 }
 
-//define global liked state
-g.liked = false
-
-//query server get self liked state
-g.ajaxProcess('GET', '/api/logs?filter=' + JSON.stringify({objectType: 'knowledge-point', objectId: id, action: 'like'}), [
-    {name: 'Content-Type', value: 'application/json'}
-], function (r) {
-    if (r.meta.code == 200) {
-        g.liked = true
-    } else {
-        g.liked = false
-    }
-})
+////define global liked state
+//g.liked = false
+//
+////query server get self liked state
+//g.ajaxProcess('GET', '/api/logs?filter=' + JSON.stringify({objectType: 'knowledge-point', objectId: id, action: 'like'}), [
+//    {name: 'Content-Type', value: 'application/json'}
+//], function (r) {
+//    if (r.meta.code == 200) {
+//        g.liked = true
+//    } else {
+//        g.liked = false
+//    }
+//})

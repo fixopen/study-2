@@ -418,74 +418,15 @@ public class PublicAccounts {
         String openId = p.getFromUserName();
         WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
         Date now = new Date();
+        Long userId;
         if (dbWechatUser == null) {
-            WechatUserInfo userInfo = getUserInfo(openId);
-
-            long userId = IdGenerator.getNewId();
-            User user = new User();
-            user.setId(userId);
-            user.setHead(userInfo.headimgurl);
-            user.setName(userInfo.nickname);
-            //u.setLoginName(us.nickname);
-            user.setSex(userInfo.sex);
-            user.setCreateTime(now);
-            user.setUpdateTime(now);
-            user.setIsAdministrator(false);
-            user.setSite("http://www.xiaoyuzhishi.com");
-            user.setAmount(0.0f);
-
-            WechatUser wechatUser = new WechatUser();
-            wechatUser.setId(IdGenerator.getNewId());
-            wechatUser.setOpenId(userInfo.openid);
-            wechatUser.setRefId(userInfo.unionid);
-            wechatUser.setCity(userInfo.city);
-            wechatUser.setCountry(userInfo.country);
-            //user.setExpiry();
-            wechatUser.setHead(userInfo.headimgurl);
-            wechatUser.setInfo(userInfo.toString());
-            wechatUser.setNickname(userInfo.nickname);
-            //user.setPrivilege();
-            wechatUser.setProvince(userInfo.province);
-            //user.setRefId();
-            //user.setRefreshToken();
-            //user.setSex(p.Infos.get(sex));
-            wechatUser.setSex(userInfo.sex);
-            wechatUser.setSubscribe(userInfo.subscribe_time);
-            wechatUser.setSubscribeTime(userInfo.subscribe);
-            wechatUser.setLanguage(userInfo.language);
-            wechatUser.setRemark(userInfo.remark);
-            wechatUser.setGroupId(userInfo.groupid);
-            //user.setToken();
-            wechatUser.setUnionId(userInfo.unionid);
-            wechatUser.setUserId(userId);
-
-            EntityManager em = JPAEntry.getEntityManager();
-            em.getTransaction().begin();
-            em.persist(wechatUser);
-            em.persist(user);
-            em.getTransaction().commit();
-
-            dbWechatUser = wechatUser;
-        }
-
-        String nowString = now.toString();
-        byte[] sessionIdentity = Securities.digestor.digest(nowString);
-        String sessionString = Hex.bytesToHex(sessionIdentity);
-
-        Session s = JPAEntry.getObject(Session.class, "userId", dbWechatUser.getUserId());
-        if (s == null) {
-            s = new Session();
-            Long sessionId = IdGenerator.getNewId();
-            s.setId(sessionId);
-            s.setUserId(dbWechatUser.getUserId());
-            s.setIdentity(sessionString);
-            s.setLastOperationTime(now);
-            JPAEntry.genericPost(s);
+            User user = insertUserInfoByOpenId(now, openId);
+            userId = user.getId();
         } else {
-            s.setIdentity(sessionString);
-            s.setLastOperationTime(now);
-            JPAEntry.genericPut(s);
+            userId = dbWechatUser.getUserId();
         }
+
+        Session s = putSession(now, userId);
 
         long secondCount = now.getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
@@ -506,6 +447,78 @@ public class PublicAccounts {
             "   </Articles>\n" +
             "</xml>";
         return Response.ok(result).build();
+    }
+
+    public static User insertUserInfoByOpenId(Date now, String openId) {
+        WechatUserInfo userInfo = getUserInfo(openId);
+
+        long userId = IdGenerator.getNewId();
+        User user = new User();
+        user.setId(userId);
+        user.setHead(userInfo.headimgurl);
+        user.setName(userInfo.nickname);
+        //u.setLoginName(us.nickname);
+        user.setSex(userInfo.sex);
+        user.setCreateTime(now);
+        user.setUpdateTime(now);
+        user.setIsAdministrator(false);
+        user.setSite("http://www.xiaoyuzhishi.com");
+        user.setAmount(0.0f);
+
+        WechatUser wechatUser = new WechatUser();
+        wechatUser.setId(IdGenerator.getNewId());
+        wechatUser.setOpenId(userInfo.openid);
+        wechatUser.setRefId(userInfo.unionid);
+        wechatUser.setCity(userInfo.city);
+        wechatUser.setCountry(userInfo.country);
+        //user.setExpiry();
+        wechatUser.setHead(userInfo.headimgurl);
+        wechatUser.setInfo(userInfo.toString());
+        wechatUser.setNickname(userInfo.nickname);
+        //user.setPrivilege();
+        wechatUser.setProvince(userInfo.province);
+        //user.setRefId();
+        //user.setRefreshToken();
+        //user.setSex(p.Infos.get(sex));
+        wechatUser.setSex(userInfo.sex);
+        wechatUser.setSubscribe(userInfo.subscribe_time);
+        wechatUser.setSubscribeTime(userInfo.subscribe);
+        wechatUser.setLanguage(userInfo.language);
+        wechatUser.setRemark(userInfo.remark);
+        wechatUser.setGroupId(userInfo.groupid);
+        //user.setToken();
+        wechatUser.setUnionId(userInfo.unionid);
+        wechatUser.setUserId(userId);
+
+        EntityManager em = JPAEntry.getEntityManager();
+        em.getTransaction().begin();
+        em.persist(wechatUser);
+        em.persist(user);
+        em.getTransaction().commit();
+
+        return user;
+    }
+
+    public static Session putSession(Date now, Long userId) {
+        String nowString = now.toString();
+        byte[] sessionIdentity = Securities.digestor.digest(nowString);
+        String sessionString = Hex.bytesToHex(sessionIdentity);
+
+        Session s = JPAEntry.getObject(Session.class, "userId", userId);
+        if (s == null) {
+            s = new Session();
+            Long sessionId = IdGenerator.getNewId();
+            s.setId(sessionId);
+            s.setUserId(userId);
+            s.setIdentity(sessionString);
+            s.setLastOperationTime(now);
+            JPAEntry.genericPost(s);
+        } else {
+            s.setIdentity(sessionString);
+            s.setLastOperationTime(now);
+            JPAEntry.genericPut(s);
+        }
+        return s;
     }
 
     @GET
