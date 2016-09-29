@@ -1,41 +1,51 @@
 function like() {
     let data ={
-        //userId: 1,
+        userId: 2,
         objectType:'knowledge-point',
         objectId:g.getUrlParameter("id"),
         action:'like'
     }
-//     let data ={
-//         //userId: 1,
-//         objectType:'knowledge-point',
-//         objectId:g.getUrlParameter("id"),
-//         action:'unlike'
-//     }
-//
+    // let data ={
+    //     //userId: 1,
+    //     objectType:'knowledge-point',
+    //     objectId:g.getUrlParameter("id"),
+    //     action:'unlike'
+    // }
+
     $.ajax({
         type: "post",
         url: "/api/logs",
         data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function (like) {
+        success: function like() {
             alert(JSON.stringify(data))
         }
     })
-//
-//     $.ajax({
-//         type: "post",
-//         url: "/api/comments",
-//         data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: '...'}),
-//         dataType: "json",
-//         contentType: "application/json; charset=utf-8",
-//         success: function like() {
-//             alert(JSON.stringify(data))
-//         }
-//     })
+    //
+    // $.ajax({
+    //     type: "post",
+    //     url: "/api/comments",
+    //     data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: '...'}),
+    //     dataType: "json",
+    //     contentType: "application/json; charset=utf-8",
+    //     success: function like() {
+    //         alert(JSON.stringify(data))
+    //     }
+    // })
 }
 
 $(function () {
+    let trueImage = document.createElement('img')
+    trueImage.setAttribute('class', 'daan_error')
+    trueImage.setAttribute('src', 'img/true.png')
+    trueImage.setAttribute('alt', '')
+
+    let falseImage = document.createElement('img')
+    falseImage.setAttribute('class', 'daan_error')
+    falseImage.setAttribute('src', 'img/error.png')
+    falseImage.setAttribute('alt', '')
+
     // // //change icon via liked state
     // let icon = document.getElementById('icon')
     // icon.addEventListener('click', function(e) {
@@ -72,6 +82,30 @@ $(function () {
                 async: false,
                 success: function (data) {
                     alert(JSON.stringify(data))
+                    // 上一个，下一个---------------------------------------------------------------
+                    let baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
+
+                    for (let i = 0; i < knowledgePointList.length; ++i) {
+                        if (knowledgePointList[i].id == id) {
+                            let prevIndex = i;
+                            let nextIndex = i;
+                            if (i > 0) {
+                                prevIndex = i - 1
+                            }
+                            if (i < knowledgePointList.length - 1) {
+                                nextIndex = i + 1
+                            }
+                            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id;
+                            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id;
+                            break
+                        }
+                    }
+                    proc({
+                        templateId: 'interaction-template',
+                        data: data.interaction,
+                        containerId: 'interaction'
+                    });
+                    //-------------------------------------------------------------------------------
                     for (let i = 0; i < data.problems.length; ++i) {
                         let p = data.problems[i];
                         p.options[0].title = 'A';
@@ -118,9 +152,16 @@ $(function () {
                     });
 
                     //data.problems
-                    let pk = data.problems[data.problems.length - 1]
-                    let strongestBrains = data.problems.pop()
-
+                    let ps = []
+                    for (let i = 0; i < data.problems.length; ++i) {
+                        ps[i] = data.problems[i]
+                    }
+                    let pk = null
+                    let strongestBrains = []
+                    if (ps.length > 0) {
+                        pk = ps[ps.length - 1]
+                        strongestBrains = ps.pop()
+                    }
                     proc({
                         templateId: 'strongest-brain-template',
                         data: strongestBrains,
@@ -151,30 +192,8 @@ $(function () {
                             }
                         ]
                     });
-                    // 上一个，下一个---------------------------------------------------------------
-                    let baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
 
-                    for (let i = 0; i < knowledgePointList.length; ++i) {
-                        if (knowledgePointList[i].id == id) {
-                            let prevIndex = i;
-                            let nextIndex = i;
-                            if (i > 0) {
-                                prevIndex = i - 1
-                            }
-                            if (i < knowledgePointList.length - 1) {
-                                nextIndex = i + 1
-                            }
-                            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id;
-                            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id;
-                            break
-                        }
-                    }
-                    //-------------------------------------------------------------------------------
-                    proc({
-                        templateId: 'interaction-template',
-                        data: data.interaction,
-                        containerId: 'interaction'
-                    });
+
 
                     proc({
                         templateId: 'comment-template',
@@ -225,38 +244,28 @@ $(function () {
                         return finded
                     }
 
-
-                    let problemContainer = document.getElementById('strongest-brain')
-                    problemContainer.addEventListener('click', function (e) {
+                    let judgement = function (e) {
                         //e.currentTarget == problemContainer
                         let clickedElement = e.target
-                        let trueImage = document.createElement('img')
-                        trueImage.setAttribute('class', 'daan_error')
-                        trueImage.setAttribute('src', 'img/true.png')
-                        trueImage.setAttribute('alt', '')
-
-                        let falseImage = document.createElement('img')
-                        falseImage.setAttribute('class', 'daan_error')
-                        falseImage.setAttribute('src', 'img/error.png')
-                        falseImage.setAttribute('alt', '')
 
                         if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
                             let problemId = clickedElement.parentNode.parentNode.dataset.id
                             let problem = findProblem(problemId)
                             if (problem) {
                                 let index = getIndex(clickedElement.textContent)
-                                let r = compareAnswer(index, problem.ProblemStandardAnswer)
+                                let r = compareAnswer(index, problem.standardAnswers)
                                 if (r) {
                                     clickedElement.parentNode.addClass('daanLi_true')
                                     clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(trueImage)
+                                    clickedElement.appendChild(trueImage.cloneNode(true))
                                 } else {
                                     clickedElement.parentNode.addClass('daanLi_error')
                                     clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(falseImage)
+                                    clickedElement.appendChild(falseImage.cloneNode(true))
                                 }
                             }
                         }
+
                         let data = {
                             objectType: 'knowledge-point',
                             objectId: 'problemId',
@@ -273,7 +282,13 @@ $(function () {
                                 alert(JSON.stringify(data))
                             }
                         })
-                    }, false)
+                    }
+
+                    let problemContainer = document.getElementById('strongest-brain')
+                    problemContainer.addEventListener('click', judgement, false)
+
+                    let pkContainer = document.getElementById('pk')
+                    pkContainer.addEventListener('click', judgement, false)
 
                     //-----------------------------------------------------------------------------------
                     //POST /api/problems/{id}/answers
