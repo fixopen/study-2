@@ -100,7 +100,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                  //  alert(JSON.stringify(data))
+                   alert(JSON.stringify(data))
                     for (let i = 0; i < data.problems.length; ++i) {
                         let p = data.problems[i]
                         p.options[0].title = 'A'
