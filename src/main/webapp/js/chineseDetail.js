@@ -25,39 +25,39 @@
 // }
 
 $(function () {
-    let liked = false
-    $.ajax({
-        type: "get",
-        url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: g.getUrlParameter("id"), action: 'like'}),
-        // url: "api/logs?filter=" + JSON.stringify(g.getUrlParameter("id")),
-        dataType: "json",
-        success: function (like) {
-            liked = true
-        },
-        error: function (unlike) {
-            liked = false
-        }
-    })
-    //change icon via liked state
-    // let icon = document.getElementById('icon')
-    let icon =document.getElementById('icon');
-    icon.addEventListener('click', function(e) {
-        if (liked) {
-            liked = false
-        // *   unlike
-        //     *   //event processor unlike
-        //     *       notification unlike
-        //     *       icon change to like, unliked
-        //     *       likeCount - 1
-        } else {
-            liked = true
-            //     *   like
-            //     *   //event processor like
-            //     *       notification like
-            // *       icon change to unlike, liked
-            // *       likeCount + 1
-        }
-    }, false)
+    // let liked = false
+    // $.ajax({
+    //     type: "get",
+    //     url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: g.getUrlParameter("id"), action: 'like'}),
+    //     // url: "api/logs?filter=" + JSON.stringify(g.getUrlParameter("id")),
+    //     dataType: "json",
+    //     success: function (like) {
+    //         liked = true
+    //     },
+    //     error: function (unlike) {
+    //         liked = false
+    //     }
+    // })
+    // //change icon via liked state
+    // // let icon = document.getElementById('icon')
+    // let icon =document.getElementById('icon');
+    // icon.addEventListener('click', function(e) {
+    //     if (liked) {
+    //         liked = false
+    //     // *   unlike
+    //     //     *   //event processor unlike
+    //     //     *       notification unlike
+    //     //     *       icon change to like, unliked
+    //     //     *       likeCount - 1
+    //     } else {
+    //         liked = true
+    //         //     *   like
+    //         //     *   //event processor like
+    //         //     *       notification like
+    //         // *       icon change to unlike, liked
+    //         // *       likeCount + 1
+    //     }
+    // }, false)
 
 // message---------
     let createComment=document.getElementById('createComment');
