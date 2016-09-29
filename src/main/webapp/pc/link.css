@@ -1,0 +1,12 @@
+.it {
+    width: 500px;
+    height: 30px;
+    padding-bottom: 20px;
+    border: 1px;
+}
+.save{
+    width: 500px;
+    height: 25px;
+    color: #fff5f5;
+    background-color: #0bb20c;
+}
