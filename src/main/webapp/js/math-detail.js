@@ -36,18 +36,6 @@ function like() {
 }
 
 $(function () {
-    // let liked = false
-    // $.ajax({
-    //     type: "get",
-    //     url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: id, action: 'like'}),
-    //     dataType: "json",
-    //     success: function (like) {
-    //         liked = true
-    //     },
-    //     error: function (unlike) {
-    //         liked = false
-    //     }
-    // })
     // // //change icon via liked state
     // let icon = document.getElementById('icon')
     // icon.addEventListener('click', function(e) {
@@ -163,7 +151,7 @@ $(function () {
                             }
                         ]
                     });
-            // 上一个，下一个---------------------------------------------------------------
+                    // 上一个，下一个---------------------------------------------------------------
                     let baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
 
                     for (let i = 0; i < knowledgePointList.length; ++i) {
@@ -181,7 +169,7 @@ $(function () {
                             break
                         }
                     }
-            //-------------------------------------------------------------------------------
+                    //-------------------------------------------------------------------------------
                     proc({
                         templateId: 'interaction-template',
                         data: data.interaction,
@@ -193,8 +181,8 @@ $(function () {
                         data: data.comments,
                         containerId: 'comments'
                     })
-            // 选项判错--------------------------------------------------------
-                    let findProblem = function(problemId) {
+                    // 选项判错--------------------------------------------------------
+                    let findProblem = function (problemId) {
                         let problem = null
                         for (let i = 0; i < data.problems.length; ++i) {
                             if (data.problems[i].id == problemId) {
@@ -205,7 +193,7 @@ $(function () {
                         return problem
                     }
 
-                    let getIndex = function(content) {
+                    let getIndex = function (content) {
                         let index = -1
                         switch (content) {
                             case 'A':
@@ -226,7 +214,7 @@ $(function () {
                         return index
                     }
 
-                    let compareAnswer = function(index, standardAnswers) {
+                    let compareAnswer = function (index, standardAnswers) {
                         let finded = false
                         for (let j = 0; j < standardAnswers.length; ++j) {
                             if (index == standardAnswers[j].name) {
@@ -269,11 +257,11 @@ $(function () {
                                 }
                             }
                         }
-                        let data ={
-                            objectType:'knowledge-point',
-                            objectId:'problemId',
-                            objectName:'index',
-                            action:'click'
+                        let data = {
+                            objectType: 'knowledge-point',
+                            objectId: 'problemId',
+                            objectName: 'index',
+                            action: 'click'
                         }
 
                         $.ajax({
@@ -286,13 +274,12 @@ $(function () {
                             }
                         })
                     }, false)
-            //-----------------------------------------------------------------------------------
 
+                    //-----------------------------------------------------------------------------------
                     //POST /api/problems/{id}/answers
                     // answer-records
                     //
                     //[1,3,4]
-
                 }
             })
         }
