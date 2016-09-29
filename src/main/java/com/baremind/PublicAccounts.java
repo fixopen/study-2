@@ -430,7 +430,7 @@ public class PublicAccounts {
 
         long secondCount = now.getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
-        String baseUrl = "https://www.xiaoyuzhishi.com/validationCode.html";
+        String baseUrl = "http://www.xiaoyuzhishi.com/validationCode.html";
 
         String result = "<xml>\n" +
             "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +

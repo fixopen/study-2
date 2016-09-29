@@ -58,6 +58,13 @@ public class Logs {
         return (Long) q.getSingleResult();
     }
 
+    public static Long getUserStatsCount(Long userId, String objectType, Long objectId, String action) {
+        EntityManager em = JPAEntry.getEntityManager();
+        String stats = "SELECT COUNT(l) FROM Log l WHERE l.userId = " + userId.toString() + " AND l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
+        Query q = em.createQuery(stats, Long.class);
+        return (Long) q.getSingleResult();
+    }
+
     public static Boolean has(Long userId, String objectType, Long objectId, String action) {
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM Log l WHERE l.userId = " + userId.toString() + " AND l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
