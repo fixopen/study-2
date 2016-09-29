@@ -72,6 +72,478 @@ public class PublicAccounts {
         return result;
     }
 
+    private static void prepare() {
+        if (accessToken.equals("")) {
+            getToken();
+        }
+    }
+
+    public static class CustomMenu {
+        public static class MenuItem {
+            private String type;
+            private String name;
+            private String key;
+            private String url;
+            private MenuItem[] sub_button;
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getKey() {
+                return key;
+            }
+
+            public void setKey(String key) {
+                this.key = key;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+
+            public MenuItem[] getSub_button() {
+                return sub_button;
+            }
+
+            public void setSub_button(MenuItem[] sub_button) {
+                this.sub_button = sub_button;
+            }
+        }
+
+        private MenuItem[] button;
+
+        public MenuItem[] getButton() {
+            return button;
+        }
+
+        public void setButton(MenuItem[] button) {
+            this.button = button;
+        }
+    }
+
+    public static class GenericResult {
+        private int errcode;
+        private String errmsg;
+
+        public int getErrcode() {
+            return errcode;
+        }
+
+        public void setErrcode(int errcode) {
+            this.errcode = errcode;
+        }
+
+        public String getErrmsg() {
+            return errmsg;
+        }
+
+        public void setErrmsg(String errmsg) {
+            this.errmsg = errmsg;
+        }
+    }
+
+    @POST
+    @Path("custom-menu")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createCustomMenu(byte[] menu) {
+        Response result = null;
+        prepare();
+        //POST https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN
+        /*
+        参数 	是否必须 	说明
+        button 	是 	一级菜单数组，个数应为1~3个
+        sub_button 	否 	二级菜单数组，个数应为1~5个
+        type 	是 	菜单的响应动作类型
+        name 	是 	菜单标题，不超过16个字节，子菜单不超过40个字节
+        key 	click等点击类型必须 	菜单KEY值，用于消息接口推送，不超过128字节
+        url 	view类型必须 	网页链接，用户点击菜单可打开链接，不超过1024字节
+        media_id 	media_id类型和view_limited类型必须 	调用新增永久素材接口返回的合法media_id
+        */
+        /*
+        1、click：点击推事件
+        用户点击click类型按钮后，微信服务器会通过消息接口推送消息类型为event	的结构给开发者（参考消息接口指南），并且带上按钮中开发者填写的key值，开发者可以通过自定义的key值与用户进行交互；
+        2、view：跳转URL
+        用户点击view类型按钮后，微信客户端将会打开开发者在按钮中填写的网页URL，可与网页授权获取用户基本信息接口结合，获得用户基本信息。
+        3、scancode_push：扫码推事件
+        用户点击按钮后，微信客户端将调起扫一扫工具，完成扫码操作后显示扫描结果（如果是URL，将进入URL），且会将扫码的结果传给开发者，开发者可以下发消息。
+        4、scancode_waitmsg：扫码推事件且弹出“消息接收中”提示框
+        用户点击按钮后，微信客户端将调起扫一扫工具，完成扫码操作后，将扫码的结果传给开发者，同时收起扫一扫工具，然后弹出“消息接收中”提示框，随后可能会收到开发者下发的消息。
+        5、pic_sysphoto：弹出系统拍照发图
+        用户点击按钮后，微信客户端将调起系统相机，完成拍照操作后，会将拍摄的相片发送给开发者，并推送事件给开发者，同时收起系统相机，随后可能会收到开发者下发的消息。
+        6、pic_photo_or_album：弹出拍照或者相册发图
+        用户点击按钮后，微信客户端将弹出选择器供用户选择“拍照”或者“从手机相册选择”。用户选择后即走其他两种流程。
+        7、pic_weixin：弹出微信相册发图器
+        用户点击按钮后，微信客户端将调起微信相册，完成选择操作后，将选择的相片发送给开发者的服务器，并推送事件给开发者，同时收起相册，随后可能会收到开发者下发的消息。
+        8、location_select：弹出地理位置选择器
+        用户点击按钮后，微信客户端将调起地理位置选择工具，完成选择操作后，将选择的地理位置发送给开发者的服务器，同时收起位置选择工具，随后可能会收到开发者下发的消息。
+        9、media_id：下发消息（除文本消息）
+        用户点击media_id类型按钮后，微信服务器会将开发者填写的永久素材id对应的素材下发给用户，永久素材类型可以是图片、音频、视频、图文消息。请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
+        10、view_limited：跳转图文消息URL
+        用户点击view_limited类型按钮后，微信客户端将打开开发者在按钮中填写的永久素材id对应的图文消息URL，永久素材类型只支持图文消息。请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
+        */
+        //{"errcode":0,"errmsg":"ok"}
+        //{"errcode":40018,"errmsg":"invalid button name size"}
+        try {
+            CustomMenu t = new Gson().fromJson(new String(menu, "UTF-8"), CustomMenu.class);
+            Client client = ClientBuilder.newClient();
+            Entity<CustomMenu> em = Entity.json(t);
+            Response response = client.target(hostname)
+                .path("/cgi-bin/menu/create")
+                .queryParam("access_token", accessToken)
+                .request(MediaType.APPLICATION_JSON).post(em);
+            GenericResult r = response.readEntity(GenericResult.class);
+            if (r.errcode == 0) {
+                result = Response.ok(r).build();
+            } else {
+                result = Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response validToken(@Context HttpServletRequest request/*, JAXBElement<DeveloperValidation> tokens*/) {
+        Response result = Response.status(400).build();
+        Map<String, String> args = new HashMap<>();
+        String queryString = request.getQueryString();
+        String[] params = queryString.split("&");
+        for (String param : params) {
+            String[] pair = param.split("=");
+            args.put(pair[0], pair[1]);
+        }
+        String[] origin = {args.get("timestamp"), args.get("nonce"), token};
+        Arrays.sort(origin);
+        String v = origin[0] + origin[1] + origin[2];
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(v.getBytes("utf-8"));
+            String sign = Hex.bytesToHex(digest);
+            if (sign.equals(args.get("signature"))) {
+                result = Response.ok(args.get("echostr")).build();
+            }
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static class WechatPush {
+        private String ToUserName;
+        private String FromUserName;
+        private String CreateTime;
+        private String MsgType;
+        private Map<String, String> Infos = new HashMap<>();
+
+        public String getToUserName() {
+            return ToUserName;
+        }
+
+        public void setToUserName(String toUserName) {
+            ToUserName = toUserName;
+        }
+
+        public String getFromUserName() {
+            return FromUserName;
+        }
+
+        public void setFromUserName(String fromUserName) {
+            FromUserName = fromUserName;
+        }
+
+        public String getCreateTime() {
+            return CreateTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            CreateTime = createTime;
+        }
+
+        public String getMsgType() {
+            return MsgType;
+        }
+
+        public void setMsgType(String msgType) {
+            MsgType = msgType;
+        }
+
+        public Map<String, String> getInfos() {
+            return Infos;
+        }
+
+        public void setInfos(Map<String, String> infos) {
+            Infos = infos;
+        }
+    }
+
+    public static class WechatXmlHandler extends DefaultHandler {
+        private WechatPush data;
+        private String currentTag;
+        private String currentData = "";
+
+        public WechatXmlHandler(WechatPush p) {
+            super();
+            data = p;
+        }
+
+        public void startDocument() {
+        }
+
+
+        public void endDocument() {
+        }
+
+
+        public void startElement(String uri, String name, String qName, Attributes atts) {
+            currentTag = name;
+            currentData = "";
+        }
+
+
+        public void endElement(String uri, String name, String qName) {
+            currentTag = "";
+            currentData = "";
+        }
+
+
+        public void characters(char ch[], int start, int length) {
+            currentData += new String(ch, start, length);
+            switch (currentTag) {
+                case "ToUserName":
+                    data.setToUserName(currentData);
+                    break;
+                case "FromUserName":
+                    data.setFromUserName(currentData);
+                    break;
+                case "CreateTime":
+                    data.setCreateTime(currentData);
+                    break;
+                case "MsgType":
+                    data.setMsgType(currentData);
+                    break;
+                default:
+                    if (!currentTag.equals("")) {
+                        data.Infos.put(currentTag, currentData);
+                    }
+                    break;
+            }
+        }
+
+    }
+
+    @POST
+    public Response processAll(@Context HttpServletRequest request, byte[] contents) {
+        Response result = Response.status(400).build();
+        Map<String, String> args = new HashMap<>();
+        String queryString = request.getQueryString();
+        String[] params = queryString.split("&");
+        for (String param : params) {
+            String[] pair = param.split("=");
+            args.put(pair[0], pair[1]);
+        }
+        String[] origin = {args.get("timestamp"), args.get("nonce"), token};
+        Arrays.sort(origin);
+        String v = origin[0] + origin[1] + origin[2];
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            try {
+                byte[] digest = md.digest(v.getBytes("utf-8"));
+                String sign = Hex.bytesToHex(digest);
+                if (sign.equals(args.get("signature"))) {
+                    //String contentType = request.getContentType();
+                    //String accept = request.getHeader("Accept");
+                    WechatPush p = new WechatPush();
+                    try {
+                        XMLReader xr = XMLReaderFactory.createXMLReader();
+                        WechatXmlHandler handler = new WechatXmlHandler(p);
+                        xr.setContentHandler(handler);
+                        xr.setErrorHandler(handler);
+                        try {
+                            xr.parse(new InputSource(new ByteArrayInputStream(contents)));
+                            switch (p.getMsgType()) {
+                                case "event":
+                                    String event = p.getInfos().get("Event");
+                                    switch (event) {
+                                        case "CLICK":
+                                            String eventKey = p.getInfos().get("EventKey");
+                                            switch (eventKey) {
+                                                case "ID_USER":
+                                                    //点击菜单拉取消息时的事件推送
+                                                    result = userClickMine(p);
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            break;
+                                        case "subscribe":
+                                            result = follow(p);
+                                            break;
+                                        default:
+                                            result = Response.ok().build();
+                                            break;
+                                    }
+                                    break;
+                                case "music":
+                                    break;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static WechatUserInfo getUserInfo(String openId) {
+        // http请求方式: GET（请使用https协议）
+        //https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+        prepare();
+        WechatUserInfo result = null;
+        while (true) {
+            Client client = ClientBuilder.newClient();
+            Response response = client.target(hostname)
+                .path("/cgi-bin/user/info")
+                .queryParam("access_token", accessToken)
+                .queryParam("openid", openId)
+                .queryParam("lang", "zh_CN")
+                .request().get();
+            String responseBody = response.readEntity(String.class);
+            if (responseBody.contains("openid")) {
+                //{"access_token":"ACCESS_TOKEN","expires_in":7200}
+                result = new Gson().fromJson(responseBody, WechatUserInfo.class);
+                break;
+            } else {
+                int r = errorProc(responseBody);
+                if (r == 0) {
+                    continue;
+                }
+            }
+        }
+        return result;
+    }
+
+    Response userClickMine(WechatPush p) {
+        String openId = p.getFromUserName();
+        WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
+        Date now = new Date();
+        if (dbWechatUser == null) {
+            WechatUserInfo userInfo = getUserInfo(openId);
+
+            long userId = IdGenerator.getNewId();
+            User user = new User();
+            user.setId(userId);
+            user.setHead(userInfo.headimgurl);
+            user.setName(userInfo.nickname);
+            //u.setLoginName(us.nickname);
+            user.setSex(userInfo.sex);
+            user.setCreateTime(now);
+            user.setUpdateTime(now);
+            user.setIsAdministrator(false);
+            user.setSite("http://www.xiaoyuzhishi.com");
+            user.setAmount(0.0f);
+
+            WechatUser wechatUser = new WechatUser();
+            wechatUser.setId(IdGenerator.getNewId());
+            wechatUser.setOpenId(userInfo.openid);
+            wechatUser.setRefId(userInfo.unionid);
+            wechatUser.setCity(userInfo.city);
+            wechatUser.setCountry(userInfo.country);
+            //user.setExpiry();
+            wechatUser.setHead(userInfo.headimgurl);
+            wechatUser.setInfo(userInfo.toString());
+            wechatUser.setNickname(userInfo.nickname);
+            //user.setPrivilege();
+            wechatUser.setProvince(userInfo.province);
+            //user.setRefId();
+            //user.setRefreshToken();
+            //user.setSex(p.Infos.get(sex));
+            wechatUser.setSex(userInfo.sex);
+            wechatUser.setSubscribe(userInfo.subscribe_time);
+            wechatUser.setSubscribeTime(userInfo.subscribe);
+            wechatUser.setLanguage(userInfo.language);
+            wechatUser.setRemark(userInfo.remark);
+            wechatUser.setGroupId(userInfo.groupid);
+            //user.setToken();
+            wechatUser.setUnionId(userInfo.unionid);
+            wechatUser.setUserId(userId);
+
+            EntityManager em = JPAEntry.getEntityManager();
+            em.getTransaction().begin();
+            em.persist(wechatUser);
+            em.persist(user);
+            em.getTransaction().commit();
+
+            dbWechatUser = wechatUser;
+        }
+
+        String nowString = now.toString();
+        byte[] sessionIdentity = Securities.digestor.digest(nowString);
+        String sessionString = Hex.bytesToHex(sessionIdentity);
+
+        Session s = JPAEntry.getObject(Session.class, "userId", dbWechatUser.getUserId());
+        if (s == null) {
+            s = new Session();
+            Long sessionId = IdGenerator.getNewId();
+            s.setId(sessionId);
+            s.setUserId(dbWechatUser.getUserId());
+            s.setIdentity(sessionString);
+            s.setLastOperationTime(now);
+            JPAEntry.genericPost(s);
+        } else {
+            s.setIdentity(sessionString);
+            s.setLastOperationTime(now);
+            JPAEntry.genericPut(s);
+        }
+
+        long secondCount = now.getTime() / 1000;
+        String currentEpochTime = Long.toString(secondCount);
+        String baseUrl = "https://www.xiaoyuzhishi.com/validationCode.html";
+
+        String result = "<xml>\n" +
+            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+            "   <MsgType><![CDATA[news]]></MsgType>\n" +
+            "   <ArticleCount>1</ArticleCount>\n" +
+            "   <Articles>\n" +
+            "       <item>\n" +
+            "           <Title><![CDATA[欢迎]]></Title> \n" +
+            "           <Description><![CDATA[点击链接将进入卡激活页面]]></Description>\n" +
+            "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
+            "       </item>\n" +
+            "   </Articles>\n" +
+            "</xml>";
+        return Response.ok(result).build();
+    }
+
     @GET
     @Path("validation")
     @Produces(MediaType.TEXT_HTML)
@@ -273,50 +745,6 @@ public class PublicAccounts {
         return result.toArray(a);
     }
 
-    public static WechatUserInfo getUserInfo(String openId) {
-        // http请求方式: GET（请使用https协议）
-        //https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
-        WechatUserInfo result = null;
-        while (true) {
-            Client client = ClientBuilder.newClient();
-            Response response = client.target(hostname)
-                .path("/cgi-bin/user/info")
-                .queryParam("access_token", accessToken)
-                .queryParam("openid", openId)
-                .queryParam("lang", "zh_CN")
-                .request().get();
-        /*
-        {
-            "subscribe": 1,
-            "openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
-            "nickname": "Band",
-            "sex": 1,
-            "language": "zh_CN",
-            "city": "广州",
-            "province": "广东",
-            "country": "中国",
-            "headimgurl":    "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
-           "subscribe_time": 1382694957,
-           "unionid": " o6_bmasdasdsad6_2sgVt7hMZOPfL"
-           "remark": "",
-           "groupid": 0
-        }
-        */
-            String responseBody = response.readEntity(String.class);
-            if (responseBody.contains("openid")) {
-                //{"access_token":"ACCESS_TOKEN","expires_in":7200}
-                result = new Gson().fromJson(responseBody, WechatUserInfo.class);
-                break;
-            } else {
-                int r = errorProc(responseBody);
-                if (r == 0) {
-                    continue;
-                }
-            }
-        }
-        return result;
-    }
-
     @POST
     @Path("follow")
     @Consumes(MediaType.APPLICATION_XML)
@@ -399,124 +827,6 @@ public class PublicAccounts {
         //return Response.ok(new File("/data/program/swtomcat/webapps/ROOT/validationCode.html"), "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
     }
 
-    public static class WechatPush {
-        private String ToUserName;
-        private String FromUserName;
-        private String CreateTime;
-        private String MsgType;
-        private Map<String, String> Infos = new HashMap<>();
-
-        public String getToUserName() {
-            return ToUserName;
-        }
-
-        public void setToUserName(String toUserName) {
-            ToUserName = toUserName;
-        }
-
-        public String getFromUserName() {
-            return FromUserName;
-        }
-
-        public void setFromUserName(String fromUserName) {
-            FromUserName = fromUserName;
-        }
-
-        public String getCreateTime() {
-            return CreateTime;
-        }
-
-        public void setCreateTime(String createTime) {
-            CreateTime = createTime;
-        }
-
-        public String getMsgType() {
-            return MsgType;
-        }
-
-        public void setMsgType(String msgType) {
-            MsgType = msgType;
-        }
-
-        public Map<String, String> getInfos() {
-            return Infos;
-        }
-
-        public void setInfos(Map<String, String> infos) {
-            Infos = infos;
-        }
-
-    }
-
-    Response userClickMine(String openId) {
-        WechatUser u = JPAEntry.getObject(WechatUser.class, "openId", openId);
-        if (u == null) {
-            WechatUserInfo userInfo = getUserInfo(openId);
-            WechatUser user = new WechatUser();
-            user.setId(IdGenerator.getNewId());
-            user.setOpenId(userInfo.openid);
-            user.setRefId(userInfo.unionid);
-            user.setCity(userInfo.city);
-            user.setCountry(userInfo.country);
-            //user.setExpiry();
-            user.setHead(userInfo.headimgurl);
-            user.setInfo(userInfo.toString());
-            user.setNickname(userInfo.nickname);
-            //user.setPrivilege();
-            user.setProvince(userInfo.province);
-            //user.setRefId();
-            //user.setRefreshToken();
-            //user.setSex(p.Infos.get(sex));
-            user.setSex(userInfo.sex);
-            user.setSubscribe(userInfo.subscribe_time);
-            user.setSubscribeTime(userInfo.subscribe);
-
-            user.setLanguage(userInfo.language);
-            user.setRemark(userInfo.remark);
-            //user.setHeadimgurl(p.Infos.get("headimgurl"));
-            user.setGroupId(userInfo.groupid);
-            //user.setToken();
-            user.setUnionId(userInfo.unionid);
-            long userId = IdGenerator.getNewId();
-            User rUser = new User();
-            rUser.setId(userId);
-            rUser.setHead(userInfo.headimgurl);
-            rUser.setName(userInfo.nickname);
-            //u.setLoginName(us.nickname);
-            rUser.setSex(userInfo.sex);
-            Date now = new Date();
-            rUser.setCreateTime(now);
-            rUser.setUpdateTime(now);
-            rUser.setIsAdministrator(false);
-            rUser.setSite("http://www.xiaoyuzhishi.com");
-            rUser.setAmount(0.0f);
-            user.setUserId(userId);
-
-            EntityManager em = JPAEntry.getEntityManager();
-            em.getTransaction().begin();
-            em.persist(user);
-            em.persist(rUser);
-            em.getTransaction().commit();
-
-            u = user;
-        }
-        //step2: generate sessionId //now.tostring().md5()
-        Date now = new Date();
-        String nowString = now.toString();
-        byte[] sessionId = Securities.digestor.digest(nowString);
-        String sessionString = Hex.bytesToHex(sessionId);
-        //step3: sessionId and user.id => sessions
-        Session s = new Session();
-        s.setId(IdGenerator.getNewId());
-        s.setUserId(u.getUserId());
-        s.setIdentity(sessionString);
-        s.setLastOperationTime(now);
-        JPAEntry.genericPost(s);
-
-        //return Response.ok(new File("E:\\projects\\study-2\\src\\main\\webapp\\validationCode.html"), "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
-        return Response.ok(new File("/data/program/swtomcat/webapps/ROOT/validationCode.html"), "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
-    }
-
     Response follow(WechatPush p) {
         //666
         //System.out.println(us);
@@ -570,176 +880,6 @@ public class PublicAccounts {
             em.getTransaction().commit();
         }
         return Response.ok().build();
-    }
-
-    public static class MySAXApp extends DefaultHandler {
-        private WechatPush data;
-        private String currentTag;
-        private String currentData = "";
-
-        public MySAXApp(WechatPush p) {
-            super();
-            data = p;
-        }
-
-        public void startDocument() {
-        }
-
-
-        public void endDocument() {
-        }
-
-
-        public void startElement(String uri, String name, String qName, Attributes atts) {
-            currentTag = name;
-            currentData = "";
-        }
-
-
-        public void endElement(String uri, String name, String qName) {
-            currentTag = "";
-            currentData = "";
-        }
-
-
-        public void characters(char ch[], int start, int length) {
-            currentData += new String(ch, start, length);
-            switch (currentTag) {
-                case "ToUserName":
-                    data.ToUserName = currentData;
-                    break;
-                case "FromUserName":
-                    data.FromUserName = currentData;
-                    break;
-                case "CreateTime":
-                    data.CreateTime = currentData;
-                    break;
-                case "MsgType":
-                    data.MsgType = currentData;
-                    break;
-                default:
-                    if ((currentTag != null) && !currentTag.equals("")) {
-                        data.Infos.put(currentTag, currentData);
-                    }
-                    break;
-            }
-        }
-
-    }
-
-    @POST
-    public Response processAll(@Context HttpServletRequest request, byte[] contents) {
-       /* String s;
-        try {
-			s = new String(contents, "UTF-8");
-			System.out.println("s=========================="+s);
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-         <xml><ToUserName><![CDATA[gh_3a8563cb8721]]></ToUserName>
-            <FromUserName><![CDATA[ozD1Zw9VD2K3zdR5Jv9Tb_PTGO7k]]></FromUserName>
-            <CreateTime>1473333349</CreateTime>
-            <MsgType><![CDATA[event]]></MsgType>
-            <Event><![CDATA[CLICK]]></Event>
-            <EventKey><![CDATA[ID_USER]]></EventKey>
-        </xml>*/
-        Response result = Response.status(400).build();
-        Map<String, String> args = new HashMap<>();
-        String queryString = request.getQueryString();
-        System.out.println("queryString=" + queryString);
-        String[] params = queryString.split("&");
-        for (String param : params) {
-            String[] pair = param.split("=");
-            args.put(pair[0], pair[1]);
-        }
-        String[] origin = {args.get("timestamp"), args.get("nonce"), token};
-        Arrays.sort(origin);
-        String v = origin[0] + origin[1] + origin[2];
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            try {
-                byte[] digest = md.digest(v.getBytes("utf-8"));
-                String sign = Hex.bytesToHex(digest);
-                if (sign.equals(args.get("signature"))) {
-                    String contentType = request.getContentType();
-                    String accept = request.getHeader("Accept");
-
-                    WechatPush p = new WechatPush();
-                    try {
-                        XMLReader xr = XMLReaderFactory.createXMLReader();
-                        MySAXApp handler = new MySAXApp(p);
-                        xr.setContentHandler(handler);
-                        xr.setErrorHandler(handler);
-                        try {
-                            xr.parse(new InputSource(new ByteArrayInputStream(contents)));
-                            switch (p.MsgType) {
-                                case "event":
-                                    String event = p.Infos.get("Event");
-                                    switch (event) {
-                                        case "CLICK":
-                                            String eventKey = p.Infos.get("EventKey");
-                                            switch (eventKey) {
-                                                case "ID_USER":
-                                                    //点击菜单拉取消息时的事件推送
-                                                    result = userClickMine(p.FromUserName);
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                            break;
-                                        case "subscribe":
-                                            result = follow(p);
-                                            break;
-                                        default:
-                                            result = Response.ok().build();
-                                            break;
-                                    }
-                                    break;
-                                case "music":
-                                    break;
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (SAXException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response validToken(@Context HttpServletRequest request/*, JAXBElement<DeveloperValidation> tokens*/) {
-        Response result = Response.status(400).build();
-        Map<String, String> args = new HashMap<>();
-        String queryString = request.getQueryString();
-        String[] params = queryString.split("&");
-        for (String param : params) {
-            String[] pair = param.split("=");
-            args.put(pair[0], pair[1]);
-        }
-        String[] origin = {args.get("timestamp"), args.get("nonce"), token};
-        Arrays.sort(origin);
-        String v = origin[0] + origin[1] + origin[2];
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(v.getBytes("utf-8"));
-            String sign = Hex.bytesToHex(digest);
-            if (sign.equals(args.get("signature"))) {
-                result = Response.ok(args.get("echostr")).build();
-            }
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return result;
     }
 
     //自定义菜单查询接口
@@ -1475,159 +1615,6 @@ public class PublicAccounts {
         return null;
     }
 
-    private void prepare() {
-        if (accessToken.equals("")) {
-            getToken();
-        }
-    }
-
-    @POST
-    @Path("custom-menu")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createCustomMenu(/*CustomMenu*/byte[] menu) {
-        prepare();
-        //POST https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN
-        /*
-        参数 	是否必须 	说明
-        button 	是 	一级菜单数组，个数应为1~3个
-        sub_button 	否 	二级菜单数组，个数应为1~5个
-        type 	是 	菜单的响应动作类型
-        name 	是 	菜单标题，不超过16个字节，子菜单不超过40个字节
-        key 	click等点击类型必须 	菜单KEY值，用于消息接口推送，不超过128字节
-        url 	view类型必须 	网页链接，用户点击菜单可打开链接，不超过1024字节
-        media_id 	media_id类型和view_limited类型必须 	调用新增永久素材接口返回的合法media_id
-        */
-        /*
-        1、click：点击推事件
-        用户点击click类型按钮后，微信服务器会通过消息接口推送消息类型为event	的结构给开发者（参考消息接口指南），并且带上按钮中开发者填写的key值，开发者可以通过自定义的key值与用户进行交互；
-        2、view：跳转URL
-        用户点击view类型按钮后，微信客户端将会打开开发者在按钮中填写的网页URL，可与网页授权获取用户基本信息接口结合，获得用户基本信息。
-        3、scancode_push：扫码推事件
-        用户点击按钮后，微信客户端将调起扫一扫工具，完成扫码操作后显示扫描结果（如果是URL，将进入URL），且会将扫码的结果传给开发者，开发者可以下发消息。
-        4、scancode_waitmsg：扫码推事件且弹出“消息接收中”提示框
-        用户点击按钮后，微信客户端将调起扫一扫工具，完成扫码操作后，将扫码的结果传给开发者，同时收起扫一扫工具，然后弹出“消息接收中”提示框，随后可能会收到开发者下发的消息。
-        5、pic_sysphoto：弹出系统拍照发图
-        用户点击按钮后，微信客户端将调起系统相机，完成拍照操作后，会将拍摄的相片发送给开发者，并推送事件给开发者，同时收起系统相机，随后可能会收到开发者下发的消息。
-        6、pic_photo_or_album：弹出拍照或者相册发图
-        用户点击按钮后，微信客户端将弹出选择器供用户选择“拍照”或者“从手机相册选择”。用户选择后即走其他两种流程。
-        7、pic_weixin：弹出微信相册发图器
-        用户点击按钮后，微信客户端将调起微信相册，完成选择操作后，将选择的相片发送给开发者的服务器，并推送事件给开发者，同时收起相册，随后可能会收到开发者下发的消息。
-        8、location_select：弹出地理位置选择器
-        用户点击按钮后，微信客户端将调起地理位置选择工具，完成选择操作后，将选择的地理位置发送给开发者的服务器，同时收起位置选择工具，随后可能会收到开发者下发的消息。
-        9、media_id：下发消息（除文本消息）
-        用户点击media_id类型按钮后，微信服务器会将开发者填写的永久素材id对应的素材下发给用户，永久素材类型可以是图片、音频、视频、图文消息。请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
-        10、view_limited：跳转图文消息URL
-        用户点击view_limited类型按钮后，微信客户端将打开开发者在按钮中填写的永久素材id对应的图文消息URL，永久素材类型只支持图文消息。请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
-        */
-        /*
-        {
-             "button":[
-             {
-                  "type":"click",
-                  "name":"今日歌曲",
-                  "key":"V1001_TODAY_MUSIC"
-              },
-              {
-                   "name":"菜单",
-                   "sub_button":[
-                   {
-                       "type":"view",
-                       "name":"搜索",
-                       "url":"http://www.soso.com/"
-                    },
-                    {
-                       "type":"view",
-                       "name":"视频",
-                       "url":"http://v.qq.com/"
-                    },
-                    {
-                       "type":"click",
-                       "name":"赞一下我们",
-                       "key":"V1001_GOOD"
-                    }]
-               }]
-         }
-         */
-         /*
-         {
-            "button": [
-                {
-                    "name": "扫码",
-                    "sub_button": [
-                        {
-                            "type": "scancode_waitmsg",
-                            "name": "扫码带提示",
-                            "key": "rselfmenu_0_0",
-                            "sub_button": [ ]
-                        },
-                        {
-                            "type": "scancode_push",
-                            "name": "扫码推事件",
-                            "key": "rselfmenu_0_1",
-                            "sub_button": [ ]
-                        }
-                    ]
-                },
-                {
-                    "name": "发图",
-                    "sub_button": [
-                        {
-                            "type": "pic_sysphoto",
-                            "name": "系统拍照发图",
-                            "key": "rselfmenu_1_0",
-                           "sub_button": [ ]
-                         },
-                        {
-                            "type": "pic_photo_or_album",
-                            "name": "拍照或者相册发图",
-                            "key": "rselfmenu_1_1",
-                            "sub_button": [ ]
-                        },
-                        {
-                            "type": "pic_weixin",
-                            "name": "微信相册发图",
-                            "key": "rselfmenu_1_2",
-                            "sub_button": [ ]
-                        }
-                    ]
-                },
-                {
-                    "name": "发送位置",
-                    "type": "location_select",
-                    "key": "rselfmenu_2_0"
-                },
-                {
-                   "type": "media_id",
-                   "name": "图片",
-                   "media_id": "MEDIA_ID1"
-                },
-                {
-                   "type": "view_limited",
-                   "name": "图文消息",
-                   "media_id": "MEDIA_ID2"
-                }
-            ]
-        }
-        */
-        //{"errcode":0,"errmsg":"ok"}
-        //{"errcode":40018,"errmsg":"invalid button name size"}
-        CustomMenu t = null;
-        try {
-            t = new Gson().fromJson(new String(menu, "UTF-8"), CustomMenu.class);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        Client client = ClientBuilder.newClient();
-        Entity<CustomMenu> em = Entity.json(t);
-        Response response = client.target(hostname)
-            .path("/cgi-bin/menu/create")
-            .queryParam("access_token", accessToken)
-            .request(MediaType.APPLICATION_JSON).post(em);
-        GenericResult r = response.readEntity(GenericResult.class);
-        return Response.ok(r).build();
-    }
-
     /*
     ?signature=xxx&timestamp=123456&nonce=123&echostr=....
 
@@ -1786,11 +1773,6 @@ public class PublicAccounts {
         public void setEvent(String event) {
             Event = event;
         }
-    }
-
-    public static class GenericResult {
-        public int errcode;
-        public String errmsg;
     }
 
     public static class DelResult {
@@ -3741,66 +3723,6 @@ public class PublicAccounts {
 
         public void setButton(MenuBase[] button) {
             this.button = button;
-        }
-    }
-
-    public static class CustomMenu {
-        private MenuItem[] button;
-
-        public MenuItem[] getButton() {
-            return button;
-        }
-
-        public void setButton(MenuItem[] button) {
-            this.button = button;
-        }
-
-        public static class MenuItem {
-            private String type;
-            private String name;
-            private String key;
-            private String url;
-            private MenuItem[] sub_button;
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getKey() {
-                return key;
-            }
-
-            public void setKey(String key) {
-                this.key = key;
-            }
-
-            public String getUrl() {
-                return url;
-            }
-
-            public void setUrl(String url) {
-                this.url = url;
-            }
-
-            public MenuItem[] getSub_button() {
-                return sub_button;
-            }
-
-            public void setSub_button(MenuItem[] sub_button) {
-                this.sub_button = sub_button;
-            }
         }
     }
 
