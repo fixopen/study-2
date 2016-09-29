@@ -203,7 +203,7 @@ public class WechatUsers {
 //                if (head != null) {
 //                    existwechatUser.setRefreshToken(head);
 //                }
-//                String token = wechatUser.getToken();
+//                String token = wechatUser.getTokenFromWechatPlatform();
 //                if (token != null) {
 //                    existwechatUser.setToken(token);
 //                }

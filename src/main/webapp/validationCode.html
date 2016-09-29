@@ -16,9 +16,10 @@
     <!--
     <script type="text/javascript" src="jquery/jquery.min.js"></script>
     -->
+    <script type="text/javascript" src="zepto/zepto.min.js"></script>
 </head>
 <body>
-<div id="warp" class="wrap" style="visibility: hidden">
+<div id="warp" class="wrap">
     <!-- main -->
     <div class="set-main">
         <ul class="set-ul">
@@ -46,19 +47,19 @@
     </div>
 </div>
 <script>
-    let userId
-    let getUrlParameter = function (name) {
-        var result = null
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)") //构造一个含有目标参数的正则表达式对象
-        var r = window.location.search.substr(1).match(reg) //匹配目标参数
-        if (r != null) {
-            result = decodeURI(r[2])
-        }
-        return result //返回参数值
-    }
-
-    let code = getUrlParameter('code')
-    let getTokenUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + code + '&grant_type=authorization_code'
+//    let userId
+//    let getUrlParameter = function (name) {
+//        var result = null
+//        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)") //构造一个含有目标参数的正则表达式对象
+//        var r = window.location.search.substr(1).match(reg) //匹配目标参数
+//        if (r != null) {
+//            result = decodeURI(r[2])
+//        }
+//        return result //返回参数值
+//    }
+//
+//    let code = getUrlParameter('code')
+//    let getTokenUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + code + '&grant_type=authorization_code'
 
     let ajax = function (method, url, headers, data, postProcess) {
         var xhr = new XMLHttpRequest()
@@ -86,23 +87,23 @@
 
     //document.getElementById("warp").style.visibility = "visible"
 
-    ajax('GET', getTokenUrl, [], null, function (tokenInfo) {
-        if (tokenInfo.meta.code < 400) {
-            ajax('PUT', 'api/wechat-users', [
-                {name: 'Content-Type', value: 'application/json;charset=utf-8'},
-                {name: 'Accept', value: 'application/json'},
-            ], tokenInfo, function (result) {
-                if (result.meta.code < 400) {
-                    userId = result.data.userId
-                    document.getElementById("warp").style.visibility = "visible" //显示
-                } else {
-                    alert(result.meta.code + result.data)
-                }
-            })
-        } else {
-            alert(tokenInfo.meta.code)
-        }
-    })
+//    ajax('GET', getTokenUrl, [], null, function (tokenInfo) {
+//        if (tokenInfo.meta.code < 400) {
+//            ajax('PUT', 'api/wechat-users', [
+//                {name: 'Content-Type', value: 'application/json;charset=utf-8'},
+//                {name: 'Accept', value: 'application/json'},
+//            ], tokenInfo, function (result) {
+//                if (result.meta.code < 400) {
+//                    userId = result.data.userId
+//                    document.getElementById("warp").style.visibility = "visible" //显示
+//                } else {
+//                    alert(result.meta.code + result.data)
+//                }
+//            })
+//        } else {
+//            alert(tokenInfo.meta.code)
+//        }
+//    })
 
     let saveButton = document.getElementById('save')
     saveButton.addEventListener('click', function (e) {
