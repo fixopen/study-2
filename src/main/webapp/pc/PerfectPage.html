@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>完善页面</title>
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="util.js"></script>
+</head>
+<script>
+    $(function () {
+        let phonecode = g.getUrlParameter("phonecode")
+        $("#phonecodeId").val(phonecode);
+    })
+</script>
+<body>
+<img src="images/首页/u15.png" height="240" width="228"/>
+<div style="position:absolute; left:240px; top:200px; ">
+    <h3>完善信息</h3>
+</div>
+<div>
+    <form>
+    <table>
+        <tr>
+            <td>真实姓名：</td>
+            <td><input type="text"/></td>
+        </tr>
+
+        <tr>
+            <td>手机号：</td>
+            <td><input type="text" id="phonecodeId"/></td>
+        </tr>
+        <tr>
+            <td>性别：</td>
+            <td><input type="text"/></td>
+        </tr>
+        <tr>
+            <td>出生年月：</td>
+            <td><input type="text"/></td>
+        </tr>
+        <tr>
+            <td>收货地址：</td>
+            <td><input type="text"/></td>
+        </tr>
+        <tr>
+            <td>就读学校：</td>
+            <td><input type="text"/></td>
+        </tr>
+        <tr>
+            <td>所在班级：</td>
+            <td><input type="text"/></td>
+        </tr>
+        <tr>
+            <td>微信账号：</td>
+            <td><input type="text"/></td>
+        </tr>
+    </table>
+    <input type="submit" value="提交"/>
+    </form>
+</div>
+</body>
+</html>
