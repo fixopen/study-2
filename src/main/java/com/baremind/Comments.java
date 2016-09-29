@@ -92,14 +92,10 @@ public class Comments {
                     existComment.setContent(content);
                 }
 
-                Date createTime = comment.getCreateTime();
-                if (createTime != null) {
-                    existComment.setCreateTime(createTime);
-                }
-
                 Date updateTime = comment.getUpdateTime();
                 if (updateTime != null) {
-                    existComment.setUpdateTime(updateTime);
+                    Date now = new Date();
+                    existComment.setUpdateTime(now);
                 }
 
                 Long userId = comment.getUserId();
