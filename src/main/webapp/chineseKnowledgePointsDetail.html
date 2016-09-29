@@ -18,6 +18,7 @@
     <script type="text/javascript" src="zepto/zepto.min.js"></script>
     <script type="text/javascript" src="zepto/touch.js"></script>
     <script type="text/javascript" src="zepto/selector.js"></script>
+    <!--<script type="text/javascript" src="jquery/jquery.min.js"></script>-->
 </head>
 <body>
 <!-- 弹窗开始 -->
@@ -91,9 +92,13 @@
         <div class="mulu_div" id="interaction"></div>
     </div>
     <div class="mulu_bottom">
-        <div class="muluBn_top">
+        <div class="muluBn_top" id="message">
             <!--<a class="mulu_botBtn" href="#">写留言</a>-->
-            <span class="mulu_botBtn">写留言</span>
+            <button id="createComment" type="button" class="mulu_botBtn">写留言</button>
+            <div id="commentWriter" style="display: none">
+                <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                <button type="submit" class="sub-btn" id="btn">提交</button>
+            </div>
         </div>
         <span id="comments"></span>
     </div>
@@ -122,7 +127,9 @@
 </template>
 <template id="problem-template">
     <li class="mld_Ulli">
+        <div>
         <img class="mld_liImg" src="${href}" alt="${type}">${title}
+        </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
     </li>
 </template>
@@ -140,7 +147,7 @@
             <li>
                 <!--<img class="ul01_imgzan" src="img/zan.png" alt="">-->
                 <!--<span class="ul01_count" id="likeCount">${likeCount}</span>-->
-                <button type="button" class="click-like" onclick="addLike()"></button>
+                <button type="button" class="click-like" onclick="like()" id="icon"></button>
                 <span class="ul01_count" id="likeCount">0</span>
             </li>
         </ul>
@@ -172,16 +179,6 @@
         </li>
     </ul>
 </template>
-<script>
-    function addLike() {
-        let likeCount = $('#likeCount').html();
-//           console.log(likeCount)
-//            likeCount = parseInt(likeCount) + 1;
-        likeCount += 1;
-        console.log(likeCount)
-    }
-</script>
-<!--script-->
 <script type="text/javascript" src="basic.js"></script>
 <script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="js/chineseDetail.js"></script>

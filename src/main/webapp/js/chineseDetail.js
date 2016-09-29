@@ -1,17 +1,17 @@
 ﻿// function like() {
-// //     let data ={
+//     let data = {
 //         userId: 1,
-//         objectType:'knowledge-point',
-//         objectId:g.getUrlParameter("id"),
-//         action:'like'
+//         objectType: 'knowledge-point',
+//         objectId: g.getUrlParameter("id"),
+//         action: 'like'
 //     }
-//     let data ={
-//         userId: 1,
-//         objectType:'knowledge-point',
-//         objectId:g.getUrlParameter("id"),
-//         action:'unlike'
-//     }
-//
+// //     // let data ={
+// //     //     userId: 1,
+// //     //     objectType:'knowledge-point',
+// //     //     objectId:g.getUrlParameter("id"),
+// //     //     action:'unlike'
+// //     // }
+// //
 //     $.ajax({
 //         type: "post",
 //         url: "/api/logs",
@@ -22,51 +22,68 @@
 //             alert(JSON.stringify(data))
 //         }
 //     })
-//
-//     $.ajax({
-//         type: "post",
-//         url: "/api/comments",
-//         data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: '...'}),
-//         dataType: "json",
-//         contentType: "application/json; charset=utf-8",
-//         success: function like() {
-//             alert(JSON.stringify(data))
-//         }
-//     })
 // }
 
 $(function () {
-    let liked = false
-    $.ajax({
-        type: "get",
-        url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: id, action: 'like'}),
-        dataType: "json",
-        success: function like(like) {
-            liked = true
-        },
-        error: function like(unlike) {
-            liked = false
+    // let liked = false
+    // $.ajax({
+    //     type: "get",
+    //     url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: g.getUrlParameter("id"), action: 'like'}),
+    //     // url: "api/logs?filter=" + JSON.stringify(g.getUrlParameter("id")),
+    //     dataType: "json",
+    //     success: function (like) {
+    //         liked = true
+    //     },
+    //     error: function (unlike) {
+    //         liked = false
+    //     }
+    // })
+    // //change icon via liked state
+    // // let icon = document.getElementById('icon')
+    // let icon =document.getElementById('icon');
+    // icon.addEventListener('click', function(e) {
+    //     if (liked) {
+    //         liked = false
+    //     // *   unlike
+    //     //     *   //event processor unlike
+    //     //     *       notification unlike
+    //     //     *       icon change to like, unliked
+    //     //     *       likeCount - 1
+    //     } else {
+    //         liked = true
+    //         //     *   like
+    //         //     *   //event processor like
+    //         //     *       notification like
+    //         // *       icon change to unlike, liked
+    //         // *       likeCount + 1
+    //     }
+    // }, false)
+
+// message---------
+    let createComment=document.getElementById('createComment');
+    createComment .addEventListener('click', writeMessage, false);
+    function writeMessage() {
+        $('#commentWriter').toggle();
+        let btn=document.getElementById('btn');
+        btn.addEventListener('click', submit, false);
+        function submit(e) {
+            let textarea=document.getElementById('textarea');
+            let value=textarea.value;
+            textarea.value='';
+            e.target.style.color = '#f5f5f5';
+            // e.target.style.backgroundColor = '#3e8f3e';
+            $.ajax({
+                type: "post",
+                url: "/api/comments",
+                data: JSON.stringify({userId:1,objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: value}),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    alert(JSON.stringify(data))
+                }
+            })
         }
-    })
-    //change icon via liked state
-    let icon = document.getElementById('icon')
-    icon.addEventListener('click', function(e) {
-        if (liked) {
-            liked = false
-        // *   unlike
-        //     *   //event processor unlike
-        //     *       notification unlike
-        //     *       icon change to like, unliked
-        //     *       likeCount - 1
-        } else {
-            liked = true
-            //     *   like
-            //     *   //event processor like
-            //     *       notification like
-            // *       icon change to unlike, liked
-            // *       likeCount + 1
-        }
-    }, false)
+    }
 
     let volumeId = g.getUrlParameter('volumeId')
     $.ajax({
@@ -83,7 +100,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    alert(JSON.stringify(data))
+                   alert(JSON.stringify(data))
                     for (let i = 0; i < data.problems.length; ++i) {
                         let p = data.problems[i]
                         p.options[0].title = 'A'
@@ -222,7 +239,7 @@ $(function () {
                             let problem = findProblem(problemId)
                             if (problem) {
                                 let index = getIndex(clickedElement.textContent)
-                                let r = compareAnswer(index, problem.ProblemStandardAnswer)
+                                let r = compareAnswer(index, problem.standardAnswers)
                                 if (r) {
                                     clickedElement.parentNode.addClass('daanLi_true')
                                     clickedElement.innerHTML = ''
@@ -261,45 +278,8 @@ $(function () {
                     //     }
                     // })
 
-                    // let data ={
-                    //     objectType:'knowledge-point',
-                    //     objectId:'problemId',
-                    //     objectName:'index',
-                    //     action:'click'
-                    // }
-                    //
-                    // $.ajax({
-                    //     type: "post",
-                    //     url: 'api/answer-records',
-                    //     async: false,
-                    //     data: data,
-                    //     success: function (data) {
-                    //         alert(JSON.stringify(data))
-                    //     }
-                    // })
-
                 }
             })
         }
     })
 })
-// {"comments":[],
-//     "contents":[],
-//     "interaction":{"likeCount":0,"readCount":76},
-//     "title":"是神农",
-//     "quotes":[],
-//     "problems":[
-//         {"options":[{"id":96647314735105,"problemId":96647314669568,"name":"11"},{"id":96647314735106,"problemId":96647314669568,"name":"22"},{"id":96647314735107,"problemId":96647314669568,"name":"33"},{"id":96647314735108,"problemId":96647314669568,"name":"44"}],
-//             "id":96647314669568,
-//             "type":"单选题",
-//             "title":"1.神",
-//             "ProblemStandardAnswer":[{"id":96647314735104,"problemId":96647314669568,"name":0}]
-//         },
-//        {"options":[{"id":96647316176898,"problemId":96647316176896,"name":"肃肃"},{"id":96647316176899,"problemId":96647316176896,"name":"物外"},{"id":96647316242432,"problemId":96647316176896,"name":"啊啊"},{"id":96647316242433,"problemId":96647316176896,"name":"吖吖"}],
-//            "id":96647316176896,
-//            "type":"单选题",
-//            "title":"2.我",
-//            "ProblemStandardAnswer":[{"id":96647316176897,"problemId":96647316176896,"name":1}]
-//        }
-//        ]
-// }
