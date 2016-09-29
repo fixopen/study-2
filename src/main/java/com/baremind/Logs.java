@@ -7,10 +7,12 @@ import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +32,19 @@ public class Logs {
         return result;
     }
 
+    @GET
+    @Path("{id}/count")
+    public Response getLikescount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            EntityManager em = JPAEntry.getEntityManager();
+            String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
+            Query lq = em.createQuery(statsLikes, Long.class);
+            Long likeCountObject = (Long) lq.getSingleResult();
+            result = Response.ok(new Gson().toJson(likeCountObject)).build();
+        }
+        return result;
+    }
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLikes(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
@@ -44,7 +59,6 @@ public class Logs {
         }
         return result;
     }
-
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)

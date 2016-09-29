@@ -22,6 +22,10 @@ public class Comments {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             comment.setId(IdGenerator.getNewId());
+            comment.setUserId(JPAEntry.getLoginId(sessionId));
+            Date now = new Date();
+            comment.setCreateTime(now);
+            comment.setUpdateTime(now);
             JPAEntry.genericPost(comment);
             result = Response.ok(comment).build();
         }

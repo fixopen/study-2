@@ -1,5 +1,7 @@
 package com.baremind;
 
+import com.baremind.data.Session;
+import com.baremind.data.User;
 import com.baremind.data.WechatUser;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -56,6 +58,27 @@ public class WechatUsers {
             }
         }
         return result;
+    }
+
+    @GET //根据id查询
+    @Path("{openId}/identities")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIdentitiesByOpenId(@PathParam("openId") String openId) {
+        WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
+        Date now = new Date();
+        Long userId;
+        String sessionId;
+        if (wechatUser == null) {
+            User user = PublicAccounts.insertUserInfoByOpenId(now, openId);
+            userId = user.getId();
+            Session s = PublicAccounts.putSession(now, user.getId());
+            sessionId = s.getIdentity();
+        } else {
+            userId = wechatUser.getUserId();
+            Session s = PublicAccounts.putSession(now, userId);
+            sessionId = s.getIdentity();
+        }
+        return Response.ok("{\"userId\":" + userId.toString() + ", \"sessionId\": \"" + sessionId + "\"}").build();
     }
 
     @PUT //根据id修改
@@ -203,7 +226,7 @@ public class WechatUsers {
 //                if (head != null) {
 //                    existwechatUser.setRefreshToken(head);
 //                }
-//                String token = wechatUser.getToken();
+//                String token = wechatUser.getTokenFromWechatPlatform();
 //                if (token != null) {
 //                    existwechatUser.setToken(token);
 //                }
