@@ -63,6 +63,18 @@ public class KnowledgePoints {
     }
 
     @GET
+    @Path("{id}/is-self-like")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Boolean has = Logs.has(JPAEntry.getLoginId(sessionId), "knowledge-point", id, "like");
+            result = Response.ok("{\"like\":" + has.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
     @Path("{id}/read-count")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReadCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {

@@ -53,9 +53,16 @@ public class Logs {
 
     public static Long getStatsCount(String objectType, Long objectId, String action) {
         EntityManager em = JPAEntry.getEntityManager();
-        String stats = "SELECT COUNT(l) FROM Log l WHERE l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
+        String stats = "SELECT COUNT(l) FROM Log l WHERE l.action = '" + action + "' AND l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
         Query q = em.createQuery(stats, Long.class);
         return (Long) q.getSingleResult();
+    }
+
+    public static Boolean has(Long userId, String objectType, Long objectId, String action) {
+        EntityManager em = JPAEntry.getEntityManager();
+        String stats = "SELECT COUNT(l) FROM Log l WHERE l.userId = " + userId.toString() + " AND l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
+        Query q = em.createQuery(stats, Long.class);
+        return (Long) q.getSingleResult() > 0l;
     }
 
     @GET //根据条件查询
