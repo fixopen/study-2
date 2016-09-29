@@ -1,10 +1,10 @@
-// function like() {
-//     let data ={
-//         //userId: 1,
-//         objectType:'knowledge-point',
-//         objectId:g.getUrlParameter("id"),
-//         action:'like'
-//     }
+function like() {
+    let data ={
+        //userId: 1,
+        objectType:'knowledge-point',
+        objectId:g.getUrlParameter("id"),
+        action:'like'
+    }
 //     let data ={
 //         //userId: 1,
 //         objectType:'knowledge-point',
@@ -12,16 +12,16 @@
 //         action:'unlike'
 //     }
 //
-//     $.ajax({
-//         type: "post",
-//         url: "/api/logs",
-//         data: JSON.stringify(data),
-//         dataType: "json",
-//         contentType: "application/json; charset=utf-8",
-//         success: function (like) {
-//             alert(JSON.stringify(data))
-//         }
-//     })
+    $.ajax({
+        type: "post",
+        url: "/api/logs",
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (like) {
+            alert(JSON.stringify(data))
+        }
+    })
 //
 //     $.ajax({
 //         type: "post",
@@ -33,7 +33,7 @@
 //             alert(JSON.stringify(data))
 //         }
 //     })
-// }
+}
 
 $(function () {
     // let liked = false
@@ -83,7 +83,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    //alert(JSON.stringify(data))
+                    alert(JSON.stringify(data))
                     for (let i = 0; i < data.problems.length; ++i) {
                         let p = data.problems[i];
                         p.options[0].title = 'A';
@@ -91,6 +91,7 @@ $(function () {
                         p.options[2].title = 'C';
                         p.options[3].title = 'D'
                     }
+
                     for (let i = 0; i < knowledgePointList.length; ++i) {
                         if (knowledgePointList[i].id == id) {
                             proc({
