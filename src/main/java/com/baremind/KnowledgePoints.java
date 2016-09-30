@@ -51,6 +51,42 @@ public class KnowledgePoints {
     }
 
     @GET
+    @Path("{id}/like-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Long likeCount = Logs.getStatsCount("knowledge-point", id, "like");
+            result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/is-self-like")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Boolean has = Logs.has(JPAEntry.getLoginId(sessionId), "knowledge-point", id, "like");
+            result = Response.ok("{\"like\":" + has.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/read-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReadCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Long readCount = Logs.getStatsCount("knowledge-point", id, "read");
+            result = Response.ok("{\"count\":" + readCount.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
     @Path("{id}/contents")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
@@ -247,7 +283,22 @@ public class KnowledgePoints {
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                totalResult.put("comments", comments);
+                List<Map<String, Object>> kpsm = new ArrayList<>(comments.size());
+                for (Comment kp : comments) {
+                    Map<String, Object> kpm = new HashMap<>();
+                    kpm.put("id", kp.getId());
+                    kpm.put("content", kp.getContent());
+                    kpm.put("clientId", kp.getClientId());
+                    kpm.put("createTime", kp.getCreateTime());
+                    kpm.put("objectId", kp.getObjectId());
+                    kpm.put("objectType", kp.getObjectType());
+                    kpm.put("updateTime", kp.getUpdateTime());
+                    kpm.put("userId", kp.getUserId());
+                    Long CommentlikeCount = Logs.getStatsCount("comments", kp.getId(), "like");
+                    kpm.put("likeCount", CommentlikeCount);
+                    kpsm.add(kpm);
+                }
+                totalResult.put("comments", kpsm);
 
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
@@ -255,7 +306,6 @@ public class KnowledgePoints {
         }
         return result;
     }
-
 
     @POST//添
     @Consumes(MediaType.APPLICATION_JSON)
