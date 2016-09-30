@@ -549,6 +549,84 @@
     dsy.add("0_30", ["重庆市", "沙坪坝","渝中","江北","南岸","九龙坡","大渡口","渝北","北碚","万盛","双桥","巴南","万州","涪陵","黔江","长寿","城口县", "大足县", "垫江县", "丰都县", "奉节县", "合川市", "江津市", "开县", "梁平县", "南川市", "彭 水苗族土家族自治县", "荣昌县", "石柱土家族自治县", "铜梁县", "巫山县", "巫溪县", "武隆县", "秀山土家族苗族自治县", "永川市", " 酉阳土家族苗族自治县", "云阳县", "忠县", "潼南县", "璧山县", "綦江县"]);
     dsy.add("0_30_0", ["城口县", "大足县", "垫江县", "丰都县", "奉节县", "合川市", "江津市", "开县", "梁平县", "南川市", "彭 水苗族土家族自治县", "荣昌县", "石柱土家族自治县", "铜梁县", "巫山县", "巫溪县", "武隆县", "秀山土家族苗族自治县", "永川市", " 酉阳土家族苗族自治县", "云阳县", "忠县", "重庆市", "潼南县", "璧山县", "綦江县"]);
 
+    let china = {
+        "beijing": {
+            "chaoyang": ["..", ".."],
+            "haidian": []
+        },
+        "shanghai": {
+            "xx": ["ss", "cx"]
+        },
+        //....
+    }
+    let state = [
+        {"index": 0, "text": ""},
+        {"index": 0, "text": ""},
+        {"index": 0, "text": ""}
+    ]
+
+    let p = document.getElementById('pr')
+    let c = doc
+    let x = doc
+
+    let addr = doc
+
+    //<option value="...">...</option>
+
+    x.addEventListener('change', function(e) {
+        state[2].index = e.target.selectedIndex
+        state[2].text = e.target.value
+
+        addr.value = state[0].text + state[1].text + state[2].text
+    })
+
+    c.addEventListener('change', function(e) {
+        state[1].index = e.target.selectedIndex
+        state[1].text = e.target.value
+
+        x.innerHTML = ''
+        for (let i = 0; i < china[state[0].text][state[1].text].length; ++i) {
+            let option = document.createElement('option')
+            option.setAttribute('value', china[state[0].text][state[1].text][i])
+            option.innerHTML = china[state[0].text][state[1].text][i]
+            x.appendChild(option)
+        }
+        x.selectedIndex = 0
+        state[2].index = 0
+        state[2].text = x.value
+
+        addr.value = state[0].text + state[1].text + state[2].text
+    })
+
+    p.addEventListener('change', function(e) {
+        state[0].index = e.target.selectedIndex
+        state[0].text = e.target.value
+
+        c.innerHTML = ''
+        for (let cv in china[state[0].text]) {
+            let option = document.createElement('option')
+            option.setAttribute('value', china[state[0].text][cv])
+            option.innerHTML = china[state[0].text][cv]
+            c.appendChild(option)
+        }
+        c.selectedIndex = 0
+        state[1].index = 0
+        state[1].text = c.value
+
+        x.innerHTML = ''
+        for (let i = 0; i < china[state[0].text][state[1].text].length; ++i) {
+            let option = document.createElement('option')
+            option.setAttribute('value', china[state[0].text][state[1].text][i])
+            option.innerHTML = china[state[0].text][state[1].text][i]
+            x.appendChild(option)
+        }
+        x.selectedIndex = 0
+        state[2].index = 0
+        state[2].text = x.value
+
+        addr.value = state[0].text + state[1].text + state[2].text
+    })
+
     var s = ["province", "city", "county"];
     var opt0 = ["省", "市级", "县、县级市、区"];
     function setup() {
