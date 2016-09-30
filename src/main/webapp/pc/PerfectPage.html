@@ -565,6 +565,12 @@
         {"index": 0, "text": ""}
     ]
 
+    let state2 = {
+        "province": "",
+        "city": "",
+        "county": ""
+    }
+
     let p = document.getElementById('pr')
     let c = doc
     let x = doc
@@ -574,57 +580,50 @@
     //<option value="...">...</option>
 
     x.addEventListener('change', function(e) {
-        state[2].index = e.target.selectedIndex
-        state[2].text = e.target.value
-
-        addr.value = state[0].text + state[1].text + state[2].text
+        state2.county = e.target.value
+        addr.value = state2.province + state2.city + state2.county
     })
 
     c.addEventListener('change', function(e) {
-        state[1].index = e.target.selectedIndex
-        state[1].text = e.target.value
+        state2.city = e.target.value
 
         x.innerHTML = ''
-        for (let i = 0; i < china[state[0].text][state[1].text].length; ++i) {
+        for (let i = 0; i < china[state2.province][state2.city].length; ++i) {
             let option = document.createElement('option')
-            option.setAttribute('value', china[state[0].text][state[1].text][i])
-            option.innerHTML = china[state[0].text][state[1].text][i]
+            option.setAttribute('value', china[state2.province][state2.city][i])
+            option.innerHTML = china[state2.province][state2.city][i]
             x.appendChild(option)
         }
         x.selectedIndex = 0
-        state[2].index = 0
-        state[2].text = x.value
+        state2.city = x.value
 
-        addr.value = state[0].text + state[1].text + state[2].text
+        addr.value = state2.province + state2.city + state2.county
     })
 
     p.addEventListener('change', function(e) {
-        state[0].index = e.target.selectedIndex
-        state[0].text = e.target.value
+        state2.province = e.target.value
 
         c.innerHTML = ''
-        for (let cv in china[state[0].text]) {
+        for (let cv in china[state2.province]) {
             let option = document.createElement('option')
-            option.setAttribute('value', china[state[0].text][cv])
-            option.innerHTML = china[state[0].text][cv]
+            option.setAttribute('value', china[state2.province][cv])
+            option.innerHTML = china[state2.province][cv]
             c.appendChild(option)
         }
         c.selectedIndex = 0
-        state[1].index = 0
-        state[1].text = c.value
+        state2.city = c.value
 
         x.innerHTML = ''
-        for (let i = 0; i < china[state[0].text][state[1].text].length; ++i) {
+        for (let i = 0; i < china[state2.province][state2.city].length; ++i) {
             let option = document.createElement('option')
-            option.setAttribute('value', china[state[0].text][state[1].text][i])
-            option.innerHTML = china[state[0].text][state[1].text][i]
+            option.setAttribute('value', china[state2.province][state2.city][i])
+            option.innerHTML = china[state2.province][state2.city][i]
             x.appendChild(option)
         }
         x.selectedIndex = 0
-        state[2].index = 0
-        state[2].text = x.value
+        state2.county = x.value
 
-        addr.value = state[0].text + state[1].text + state[2].text
+        addr.value = state2.province + state2.city + state2.county
     })
 
     var s = ["province", "city", "county"];
