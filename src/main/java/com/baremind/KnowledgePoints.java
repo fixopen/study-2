@@ -283,7 +283,22 @@ public class KnowledgePoints {
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                totalResult.put("comments", comments);
+                List<Map<String, Object>> kpsm = new ArrayList<>(comments.size());
+                for (Comment kp : comments) {
+                    Map<String, Object> kpm = new HashMap<>();
+                    kpm.put("id", kp.getId());
+                    kpm.put("content", kp.getContent());
+                    kpm.put("clientId", kp.getClientId());
+                    kpm.put("createTime", kp.getCreateTime());
+                    kpm.put("objectId", kp.getObjectId());
+                    kpm.put("objectType", kp.getObjectType());
+                    kpm.put("updateTime", kp.getUpdateTime());
+                    kpm.put("userId", kp.getUserId());
+                    Long CommentlikeCount = Logs.getStatsCount("comments", kp.getId(), "like");
+                    kpm.put("likeCount", CommentlikeCount);
+                    kpsm.add(kpm);
+                }
+                totalResult.put("comments", kpsm);
 
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
