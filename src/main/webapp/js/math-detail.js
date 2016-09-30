@@ -1,41 +1,124 @@
-function like() {
+function formateDate(date) {
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    var h = date.getHours();
+    var mi = date.getMinutes();
+    m = m > 9 ? m : '0' + m;
+    return y + '-' + m + '-' + d + ' ' + h + ':' + mi;
+
+}
+function like(el) {
+    var total = document.getElementById('total');
+    total.innerText = parseInt(total.innerText) + 1;
+    el.disabled = true;
+    // setTimeout(function () {
+    //     el.disabled = false;
+    // }, 10000);
     let data ={
-        userId: 2,
         objectType:'knowledge-point',
         objectId:g.getUrlParameter("id"),
         action:'like'
     }
-    // let data ={
-    //     //userId: 1,
-    //     objectType:'knowledge-point',
-    //     objectId:g.getUrlParameter("id"),
-    //     action:'unlike'
-    // }
-
     $.ajax({
         type: "post",
         url: "/api/logs",
         data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function like() {
-            alert(JSON.stringify(data))
+        success: function (like) {
+            alert(JSON.stringify(like))
         }
     })
-    //
-    // $.ajax({
-    //     type: "post",
-    //     url: "/api/comments",
-    //     data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: '...'}),
-    //     dataType: "json",
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function like() {
-    //         alert(JSON.stringify(data))
-    //     }
-    // })
 }
+function commentLike(el) {
+    var total = document.getElementById('all');
+    total.innerText = parseInt(total.innerText) + 1;
+    el.disabled = true;
+    // setTimeout(function () {
+    //     el.disabled = false;
+    // }, 10000);
+    let data ={
+        objectType:'comment',
+        Id:g.getUrlParameter("id"),
+        action:'like'
+    }
+   
+    $.ajax({
+        type: "post",
+        url: "/api/logs",
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (like) {
+            alert(JSON.stringify(like))
+        }
+    })
+}
+// 定义disabled函数，禁用投票按钮
+
+// function like() {
+//
+//     // 定义vote函数，计算票数
+//
+//     // let data ={
+//     //     //userId: 1,
+//     //     objectType:'knowledge-point',
+//     //     objectId:g.getUrlParameter("id"),
+//     //     action:'unlike'
+//     // }
+//
+//
+// }
+
 
 $(function () {
+    let data ={
+        objectType:'knowledge-point',
+        objectId:parseInt(g.getUrlParameter("id")),
+        action:'like'
+    }
+    $.ajax({
+        type: 'get',
+        url: 'api/logs?filter=' + JSON.stringify(data ),
+        dataType: 'json',
+        success: function (like) {
+            alert(JSON.stringify(like))
+            if(like !=null){
+                alert("你已经点过赞了")
+            }else{
+            }
+        }
+    })
+
+
+    let createComment=document.getElementById('createComment');
+    createComment .addEventListener('click', writeMessage, false);
+    function writeMessage() {
+        $('#commentWriter').toggle();
+        let btn=document.getElementById('btn');
+        btn.addEventListener('click', submit, false);
+        function submit(e) {
+            let textarea=document.getElementById('textarea');
+            let value=textarea.value;
+            textarea.value='';
+            e.target.style.color = '#f5f5f5';
+            // e.target.style.backgroundColor = '#3e8f3e';
+            $.ajax({
+                type: "post",
+                url: "/api/comments",
+                data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: value}),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    alert(JSON.stringify(data))
+
+                }
+            })
+        }
+
+    }
+
     let trueImage = document.createElement('img')
     trueImage.setAttribute('class', 'daan_error')
     trueImage.setAttribute('src', 'img/true.png')
@@ -65,6 +148,9 @@ $(function () {
     // //         // *       likeCount + 1
     //     }
     // }, false)
+    // message---------
+
+
 
     let volumeId = g.getUrlParameter("volumeId");
     $.ajax({
@@ -150,7 +236,11 @@ $(function () {
                         data: data.video,
                         containerId: 'video'
                     });
-
+                    proc({
+                        templateId: 'comment-template',
+                        data: data.comments,
+                        containerId: 'comments'
+                    })
                     //data.problems
                     let ps = []
                     for (let i = 0; i < data.problems.length; ++i) {
@@ -195,11 +285,7 @@ $(function () {
 
 
 
-                    proc({
-                        templateId: 'comment-template',
-                        data: data.comments,
-                        containerId: 'comments'
-                    })
+
                     // 选项判错--------------------------------------------------------
                     let findProblem = function (problemId) {
                         let problem = null

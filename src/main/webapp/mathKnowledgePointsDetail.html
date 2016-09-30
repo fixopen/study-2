@@ -72,11 +72,15 @@
     </div>
     <!--message-->
     <div class="mulu_bottom">
-        <div class="muluBn_top">
-            <a class="mulu_botBtn" href="#">写留言</a>
+        <div class="muluBn_top" id="message">
+            <!--<a class="mulu_botBtn" href="#">写留言</a>-->
+            <button id="createComment" type="button" class="mulu_botBtn">写留言</button>
+            <div id="commentWriter" style="display: none">
+                <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                <button type="submit" class="sub-btn" id="btn">提交</button>
+            </div>
         </div>
-        <div id="comments"></div>
-
+        <span id="comments"></span>
     </div>
 
 </div>
@@ -137,8 +141,8 @@
     <div>
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
-            <li><img class="ul01_imgzan" src="img/zan.png" alt="" onclick="like()"><span
-                    class="ul01_count">${likeCount}</span></li>
+            <li><img class="ul01_imgzan" src="img/zan.png" alt="" onclick="like(this)" id="icon">
+                <span class="ul01_count" id="total">${likeCount}</span></li>
         </ul>
         <ul class="ul01_riht">
             <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
@@ -155,14 +159,14 @@
             <ul class="topUl">
                 <li class="topUl_top">
                     <div class="litop_fleft">${name}</div>
-                    <div class="litop_friht"><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span>
+                    <div class="litop_friht"><img class="ul01_imgzan" src="img/zan.png" onclick="commentLike(this)"><span class="ul01_count" id="all">${likeCount}</span>
                     </div>
                 </li>
                 <li class="topUl_center tcmar_top">
                     ${content}
                 </li>
                 <li class="topUl_bottom tcmar_top">
-                    <div class="litop_fleft">${time}</div>
+                    <div class="litop_fleft">${createTime}</div>
                 </li>
             </ul>
         </li>
