@@ -3,6 +3,7 @@ package com.baremind;
 import com.baremind.data.Card;
 import com.baremind.data.User;
 import com.baremind.data.ValidationCode;
+import com.baremind.data.WechatUser;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -451,6 +452,23 @@ public class Users {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             user.setId(IdGenerator.getNewId());
+            JPAEntry.genericPost(user);
+            result = Response.ok(user).build();
+        }
+        return result;
+    }
+
+    @POST //添
+    @Path("pcuser")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createPcUser(@CookieParam("sessionId") String sessionId, User user) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            user.setId(IdGenerator.getNewId());
+            WechatUser wechatUser = new WechatUser();
+            wechatUser.setUserId(user.getId());
+           /* wechatUser.setRefId();*/
             JPAEntry.genericPost(user);
             result = Response.ok(user).build();
         }
