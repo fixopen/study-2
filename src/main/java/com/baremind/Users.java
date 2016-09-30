@@ -1,7 +1,6 @@
 package com.baremind;
 
 import com.baremind.data.Card;
-import com.baremind.data.Session;
 import com.baremind.data.User;
 import com.baremind.data.ValidationCode;
 import com.baremind.utils.CharacterEncodingFilter;
@@ -43,246 +42,75 @@ public class Users {
         if (r.messageId == null) {
             switch (r.code) {
                 case "0": //提交成功
-                    result = Response.ok().build();
                     break;
                 case "101": //无此用户
-                    result = Response.status(523).entity("{\"state\":\"无此用户\"").build();
+                    result = Response.status(523).entity("{\"state\":\"无此用户\"}").build();
                     break;
                 case "102": //密码错
-                    result = Response.status(523).entity("{\"state\":\"密码错\"").build();
+                    result = Response.status(523).entity("{\"state\":\"密码错\"}").build();
                     break;
                 case "103": //提交过快（提交速度超过流速限制）
-                    result = Response.status(523).entity("{\"state\":\"提交过快（提交速度超过流速限制）\"").build();
+                    result = Response.status(523).entity("{\"state\":\"提交过快（提交速度超过流速限制）\"}").build();
                     break;
                 case "104": //系统忙（因平台侧原因，暂时无法处理提交的短信）
-                    result = Response.status(523).entity("{\"state\":\"系统忙（因平台侧原因，暂时无法处理提交的短信）\"").build();
+                    result = Response.status(523).entity("{\"state\":\"系统忙（因平台侧原因，暂时无法处理提交的短信）\"}").build();
                     break;
                 case "105": //敏感短信（短信内容包含敏感词）
-                    result = Response.status(523).entity("{\"state\":\"敏感短信（短信内容包含敏感词)\"").build();
+                    result = Response.status(523).entity("{\"state\":\"敏感短信（短信内容包含敏感词)\"}").build();
                     break;
                 case "106": //消息长度错（>536或<=0）
-                    result = Response.status(523).entity("{\"state\":\"消息长度错（>536或<=0）\"").build();
+                    result = Response.status(523).entity("{\"state\":\"消息长度错（>536或<=0）\"}").build();
                     break;
                 case "107": //包含错误的手机号码
-                    result = Response.status(523).entity("{\"state\":\"包含错误的手机号码\"").build();
+                    result = Response.status(523).entity("{\"state\":\"包含错误的手机号码\"}").build();
                     break;
                 case "108": //手机号码个数错（群发>50000或<=0;单发>200或<=0）
-                    result = Response.status(523).entity("{\"state\":\"手机号码个数错（群发>50000或<=0;单发>200或<=0）\"").build();
+                    result = Response.status(523).entity("{\"state\":\"手机号码个数错（群发>50000或<=0;单发>200或<=0）\"}").build();
                     break;
                 case "109": //无发送额度（该用户可用短信数已使用完）
-                    result = Response.status(523).entity("{\"state\":\"无发送额度（该用户可用短信数已使用完）\"").build();
+                    result = Response.status(523).entity("{\"state\":\"无发送额度（该用户可用短信数已使用完）\"}").build();
                     break;
                 case "110": //不在发送时间内
-                    result = Response.status(523).entity("{\"state\":\"不在发送时间内\"").build();
+                    result = Response.status(523).entity("{\"state\":\"不在发送时间内\"}").build();
                     break;
                 case "111": //超出该账户当月发送额度限制
-                    result = Response.status(523).entity("{\"state\":\"超出该账户当月发送额度限制\"").build();
+                    result = Response.status(523).entity("{\"state\":\"超出该账户当月发送额度限制\"}").build();
                     break;
                 case "112": //无此产品，用户没有订购该产品
-                    result = Response.status(523).entity("{\"state\":\"无此产品，用户没有订购该产品\"").build();
+                    result = Response.status(523).entity("{\"state\":\"无此产品，用户没有订购该产品\"}").build();
                     break;
                 case "113": //extno格式错（非数字或者长度不对）
-                    result = Response.status(523).entity("{\"state\":\"extno格式错（非数字或者长度不对）\"").build();
+                    result = Response.status(523).entity("{\"state\":\"extno格式错（非数字或者长度不对）\"}").build();
                     break;
                 case "115": //自动审核驳回
-                    result = Response.status(523).entity("{\"state\":\"自动审核驳回\"").build();
+                    result = Response.status(523).entity("{\"state\":\"自动审核驳回\"}").build();
                     break;
                 case "116": //签名不合法，未带签名（用户必须带签名的前提下）
-                    result = Response.status(523).entity("{\"state\":\"签名不合法，未带签名（用户必须带签名的前提下）\"").build();
+                    result = Response.status(523).entity("{\"state\":\"签名不合法，未带签名（用户必须带签名的前提下）\"}").build();
                     break;
                 case "117": //IP地址认证错,请求调用的IP地址不是系统登记的IP地址
-                    result = Response.status(523).entity("{\"state\":\"IP地址认证错,请求调用的IP地址不是系统登记的IP地址\"").build();
+                    result = Response.status(523).entity("{\"state\":\"IP地址认证错,请求调用的IP地址不是系统登记的IP地址\"}").build();
                     break;
                 case "118": //用户没有相应的发送权限
-                    result = Response.status(523).entity("{\"state\":\"用户没有相应的发送权限\"").build();
+                    result = Response.status(523).entity("{\"state\":\"用户没有相应的发送权限\"}").build();
                     break;
                 case "119": //用户已过期
-                    result = Response.status(523).entity("{\"state\":\"用户已过期\"").build();
+                    result = Response.status(523).entity("{\"state\":\"用户已过期\"}").build();
                     break;
                 case "120": //测试内容不是白名单
-                    result = Response.status(523).entity("{\"state\":\"测试内容不是白名单\"").build();
+                    result = Response.status(523).entity("{\"state\":\"测试内容不是白名单\"}").build();
                     break;
             }
         } else {
-            result = Response.ok("{\"messageId\": \"" + r.messageId + "\"}\"").build();
+            result = Response.ok("{\"messageId\": \"" + r.messageId + "\"}").build();
         }
         return result;
     }
 
-    public static class ActiveCard {
-        private String cardCode;
-        private String password;
-        private String phonecode;
-        private String validationCode;
-        private Long userId;
-
-        public String getCardCode() {
-            return cardCode;
-        }
-
-        public void setCardCode(String cardCode) {
-            this.cardCode = cardCode;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getPhonecode() {
-            return phonecode;
-        }
-
-        public void setPhonecode(String phonecode) {
-            this.phonecode = phonecode;
-        }
-
-        public String getValidationCode() {
-            return validationCode;
-        }
-
-        public void setValidationCode(String validationCode) {
-            this.validationCode = validationCode;
-        }
-
-        public Long getUserId() {
-            return userId;
-        }
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
-    }
-
-    @POST
-    @Path("cards")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response queryValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-        Response result = Response.status(500).build();
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("no", ac.cardCode);
-        condition.put("password", ac.password);
-        List<Card> cs = JPAEntry.getList(Card.class, condition);
-        switch (cs.size()) {
-            case 0:
-                result = Response.status(404).build();
-                break;
-            case 1:
-                Map<String, Object> ValidationCodecondition = new HashMap<>();
-                ValidationCodecondition.put("phoneNumber", ac.phonecode);
-                ValidationCodecondition.put("validCode", ac.validationCode);
-                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
-                switch (validationCodes.size()) {
-                    case 0:
-                        result = Response.status(401).build();
-                        break;
-                    case 1:
-                        Date now = new Date();
-                        Date sendTime = validationCodes.get(0).getTimestamp();
-                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
-                            result = Response.status(410).build();
-                        } else {
-                            Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
-                            if (s == null) {
-                                result = Response.status(412).build();
-                            } else {
-                                Card c = cs.get(0);
-                                c.setActiveTime(now);
-                                c.setAmount(588.0);
-                                c.setUserId(s.getUserId());
-                                JPAEntry.genericPut(c);
-                                result = Response.ok().build();
-                            }
-                        }
-                        break;
-                    default:
-                        result = Response.status(520).build();
-                        break;
-                }
-                EntityManager em = JPAEntry.getEntityManager();
-                em.getTransaction().begin();
-                for (ValidationCode validationCode : validationCodes) {
-                    em.remove(validationCode);
-                }
-                em.getTransaction().commit();
-                break;
-        }
-        return result;
-    }
-
-    @POST
-    @Path("pccards")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response querypcValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-        Response result = Response.status(500).build();
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("no", ac.cardCode);
-        condition.put("password", ac.password);
-        List<Card> cs = JPAEntry.getList(Card.class, condition);
-        switch (cs.size()) {
-            case 0:
-                result = Response.status(404).build();
-                break;
-            case 1:
-                Map<String, Object> ValidationCodecondition = new HashMap<>();
-                ValidationCodecondition.put("phoneNumber", ac.phonecode);
-                ValidationCodecondition.put("validCode", ac.validationCode);
-                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
-                switch (validationCodes.size()) {
-                    case 0:
-                        result = Response.status(401).build();
-                        break;
-                    case 1:
-                        Date now = new Date();
-                        Date sendTime = validationCodes.get(0).getTimestamp();
-                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
-                            result = Response.status(410).build();
-                        } else {
-                           /* Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
-                            if (s == null) {
-                                result = Response.status(412).build();
-                            } else {*/
-                                Card c = cs.get(0);
-                                c.setActiveTime(now);
-                                c.setAmount(588.0);
-                               /* c.setUserId(s.getUserId());*/
-                                JPAEntry.genericPut(c);
-                                result = Response.ok().build();
-                            /*}*/
-                        }
-                        break;
-                    default:
-                        result = Response.status(520).build();
-                        break;
-                }
-                EntityManager em = JPAEntry.getEntityManager();
-                em.getTransaction().begin();
-                for (ValidationCode validationCode : validationCodes) {
-                    em.remove(validationCode);
-                }
-                em.getTransaction().commit();
-                break;
-        }
-        return result;
-    }
-
-    static void queryBalance() {
-        //http://IP:PORT/msg/QueryBalance?account=a&pswd=p
-
-//        return body
-//        20130303180000,0
-//        1234567,1000
-//        1234531,2000
-//        0 提交成功
-//        101 无此用户
-//        102 密码错
-//        103 查询过快（10秒查询一次）
-//        
+    public static class SendMessageResult {
+        public String time;
+        public String code;
+        public String messageId;
     }
 
     public static SendMessageResult sendMessage(String phoneNumber, String validInfo) {
@@ -342,6 +170,180 @@ public class Users {
             result.code = timeCode[1];
         }
         return result;
+    }
+
+    public static class ActiveCard {
+        private String cardNo;
+        private String password;
+        private String phoneNumber;
+        private String validCode;
+
+        public String getCardNo() {
+            return cardNo;
+        }
+
+        public void setCardNo(String cardCode) {
+            this.cardNo = cardCode;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
+
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
+
+        public String getValidCode() {
+            return validCode;
+        }
+
+        public void setValidCode(String validCode) {
+            this.validCode = validCode;
+        }
+    }
+
+    @POST
+    @Path("{id}/cards")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response queryValidCode(@PathParam("id") Long id, ActiveCard ac) {
+        Response result = Response.status(412).build();
+        User user = JPAEntry.getObject(User.class, "id", id);
+        if (user != null) {
+            Map<String, Object> validationCodeConditions = new HashMap<>();
+            validationCodeConditions.put("phoneNumber", ac.getPassword());
+            validationCodeConditions.put("validCode", ac.getValidCode());
+            List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+            switch (validationCodes.size()) {
+                case 0:
+                    result = Response.status(401).build();
+                    break;
+                case 1:
+                    Date now = new Date();
+                    Date sendTime = validationCodes.get(0).getTimestamp();
+                    if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                        Map<String, Object> condition = new HashMap<>();
+                        condition.put("no", ac.getCardNo());
+                        condition.put("password", ac.getPassword());
+                        List<Card> cs = JPAEntry.getList(Card.class, condition);
+                        switch (cs.size()) {
+                            case 0:
+                                result = Response.status(404).build();
+                                break;
+                            case 1:
+                                user.setTelephone(ac.getPhoneNumber());
+                                JPAEntry.genericPut(user);
+                                Card c = cs.get(0);
+                                if (c.getActiveTime() != null) {
+                                    c.setActiveTime(now);
+                                    c.setAmount(588.0);
+                                    c.setUserId(id);
+                                    JPAEntry.genericPut(c);
+                                    result = Response.ok().build();
+                                } else {
+                                    result = Response.status(405).build();
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        result = Response.status(410).build();
+                    }
+                    break;
+                default:
+                    result = Response.status(520).build();
+                    break;
+            }
+            EntityManager em = JPAEntry.getEntityManager();
+            em.getTransaction().begin();
+            for (ValidationCode validationCode : validationCodes) {
+                em.remove(validationCode);
+            }
+            em.getTransaction().commit();
+        }
+        //Response result = Response.status(500).build();
+        return result;
+    }
+
+    @POST
+    @Path("pccards")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response querypcValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
+        Response result = Response.status(500).build();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("no", ac.getCardNo());
+        condition.put("password", ac.getPassword());
+        List<Card> cs = JPAEntry.getList(Card.class, condition);
+        switch (cs.size()) {
+            case 0:
+                result = Response.status(404).build();
+                break;
+            case 1:
+                Map<String, Object> ValidationCodecondition = new HashMap<>();
+                ValidationCodecondition.put("phoneNumber", ac.getPhoneNumber());
+                ValidationCodecondition.put("validCode", ac.getValidCode());
+                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
+                switch (validationCodes.size()) {
+                    case 0:
+                        result = Response.status(401).build();
+                        break;
+                    case 1:
+                        Date now = new Date();
+                        Date sendTime = validationCodes.get(0).getTimestamp();
+                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
+                            result = Response.status(410).build();
+                        } else {
+                           /* Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
+                            if (s == null) {
+                                result = Response.status(412).build();
+                            } else {*/
+                            Card c = cs.get(0);
+                            c.setActiveTime(now);
+                            c.setAmount(588.0);
+                               /* c.setUserId(s.getUserId());*/
+                            JPAEntry.genericPut(c);
+                            result = Response.ok().build();
+                            /*}*/
+                        }
+                        break;
+                    default:
+                        result = Response.status(520).build();
+                        break;
+                }
+                EntityManager em = JPAEntry.getEntityManager();
+                em.getTransaction().begin();
+                for (ValidationCode validationCode : validationCodes) {
+                    em.remove(validationCode);
+                }
+                em.getTransaction().commit();
+                break;
+        }
+        return result;
+    }
+
+    static void queryBalance() {
+        //http://IP:PORT/msg/QueryBalance?account=a&pswd=p
+
+//        return body
+//        20130303180000,0
+//        1234567,1000
+//        1234531,2000
+//        0 提交成功
+//        101 无此用户
+//        102 密码错
+//        103 查询过快（10秒查询一次）
+//        
     }
 
 //    @POST
@@ -582,12 +584,6 @@ public class Users {
             }
         }
         return result;
-    }
-
-    public static class SendMessageResult {
-        public String time;
-        public String code;
-        public String messageId;
     }
 
     public static class SmsState {
