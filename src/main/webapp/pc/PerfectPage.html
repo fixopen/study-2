@@ -108,5 +108,83 @@
     </table>
         <button class="save" onclick="ss()">提交</button>
 </div>
+<script>
+    let china = {
+        "beijing": {
+            "chaoyang": ["..", ".."],
+            "haidian": []
+        },
+        "shanghai": {
+            "xx": ["ss", "cx"]
+        },
+        //....
+    }
+    let state = [
+        {"index": 0, "text": ""},
+        {"index": 0, "text": ""},
+        {"index": 0, "text": ""}
+    ]
+
+    let state2 = {
+        "province": "",
+        "city": "",
+        "county": ""
+    }
+
+    let p = document.getElementById('pr')
+    let c = doc
+    let x = doc
+
+    let addr = doc
+
+    //<option value="...">...</option>
+
+    x.addEventListener('change', function(e) {
+        state2.county = e.target.value
+        addr.value = state2.province + state2.city + state2.county
+    })
+
+    c.addEventListener('change', function(e) {
+        state2.city = e.target.value
+
+        x.innerHTML = ''
+        for (let i = 0; i < china[state2.province][state2.city].length; ++i) {
+            let option = document.createElement('option')
+            option.setAttribute('value', china[state2.province][state2.city][i])
+            option.innerHTML = china[state2.province][state2.city][i]
+            x.appendChild(option)
+        }
+        x.selectedIndex = 0
+        state2.city = x.value
+
+        addr.value = state2.province + state2.city + state2.county
+    })
+
+    p.addEventListener('change', function(e) {
+        state2.province = e.target.value
+
+        c.innerHTML = ''
+        for (let cv in china[state2.province]) {
+            let option = document.createElement('option')
+            option.setAttribute('value', china[state2.province][cv])
+            option.innerHTML = china[state2.province][cv]
+            c.appendChild(option)
+        }
+        c.selectedIndex = 0
+        state2.city = c.value
+
+        x.innerHTML = ''
+        for (let i = 0; i < china[state2.province][state2.city].length; ++i) {
+            let option = document.createElement('option')
+            option.setAttribute('value', china[state2.province][state2.city][i])
+            option.innerHTML = china[state2.province][state2.city][i]
+            x.appendChild(option)
+        }
+        x.selectedIndex = 0
+        state2.county = x.value
+
+        addr.value = state2.province + state2.city + state2.county
+    })
+</script>
 </body>
 </html>
