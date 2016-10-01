@@ -1,0 +1,27 @@
+.title {
+    display: inline-block;
+    width: 5.625rem;
+    color: rgb(68, 68, 68);
+}
+
+.value {
+    color: rgb(68, 68, 68);
+}
+
+.validButton {
+    color: rgb(68, 68, 68);
+}
+
+.tips {
+    padding: 0 0.875rem;
+    box-sizing: border-box;
+    color: rgb(254, 101, 104);
+}
+
+.save {
+    border-radius: 5px;
+    background-color: rgb(254, 101, 104);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    width: 100%;
+}

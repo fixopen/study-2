@@ -1,0 +1,25 @@
+.common-font {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB W6", "Microsoft YaHei", 宋体, Tahoma, Arial, sans-serif;
+    font-size: 1.0625rem;
+}
+
+.common-line-height {
+    line-height: 3.6875rem;
+}
+
+.common-border-style {
+    border-style: none;
+}
+
+.common-margin-padding {
+    margin: 0;
+    padding: 0;
+}
+
+.common-outline-style {
+    outline-style: none;
+}
+
+.common-resize {
+    resize: none;
+}

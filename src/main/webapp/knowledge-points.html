@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>books</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <link rel="stylesheet" href="common.css"/>
+</head>
+<body>
+<h1 id="title"></h1>
+<ol id="knowledge-point-contents"></ol>
+<template id="title-template">
+    <span>${title}</span>
+</template>
+<template id="knowledge-point-template">
+    <li>
+        <a href="knowledge-point-contents.html?volumeId=${volumeId}&id=${id}&title=${title}">${name}</a>
+        <div>
+            阅读<span>${readCount}</span>
+            <span>${likeCount}</span>
+        </div>
+        <img src="separator.png" alt=""/>
+    </li>
+</template>
+<script>
+    $(function () {
+        proc({
+            templateId: 'title-template',
+            data: {title: g.getUrlParameter('volume')},
+            containerId: 'title'
+        })
+        var volumeId = g.getUrlParameter('volumeId');
+        $.ajax({
+            type: "get",
+            url: 'api/volumes/' + volumeId + '/knowledge-points',
+            dataType: 'json',
+            async: false,
+            success: function (knowledgePoints) {
+                alert(JSON.stringify(knowledgePoints))
+                proc({
+                    data: knowledgePoints,
+                    containerId: 'knowledge-point',
+                    templateId: 'knowledge-point-template'
+                });
+            }
+        })
+    })
+</script>
+</body>
+</html>

@@ -130,31 +130,21 @@
 //            }
 //        })
 
-        var timeoutId;
-        var timeoutCount = 60;
         var activeCode = function (e) {
             //alert('active code');
-            var proc = function () {
-                e.target.value = " (" + timeoutCount + ") 秒后\n重新发送";
-                --timeoutCount;
-                if (timeoutCount <= 0) {
-                    e.target.value = " 重新发送 ";
-                    clearInterval(timeoutId);
-                }
-            }
             var phoneNumber = document.getElementById('phoneNumber').value;
-
-            ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
-                {name: 'Accept', value: 'application/json'}
-            ], null, function (r) {
-                if (r.meta.code < 400) {
-                    var tips = document.getElementById("tips");
-                    tips.innerHTML = "发送成功，请注意查收";
-                } else {
-                    var tips = document.getElementById("tips");
-                    tips.innerHTML = "发送失败，请重新获取验证码";
-                }
-            })
+            if (phoneNumber != "") {
+                ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
+                    {name: 'Accept', value: 'application/json'}
+                ], null, function (r) {
+                    if (r.meta.code < 400) {
+                        var tips = document.getElementById("tips");
+                        tips.innerHTML = "发送成功，请注意查收";
+                    } else {
+                        var tips = document.getElementById("tips");
+                        tips.innerHTML = "发送失败，请重新获取验证码";
+                    }
+                })
 
 //            $.ajax({
 //                type: 'get',
@@ -169,7 +159,18 @@
 //                    tips.innerHTML = "发送失败，请重新获取验证码"
 //                }
 //            })
-            timeoutId = setInterval(proc, 1000);
+                var timeoutId;
+                var timeoutCount = 60;
+                var proc = function () {
+                    e.target.value = " (" + timeoutCount + ") 秒后\n重新发送";
+                    --timeoutCount;
+                    if (timeoutCount <= 0) {
+                        e.target.value = " 重新发送 ";
+                        clearInterval(timeoutId);
+                    }
+                }
+                timeoutId = setInterval(proc, 1000);
+            }
         }
 
         var save = function (e) {
