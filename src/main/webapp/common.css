@@ -23,3 +23,7 @@
 .common-resize {
     resize: none;
 }
+
+dialog {
+    display: none;
+}

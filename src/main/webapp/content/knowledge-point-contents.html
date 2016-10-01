@@ -8,7 +8,7 @@
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
-    <link rel="stylesheet" href="common.css"/>
+    <link rel="stylesheet" href="../common.css"/>
 </head>
 <body>
 <section id="title"></section>
@@ -24,7 +24,7 @@
 </section>
 <section id="interaction"></section>
 <section>
-    <span>写留言<img src="pen.jpg" alt="写留言"/></span>
+    <span>写留言<img src="write.png" alt="写留言"/></span>
     <textarea id="new-comment" style="display: none"></textarea>
     <section id="comments"></section>
 </section>
@@ -36,36 +36,39 @@
         <section>${content}</section>
         <address>${source}</address>
     </article>
-    <!-- ... -->
 </template>
 <template id="content-text-template">
     <p>${content}</p>
-    <!-- ... -->
 </template>
 <template id="content-image-template">
     <span>
-    <img src="${href}" alt="${description}"/>
-        </span>
-    <!-- ... -->
+        <img src="${href}" alt="${description}"/>
+    </span>
+</template>
+<template id="content-image-text-template">
+    <p>
+        <img src="${href}" alt="${description}"/>
+        ${content}
+    </p>
 </template>
 <template id="video-template">
     <span>
-    <video src="${href}">
-        <img src="${coverHref}" alt="${coverDescription}"/>
-    </video>
-        </span>
+        <a href="${href}"><img src="${storePath}"/></a>
+    </span>
 </template>
 <template id="problem-option-template">
-    <li>${option}</li>
+    <li>
+        <span>${title}</span>
+        <label>${name}</label>
+    </li>
 </template>
 <template id="problem-template">
     <div>
-        <dt><span>${type}</span>${title}</dt>
-        <dd>
-            <ol type="A" data-ext-point="options"></ol>
-        </dd>
+        <p><span>${type}</span>${title}</p>
+        <img src="${storePath}" alt=""/>
+        <ol type="A" data-ext-point="options"></ol>
+        <div data-ext-point="explain"></div>
     </div>
-    <!-- ... -->
 </template>
 <template id="interaction-template">
     <div>
@@ -82,8 +85,12 @@
         <section>${content}</section>
         <time>${time}</time>
     </article>
-    <!-- ... -->
 </template>
+<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>
+<dialog>您的卡片已过期，请重新购买！</dialog>
+<dialog>您的卡片只可观看***，<br>观看其他内容请购买相应卡片！</dialog>
+<dialog>还剩24雨点不够观看啦，请充值！</dialog>
+<dialog>雨点所剩不多，请尽快充值哦！</dialog>
 <script>
     $(function(e){
         //get knowledge point list of same volume

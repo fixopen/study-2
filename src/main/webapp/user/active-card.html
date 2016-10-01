@@ -8,7 +8,7 @@
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
-    <link rel="stylesheet" href="common.css"/>
+    <link rel="stylesheet" href="../common.css"/>
     <link rel="stylesheet" href="active-card.css"/>
     <script>
         var getUrlParameter = function (name) {
@@ -142,7 +142,7 @@
             {name: 'Accept', value: 'application/json'}
         ], data, function (r) {
             if (r.meta.code < 400) {
-                location.href = 'Gold.html';
+                location.href = '../Gold.html';
             } else {
                 //alert('save error');
                 var tips = document.getElementById("tips");
@@ -170,7 +170,7 @@
                         tips.innerHTML = "验证码超时";
                         break;
                     case 200:
-                        window.location.href = 'Gold.html';
+                        window.location.href = '../Gold.html';
                         break;
                 }
             }
