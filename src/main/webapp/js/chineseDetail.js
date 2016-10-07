@@ -60,22 +60,27 @@ $(function () {
     // }, false)
 
 // message---------
-    let createComment=document.getElementById('createComment');
-    createComment .addEventListener('click', writeMessage, false);
+    let createComment = document.getElementById('createComment');
+    createComment.addEventListener('click', writeMessage, false);
     function writeMessage() {
         $('#commentWriter').toggle();
-        let btn=document.getElementById('btn');
+        let btn = document.getElementById('btn');
         btn.addEventListener('click', submit, false);
         function submit(e) {
-            let textarea=document.getElementById('textarea');
-            let value=textarea.value;
-            textarea.value='';
+            let textarea = document.getElementById('textarea');
+            let value = textarea.value;
+            textarea.value = '';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
             $.ajax({
                 type: "post",
                 url: "/api/comments",
-                data: JSON.stringify({userId:1,objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: value}),
+                data: JSON.stringify({
+                    userId: 1,
+                    objectType: 'knowledge-point',
+                    objectId: g.getUrlParameter("id"),
+                    content: value
+                }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -100,7 +105,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                   alert(JSON.stringify(data))
+                    alert(JSON.stringify(data))
                     for (let i = 0; i < data.problems.length; ++i) {
                         let p = data.problems[i]
                         p.options[0].title = 'A'

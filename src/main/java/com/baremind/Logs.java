@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,34 @@ public class Logs {
             result = Response.ok(log).build();
         }
         return result;
+    }
+
+    public static Log insertLog(String sessionId, String objectType, Long objectId, String action) {
+        Log log = new Log();
+        log.setId(IdGenerator.getNewId());
+        log.setUserId(JPAEntry.getLoginId(sessionId));
+        log.setCreateTime(new Date());
+        log.setObjectType(objectType);
+        log.setObjectId(objectId);
+        log.setAction(action);
+        JPAEntry.genericPost(log);
+        return log;
+    }
+
+    public static Long deleteLike(String sessionId, String objectType, Long objectId) {
+        Map<String, Object> filter = new HashMap<>();
+        filter.put("userId", JPAEntry.getLoginId(sessionId));
+        filter.put("objectType", objectType);
+        filter.put("objectId", objectId);
+        filter.put("action", "like");
+        List<Log> logs = JPAEntry.getList(Log.class, filter);
+        EntityManager em = JPAEntry.getEntityManager();
+        em.getTransaction().begin();
+        for (Log log : logs) {
+            em.remove(log);
+        }
+        em.getTransaction().commit();
+        return (long)logs.size();
     }
 
     @GET

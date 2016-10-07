@@ -60,28 +60,40 @@ public class JPAEntry {
     }
 
     public static <T> List<T> getList(Class<T> type, Map<String, Object> conditions, Map<String, String> orders) {
-        String jpql = "SELECT o FROM " + type.getSimpleName() + " o WHERE 1 = 1";
+        String jpql = "SELECT o FROM " + type.getSimpleName() + " o";
+        boolean isFirst = true;
         if (conditions != null) {
             for (Map.Entry<String, Object> item : conditions.entrySet()) {
-                jpql += " AND o." + item.getKey() + " = :" + item.getKey();
+                if (isFirst) {
+                    jpql += " WHERE ";
+                    isFirst = false;
+                } else {
+                    jpql += " AND ";
+                }
+                jpql += "o." + item.getKey() + " = :" + item.getKey();
             }
         }
         if (orders != null) {
-            jpql += " ORDER BY ";
+            isFirst = true;
             for (Map.Entry<String, String> order : orders.entrySet()) {
-                jpql += "o." + order.getKey() + " " + order.getValue() + ", ";
+                if (isFirst) {
+                    jpql += " ORDER BY ";
+                    isFirst = false;
+                } else {
+                    jpql += ", ";
+                }
+                jpql += "o." + order.getKey() + " " + order.getValue();
             }
-            jpql = jpql.substring(0, jpql.length() - 2);
         }
         EntityManager em = getEntityManager();
-        TypedQuery<T> q = em.createQuery(jpql, type);
+        final TypedQuery<T> q = em.createQuery(jpql, type);
         if (conditions != null) {
-            //conditions.forEach((key, value) -> {
-            //    q.setParameter(key, value);
-            //});
-            for (Map.Entry<String, Object> item : conditions.entrySet()) {
-                q.setParameter(item.getKey(), item.getValue());
-            }
+            conditions.forEach((key, value) -> {
+                q.setParameter(key, value);
+            });
+            //for (Map.Entry<String, Object> item : conditions.entrySet()) {
+            //    q.setParameter(item.getKey(), item.getValue());
+            //}
         }
         return q.getResultList();
     }
