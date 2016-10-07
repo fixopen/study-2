@@ -43,7 +43,7 @@ function commentLike(el) {
         Id:g.getUrlParameter("id"),
         action:'like'
     }
-   
+
     $.ajax({
         type: "post",
         url: "/api/logs",
