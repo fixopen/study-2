@@ -303,23 +303,23 @@ public class Users {
                             result = Response.status(404).build();
                             break;
                         case 1:
-                            User user = JPAEntry.getObject(User.class, "name", ac.getPhoneNumber());
-                            if (user == null) {
-                                user = new User();
-                                user.setId(IdGenerator.getNewId());
-                                user.setTelephone(ac.getPhoneNumber());
-                                JPAEntry.genericPost(user);
-                            } else {
-                                user.setTelephone(ac.getPhoneNumber());
-                                JPAEntry.genericPut(user);
-                            }
                             Card c = cs.get(0);
                             if (c.getActiveTime() == null) {
                                 c.setActiveTime(now);
                                 c.setAmount(588.0);
-                                c.setUserId(user.getId());
-                                JPAEntry.genericPut(c);
-                                result = Response.ok().build();
+                                User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
+                                if (user == null) {
+                                    user = new User();
+                                    user.setId(IdGenerator.getNewId());
+                                    user.setTelephone(ac.getPhoneNumber());
+                                    user.setLoginName(ac.getPhoneNumber());
+                                    JPAEntry.genericPost(user);
+                                    c.setUserId(user.getId());
+                                    JPAEntry.genericPut(c);
+                                    result = Response.ok().build();
+                                } else {
+                                    Response.status(412).build();
+                                }
                             } else {
                                 result = Response.status(405).build();
                             }
