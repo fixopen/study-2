@@ -221,7 +221,7 @@ public class Users {
         User user = JPAEntry.getObject(User.class, "id", id);
         if (user != null) {
             Map<String, Object> validationCodeConditions = new HashMap<>();
-            validationCodeConditions.put("phoneNumber", ac.getPassword());
+            validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
             validationCodeConditions.put("validCode", ac.getValidCode());
             List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
             switch (validationCodes.size()) {
