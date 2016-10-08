@@ -12,6 +12,7 @@
 	<!-- 引入js -->
 	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
+	<script src="../util.js"></script>
 	<!--<script src="../jquery/jquery.min.js"></script>-->
 </head>
 <body>
@@ -89,10 +90,10 @@
 		saveButton.addEventListener('click', function (e) {
 
 			let data = {
-				cardCode: document.getElementById('cardCode').value,
+				cardNo: document.getElementById('cardCode').value,
 				password: document.getElementById('password').value,
-				phonecode: document.getElementById('phonecode').value,
-				validationCode: document.getElementById('validationCode').value
+				phoneNumber: document.getElementById('phonecode').value,
+				validCode: document.getElementById('validationCode').value
 			}
 			$.ajax({
 				type: "POST",
@@ -102,7 +103,9 @@
 				contentType: "application/json; charset=utf-8",
 				success: function (save) {
 					if (save.status < 400) {
-						window.location.href = '激活成功.html?phonecode='+document.getElementById('phonecode').value
+						g.setCookie("phonecode",document.getElementById('phonecode').value)
+						window.location.href = '激活成功.html'
+
 					}
 					else {
 						switch (save.status) {
@@ -129,14 +132,16 @@
 								document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
 								break;
 							case 200:
-								window.location.href = '激活成功.html?phonecode='+document.getElementById('phonecode').value;
+								g.setCookie("phonecode",document.getElementById('phonecode').value)
+								window.location.href = '激活成功.html'
 								break;
 						}
 					}
 				},
 				error:function (save) {
 					if (save.status < 400) {
-						window.location.href = '激活成功.html?phonecode='+document.getElementById('phonecode').value
+						g.setCookie("phonecode",document.getElementById('phonecode').value)
+						window.location.href = '激活成功.html'
 					}
 					else {
 						switch (save.status) {
@@ -162,7 +167,9 @@
 								document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
 								break;
 							case 200:
-								window.location.href = '激活成功.html?phonecode='+document.getElementById('phonecode').value;
+								g.setCookie("phonecode",document.getElementById('phonecode').value)
+								window.location.href = '激活成功.html'
+
 								break;
 						}
 					}
