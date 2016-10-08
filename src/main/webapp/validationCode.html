@@ -131,18 +131,17 @@
 //        })
 
         var activeCode = function (e) {
-            //alert('active code');
-            var phoneNumber = document.getElementById('phoneNumber').value;
+            //alert('active code')
+            var phoneNumber = document.getElementById('phoneNumber').value
             if (phoneNumber != "") {
                 ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
                     {name: 'Accept', value: 'application/json'}
                 ], null, function (r) {
+                    var tips = document.getElementById("tips")
                     if (r.meta.code < 400) {
-                        var tips = document.getElementById("tips");
-                        tips.innerHTML = "发送成功，请注意查收";
+                        tips.innerHTML = '发送成功，请注意查收'
                     } else {
-                        var tips = document.getElementById("tips");
-                        tips.innerHTML = "发送失败，请重新获取验证码";
+                        tips.innerHTML = '发送失败，请重新获取验证码'
                     }
                 })
 
@@ -151,25 +150,27 @@
 //                url: 'api/users/telephones/' + phoneNumber + '/code',
 //                dataType: 'json',
 //                success: function (data) {
-//                    var tips = document.getElementById("tips")
-//                    tips.innerHTML = "发送成功，请注意查收"
+//                    var tips = document.getElementById('tips')
+//                    tips.innerHTML = '发送成功，请注意查收'
 //                },
 //                error: function (r) {
-//                    var tips = document.getElementById("tips")
-//                    tips.innerHTML = "发送失败，请重新获取验证码"
+//                    var tips = document.getElementById('tips')
+//                    tips.innerHTML = '发送失败，请重新获取验证码'
 //                }
 //            })
                 var timeoutId;
                 var timeoutCount = 60;
                 var proc = function () {
-                    e.target.value = " (" + timeoutCount + ") 秒后\n重新发送";
+                    e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
                     --timeoutCount;
                     if (timeoutCount <= 0) {
-                        e.target.value = " 重新发送 ";
+                        e.target.value = ' 重新发送 ';
                         clearInterval(timeoutId);
                     }
                 }
                 timeoutId = setInterval(proc, 1000);
+            } else {
+                alert('You must fill the phone number field for receiver sms')
             }
         }
 

@@ -64,7 +64,7 @@ public class ClassRooms {
         Response result = null;
         try {
             //result = Response.temporaryRedirect(new URI("/client/direct-play.html")).cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
-            result = Response.seeOther(new URI("/client/direct-play.html")).cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
+            result = Response.seeOther(new URI("/content/direct-play.html?self=" + user.getName())).cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -108,6 +108,7 @@ public class ClassRooms {
             orders.put("createTime", "ASC");
             List<Comment> comments = JPAEntry.getList(Comment.class, filterObject, orders);
             if (!comments.isEmpty()) {
+                //SELECT name FROM users WHERE id IN (SELECT DISTINCT user_id FROM comments)
                 result = Response.ok(new Gson().toJson(comments)).build();
             }
         }

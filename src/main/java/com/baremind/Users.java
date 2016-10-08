@@ -216,38 +216,6 @@ public class Users {
     @Path("{id}/cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-/*<<<<<<< HEAD
-    public Response queryValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-        Response result = Response.status(500).build();
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("no", ac.cardCode);
-        condition.put("password", ac.password);
-        List<Card> cs = JPAEntry.getList(Card.class, condition);
-
-        switch (cs.size()) {
-            case 0:
-                result = Response.status(404).build();
-                break;
-            case 1:
-                Map<String, Object> ValidationCodecondition = new HashMap<>();
-                ValidationCodecondition.put("phoneNumber", ac.phonecode);
-                ValidationCodecondition.put("validCode", ac.validationCode);
-                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
-                switch (validationCodes.size()) {
-                    case 0:
-                        result = Response.status(401).build();
-                        break;
-                    case 1:
-                        Date now = new Date();
-                        Date sendTime = validationCodes.get(0).getTimestamp();
-                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
-                            result = Response.status(410).build();
-                        } else {
-                            Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
-                            if (s == null) {
-                                result = Response.status(412).build();
-                            } else {
-=======*/
     public Response queryValidCode(@PathParam("id") Long id, ActiveCard ac) {
         Response result = Response.status(412).build();
         User user = JPAEntry.getObject(User.class, "id", id);
@@ -275,7 +243,6 @@ public class Users {
                             case 1:
                                 user.setTelephone(ac.getPhoneNumber());
                                 JPAEntry.genericPut(user);
-/*>>>>>>> origin/master*/
                                 Card c = cs.get(0);
                                 if (c.getActiveTime() == null) {
                                     c.setActiveTime(now);
@@ -310,10 +277,79 @@ public class Users {
     }
 
     @POST
+    @Path("cards")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response validCode(ActiveCard ac) {
+        Response result = Response.status(412).build();
+        Map<String, Object> validationCodeConditions = new HashMap<>();
+        validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
+        validationCodeConditions.put("validCode", ac.getValidCode());
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+        switch (validationCodes.size()) {
+            case 0:
+                result = Response.status(401).build();
+                break;
+            case 1:
+                Date now = new Date();
+                Date sendTime = validationCodes.get(0).getTimestamp();
+                if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                    Map<String, Object> condition = new HashMap<>();
+                    condition.put("no", ac.getCardNo());
+                    condition.put("password", ac.getPassword());
+                    List<Card> cs = JPAEntry.getList(Card.class, condition);
+                    switch (cs.size()) {
+                        case 0:
+                            result = Response.status(404).build();
+                            break;
+                        case 1:
+                            User user = JPAEntry.getObject(User.class, "name", ac.getPhoneNumber());
+                            if (user == null) {
+                                user = new User();
+                                user.setId(IdGenerator.getNewId());
+                                user.setTelephone(ac.getPhoneNumber());
+                                JPAEntry.genericPost(user);
+                            } else {
+                                user.setTelephone(ac.getPhoneNumber());
+                                JPAEntry.genericPut(user);
+                            }
+                            Card c = cs.get(0);
+                            if (c.getActiveTime() == null) {
+                                c.setActiveTime(now);
+                                c.setAmount(588.0);
+                                c.setUserId(user.getId());
+                                JPAEntry.genericPut(c);
+                                result = Response.ok().build();
+                            } else {
+                                result = Response.status(405).build();
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    result = Response.status(410).build();
+                }
+                break;
+            default:
+                result = Response.status(520).build();
+                break;
+        }
+        EntityManager em = JPAEntry.getEntityManager();
+        em.getTransaction().begin();
+        for (ValidationCode validationCode : validationCodes) {
+            em.remove(validationCode);
+        }
+        em.getTransaction().commit();
+        //Response result = Response.status(500).build();
+        return result;
+    }
+
+    @POST
     @Path("pccards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response querypcValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
+    public Response querypcValidCode(ActiveCard ac) {
         Response result = Response.status(500).build();
         Map<String, Object> condition = new HashMap<>();
         condition.put("no", ac.getCardNo());
