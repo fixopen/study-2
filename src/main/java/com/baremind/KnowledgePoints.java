@@ -50,6 +50,32 @@ public class KnowledgePoints {
         return result;
     }
 
+    @PUT
+    @Path("{id}/like")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Log log = Logs.insertLog(sessionId, "knowledge-point", id, "like");
+            result = Response.ok(new Gson().toJson(log)).build();
+        }
+        return result;
+    }
+
+    @PUT
+    @Path("{id}/unlike")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Long count = Logs.deleteLike(sessionId, "knowledge-point", id);
+            result = Response.ok("{\"count\":" + count.toString() + "}").build();
+        }
+        return result;
+    }
+
     @GET
     @Path("{id}/like-count")
     @Produces(MediaType.APPLICATION_JSON)
