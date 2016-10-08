@@ -216,12 +216,44 @@ public class Users {
     @Path("{id}/cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+/*<<<<<<< HEAD
+    public Response queryValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
+        Response result = Response.status(500).build();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("no", ac.cardCode);
+        condition.put("password", ac.password);
+        List<Card> cs = JPAEntry.getList(Card.class, condition);
+
+        switch (cs.size()) {
+            case 0:
+                result = Response.status(404).build();
+                break;
+            case 1:
+                Map<String, Object> ValidationCodecondition = new HashMap<>();
+                ValidationCodecondition.put("phoneNumber", ac.phonecode);
+                ValidationCodecondition.put("validCode", ac.validationCode);
+                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
+                switch (validationCodes.size()) {
+                    case 0:
+                        result = Response.status(401).build();
+                        break;
+                    case 1:
+                        Date now = new Date();
+                        Date sendTime = validationCodes.get(0).getTimestamp();
+                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
+                            result = Response.status(410).build();
+                        } else {
+                            Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
+                            if (s == null) {
+                                result = Response.status(412).build();
+                            } else {
+=======*/
     public Response queryValidCode(@PathParam("id") Long id, ActiveCard ac) {
         Response result = Response.status(412).build();
         User user = JPAEntry.getObject(User.class, "id", id);
         if (user != null) {
             Map<String, Object> validationCodeConditions = new HashMap<>();
-            validationCodeConditions.put("phoneNumber", ac.getPassword());
+            validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
             validationCodeConditions.put("validCode", ac.getValidCode());
             List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
             switch (validationCodes.size()) {
@@ -243,8 +275,9 @@ public class Users {
                             case 1:
                                 user.setTelephone(ac.getPhoneNumber());
                                 JPAEntry.genericPut(user);
+/*>>>>>>> origin/master*/
                                 Card c = cs.get(0);
-                                if (c.getActiveTime() != null) {
+                                if (c.getActiveTime() == null) {
                                     c.setActiveTime(now);
                                     c.setAmount(588.0);
                                     c.setUserId(id);
@@ -286,6 +319,7 @@ public class Users {
         condition.put("no", ac.getCardNo());
         condition.put("password", ac.getPassword());
         List<Card> cs = JPAEntry.getList(Card.class, condition);
+
         switch (cs.size()) {
             case 0:
                 result = Response.status(404).build();
@@ -338,10 +372,6 @@ public class Users {
 
 //        return body
 //        20130303180000,0
-//        1234567,1000
-//        1234531,2000
-//        0 提交成功
-//        101 无此用户
 //        102 密码错
 //        103 查询过快（10秒查询一次）
 //        
@@ -467,7 +497,10 @@ public class Users {
         if (JPAEntry.isLogining(sessionId)) {
             user.setId(IdGenerator.getNewId());
             WechatUser wechatUser = new WechatUser();
+            Date now = new Date();
             wechatUser.setUserId(user.getId());
+            user.setCreateTime(now);
+            user.setUpdateTime(now);
            /* wechatUser.setRefId();*/
             JPAEntry.genericPost(user);
             result = Response.ok(user).build();
@@ -533,10 +566,6 @@ public class Users {
                 if (classname != null) {
                     existuser.setClassname(classname);
                 }
-                Date createTime = user.getCreateTime();
-                if (createTime != null) {
-                    existuser.setCreateTime(createTime);
-                }
                 String description = user.getDescription();
                 if (description != null) {
                     existuser.setDescription(description);
@@ -589,10 +618,8 @@ public class Users {
                 if (timezone != null) {
                     existuser.setTimezone(timezone);
                 }
-                Date updateTime = user.getUpdateTime();
-                if (updateTime != null) {
-                    existuser.setUpdateTime(updateTime);
-                }
+                Date now = new Date();
+                existuser.setUpdateTime(now);
                 String site = user.getSite();
                 if (site != null) {
                     existuser.getSite();

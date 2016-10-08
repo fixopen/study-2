@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
 import java.util.function.Predicate;
-
+import java.text.SimpleDateFormat;
 @Path("knowledge-points")
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
@@ -315,7 +315,8 @@ public class KnowledgePoints {
                     kpm.put("id", kp.getId());
                     kpm.put("content", kp.getContent());
                     kpm.put("clientId", kp.getClientId());
-                    kpm.put("createTime", kp.getCreateTime());
+                    SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    kpm.put("createTime", time.format(kp.getCreateTime()));
                     kpm.put("objectId", kp.getObjectId());
                     kpm.put("objectType", kp.getObjectType());
                     kpm.put("updateTime", kp.getUpdateTime());
