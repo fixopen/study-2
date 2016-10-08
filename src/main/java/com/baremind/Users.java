@@ -355,8 +355,7 @@ public class Users {
         condition.put("no", ac.getCardNo());
         condition.put("password", ac.getPassword());
         List<Card> cs = JPAEntry.getList(Card.class, condition);
-        System.out.printf(new Gson().toJson(cs));
-        /*if(new Gson().toJson(cs))*/
+
         switch (cs.size()) {
             case 0:
                 result = Response.status(404).build();
@@ -409,10 +408,6 @@ public class Users {
 
 //        return body
 //        20130303180000,0
-//        1234567,1000
-//        1234531,2000
-//        0 提交成功
-//        101 无此用户
 //        102 密码错
 //        103 查询过快（10秒查询一次）
 //        
