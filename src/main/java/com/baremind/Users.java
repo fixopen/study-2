@@ -244,7 +244,7 @@ public class Users {
                                 user.setTelephone(ac.getPhoneNumber());
                                 JPAEntry.genericPut(user);
                                 Card c = cs.get(0);
-                                if (c.getActiveTime() != null) {
+                                if (c.getActiveTime() == null) {
                                     c.setActiveTime(now);
                                     c.setAmount(588.0);
                                     c.setUserId(id);
