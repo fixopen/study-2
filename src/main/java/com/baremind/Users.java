@@ -164,6 +164,7 @@ public class Users {
         condition.put("no", ac.cardCode);
         condition.put("password", ac.password);
         List<Card> cs = JPAEntry.getList(Card.class, condition);
+
         switch (cs.size()) {
             case 0:
                 result = Response.status(404).build();
@@ -221,6 +222,8 @@ public class Users {
         condition.put("no", ac.cardCode);
         condition.put("password", ac.password);
         List<Card> cs = JPAEntry.getList(Card.class, condition);
+        System.out.printf(new Gson().toJson(cs));
+        /*if(new Gson().toJson(cs))*/
         switch (cs.size()) {
             case 0:
                 result = Response.status(404).build();
@@ -461,7 +464,10 @@ public class Users {
         if (JPAEntry.isLogining(sessionId)) {
             user.setId(IdGenerator.getNewId());
             WechatUser wechatUser = new WechatUser();
+            Date now = new Date();
             wechatUser.setUserId(user.getId());
+            user.setCreateTime(now);
+            user.setUpdateTime(now);
            /* wechatUser.setRefId();*/
             JPAEntry.genericPost(user);
             result = Response.ok(user).build();
@@ -527,10 +533,6 @@ public class Users {
                 if (classname != null) {
                     existuser.setClassname(classname);
                 }
-                Date createTime = user.getCreateTime();
-                if (createTime != null) {
-                    existuser.setCreateTime(createTime);
-                }
                 String description = user.getDescription();
                 if (description != null) {
                     existuser.setDescription(description);
@@ -583,10 +585,8 @@ public class Users {
                 if (timezone != null) {
                     existuser.setTimezone(timezone);
                 }
-                Date updateTime = user.getUpdateTime();
-                if (updateTime != null) {
-                    existuser.setUpdateTime(updateTime);
-                }
+                Date now = new Date();
+                existuser.setUpdateTime(now);
                 String site = user.getSite();
                 if (site != null) {
                     existuser.getSite();
