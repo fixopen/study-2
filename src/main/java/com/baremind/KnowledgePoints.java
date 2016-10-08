@@ -7,13 +7,16 @@ import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.*;
-import java.util.function.Predicate;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 @Path("knowledge-points")
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
@@ -50,15 +53,18 @@ public class KnowledgePoints {
         return result;
     }
 
-    private <T> List<T> getList(EntityManager em, String tableName, List<String> ids, Class<T> type) {
-        return getListByColumn(em, tableName, "id", ids, type);
+    private <T> List<T> getList(EntityManager em, List<String> ids, Class<T> type) {
+        return getListByColumn(em, "id", ids, type);
     }
 
-    private <T> List<T> getListByColumn(EntityManager em, String tableName, String columnName, List<String> ids, Class<T> type) {
+    private <T> List<T> getListByColumn(EntityManager em, String columnName, List<String> ids, Class<T> type) {
         List<T> result = null;
         if (!ids.isEmpty()) {
-            String query = "SELECT * FROM " + tableName + " WHERE " + columnName + " IN ( " + join(ids) + " )";
-            Query pq = em.createNativeQuery(query, type);
+            //String query = "SELECT * FROM " + tableName + " WHERE " + columnName + " IN ( " + join(ids) + " )";
+            //Query pq = em.createNativeQuery(query, type);
+            //result = pq.getResultList();
+            String query = "SELECT o FROM " + type.getSimpleName() + " o WHERE o." + columnName + " IN ( " + join(ids) + " )";
+            TypedQuery<T> pq = em.createQuery(query, type);
             result = pq.getResultList();
         }
         return result;
@@ -177,19 +183,19 @@ public class KnowledgePoints {
 
                 EntityManager em = JPAEntry.getEntityManager();
 
-                List<Text> textObjects = getList(em, "texts", textIds, Text.class);
+                List<Text> textObjects = getList(em, textIds, Text.class);
 
-                List<Image> imageObjects = getList(em, "images", imageIds, Image.class);
+                List<Image> imageObjects = getList(em, imageIds, Image.class);
 
-                List<Video> videoObjects = getList(em, "videos", videoIds, Video.class);
+                List<Video> videoObjects = getList(em, videoIds, Video.class);
 
-                List<Problem> problemObjects = getList(em, "problems", problemIds, Problem.class);
-                List<ProblemOption> problemOptionObjects = getListByColumn(em, "problem_options", "problem_id", problemIds, ProblemOption.class);
-                List<ProblemStandardAnswer> problemStandardAnswerObjects = getListByColumn(em, "problem_standard_answers", "problem_id", problemIds, ProblemStandardAnswer.class);
+                List<Problem> problemObjects = getList(em, problemIds, Problem.class);
+                List<ProblemOption> problemOptionObjects = getListByColumn(em, "problemId", problemIds, ProblemOption.class);
+                List<ProblemStandardAnswer> problemStandardAnswerObjects = getListByColumn(em, "problemId", problemIds, ProblemStandardAnswer.class);
 
-                List<ImageText> imageTextObject = getList(em, "image_texts", imageTextIds, ImageText.class);
+                List<ImageText> imageTextObject = getList(em, imageTextIds, ImageText.class);
 
-                List<Quote> quoteObject = getList(em, "quotes", quoteIds, Quote.class);
+                List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
 
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
