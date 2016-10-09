@@ -8,8 +8,7 @@
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait">
-    <!--
-    -->
+
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/index.css">
@@ -176,12 +175,12 @@
 //                    tips.innerHTML = '发送失败，请重新获取验证码'
 //                }
 //            })
-                e.target.disabled = true
                 var timeoutId;
                 var timeoutCount = 180;
                 var proc = function () {
                     e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
                     --timeoutCount;
+                    e.target.disabled = true
                     if (timeoutCount <= 0) {
                         e.target.value = ' 重新发送 ';
                         clearInterval(timeoutId);
@@ -195,18 +194,12 @@
         }
 
         var save = function (e) {
-            //alert('save');
-
-//            if(document.getElementById('cardCode').value == null || document.getElementById('cardCode').value == undefined || document.getElementById('cardCode').value == ""){
-//                alert("输入框不能为空")
-//            }
-            if (document.getElementById('cardCode').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validationCode').value == "") {
+            if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
                 alert("输入框不能为空")
             } else {
-                let code = document.getElementById('cardNo').value
-                let cardNo = code.replace(/\s/ig, '');
-
                 var data = {};
+                var code = document.getElementById('cardNo').value
+                var cardNo = code.replace(/\s/ig, '');
                 data.cardNo = cardNo;
                 data.password = document.getElementById('password').value;
                 data.phoneNumber = document.getElementById('phoneNumber').value;
@@ -292,7 +285,6 @@
 //                }
 //            })
         }
-
     </script>
 </head>
 <body>
