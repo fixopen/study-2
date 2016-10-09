@@ -1,10 +1,9 @@
 package com.baremind.utils;
 
-import com.baremind.data.Log;
+import com.baremind.Logs;
 import com.baremind.data.Session;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,13 +144,14 @@ public class JPAEntry {
     }
 
     public static void log(Long userId, String action, String objectType, Long objectId) {
-        Log log = new Log();
-        log.setId(IdGenerator.getNewId());
-        log.setUserId(userId);
-        log.setAction(action);
-        log.setObjectType(objectType);
-        log.setObjectId(objectId);
-        log.setCreateTime(new Date());
-        genericPost(log);
+        Logs.insert(userId, objectType, objectId, action);
+//        Log log = new Log();
+//        log.setId(IdGenerator.getNewId());
+//        log.setUserId(userId);
+//        log.setAction(action);
+//        log.setObjectType(objectType);
+//        log.setObjectId(objectId);
+//        log.setCreateTime(new Date());
+//        genericPost(log);
     }
 }

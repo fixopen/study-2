@@ -36,14 +36,16 @@
 							<td>卡号：</td>
 							<td>
 								<input type="text" placeholder="请填写卡号" id="cardCode" class="card-input fill-error" required pattern="\d+"><br>
-								<!--<i class="error">卡号错误，请重新输入</i>-->
+								<i class="error"></i>
+								<!--卡号错误，请重新输入-->
 							</td>
 						</tr>
 						<tr>
 							<td>密码：</td>
 							<td>
 								<input type="password" placeholder="请输入密码" id="password" class="card-input" required="required"><br>
-								<!--<i class="error">密码错误，请重新输入</i>-->
+								<i class="error"></i>
+								<!--密码错误，请重新输入-->
 							</td>
 						</tr>
 						<tr>
@@ -51,22 +53,25 @@
 							<td>
 								<input type="text" placeholder="请输入11位手机号，该手机号将成为您的账号" id="phonecode" class="mobile-input" required pattern="\d{11}">
 								<input type="button" class="send-btn" value="发送验证码" id="phone_btn">
-								<!-- <a href="javascript:;" class="send-agin">59S重新发送</a><br> -->
-								<!--<i class="error">手机号格式错误，请重新输入</i>-->
+								<!--<a href="javascript:;" class="send-agin"></a><br>-->
+								<!-- 59S重新发送 -->
+								<i class="error"></i>
+								<!--手机号格式错误，请重新输入-->
 							</td>
 						</tr>
 						<tr>
 							<td>验证码：</td>
 							<td>
 								<input type="text" placeholder="请输入验证码" id="validationCode" class="card-input" required pattern="\d{6}"><br>
-								<!--<i class="error">验证码错误请重新输入</i>-->
+								<i class="error"></i>
+								<!--验证码错误请重新输入-->
 							</td>
 						</tr>
 					</table>
 					<div id="error" style="" colour="red"></div>
 					<div class="activate-btn">
-						<!--<a href="激活成功.html" class="activate-now">立即激活</a><br>
-						<a href="D登录.html" class="activate-login">已激活去登录</a>-->
+						<!--<a href="激活成功.html" class="activate-now">立即激活</a><br>-->
+						<a href="D登录.html" class="activate-login">已激活去登录</a>
 						<div id="save" class="activate-now">立即激活</div>
 					</div>
 				</div>
@@ -191,7 +196,8 @@
 						--printnr
 						if (printnr <= 0) {
 							e.target.value = " 重新发送 "
-							clearInterval(timeoutId)
+							//clearInterval(timeoutId)
+							//proc()
 						}
 					}
 					var phonecode = document.getElementById('phonecode').value

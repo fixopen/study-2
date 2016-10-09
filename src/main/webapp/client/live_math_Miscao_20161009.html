@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>小雨知时</title>
+    <meta charset="utf-8">
+    <meta name="description" content="小雨知时">
+    <meta name="author" content="Agora.io">
+    <link rel="stylesheet" href="css/bundle.css?v=1.0">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>、
+
+    <![endif]-->
+</head>
+<body>
+<!--<img src="startup.jpg" id="imgid" style="width: 100%"> style="display: none; /*visibility: hidden*/"-->
+<div id="warp">
+    <video webkit-playsinline id="video" controls style="width: 1024px; margin-left: 11px;">
+        <!--
+        <source src="http://agorapull.8686c.com/live/11672-xiaoyu/playlist.m3u8" type="application/x-mpegURL">
+        -->
+        <source src="http://vid-11672.hls.chinanetcenter.broadcastapp.agoraio.cn/live/xiaoyu/playlist.m3u8"
+                type="application/x-mpegURL">
+    </video>
+    <div id="wbGuest">
+        <iframe style="width: 1024px; height: 768px;"
+                src="https://wb.agora.io/html/agora-wb.html?key=7070b797554944639c150ac925397253&amp;cname=xiaoyu&amp;role=guest&amp;width=1024&amp;height=768"></iframe>
+    </div>
+    <div style="width: 1024px">
+        <address id="font" style="text-align: center">小雨直播,版权所有</address>
+        <address style="text-align: center">
+            温馨提示：关注小雨知时公众号通知，及时了解课程安排，请提前准备好配套书籍，按时听课。
+        </address>
+    </div>
+</div>
+<!--
+<div id="videoContainer"></div>
+<script src="js/vendor-bundle.js"></script>
+<script src="js/AgoraRTCSDK-1.2.5.js"></script>
+<script src="js/AgoraWBSDK-1.0.0.js"></script>
+<script src="js/script-guest.js"></script>
+-->
+
+
+<!--<script type="application/ecmascript">
+    //window.addEventListener('load', function (e) {
+        let doc = document
+        let image = doc.getElementById('imgid')
+        image.addEventListener('click', function(e){
+            e.target.style.display = 'none'
+            doc.getElementById('warp').style.display = 'block'
+        }, false)
+    //}, false)
+</script>-->
+</body>
+</html>

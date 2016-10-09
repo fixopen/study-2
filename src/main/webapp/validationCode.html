@@ -56,6 +56,24 @@
     <script type="text/javascript" src="util.js"></script>
     -->
     <script>
+        function test() {
+            var len = document.getElementById('cardNo').value.length;
+            var reg = /\s+/g;
+            var card_ = "";
+            var card = document.getElementById('cardNo').value;
+            //去除空格
+            card = card.replace(reg, "");
+            for (var i = 0; i < len; i++) {
+                if (i == 3 || i == 7 || i == 11 || i == 15) {
+                    card_ = card_ + card.charAt(i) + " ";
+                }
+                else {
+                    card_ = card_ + card.charAt(i);
+                }
+            }
+            document.getElementById("cardNo").value = card_;
+        }
+
         var getUrlParameter = function (name) {
             var result = null;
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
@@ -116,19 +134,19 @@
             }
         })
 
-//        $.ajax({
-//            type: 'get',
-//            url: 'api/wechat-users/' + openId + "/identities",
-//            dataType: 'json',
-//            success: function(ids) {
-//                userId = ids.data.userId;
-//                g.setCookie('sessionId', ids.sessionId);
-//            },
-//            error: function(r) {
-//                var tips = document.getElementById("tips");
-//                tips.innerHTML = "Initialize error，place refresh this page";
-//            }
-//        })
+        //        $.ajax({
+        //            type: 'get',
+        //            url: 'api/wechat-users/' + openId + "/identities",
+        //            dataType: 'json',
+        //            success: function(ids) {
+        //                userId = ids.data.userId;
+        //                g.setCookie('sessionId', ids.sessionId);
+        //            },
+        //            error: function(r) {
+        //                var tips = document.getElementById("tips");
+        //                tips.innerHTML = "Initialize error，place refresh this page";
+        //            }
+        //        })
 
         var activeCode = function (e) {
             //alert('active code')
@@ -158,67 +176,81 @@
 //                    tips.innerHTML = '发送失败，请重新获取验证码'
 //                }
 //            })
+                e.target.disabled = true
                 var timeoutId;
-                var timeoutCount = 60;
+                var timeoutCount = 180;
                 var proc = function () {
                     e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
                     --timeoutCount;
                     if (timeoutCount <= 0) {
                         e.target.value = ' 重新发送 ';
                         clearInterval(timeoutId);
+                        e.target.disabled = false
                     }
                 }
                 timeoutId = setInterval(proc, 1000);
             } else {
-                alert('You must fill the phone number field for receiver sms')
+                alert('手机号不能为空')
             }
         }
 
         var save = function (e) {
             //alert('save');
-            var data = {};
-            data.cardNo = document.getElementById('cardCode').value;
-            data.password = document.getElementById('password').value;
-            data.phoneNumber = document.getElementById('phoneNumber').value;
-            data.validCode = document.getElementById('validationCode').value;
-            ajax('POST', 'api/users/' + userId + '/cards', [
-                {name: 'Content-Type', value: 'application/json'},
-                {name: 'Accept', value: 'application/json'}
-            ], data, function (r) {
-                if (r.meta.code < 400) {
-                    location.href = 'Gold.html';
-                } else {
-                    //alert('save error');
-                    var tips = document.getElementById("tips");
-                    //alert('get tips');
-                    switch (r.meta.code) {
-                        case 500:
-                            tips.innerHTML = "后台错误500，请联系程序猿叔叔。email：15210038357@163.com";
-                            break;
-                        case 412:
-                            tips.innerHTML = "请返回的我的首页";
-                            break;
-                        case 520:
-                            tips.innerHTML = "后台错误520，请联系程序猿叔叔。email：15210038357@163.com";
-                            break;
-                        case 404:
-                            tips.innerHTML = "用户名或密码错误";
-                            break;
-                        case 405:
-                            tips.innerHTML = "不可以重复激活";
-                            break;
-                        case 401:
-                            tips.innerHTML = "手机号或验证码错误";
-                            break;
-                        case 410:
-                            tips.innerHTML = "验证码超时";
-                            break;
-                        case 200:
-                            window.location.href = 'Gold.html';
-                            break;
+
+//            if(document.getElementById('cardCode').value == null || document.getElementById('cardCode').value == undefined || document.getElementById('cardCode').value == ""){
+//                alert("输入框不能为空")
+//            }
+            if (document.getElementById('cardCode').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validationCode').value == "") {
+                alert("输入框不能为空")
+            } else {
+                let code = document.getElementById('cardNo').value
+                let cardNo = code.replace(/\s/ig, '');
+
+                var data = {};
+                data.cardNo = cardNo;
+                data.password = document.getElementById('password').value;
+                data.phoneNumber = document.getElementById('phoneNumber').value;
+                data.validCode = document.getElementById('validCode').value;
+                ajax('POST', 'api/users/' + userId + '/cards', [
+                    {name: 'Content-Type', value: 'application/json'},
+                    {name: 'Accept', value: 'application/json'}
+                ], data, function (r) {
+                    if (r.meta.code < 400) {
+                        location.href = 'Gold.html';
+                    } else {
+                        //alert('save error');
+                        var tips = document.getElementById("tips");
+                        //alert('get tips');
+                        switch (r.meta.code) {
+                            case 500:
+                                tips.innerHTML = "你的手机号跟别人重复啦";
+                                break;
+                            case 412:
+                                tips.innerHTML = "请返回的我的首页";
+                                break;
+                            case 520:
+                                tips.innerHTML = "后台错误520";
+                                break;
+                            case 404:
+                                tips.innerHTML = "卡号或密码错误";
+                                break;
+                            case 405:
+                                tips.innerHTML = "不可以重复激活";
+                                break;
+                            case 401:
+                                tips.innerHTML = "手机号或验证码错误";
+                                break;
+                            case 410:
+                                tips.innerHTML = "验证码超时";
+                                break;
+                            case 200:
+                                window.location.href = 'Gold.html';
+                                break;
+                        }
                     }
-                }
-            })
+                })
+            }
+
 
 //            $.ajax({
 //                type: 'post',
@@ -260,6 +292,7 @@
 //                }
 //            })
         }
+
     </script>
 </head>
 <body>
@@ -267,24 +300,28 @@
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div class="set-li">
             <span class="set-span">卡号</span>
-            <input type="text" placeholder="请输入卡号" id="cardCode" required pattern="\d+">
+            <input type="text" placeholder="请输入卡号" id="cardNo" style="height:20px; font-size:18px;" onkeyup="test()"
+                   required pattern="\d+">
         </div>
         <div class="set-li">
             <span class="set-span">密码</span>
-            <input type="password" placeholder="请输入密码" id="password" required>
+            <input type="password" placeholder="请输入密码" id="password" style="height:20px; font-size:18px;" required>
         </div>
         <div class="set-li">
             <span class="set-span">手机号</span>
-            <input type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+" style="width: 30%">
-            <input type="button" id="activeCode" style="display: inline-block;" value="获取手机验证码">
+            <input type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+"
+                   style="height:20px; width: 115px; font-size:18px;">
+            <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"
+                   class="send-btn cur">
         </div>
         <div class="set-li">
             <span class="set-span">验证码</span>
-            <input type="text" placeholder="请输入验证码" id="validationCode" required pattern="\d{6}">
+            <input type="text" placeholder="请输入验证码" id="validCode" style="height:20px; font-size:18px;" required
+                   pattern="\d{6}">
         </div>
     </section>
     <div style="font-size: 0.875rem; color: #fe6568; padding-left: 0.875rem; box-sizing: border-box; line-height: 1.375rem;"
-         id="tips">卡片验证码将发送至此手机!
+         id="tips">欢迎来到激活卡页面!
     </div>
     <input type="button" id="save" style="width: 100%" class="save-btn" value="确 认">
 </div>
@@ -299,17 +336,6 @@
 
     //$('#save').tap(save)
 </script>
+
 </body>
 </html>
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>validation code</title>
-</head>
-<body>
-<h1>Hello, world</h1>
-</body>
-</html>
--->
