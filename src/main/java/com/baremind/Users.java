@@ -39,7 +39,7 @@ public class Users {
         message.setValidCode(sjs);
         message.setTimestamp(now);
         JPAEntry.genericPost(message);
-        SendMessageResult r = sendMessage(telephone, "【小雨知时】" + sjs + "(动态验证码),请在3分钟内使用");
+        SendMessageResult r = sendMessage(telephone, "《小雨知时》" + sjs + "(动态验证码),请在3分钟内使用");
         if (r.messageId == null) {
             switch (r.code) {
                 case "0": //提交成功
@@ -216,7 +216,7 @@ public class Users {
     @Path("{id}/cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response queryValidCode(@PathParam("id") Long id, ActiveCard ac) {
+    public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
         Response result = Response.status(412).build();
         User user = JPAEntry.getObject(User.class, "id", id);
         if (user != null) {
@@ -280,7 +280,7 @@ public class Users {
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response validCode(ActiveCard ac) {
+    public Response activeCard(ActiveCard ac) {
         Response result = Response.status(412).build();
         Map<String, Object> validationCodeConditions = new HashMap<>();
         validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
