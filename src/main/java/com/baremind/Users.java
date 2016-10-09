@@ -351,55 +351,54 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response querypcValidCode(ActiveCard ac) {
         Response result = Response.status(500).build();
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("no", ac.getCardNo());
-        condition.put("password", ac.getPassword());
-        List<Card> cs = JPAEntry.getList(Card.class, condition);
-
-        switch (cs.size()) {
+        Map<String, Object> ValidationCodecondition = new HashMap<>();
+        ValidationCodecondition.put("phoneNumber", ac.getPhoneNumber());
+        ValidationCodecondition.put("validCode", ac.getValidCode());
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
+        switch (validationCodes.size()) {
             case 0:
-                result = Response.status(404).build();
+                result = Response.status(401).build();
                 break;
             case 1:
-                Map<String, Object> ValidationCodecondition = new HashMap<>();
-                ValidationCodecondition.put("phoneNumber", ac.getPhoneNumber());
-                ValidationCodecondition.put("validCode", ac.getValidCode());
-                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
-                switch (validationCodes.size()) {
-                    case 0:
-                        result = Response.status(401).build();
-                        break;
-                    case 1:
-                        Date now = new Date();
-                        Date sendTime = validationCodes.get(0).getTimestamp();
-                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
-                            result = Response.status(410).build();
-                        } else {
-                           /* Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
-                            if (s == null) {
-                                result = Response.status(412).build();
-                            } else {*/
+                Date now = new Date();
+                Date sendTime = validationCodes.get(0).getTimestamp();
+                if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                    Map<String, Object> condition = new HashMap<>();
+                    condition.put("no", ac.getCardNo());
+                    condition.put("password", ac.getPassword());
+                    List<Card> cs = JPAEntry.getList(Card.class, condition);
+                    switch (cs.size()) {
+                        case 0:
+                            result = Response.status(404).build();
+                            break;
+                        case 1:
                             Card c = cs.get(0);
-                            c.setActiveTime(now);
-                            c.setAmount(588.0);
-                               /* c.setUserId(s.getUserId());*/
-                            JPAEntry.genericPut(c);
-                            result = Response.ok().build();
-                            /*}*/
-                        }
-                        break;
-                    default:
-                        result = Response.status(520).build();
-                        break;
+                            if(c.getActiveTime() == null){
+                                c.setActiveTime(now);
+                                c.setAmount(588.0);
+                                JPAEntry.genericPut(c);
+                                result = Response.ok().build();
+                            }else{
+                                result = Response.status(405).build();
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    result = Response.status(410).build();
                 }
-                EntityManager em = JPAEntry.getEntityManager();
-                em.getTransaction().begin();
-                for (ValidationCode validationCode : validationCodes) {
-                    em.remove(validationCode);
-                }
-                em.getTransaction().commit();
+                break;
+            default:
+                result = Response.status(520).build();
                 break;
         }
+        EntityManager em = JPAEntry.getEntityManager();
+        em.getTransaction().begin();
+        for (ValidationCode validationCode : validationCodes) {
+            em.remove(validationCode);
+        }
+        em.getTransaction().commit();
         return result;
     }
 

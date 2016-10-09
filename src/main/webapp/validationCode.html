@@ -267,20 +267,20 @@
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div class="set-li">
             <span class="set-span">卡号</span>
-            <input type="text" placeholder="请输入卡号" id="cardCode" required pattern="\d+">
+            <input type="text" placeholder="请输入卡号" id="cardCode" style="height:20px; font-size:18px;" required pattern="\d+">
         </div>
         <div class="set-li">
             <span class="set-span">密码</span>
-            <input type="password" placeholder="请输入密码" id="password" required>
+            <input type="password" placeholder="请输入密码" id="password" style="height:20px; font-size:18px;" required>
         </div>
         <div class="set-li">
             <span class="set-span">手机号</span>
-            <input type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+" style="width: 30%">
-            <input type="button" id="activeCode" style="display: inline-block;" value="获取手机验证码">
+            <input type="tel" id="phoneNumber" placeholder="请输入手机号"  required pattern="\d+" style="height:20px; width: 115px; font-size:18px;">
+            <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"  class="send-btn cur">
         </div>
         <div class="set-li">
             <span class="set-span">验证码</span>
-            <input type="text" placeholder="请输入验证码" id="validationCode" required pattern="\d{6}">
+            <input type="text" placeholder="请输入验证码" id="validationCode" style="height:20px; font-size:18px;" required pattern="\d{6}">
         </div>
     </section>
     <div style="font-size: 0.875rem; color: #fe6568; padding-left: 0.875rem; box-sizing: border-box; line-height: 1.375rem;"
