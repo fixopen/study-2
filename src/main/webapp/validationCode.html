@@ -158,6 +158,9 @@
 //                    tips.innerHTML = '发送失败，请重新获取验证码'
 //                }
 //            })
+
+                e.target.disabled = true
+
                 var timeoutId;
                 var timeoutCount = 60;
                 var proc = function () {
@@ -166,6 +169,7 @@
                     if (timeoutCount <= 0) {
                         e.target.value = ' 重新发送 ';
                         clearInterval(timeoutId);
+                        e.target.disabled = false
                     }
                 }
                 timeoutId = setInterval(proc, 1000);
@@ -177,10 +181,11 @@
         var save = function (e) {
             //alert('save');
             var data = {};
-            data.cardNo = document.getElementById('cardCode').value;
+            data.cardNo = document.getElementById('cardNo').value;
             data.password = document.getElementById('password').value;
             data.phoneNumber = document.getElementById('phoneNumber').value;
-            data.validCode = document.getElementById('validationCode').value;
+            data.validCode = document.getElementById('validCode').value;
+            alert('POST data is ' + JSON.stringify(data))
             ajax('POST', 'api/users/' + userId + '/cards', [
                 {name: 'Content-Type', value: 'application/json'},
                 {name: 'Accept', value: 'application/json'}
@@ -267,7 +272,7 @@
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div class="set-li">
             <span class="set-span">卡号</span>
-            <input type="text" placeholder="请输入卡号" id="cardCode" style="height:20px; font-size:18px;" required pattern="\d+">
+            <input type="text" placeholder="请输入卡号" id="cardNo" style="height:20px; font-size:18px;" required pattern="\d+">
         </div>
         <div class="set-li">
             <span class="set-span">密码</span>
@@ -280,7 +285,7 @@
         </div>
         <div class="set-li">
             <span class="set-span">验证码</span>
-            <input type="text" placeholder="请输入验证码" id="validationCode" style="height:20px; font-size:18px;" required pattern="\d{6}">
+            <input type="text" placeholder="请输入验证码" id="validCode" style="height:20px; font-size:18px;" required pattern="\d{6}">
         </div>
     </section>
     <div style="font-size: 0.875rem; color: #fe6568; padding-left: 0.875rem; box-sizing: border-box; line-height: 1.375rem;"
