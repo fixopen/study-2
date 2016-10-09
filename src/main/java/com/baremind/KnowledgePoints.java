@@ -77,7 +77,7 @@ public class KnowledgePoints {
     public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            Log log = Logs.insertLog(sessionId, "knowledge-point", id, "like");
+            Log log = Logs.insert(sessionId, "knowledge-point", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;

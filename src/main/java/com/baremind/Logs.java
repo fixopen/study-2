@@ -45,7 +45,7 @@ public class Logs {
         return log;
     }
 
-    public static Log insertLog(String sessionId, String objectType, Long objectId, String action) {
+    public static Log insert(String sessionId, String objectType, Long objectId, String action) {
         Log log = new Log();
         log.setId(IdGenerator.getNewId());
         log.setUserId(JPAEntry.getLoginId(sessionId));

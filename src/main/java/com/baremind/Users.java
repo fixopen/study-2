@@ -227,7 +227,9 @@ public class Users {
             Map<String, Object> validationCodeConditions = new HashMap<>();
             validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
             validationCodeConditions.put("validCode", ac.getValidCode());
+            Logs.insert(id, "log", logId, "start query validation_codes table");
             List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+            Logs.insert(id, "log", logId, "end query validation_codes table");
             switch (validationCodes.size()) {
                 case 0:
                     Logs.insert(id, "log", logId, "validation code not exist");
