@@ -46,15 +46,7 @@ public class Logs {
     }
 
     public static Log insert(String sessionId, String objectType, Long objectId, String action) {
-        Log log = new Log();
-        log.setId(IdGenerator.getNewId());
-        log.setUserId(JPAEntry.getLoginId(sessionId));
-        log.setCreateTime(new Date());
-        log.setObjectType(objectType);
-        log.setObjectId(objectId);
-        log.setAction(action);
-        JPAEntry.genericPost(log);
-        return log;
+        return insert(JPAEntry.getLoginId(sessionId), objectType, objectId, action);
     }
 
     public static Long deleteLike(String sessionId, String objectType, Long objectId) {

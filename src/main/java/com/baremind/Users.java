@@ -224,11 +224,11 @@ public class Users {
         User user = JPAEntry.getObject(User.class, "id", id);
         if (user != null) {
             Logs.insert(id, "log", logId, "user exist");
-            Map<String, Object> validationCodeConditions = new HashMap<>();
-            validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
-            validationCodeConditions.put("validCode", ac.getValidCode());
+            Map<String, Object> validCodeConditions = new HashMap<>();
+            validCodeConditions.put("phoneNumber", ac.getPhoneNumber());
+            validCodeConditions.put("validCode", ac.getValidCode());
             Logs.insert(id, "log", logId, "start query validation_codes table");
-            List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+            List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validCodeConditions);
             Logs.insert(id, "log", logId, "end query validation_codes table");
             switch (validationCodes.size()) {
                 case 0:
@@ -241,10 +241,10 @@ public class Users {
                     Date sendTime = validationCodes.get(0).getTimestamp();
                     if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
                         Logs.insert(id, "log", logId, "validation code success");
-                        Map<String, Object> condition = new HashMap<>();
-                        condition.put("no", ac.getCardNo());
-                        condition.put("password", ac.getPassword());
-                        List<Card> cs = JPAEntry.getList(Card.class, condition);
+                        Map<String, Object> cardConditions = new HashMap<>();
+                        cardConditions.put("no", ac.getCardNo());
+                        cardConditions.put("password", ac.getPassword());
+                        List<Card> cs = JPAEntry.getList(Card.class, cardConditions);
                         switch (cs.size()) {
                             case 0:
                                 Logs.insert(id, "log", logId, "card not exists");
