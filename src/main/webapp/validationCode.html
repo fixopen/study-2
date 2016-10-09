@@ -199,6 +199,7 @@
 
         var save = function (e) {
             //alert('save');
+
 //            if(document.getElementById('cardCode').value == null || document.getElementById('cardCode').value == undefined || document.getElementById('cardCode').value == ""){
 //                alert("输入框不能为空")
 //            }
@@ -302,7 +303,11 @@
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div class="set-li">
             <span class="set-span">卡号</span>
+<<<<<<< HEAD
             <input type="text" placeholder="请输入卡号" id="cardCode" style="height:20px; font-size:18px;" onkeyup="test()" required pattern="\d+">
+=======
+            <input type="text" placeholder="请输入卡号" id="cardNo" style="height:20px; font-size:18px;" required pattern="\d+">
+>>>>>>> origin/master
         </div>
         <div class="set-li">
             <span class="set-span">密码</span>
@@ -315,7 +320,7 @@
         </div>
         <div class="set-li">
             <span class="set-span">验证码</span>
-            <input type="text" placeholder="请输入验证码" id="validationCode" style="height:20px; font-size:18px;" required pattern="\d{6}">
+            <input type="text" placeholder="请输入验证码" id="validCode" style="height:20px; font-size:18px;" required pattern="\d{6}">
         </div>
     </section>
     <div style="font-size: 0.875rem; color: #fe6568; padding-left: 0.875rem; box-sizing: border-box; line-height: 1.375rem;"
@@ -331,6 +336,7 @@
     saveButton.addEventListener('click', save, false);
 
     //$('#activeCode').tap(activeCode)
+    var v = document.getElementById('code').value.trim()
 
     //$('#save').tap(save)
 </script>

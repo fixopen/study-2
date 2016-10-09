@@ -33,16 +33,20 @@ public class Logs {
         return result;
     }
 
-    public static Log insertLog(String sessionId, String objectType, Long objectId, String action) {
+    public static Log insert(Long userId, String objectType, Long objectId, String action) {
         Log log = new Log();
         log.setId(IdGenerator.getNewId());
-        log.setUserId(JPAEntry.getLoginId(sessionId));
+        log.setUserId(userId);
         log.setCreateTime(new Date());
         log.setObjectType(objectType);
         log.setObjectId(objectId);
         log.setAction(action);
         JPAEntry.genericPost(log);
         return log;
+    }
+
+    public static Log insert(String sessionId, String objectType, Long objectId, String action) {
+        return insert(JPAEntry.getLoginId(sessionId), objectType, objectId, action);
     }
 
     public static Long deleteLike(String sessionId, String objectType, Long objectId) {
