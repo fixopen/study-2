@@ -56,27 +56,24 @@
     <script type="text/javascript" src="util.js"></script>
     -->
     <script>
-        function test(){
-            var len=document.getElementById('cardCode').value.length;
-            var reg = /\s{1,}/g;
+        function test() {
+            var len = document.getElementById('cardNo').value.length;
+            var reg = /\s+/g;
             var card_ = "";
-            var card=document.getElementById('cardCode').value;
+            var card = document.getElementById('cardNo').value;
             //去除空格
-            card = card.replace(reg,"");
-            for(var i = 0;i < len;i++){
-                if(i == 3||i == 7 ||i == 11||i == 15)
-                {
+            card = card.replace(reg, "");
+            for (var i = 0; i < len; i++) {
+                if (i == 3 || i == 7 || i == 11 || i == 15) {
                     card_ = card_ + card.charAt(i) + " ";
                 }
-                else
-                {
+                else {
                     card_ = card_ + card.charAt(i);
                 }
-
             }
-
-            document.getElementById("cardCode").value = card_;
+            document.getElementById("cardNo").value = card_;
         }
+
         var getUrlParameter = function (name) {
             var result = null;
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
@@ -137,19 +134,19 @@
             }
         })
 
-//        $.ajax({
-//            type: 'get',
-//            url: 'api/wechat-users/' + openId + "/identities",
-//            dataType: 'json',
-//            success: function(ids) {
-//                userId = ids.data.userId;
-//                g.setCookie('sessionId', ids.sessionId);
-//            },
-//            error: function(r) {
-//                var tips = document.getElementById("tips");
-//                tips.innerHTML = "Initialize error，place refresh this page";
-//            }
-//        })
+        //        $.ajax({
+        //            type: 'get',
+        //            url: 'api/wechat-users/' + openId + "/identities",
+        //            dataType: 'json',
+        //            success: function(ids) {
+        //                userId = ids.data.userId;
+        //                g.setCookie('sessionId', ids.sessionId);
+        //            },
+        //            error: function(r) {
+        //                var tips = document.getElementById("tips");
+        //                tips.innerHTML = "Initialize error，place refresh this page";
+        //            }
+        //        })
 
         var activeCode = function (e) {
             //alert('active code')
@@ -193,7 +190,7 @@
                 }
                 timeoutId = setInterval(proc, 1000);
             } else {
-                alert('You must fill the phone number field for receiver sms')
+                alert('手机号不能为空')
             }
         }
 
@@ -203,18 +200,18 @@
 //            if(document.getElementById('cardCode').value == null || document.getElementById('cardCode').value == undefined || document.getElementById('cardCode').value == ""){
 //                alert("输入框不能为空")
 //            }
-            if(document.getElementById('cardCode').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validationCode').value == ""){
+            if (document.getElementById('cardCode').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validationCode').value == "") {
                 alert("输入框不能为空")
-            }else{
-                let code = document.getElementById('cardCode').value
-                let cardNo = code.replace(/\s/ig,'');
+            } else {
+                let code = document.getElementById('cardNo').value
+                let cardNo = code.replace(/\s/ig, '');
 
                 var data = {};
                 data.cardNo = cardNo;
                 data.password = document.getElementById('password').value;
                 data.phoneNumber = document.getElementById('phoneNumber').value;
-                data.validCode = document.getElementById('validationCode').value;
-                ajax('POST', 'api/users/'+userId+'/cards', [
+                data.validCode = document.getElementById('validCode').value;
+                ajax('POST', 'api/users/' + userId + '/cards', [
                     {name: 'Content-Type', value: 'application/json'},
                     {name: 'Accept', value: 'application/json'}
                 ], data, function (r) {
@@ -226,7 +223,7 @@
                         //alert('get tips');
                         switch (r.meta.code) {
                             case 500:
-                                tips.innerHTML = "后台错误500";
+                                tips.innerHTML = "你的手机号跟别人重复啦";
                                 break;
                             case 412:
                                 tips.innerHTML = "请返回的我的首页";
@@ -303,11 +300,8 @@
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div class="set-li">
             <span class="set-span">卡号</span>
-<<<<<<< HEAD
-            <input type="text" placeholder="请输入卡号" id="cardCode" style="height:20px; font-size:18px;" onkeyup="test()" required pattern="\d+">
-=======
-            <input type="text" placeholder="请输入卡号" id="cardNo" style="height:20px; font-size:18px;" required pattern="\d+">
->>>>>>> origin/master
+            <input type="text" placeholder="请输入卡号" id="cardNo" style="height:20px; font-size:18px;" onkeyup="test()"
+                   required pattern="\d+">
         </div>
         <div class="set-li">
             <span class="set-span">密码</span>
@@ -315,12 +309,15 @@
         </div>
         <div class="set-li">
             <span class="set-span">手机号</span>
-            <input type="tel" id="phoneNumber" placeholder="请输入手机号"  required pattern="\d+" style="height:20px; width: 115px; font-size:18px;">
-            <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"  class="send-btn cur">
+            <input type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+"
+                   style="height:20px; width: 115px; font-size:18px;">
+            <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"
+                   class="send-btn cur">
         </div>
         <div class="set-li">
             <span class="set-span">验证码</span>
-            <input type="text" placeholder="请输入验证码" id="validCode" style="height:20px; font-size:18px;" required pattern="\d{6}">
+            <input type="text" placeholder="请输入验证码" id="validCode" style="height:20px; font-size:18px;" required
+                   pattern="\d{6}">
         </div>
     </section>
     <div style="font-size: 0.875rem; color: #fe6568; padding-left: 0.875rem; box-sizing: border-box; line-height: 1.375rem;"
@@ -336,22 +333,9 @@
     saveButton.addEventListener('click', save, false);
 
     //$('#activeCode').tap(activeCode)
-    var v = document.getElementById('code').value.trim()
 
     //$('#save').tap(save)
 </script>
 
-    </body>
-</html>
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>validation code</title>
-</head>
-<body>
-<h1>Hello, world</h1>
 </body>
 </html>
--->
