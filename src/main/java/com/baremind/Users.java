@@ -217,51 +217,65 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
+        Random rand = new Random();
+        Long logId = rand.nextLong();
+        Logs.insert(id, "log", logId, "start");
         Response result = Response.status(412).build();
         User user = JPAEntry.getObject(User.class, "id", id);
         if (user != null) {
+            Logs.insert(id, "log", logId, "user exist");
             Map<String, Object> validationCodeConditions = new HashMap<>();
             validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
             validationCodeConditions.put("validCode", ac.getValidCode());
             List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
             switch (validationCodes.size()) {
                 case 0:
+                    Logs.insert(id, "log", logId, "validation code not exist");
                     result = Response.status(401).build();
                     break;
                 case 1:
+                    Logs.insert(id, "log", logId, "validation code exist");
                     Date now = new Date();
                     Date sendTime = validationCodes.get(0).getTimestamp();
                     if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                        Logs.insert(id, "log", logId, "validation code success");
                         Map<String, Object> condition = new HashMap<>();
                         condition.put("no", ac.getCardNo());
                         condition.put("password", ac.getPassword());
                         List<Card> cs = JPAEntry.getList(Card.class, condition);
                         switch (cs.size()) {
                             case 0:
+                                Logs.insert(id, "log", logId, "card not exists");
                                 result = Response.status(404).build();
                                 break;
                             case 1:
+                                Logs.insert(id, "log", logId, "card exists");
                                 user.setTelephone(ac.getPhoneNumber());
                                 JPAEntry.genericPut(user);
                                 Card c = cs.get(0);
                                 if (c.getActiveTime() == null) {
+                                    Logs.insert(id, "log", logId, "card success");
                                     c.setActiveTime(now);
                                     c.setAmount(588.0);
                                     c.setUserId(id);
                                     JPAEntry.genericPut(c);
                                     result = Response.ok().build();
                                 } else {
+                                    Logs.insert(id, "log", logId, "card already active");
                                     result = Response.status(405).build();
                                 }
                                 break;
                             default:
+                                Logs.insert(id, "log", logId, "card multiple exists");
                                 break;
                         }
                     } else {
+                        Logs.insert(id, "log", logId, "validation code timeout");
                         result = Response.status(410).build();
                     }
                     break;
                 default:
+                    Logs.insert(id, "log", logId, "validation code multiple exist");
                     result = Response.status(520).build();
                     break;
             }
@@ -271,8 +285,8 @@ public class Users {
                 em.remove(validationCode);
             }
             em.getTransaction().commit();
+            Logs.insert(id, "log", logId, "remove validation codes");
         }
-        //Response result = Response.status(500).build();
         return result;
     }
 
