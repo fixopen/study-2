@@ -236,50 +236,49 @@ $(function () {
 
                    // GET /knowledge-points/.../is-self-like
                     let id = g.getUrlParameter("id")
-                    let liked
                     $.ajax({
                         type: "get",
                         url: 'api/knowledge-points/' + id + '/is-self-like',
                         dataType: "json",
                         success: function (like) {
-                            liked = true
+                            let liked = like.like
+                            let icon = document.getElementById('icon');
+                            icon.addEventListener('click', function (e) {
+                                if (liked) {
+                                    $.ajax({
+                                        type: "put",
+                                        url: '/api/knowledge-points/' + id + '/unlike',
+                                        data: JSON.stringify({}),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (unlike) {
+                                            icon.setAttribute('src', 'img/zan.png');
+                                            --data.interaction.likeCount
+                                            e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                            liked = false;
+                                        }
+                                    })
+                                } else {
+                                    $.ajax({
+                                        type: "put",
+                                        url: '/api/knowledge-points/' + id + '/like',
+                                        data: JSON.stringify({}),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (like) {
+                                            icon.setAttribute('src', 'img/zan-over.png');
+                                            ++data.interaction.likeCount
+                                            e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                            liked = true;
+                                        }
+                                    })
+                                }
+                            }, false)
                         },
                         error: function (unlike) {
-                            liked = false
+                            //liked = false
                         }
                     })
-
-                    let icon = document.getElementById('icon');
-                    icon.addEventListener('click', function (e) {
-                        if (liked) {
-                            $.ajax({
-                                type: "put",
-                                url: '/api/knowledge-points/' + id + '/unlike',
-                                data: JSON.stringify({}),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function (unlike) {
-                                    icon.setAttribute('src', 'img/zan.png');
-                                    e.target.nextElementSibling.textContent = data.interaction.likeCount - 1
-                                    liked = false;
-                                }
-                            })
-                        } else {
-                            $.ajax({
-                                type: "put",
-                                url: '/api/knowledge-points/' + id + '/like',
-                                data: JSON.stringify({}),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function (like) {
-                                    icon.setAttribute('src', 'img/zan-over.png');
-                                    e.target.nextElementSibling.textContent = data.interaction.likeCount + 1
-                                    liked = true;
-                                }
-                            })
-                        }
-                    }, false)
-
 
                     proc({
                         templateId: 'comment-template',
