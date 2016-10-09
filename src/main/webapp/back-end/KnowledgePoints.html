@@ -453,7 +453,7 @@
                     volumeSelect.selectedIndex = volumeSelect.options.length - 1
                     alert("添加成功")
                 },
-                error: function () {
+                error: function (volumeData) {
                     alert("添加失败")
                 }
             })
@@ -490,7 +490,7 @@
                     opt.innerText = volume.value
                     alert("修改成功")
                 },
-                error: function () {
+                error: function (volumeData) {
                     alert("修改失败")
                 }
             })
@@ -548,8 +548,9 @@
                     alert("添加成功")
                     document.getElementById("buttons").style.visibility = "visible" //显示
                 },
-                error: function () {
+                error: function (knowledgePoint) {
                     alert("添加失败")
+                    alert(JSON.stringify(knowledgePoint))
                 }
             })
         })
@@ -586,7 +587,7 @@
                     opt.innerText = knowledgePoints.value
                     alert("修改成功")
                 },
-                error: function () {
+                error: function (knowledgePoint) {
                     alert("修改失败")
                 }
             })
@@ -858,7 +859,7 @@
                                                 contentType: "application/json; charset=utf-8",
                                             })
                                         }
-                                        alert("添加成功")
+                                       /* alert("添加成功")*/
                                     }
                                 })
                             } else {
@@ -927,7 +928,7 @@
                                 }
                                 request.open("POST", "/api/medias")
                                 request.send(formData)
-                                alert("添加成功")
+//                                alert("添加成功")
                             }
                         }
                     }
