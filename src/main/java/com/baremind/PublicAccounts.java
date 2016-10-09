@@ -365,7 +365,32 @@ public class PublicAccounts {
                                             break;
                                     }
                                     break;
+                                case "text":
+                                    result = Response.ok().build();
+                                    break;
+                                case "image":
+                                    result = Response.ok().build();
+                                    break;
+                                case "voice":
+                                    result = Response.ok().build();
+                                    break;
+                                case "video":
+                                    result = Response.ok().build();
+                                    break;
+                                case "shortvideo":
+                                    result = Response.ok().build();
+                                    break;
+                                case "location":
+                                    result = Response.ok().build();
+                                    break;
+                                case "link":
+                                    result = Response.ok().build();
+                                    break;
                                 case "music":
+                                    result = Response.ok().build();
+                                    break;
+                                default:
+                                    result = Response.ok().build();
                                     break;
                             }
                         } catch (IOException e) {
