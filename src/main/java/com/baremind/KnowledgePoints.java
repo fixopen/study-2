@@ -7,13 +7,16 @@ import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
-
 @Path("knowledge-points")
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
@@ -46,6 +49,49 @@ public class KnowledgePoints {
             }
             result += id;
             isFirst = false;
+        }
+        return result;
+    }
+
+    private <T> List<T> getList(EntityManager em, List<String> ids, Class<T> type) {
+        return getListByColumn(em, "id", ids, type);
+    }
+
+    private <T> List<T> getListByColumn(EntityManager em, String columnName, List<String> ids, Class<T> type) {
+        List<T> result = null;
+        if (!ids.isEmpty()) {
+            //String query = "SELECT * FROM " + tableName + " WHERE " + columnName + " IN ( " + join(ids) + " )";
+            //Query pq = em.createNativeQuery(query, type);
+            //result = pq.getResultList();
+            String query = "SELECT o FROM " + type.getSimpleName() + " o WHERE o." + columnName + " IN ( " + join(ids) + " )";
+            TypedQuery<T> pq = em.createQuery(query, type);
+            result = pq.getResultList();
+        }
+        return result;
+    }
+
+    @PUT
+    @Path("{id}/like")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Log log = Logs.insertLog(sessionId, "knowledge-point", id, "like");
+            result = Response.ok(new Gson().toJson(log)).build();
+        }
+        return result;
+    }
+
+    @PUT
+    @Path("{id}/unlike")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Long count = Logs.deleteLike(sessionId, "knowledge-point", id);
+            result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
     }
@@ -137,53 +183,19 @@ public class KnowledgePoints {
 
                 EntityManager em = JPAEntry.getEntityManager();
 
-                List<Text> textObjects = null;
-                if (!textIds.isEmpty()) {
-                    String textquery = "SELECT id, content FROM texts WHERE id IN ( " + join(textIds) + " )";
-                    Query tq = em.createNativeQuery(textquery, Text.class);
-                    textObjects = tq.getResultList();
-                }
+                List<Text> textObjects = getList(em, textIds, Text.class);
 
-                List<Image> imageObjects = null;
-                if (!imageIds.isEmpty()) {
-                    String imagequery = "SELECT * FROM images WHERE id IN ( " + join(imageIds) + " )";
-                    Query iq = em.createNativeQuery(imagequery, Image.class);
-                    imageObjects = iq.getResultList();
-                }
-                List<Video> videoObjects = null;
-                if (!videoIds.isEmpty()) {
-                    String videoquery = "SELECT * FROM videos WHERE id IN ( " + join(videoIds) + " )";
-                    Query vq = em.createNativeQuery(videoquery, Video.class);
-                    videoObjects = vq.getResultList();
-                }
-                List<Problem> problemObjects = null;
-                List<ProblemOption> problemoptionObjects = null;
-                List<ProblemStandardAnswer> problemstandardanswersObjects = null;
-                if (!problemIds.isEmpty()) {
-                    String problemquery = "SELECT * FROM problems WHERE id IN ( " + join(problemIds) + " )";
-                    Query pq = em.createNativeQuery(problemquery, Problem.class);
-                    problemObjects = pq.getResultList();
+                List<Image> imageObjects = getList(em, imageIds, Image.class);
 
-                    String problemoptionsquery = "SELECT * FROM problem_options WHERE problem_id IN ( " + join(problemIds) + " )";
-                    Query pqoption = em.createNativeQuery(problemoptionsquery, ProblemOption.class);
-                    problemoptionObjects = pqoption.getResultList();
+                List<Video> videoObjects = getList(em, videoIds, Video.class);
 
-                    String problemsstandardanswersquery = "SELECT * FROM problem_standard_answers WHERE problem_id IN ( " + join(problemIds) + " )";
-                    Query pqsan = em.createNativeQuery(problemsstandardanswersquery, ProblemStandardAnswer.class);
-                    problemstandardanswersObjects = pqsan.getResultList();
-                }
-                List<ImageText> imageTextObject = null;
-                if (!imageTextIds.isEmpty()) {
-                    String imageTextquery = "SELECT * FROM image_texts WHERE id IN ( " + join(imageTextIds) + " )";
-                    Query itq = em.createNativeQuery(imageTextquery, ImageText.class);
-                    imageTextObject = itq.getResultList();
-                }
-                List<Quote> quoteObject = null;
-                if (!quoteIds.isEmpty()) {
-                    String quotequery = "SELECT * FROM quotes WHERE id IN ( " + join(quoteIds) + " )";
-                    Query qq = em.createNativeQuery(quotequery, Quote.class);
-                    quoteObject = qq.getResultList();
-                }
+                List<Problem> problemObjects = getList(em, problemIds, Problem.class);
+                List<ProblemOption> problemOptionObjects = getListByColumn(em, "problemId", problemIds, ProblemOption.class);
+                List<ProblemStandardAnswer> problemStandardAnswerObjects = getListByColumn(em, "problemId", problemIds, ProblemStandardAnswer.class);
+
+                List<ImageText> imageTextObject = getList(em, imageTextIds, ImageText.class);
+
+                List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
 
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
@@ -202,53 +214,53 @@ public class KnowledgePoints {
                             break;
                         case "image":
                             if (imageObjects != null) {
-                                Image im = findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> itm = new HashMap<>();
-                                itm.put("id", im.getId());
-                                itm.put("type", "image");
-                                itm.put("description", "");
-                                itm.put("href", im.getStorePath());
-                                orderedContents.add(itm);
+                                Image i = findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> im = new HashMap<>();
+                                im.put("id", i.getId());
+                                im.put("type", "image");
+                                im.put("description", "");
+                                im.put("href", i.getStorePath());
+                                orderedContents.add(im);
                             }
                             break;
                         case "imageText":
                             if (imageTextObject != null) {
-                                ImageText ITe = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> items = new HashMap<>();
-                                items.put("id", ITe.getId());
-                                items.put("type", "imageText");
-                                items.put("content", ITe.getContent());
-                                items.put("href", ITe.getStorePath());
-                                orderedContents.add(items);
+                                ImageText it = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> itm = new HashMap<>();
+                                itm.put("id", it.getId());
+                                itm.put("type", "imageText");
+                                itm.put("content", it.getContent());
+                                itm.put("href", it.getStorePath());
+                                orderedContents.add(itm);
                             }
                             break;
                         case "problem":
-                            if (problemObjects != null || problemoptionObjects != null || problemstandardanswersObjects != null) {
-                                Problem pie = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
-                                List<ProblemOption> pieo = findItems(problemoptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
-                                List<ProblemStandardAnswer> dfs = findItems(problemstandardanswersObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
+                            if (problemObjects != null || problemOptionObjects != null || problemStandardAnswerObjects != null) {
+                                Problem problemItem = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
+                                List<ProblemOption> problemOptions = findItems(problemOptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
+                                List<ProblemStandardAnswer> problemStandardAnswers = findItems(problemStandardAnswerObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
 
-                                Map<String, Object> piems = new HashMap<>();
-                                piems.put("id", pie.getId());
-                                if (dfs.size() > 1) {
-                                    piems.put("type", "多选题");
+                                Map<String, Object> pm = new HashMap<>();
+                                pm.put("id", problemItem.getId());
+                                if (problemStandardAnswers.size() > 1) {
+                                    pm.put("type", "多选题");
                                 } else {
-                                    piems.put("type", "单选题");
+                                    pm.put("type", "单选题");
                                 }
-                                piems.put("options", pieo);
-                                piems.put("standardAnswers", dfs);
-                                piems.put("title", pie.getTitle());
-                                orderedProblems.add(piems);
+                                pm.put("options", problemOptions);
+                                pm.put("standardAnswers", problemStandardAnswers);
+                                pm.put("title", problemItem.getTitle());
+                                orderedProblems.add(pm);
                             }
                             break;
                         case "quote":
                             if (quoteObject != null) {
-                                Quote ique = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> iquems = new HashMap<>();
-                                iquems.put("id", ique.getId());
-                                iquems.put("content", ique.getContent());
-                                iquems.put("source", ique.getSource());
-                                orderedQuotes.add(iquems);
+                                Quote q = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> qm = new HashMap<>();
+                                qm.put("id", q.getId());
+                                qm.put("content", q.getContent());
+                                qm.put("source", q.getSource());
+                                orderedQuotes.add(qm);
                             }
                             break;
                     }
@@ -264,17 +276,8 @@ public class KnowledgePoints {
                 }
 
                 Map<String, Object> interaction = new HashMap<>();
-
-                String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
-                Query lq = em.createQuery(statsLikes, Long.class);
-                Long likeCountObject = (Long) lq.getSingleResult();
-
-                String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + id.toString();
-                Query rq = em.createQuery(statsReads, Long.class);
-                Long readCount = (Long) rq.getSingleResult();
-
-                interaction.put("likeCount", likeCountObject);
-                interaction.put("readCount", readCount);
+                interaction.put("likeCount", Logs.getStatsCount("knowledge-point", id, "like"));
+                interaction.put("readCount", Logs.getStatsCount("knowledge-point", id, "read"));
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
@@ -283,7 +286,22 @@ public class KnowledgePoints {
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                totalResult.put("comments", comments);
+                List<Map<String, Object>> commentMaps = new ArrayList<>(comments.size());
+                for (Comment comment : comments) {
+                    Map<String, Object> commentMap = new HashMap<>();
+                    commentMap.put("id", comment.getId());
+                    commentMap.put("content", comment.getContent());
+                    commentMap.put("clientId", comment.getClientId());
+                    SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    commentMap.put("createTime", time.format(comment.getCreateTime()));
+                    commentMap.put("objectId", comment.getObjectId());
+                    commentMap.put("objectType", comment.getObjectType());
+                    commentMap.put("updateTime", comment.getUpdateTime());
+                    commentMap.put("userId", comment.getUserId());
+                    commentMap.put("likeCount", Logs.getStatsCount("comment", comment.getId(), "like"));
+                    commentMaps.add(commentMap);
+                }
+                totalResult.put("comments", commentMaps);
 
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();

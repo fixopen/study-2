@@ -20,6 +20,12 @@ import java.util.Map;
 
 @Path("cards")
 public class Cards {
+    private static final String[] subjects = new String[]{"01", "02", "03"};
+    private static final int MATH = 0;
+    private static final int CHINESE = 1;
+    private static final int ENGLISH = 2;
+    private static final String[] grades = new String[]{"20", "21"};
+    private static final String[] serials = new String[]{"1"};
     @POST
     @Path("generate")
     @Consumes(MediaType.APPLICATION_JSON)

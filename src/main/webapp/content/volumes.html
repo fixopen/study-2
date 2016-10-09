@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>books</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <link rel="stylesheet" href="../common.css"/>
+    <link rel="stylesheet" href="volumes.css"/>
+</head>
+<body>
+<ul id="grades" style="list-style: none; width: 15.375rem; margin: 0 auto">
+    <li id="low-title" class="common-font common-border-style common-line-height common-margin-padding common-outline-style common-resize">
+        <span>低年级</span>
+        <img id="bird" src="../bird.png" alt=""/>
+    </li>
+    <li id="high-title" class="common-font common-border-style common-line-height common-margin-padding common-outline-style common-resize">
+        <span>高年级</span>
+    </li>
+</ul>
+<ol id="low-contents"></ol>
+<ol id="high-contents"></ol>
+<template id="volume-template">
+    <li>
+        <a href="knowledge-points.html?volumeId=${volumeId}&volume=${volume}">${title}</a>
+    </li>
+</template>
+<script>
+    window.addEventListener('load', function (e) {
+        var subjectId = getUrlParameter('subjectId')
+        var grade = 20
+
+        $.ajax({
+            type: "get",
+            url: 'api/volumes?filter=' + JSON.stringify({
+                subjectId: parseInt(subjectId),
+                grade: grade
+            }),
+            success: function (volumes) {
+                proc({
+                    templateId: 'volume-template',
+                    data: volumes,
+                    containerId: 'low-contents'
+                });
+            }
+        })
+
+        $.ajax({
+            type: "get",
+            url: 'api/volumes?filter=' + JSON.stringify({
+                subjectId: parseInt(subjectId),
+                grade: grade
+            }),
+            success: function (volumes) {
+                proc({
+                    templateId: 'volume-template',
+                    data: volumes,
+                    containerId: 'high-contents'
+                })
+            }
+        })
+    })
+</script>
+</body>
+</html>

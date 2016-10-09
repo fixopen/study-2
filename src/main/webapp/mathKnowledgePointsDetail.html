@@ -72,12 +72,17 @@
     </div>
     <!--message-->
     <div class="mulu_bottom">
-        <div class="muluBn_top">
-            <a class="mulu_botBtn" href="#">写留言</a>
+        <div class="muluBn_top" id="message">
+            <!--<a class="mulu_botBtn" href="#">写留言</a>-->
+            <button id="createComment" type="button" class="mulu_botBtn">写留言</button>
+            <div id="commentWriter" style="display: none">
+                <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                <button type="submit" class="sub-btn" id="btn">提交</button>
+            </div>
         </div>
-        <div id="comments"></div>
-
+        <span id="comments"></span>
     </div>
+
 </div>
 <!--templates-->
 <template id="title1-template">
@@ -128,7 +133,7 @@
 <template id="pk-template">
     <li class="mld_Ulli">
         <div>${title}</div>
-        <ol class="mld_daanUl" data-ext-point="options"></ol>
+        <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
     </li>
 </template>
 
@@ -136,8 +141,13 @@
     <div>
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
-            <li><img class="ul01_imgzan" src="img/zan.png" alt="" onclick="like()"><span
-                    class="ul01_count">${likeCount}</span></li>
+            <!--<li>-->
+                <!--<span class="praisebtn ul01_count"><img src="img/zan.png" class="praisenum ul01_imgzan" data-bd-imgshare-binded="1">-->
+                   <!--<a href="#" praise-flag="0" data-id="7" id="total">${likeCount}</a>&lt;!&ndash;//praise-flag="0" 记录点赞标识（是否已赞过）,data-id记录文章id&ndash;&gt;-->
+                <!--</span>-->
+                <img class="ul01_imgzan" src="img/zan.png" alt="" onclick="like(this)" id="icon">
+                <span class="ul01_count" id="total">${likeCount}</span></li>
+            <!--<li><a id="putups<%= mind._id %>" name="putups" href="javascript:putUps('<%= mind._id %>');" title="<%=mind.ups%>个赞" >赞[<%=mind.ups%>]</a></li>-->
         </ul>
         <ul class="ul01_riht">
             <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
@@ -154,14 +164,14 @@
             <ul class="topUl">
                 <li class="topUl_top">
                     <div class="litop_fleft">${name}</div>
-                    <div class="litop_friht"><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span>
+                    <div class="litop_friht"><img class="ul01_imgzan" src="img/zan.png" onclick="commentLike(this)"><span class="ul01_count" id="all">${likeCount}</span>
                     </div>
                 </li>
                 <li class="topUl_center tcmar_top">
                     ${content}
                 </li>
                 <li class="topUl_bottom tcmar_top">
-                    <div class="litop_fleft">${time}</div>
+                    <div class="litop_fleft">${createTime}</div>
                 </li>
             </ul>
         </li>
@@ -172,5 +182,6 @@
 <script type="text/javascript" src="basic.js"></script>
 <script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="js/math-detail.js"></script>
+<script type="text/javascript" src="jquery/jquery.min.js"></script>
 </body>
 </html>
