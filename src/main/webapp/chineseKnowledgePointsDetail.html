@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/chindeseDetail.css">
+    <!--<link rel="stylesheet" href="bootstrap/bootstrap.min.css">-->
 
     <!-- 引入js -->
     <script type="text/javascript" src="zepto/zepto.min.js"></script>
@@ -128,7 +129,7 @@
 <template id="problem-template">
     <li class="mld_Ulli">
         <div>
-        <img class="mld_liImg" src="${href}" alt="${type}">${title}
+            <img class="mld_liImg" src="${href}" alt="${type}">${title}
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
     </li>
@@ -147,8 +148,10 @@
             <li>
                 <!--<img class="ul01_imgzan" src="img/zan.png" alt="">-->
                 <!--<span class="ul01_count" id="likeCount">${likeCount}</span>-->
-                <button type="button" class="click-like" onclick="like()" id="icon"></button>
-                <span class="ul01_count" id="likeCount">0</span>
+                <!--<button type="button" class="click-like" onclick="like()" id="icon"></button>-->
+                <!--<span class="ul01_count" id="likeCount">0</span>-->
+                <img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">
+                <span class="ul01_count" id="total">${likeCount}</span>
             </li>
         </ul>
         <ul class="ul01_riht">
@@ -158,7 +161,7 @@
     </div>
 </template>
 <template id="comment-template">
-    <ul class="muluBn_center">
+    <ul class="muluBn_center" data-id="${id}">
         <li class="liuyan_li lion_01">
             <img src="${avatar}" alt="">
         </li>
@@ -166,19 +169,44 @@
             <ul class="topUl">
                 <li class="topUl_top">
                     <div class="litop_fleft">${name}</div>
-                    <div class="litop_friht"><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span>
+                    <div class="litop_friht">
+                        <img class="ul01_imgzan" src="img/zan.png" alt="" >
+                        <span class="ul01_count">${likeCount}</span>
                     </div>
                 </li>
                 <li class="topUl_center tcmar_top">
                     ${content}
                 </li>
                 <li class="topUl_bottom tcmar_top">
-                    <div class="litop_fleft">${time}</div>
+                    <div class="litop_fleft">${createTime}</div>
                 </li>
             </ul>
         </li>
     </ul>
 </template>
+
+<!--<template id="comment-template">-->
+    <!--<li class="muluBn_center">-->
+        <!--<div class="row" data-id="${id}">-->
+            <!--<div class="col-xs-2 liuyan_li lion_01">-->
+                <!--<img src="${avatar}" alt="">-->
+            <!--</div>-->
+            <!--<div class="col-xs-9 liuyan_li lion_02 topUl topUl_top litop_fleft">-->
+                <!--<span>${name}</span>-->
+                <!--<div class="topUl_center tcmar_top">${content}</div>-->
+                <!--<div class="topUl_bottom tcmar_top">-->
+                    <!--<div class="litop_fleft">${createTime}</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-xs-1">-->
+                <!--<div class="litop_friht">-->
+                    <!--<img class="ul01_imgzan" src="img/zan.png">-->
+                    <!--<span class="ul01_count">${likeCount}</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</li>-->
+<!--</template>-->
 <script type="text/javascript" src="basic.js"></script>
 <script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="js/chineseDetail.js"></script>
