@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>books</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <link rel="stylesheet" href="../common.css"/>
+</head>
+<body>
+<section id="title"></section>
+<section>
+    <h2>选文赏析</h2>
+    <ul id="origin"></ul>
+</section>
+<section id="content"></section>
+<section id="video"></section>
+<section>
+    <h2>闯关练习</h2>
+    <dl id="problems"></dl>
+</section>
+<section id="interaction"></section>
+<section>
+    <span>写留言<img src="write.png" alt="写留言"/></span>
+    <textarea id="new-comment" style="display: none"></textarea>
+    <section id="comments"></section>
+</section>
+<template id="title-template">
+    <h1>${title}</h1>
+</template>
+<template id="origin-template">
+    <article>
+        <section>${content}</section>
+        <address>${source}</address>
+    </article>
+</template>
+<template id="content-text-template">
+    <p>${content}</p>
+</template>
+<template id="content-image-template">
+    <span>
+        <img src="${href}" alt="${description}"/>
+    </span>
+</template>
+<template id="content-image-text-template">
+    <p>
+        <img src="${href}" alt="${description}"/>
+        ${content}
+    </p>
+</template>
+<template id="video-template">
+    <span>
+        <a href="${href}"><img src="${storePath}"/></a>
+    </span>
+</template>
+<template id="problem-option-template">
+    <li>
+        <span>${title}</span>
+        <label>${name}</label>
+    </li>
+</template>
+<template id="problem-template">
+    <div>
+        <p><span>${type}</span>${title}</p>
+        <img src="${storePath}" alt=""/>
+        <ol type="A" data-ext-point="options"></ol>
+        <div data-ext-point="explain"></div>
+    </div>
+</template>
+<template id="interaction-template">
+    <div>
+        <span>阅读</span><span>${readCount}</span>
+        <span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>
+        <a href="${previous}">previous</a><a href="${next}">next</a>
+    </div>
+</template>
+<template id="comment-template">
+    <article>
+        <img src="${avatar}" alt=""/>
+        <span>${name}</span>
+        <span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>
+        <section>${content}</section>
+        <time>${time}</time>
+    </article>
+</template>
+<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>
+<dialog>您的卡片已过期，请重新购买！</dialog>
+<dialog>您的卡片只可观看***，<br>观看其他内容请购买相应卡片！</dialog>
+<dialog>还剩24雨点不够观看啦，请充值！</dialog>
+<dialog>雨点所剩不多，请尽快充值哦！</dialog>
+<script>
+    $(function(e){
+        //get knowledge point list of same volume
+        //get api/volumes/volumeId/knowledge-points
+        //get api/knowledge-points/id/contents
+
+        proc({
+            templateId: 'title-template',
+            data: data,
+            containerId: 'title'
+        })
+
+        proc({
+            templateId: 'origin-template',
+            data: data.origins,
+            containerId: 'origin'
+        })
+
+        proc({
+            data: data.contents,
+            containerId: 'content',
+            alterTemplates: [
+                {type: 'text', templateId: 'content-text-template'},
+                {type: 'image', templateId: 'content-image-template'}
+            ]
+        })
+
+        proc({
+            templateId: 'video-template',
+            data: data.video,
+            containerId: 'video'
+        })
+
+        proc({
+            templateId: 'problem-template',
+            data: data.problems,
+            containerId: 'problems',
+            secondBind: {
+                extPoint: 'options',
+                dataFieldName: 'options',
+                templateId: 'problem-option-template'
+            }
+        })
+
+        proc({
+            templateId: 'interaction-template',
+            data: data.interaction,
+            containerId: 'interaction'
+        })
+
+        proc({
+            templateId: 'comment-template',
+            data: data.comments,
+            containerId: 'comments'
+        })
+    })
+</script>
+</body>
+</html>

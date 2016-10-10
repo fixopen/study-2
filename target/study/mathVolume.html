@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数学</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telphone=no"/>
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/math-volumes.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="zepto/zepto.min.js"></script>
+    <script type="text/javascript" src="zepto/touch.js"></script>
+    <script type="text/javascript" src="zepto/selector.js"></script>
+</head>
+<body>
+<div class="wrap">
+    <ol class="rain-main">
+        <div class="bao_dul">
+            <ul class="table_ul">
+                <li class="table_li li_one">
+                    <a class="lione_zi" href="#">1-3年级</a>
+                    <img class="lione_zimg" src="img/bird.png" alt="">
+                </li>
+                <li class="table_li">
+                    <a class="lione_zi" href="#">4-6年级</a>
+                    <img class="lione_zimg" src="img/bird.png" alt="" style="display: none">
+                </li>
+            </ul>
+        </div>
+        <!--volumes-->
+        <div class="neir_div0 div0_one">
+            <ol class="neir0_UL" id="volumes-low">
+            </ol>
+        </div>
+        <div class="neir_div0 div0_two">
+            <ol class="neir0_UL" id="volumes-hight">
+            </ol>
+        </div>
+    </ol>
+</div>
+<!--templates-->
+<template id="volumes-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <!--<a class="neir_pzi" href="#">${title}</a>-->
+            <a class="neir_pzi" data-id="${id}" data-type="volume"
+               href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
+        </div>
+    </li>
+</template>
+<script type="text/javascript" src="basic.js"></script>
+<script type="text/javascript" src="js/turnOne.js"></script>
+<script type="text/javascript" src="js/math-volume.js"></script>
+</body>
+</html>

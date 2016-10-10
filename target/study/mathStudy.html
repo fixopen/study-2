@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>奥数学习</title>
+    <link href="weui/weui.min.css" rel="stylesheet">
+    <link href="bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mathStudy.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <!--header-->
+    <div class="row mathStudy-header">
+        <div class="col-xs-1">
+            <a href="">&lt;</a>
+        </div>
+        <div class="col-xs-9" id="mathStudy-title"></div>
+        <div class="col-xs-2">
+            <a href="#" id="">...</a>
+        </div>
+    </div>
+    <!--class-->
+    <div class="row">
+        <div class="col-xs-12 action-cs">
+            <div class="action-c">
+                <button type="button" class="btn" id="low">低年级</button>
+                <button type="button" class="btn" id="hight">高年级</button>
+            </div>
+        </div>
+    </div>
+    <!--section-->
+    <div class="row">
+        <div class="col-xs-12" style="background-color: #eeeeee">奥数解析</div>
+        <div class="col-xs-12" id="mathStudy-volumesL"></div>
+        <div class="col-xs-12" id="mathStudy-volumesH" style="display: none"></div>
+        <!--<div class="col-xs-12" id="mathStudy-section"></div>-->
+    </div>
+    <!--footer-->
+    <div class="row">
+        <div class="col-xs-12" id="follow"></div>
+    </div>
+</div>
+<!--templates-->
+<template id="title-template">
+    <span>${title}</span>
+</template>
+<template id="volumes-template">
+    <div class="col-xs-6 action-cs">
+        <a href="#" class="btn btn-default action-c" style="width: 100%;" data-id="${id}" data-type="volume">${name}</a>
+        <!--<button class="btn action-c" type="button">${name}</button>-->
+    </div>
+</template>
+<template id="follow-template">
+    <div class="action-cs">
+        <div class="row action-c">
+            <div class="col-xs-12">
+                <p>${title1}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <img src="${imgsrc}" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${title2}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step1}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step2}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>${step3}</p>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<script src="jquery/jquery.min.js"></script>
+<script src="bootstrap/bootstrap.min.js"></script>
+<script src="js/mathStudy.js"></script>
+</body>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit name="supportData" transaction-type="RESOURCE_LOCAL">
+        <class>com.baremind.data.Additional</class>
+        <class>com.baremind.data.Card</class>
+        <class>com.baremind.data.Comment</class>
+        <class>com.baremind.data.Device</class>
+        <class>com.baremind.data.Image</class>
+        <class>com.baremind.data.KnowledgePoint</class>
+        <class>com.baremind.data.Media</class>
+        <class>com.baremind.data.Problem</class>
+        <class>com.baremind.data.Property</class>
+        <class>com.baremind.data.Scheduler</class>
+        <class>com.baremind.data.Session</class>
+        <class>com.baremind.data.Subject</class>
+        <class>com.baremind.data.Tag</class>
+        <class>com.baremind.data.User</class>
+        <class>com.baremind.data.ValidationCode</class>
+        <class>com.baremind.data.Video</class>
+        <class>com.baremind.data.Volume</class>
+        <class>com.baremind.data.WechatUser</class>
+        <class>com.baremind.data.Text</class>
+        <class>com.baremind.data.ProblemOption</class>
+        <class>com.baremind.data.ProblemStandardAnswer</class>
+        <class>com.baremind.data.KnowledgePointContentMap</class>
+        <class>com.baremind.data.Quote</class>
+        <class>com.baremind.data.ImageText</class>
+        <class>com.baremind.data.Log</class>
+        <class>com.baremind.data.AnswerRecord</class>
+        <class>com.baremind.data.PinyinText</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://139.129.214.229:5432/study"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="postgres"/>
+            <!--
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/study"/>
+            <property name="javax.persistence.jdbc.user" value="fixopen"/>
+            <property name="javax.persistence.jdbc.password" value="123456"/>
+            -->
+        </properties>
+    </persistence-unit>
+</persistence>
