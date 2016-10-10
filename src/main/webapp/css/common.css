@@ -102,3 +102,54 @@ table {
     box-sizing: border-box;
     margin-bottom: 1.25rem;
 }
+
+.set-li {
+    height: 3.6875rem;
+    line-height: 3.6875rem;
+    padding: 0 0.625rem;
+    box-sizing: border-box;
+    font-size: 1.0625rem;
+    border-bottom: 1px solid #e5e5e5;
+    color: #444;
+}
+
+.set-span {
+    display: inline-block;
+    width: 5.625rem;
+}
+
+.save-btn {
+    display: block;
+    height: 3.75rem;
+    line-height: 3.75rem;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.0625rem;
+    background-color: #fe6568;
+    color: #fff;
+    margin-bottom: 0.53125rem;
+    /*text-decoration: underline overline;*/
+    text-decoration: none;
+}
+
+.save-btn:hover {
+    text-decoration: underline overline;
+}
+
+.wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+
+    background: url(../img/zb_bg.jpg) no-repeat center top;
+
+    -webkit-background-size: cover;
+    background-size: cover;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+    font-family: "鑻规柟", "Microsoft YaHei";
+}
