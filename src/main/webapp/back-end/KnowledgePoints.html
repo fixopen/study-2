@@ -52,6 +52,7 @@
     <button id="appendVideo" data-type="video">append video</button>
     <button id="appendProblem" data-type="problem">append problem</button>
     <button id="appendImageText" data-type="imagetext">append imagetext</button>
+    <button id="appendPinyinText" data-type="pinyintext">append pinyintext</button>
     <button id="appendQuote" data-type="quote">append quote</button>
     <button id="movePrevious">^</button>
     <button id="moveNext">V</button>
@@ -82,6 +83,12 @@
     <div data-type="quote">
         段落<textarea data-type="content"></textarea>
         出处<textarea data-type="source"></textarea>
+    </div>
+</template>
+<template id="pinyinText-template">
+    <div data-type="pinyinText">
+        拼音<textarea data-type="pinyin"></textarea>
+        文字<textarea data-type="content"></textarea>
     </div>
 </template>
 
@@ -682,6 +689,14 @@
             currentSelectedElement = p
         }, false)
 
+        let appendPinyinText = document.getElementById('appendPinyinText')
+        appendPinyinText.addEventListener('click', function (e) {
+            let py = document.getElementById('pinyinText-template')
+            let p = py.content.children[0].cloneNode(true)
+            contents.appendChild(p)
+            currentSelectedElement = p
+        }, false)
+
         let appendQuote = document.getElementById('appendQuote')
         appendQuote.addEventListener('click', function (e) {
             let pt = document.getElementById('quote-template')
@@ -1005,6 +1020,50 @@
                                 currentSelectedElement.dataset.id = quote.id
                             },
                             error: function (quote) {
+                                alert("修改失败")
+                            }
+                        })
+                    }
+                    break ;
+                case 'pinyinText':
+                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                        currentId = currentSelectedElement.dataset.id
+                        let data = {
+                            pinyin: currentSelectedElement.querySelector('[data-type="pinyin"]').value,
+                            content: currentSelectedElement.querySelector('[data-type="content"]').value
+                        }
+                        $.ajax({
+                            type: "put",
+                            url: "/api/pinyin-texts/" + currentId,
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (pinyin) {
+                                alert("修改成功")
+                            },
+                            error: function (pinyin) {
+                                alert("修改失败")
+                            }
+                        })
+                    } else {
+                        let data = {
+                            pinyin: currentSelectedElement.querySelector('[data-type="pinyin"]').value,
+                            content: currentSelectedElement.querySelector('[data-type="content"]').value
+                        }
+                        alert(JSON.stringify(data))
+                        //{"content":"第一的腰包","source":"——礼拜"}
+                        $.ajax({
+                            type: "post",
+                            url: "/api/pinyin-texts",
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (pinyin) {
+                                alert("添加成功")
+                                currentSelectedElement.dataset.id = pinyin.id
+                            },
+                            error: function (pinyin) {
+                                alert(JSON.stringify(pinyin))
                                 alert("修改失败")
                             }
                         })
