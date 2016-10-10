@@ -493,7 +493,7 @@ public class PublicAccounts {
 
     Response activeCard(WechatPush p) {
         String baseUrl = "http://www.xiaoyuzhishi.com/validationCode.html";
-        String result = processAndGenerate(p, "欢迎", "点击链接将进入卡激活页面", baseUrl);
+        String result = processAndGenerate(p, "激活新卡", "点击链接将进入卡激活页面", baseUrl);
         return Response.ok(result).build();
     }
 
