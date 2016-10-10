@@ -139,7 +139,7 @@ function commentLike(el) {
 // let commentId=
     $.ajax({
         type: "post",
-        url: "/api/comment",
+        url: "/api/comments",
         data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -228,6 +228,8 @@ function commentLike(el) {
 
 
 $(function () {
+    //GET /knowledge-points/.../is-self-like
+
     // let data ={
     //     objectType:'knowledge-point',
     //     objectId:parseInt(g.getUrlParameter("id")),
@@ -261,7 +263,7 @@ $(function () {
             // e.target.style.backgroundColor = '#3e8f3e';
             $.ajax({
                 type: "post",
-                url: "/api/comment",
+                url: "/api/comments",
                 data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: value}),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",

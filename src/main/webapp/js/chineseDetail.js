@@ -1,4 +1,52 @@
-﻿// function like() {
+﻿// function like(el) {
+//     var total = document.getElementById('total');
+//     total.innerText = parseInt(total.innerText) + 1;
+//     el.disabled = true;
+//     $(function () {
+//         $("#icon").one("click", function () {})
+//     })
+//     let data ={
+//         objectType:'knowledge-point',
+//         objectId:g.getUrlParameter("id"),
+//         action:'like'
+//     }
+//     $.ajax({
+//         type: "post",
+//         url: "/api/logs",
+//         data: JSON.stringify(data),
+//         dataType: "json",
+//         contentType: "application/json; charset=utf-8",
+//         success: function (like) {
+//             alert(JSON.stringify(like))
+//         }
+//     })
+// }
+
+//onclick="commentLike(this)"
+// function commentLike(el) {
+//     var total = document.getElementById('all');
+//     total.innerText = parseInt(total.innerText) + 1;
+//     el.disabled = true;
+//     let data = {
+//         objectType: 'comment',
+//         id: data.comments.id,
+//         action: 'like'
+//     }
+// // let commentId=
+//     $.ajax({
+//         type: "post",
+//         url: "/api/comments",
+//         data: JSON.stringify(data),
+//         dataType: "json",
+//         contentType: "application/json; charset=utf-8",
+//         success: function (like) {
+//             alert(JSON.stringify(like))
+//         }
+//     })
+// }
+
+
+// function like() {
 //     let data = {
 //         userId: 1,
 //         objectType: 'knowledge-point',
@@ -25,10 +73,20 @@
 // }
 
 $(function () {
+
     // let liked = false
+    // let data ={
+    //     objectType:'knowledge-point',
+    //     objectId:g.getUrlParameter("id"),
+    //     action:'like'
+    // }
+    //
     // $.ajax({
     //     type: "get",
-    //     url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: g.getUrlParameter("id"), action: 'like'}),
+    //     url: "/api/logs",
+    //     data: JSON.stringify(data),
+    //
+    //     // url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: g.getUrlParameter("id"), action: 'like'}),
     //     // url: "api/logs?filter=" + JSON.stringify(g.getUrlParameter("id")),
     //     dataType: "json",
     //     success: function (like) {
@@ -154,6 +212,7 @@ $(function () {
 
                     let baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
                     for (let i = 0; i < knowledgePointList.length; ++i) {
+                        let id = g.getUrlParameter('id')
                         if (knowledgePointList[i].id == id) {
                             let prevIndex = i
                             let nextIndex = i
@@ -175,11 +234,115 @@ $(function () {
                         containerId: 'interaction'
                     })
 
+                   // GET /knowledge-points/.../is-self-like
+                    let id = g.getUrlParameter("id")
+                    $.ajax({
+                        type: "get",
+                        url: 'api/knowledge-points/' + id + '/is-self-like',
+                        dataType: "json",
+                        success: function (like) {
+                            let liked = like.like
+                            let icon = document.getElementById('icon');
+                            icon.addEventListener('click', function (e) {
+                                if (liked) {
+                                    $.ajax({
+                                        type: "put",
+                                        url: '/api/knowledge-points/' + id + '/unlike',
+                                        data: JSON.stringify({}),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (unlike) {
+                                            icon.setAttribute('src', 'img/zan.png');
+                                            --data.interaction.likeCount
+                                            e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                            liked = false;
+                                        }
+                                    })
+                                } else {
+                                    $.ajax({
+                                        type: "put",
+                                        url: '/api/knowledge-points/' + id + '/like',
+                                        data: JSON.stringify({}),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (like) {
+                                            icon.setAttribute('src', 'img/zan-over.png');
+                                            ++data.interaction.likeCount
+                                            e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                            liked = true;
+                                        }
+                                    })
+                                }
+                            }, false)
+                        },
+                        error: function (unlike) {
+                            //liked = false
+                        }
+                    })
+
                     proc({
                         templateId: 'comment-template',
                         data: data.comments,
                         containerId: 'comments'
                     })
+
+                    let commentIcon= document.getElementById('commentIcon');
+                    commentIcon.addEventListener('click', function (e) {// $('#comment-icon').on('click', function (e) {
+                        let id = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id
+                        let likeds
+                        $.ajax({
+                            type: "get",
+                            url: 'api/knowledge-points/' + id + '/is-self-like',
+                            dataType: "json",
+                            success: function (like) {
+                                likeds = true
+                            },
+                            error: function (unlike) {
+                                likeds = false
+                            }
+                        })
+                        if(likeds){
+                            let id = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id
+                            $.ajax({
+                                type: "post",
+                                url: '/api/knowledge-points/' + id + '/unlike',
+                                data: JSON.stringify({}),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (unlike) {
+                                    alert(JSON.stringify(unlike))
+                                    for (let i = 0; i < data.comments.length; ++i) {
+                                        if (data.comments[i].id == id) {
+                                            commentIcon.setAttribute('src', 'img/zan.png');
+                                            e.target.nextElementSibling.textContent = data.comments[i].likeCount - 1
+                                            likeds = false;
+                                            break
+                                        }
+                                    }
+                                }
+                            })
+                        }else{
+                            let commentId = e.target.parentNode.parentNode.parentNode.parentNode.dataset.id
+                            $.ajax({
+                                type: "put",
+                                url: '/api/knowledge-points/' + id + '/like',
+                                data: JSON.stringify({}),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (like) {
+                                    alert(JSON.stringify(like))
+                                    for (let i = 0; i < data.comments.length; ++i) {
+                                        if (data.comments[i].id == commentId) {
+                                            commentIcon.setAttribute('src', 'img/zan-over.png');
+                                            e.target.nextElementSibling.textContent = data.comments[i].likeCount + 1
+                                            likeds = true;
+                                            break
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    },false)
 
                     let findProblem = function (problemId) {
                         let problem = null
@@ -258,30 +421,6 @@ $(function () {
                         }
                     }, false)
 
-                    //POST /api/problems/{id}/answers
-                    // answer-records
-                    //
-                    //[1,3,4]
-                    // let problemId = clickedElement.parentNode.parentNode.dataset.id;
-                    // let index = getIndex(clickedElement.textContent)
-                    // let data ={
-                    //     objectType:'knowledge-point',
-                    //     objectId:'problemId',
-                    //     objectName:'index',
-                    //     action:'click'
-                    // }
-                    //
-                    // $.ajax({
-                    //     type: "post",
-                    //     url: 'api/answer-records',
-                    //     data: JSON.stringify(data),
-                    //     async: false,
-                    //     dataType: "json",
-                    //     contentType: "application/json; charset=utf-8",
-                    //     success: function (data) {
-                    //         alert(JSON.stringify(data))
-                    //     }
-                    // })
 
                 }
             })
