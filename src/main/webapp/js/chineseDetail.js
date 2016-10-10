@@ -285,64 +285,69 @@ $(function () {
                         data: data.comments,
                         containerId: 'comments'
                     })
-
-                    let commentIcon= document.getElementById('commentIcon');
-                    commentIcon.addEventListener('click', function (e) {// $('#comment-icon').on('click', function (e) {
+                    //
+                    // let commentIcon= document.getElementById('commentIcon');
+                    // commentIcon.addEventListener('click', function (e) {
+                         $('.ul01_imgzan').on('click', function (e) {
                         let id = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id
-                        let likeds
+                       // let likeds
                         $.ajax({
                             type: "get",
                             url: 'api/knowledge-points/' + id + '/is-self-like',
                             dataType: "json",
                             success: function (like) {
-                                likeds = true
+                               let  likeds = like.like;
+                                if(likeds){
+                                    let id = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id
+                                    $.ajax({
+                                        type: "post",
+                                        url: '/api/knowledge-points/' + id + '/unlike',
+                                        data: JSON.stringify({}),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (unlike) {
+                                            alert(JSON.stringify(unlike))
+                                            for (let i = 0; i < data.comments.length; ++i) {
+                                                if (data.comments[i].id == id) {
+                                                    commentIcon.setAttribute('src', 'img/zan.png');
+                                                    --data.comments[i].likeCount;
+                                                    e.target.nextElementSibling.textContent = data.comments[i].likeCount;
+                                                    likeds = false;
+                                                    break
+                                                }
+                                            }
+                                        }
+                                    })
+                                }else{
+                                    let commentId = e.target.parentNode.parentNode.parentNode.parentNode.dataset.id
+                                    $.ajax({
+                                        type: "put",
+                                        url: '/api/knowledge-points/' + id + '/like',
+                                        data: JSON.stringify({}),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (like) {
+                                            alert(JSON.stringify(like))
+                                            for (let i = 0; i < data.comments.length; ++i) {
+                                                if (data.comments[i].id == commentId) {
+                                                    commentIcon.setAttribute('src', 'img/zan-over.png');
+                                                    ++data.comments[i].likeCount;
+                                                    e.target.nextElementSibling.textContent = data.comments[i].likeCount;
+                                                    likeds = true;
+                                                    break
+                                                }
+                                            }
+                                        }
+                                    })
+                                }
+
                             },
                             error: function (unlike) {
                                 likeds = false
                             }
                         })
-                        if(likeds){
-                            let id = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id
-                            $.ajax({
-                                type: "post",
-                                url: '/api/knowledge-points/' + id + '/unlike',
-                                data: JSON.stringify({}),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function (unlike) {
-                                    alert(JSON.stringify(unlike))
-                                    for (let i = 0; i < data.comments.length; ++i) {
-                                        if (data.comments[i].id == id) {
-                                            commentIcon.setAttribute('src', 'img/zan.png');
-                                            e.target.nextElementSibling.textContent = data.comments[i].likeCount - 1
-                                            likeds = false;
-                                            break
-                                        }
-                                    }
-                                }
-                            })
-                        }else{
-                            let commentId = e.target.parentNode.parentNode.parentNode.parentNode.dataset.id
-                            $.ajax({
-                                type: "put",
-                                url: '/api/knowledge-points/' + id + '/like',
-                                data: JSON.stringify({}),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function (like) {
-                                    alert(JSON.stringify(like))
-                                    for (let i = 0; i < data.comments.length; ++i) {
-                                        if (data.comments[i].id == commentId) {
-                                            commentIcon.setAttribute('src', 'img/zan-over.png');
-                                            e.target.nextElementSibling.textContent = data.comments[i].likeCount + 1
-                                            likeds = true;
-                                            break
-                                        }
-                                    }
-                                }
-                            })
-                        }
-                    },false)
+
+                    })
 
                     let findProblem = function (problemId) {
                         let problem = null
