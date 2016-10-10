@@ -218,6 +218,13 @@
                 })
             }
         }
+
+        var enableActive = function(e) {
+            clearInterval(timeoutId);
+            var activeCodeButton = document.getElementById('activeCode');
+            activeCodeButton.disabled = false
+            activeCodeButton.value = '发送验证码'
+        }
     </script>
 
 </head>
@@ -262,16 +269,12 @@
     saveButton.addEventListener('click', save, false);
 
     var validCode = document.getElementById('validCode')
-    validCode.addEventListener('change', function(e) {
-        clearInterval(timeoutId);
-        activeCodeButton.value = '发送验证码'
-    }, false)
+
+    validCode.addEventListener('change', enableActive, false)
 
     var phoneNumber = document.getElementById('phoneNumber')
-    phoneNumber.addEventListener('change', function(e) {
-        clearInterval(timeoutId);
-        activeCodeButton.value = '发送验证码'
-    }, false)
+    phoneNumber.addEventListener('change', enableActive, false)
+
 
     //$('#activeCode').tap(activeCode)
 
