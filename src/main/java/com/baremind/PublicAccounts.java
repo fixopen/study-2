@@ -354,7 +354,7 @@ public class PublicAccounts {
                                                     result = userClickMine(p);
                                                     break;
                                                 case "ID_ACTIVE":
-                                                    result = activeClick(p);
+                                                    result = activeCard(p);
                                                     break;
                                                 case "ID_DIRECT_PLAY":
                                                     result = directPlay(p);
@@ -491,7 +491,7 @@ public class PublicAccounts {
         return result;
     }
 
-    Response activeClick(WechatPush p) {
+    Response activeCard(WechatPush p) {
         String baseUrl = "http://www.xiaoyuzhishi.com/validationCode.html";
         String result = processAndGenerate(p, "欢迎", "点击链接将进入卡激活页面", baseUrl);
         return Response.ok(result).build();
