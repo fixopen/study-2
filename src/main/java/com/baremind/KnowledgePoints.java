@@ -277,7 +277,7 @@ public class KnowledgePoints {
                                 qm.put("id", q.getId());
                                 qm.put("pinyin", q.getPinyin());
                                 qm.put("content", q.getContent());
-                                orderedPinyins.add(qm);
+                                orderedContents.add(qm);
                             }
                             break;
                     }
@@ -298,7 +298,7 @@ public class KnowledgePoints {
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
-                totalResult.put("pinyins", orderedPinyins);
+                /*totalResult.put("pinyins", orderedPinyins);*/
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
