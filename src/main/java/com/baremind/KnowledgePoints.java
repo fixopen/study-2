@@ -157,6 +157,7 @@ public class KnowledgePoints {
                 List<String> problemIds = new ArrayList<>();
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
+                List<String> pinyinIds = new ArrayList<>();
 
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
@@ -178,6 +179,9 @@ public class KnowledgePoints {
                         case "quote":
                             quoteIds.add(item.getObjectId().toString());
                             break;
+                        case "pinyinText":
+                            pinyinIds.add(item.getObjectId().toString());
+                            break;
                     }
                 }
 
@@ -197,9 +201,12 @@ public class KnowledgePoints {
 
                 List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
 
+                List<PinyinText> pinyinTextObject = getList(em, pinyinIds, PinyinText.class);
+
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
                 List<Object> orderedQuotes = new ArrayList<>();
+                List<Object> orderedPinyins = new ArrayList<>();
                 for (final KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
                         case "text":
@@ -263,6 +270,16 @@ public class KnowledgePoints {
                                 orderedQuotes.add(qm);
                             }
                             break;
+                        case "pinyinText":
+                            if (pinyinTextObject != null) {
+                                PinyinText q = findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> qm = new HashMap<>();
+                                qm.put("id", q.getId());
+                                qm.put("pinyin", q.getPinyin());
+                                qm.put("content", q.getContent());
+                                orderedPinyins.add(qm);
+                            }
+                            break;
                     }
                 }
 
@@ -281,6 +298,7 @@ public class KnowledgePoints {
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
+                totalResult.put("pinyins", orderedPinyins);
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
