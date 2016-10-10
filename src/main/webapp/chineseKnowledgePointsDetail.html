@@ -121,8 +121,8 @@
 </template>
 <template id="video-template">
         <span>
-           <a href="#"> <img src="${storePath}"/></a>
-            <!--<video src="${storePath}"></video>-->
+           <!--<a href="#"> <img src="${storePath}"/></a>-->
+            <video src="${storePath}"></video>
             <!--alt="${coverDescription}-->
         </span>
 </template>
@@ -161,7 +161,7 @@
     </div>
 </template>
 <template id="comment-template">
-    <ul class="muluBn_center" data-id="${id}">
+    <ul class="muluBn_center">
         <li class="liuyan_li lion_01">
             <img src="${avatar}" alt="">
         </li>
@@ -169,8 +169,8 @@
             <ul class="topUl">
                 <li class="topUl_top">
                     <div class="litop_fleft">${name}</div>
-                    <div class="litop_friht">
-                        <img class="ul01_imgzan" src="img/zan.png" alt="" >
+                    <div class="litop_friht" data-id="${id}">
+                        <img class="ul01_imgzan_" src="img/zan.png" alt="" >
                         <span class="ul01_count">${likeCount}</span>
                     </div>
                 </li>
