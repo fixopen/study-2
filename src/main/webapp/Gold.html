@@ -325,7 +325,35 @@
             }
         }
     </script>
+    <script>
 
+        var readyFunc = function onBridgeReady() {
+            var curid;
+            var curAudioId;
+            var playStatus = 0;
+
+
+            // 关闭当前webview窗口 - closeWindow
+            document.querySelector('#closeWindow').addEventListener('click', function(e){
+                WeixinJSBridge.invoke('closeWindow',{
+                },function(res){
+
+                    //alert(res.err_msg);
+
+                });
+            });
+
+        }
+
+
+        if (typeof WeixinJSBridge === "undefined") {
+            document.addEventListener('WeixinJSBridgeReady', readyFunc, false);
+        } else {
+            readyFunc();
+        }
+
+
+    </script>
 </head>
 <body>
 <div class="wrap"></div>
@@ -333,7 +361,7 @@
     <div class="cloud1"></div>
     <div class="blue-bg"></div>
     <div class="btm-img">
-        <a href="javascript:window.close();">返回首页学习</a>
+        <a href="javascript:void(0)" id="closeWindow">返回首页学习</a>
     </div>
 </div>
 <div class="cloud2"></div>
