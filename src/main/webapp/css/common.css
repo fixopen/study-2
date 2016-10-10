@@ -121,14 +121,15 @@ table {
 .save-btn {
     display: block;
     height: 3.75rem;
-    line-height: 3.75rem;
+    width: 90%;
+   /* line-height: 3.75rem;*/
     border-radius: 5px;
     text-align: center;
-    font-size: 1.0625rem;
+    font-size: 18px;
+    margin-left: 5%;
+    margin-right: 5%;
     background-color: #fe6568;
     color: #fff;
-    margin-bottom: 0.53125rem;
-    /*text-decoration: underline overline;*/
     text-decoration: none;
 }
 
@@ -136,7 +137,7 @@ table {
     text-decoration: underline overline;
 }
 
-.wrap {
+/*.wrap {
     position: absolute;
     top: 0;
     left: 0;
@@ -152,4 +153,4 @@ table {
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
     font-family: "鑻规柟", "Microsoft YaHei";
-}
+}*/
