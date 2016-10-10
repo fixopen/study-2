@@ -1007,7 +1007,7 @@
                             content: currentSelectedElement.querySelector('[data-type="content"]').value,
                             source: currentSelectedElement.querySelector('[data-type="source"]').value
                         }
-                        alert(JSON.stringify(data))
+                        /*alert(JSON.stringify(data))*/
                         //{"content":"第一的腰包","source":"——礼拜"}
                         $.ajax({
                             type: "post",
@@ -1050,7 +1050,7 @@
                             pinyin: currentSelectedElement.querySelector('[data-type="pinyin"]').value,
                             content: currentSelectedElement.querySelector('[data-type="content"]').value
                         }
-                        alert(JSON.stringify(data))
+                       /* alert(JSON.stringify(data))*/
                         //{"content":"第一的腰包","source":"——礼拜"}
                         $.ajax({
                             type: "post",
@@ -1063,7 +1063,7 @@
                                 currentSelectedElement.dataset.id = pinyin.id
                             },
                             error: function (pinyin) {
-                                alert(JSON.stringify(pinyin))
+                                /*alert(JSON.stringify(pinyin))*/
                                 alert("修改失败")
                             }
                         })
