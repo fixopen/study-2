@@ -355,7 +355,12 @@ public class PublicAccounts {
                                                     break;
                                                 case "ID_ACTIVE":
                                                     result = activeClick(p);
+                                                    break;
+                                                case "ID_DIRECT_PLAY":
+                                                    result = directPlay(p);
+                                                    break;
                                                 default:
+                                                    result = Response.ok().build();
                                                     break;
                                             }
                                             break;
@@ -439,7 +444,21 @@ public class PublicAccounts {
         return result;
     }
 
-    Response activeClick(WechatPush p) {
+    private static String generate(WechatPush p, String content) {
+        String openId = p.getFromUserName();
+        long secondCount = new Date().getTime() / 1000;
+        String currentEpochTime = Long.toString(secondCount);
+        String result = "<xml>\n" +
+            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+            "   <MsgType><![CDATA[text]]></MsgType>\n" +
+            "   <Content><![CDATA[" + content + "]]></Content>\n" +
+            "</xml>";
+        return result;
+    }
+
+    private static String processAndGenerate(WechatPush p, String title, String content, String baseUrl) {
         String openId = p.getFromUserName();
         WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
         Date now = new Date();
@@ -452,10 +471,8 @@ public class PublicAccounts {
         }
 
         Session s = putSession(now, userId);
-
         long secondCount = now.getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
-        String baseUrl = "http://www.xiaoyuzhishi.com/validationCode.html";
 
         String result = "<xml>\n" +
             "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
@@ -465,55 +482,29 @@ public class PublicAccounts {
             "   <ArticleCount>1</ArticleCount>\n" +
             "   <Articles>\n" +
             "       <item>\n" +
-            "           <Title><![CDATA[欢迎]]></Title> \n" +
-            "           <Description><![CDATA[点击链接将进入卡激活页面]]></Description>\n" +
+            "           <Title><![CDATA[" + title + "]]></Title> \n" +
+            "           <Description><![CDATA[" + content + "]]></Description>\n" +
             "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
             "       </item>\n" +
             "   </Articles>\n" +
             "</xml>";
+        return result;
+    }
+
+    Response activeClick(WechatPush p) {
+        String baseUrl = "http://www.xiaoyuzhishi.com/validationCode.html";
+        String result = processAndGenerate(p, "欢迎", "点击链接将进入卡激活页面", baseUrl);
         return Response.ok(result).build();
     }
 
     Response userClickMine(WechatPush p) {
-        String openId = p.getFromUserName();
-//        WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
-//        Date now = new Date();
-//        Long userId;
-//        if (dbWechatUser == null) {
-//            User user = insertUserInfoByOpenId(now, openId);
-//            userId = user.getId();
-//        } else {
-//            userId = dbWechatUser.getUserId();
-//        }
-//
-//        Session s = putSession(now, userId);
+        String result = generate(p, "系统不断升级中,请稍晚几天再激活。不影响学生上直播课。请关注微信号的公告提示。");
+        return Response.ok(result).build();
+    }
 
-        long secondCount = new Date().getTime() / 1000;
-        String currentEpochTime = Long.toString(secondCount);
-//        String baseUrl = "http://www.xiaoyuzhishi.com/validationCode.html";
-
-//        String result = "<xml>\n" +
-//            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-//            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-//            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-//            "   <MsgType><![CDATA[news]]></MsgType>\n" +
-//            "   <ArticleCount>1</ArticleCount>\n" +
-//            "   <Articles>\n" +
-//            "       <item>\n" +
-//            "           <Title><![CDATA[欢迎]]></Title> \n" +
-//            "           <Description><![CDATA[点击链接将进入卡激活页面]]></Description>\n" +
-//            "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
-//            "       </item>\n" +
-//            "   </Articles>\n" +
-//            "</xml>";
-
-        String result = "<xml>\n" +
-            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-            "   <MsgType><![CDATA[text]]></MsgType>\n" +
-            "   <Content><![CDATA[系统不断升级中,请稍晚几天再激活。不影响学生上直播课。请关注微信号的公告提示。]]></Content>\n" +
-            "</xml>";
+    Response directPlay(WechatPush p) {
+        String baseUrl = "http://www.xiaoyuzhishi.com/content/direct-play.html";
+        String result = processAndGenerate(p, "欢迎", "点击链接将进入卡激活页面", baseUrl);
         return Response.ok(result).build();
     }
 
