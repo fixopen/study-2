@@ -121,6 +121,8 @@
 
         var openId = getUrlParameter('openid');
 
+        var timeoutId;
+
         ajax('GET', 'api/wechat-users/' + openId + "/identities", [
             {name: 'Accept', value: 'application/json'}
         ], null, function (ids) {
@@ -175,7 +177,6 @@
 //                    tips.innerHTML = '发送失败，请重新获取验证码'
 //                }
 //            })
-                var timeoutId;
                 var timeoutCount = 180;
                 var proc = function () {
                     e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
@@ -323,6 +324,12 @@
 
     var saveButton = document.getElementById('save');
     saveButton.addEventListener('click', save, false);
+
+    var validCode = document.getElementById('validCode')
+    validCode.addEventListener('change', function(e) {
+        clearInterval(timeoutId);
+        activeCodeButton.innerHTML = 'cc'
+    }, false)
 
     //$('#activeCode').tap(activeCode)
 
