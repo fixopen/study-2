@@ -1,5 +1,5 @@
 ﻿$(function () {
-// message---------
+// message
     let createComment = document.getElementById('createComment');
     createComment.addEventListener('click', writeMessage, false);
     function writeMessage() {
@@ -92,6 +92,89 @@
                         }
                     })
 
+                    // let type=
+                    // if(type="单选题"){
+                    //
+                    // }
+                    //answers
+                    let findProblem = function (problemId) {
+                        let problem = null
+                        for (let i = 0; i < data.problems.length; ++i) {
+                            if (data.problems[i].id == problemId) {
+                                problem = data.problems[i]
+                                break
+                            }
+                        }
+                        return problem
+                    }
+
+                    let getIndex = function (content) {
+                        let index = -1
+                        switch (content) {
+                            case 'A':
+                                index = 0
+                                break
+                            case 'B':
+                                index = 1
+                                break
+                            case 'C':
+                                index = 2
+                                break
+                            case 'D':
+                                index = 3
+                                break
+                            default:
+                                break
+                        }
+                        return index
+                    }
+
+                    let compareAnswer = function (index, standardAnswers) {
+                        let finded = false
+                        for (let j = 0; j < standardAnswers.length; ++j) {
+                            if (index == standardAnswers[j].name) {
+                                finded = true
+                                break
+                            }
+                        }
+                        return finded
+                    }
+
+
+                    let problemContainer = document.getElementById('problem')
+                    problemContainer.addEventListener('click', function (e) {
+                        //e.currentTarget == problemContainer
+                        let clickedElement = e.target
+                        let trueImage = document.createElement('img')
+                        trueImage.setAttribute('class', 'daan_error')
+                        trueImage.setAttribute('src', 'img/true.png')
+                        trueImage.setAttribute('alt', '')
+
+                        let falseImage = document.createElement('img')
+                        falseImage.setAttribute('class', 'daan_error')
+                        falseImage.setAttribute('src', 'img/error.png')
+                        falseImage.setAttribute('alt', '')
+
+                        if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
+                            let problemId = clickedElement.parentNode.parentNode.dataset.id
+                            let problem = findProblem(problemId)
+                            if (problem) {
+                                let index = getIndex(clickedElement.textContent)
+                                let r = compareAnswer(index, problem.standardAnswers)
+                                if (r) {
+                                    clickedElement.parentNode.addClass('daanLi_true')
+                                    clickedElement.innerHTML = ''
+                                    clickedElement.appendChild(trueImage)
+                                } else {
+                                    clickedElement.parentNode.addClass('daanLi_error')
+                                    clickedElement.innerHTML = ''
+                                    clickedElement.appendChild(falseImage)
+                                }
+                            }
+                        }
+                    }, false)
+
+                    //上一课下一课
                     let baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
                     for (let i = 0; i < knowledgePointList.length; ++i) {
                         let id = g.getUrlParameter('id')
@@ -116,7 +199,7 @@
                         containerId: 'interaction'
                     })
 
-                   // GET /knowledge-points/.../is-self-like
+                   // likes
                     let id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
@@ -216,87 +299,7 @@
                                 }
                             }
                         })
-
                     })
-
-                    let findProblem = function (problemId) {
-                        let problem = null
-                        for (let i = 0; i < data.problems.length; ++i) {
-                            if (data.problems[i].id == problemId) {
-                                problem = data.problems[i]
-                                break
-                            }
-                        }
-                        return problem
-                    }
-
-                    let getIndex = function (content) {
-                        let index = -1
-                        switch (content) {
-                            case 'A':
-                                index = 0
-                                break
-                            case 'B':
-                                index = 1
-                                break
-                            case 'C':
-                                index = 2
-                                break
-                            case 'D':
-                                index = 3
-                                break
-                            default:
-                                break
-                        }
-                        return index
-                    }
-
-                    let compareAnswer = function (index, standardAnswers) {
-                        let finded = false
-                        for (let j = 0; j < standardAnswers.length; ++j) {
-                            if (index == standardAnswers[j].name) {
-                                finded = true
-                                break
-                            }
-                        }
-                        return finded
-                    }
-
-
-                    let problemContainer = document.getElementById('problem')
-                    problemContainer.addEventListener('click', function (e) {
-                        //e.currentTarget == problemContainer
-                        let clickedElement = e.target
-                        let trueImage = document.createElement('img')
-                        trueImage.setAttribute('class', 'daan_error')
-                        trueImage.setAttribute('src', 'img/true.png')
-                        trueImage.setAttribute('alt', '')
-
-                        let falseImage = document.createElement('img')
-                        falseImage.setAttribute('class', 'daan_error')
-                        falseImage.setAttribute('src', 'img/error.png')
-                        falseImage.setAttribute('alt', '')
-
-                        if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            let problemId = clickedElement.parentNode.parentNode.dataset.id
-                            let problem = findProblem(problemId)
-                            if (problem) {
-                                let index = getIndex(clickedElement.textContent)
-                                let r = compareAnswer(index, problem.standardAnswers)
-                                if (r) {
-                                    clickedElement.parentNode.addClass('daanLi_true')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(trueImage)
-                                } else {
-                                    clickedElement.parentNode.addClass('daanLi_error')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(falseImage)
-                                }
-                            }
-                        }
-                    }, false)
-
-
                 }
             })
         }
