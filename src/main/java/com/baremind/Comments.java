@@ -1,6 +1,7 @@
 package com.baremind;
 
 import com.baremind.data.Comment;
+import com.baremind.data.Log;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -15,6 +16,56 @@ import java.util.Map;
 
 @Path("comments")
 public class Comments {
+    @PUT
+    @Path("{id}/like")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Log log = Logs.insert(sessionId, "comment", id, "like");
+            result = Response.ok(new Gson().toJson(log)).build();
+        }
+        return result;
+    }
+
+    @PUT
+    @Path("{id}/unlike")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Long count = Logs.deleteLike(sessionId, "comment", id);
+            result = Response.ok("{\"count\":" + count.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/like-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Long likeCount = Logs.getStatsCount("comment", id, "like");
+            result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/is-self-like")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Boolean has = Logs.has(JPAEntry.getLoginId(sessionId), "comment", id, "like");
+            result = Response.ok("{\"like\":" + has.toString() + "}").build();
+        }
+        return result;
+    }
+
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
