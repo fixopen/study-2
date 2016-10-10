@@ -114,6 +114,12 @@
 <template id="content-text-template">
     <p class="mulu_dp">${content}</p>
 </template>
+<template id="content-pinyin-template">
+    <ruby>
+        <p class="mulu_dp">${content}</p>
+        <rt>${pinyin}</rt>
+    </ruby>
+</template>
 <template id="content-img-template">
         <span>
         <img class="muld_images" src="${href}" alt="${description}">
@@ -121,8 +127,8 @@
 </template>
 <template id="video-template">
         <span>
-           <!--<a href="#"> <img src="${storePath}"/></a>-->
-            <video src="${storePath}"></video>
+           <a href="#"> <img src="${storePath}"/></a>
+            <!--<video src="${storePath}"></video>-->
             <!--alt="${coverDescription}-->
         </span>
 </template>

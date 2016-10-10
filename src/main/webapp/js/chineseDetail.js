@@ -71,6 +71,7 @@
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
+                            {type: 'pinyin', templateId: 'content-pinyin-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
