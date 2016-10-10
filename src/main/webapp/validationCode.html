@@ -253,6 +253,13 @@
 //                }
 //            })
         }
+
+        var enableActive = function(e) {
+            clearInterval(timeoutId);
+            var activeCodeButton = document.getElementById('activeCode');
+            activeCodeButton.disabled = false
+            activeCodeButton.value = 'cc'
+        }
     </script>
 
 </head>
@@ -296,10 +303,10 @@
     saveButton.addEventListener('click', save, false);
 
     var validCode = document.getElementById('validCode')
-    validCode.addEventListener('change', function(e) {
-        clearInterval(timeoutId);
-        activeCodeButton.innerHTML = 'cc'
-    }, false)
+    validCode.addEventListener('change', enableActive, false)
+
+    var phoneNumber = document.getElementById('phoneNumber')
+    phoneNumber.addEventListener('change', enableActive, false)
 
     //$('#activeCode').tap(activeCode)
 
