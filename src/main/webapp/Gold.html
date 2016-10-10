@@ -7,7 +7,6 @@
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui"/>
     <link rel="stylesheet" href="css/Cold.css">
     <script>
-
         function Coin(opts) {
             //默认参数
             this.defaults = {
@@ -26,6 +25,7 @@
             this.wrapHeight = 0;
             this._init();
         }
+
         Coin.prototype = {
             constructor: Coin,
             /**
@@ -285,8 +285,6 @@
             var oBtn = document.getElementById('btn1');
             init();
             var coin = new Coin();
-            // oBtn.onclick=function(){
-            // }
             var SHAKE_THRESHOLD = 400;
             var last_update = 0;
             var index = 0;
@@ -325,35 +323,6 @@
             }
         }
     </script>
-    <script>
-
-        var readyFunc = function onBridgeReady() {
-            var curid;
-            var curAudioId;
-            var playStatus = 0;
-
-
-            // 关闭当前webview窗口 - closeWindow
-            document.querySelector('#closeWindow').addEventListener('click', function(e){
-                WeixinJSBridge.invoke('closeWindow',{
-                },function(res){
-
-                    //alert(res.err_msg);
-
-                });
-            });
-
-        }
-
-
-        if (typeof WeixinJSBridge === "undefined") {
-            document.addEventListener('WeixinJSBridgeReady', readyFunc, false);
-        } else {
-            readyFunc();
-        }
-
-
-    </script>
 </head>
 <body>
 <div class="wrap"></div>
@@ -371,5 +340,23 @@
         <img src="images/cg.png" alt="">
     </div>
 </div>
+<script>
+    //var readyFunc = function onBridgeReady() {
+    //    document.querySelector('#closeWindow').addEventListener('click', function (e) {
+    //        WeixinJSBridge.invoke('closeWindow', {}, function (res) {});
+    //    }, false);
+    //}
+
+    //if (typeof WeixinJSBridge === "undefined") {
+    //    document.addEventListener('WeixinJSBridgeReady', readyFunc, false);
+    //} else {
+    //    readyFunc();
+    //}
+
+    var closeWindow = document.getElementById('closeWindow')
+    closeWindow.addEventListener('click', function(e) {
+        WeixinJSBridge.invoke('closeWindow', {}, function (res) {})
+    }, false)
+</script>
 </body>
 </html>
