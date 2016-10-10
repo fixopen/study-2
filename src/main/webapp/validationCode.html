@@ -22,7 +22,12 @@
     <script type="text/javascript" src="util.js"></script>
     -->
     <script>
-        function test() {
+        window.onload =function() {
+            document.getElementById("cardNo").onkeyup =function() {
+                this.value =this.value.replace(/\s/g,'').replace(/\D/g,'').replace(/(\d{4})(?=\d)/g,"$1 ");;
+            };
+        };
+       /* function test() {
             var len = document.getElementById('cardNo').value.length;
             var reg = /\s+/g;
             var card_ = "";
@@ -38,7 +43,8 @@
                 }
             }
             document.getElementById("cardNo").value = card_;
-        }
+        }*/
+
 
         var getUrlParameter = function (name) {
             var result = null;
@@ -285,9 +291,10 @@
         欢迎来到激活卡页面!
     </div>
     <br/>
-
-    <input type="button" id="save" style="width: 100%" class="save-btn" value="确 认">
+    <button id="save"  style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+    margin-right: 5%; background-color: #fe6568; border: none">确 认</button>
 </div>
+
 <script>
     var activeCodeButton = document.getElementById('activeCode');
     activeCodeButton.addEventListener('click', activeCode, false);
