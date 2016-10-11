@@ -451,7 +451,11 @@ public class PublicAccounts {
         User user = new User();
         user.setId(userId);
         user.setHead(userInfo.headimgurl);
-        user.setName(userInfo.nickname);
+        if (userInfo.nickname == null) {
+            user.setName("");
+        } else {
+            user.setName(userInfo.nickname);
+        }
         //u.setLoginName(us.nickname);
         user.setSex(userInfo.sex);
         user.setCreateTime(now);
