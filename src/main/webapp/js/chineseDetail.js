@@ -71,10 +71,55 @@
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
-                            {type: 'pinyin', templateId: 'content-pinyin-template'},
+                            {type: 'pinyinText', templateId: 'content-pinyin-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
+
+                    // pinyin
+                    let pinyins = []
+                    for(let i=0;i<data.contents.length;i++){
+                        if (data.contents[i].type == 'pinyinText') {
+                            pinyins.push(data.contents[i])
+                        }
+                    }
+
+                    let ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','']
+
+                    let isP = function(c) {
+                        let result = false
+                        for (let i = 0; i < ps.length; ++i) {
+                            if (ps[i] == c) {
+                                result = true
+                                break
+                            }
+                        }
+                        return result
+                    }
+
+                    for (let i = 0; i < pinyins.length; ++i) {
+                        let pinyinItem = pinyins[i]
+                        let pinyin = pinyinItem.pinyin.split(' ')
+                        let chineseIndex = 0;
+                        for (let j = 0; j < pinyin.length; ++j) {
+                            let pinyinValue = pinyin[j]
+                            let c = pinyinItem.content[chineseIndex]
+                            ++chineseIndex
+                            if (isP(c)) {
+                                e = c
+                                c = pinyinItem.content[chineseIndex]
+                                ++chineseIndex
+                            }
+                            //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
+                            bind(e, {"pinyin": pinyinValue, "content":c})
+                            e
+                        }
+                      //  let pinyin=data.contents[i].pinyin.split(" ");
+                        //alert(pinyin);
+                        //let content=data.contents[i].content.split('');
+                        //alert(content);
+
+                    }
 
                     proc({
                         templateId: 'video-template',
@@ -97,6 +142,7 @@
                     // if(type="单选题"){
                     //
                     // }
+
                     //answers
                     let findProblem = function (problemId) {
                         let problem = null

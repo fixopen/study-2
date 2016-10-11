@@ -42,12 +42,20 @@ a {
     background-color: #fffcf2;
     box-sizing: border-box;
 }
-
+/*拼音*/
 .mulu_dp {
     text-indent: 2em;
     margin-bottom: 1rem;
+    /*letter-spacing: 0.625rem;*/
 }
-
+/*拼音*/
+.rt{
+    font-size: 0.75rem;
+    /*text-indent: 2em;*/
+    /*word-spacing:-2px;*/
+    /*letter-spacing: 1px;*/
+    word-spacing: -9em;
+}
 .mulu_dp span {
     display: block;
     text-align: right;
