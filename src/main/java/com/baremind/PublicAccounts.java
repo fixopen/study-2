@@ -811,37 +811,12 @@ public class PublicAccounts {
 
         Response result = null;
         try {
-            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         return result;
-        //String result = "";
-        //String filePath = request.getServletContext().getRealPath("/activeCard.html");
-        //try {
-        //    FileReader fr = new FileReader(filePath);
-        //    char[] buffer = new char[4 * 1024];
-        //    for (; ; ) {
-        //        int length = fr.read(buffer);
-        //        if (length == -1) {
-        //            break;
-        //        }
-        //        result += new String(buffer, 0, length);
-        //    }
-        //    result += userId.toString() + "\n";
-        //    String file2Path = request.getServletContext().getRealPath("/activeCard2.html");
-        //    FileReader fr2 = new FileReader(file2Path);
-        //    for (; ; ) {
-        //        int length = fr2.read(buffer);
-        //        if (length == -1) {
-        //            break;
-        //        }
-        //        result += new String(buffer, 0, length);
-        //    }
-        //} catch (Exception e) {
-        //    e.printStackTrace();
-        //}
-        //return Response.ok(result, "text/html").cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
     }
 
     //获取微信服务器ID
