@@ -597,6 +597,8 @@ public class PublicAccounts {
     public static WechatUser fillWechatUserByWechatUserInfo(Long userId, WechatUserInfo userInfo) {
         WechatUser wechatUser = new WechatUser();
         wechatUser.setId(IdGenerator.getNewId());
+        Logs.insert(0l, "debug", 12l, wechatUser.getId().toString());
+        wechatUser.setUserId(userId);
         wechatUser.setOpenId(userInfo.openid);
         wechatUser.setRefId(userInfo.unionid);
         wechatUser.setCity(userInfo.city);
@@ -618,7 +620,6 @@ public class PublicAccounts {
         wechatUser.setGroupId(userInfo.groupid);
         //user.setToken();
         wechatUser.setUnionId(userInfo.unionid);
-        wechatUser.setUserId(userId);
         return wechatUser;
     }
 
