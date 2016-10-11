@@ -70,6 +70,7 @@
             <li><input type="text" data-type="option" data-identity="3"/></li>
             <li><input type="text" data-type="option" data-identity="4"/></li>
         </ol>
+        视频图片<input type="file" data-type="videoImg"/>
         视频路径(手动输入)<input type="text" data-type="video"/>
     </div>
 </template>
@@ -77,6 +78,12 @@
     <div data-type="imageText">
         图片<input type="file" data-type="image"/>
         文本<textarea data-type="content"></textarea>
+    </div>
+</template>
+<template id="video-template">
+    <div data-type="video">
+        视频图片<input type="file" data-type="cover"/>
+        视频路径<textarea data-type="storePath"></textarea>
     </div>
 </template>
 <template id="quote-template">
@@ -662,7 +669,7 @@
             currentSelectedElement = ImageArea
         }, false)
 
-        let appendVideo = document.getElementById('appendVideo')
+        /*let appendVideo = document.getElementById('appendVideo')
         appendVideo.addEventListener('click', function (e) {
             let VideoArea = document.createElement('input')
             let orderValue = 1
@@ -671,7 +678,7 @@
             VideoArea.setAttribute("data-type", 'video')
             contents.appendChild(VideoArea)
             currentSelectedElement = VideoArea
-        }, false)
+        }, false)*/
 
         let appendProblem = document.getElementById('appendProblem')
         appendProblem.addEventListener('click', function (e) {
@@ -693,6 +700,14 @@
         appendPinyinText.addEventListener('click', function (e) {
             let py = document.getElementById('pinyinText-template')
             let p = py.content.children[0].cloneNode(true)
+            contents.appendChild(p)
+            currentSelectedElement = p
+        }, false)
+
+        let appendVideo = document.getElementById('appendVideo')
+        appendVideo.addEventListener('click', function (e) {
+            let video = document.getElementById('video-template')
+            let p = video.content.children[0].cloneNode(true)
             contents.appendChild(p)
             currentSelectedElement = p
         }, false)
@@ -777,46 +792,6 @@
                         request.open("POST", "/api/medias");
                         request.send(formData);
                         alert("添加成功")
-                    }
-                    break;
-                case 'video':
-                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
-                        //put
-                        currentId = currentSelectedElement.dataset.id
-                        var data = {};
-                        data.storePath = currentSelectedElement.value
-
-                        $.ajax({
-                            type: "put",
-                            url: "/api/videos/" + currentId,
-                            data: JSON.stringify(data),
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (volumeData) {
-                                alert("修改成功")
-                            },
-                            error: function (volumeData) {
-                                alert("修改失败")
-                            }
-                        })
-
-                    } else {
-                        //post
-                        var data = {};
-                        data.storePath = currentSelectedElement.value
-                        $.ajax({
-                            type: "post",
-                            url: "/api/videos",
-                            data: JSON.stringify(data),
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (videos) {
-                                alert("添加成功")
-                                currentSelectedElement.dataset.id = videos.id
-                            }, error: function (videos) {
-                                alert("添加失败")
-                            }
-                        })
                     }
                     break;
                 case'problem':
@@ -980,6 +955,60 @@
                         request.open("POST", "/api/image-texts");
                         request.send(formData);
                         alert("添加成功")
+                    }
+                    break;
+                case 'video':
+                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                        //put
+                        alert("视频不支持修改")
+                       /* currentId = currentSelectedElement.dataset.id
+                        var data = {};
+                        data.storePath = currentSelectedElement.value
+
+                        $.ajax({
+                            type: "put",
+                            url: "/api/videos/" + currentId,
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (volumeData) {
+                                alert("修改成功")
+                            },
+                            error: function (volumeData) {
+                                alert("修改失败")
+                            }
+                        })*/
+
+                    } else {
+                        //post
+                        var formData = new FormData();
+                        formData.append("file", currentSelectedElement.querySelector('[data-type="cover"]').files[0]);
+                        //formData.append("file", document.getElementById('file').files[0]);
+                        var request = new XMLHttpRequest();
+                        request.onreadystatechange = function () {
+                            if (request.status == 200) {
+                                returndata = JSON.parse(request.responseText)
+                                /*currentSelectedElement.dataset.id = returndata.id*/
+                                var data = {};
+                                data.storePath = currentSelectedElement.querySelector('[data-type="storePath"]').value,
+                                data.cover = returndata.id
+                                $.ajax({
+                                    type: "post",
+                                    url: "/api/videos",
+                                    data: JSON.stringify(data),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (videos) {
+                                        alert("添加成功")
+                                        currentSelectedElement.dataset.id = videos.id
+                                    }, error: function (videos) {
+                                        alert("添加失败")
+                                    }
+                                })
+                            }
+                        }
+                        request.open("POST", "/api/medias");
+                        request.send(formData);
                     }
                     break;
                 case 'quote':

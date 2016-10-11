@@ -28,43 +28,22 @@ public class Problem {
     @Column(name = "title")
     private String title;
 
-   /* //@Column(name = "options")
-    @Array(databaseType="text[]")
-    private List<String> options;*/
-
-//    @SuppressWarnings("JpaAttributeTypeInspection")
-//    @Column(name = "options", columnDefinition = "name[]")
-//    @Convert(converter = ListToArrayConverter.class)
-//    private List<String> options;
-
-//    @Transient
-//    private String[] transferOptions;
-
-//    void f() {
-//        if (object instanceof UUID) {
-//            PGobject pg = new PGobject();
-//            pg.setType("uuid");
-//            try {
-//                pg.setValue(object.toString());
-//            } catch (SQLException e) {
-//                logger.error("Failed to convert value: " + object, e);
-//            }
-//            return pg;
-//        }
-//        return null;
-//    }
-
-    /*@Column(name = "standard_answers")
-    private int[] standardAnswers;*/
-
-    /*@Column(name = "order")
-    private int order;*/
-
     @Column(name = "store_path")
     private String storePath;
 
     @Column(name = "video_url")
     private String videoUrl;
+
+    @Column(name = "video_img")
+    private String videoImg;
+
+    public String getVideoImg() {
+        return videoImg;
+    }
+
+    public void setVideoImg(String videoImg) {
+        this.videoImg = videoImg;
+    }
 
     //{"videoUrl":"/data","storePath":"d:/1474270688455.jpeg","standardAnswers":[0,1],"options":["das","asdf","afds","adf"],"title":"dfas","knowledgePointId":5,"volumeId":1,"subjectId":1}
     public Long getId() {

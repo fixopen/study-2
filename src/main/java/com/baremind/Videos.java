@@ -1,20 +1,79 @@
 package com.baremind;
 
+
 import com.baremind.data.Video;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 @Path("videos")
 public class Videos {
+
+    /*@POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                Part p = request.getPart("file");
+                String contentType = p.getContentType();
+                InputStream inputStream = p.getInputStream();
+                long now = new Date().getTime();
+                String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
+                if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
+                    String fileName = now + "." + postfix;
+                    String pyshicalpath = Properties.getPropertyValue("physicalpath");
+                    String uploadedFileLocation = pyshicalpath + fileName;
+                    File file = new File(uploadedFileLocation);
+                    FileOutputStream w = new FileOutputStream(file);
+                    CharacterEncodingFilter.saveFile(w, inputStream);
+
+                    String content = request.getParameter("content");
+                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
+                    Video video = new Video();
+                    video.setId(IdGenerator.getNewId());
+                    String virtualPath = Properties.getPropertyValue("virtualpath") + fileName;
+                    video.setStorePath(virtualPath);
+                    video.setCover();
+                    *//*imageText.setExt(postfix);
+                    imageText.setMimeType(contentType);
+                    imageText.setName(fileName);
+                    imageText.setSize(p.getSize());*//*
+
+                    *//*imageText.setStorePath(virtualPath);*//*
+                    imageText.setContent(content);
+                    JPAEntry.genericPost(imageText);
+
+                    result = Response.ok(new Gson().toJson(imageText)).build();
+                } else {
+                    result = Response.status(415).build();
+                    //上传图片的格式不正确
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServletException e) {
+
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }*/
+
     @POST//添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -93,6 +152,11 @@ public class Videos {
                 String storePath = video.getStorePath();
                 if (storePath != null) {
                     existvideo.setStorePath(storePath);
+                }
+
+                Long cover = video.getCover();
+                if (cover != 0) {
+                    existvideo.setCover(cover);
                 }
 
                /* Long duration = video.getDuration();
