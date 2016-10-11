@@ -418,6 +418,126 @@ public class PublicAccounts {
         return result;
     }
 
+    public static class WechatUserInfo {
+        private int subscribe;
+        private String openid;
+        private String nickname;
+        private Long sex;
+        private String language;
+        private String city;
+        private String province;
+        private String country;
+        private String headimgurl;
+        private int subscribe_time;
+        private String unionid;
+        private String remark;
+        private int groupid;
+
+        public int getSubscribe() {
+            return subscribe;
+        }
+
+        public void setSubscribe(int subscribe) {
+            this.subscribe = subscribe;
+        }
+
+        public String getOpenid() {
+            return openid;
+        }
+
+        public void setOpenid(String openid) {
+            this.openid = openid;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public Long getSex() {
+            return sex;
+        }
+
+        public void setSex(Long sex) {
+            this.sex = sex;
+        }
+
+        public String getLanguage() {
+            return language;
+        }
+
+        public void setLanguage(String language) {
+            this.language = language;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
+        public String getProvince() {
+            return province;
+        }
+
+        public void setProvince(String province) {
+            this.province = province;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public String getHeadimgurl() {
+            return headimgurl;
+        }
+
+        public void setHeadimgurl(String headimgurl) {
+            this.headimgurl = headimgurl;
+        }
+
+        public int getSubscribe_time() {
+            return subscribe_time;
+        }
+
+        public void setSubscribe_time(int subscribe_time) {
+            this.subscribe_time = subscribe_time;
+        }
+
+        public String getUnionid() {
+            return unionid;
+        }
+
+        public void setUnionid(String unionid) {
+            this.unionid = unionid;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+
+        public int getGroupid() {
+            return groupid;
+        }
+
+        public void setGroupid(int groupid) {
+            this.groupid = groupid;
+        }
+    }
+
     public static WechatUserInfo getUserInfo(String openId) {
         // http请求方式: GET（请使用https协议）
         //https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
@@ -450,10 +570,22 @@ public class PublicAccounts {
         long userId = IdGenerator.getNewId();
         User user = new User();
         user.setId(userId);
-        user.setHead(userInfo.headimgurl);
-        user.setName(userInfo.nickname);
+        if (userInfo.headimgurl == null) {
+            user.setHead("");
+        } else {
+            user.setHead(userInfo.headimgurl);
+        }
+        if (userInfo.nickname == null) {
+            user.setName("");
+        } else {
+            user.setName(userInfo.nickname);
+        }
         //u.setLoginName(us.nickname);
-        user.setSex(userInfo.sex);
+        if (userInfo.sex == null) {
+            user.setSex(0l);
+        } else {
+            user.setSex(userInfo.sex);
+        }
         user.setCreateTime(now);
         user.setUpdateTime(now);
         user.setIsAdministrator(false);
@@ -465,6 +597,8 @@ public class PublicAccounts {
     public static WechatUser fillWechatUserByWechatUserInfo(Long userId, WechatUserInfo userInfo) {
         WechatUser wechatUser = new WechatUser();
         wechatUser.setId(IdGenerator.getNewId());
+        //Logs.insert(0l, "debug", 12l, wechatUser.getId().toString());
+        wechatUser.setUserId(userId);
         wechatUser.setOpenId(userInfo.openid);
         wechatUser.setRefId(userInfo.unionid);
         wechatUser.setCity(userInfo.city);
@@ -486,7 +620,6 @@ public class PublicAccounts {
         wechatUser.setGroupId(userInfo.groupid);
         //user.setToken();
         wechatUser.setUnionId(userInfo.unionid);
-        wechatUser.setUserId(userId);
         return wechatUser;
     }
 
@@ -574,7 +707,7 @@ public class PublicAccounts {
     }
 
     Response activeCard(WechatPush p) {
-        String baseUrl = "http://www.xiaoyuzhishi.com/validationCode.html";
+        String baseUrl = "http://www.xiaoyuzhishi.com/user/active-card.html";
         String result = processAndGenerate(p, "激活新卡", "点击链接将进入卡激活页面", baseUrl);
         return Response.ok(result).build();
     }
@@ -620,7 +753,7 @@ public class PublicAccounts {
 
             EntityManager em = JPAEntry.getEntityManager();
             em.getTransaction().begin();
-            em.persist(wechatUser);
+            em.persist(dbWechatUser);
             em.persist(user);
             em.getTransaction().commit();
         } else {
@@ -678,7 +811,7 @@ public class PublicAccounts {
 
         Response result = null;
         try {
-            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -1031,263 +1164,6 @@ public class PublicAccounts {
         //没有处理，记得要做处理
         return null;
     }
-
-
-    //==================================================================================================================================
-
-   /* static String hostname = "http://222.73.117.158";
-    static String username = "jiekou-clcs-13";
-    static String password = "THYnk464hu";
-
-    static void queryBalance() {
-        //http://IP:PORT/msg/QueryBalance?account=a&pswd=p
-
-//        return body
-//        20130303180000,0
-//        1234567,1000
-//        1234531,2000
-//        0 提交成功
-//        101 无此用户
-//        102 密码错
-//        103 查询过快（10秒查询一次）
-//
-    }
-
-    public static class SendMessageResult {
-        public String time;
-        public String code;
-        public String messageId;
-    }
-
-    public static SendMessageResult sendMessage(String telephoneNumber, String validInfo) {
-        //platform: http://222.73.117.158/msg/index.jsp
-        //username: jiekou-clcs-13
-        //password: THYnk464hu
-        //http://222.73.117.158:80/msg/HttpBatchSendSM?account=a&pswd=p&mobile=m&msg=m&needstatus=true
-
-        //resptime,respstatus
-        //msgid
-//        respstatus
-//        * 代码 说明
-//        0 提交成功
-//        101 无此用户
-//        102 密码错
-//        103 提交过快（提交速度超过流速限制）
-//        104 系统忙（因平台侧原因，暂时无法处理提交的短信）
-//        105 敏感短信（短信内容包含敏感词）
-//        106 消息长度错（>536或<=0）
-//        107 包含错误的手机号码
-//        108 手机号码个数错（群发>50000或<=0;单发>200或<=0）
-//        109 无发送额度（该用户可用短信数已使用完）
-//        110 不在发送时间内
-//        111 超出该账户当月发送额度限制
-//        112 无此产品，用户没有订购该产品
-//        113 extno格式错（非数字或者长度不对）
-//        115 自动审核驳回
-//        116 签名不合法，未带签名（用户必须带签名的前提下）
-//        117 IP地址认证错,请求调用的IP地址不是系统登记的IP地址
-//        118 用户没有相应的发送权限
-//        119 用户已过期
-//        120 测试内容不是白名单
-
-
-        SendMessageResult result = new SendMessageResult();
-        // Default instance of client
-        Client client = ClientBuilder.newClient();
-        // + "HttpBatchSendSM?account=" + username + "&pswd=" + password + "&mobile=" + telephoneNumber + "&msg=" + validInfo + "&needstatus=true"
-        Response response = client.target(hostname)
-            .path("/msg/HttpBatchSendSM")
-            .queryParam("account", username)
-            .queryParam("pswd", password)
-            .queryParam("mobile", telephoneNumber)
-            .queryParam("msg", validInfo)
-            .queryParam("needstatus", true)
-            .request("text/plain").get();
-        String responseBody = response.readEntity(String.class);
-        if (responseBody.contains("\n")) {
-            String[] lines = responseBody.split("\n");
-            if (lines.length == 2) {
-                String[] timeCode = lines[0].split(",");
-                result.time = timeCode[0];
-                result.code = timeCode[1];
-            }
-            result.messageId = lines[1];
-        }
-        return result;
-    }
-
-    public static class SmsState {
-        public String receiver;
-        public String password;
-        public String messageId;
-        public String reportTime;
-        public String mobile;
-        public String status;
-    }
-
-    @GET
-    @Path("telephones/{telephone}/code")
-    public Response queryValidCode(@PathParam("telephone") String telephone) {
-        //step0: generate valid code
-        Random rand = new Random();
-        String sjs = "";
-//        for (int i = 0; i < 6; i++) {
-//            sjs += rand.nextInt(10);
-//        }
-        int x = rand.nextInt(899999);
-        int y = x + 100000;
-        sjs = String.valueOf(y);
-        Date now = new Date();
-        //step1: record phoneNumber & validCode & timestamp
-        ValidationCode message = new ValidationCode();
-        message.setId(IdGenerator.getNewId());
-        message.setPhoneNumber(telephone);
-        message.setValidCode(sjs);
-        message.setTimestamp(now);
-        JPAEntry.genericPost(message);
-        //step2: sendMessage(phoneNumber, "" + validCode + "")
-        sendMessage(telephone, "【小雨知时】" + sjs + "(动态验证码),请在3分钟内使用");
-
-        return Response.ok().build();
-    }
-
-    public static class ActiveCard {
-        private String cardCode;
-        private String password;
-        private String phonecode;
-        private String validationCode;
-
-        public String getCardCode() {
-            return cardCode;
-        }
-
-        public void setCardCode(String cardCode) {
-            this.cardCode = cardCode;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getPhonecode() {
-            return phonecode;
-        }
-
-        public void setPhonecode(String phonecode) {
-            this.phonecode = phonecode;
-        }
-
-        public String getValidationCode() {
-            return validationCode;
-        }
-
-        public void setValidationCode(String validationCode) {
-            this.validationCode = validationCode;
-        }
-
-    }
-
-    @POST
-    @Path("cards")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response queryValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-        Response result = Response.status(500).build();
-        //step0: card no, card password, phone number, valid code
-
-        //step1: query cards table, valid card info
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("no", ac.cardCode);
-        condition.put("password", ac.password);
-        List<Card> cs = JPAEntry.getList(Card.class, condition);
-        switch (cs.size()) {
-            case 0:
-                result = Response.status(404).build();
-                break;
-            case 1:
-                //step2: query valid table, va   lid valid code
-                Map<String, Object> ValidationCodecondition = new HashMap<>();
-                ValidationCodecondition.put("phoneNumber", ac.phonecode);
-                ValidationCodecondition.put("validCode", ac.validationCode);
-                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
-                switch (validationCodes.size()) {
-                    case 0:
-                        result = Response.status(404).build();
-                        break;
-                    case 1:
-                        Date now = new Date();
-                        Date sendTime = validationCodes.get(0).getTimestamp();
-                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
-                            result = Response.status(410).build();
-                        } else {
-                            //step3.0: query sessions table, get user.id
-                            Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
-                            if (s == null) {
-                                //
-                            } else {
-                                //step3: update cards table, state, amount, cards'user_id -> user.id
-                                Card c = cs.get(0);
-                                c.setActiveTime(now);
-                                c.setAmount(588.0);
-                                c.setUserId(s.getUserId());
-                                JPAEntry.genericPut(c);
-                                result = Response.ok().build();
-                            }
-                        }
-                        break;
-                    default:
-                        result = Response.status(500).build();
-                        break;
-                }
-                EntityManager em = JPAEntry.getEntityManager();
-                em.getTransaction().begin();
-                for (ValidationCode validationCode : validationCodes) {
-                    em.remove(validationCode);
-                }
-                em.getTransaction().commit();
-                break;
-        }
-        return result;
-    }
-
-    @GET
-    @Path("smsStateNotification")
-    public SmsState smsStateNotification() {
-        //http://pushUrl?receiver=admin&pswd=12345&msgid=12345&reportTime=1012241002&mobile=13900210021&status=DELIVRD
-
-//        DELIVRD 短消息转发成功
-//        EXPIRED 短消息超过有效期
-//        UNDELIV 短消息是不可达的
-//        UNKNOWN 未知短消息状态
-//        REJECTD 短消息被短信中心拒绝
-//        DTBLACK 目的号码是黑名单号码
-//        ERR:104 系统忙
-//        REJECT 审核驳回
-//        其他 网关内部状态
-//
-        return null;
-    }
-
-    public static class SmsReceiverState {
-        public String receiver;
-        public String password;
-        public String message;
-        public String moTime;
-        public String mobile;
-        public String destinationCode;
-    }
-
-    @GET
-    @Path("smsReceiver")
-    public SmsReceiverState smsReceiver() {
-        //http://pushMoUrl?receiver=admin&pswd=12345&moTime=1208212205&mobile=13800210021&msg=hello&destcode=10657109012345
-        return null;
-    }*/
-//==================================================================================================================================
 
     //：弹出微信相册发图器的事件推送
     @POST
@@ -1733,22 +1609,6 @@ public class PublicAccounts {
         public static class UserData {
             private String[] openid;
         }
-    }
-
-    public static class WechatUserInfo {
-        private int subscribe;
-        private String openid;
-        private String nickname;
-        private Long sex;
-        private String language;
-        private String city;
-        private String province;
-        private String country;
-        private String headimgurl;
-        private int subscribe_time;
-        private String unionid;
-        private String remark;
-        private int groupid;
     }
 
     // 关注/取消关注事件

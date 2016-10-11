@@ -109,8 +109,8 @@
 </template>
 <template id="video-template">
     <div>
-        <img class="muld_images" src="${coverHref}" alt="${coverDescription}">
-        <video></video>
+        <a href="${video}"><img class="muld_images" src="${coverHref}" alt="${coverDescription}"></a>
+        <!--<video></video>-->
     </div>
 </template>
 <template id="strongest-brain-option-template">
@@ -141,13 +141,10 @@
     <div>
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
-            <!--<li>-->
-                <!--<span class="praisebtn ul01_count"><img src="img/zan.png" class="praisenum ul01_imgzan" data-bd-imgshare-binded="1">-->
-                   <!--<a href="#" praise-flag="0" data-id="7" id="total">${likeCount}</a>&lt;!&ndash;//praise-flag="0" 记录点赞标识（是否已赞过）,data-id记录文章id&ndash;&gt;-->
-                <!--</span>-->
-                <img class="ul01_imgzan" src="img/zan.png" alt="" onclick="like(this)" id="icon">
-            <span class="ul01_count" id="total">${likeCount}</span></li>
-            <!--<li><a id="putups<%= mind._id %>" name="putups" href="javascript:putUps('<%= mind._id %>');" title="<%=mind.ups%>个赞" >赞[<%=mind.ups%>]</a></li>-->
+            <li>
+                <img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">
+                <span class="ul01_count" id="total">${likeCount}</span>
+            </li>
         </ul>
         <ul class="ul01_riht">
             <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
@@ -164,7 +161,9 @@
             <ul class="topUl">
                 <li class="topUl_top">
                     <div class="litop_fleft">${name}</div>
-                    <div class="litop_friht"><img class="ul01_imgzan" src="img/zan.png" onclick="commentLike(this)"><span class="ul01_count" id="all">${likeCount}</span>
+                    <div class="litop_friht" data-id="${id}">
+                        <img class="ul01_imgzan" src="img/zan.png" alt="" >
+                        <span class="ul01_count">${likeCount}</span>
                     </div>
                 </li>
                 <li class="topUl_center tcmar_top">
@@ -177,6 +176,7 @@
         </li>
     </ul>
 </template>
+
 
 
 <script type="text/javascript" src="basic.js"></script>

@@ -33,9 +33,6 @@ public class Video {
     @Column(name = "cover")
     private Long cover;
 
-    /*  @Column(name = "duration")
-      private Long duration;
-  */
     @Column(name = "bit_rate")
     private Double bitRate;
 

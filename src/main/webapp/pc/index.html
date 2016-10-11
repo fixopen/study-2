@@ -93,10 +93,10 @@
 	<script>
 		let saveButton = document.getElementById('save')
 		saveButton.addEventListener('click', function (e) {
-		   let cardCode = document.getElementById('cardCode').value
-		   let password = document.getElementById('password').value
-		   let phonecode = document.getElementById('phonecode').value
-		   let validationCode = document.getElementById('validationCode').value
+			let cardCode = document.getElementById('cardCode').value
+			let password = document.getElementById('password').value
+			let phonecode = document.getElementById('phonecode').value
+			let validationCode = document.getElementById('validationCode').value
 			if(cardCode.length != 12){
 				document.getElementById("cardCodeerror").innerHTML = "卡号错误，请重新输入"
 			}else{

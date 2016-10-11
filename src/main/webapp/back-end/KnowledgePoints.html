@@ -98,7 +98,6 @@
         文字<textarea data-type="content"></textarea>
     </div>
 </template>
-
 <script type="text/javascript">
     document.getElementById("buttons").style.visibility = "hidden";//隐藏
     let subjects = []
@@ -669,28 +668,9 @@
             currentSelectedElement = ImageArea
         }, false)
 
-        /*let appendVideo = document.getElementById('appendVideo')
-        appendVideo.addEventListener('click', function (e) {
-            let VideoArea = document.createElement('input')
-            let orderValue = 1
-            VideoArea.setAttribute('data-identity', orderValue)
-            VideoArea.setAttribute("data-id", '')
-            VideoArea.setAttribute("data-type", 'video')
-            contents.appendChild(VideoArea)
-            currentSelectedElement = VideoArea
-        }, false)*/
-
         let appendProblem = document.getElementById('appendProblem')
         appendProblem.addEventListener('click', function (e) {
             let pt = document.getElementById('problem-template')
-            let p = pt.content.children[0].cloneNode(true)
-            contents.appendChild(p)
-            currentSelectedElement = p
-        }, false)
-
-        let appendImageText = document.getElementById('appendImageText')
-        appendImageText.addEventListener('click', function (e) {
-            let pt = document.getElementById('imageText-template')
             let p = pt.content.children[0].cloneNode(true)
             contents.appendChild(p)
             currentSelectedElement = p
@@ -708,6 +688,14 @@
         appendVideo.addEventListener('click', function (e) {
             let video = document.getElementById('video-template')
             let p = video.content.children[0].cloneNode(true)
+            contents.appendChild(p)
+            currentSelectedElement = p
+        }, false)
+
+        let appendImageText = document.getElementById('appendImageText')
+        appendImageText.addEventListener('click', function (e) {
+            let pt = document.getElementById('imageText-template')
+            let p = pt.content.children[0].cloneNode(true)
             contents.appendChild(p)
             currentSelectedElement = p
         }, false)
@@ -792,6 +780,46 @@
                         request.open("POST", "/api/medias");
                         request.send(formData);
                         alert("添加成功")
+                    }
+                    break;
+                case 'video':
+                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                        //put
+                        currentId = currentSelectedElement.dataset.id
+                        var data = {};
+                        data.storePath = currentSelectedElement.value
+
+                        $.ajax({
+                            type: "put",
+                            url: "/api/videos/" + currentId,
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (volumeData) {
+                                alert("修改成功")
+                            },
+                            error: function (volumeData) {
+                                alert("修改失败")
+                            }
+                        })
+
+                    } else {
+                        //post
+                        var data = {};
+                        data.storePath = currentSelectedElement.value
+                        $.ajax({
+                            type: "post",
+                            url: "/api/videos",
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (videos) {
+                                alert("添加成功")
+                                currentSelectedElement.dataset.id = videos.id
+                            }, error: function (videos) {
+                                alert("添加失败")
+                            }
+                        })
                     }
                     break;
                 case'problem':
@@ -961,23 +989,23 @@
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         //put
                         alert("视频不支持修改")
-                       /* currentId = currentSelectedElement.dataset.id
-                        var data = {};
-                        data.storePath = currentSelectedElement.value
+                        /* currentId = currentSelectedElement.dataset.id
+                         var data = {};
+                         data.storePath = currentSelectedElement.value
 
-                        $.ajax({
-                            type: "put",
-                            url: "/api/videos/" + currentId,
-                            data: JSON.stringify(data),
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (volumeData) {
-                                alert("修改成功")
-                            },
-                            error: function (volumeData) {
-                                alert("修改失败")
-                            }
-                        })*/
+                         $.ajax({
+                         type: "put",
+                         url: "/api/videos/" + currentId,
+                         data: JSON.stringify(data),
+                         dataType: "json",
+                         contentType: "application/json; charset=utf-8",
+                         success: function (volumeData) {
+                         alert("修改成功")
+                         },
+                         error: function (volumeData) {
+                         alert("修改失败")
+                         }
+                         })*/
 
                     } else {
                         //post
@@ -991,7 +1019,7 @@
                                 /*currentSelectedElement.dataset.id = returndata.id*/
                                 var data = {};
                                 data.storePath = currentSelectedElement.querySelector('[data-type="storePath"]').value,
-                                data.cover = returndata.id
+                                        data.cover = returndata.id
                                 $.ajax({
                                     type: "post",
                                     url: "/api/videos",
@@ -1036,7 +1064,7 @@
                             content: currentSelectedElement.querySelector('[data-type="content"]').value,
                             source: currentSelectedElement.querySelector('[data-type="source"]').value
                         }
-                        /*alert(JSON.stringify(data))*/
+                        alert(JSON.stringify(data))
                         //{"content":"第一的腰包","source":"——礼拜"}
                         $.ajax({
                             type: "post",
@@ -1079,7 +1107,7 @@
                             pinyin: currentSelectedElement.querySelector('[data-type="pinyin"]').value,
                             content: currentSelectedElement.querySelector('[data-type="content"]').value
                         }
-                       /* alert(JSON.stringify(data))*/
+                        /* alert(JSON.stringify(data))*/
                         //{"content":"第一的腰包","source":"——礼拜"}
                         $.ajax({
                             type: "post",

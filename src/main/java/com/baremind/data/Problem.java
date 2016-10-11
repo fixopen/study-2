@@ -34,15 +34,15 @@ public class Problem {
     @Column(name = "video_url")
     private String videoUrl;
 
-    @Column(name = "video_img")
-    private String videoImg;
+    @Column(name = "video_image")
+    private Long videoImage;
 
-    public String getVideoImg() {
-        return videoImg;
+    public Long getVideoImage() {
+        return videoImage;
     }
 
-    public void setVideoImg(String videoImg) {
-        this.videoImg = videoImg;
+    public void setVideoImage(Long videoImage) {
+        this.videoImage = videoImage;
     }
 
     //{"videoUrl":"/data","storePath":"d:/1474270688455.jpeg","standardAnswers":[0,1],"options":["das","asdf","afds","adf"],"title":"dfas","knowledgePointId":5,"volumeId":1,"subjectId":1}
@@ -86,30 +86,6 @@ public class Problem {
         this.title = title;
     }
 
-    /* public List<String> getOptions() {
-         return options;
-     }
-
-     public void setOptions(List<String> options) {
-         this.options = options;
-     }
-
-     public int[] getStandardAnswers() {
-         return standardAnswers;
-     }
-
-     public void setStandardAnswers(int[] standardAnswers) {
-         this.standardAnswers = standardAnswers;
-     }
- */
-    /* public int getOrder() {
-         return order;
-     }
-
-     public void setOrder(int order) {
-         this.order = order;
-     }
- */
     public String getStorePath() {
         return storePath;
     }

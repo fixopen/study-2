@@ -394,8 +394,6 @@ public class Users {
                             if(c.getActiveTime() == null){
                                 c.setActiveTime(now);
                                 c.setAmount(588.0);
-                               // User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-
                                 JPAEntry.genericPut(c);
                                 result = Response.ok().build();
                             }else{
