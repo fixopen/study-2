@@ -241,6 +241,17 @@ public class KnowledgePoints {
                                 orderedContents.add(itm);
                             }
                             break;
+                        case "pinyinText":
+                            if (pinyinTextObject != null) {
+                                PinyinText q = findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> qm = new HashMap<>();
+                                qm.put("id", q.getId());
+                                qm.put("type", "pinyinText");
+                                qm.put("pinyin", q.getPinyin());
+                                qm.put("content", q.getContent());
+                                orderedContents.add(qm);
+                            }
+                            break;
                         case "problem":
                             if (problemObjects != null || problemOptionObjects != null || problemStandardAnswerObjects != null) {
                                 Problem problemItem = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
@@ -270,16 +281,7 @@ public class KnowledgePoints {
                                 orderedQuotes.add(qm);
                             }
                             break;
-                        case "pinyinText":
-                            if (pinyinTextObject != null) {
-                                PinyinText q = findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> qm = new HashMap<>();
-                                qm.put("id", q.getId());
-                                qm.put("pinyin", q.getPinyin());
-                                qm.put("content", q.getContent());
-                                orderedContents.add(qm);
-                            }
-                            break;
+
                     }
                 }
 
