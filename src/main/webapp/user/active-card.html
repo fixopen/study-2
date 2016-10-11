@@ -47,7 +47,7 @@
     </script>
 </head>
 <body>
-<div style="padding-top: 0.625rem;" class="common-margin-padding">
+<div class="common-margin-padding" style="background: url(../img/zb_bg.jpg) no-repeat center top; background-size: cover;">
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div>
             <span class="common-font common-line-height title">卡号</span>
@@ -59,7 +59,7 @@
         </div>
         <div>
             <span class="common-font common-line-height title">手机号</span>
-            <input type="tel" id="phoneNumber" class="common-font common-line-height common-border-style value" style="width: 30%" placeholder="请输入手机号" required pattern="\d+"/>
+            <input type="tel" id="phoneNumber" class="common-font common-line-height common-border-style value" placeholder="请输入手机号" required pattern="\d+"/>
             <input type="button" id="activeCode" class="common-font common-line-height common-border-style validButton" value="获取手机验证码"/>
         </div>
         <div>
@@ -67,7 +67,7 @@
             <input type="text" id="validationCode" class="common-font common-line-height common-border-style value" placeholder="请输入验证码" required pattern="\d{6}"/>
         </div>
     </section>
-    <div id="tips" class="common-font common-line-height common-border-style tips">卡片验证码将发送至此手机!</div>
+    <div id="tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
     <input type="button" id="save" class="common-font common-line-height common-border-style save" value="确 认"/>
 </div>
 <script>
@@ -75,49 +75,38 @@
     var sessionId = getUrlParameter('sessionid');
     var timeoutId;
     var timeoutCount = 180;
+
+    var enableActive = function (activeCodeButton, title) {
+        clearInterval(timeoutId);
+        activeCodeButton.disabled = false
+        activeCodeButton.value = title
+    }
+
     var activeCode = function (e) {
         var phoneNumber = document.getElementById('phoneNumber').value;
         ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
             {name: 'Accept', value: 'application/json'}
         ], null, function (r) {
+            var tips = document.getElementById("tips");
             if (r.meta.code < 400) {
-                var tips = document.getElementById("tips");
                 tips.innerHTML = "发送成功，请注意查收";
                 var proc = function () {
                     e.target.value = " (" + timeoutCount + ") 秒后\n重新发送";
                     --timeoutCount;
                     if (timeoutCount <= 0) {
-                        e.target.value = " 重新发送 ";
-                        e.target.disabled = false;
-                        clearInterval(timeoutId);
+                        enableActive(e.target, ' 重新发送 ')
                     }
                 }
 
                 e.target.disabled = true;
                 timeoutId = setInterval(proc, 1000);
             } else {
-                var tips = document.getElementById("tips");
                 tips.innerHTML = "发送失败，请重新获取验证码";
             }
         })
-
-//            $.ajax({
-//                type: 'get',
-//                url: 'api/users/telephones/' + phoneNumber + '/code',
-//                dataType: 'json',
-//                success: function (data) {
-//                    var tips = document.getElementById("tips")
-//                    tips.innerHTML = "发送成功，请注意查收"
-//                },
-//                error: function (r) {
-//                    var tips = document.getElementById("tips")
-//                    tips.innerHTML = "发送失败，请重新获取验证码"
-//                }
-//            })
     }
 
     var save = function (e) {
-        //alert('save');
         var data = {};
         data.cardNo = document.getElementById('cardCode').value;
         data.password = document.getElementById('password').value;
@@ -130,24 +119,25 @@
             if (r.meta.code < 400) {
                 location.href = '../Gold.html';
             } else {
-                //alert('save error');
+                var activeCodeButton = document.getElementById('activeCode');
+                enableActive(activeCodeButton, ' 重新发送 ')
+
                 var tips = document.getElementById("tips");
-                //alert('get tips');
                 switch (r.meta.code) {
                     case 500:
-                        tips.innerHTML = "后台错误500，请联系程序猿叔叔。email：15210038357@163.com";
+                        tips.innerHTML = "你的手机号跟别人重复啦";
                         break;
                     case 412:
                         tips.innerHTML = "请返回的我的首页";
                         break;
                     case 520:
-                        tips.innerHTML = "后台错误520，请联系程序猿叔叔。email：15210038357@163.com";
+                        tips.innerHTML = "后台错误520";
                         break;
                     case 404:
-                        tips.innerHTML = "用户名或密码错误";
+                        tips.innerHTML = "卡号或密码错误";
                         break;
                     case 405:
-                        tips.innerHTML = "不可以重复激活";
+                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
                         break;
                     case 401:
                         tips.innerHTML = "手机号或验证码错误";
@@ -156,52 +146,32 @@
                         tips.innerHTML = "验证码超时";
                         break;
                     case 200:
-                        window.location.href = '../Gold.html';
+                        window.location.href = 'Gold.html';
                         break;
+                    default:
+                        tips.innerHTML = '发生了未预期的错误，请把错误码《' + r.meta.code + '》发给服务提供者[]寻求帮助'
+                        break
                 }
             }
         })
-
-//            $.ajax({
-//                type: 'post',
-//                url: 'api/users/cards',
-//                contentType: 'application/json',
-//                data: data,
-//                dataType: 'json',
-//                success: function (result) {
-//                    window.location.href = 'Gold.html'
-//                },
-//                error: function (result) {
-//                    var tips = document.getElementById("tips")
-//                    switch (result.statusCode) {
-//                        case 500:
-//                            tips.innerHTML = "后台错误500，请联系程序猿叔叔。email：15210038357@163.com";
-//                            break;
-//                        case 412:
-//                            tips.innerHTML = "请返回的我的首页";
-//                            break;
-//                        case 520:
-//                            tips.innerHTML = "后台错误520，请联系程序猿叔叔。email：15210038357@163.com";
-//                            break;
-//                        case 404:
-//                            tips.innerHTML = "用户名或密码错误";
-//                            break;
-//                        case 405:
-//                            tips.innerHTML = "不可以重复激活";
-//                            break;
-//                        case 401:
-//                            tips.innerHTML = "手机号或验证码错误";
-//                            break;
-//                        case 410:
-//                            tips.innerHTML = "验证码超时";
-//                            break;
-//                        case 200:
-//                            window.location.href = 'Gold.html';
-//                            break;
-//                    }
-//                }
-//            })
     }
+
+    var cardNo = document.getElementById("cardNo")
+    cardNo.addEventListener('keyup', function (e) {
+        e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
+    }, false);
+
+    var validCode = document.getElementById('validCode')
+    validCode.addEventListener('change', function(e) {enableActive(e.target, ' 发送验证码 ')}, false)
+
+    var phoneNumber = document.getElementById('phoneNumber')
+    phoneNumber.addEventListener('change', function(e) {enableActive(e.target, ' 发送验证码 ')}, false)
+
+    var activeCodeButton = document.getElementById('activeCode');
+    activeCodeButton.addEventListener('click', activeCode, false);
+
+    var saveButton = document.getElementById('save');
+    saveButton.addEventListener('click', save, false);
 </script>
 </body>
 </html>
