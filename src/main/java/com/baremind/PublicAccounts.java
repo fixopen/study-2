@@ -28,6 +28,8 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -444,6 +446,86 @@ public class PublicAccounts {
         return result;
     }
 
+    public static User fillUserByWechatUserInfo(Date now, WechatUserInfo userInfo) {
+        long userId = IdGenerator.getNewId();
+        User user = new User();
+        user.setId(userId);
+        user.setHead(userInfo.headimgurl);
+        user.setName(userInfo.nickname);
+        //u.setLoginName(us.nickname);
+        user.setSex(userInfo.sex);
+        user.setCreateTime(now);
+        user.setUpdateTime(now);
+        user.setIsAdministrator(false);
+        user.setSite("http://www.xiaoyuzhishi.com");
+        user.setAmount(0.0f);
+        return user;
+    }
+
+    public static WechatUser fillWechatUserByWechatUserInfo(Long userId, WechatUserInfo userInfo) {
+        WechatUser wechatUser = new WechatUser();
+        wechatUser.setId(IdGenerator.getNewId());
+        wechatUser.setOpenId(userInfo.openid);
+        wechatUser.setRefId(userInfo.unionid);
+        wechatUser.setCity(userInfo.city);
+        wechatUser.setCountry(userInfo.country);
+        //user.setExpiry();
+        wechatUser.setHead(userInfo.headimgurl);
+        wechatUser.setInfo(userInfo.toString());
+        wechatUser.setNickname(userInfo.nickname);
+        //user.setPrivilege();
+        wechatUser.setProvince(userInfo.province);
+        //user.setRefId();
+        //user.setRefreshToken();
+        //user.setSex(p.Infos.get(sex));
+        wechatUser.setSex(userInfo.sex);
+        wechatUser.setSubscribe(userInfo.subscribe_time);
+        wechatUser.setSubscribeTime(userInfo.subscribe);
+        wechatUser.setLanguage(userInfo.language);
+        wechatUser.setRemark(userInfo.remark);
+        wechatUser.setGroupId(userInfo.groupid);
+        //user.setToken();
+        wechatUser.setUnionId(userInfo.unionid);
+        wechatUser.setUserId(userId);
+        return wechatUser;
+    }
+
+    public static User insertUserInfoByOpenId(Date now, String openId) {
+        WechatUserInfo userInfo = getUserInfo(openId);
+        User user = fillUserByWechatUserInfo(now, userInfo);
+        WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
+
+        EntityManager em = JPAEntry.getEntityManager();
+        em.getTransaction().begin();
+        em.persist(wechatUser);
+        em.persist(user);
+        em.getTransaction().commit();
+
+        return user;
+    }
+
+    public static Session putSession(Date now, Long userId) {
+        String nowString = now.toString();
+        byte[] sessionIdentity = Securities.digestor.digest(nowString);
+        String sessionString = Hex.bytesToHex(sessionIdentity);
+
+        Session s = JPAEntry.getObject(Session.class, "userId", userId);
+        if (s == null) {
+            s = new Session();
+            Long sessionId = IdGenerator.getNewId();
+            s.setId(sessionId);
+            s.setUserId(userId);
+            s.setIdentity(sessionString);
+            s.setLastOperationTime(now);
+            JPAEntry.genericPost(s);
+        } else {
+            s.setIdentity(sessionString);
+            s.setLastOperationTime(now);
+            JPAEntry.genericPut(s);
+        }
+        return s;
+    }
+
     private static String generate(WechatPush p, String content) {
         String openId = p.getFromUserName();
         long secondCount = new Date().getTime() / 1000;
@@ -508,64 +590,6 @@ public class PublicAccounts {
         return Response.ok(result).build();
     }
 
-    public static User fillUserByWechatUserInfo(Date now, WechatUserInfo userInfo) {
-        long userId = IdGenerator.getNewId();
-        User user = new User();
-        user.setId(userId);
-        user.setHead(userInfo.headimgurl);
-        user.setName(userInfo.nickname);
-        //u.setLoginName(us.nickname);
-        user.setSex(userInfo.sex);
-        user.setCreateTime(now);
-        user.setUpdateTime(now);
-        user.setIsAdministrator(false);
-        user.setSite("http://www.xiaoyuzhishi.com");
-        user.setAmount(0.0f);
-        return user;
-    }
-
-    public static WechatUser fillWechatUserByWechatUserInfo(Long userId, WechatUserInfo userInfo) {
-        WechatUser wechatUser = new WechatUser();
-        wechatUser.setId(IdGenerator.getNewId());
-        wechatUser.setOpenId(userInfo.openid);
-        wechatUser.setRefId(userInfo.unionid);
-        wechatUser.setCity(userInfo.city);
-        wechatUser.setCountry(userInfo.country);
-        //user.setExpiry();
-        wechatUser.setHead(userInfo.headimgurl);
-        wechatUser.setInfo(userInfo.toString());
-        wechatUser.setNickname(userInfo.nickname);
-        //user.setPrivilege();
-        wechatUser.setProvince(userInfo.province);
-        //user.setRefId();
-        //user.setRefreshToken();
-        //user.setSex(p.Infos.get(sex));
-        wechatUser.setSex(userInfo.sex);
-        wechatUser.setSubscribe(userInfo.subscribe_time);
-        wechatUser.setSubscribeTime(userInfo.subscribe);
-        wechatUser.setLanguage(userInfo.language);
-        wechatUser.setRemark(userInfo.remark);
-        wechatUser.setGroupId(userInfo.groupid);
-        //user.setToken();
-        wechatUser.setUnionId(userInfo.unionid);
-        wechatUser.setUserId(userId);
-        return wechatUser;
-    }
-
-    public static User insertUserInfoByOpenId(Date now, String openId) {
-        WechatUserInfo userInfo = getUserInfo(openId);
-        User user = fillUserByWechatUserInfo(now, userInfo);
-        WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
-
-        EntityManager em = JPAEntry.getEntityManager();
-        em.getTransaction().begin();
-        em.persist(wechatUser);
-        em.persist(user);
-        em.getTransaction().commit();
-
-        return user;
-    }
-
     public static void fillWechatUserTokenInfo(WechatUser dbWechatUser, WechatUser wechatUser) {
         Date expiry = wechatUser.getExpiry();
         if (expiry != null) {
@@ -604,28 +628,6 @@ public class PublicAccounts {
             JPAEntry.genericPut(dbWechatUser);
         }
         return user;
-    }
-
-    public static Session putSession(Date now, Long userId) {
-        String nowString = now.toString();
-        byte[] sessionIdentity = Securities.digestor.digest(nowString);
-        String sessionString = Hex.bytesToHex(sessionIdentity);
-
-        Session s = JPAEntry.getObject(Session.class, "userId", userId);
-        if (s == null) {
-            s = new Session();
-            Long sessionId = IdGenerator.getNewId();
-            s.setId(sessionId);
-            s.setUserId(userId);
-            s.setIdentity(sessionString);
-            s.setLastOperationTime(now);
-            JPAEntry.genericPost(s);
-        } else {
-            s.setIdentity(sessionString);
-            s.setLastOperationTime(now);
-            JPAEntry.genericPut(s);
-        }
-        return s;
     }
 
     @GET
@@ -674,44 +676,39 @@ public class PublicAccounts {
         Long userId = user.getId();
         Session s = putSession(now, userId);
 
-        String result = "";
-        String filePath = request.getServletContext().getRealPath("/activeCard.html");
+        Response result = null;
         try {
-            FileReader fr = new FileReader(filePath);
-            char[] buffer = new char[4 * 1024];
-            for (; ; ) {
-                int length = fr.read(buffer);
-                if (length == -1) {
-                    break;
-                }
-                result += new String(buffer, 0, length);
-            }
-            result += userId.toString() + "\n";
-            String file2Path = request.getServletContext().getRealPath("/activeCard2.html");
-            FileReader fr2 = new FileReader(file2Path);
-            for (; ; ) {
-                int length = fr2.read(buffer);
-                if (length == -1) {
-                    break;
-                }
-                result += new String(buffer, 0, length);
-            }
-        } catch (Exception e) {
+            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-//        String sessionString = "hahaha";
-//        String result = "<!DOCTYPE html>\n" +
-//            "<html lang=\"en\">\n" +
-//            "<head>\n" +
-//            "    <meta charset=\"UTF-8\">\n" +
-//            "    <title>test</title>\n" +
-//            "</head>\n" +
-//            "<body>\n" +
-//            "<h1>Hello, world</h1>\n" +
-//            "</body>\n" +
-//            "</html>";
-        return Response.ok(result, "text/html").cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
-        //return Response.ok(result, "text/html").build();
+        return result;
+        //String result = "";
+        //String filePath = request.getServletContext().getRealPath("/activeCard.html");
+        //try {
+        //    FileReader fr = new FileReader(filePath);
+        //    char[] buffer = new char[4 * 1024];
+        //    for (; ; ) {
+        //        int length = fr.read(buffer);
+        //        if (length == -1) {
+        //            break;
+        //        }
+        //        result += new String(buffer, 0, length);
+        //    }
+        //    result += userId.toString() + "\n";
+        //    String file2Path = request.getServletContext().getRealPath("/activeCard2.html");
+        //    FileReader fr2 = new FileReader(file2Path);
+        //    for (; ; ) {
+        //        int length = fr2.read(buffer);
+        //        if (length == -1) {
+        //            break;
+        //        }
+        //        result += new String(buffer, 0, length);
+        //    }
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //}
+        //return Response.ok(result, "text/html").cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
     }
 
     //获取微信服务器ID
