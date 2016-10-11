@@ -574,7 +574,7 @@ public class PublicAccounts {
     }
 
     Response activeCard(WechatPush p) {
-        String baseUrl = "http://www.xiaoyuzhishi.com/validationCode.html";
+        String baseUrl = "http://www.xiaoyuzhishi.com/user/active-card.html";
         String result = processAndGenerate(p, "激活新卡", "点击链接将进入卡激活页面", baseUrl);
         return Response.ok(result).build();
     }
@@ -678,7 +678,7 @@ public class PublicAccounts {
 
         Response result = null;
         try {
-            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
