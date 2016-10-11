@@ -1,5 +1,7 @@
-﻿$(function () {
-// message
+$(function () {
+
+// message---------
+
     let createComment = document.getElementById('createComment');
     createComment.addEventListener('click', writeMessage, false);
     function writeMessage() {
@@ -279,13 +281,16 @@
                                         contentType: "application/json; charset=utf-8",
                                         success: function (like) {
                                             icon.setAttribute('src', 'img/zan-over.png');
-                                            ++data.interaction.likeCount
+                                            ++data.interaction.likeCount;
                                             e.target.nextElementSibling.textContent = data.interaction.likeCount
                                             liked = true;
                                         }
                                     })
                                 }
                             }, false)
+                        },
+                        error: function (unlike) {
+                            //liked = false
                         }
                     })
 

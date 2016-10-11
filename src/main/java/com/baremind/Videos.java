@@ -5,10 +5,18 @@ import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
-
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,11 +103,11 @@ public class Videos {
                     existvideo.setStorePath(storePath);
                 }
 
-               /* Long duration = video.getDuration();
-                if (duration != 0) {
-                    existvideo.setDuration(duration);
+                Long cover = video.getCover();
+                if (cover != 0) {
+                    existvideo.setCover(cover);
                 }
-*/
+
                 Double bitRate = video.getBitRate();
                 if (bitRate != null) {
                     existvideo.setBitRate(bitRate);

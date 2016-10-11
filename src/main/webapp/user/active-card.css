@@ -6,16 +6,26 @@
 
 .value {
     color: rgb(68, 68, 68);
+    height: 20px;
+    font-size: 18px;
 }
 
 .validButton {
-    color: rgb(68, 68, 68);
+    color: #FFFFFF;
+    background-color: #24cbd1;
+    font-size: 14px;
+    float: right;
+    width: 25%;
+    height: 59px;
 }
 
 .tips {
+    line-height: 1.375rem;
+    font-size: 0.875rem;
     padding: 0 0.875rem;
     box-sizing: border-box;
     color: rgb(254, 101, 104);
+    margin-bottom: 1.875rem;
 }
 
 .save {
@@ -23,5 +33,7 @@
     background-color: rgb(254, 101, 104);
     color: rgb(255, 255, 255);
     text-align: center;
-    width: 100%;
+    width: 90%;
+    margin: auto;
+    display: block;
 }

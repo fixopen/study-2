@@ -30,11 +30,19 @@ public class Video {
     @Column(name = "store_path")
     private String storePath;
 
-    /*  @Column(name = "duration")
-      private Long duration;
-  */
+    @Column(name = "cover")
+    private Long cover;
+
     @Column(name = "bit_rate")
     private Double bitRate;
+
+    public Long getCover() {
+        return cover;
+    }
+
+    public void setCover(Long cover) {
+        this.cover = cover;
+    }
 
     public Long getId() {
         return id;

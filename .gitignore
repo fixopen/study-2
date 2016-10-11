@@ -1,8 +1,7 @@
-/target/
-/.settings/
-/.metadata/
-/.project
-/.classpath
-/.idea/
-/*.iml
-src/main/webapp/basic-example/css/images/
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+study.iml
+target/
+.settings/
+.project
+

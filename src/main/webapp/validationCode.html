@@ -73,23 +73,23 @@
             //alert('send content');
         }
 
-        var userId;
-
-        var openId = getUrlParameter('openid');
+        var userId = getUrlParameter('userid');
+        var sessionId = getUrlParameter('sessionid')
+        //var openId = getUrlParameter('openid');
 
         var timeoutId;
 
-        ajax('GET', 'api/wechat-users/' + openId + "/identities", [
-            {name: 'Accept', value: 'application/json'}
-        ], null, function (ids) {
-            if (ids.meta.code < 400) {
-                userId = ids.data.userId
-                //g.setCookie('sessionId', ids.data.sessionId)
-            } else {
-                var tips = document.getElementById("tips")
-                tips.innerHTML = "Initialize error，place refresh this page"
-            }
-        })
+        //ajax('GET', 'api/wechat-users/' + openId + "/identities", [
+        //    {name: 'Accept', value: 'application/json'}
+        //], null, function (ids) {
+        //    if (ids.meta.code < 400) {
+        //        userId = ids.data.userId
+        //        //g.setCookie('sessionId', ids.data.sessionId)
+        //    } else {
+        //        var tips = document.getElementById("tips")
+        //        tips.innerHTML = "Initialize error，place refresh this page"
+        //    }
+        //})
 
         //        $.ajax({
         //            type: 'get',
