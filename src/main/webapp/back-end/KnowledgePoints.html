@@ -63,9 +63,16 @@
     <div data-type="problem">
         问题<textarea data-type="title"></textarea>
         图片<input type="file" data-type="image"/>
+            <input type="text" data-type="order"/>
         标准答案<input type="text" data-type="standardAnswers"/>
+        <button id="appendProblemText" data-type="problemText">append problemText</button>
+        <button id="appendProblemImage" data-type="problemImage">append problemImage</button>
+        <button id="appendProblemImageText" data-type="problemImageText">append problemImageText</button>
         <ol>
-            <li><input type="text" data-type="option" data-identity="1"/></li>
+            <li>
+                <input type="text" data-type="option" data-identity="1"/>
+                <input/>
+            </li>
             <li><input type="text" data-type="option" data-identity="2"/></li>
             <li><input type="text" data-type="option" data-identity="3"/></li>
             <li><input type="text" data-type="option" data-identity="4"/></li>
@@ -663,7 +670,6 @@
             ImageArea.setAttribute("data-type", 'image')
             ImageArea.setAttribute("name", 'file')
             ImageArea.setAttribute("type", 'file')
-            ImageArea.setAttribute("id", 'file')
             contents.appendChild(ImageArea)
             currentSelectedElement = ImageArea
         }, false)
@@ -751,12 +757,12 @@
                     }
                     break;
                 case 'image':
-                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                  /*  if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         //put
-                        currentId = currentSelectedElement.dataset.id
+                        //currentId = currentSelectedElement.dataset.id
 
                         var formData = new FormData();
-                        formData.append("file", document.getElementById('file').files[0]);
+                        formData.append("file", currentSelectedElement.files[0]);
                         var request = new XMLHttpRequest();
                         request.onreadystatechange = function () {
                             if (request.readyState === 4) {
@@ -766,12 +772,12 @@
                                 }
                             }
                         }
-                        request.open("POST", "/api/medias/");
+                        request.open("POST", "/api/medias");
                         request.send(formData);
                         alert("修改成功")
-                    } else {
+                    } else {*/
                         var formData = new FormData();
-                        formData.append("file", document.getElementById('file').files[0]);
+                        formData.append("file", currentSelectedElement.files[0]);
                         var request = new XMLHttpRequest();
                         request.onreadystatechange = function () {
                             if (request.readyState === 4) {
@@ -784,7 +790,7 @@
                         request.open("POST", "/api/medias");
                         request.send(formData);
                         alert("添加成功")
-                    }
+                    /*}*/
                     break;
                 case'problem':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
@@ -792,12 +798,26 @@
                     } else {
                         if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
                             if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
+                                var formData = new FormData();
+                                formData.append("file", currentSelectedElement.querySelector('[data-type="videoImg"]').files[0]);
+                                var request = new XMLHttpRequest();
+                                request.onreadystatechange = function () {
+                                    if (request.readyState === 4) {
+                                        if (request.status == 200) {
+                                            returndata = JSON.parse(request.responseText)
+                                            videoImg = returndata.id
+                                        }
+                                    }
+                                }
+                                request.open("POST", "/api/medias");
+                                request.send(formData);
                                 var data = {
                                     videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
                                     title: currentSelectedElement.querySelector('[data-type="title"]').value,
                                     knowledgePointId: parseInt(currentKnowledgePoint),
                                     volumeId: parseInt(currentVolume),
-                                    subjectId: parseInt(currentSubject)
+                                    subjectId: parseInt(currentSubject),
+                                    videoImage: videoImg
                                 }
                                 $.ajax({
                                     type: "post",
@@ -853,13 +873,27 @@
                                         if (request.status == 200) {
                                             returndata = JSON.parse(request.responseText)
                                             currentSelectedElement.querySelector('[data-type="image"]').dataset.storePath = returndata.storePath
+                                            var formData = new FormData();
+                                            formData.append("file", currentSelectedElement.querySelector('[data-type="videoImg"]').files[0]);
+                                            var request = new XMLHttpRequest();
+                                            request.onreadystatechange = function () {
+                                                if (request.readyState === 4) {
+                                                    if (request.status == 200) {
+                                                        returndata = JSON.parse(request.responseText)
+                                                        videoImg = returndata.id
+                                                    }
+                                                }
+                                            }
+                                            request.open("POST", "/api/medias");
+                                            request.send(formData);
                                             var data = {
                                                 videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
                                                 storePath: currentSelectedElement.querySelector('[data-type="image"]').dataset.storePath,
                                                 title: currentSelectedElement.querySelector('[data-type="title"]').value,
                                                 knowledgePointId: parseInt(currentKnowledgePoint),
                                                 volumeId: parseInt(currentVolume),
-                                                subjectId: parseInt(currentSubject)
+                                                subjectId: parseInt(currentSubject),
+                                                videoImage: videoImg
                                             }
                                             $.ajax({
                                                 type: "post",

@@ -296,8 +296,10 @@ public class KnowledgePoints {
                     Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
                     Map<String, Object> vm = new HashMap<>();
                     vm.put("cover", image.getStorePath());
-                    //...
+                    vm.put("id",video.getId());
+                    vm.put("storePath",video.getStorePath());
                     totalResult.put("video", vm);
+
                 }
 
                 Map<String, Object> interaction = new HashMap<>();
