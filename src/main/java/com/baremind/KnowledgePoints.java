@@ -267,6 +267,9 @@ public class KnowledgePoints {
                                 pm.put("options", problemOptions);
                                 pm.put("standardAnswers", problemStandardAnswers);
                                 pm.put("title", problemItem.getTitle());
+                                pm.put("storePath", problemItem.getStorePath());
+                                pm.put("videoUrl", problemItem.getVideoUrl());
+                                pm.put("videoImage", problemItem.getVideoImage());
                                 orderedProblems.add(pm);
                             }
                             break;
