@@ -979,7 +979,7 @@
 
                     } else {
                         //post
-                        /*var storePath
+                        var storePath
                         var cover
                         var formData = new FormData();
                         formData.append("file", currentSelectedElement.querySelector('[data-type="cover"]').files[0]);
@@ -989,38 +989,35 @@
                             if (request.readyState === 4) {
                                 if (request.status == 200) {
                                     returndata = JSON.parse(request.responseText)
-                                    /!*alert(returndata)
-                                    alert(returndata.id)*!/
-                                    /!*currentSelectedElement.dataset.id = returndata.id*!/
+                                    /*alert(returndata)
+                                    alert(returndata.id)*/
+                                    /*currentSelectedElement.dataset.id = returndata.id*/
                                     storePath = currentSelectedElement.querySelector('[data-type="storePath"]').value,
                                     cover = returndata.id
-
+                                    var data = {};
+                                        data.cover = cover,
+                                        data.storePath = storePath
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/api/videos",
+                                        data: JSON.stringify(data),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (videos) {
+                                            alert(JSON.stringify(videos))
+                                            alert("添加成功")
+                                            currentSelectedElement.dataset.id = videos.id
+                                        },
+                                        error: function (videos) {
+                                            alert(JSON.stringify(videos))
+                                            alert("添加失败")
+                                        }
+                                    })
                                 }
                             }
                         }
                         request.open("POST", "/api/medias");
                         request.send(formData);
-
-                        alert(JSON.stringify(storePath))
-                        alert(JSON.stringify(cover))
-                        var data = {};
-                        data.cover = cover,
-                        data.storePath = storePath*/
-                        $.ajax({
-                            type: "post",
-                            url: "/api/videos",
-                            data: {"cover":66,"storePath":"111"},
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (videos) {
-                                alert(JSON.stringify(videos))
-                                alert("添加成功")
-                                currentSelectedElement.dataset.id = videos.id
-                            }, error: function (videos) {
-                                alert(JSON.stringify(videos))
-                                alert("添加失败")
-                            }
-                        })
                     }
                     break;
                 case 'quote':

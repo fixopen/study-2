@@ -34,7 +34,7 @@ public class Medias {
                 InputStream inputStream = p.getInputStream();
                 long now = new Date().getTime();
                 String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
-                if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
+                if (!Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "png")) {
                     String fileName = now + "." + postfix;
                     String pyshicalpath = Properties.getPropertyValue("physicalpath");
                     String uploadedFileLocation = pyshicalpath + fileName;
