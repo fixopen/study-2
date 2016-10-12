@@ -1,7 +1,6 @@
 $(function () {
 
 // message---------
-
     let createComment = document.getElementById('createComment');
     createComment.addEventListener('click', writeMessage, false);
     function writeMessage() {
@@ -73,7 +72,7 @@ $(function () {
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
-                            {type: 'pinyinText', templateId: 'content-pinyin-template'},
+                            // {type: 'pinyinText', templateId: 'content-pinyin-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
@@ -113,8 +112,20 @@ $(function () {
                                 ++chineseIndex
                             }
                             //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
-                            bind(e, {"pinyin": pinyinValue, "content":c})
-                            e
+                            let g = {}
+                            g.bind = function (element, data) {
+                                element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, letiable) {
+                                    if (!letiable) {
+                                        return ""
+                                    }
+                                    return data[letiable];
+                                });
+                                return element
+                            };
+                            let e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                            let content=document.getElementById('content')
+                            g.bind(e, {"pinyin": pinyinValue, "content":c})
+                            content.appendChild(e)
                         }
                       //  let pinyin=data.contents[i].pinyin.split(" ");
                         //alert(pinyin);
@@ -140,10 +151,15 @@ $(function () {
                         }
                     })
 
-                    // let type=
-                    // if(type="单选题"){
-                    //
-                    // }
+                    //多选单选
+                    for(let i=0;i<data.problems.length;i++){
+                        if (data.problems[i].type == '多选题') {
+                            $('.addimg span').eq(i).removeClass('mld_liImg').addClass('mld_liImg_');
+                        }else if(data.problems[i].type == '单选题'){
+                            $('.addimg span').eq(i).removeClass('mld_liImg_').addClass('mld_liImg');
+                        }
+                    }
+
 
                     //answers
                     let findProblem = function (problemId) {
@@ -268,7 +284,7 @@ $(function () {
                                         success: function (unlike) {
                                             icon.setAttribute('src', 'img/zan.png');
                                             --data.interaction.likeCount
-                                            e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                            e.target.nextElementSibling.textContent = data.interaction.likeCount;
                                             liked = false;
                                         }
                                     })
@@ -357,3 +373,34 @@ $(function () {
         }
     })
 })
+
+
+//problems:[{'name':[],'id':1,'type':'22'},
+// {'name':[],'id':2,'type':'33'},
+// {'name':[],'id':3,'type':'44'},
+// ]
+
+// lemId":96743504216064,"name":0}],"options":[{"id":96743504216066,"problemId":96743504216064,"name":"刘伶"},{"id":96743504216067,"problemId":96743504216064,"name":"王戎"},{"id":96743504216068,"problemId":96743504216064,"name":"向秀"},{"id":96743504216069,"problemId":96743504216064,"name":"阮籍"}],"id":96743504216064,"type":"单选题","title":"4.“我以天地为栋宇，屋室为裈衣，诸君何为入\n我裈中？”是谁的酒后豪言？"}]}
+// "problems":[
+//     {"standardAnswers":
+//         [{"id":96743495630849,"problemId":96743495630848,"name":0},{"id":96743495696384,"problemId":96743495630848,"name":3}],
+//         "options":[
+//             {"id":96743495696385,"problemId":96743495630848,"name":"庄子"},
+//             {"id":96743495696386,"problemId":96743495630848,"name":"孟子"},
+//             {"id":96743495696387,"problemId":96743495630848,"name":"孔子"},
+//             {"id":96743495696388,"problemId":96743495630848,"name":"老子"}],
+//         "id":96743495630848,
+//         "type":"多选题",
+//         "title":"1.诸子百家中，最受“竹林七贤”喜欢的是谁？"},
+//     {"standardAnswers":
+//          [{"id":96743498055681,"problemId":96743498055680,"name":1},{"id":96743498055682,"problemId":96743498055680,"name":3}],
+//          "options":[
+//          {"id":96743498055683,"problemId":96743498055680,"name":"嵇喜"},
+            // {"id":96743498055684,"problemId":96743498055680,"name":"王戎"},
+            // {"id":96743498055685,"problemId":96743498055680,"name":"曹操"},
+            // {"id":96743498055686,"problemId":96743498055680,"name":"阮籍"}],
+            // "id":96743498055680,
+            // "type":"多选题",
+            // "title":"2.以下哪些人被认为是“魏晋风度”的代表？"
+    // },
+// {"standardAnswers":[{"id":96743501398017,"problemId":96743501398016,"name":1}],"options":[{"id":96743501398018,"problemId":96743501398016,"name":"阮籍"},{"id":96743501398019,"problemId":96743501398016,"name":"嵇康"},{"id":96743501398020,"problemId":96743501398016,"name":"山涛"},{"id":96743501398021,"problemId":96743501398016,"name":"阮咸"}],"id":96743501398016,"type":"单选题","title":"3.“萧萧肃肃，爽朗清举”是古人对谁的赞誉？"},{"standardAnswers":[{"id":96743504216065,"prob

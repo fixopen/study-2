@@ -98,31 +98,32 @@ li.mld_Ulli {
     line-height: 2.5rem;
 }
 
-.mld_liImg {
-    width: 2.1875rem;
+/*.mld_liImg {*/
+    /*width: 2.1875rem;*/
+    /*height: 0.9375rem;*/
+    /*margin-right: 0.46875rem;*/
+    /*position: relative;*/
+    /*top: 0.15625rem;*/
+/*}*/
+
+.mld_liImg{
+    width:2.1875rem;
     height: 0.9375rem;
     margin-right: 0.46875rem;
-    position: relative;
-    top: 0.15625rem;
+    padding:0  0.0625rem;
+    border: 1px solid #24cbd1;
+    color: #24cbd1;
+    font-size: 0.625rem;
 }
-/*.mld_liImg{*/
-    /*width:2.1875rem;*/
-    /*height: 0.9375rem;*/
-    /*margin-right: 0.46875rem;*/
-    /*padding:0  0.0625rem;*/
-    /*border: 1px solid #24cbd1;*/
-    /*color: #24cbd1;*/
-    /*font-size: 0.625rem;*/
-/*}*/
-/*.mld_liImg_{*/
-    /*width:2.1875rem;*/
-    /*height: 0.9375rem;*/
-    /*margin-right: 0.46875rem;*/
-    /*padding:0  0.0625rem;*/
-    /*border: 1px solid #fe6568;*/
-    /*color: #fe6568;*/
-    /*font-size: 0.625rem;*/
-/*}*/
+.mld_liImg_{
+    width:2.1875rem;
+    height: 0.9375rem;
+    margin-right: 0.46875rem;
+    padding:0  0.0625rem;
+    border: 1px solid #fe6568;
+    color: #fe6568;
+    font-size: 0.625rem;
+}
 .daan_quan {
     display: inline-block;
     width: 1.5625rem;

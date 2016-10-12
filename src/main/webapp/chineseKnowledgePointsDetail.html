@@ -81,7 +81,8 @@
         </div>
         <div class="mulu_div youKuang" id="origin"></div>
         <div>
-            <div class="mulu_div" id="content"></div>
+            <div class="mulu_div" id="content">
+            </div>
             <div class="mulu_div" id="video"></div>
         </div>
         <div class="biaoti_div">
@@ -115,11 +116,13 @@
     <p class="mulu_dp">${content}</p>
 </template>
 <template id="content-pinyin-template">
+    <!--<div style="margin-left: 100px;">-->
     <ruby >
-        <p class="mulu_dp">${content}</p>
-        <!--<p >${content}</p>-->
-        <rt class="rt">${pinyin}</rt>
+        <p >${content}</p>
+        <rt >${pinyin}</rt>
     </ruby>
+    <span>${content}</span>
+    <!--</div>-->
 </template>
 <template id="content-img-template">
         <span>
@@ -129,7 +132,8 @@
 <template id="video-template">
         <span>
            <a href="${storePath}">
-               <img src="${Path}"/>
+               <img src="${cover}"/>
+               <!--<img src="img/chinese-cover.jpg"/>-->
            </a>
             <!--<video src="${storePath}"></video>-->
             <!--alt="${coverDescription}-->
@@ -137,10 +141,10 @@
 </template>
 <template id="problem-template">
     <li class="mld_Ulli">
-        <div>
-            <img class="mld_liImg" src="${href}" alt="${type}">${title}
-            <!--<span class="mld_liImg">${type}</span>-->
-            <!--${title}-->
+        <div class="addimg">
+            <!--<img class="mld_liImg" src="${href}" alt="${type}">${title}-->
+            <span>${type}</span>
+            ${title}
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
     </li>
@@ -157,10 +161,6 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <!--<img class="ul01_imgzan" src="img/zan.png" alt="">-->
-                <!--<span class="ul01_count" id="likeCount">${likeCount}</span>-->
-                <!--<button type="button" class="click-like" onclick="like()" id="icon"></button>-->
-                <!--<span class="ul01_count" id="likeCount">0</span>-->
                 <img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">
                 <span class="ul01_count" id="total">${likeCount}</span>
             </li>
