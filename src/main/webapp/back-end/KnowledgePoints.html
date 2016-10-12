@@ -663,7 +663,6 @@
             ImageArea.setAttribute("data-type", 'image')
             ImageArea.setAttribute("name", 'file')
             ImageArea.setAttribute("type", 'file')
-            ImageArea.setAttribute("id", 'file')
             contents.appendChild(ImageArea)
             currentSelectedElement = ImageArea
         }, false)
@@ -751,12 +750,12 @@
                     }
                     break;
                 case 'image':
-                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                  /*  if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         //put
-                        currentId = currentSelectedElement.dataset.id
+                        //currentId = currentSelectedElement.dataset.id
 
                         var formData = new FormData();
-                        formData.append("file", document.getElementById('file').files[0]);
+                        formData.append("file", currentSelectedElement.files[0]);
                         var request = new XMLHttpRequest();
                         request.onreadystatechange = function () {
                             if (request.readyState === 4) {
@@ -766,12 +765,12 @@
                                 }
                             }
                         }
-                        request.open("POST", "/api/medias/");
+                        request.open("POST", "/api/medias");
                         request.send(formData);
                         alert("修改成功")
-                    } else {
+                    } else {*/
                         var formData = new FormData();
-                        formData.append("file", document.getElementById('file').files[0]);
+                        formData.append("file", currentSelectedElement.files[0]);
                         var request = new XMLHttpRequest();
                         request.onreadystatechange = function () {
                             if (request.readyState === 4) {
@@ -784,7 +783,7 @@
                         request.open("POST", "/api/medias");
                         request.send(formData);
                         alert("添加成功")
-                    }
+                    /*}*/
                     break;
                 case'problem':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
