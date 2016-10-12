@@ -16,58 +16,24 @@ public class Problem {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "subject_id")
-    private Long subjectId;
-
-    @Column(name = "volume_id")
-    private Long volumeId;
-
     @Column(name = "knowledge_point_id")
     private Long knowledgePointId;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "store_path")
-    private String storePath;
+    @Column(name = "image_id")
+    private Long imageId;
 
-    @Column(name = "video_url")
-    private String videoUrl;
+    @Column(name = "video_id")
+    private Long videoId;
 
-    @Column(name = "video_image")
-    private Long videoImage;
-
-    public Long getVideoImage() {
-        return videoImage;
-    }
-
-    public void setVideoImage(Long videoImage) {
-        this.videoImage = videoImage;
-    }
-
-    //{"videoUrl":"/data","storePath":"d:/1474270688455.jpeg","standardAnswers":[0,1],"options":["das","asdf","afds","adf"],"title":"dfas","knowledgePointId":5,"volumeId":1,"subjectId":1}
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public Long getVolumeId() {
-        return volumeId;
-    }
-
-    public void setVolumeId(Long volumeId) {
-        this.volumeId = volumeId;
     }
 
     public Long getKnowledgePointId() {
@@ -78,28 +44,27 @@ public class Problem {
         this.knowledgePointId = knowledgePointId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getStorePath() {
-        return storePath;
+    public Long getImageId() {
+        return imageId;
     }
 
-    public void setStorePath(String storePath) {
-        this.storePath = storePath;
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 
-    public String getVideoUrl() {
-        return videoUrl;
+    public Long getVideoId() {
+        return videoId;
     }
 
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
+    public void setVideoId(Long videoId) {
+        this.videoId = videoId;
     }
-
 }

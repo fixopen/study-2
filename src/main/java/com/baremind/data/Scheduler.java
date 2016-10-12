@@ -17,14 +17,14 @@ public class Scheduler {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "day")
-    private int day;
-
     @Column(name = "year")
     private int year;
 
     @Column(name = "week")
     private int week;
+
+    @Column(name = "day")
+    private int day;
 
     @Column(name = "state")
     private int state;
@@ -42,10 +42,10 @@ public class Scheduler {
     private Long subjectId;
 
     @Column(name = "grade")
-    private int grade;
+    private Integer grade;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "description")
     private String description;
@@ -78,6 +78,14 @@ public class Scheduler {
 
     public void setWeek(int week) {
         this.week = week;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     public int getState() {
@@ -120,20 +128,20 @@ public class Scheduler {
         this.subjectId = subjectId;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -159,14 +167,4 @@ public class Scheduler {
     public void setTeacherDescription(String teacherDescription) {
         this.teacherDescription = teacherDescription;
     }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-
 }

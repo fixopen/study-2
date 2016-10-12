@@ -67,30 +67,24 @@ public class Problems {
             result = Response.status(404).build();
             Problem existproblem = JPAEntry.getObject(Problem.class, "id", id);
             if (existproblem != null) {
-                String storePath = problem.getStorePath();
-                if (storePath != null) {
-                    existproblem.setStorePath(storePath);
-                }
-                String title = problem.getTitle();
-                if (title != null) {
-                    existproblem.setTitle(title);
-                }
                 Long knowledgePointId = problem.getKnowledgePointId();
                 if (knowledgePointId != null) {
                     existproblem.setKnowledgePointId(knowledgePointId);
                 }
-                Long subjectId = problem.getSubjectId();
-                if (subjectId != null) {
-                    existproblem.setSubjectId(subjectId);
+
+                String title = problem.getName();
+                if (title != null) {
+                    existproblem.setName(title);
                 }
 
-                String videoUrl = problem.getVideoUrl();
-                if (videoUrl != null) {
-                    existproblem.setVideoUrl(videoUrl);
+                Long imageId = problem.getImageId();
+                if (imageId != null) {
+                    existproblem.setImageId(imageId);
                 }
-                Long volumeId = problem.getVolumeId();
-                if (volumeId != null) {
-                    existproblem.setVolumeId(volumeId);
+
+                Long videoId = problem.getVideoId();
+                if (videoId != null) {
+                    existproblem.setVideoId(videoId);
                 }
                 JPAEntry.genericPut(existproblem);
                 result = Response.ok(existproblem).build();

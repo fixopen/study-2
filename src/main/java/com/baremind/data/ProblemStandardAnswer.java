@@ -18,8 +18,8 @@ public class ProblemStandardAnswer {
     @Column(name = "problem_id")
     private Long problemId;
 
-    @Column(name = "name")
-    private Long name;
+    @Column(name = "index")
+    private Integer index;
 
     public Long getId() {
         return id;
@@ -37,11 +37,11 @@ public class ProblemStandardAnswer {
         this.problemId = problemId;
     }
 
-    public Long getName() {
-        return name;
+    public Integer getIndex() {
+        return index;
     }
 
-    public void setName(Long name) {
-        this.name = name;
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 }

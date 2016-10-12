@@ -21,6 +21,9 @@ public class ProblemOption {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "image_id")
+    private Long imageId;
+
     public Long getId() {
         return id;
     }
@@ -43,5 +46,13 @@ public class ProblemOption {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 }

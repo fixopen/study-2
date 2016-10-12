@@ -142,7 +142,6 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
-
                 JPAEntry.log(JPAEntry.getLoginId(sessionId), "read", "knowledge-point", id);
 
                 Map<String, Object> conditions = new HashMap<>();
@@ -161,7 +160,7 @@ public class KnowledgePoints {
                 List<String> pinyinIds = new ArrayList<>();
 
                 for (KnowledgePointContentMap item : maps) {
-                    switch (item.getType()) {
+                    switch (item.getObjectType()) {
                         case "text":
                             textIds.add(item.getObjectId().toString());
                             break;
@@ -206,9 +205,9 @@ public class KnowledgePoints {
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
                 List<Object> orderedQuotes = new ArrayList<>();
-                List<Object> orderedPinyins = new ArrayList<>();
+
                 for (final KnowledgePointContentMap item : maps) {
-                    switch (item.getType()) {
+                    switch (item.getObjectType()) {
                         case "text":
                             if (textObjects != null) {
                                 Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
@@ -237,7 +236,8 @@ public class KnowledgePoints {
                                 itm.put("id", it.getId());
                                 itm.put("type", "imageText");
                                 itm.put("content", it.getContent());
-                                itm.put("href", it.getStorePath());
+                                Image image = JPAEntry.getObject(Image.class, "id", it.getImageId());
+                                itm.put("href", image.getStorePath());
                                 orderedContents.add(itm);
                             }
                             break;
@@ -267,10 +267,13 @@ public class KnowledgePoints {
                                 }
                                 pm.put("options", problemOptions);
                                 pm.put("standardAnswers", problemStandardAnswers);
-                                pm.put("title", problemItem.getTitle());
-                                pm.put("storePath", problemItem.getStorePath());
-                                pm.put("videoUrl", problemItem.getVideoUrl());
-                                pm.put("videoImage", problemItem.getVideoImage());
+                                pm.put("name", problemItem.getName());
+                                Image image = JPAEntry.getObject(Image.class, "id", problemItem.getImageId());
+                                pm.put("storePath", image.getStorePath());
+                                Video video = JPAEntry.getObject(Video.class, "id", problemItem.getVideoId());
+                                pm.put("videoUrl", video.getStorePath());
+                                Image cover = JPAEntry.getObject(Image.class, "id", video.getCover());
+                                pm.put("videoImage", cover.getStorePath());
                                 orderedProblems.add(pm);
                             }
                             break;
@@ -288,7 +291,7 @@ public class KnowledgePoints {
                 }
 
                 Map<String, Object> totalResult = new HashMap<>();
-                totalResult.put("title", p.getTitle());
+                totalResult.put("title", p.getName());
                 totalResult.put("quotes", orderedQuotes);
                 totalResult.put("contents", orderedContents);
 
@@ -318,7 +321,6 @@ public class KnowledgePoints {
                     Map<String, Object> commentMap = new HashMap<>();
                     commentMap.put("id", comment.getId());
                     commentMap.put("content", comment.getContent());
-                    commentMap.put("clientId", comment.getClientId());
                     SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     commentMap.put("createTime", time.format(comment.getCreateTime()));
                     commentMap.put("objectId", comment.getObjectId());
@@ -392,34 +394,21 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             KnowledgePoint existknowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (existknowledgePoint != null) {
-                int grade = knowledgePoint.getGrade();
-                if (grade != 0) {
-                    existknowledgePoint.getGrade();
-                }
-                String storePath = knowledgePoint.getStorePath();
-                if (storePath != null) {
-                    existknowledgePoint.setStorePath(storePath);
-                }
                 int order = knowledgePoint.getOrder();
                 if (order != 0) {
                     existknowledgePoint.setOrder(order);
                 }
-                Long subjectId = knowledgePoint.getSubjectId();
-                if (sessionId != null) {
-                    existknowledgePoint.setSubjectId(subjectId);
-                }
-                String title = knowledgePoint.getTitle();
+
+                String title = knowledgePoint.getName();
                 if (title != null) {
-                    existknowledgePoint.setTitle(title);
+                    existknowledgePoint.setName(title);
                 }
-                String videoUrl = knowledgePoint.getVideoUrl();
-                if (videoUrl != null) {
-                    existknowledgePoint.setVideoUrl(videoUrl);
-                }
+
                 Long volumeId = knowledgePoint.getVolumeId();
                 if (volumeId != null) {
                     existknowledgePoint.setVolumeId(volumeId);
                 }
+
                 JPAEntry.genericPut(existknowledgePoint);
                 result = Response.ok(existknowledgePoint).build();
             }

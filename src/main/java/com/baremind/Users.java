@@ -363,63 +363,6 @@ public class Users {
         return result;
     }
 
-    @POST
-    @Path("pccards")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response querypcValidCode(ActiveCard ac) {
-        Response result = Response.status(500).build();
-        Map<String, Object> ValidationCodecondition = new HashMap<>();
-        ValidationCodecondition.put("phoneNumber", ac.getPhoneNumber());
-        ValidationCodecondition.put("validCode", ac.getValidCode());
-        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
-        switch (validationCodes.size()) {
-            case 0:
-                result = Response.status(401).build();
-                break;
-            case 1:
-                Date now = new Date();
-                Date sendTime = validationCodes.get(0).getTimestamp();
-                if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                    Map<String, Object> condition = new HashMap<>();
-                    condition.put("no", ac.getCardNo());
-                    condition.put("password", ac.getPassword());
-                    List<Card> cs = JPAEntry.getList(Card.class, condition);
-                    switch (cs.size()) {
-                        case 0:
-                            result = Response.status(404).build();
-                            break;
-                        case 1:
-                            Card c = cs.get(0);
-                            if(c.getActiveTime() == null){
-                                c.setActiveTime(now);
-                                c.setAmount(588.0);
-                                JPAEntry.genericPut(c);
-                                result = Response.ok().build();
-                            }else{
-                                result = Response.status(405).build();
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
-                    result = Response.status(410).build();
-                }
-                break;
-            default:
-                result = Response.status(520).build();
-                break;
-        }
-        EntityManager em = JPAEntry.getEntityManager();
-        em.getTransaction().begin();
-        for (ValidationCode validationCode : validationCodes) {
-            em.remove(validationCode);
-        }
-        em.getTransaction().commit();
-        return result;
-    }
-
     static void queryBalance() {
         //http://IP:PORT/msg/QueryBalance?account=a&pswd=p
 
@@ -639,9 +582,9 @@ public class Users {
                 if (isAdministrator != null) {
                     existuser.setIsAdministrator(isAdministrator);
                 }
-                String location = user.getLocation();
+                String location = user.getAddress();
                 if (location != null) {
-                    existuser.setLocation(location);
+                    existuser.setAddress(location);
                 }
                 String loginName = user.getLoginName();
                 if (loginName != null) {
@@ -659,7 +602,7 @@ public class Users {
                 if (school != null) {
                     existuser.setSchool(school);
                 }
-                Long sex = user.getSex();
+                Integer sex = user.getSex();
                 if (sex != 0) {
                     existuser.setSex(sex);
                 }

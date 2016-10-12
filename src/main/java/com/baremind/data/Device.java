@@ -66,6 +66,4 @@ public class Device {
     public void setPlatformNotificationToken(String platformNotificationToken) {
         this.platformNotificationToken = platformNotificationToken;
     }
-
-
 }
