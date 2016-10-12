@@ -292,7 +292,12 @@ public class KnowledgePoints {
                 totalResult.put("contents", orderedContents);
 
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
-                    totalResult.put("video", videoObjects.get(0));
+                    Video video = videoObjects.get(0);
+                    Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
+                    Map<String, Object> vm = new HashMap<>();
+                    vm.put("cover", image.getStorePath());
+                    //...
+                    totalResult.put("video", vm);
                 }
 
                 Map<String, Object> interaction = new HashMap<>();
