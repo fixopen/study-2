@@ -714,7 +714,7 @@
             currentSelectedElement = p
         }, false)
 
-        let submitFile = function(typeName, postProces) {
+        let submitFile = function(typeName, postProcess) {
           var formData = new FormData();
           formData.append("file", currentSelectedElement.querySelector('[data-type="' + typeName + '"]').files[0]);
           var request = new XMLHttpRequest();
@@ -730,15 +730,15 @@
           request.send(formData);
         }
 
-        let problemProcess = function(returndata) {
-          videoImg = returndata.id
+        let problemProcess = function(returndata, imagePath) {
           var data = {
               videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
               title: currentSelectedElement.querySelector('[data-type="title"]').value,
               knowledgePointId: parseInt(currentKnowledgePoint),
               volumeId: parseInt(currentVolume),
               subjectId: parseInt(currentSubject),
-              videoImage: videoImg
+              videoImage: returndata ? returndata.id : null,
+			  storePath: imagePath
           }
           $.ajax({
               type: "post",
@@ -787,7 +787,7 @@
           })
         }
 
-        let imageTextProcess = function(typeName, typevalue, postProces){
+        let imageTextProcess = function(typeName, typevalue, postProcess){
             var formData = new FormData();
             formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
             formData.append("content", currentSelectedElement.querySelector('[data-type="content"]').value);
@@ -862,32 +862,42 @@
                     alert("添加成功")
                     break;
                 case'problem':
-                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
-                        alert("问题不提供修改功能")
+    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+        alert("问题不提供修改功能")
+    } else {
+        if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
+            if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
+                if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length == 0) {
+                    problemProcess()
+                } else {
+                    submitFile('videoImg', function(returndata) {
+                        problemProcess(returndata)
+                    })
+                }
+            } else {
+                submitFile('image', function(returndata) {
+                    if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length == 0) {
+                        problemProcess()
                     } else {
-                        if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
-                            if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
-                                submitFile('videoImg', function(returndata) {
-                                    problemProcess(returndata)
-                                })
-                            } else {
-                                submitFile('image', function(returndata) {
-                                    submitFile('videoImg', function(returndata) {
-                                        problemProcess(returndata)
-                                    })
-                                })
-                            }
-                        }
+                        submitFile('videoImg', function(rd) {
+                            problemProcess(rd, returndata.storePath)
+                        })
                     }
+                })
+            }
+        }
+    }
                     break
                 case 'imageText':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         delete currentSelectedElement.dataset.id
                         imageTextProcess("image","content",function(returndata){
+							currentSelectedElement.dataset.id = returndata.id
                             alert("修改成功")
                         })
                     } else {
                         imageTextProcess("image","content",function(returndata){
+							currentSelectedElement.dataset.id = returndata.id
                             alert("添加成功")
                         })
                     }
@@ -937,6 +947,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (quote) {
+								currentSelectedElement.dataset.id = quote.id
                                 alert("修改成功")
                             },
                             error: function (quote) {
@@ -981,6 +992,7 @@
                             contentType: "application/json; charset=utf-8",
                             success: function (pinyin) {
                                 alert("修改成功")
+								currentSelectedElement.dataset.id = pinyin.id
                             },
                             error: function (pinyin) {
                                 alert("修改失败")
