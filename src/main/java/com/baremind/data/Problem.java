@@ -28,43 +28,22 @@ public class Problem {
     @Column(name = "title")
     private String title;
 
-   /* //@Column(name = "options")
-    @Array(databaseType="text[]")
-    private List<String> options;*/
-
-//    @SuppressWarnings("JpaAttributeTypeInspection")
-//    @Column(name = "options", columnDefinition = "name[]")
-//    @Convert(converter = ListToArrayConverter.class)
-//    private List<String> options;
-
-//    @Transient
-//    private String[] transferOptions;
-
-//    void f() {
-//        if (object instanceof UUID) {
-//            PGobject pg = new PGobject();
-//            pg.setType("uuid");
-//            try {
-//                pg.setValue(object.toString());
-//            } catch (SQLException e) {
-//                logger.error("Failed to convert value: " + object, e);
-//            }
-//            return pg;
-//        }
-//        return null;
-//    }
-
-    /*@Column(name = "standard_answers")
-    private int[] standardAnswers;*/
-
-    /*@Column(name = "order")
-    private int order;*/
-
     @Column(name = "store_path")
     private String storePath;
 
     @Column(name = "video_url")
     private String videoUrl;
+
+    @Column(name = "video_image")
+    private Long videoImage;
+
+    public Long getVideoImage() {
+        return videoImage;
+    }
+
+    public void setVideoImage(Long videoImage) {
+        this.videoImage = videoImage;
+    }
 
     //{"videoUrl":"/data","storePath":"d:/1474270688455.jpeg","standardAnswers":[0,1],"options":["das","asdf","afds","adf"],"title":"dfas","knowledgePointId":5,"volumeId":1,"subjectId":1}
     public Long getId() {
@@ -107,30 +86,6 @@ public class Problem {
         this.title = title;
     }
 
-    /* public List<String> getOptions() {
-         return options;
-     }
-
-     public void setOptions(List<String> options) {
-         this.options = options;
-     }
-
-     public int[] getStandardAnswers() {
-         return standardAnswers;
-     }
-
-     public void setStandardAnswers(int[] standardAnswers) {
-         this.standardAnswers = standardAnswers;
-     }
- */
-    /* public int getOrder() {
-         return order;
-     }
-
-     public void setOrder(int order) {
-         this.order = order;
-     }
- */
     public String getStorePath() {
         return storePath;
     }

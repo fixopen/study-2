@@ -36,7 +36,7 @@
 							<td>卡号：</td>
 							<td>
 								<input type="text" placeholder="请填写卡号" id="cardCode" class="card-input fill-error" required pattern="\d+"><br>
-								<i class="error"></i>
+								<i class="error" id="cardCodeerror"></i>
 								<!--卡号错误，请重新输入-->
 							</td>
 						</tr>
@@ -44,7 +44,7 @@
 							<td>密码：</td>
 							<td>
 								<input type="password" placeholder="请输入密码" id="password" class="card-input" required="required"><br>
-								<i class="error"></i>
+								<i class="error" id="passworderror"></i>
 								<!--密码错误，请重新输入-->
 							</td>
 						</tr>
@@ -55,7 +55,7 @@
 								<input type="button" class="send-btn" value="发送验证码" id="phone_btn">
 								<!--<a href="javascript:;" class="send-agin"></a><br>-->
 								<!-- 59S重新发送 -->
-								<i class="error"></i>
+								<i class="error" id="phonecodeerror"></i>
 								<!--手机号格式错误，请重新输入-->
 							</td>
 						</tr>
@@ -63,7 +63,7 @@
 							<td>验证码：</td>
 							<td>
 								<input type="text" placeholder="请输入验证码" id="validationCode" class="card-input" required pattern="\d{6}"><br>
-								<i class="error"></i>
+								<i class="error" id="validationCodeerror"></i>
 								<!--验证码错误请重新输入-->
 							</td>
 						</tr>
@@ -93,12 +93,36 @@
 	<script>
 		let saveButton = document.getElementById('save')
 		saveButton.addEventListener('click', function (e) {
+			let cardCode = document.getElementById('cardCode').value
+			let password = document.getElementById('password').value
+			let phonecode = document.getElementById('phonecode').value
+			let validationCode = document.getElementById('validationCode').value
+			if(cardCode.length != 12){
+				document.getElementById("cardCodeerror").innerHTML = "卡号错误，请重新输入"
+			}else{
+				document.getElementById("cardCodeerror").innerHTML = ""
+			}
+			if(password.length != 8){
+				document.getElementById("passworderror").innerHTML = "密码错误，请重新输入"
+			}else{
+				document.getElementById("passworderror").innerHTML = ""
+			}
+			if(phonecode.length != 11){
+				document.getElementById("phonecodeerror").innerHTML = "手机号格式错误，请重新输入"
+			}else{
+				document.getElementById("phonecodeerror").innerHTML = ""
+			}
+			if(validationCode.length != 6){
+				document.getElementById("validationCodeerror").innerHTML = "验证码错误请重新输入"
+			}else{
+				document.getElementById("validationCodeerror").innerHTML = ""
+			}
 
 			let data = {
-				cardNo: document.getElementById('cardCode').value,
-				password: document.getElementById('password').value,
-				phoneNumber: document.getElementById('phonecode').value,
-				validCode: document.getElementById('validationCode').value
+				cardNo: phonecode,
+				password: password,
+				phoneNumber: phonecode,
+				validCode: validationCode
 			}
 			$.ajax({
 				type: "POST",
@@ -116,13 +140,13 @@
 						switch (save.status) {
 							case 500:
 
-								document.getElementById("error").innerHTML ="<font size='10px' color='red' >后台错误500，请联系程序猿叔叔。email：15210038357@163.com</font>";
+								document.getElementById("error").innerHTML ="<font size='10px' color='red' >你的手机号和别人都重复了</font>";
 								break;
 								/*case 412:
 								 document.getElementById("tipid").innerHTML = "请返回的我的首页";
 								 break;*/
 							case 520:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520，请联系程序猿叔叔。email：15210038357@163.com</font>";
+								document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520</font>";
 								break;
 							case 404:
 								document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
