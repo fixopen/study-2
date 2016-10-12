@@ -18,6 +18,8 @@
     <script type="text/javascript" src="/zepto/zepto.min.js"></script>
     <script type="text/javascript" src="/zepto/touch.js"></script>
     <script type="text/javascript" src="/zepto/selector.js"></script>
+    <script type="text/javascript" src="/basic.js"></script>
+    <script type="text/javascript" src="/util.js"></script>
 
 </head>
 <body>
@@ -35,7 +37,8 @@
 </div>
 <!-- 弹窗结束 -->
 
-<div class="wrap">
+<div class="wrap" id="user"></div>
+<template id="user-template">
     <div class="mine_zilo">
         <ul class="mine_zUl">
             <li class="mine_zuli">
@@ -74,8 +77,26 @@
             </li>
         </ul>
     </div>
-</div>
+</template>
 <script type="text/javascript">
+    var userId = g.getUrlParameter('userid')
+
+    $.ajax({
+        type: 'get',
+        url: '/api/users/' + userId,
+        dataType: 'json',
+        success: function(user) {
+            proc({
+                containerId: 'user',
+                data: user,
+                templateId: 'user-template'
+            })
+        },
+        error: function(r) {
+            alert('获取用户信息失败，请刷新以重试')
+        }
+    })
+
     $(".p_btn.btn01").each(function (index, el) {
         $(this).tap(function () {
             $('.tan').hide();
