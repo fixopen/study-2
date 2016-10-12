@@ -36,7 +36,7 @@ public class Medias {
                 String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
                 if (!Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "png")) {
                     String fileName = now + "." + postfix;
-                    String pyshicalpath = Properties.getPropertyValue("physicalpath");
+                    String pyshicalpath = Properties.getPropertyValue("F:\\666");
                     String uploadedFileLocation = pyshicalpath + fileName;
 
                     File file = new File(uploadedFileLocation);

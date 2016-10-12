@@ -292,6 +292,13 @@ public class KnowledgePoints {
                 totalResult.put("contents", orderedContents);
 
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
+                   /* Map<String, Object> interaction = new HashMap<>();
+              *//*      List<String> aaaa = new ArrayList<>();*//*
+                    int id = videoObjects.get(0).getCover();
+                    List<Image> aaaa = getList(em, id, Image.class);
+                    interaction.put("id",videoObjects.get(0).getId());
+                    interaction.put("cover", aaaa.get(0).getStorePath());
+                    interaction.put("storePath",videoObjects.get(0).getStorePath());*/
                     totalResult.put("video", videoObjects.get(0));
                 }
 
