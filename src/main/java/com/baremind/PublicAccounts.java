@@ -639,15 +639,17 @@ public class PublicAccounts {
 
     public static User insertUserInfoByOpenId(Date now, String openId) {
         WechatUserInfo userInfo = getUserInfo(openId);
-        User user = fillUserByWechatUserInfo(now, userInfo);
-        WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
+        User user = null;
+        if (userInfo != null) {
+            user = fillUserByWechatUserInfo(now, userInfo);
+            WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
 
-        EntityManager em = JPAEntry.getEntityManager();
-        em.getTransaction().begin();
-        em.persist(wechatUser);
-        em.persist(user);
-        em.getTransaction().commit();
-
+            EntityManager em = JPAEntry.getEntityManager();
+            em.getTransaction().begin();
+            em.persist(wechatUser);
+            em.persist(user);
+            em.getTransaction().commit();
+        }
         return user;
     }
 
@@ -761,15 +763,17 @@ public class PublicAccounts {
         WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
         if (dbWechatUser == null) {
             WechatUserInfo userInfo = getUserInfo(wechatUser.getOpenId());
-            user = fillUserByWechatUserInfo(now, userInfo);
-            dbWechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
-            fillWechatUserTokenInfo(dbWechatUser, wechatUser);
+            if (userInfo != null) {
+                user = fillUserByWechatUserInfo(now, userInfo);
+                dbWechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
+                fillWechatUserTokenInfo(dbWechatUser, wechatUser);
 
-            EntityManager em = JPAEntry.getEntityManager();
-            em.getTransaction().begin();
-            em.persist(dbWechatUser);
-            em.persist(user);
-            em.getTransaction().commit();
+                EntityManager em = JPAEntry.getEntityManager();
+                em.getTransaction().begin();
+                em.persist(dbWechatUser);
+                em.persist(user);
+                em.getTransaction().commit();
+            }
         } else {
             fillWechatUserTokenInfo(dbWechatUser, wechatUser);
             JPAEntry.genericPut(dbWechatUser);
@@ -894,6 +898,7 @@ public class PublicAccounts {
     public static String[] getUserList(String nextOpenid) {
         // http请求方式: GET（请使用https协议）
         // https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
+        prepare();
         ArrayList<String> result = new ArrayList<>();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
@@ -910,20 +915,40 @@ public class PublicAccounts {
             if (us.count < 10000) {
                 result.set(0, null);
             }
-            //EntityManager em = JPAEntry.getEntityManager();
-            //em.getTransaction().begin();
             for (String openId : us.data.openid) {
-                //WechatUser user = new WechatUser();
-                //user.setId(IdGenerator.getNewId());
-                //user.setOpenId(openId);
                 result.add(openId);
-                //System.out.println("openid"+openId);
-                //em.persist(user);
             }
-            //em.getTransaction().commit();
         }
         String[] a = new String[result.size()];
         return result.toArray(a);
+    }
+
+    @POST
+    @Path("followers")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFollowers() {
+        String maxOpenid = "";
+        Date now = new Date();
+        while (true) {
+            String[] openids = getUserList(maxOpenid);
+            boolean isFirst = true;
+            for (String openId : openids) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
+                    if (dbWechatUser == null) {
+                        insertUserInfoByOpenId(now, openId);
+                    }
+                }
+            }
+            maxOpenid = openids[0];
+            if (maxOpenid == null) {
+                break;
+            }
+        }
+        return Response.ok().build();
     }
 
     @POST

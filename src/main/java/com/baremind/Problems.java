@@ -67,11 +67,6 @@ public class Problems {
             result = Response.status(404).build();
             Problem existproblem = JPAEntry.getObject(Problem.class, "id", id);
             if (existproblem != null) {
-                Long knowledgePointId = problem.getKnowledgePointId();
-                if (knowledgePointId != null) {
-                    existproblem.setKnowledgePointId(knowledgePointId);
-                }
-
                 String title = problem.getName();
                 if (title != null) {
                     existproblem.setName(title);

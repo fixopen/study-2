@@ -9,7 +9,11 @@ import com.google.gson.reflect.TypeToken;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.*;
@@ -26,6 +30,7 @@ public class Cards {
     private static final int ENGLISH = 2;
     private static final String[] grades = new String[]{"20", "21"};
     private static final String[] serials = new String[]{"1"};
+
     @POST
     @Path("generate")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -48,6 +53,33 @@ public class Cards {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 result = Response.status(400).build();
+            }
+        }
+        return result;
+    }
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                Part p = request.getPart("file");
+                InputStream inputStream = p.getInputStream();
+                long now = new Date().getTime();
+                String postfix = ".csv";
+                String fileName = now + "." + postfix;
+                String uploadedFileLocation = "" + fileName;
+
+                File file = new File(uploadedFileLocation);
+                FileOutputStream w = new FileOutputStream(file);
+                CharacterEncodingFilter.saveFile(w, inputStream);
+
+                parseAndInsert(uploadedFileLocation);
+                result = Response.ok("{\"state\":\"ok\"}").build();
+            } catch (IOException | ServletException e) { /*FileNotFoundException*/
+                e.printStackTrace();
             }
         }
         return result;
