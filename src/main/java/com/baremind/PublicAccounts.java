@@ -543,7 +543,12 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
         prepare();
         WechatUserInfo result = null;
-        while (true) {
+        boolean isContinue = true;
+        int repeatCount = 0;
+        while (isContinue) {
+            if (repeatCount > 5) {
+                break;
+            }
             Client client = ClientBuilder.newClient();
             Response response = client.target(hostname)
                 .path("/cgi-bin/user/info")
@@ -555,11 +560,18 @@ public class PublicAccounts {
             if (responseBody.contains("openid")) {
                 //{"access_token":"ACCESS_TOKEN","expires_in":7200}
                 result = new Gson().fromJson(responseBody, WechatUserInfo.class);
-                break;
+                isContinue = false;
             } else {
-                int r = errorProc(responseBody);
-                if (r == 0) {
-                    continue;
+                if (responseBody.contains("errcode")) {
+                    GenericResult rc = new Gson().fromJson(responseBody, GenericResult.class);
+                    switch (rc.errcode) {
+                        case 40014:
+                            getTokenFromWechatPlatform();
+                            break;
+                        default:
+                            isContinue = false;
+                            break;
+                    }
                 }
             }
         }
