@@ -81,8 +81,7 @@
         </div>
         <div class="mulu_div youKuang" id="origin"></div>
         <div>
-            <div class="mulu_div" id="content">
-            </div>
+            <div class="mulu_div" id="content"></div>
             <div class="mulu_div" id="video"></div>
         </div>
         <div class="biaoti_div">
@@ -115,14 +114,17 @@
 <template id="content-text-template">
     <p class="mulu_dp">${content}</p>
 </template>
+<template id="content-pingyincontent-template">
+    <div style="margin-left: 100px;" id="pycontent"></div>
+</template>
 <template id="content-pinyin-template">
-    <!--<div style="margin-left: 100px;">-->
     <ruby >
-        <p >${content}</p>
-        <rt >${pinyin}</rt>
+        <p>${content}</p>
+        <rt>${pinyin}</rt>
     </ruby>
+</template>
+<template id="content-py-template">
     <span>${content}</span>
-    <!--</div>-->
 </template>
 <template id="content-img-template">
         <span>

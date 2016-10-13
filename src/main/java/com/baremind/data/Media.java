@@ -77,6 +77,4 @@ public class Media {
     public void setStorePath(String storePath) {
         this.storePath = storePath;
     }
-
-
 }

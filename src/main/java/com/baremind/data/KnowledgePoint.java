@@ -15,26 +15,14 @@ public class KnowledgePoint {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "subject_id")
-    private Long subjectId;
-
     @Column(name = "volume_id")
     private Long volumeId;
 
-    @Column(name = "grade")
-    private int grade;
-
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "\"order\"")
     private int order;
-
-    @Column(name = "store_path")
-    private String storePath;
-
-    @Column(name = "video_url")
-    private String videoUrl;
 
     public Long getId() {
         return id;
@@ -42,14 +30,6 @@ public class KnowledgePoint {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
     }
 
     public Long getVolumeId() {
@@ -60,20 +40,12 @@ public class KnowledgePoint {
         this.volumeId = volumeId;
     }
 
-    public int getGrade() {
-        return grade;
+    public String getName() {
+        return name;
     }
 
-    public void setGrade(int grade) {
-        this.grade = grade;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getOrder() {
@@ -83,22 +55,4 @@ public class KnowledgePoint {
     public void setOrder(int order) {
         this.order = order;
     }
-
-    public String getStorePath() {
-        return storePath;
-    }
-
-    public void setStorePath(String storePath) {
-        this.storePath = storePath;
-    }
-
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
-
-
 }

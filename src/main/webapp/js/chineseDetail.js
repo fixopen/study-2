@@ -72,7 +72,7 @@ $(function () {
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
-                            // {type: 'pinyinText', templateId: 'content-pinyin-template'},
+                            {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
@@ -87,7 +87,7 @@ $(function () {
 
                     let ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
                         '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
-                    'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
+                        'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
                         'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
 
                     let isP = function(c) {
@@ -110,11 +110,11 @@ $(function () {
                             let c = pinyinItem.content[chineseIndex]
                             ++chineseIndex
                             if (isP(c)) {
-                                e = c
+                                let e = c
                                 c = pinyinItem.content[chineseIndex]
                                 ++chineseIndex
                             }
-                            //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
+
                             let g = {}
                             g.bind = function (element, data) {
                                 element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, letiable) {
@@ -125,9 +125,15 @@ $(function () {
                                 });
                                 return element
                             };
+
+                            //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
                             let e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                            let content=document.getElementById('content')
+                            let content=document.getElementById('pycontent')
                             g.bind(e, {"pinyin": pinyinValue, "content":c})
+                            content.appendChild(e)
+
+                            let e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                            g.bind(e, {"content":c})
                             content.appendChild(e)
                         }
                       //  let pinyin=data.contents[i].pinyin.split(" ");
@@ -377,33 +383,3 @@ $(function () {
     })
 })
 
-
-//problems:[{'name':[],'id':1,'type':'22'},
-// {'name':[],'id':2,'type':'33'},
-// {'name':[],'id':3,'type':'44'},
-// ]
-
-// lemId":96743504216064,"name":0}],"options":[{"id":96743504216066,"problemId":96743504216064,"name":"刘伶"},{"id":96743504216067,"problemId":96743504216064,"name":"王戎"},{"id":96743504216068,"problemId":96743504216064,"name":"向秀"},{"id":96743504216069,"problemId":96743504216064,"name":"阮籍"}],"id":96743504216064,"type":"单选题","title":"4.“我以天地为栋宇，屋室为裈衣，诸君何为入\n我裈中？”是谁的酒后豪言？"}]}
-// "problems":[
-//     {"standardAnswers":
-//         [{"id":96743495630849,"problemId":96743495630848,"name":0},{"id":96743495696384,"problemId":96743495630848,"name":3}],
-//         "options":[
-//             {"id":96743495696385,"problemId":96743495630848,"name":"庄子"},
-//             {"id":96743495696386,"problemId":96743495630848,"name":"孟子"},
-//             {"id":96743495696387,"problemId":96743495630848,"name":"孔子"},
-//             {"id":96743495696388,"problemId":96743495630848,"name":"老子"}],
-//         "id":96743495630848,
-//         "type":"多选题",
-//         "title":"1.诸子百家中，最受“竹林七贤”喜欢的是谁？"},
-//     {"standardAnswers":
-//          [{"id":96743498055681,"problemId":96743498055680,"name":1},{"id":96743498055682,"problemId":96743498055680,"name":3}],
-//          "options":[
-//          {"id":96743498055683,"problemId":96743498055680,"name":"嵇喜"},
-            // {"id":96743498055684,"problemId":96743498055680,"name":"王戎"},
-            // {"id":96743498055685,"problemId":96743498055680,"name":"曹操"},
-            // {"id":96743498055686,"problemId":96743498055680,"name":"阮籍"}],
-            // "id":96743498055680,
-            // "type":"多选题",
-            // "title":"2.以下哪些人被认为是“魏晋风度”的代表？"
-    // },
-// {"standardAnswers":[{"id":96743501398017,"problemId":96743501398016,"name":1}],"options":[{"id":96743501398018,"problemId":96743501398016,"name":"阮籍"},{"id":96743501398019,"problemId":96743501398016,"name":"嵇康"},{"id":96743501398020,"problemId":96743501398016,"name":"山涛"},{"id":96743501398021,"problemId":96743501398016,"name":"阮咸"}],"id":96743501398016,"type":"单选题","title":"3.“萧萧肃肃，爽朗清举”是古人对谁的赞誉？"},{"standardAnswers":[{"id":96743504216065,"prob

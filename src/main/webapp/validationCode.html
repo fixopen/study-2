@@ -150,7 +150,14 @@
             }
         }
 
+        var o = 0
+
         var save = function (e) {
+            if (o == 1) {
+                var tips = document.getElementById("tips");
+                tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                return
+            }
             if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
                 alert("输入框不能为空")
             } else {
@@ -186,6 +193,7 @@
                                 break;
                             case 405:
                                 tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                                o = 1;
                                 break;
                             case 401:
                                 tips.innerHTML = "手机号或验证码错误";
@@ -253,6 +261,11 @@
 
     var saveButton = document.getElementById('save');
     saveButton.addEventListener('click', save, false);
+
+    var cardNo = document.getElementById('cardNo')
+    cardNo.addEventListener('change', function(e) {
+        o = 0
+    }, false)
 
     var validCode = document.getElementById('validCode')
 

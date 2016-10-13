@@ -135,7 +135,7 @@ public class WechatUsers {
                 if (refreshToken != null) {
                     existwechatUser.setRefreshToken(refreshToken);
                 }
-                Long sex = wechatUser.getSex();
+                Integer sex = wechatUser.getSex();
                 if (sex != null) {
                     existwechatUser.setSex(sex);
                 }

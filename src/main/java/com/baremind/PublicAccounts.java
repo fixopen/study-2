@@ -422,7 +422,7 @@ public class PublicAccounts {
         private int subscribe;
         private String openid;
         private String nickname;
-        private Long sex;
+        private Integer sex;
         private String language;
         private String city;
         private String province;
@@ -457,11 +457,11 @@ public class PublicAccounts {
             this.nickname = nickname;
         }
 
-        public Long getSex() {
+        public Integer getSex() {
             return sex;
         }
 
-        public void setSex(Long sex) {
+        public void setSex(Integer sex) {
             this.sex = sex;
         }
 
@@ -542,7 +542,7 @@ public class PublicAccounts {
         // http请求方式: GET（请使用https协议）
         //https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
         prepare();
-        WechatUserInfo result = null;
+        WechatUserInfo result;
         while (true) {
             Client client = ClientBuilder.newClient();
             Response response = client.target(hostname)
@@ -582,7 +582,7 @@ public class PublicAccounts {
         }
         //u.setLoginName(us.nickname);
         if (userInfo.sex == null) {
-            user.setSex(0l);
+            user.setSex(0);
         } else {
             user.setSex(userInfo.sex);
         }
@@ -1015,7 +1015,8 @@ public class PublicAccounts {
             //user.setRefId();
             //user.setRefreshToken();
             //user.setSex(p.Infos.get(sex));
-            user.setSex(Long.parseLong(p.Infos.get("sex")));
+            Long sex = Long.parseLong(p.Infos.get("sex"));
+            user.setSex(sex.intValue());
             user.setSubscribe(Integer.parseInt(p.Infos.get("subscribe")));
             user.setSubscribeTime(Integer.parseInt(p.Infos.get("subscribe_time")));
 
@@ -1031,7 +1032,7 @@ public class PublicAccounts {
             u.setHead(p.Infos.get("headimgurl"));
             u.setName(p.Infos.get("nickname"));
             //u.setLoginName(us.nickname);
-            u.setSex(Long.parseLong(p.Infos.get("sex")));
+            u.setSex(sex.intValue());
             Date now = new Date();
             u.setCreateTime(now);
             u.setUpdateTime(now);

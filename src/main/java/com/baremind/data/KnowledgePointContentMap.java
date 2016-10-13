@@ -18,23 +18,14 @@ public class KnowledgePointContentMap {
     @Column(name = "knowledge_point_id")
     private Long KnowledgePointId;
 
-    @Column(name = "volume_id")
-    private Long volumeId;
-
-    @Column(name = "subject_id")
-    private Long subjectId;
-
-    @Column(name = "grade")
-    private Long grade;
-
-    @Column(name = "type")
-    private String type;
-
-    @Column(name = "\"order\"")
-    private int order;
+    @Column(name = "object_type")
+    private String objectType;
 
     @Column(name = "object_id")
     private Long objectId;
+
+    @Column(name = "\"order\"")
+    private int order;
 
     public Long getId() {
         return id;
@@ -52,28 +43,12 @@ public class KnowledgePointContentMap {
         KnowledgePointId = knowledgePointId;
     }
 
-    public Long getVolumeId() {
-        return volumeId;
+    public String getObjectType() {
+        return objectType;
     }
 
-    public void setVolumeId(Long volumeId) {
-        this.volumeId = volumeId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
     }
 
     public Long getObjectId() {
@@ -84,19 +59,11 @@ public class KnowledgePointContentMap {
         this.objectId = objectId;
     }
 
-    public Long getSubjectId() {
-        return subjectId;
+    public int getOrder() {
+        return order;
     }
 
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public Long getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Long grade) {
-        this.grade = grade;
+    public void setOrder(int order) {
+        this.order = order;
     }
 }
