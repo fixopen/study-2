@@ -636,16 +636,18 @@ public class PublicAccounts {
     }
 
     public static User insertUserInfoByOpenId(Date now, String openId) {
+        User user = null;
         WechatUserInfo userInfo = getUserInfo(openId);
-        User user = fillUserByWechatUserInfo(now, userInfo);
-        WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
+        if (userInfo != null) {
+            user = fillUserByWechatUserInfo(now, userInfo);
+            WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
 
-        EntityManager em = JPAEntry.getEntityManager();
-        em.getTransaction().begin();
-        em.persist(wechatUser);
-        em.persist(user);
-        em.getTransaction().commit();
-
+            EntityManager em = JPAEntry.getEntityManager();
+            em.getTransaction().begin();
+            em.persist(wechatUser);
+            em.persist(user);
+            em.getTransaction().commit();
+        }
         return user;
     }
 
