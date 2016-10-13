@@ -265,7 +265,16 @@ public class KnowledgePoints {
                                 } else {
                                     pm.put("type", "单选题");
                                 }
-                                pm.put("options", problemOptions);
+                                List<Map<String, Object>> poms = new ArrayList<>();
+                                for (ProblemOption o : problemOptions) {
+                                    Map<String, Object> pom = new HashMap<>();
+                                    pom.put("id", o.getId());
+                                    pom.put("name", o.getName());
+                                    Image image = JPAEntry.getObject(Image.class, "id", o.getImageId());
+                                    pom.put("image", image);
+                                    poms.add(pom);
+                                }
+                                pm.put("options", poms);
                                 pm.put("standardAnswers", problemStandardAnswers);
                                 pm.put("name", problemItem.getName());
                                 Image image = JPAEntry.getObject(Image.class, "id", problemItem.getImageId());
