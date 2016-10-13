@@ -579,6 +579,25 @@ public class PublicAccounts {
         return result;
     }
 
+    public static WechatUserInfo getUserInfo(String token, String openId) {
+        // http请求方式: GET（请使用https协议）
+        //https://api.weixin.qq.com/cgi-bin/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+        WechatUserInfo result = null;
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+            .path("/cgi-bin/sns/userinfo")
+            .queryParam("access_token", token)
+            .queryParam("openid", openId)
+            .queryParam("lang", "zh_CN")
+            .request().get();
+        String responseBody = response.readEntity(String.class);
+        if (responseBody.contains("openid")) {
+            //{"access_token":"ACCESS_TOKEN","expires_in":7200}
+            result = new Gson().fromJson(responseBody, WechatUserInfo.class);
+        }
+        return result;
+    }
+
     public static User fillUserByWechatUserInfo(Date now, WechatUserInfo userInfo) {
         long userId = IdGenerator.getNewId();
         User user = new User();
@@ -761,7 +780,7 @@ public class PublicAccounts {
         User user = null;
         WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
         if (dbWechatUser == null) {
-            WechatUserInfo userInfo = getUserInfo(wechatUser.getOpenId());
+            WechatUserInfo userInfo = getUserInfo(wechatUser.getToken(), wechatUser.getOpenId());
             if (userInfo != null) {
                 user = fillUserByWechatUserInfo(now, userInfo);
                 dbWechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
