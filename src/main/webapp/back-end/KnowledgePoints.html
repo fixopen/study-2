@@ -73,10 +73,17 @@
     </div>
 </template>
 <template id="problem-option-template">
+<<<<<<< HEAD
         <li data-type="option">
             <input type="file" data-type="imageo"/>
             <input type="text" data-type="content"/>
         </li>
+=======
+    <li data-type="option">
+        <input type="text" data-type="content"/>
+        <input type="file" data-type="image"/>
+    </li>
+>>>>>>> 81c7035f1ac0544e579053e63549dd79099bf5b3
 </template>
 <template id="imageText-template">
     <div data-type="imageText">
@@ -679,7 +686,11 @@
             let append = p.querySelector('[data-type="append"]')
             append.addEventListener('click', function(e) {
                 let pot = document.getElementById('problem-option-template')
+<<<<<<< HEAD
                 let po = pot.content.children[0].cloneNode(true)
+=======
+                let po = pot.content.children[p].cloneNode(true)
+>>>>>>> 81c7035f1ac0544e579053e63549dd79099bf5b3
                 let options = e.target.parentNode.querySelector('[data-type="options"]')
                 options.appendChild(po)
             }, false)

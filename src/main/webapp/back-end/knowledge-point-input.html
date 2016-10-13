@@ -157,6 +157,39 @@
         choice.selectedIndex = 0
     }
 
+    let changeKnowledgePoint = function(knowledgePointChoice, knowledgePoint) {
+        state.knowledgePoint.index = knowledgePointChoice.selectedIndex
+        state.knowledgePoint.id = knowledgePointChoice.value
+        knowledgePoint.value = ''
+        let opt = knowledgePointChoice.options.item(state.knowledgePoint.index)
+        if (opt) {
+            knowledgePoint.value = opt.text
+        }
+    }
+
+    let changeVolume = function(volumeChoice, volume) {
+        state.volume.index = volumeChoice.selectedIndex
+        state.volume.id = volumeChoice.value
+        volume.value = ''
+        let opt = volumeChoice.options.item(state.volume.index)
+        if (opt) {
+            volume.value = opt.text
+        }
+    }
+
+    let changeGrade = function(gradeChoice) {
+        state.grade.index = gradeChoice.selectedIndex
+        state.grade.value = gradeChoice.value
+        switch (state.grade.value) {
+            case '20':
+                state.grade.name = 'low'
+                break
+            case '21':
+                state.grade.name = 'high'
+                break
+        }
+    }
+
     g.ajaxProcess('GET', '/api/subjects', [
         {name: 'Accept', value: 'application/json'}
     ], null, function(data) {
@@ -199,49 +232,15 @@
         state.contents.style.visibility = 'hidden'
     })
 
-
-    let changeKnowledgePoint = function(knowledgePointChoice, knowledgePoint) {
-        state.knowledgePoint.index = knowledgePointChoice.selectedIndex
-        state.knowledgePoint.id = knowledgePointChoice.value
-        knowledgePoint.value = ''
-        let opt = knowledgePointChoice.options.item(state.knowledgePoint.index)
-        if (opt) {
-            knowledgePoint.value = opt.text
-        }
-    }
-
     state.knowledgePoint.choice.addEventListener('change', function (e) {
         changeKnowledgePoint(e.target, state.knowledgePoint.title)
     }, false)
-
-    let changeVolume = function(volumeChoice, volume) {
-        state.volume.index = volumeChoice.selectedIndex
-        state.volume.id = volumeChoice.value
-        volume.value = ''
-        let opt = volumeChoice.options.item(state.volume.index)
-        if (opt) {
-            volume.value = opt.text
-        }
-    }
 
     state.volume.choice.addEventListener('change', function (e) {
         changeVolume(e.target, state.volume.title)
         state.knowledgePoint.choice.selectedIndex = 0
         changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
     }, false)
-
-    let changeGrade = function(gradeChoice) {
-        state.grade.index = gradeChoice.selectedIndex
-        state.grade.value = gradeChoice.value
-        switch (state.grade.value) {
-            case '20':
-                state.grade.name = 'low'
-                break
-            case '21':
-                state.grade.name = 'high'
-                break
-        }
-    }
 
     state.grade.choice.addEventListener('change', function (e) {
         changeGrade(e.target)
@@ -406,6 +405,9 @@
         image.setAttribute("data-type", 'image')
         image.setAttribute("name", 'file')
         image.setAttribute("type", 'file')
+        image.addEventListener('change', function(e) {
+          delete image.dataset.id
+        }, false)
         state.contents.appendChild(image)
         state.currentSelectedElement = image
     }, false)
@@ -414,40 +416,52 @@
     appendProblem.addEventListener('click', function (e) {
         let pt = document.getElementById('problem-template')
         let p = pt.content.children[0].cloneNode(true)
+        let image = p.querySelector('[data-type="image"]')
+        image.addEventListener('change', function(e) {
+          delete image.dataset.id
+        }, false)
         state.contents.appendChild(p)
         state.currentSelectedElement = p
     }, false)
 
     let appendPinyinText = document.getElementById('appendPinyinText')
     appendPinyinText.addEventListener('click', function (e) {
-        let py = document.getElementById('pinyinText-template')
-        let p = py.content.children[0].cloneNode(true)
-        state.contents.appendChild(p)
-        state.currentSelectedElement = p
+        let ptt = document.getElementById('pinyinText-template')
+        let pt = ptt.content.children[0].cloneNode(true)
+        state.contents.appendChild(pt)
+        state.currentSelectedElement = pt
     }, false)
 
     let appendVideo = document.getElementById('appendVideo')
     appendVideo.addEventListener('click', function (e) {
-        let video = document.getElementById('video-template')
-        let p = video.content.children[0].cloneNode(true)
-        state.contents.appendChild(p)
-        state.currentSelectedElement = p
+        let vt = document.getElementById('video-template')
+        let v = vt.content.children[0].cloneNode(true)
+        let image = v.querySelector('[data-type="image"]')
+        image.addEventListener('change', function(e) {
+          delete image.dataset.id
+        }, false)
+        state.contents.appendChild(v)
+        state.currentSelectedElement = v
     }, false)
 
     let appendImageText = document.getElementById('appendImageText')
     appendImageText.addEventListener('click', function (e) {
-        let pt = document.getElementById('imageText-template')
-        let p = pt.content.children[0].cloneNode(true)
-        state.contents.appendChild(p)
-        state.currentSelectedElement = p
+        let itt = document.getElementById('imageText-template')
+        let it = itt.content.children[0].cloneNode(true)
+        let image = it.querySelector('[data-type="image"]')
+        image.addEventListener('change', function(e) {
+          delete image.dataset.id
+        }, false)
+        state.contents.appendChild(it)
+        state.currentSelectedElement = it
     }, false)
 
     let appendQuote = document.getElementById('appendQuote')
     appendQuote.addEventListener('click', function (e) {
-        let pt = document.getElementById('quote-template')
-        let p = pt.content.children[0].cloneNode(true)
-        state.contents.appendChild(p)
-        state.currentSelectedElement = p
+        let qt = document.getElementById('quote-template')
+        let q = pt.content.children[0].cloneNode(true)
+        state.contents.appendChild(q)
+        state.currentSelectedElement = q
     }, false)
 
     let uploadFile = function(file, postProcess) {
