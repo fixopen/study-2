@@ -65,21 +65,17 @@
         图片<input type="file" data-type="image"/>
         <input type="text" data-type="order"/>
         标准答案<input type="text" data-type="standardAnswers"/>
-        <button id="appendProblemText" data-type="problemText">append problemText</button>
-        <button id="appendProblemImage" data-type="problemImage">append problemImage</button>
-        <button id="appendProblemImageText" data-type="problemImageText">append problemImageText</button>
-        <ol>
-            <li>
-                <input type="text" data-type="option" data-identity="1"/>
-                <input/>
-            </li>
-            <li><input type="text" data-type="option" data-identity="2"/></li>
-            <li><input type="text" data-type="option" data-identity="3"/></li>
-            <li><input type="text" data-type="option" data-identity="4"/></li>
-        </ol>
+        <ol data-type="options"></ol>
         视频图片<input type="file" data-type="videoImg"/>
         视频路径(手动输入)<input type="text" data-type="video"/>
+        <button data-type="append">append problem option</button>
     </div>
+</template>
+<template id="problem-option-template">
+    <li data-type="option">
+        <input type="text" data-type="content"/>
+        <input type="file" data-type="image"/>
+    </li>
 </template>
 <template id="imageText-template">
     <div data-type="imageText">
@@ -704,6 +700,13 @@
         appendProblem.addEventListener('click', function (e) {
             let pt = document.getElementById('problem-template')
             let p = pt.content.children[0].cloneNode(true)
+            let append = p.querySelector('[data-type="append"]')
+            append.addEventListener('click', function(e) {
+                let pot = document.getElementById('problem-option-template')
+                let po = pot.content.children[p].cloneNode(true)
+                let options = e.target.parentNode.querySelector('[data-type="options"]')
+                options.appendChild(po)
+            }, false)
             contents.appendChild(p)
             currentSelectedElement = p
         }, false)
