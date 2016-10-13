@@ -569,6 +569,7 @@ public class PublicAccounts {
                             getTokenFromWechatPlatform();
                             break;
                         default:
+                            Logs.insert(0l, "wechatError", 100l, responseBody);
                             isContinue = false;
                             break;
                     }
