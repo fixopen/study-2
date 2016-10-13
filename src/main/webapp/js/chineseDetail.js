@@ -72,7 +72,7 @@ $(function () {
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
-                            {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
+                            // {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
@@ -110,7 +110,7 @@ $(function () {
                             let c = pinyinItem.content[chineseIndex]
                             ++chineseIndex
                             if (isP(c)) {
-                                let e = c
+                                 e = c
                                 c = pinyinItem.content[chineseIndex]
                                 ++chineseIndex
                             }
@@ -128,13 +128,18 @@ $(function () {
 
                             //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
                             let e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                            let content=document.getElementById('pycontent')
+                            let content=document.getElementById('content')
                             g.bind(e, {"pinyin": pinyinValue, "content":c})
                             content.appendChild(e)
 
-                            let e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
-                            g.bind(e, {"content":c})
-                            content.appendChild(e)
+                            // let d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                            // let content=document.getElementById('pycontent')
+                            // g.bind(d, {"pinyin": pinyinValue, "content":c})
+                            // content.appendChild(d)
+                            //
+                            // let e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                            // g.bind(e, {"content":c})
+                            // content.appendChild(e)
                         }
                       //  let pinyin=data.contents[i].pinyin.split(" ");
                         //alert(pinyin);
