@@ -16,9 +16,6 @@ public class Problem {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "knowledge_point_id")
-    private Long knowledgePointId;
-
     @Column(name = "name")
     private String name;
 
@@ -34,14 +31,6 @@ public class Problem {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getKnowledgePointId() {
-        return knowledgePointId;
-    }
-
-    public void setKnowledgePointId(Long knowledgePointId) {
-        this.knowledgePointId = knowledgePointId;
     }
 
     public String getName() {

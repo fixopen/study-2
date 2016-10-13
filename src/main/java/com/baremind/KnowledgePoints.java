@@ -297,8 +297,8 @@ public class KnowledgePoints {
 
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     Video video = videoObjects.get(0);
-                    Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
                     Map<String, Object> vm = new HashMap<>();
+                    Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
                     vm.put("cover", image.getStorePath());
                     vm.put("id", video.getId());
                     vm.put("storePath", video.getStorePath());

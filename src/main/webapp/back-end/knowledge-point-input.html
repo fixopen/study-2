@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Content</title>
+    <style>
+        .active {
+            background-color: yellow;
+        }
+
+        .saved {
+            background-color: #b2b2b2;
+        }
+    </style>
+</head>
+<body>
+<h1>后台录入页面</h1>
+<table border="1">
+    <tr>
+        <th>科目</th>
+        <th>年级</th>
+        <th>标题</th>
+        <th>操作</th>
+        <th>知识点</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td><select id="subjectChoice"></select></td>
+        <td>
+            <select id="gradeChoice">
+                <option value="20">低年级</option>
+                <option value="21">高年级</option>
+            </select>
+        </td>
+        <td>
+            <input type="text" id="volumeTitle"/>
+            <select id="volumeChoice"></select>
+        </td>
+        <td>
+            <input type="button" id="appendVolume" value="添加"/>
+            <input type="button" id="updateVolume" value="修改"/>
+        </td>
+        <td>
+            <input type="text" id="knowledgePointTitle"/>
+            <select id="knowledgePointChoice"></select>
+        </td>
+        <td>
+            <input type="button" id="appendKnowledgePoint" value="添加"/>
+            <input type="button" id="updateKnowledgePoint" value="修改"/>
+        </td>
+    </tr>
+</table>
+<div id="contents"></div>
+<div id="buttons">
+    <button id="appendText" data-type="text">append text</button>
+    <button id="appendImage" data-type="image">append image</button>
+    <button id="appendVideo" data-type="video">append video</button>
+    <button id="appendProblem" data-type="problem">append problem</button>
+    <button id="appendImageText" data-type="imagetext">append image-text</button>
+    <button id="appendPinyinText" data-type="pinyintext">append pinyin-text</button>
+    <button id="appendQuote" data-type="quote">append quote</button>
+    <button id="movePrevious">^</button>
+    <button id="moveNext">V</button>
+    <button id="submit">submit</button>
+    <button id="save">save</button>
+</div>
+<template id="problem-template">
+    <div data-type="problem">
+        问题标题<textarea data-type="title"></textarea>
+        图片<input type="file" data-type="image"/>
+        <input type="text" data-type="order"/>
+        标准答案<input type="text" data-type="standardAnswers"/>
+        <button id="appendProblemText" data-type="problemText">append problemText</button>
+        <button id="appendProblemImage" data-type="problemImage">append problemImage</button>
+        <button id="appendProblemImageText" data-type="problemImageText">append problemImageText</button>
+        <ol>
+            <li><input type="text" data-type="option" data-identity="1"/></li>
+            <li><input type="text" data-type="option" data-identity="2"/></li>
+            <li><input type="text" data-type="option" data-identity="3"/></li>
+            <li><input type="text" data-type="option" data-identity="4"/></li>
+        </ol>
+        视频图片<input type="file" data-type="videoCover"/>
+        视频路径(手动输入)<input type="text" data-type="video"/>
+    </div>
+</template>
+<template id="imageText-template">
+    <div data-type="imageText">
+        图片<input type="file" data-type="image"/>
+        文本<textarea data-type="content"></textarea>
+    </div>
+</template>
+<template id="video-template">
+    <div data-type="video">
+        视频图片<input type="file" data-type="cover"/>
+        视频路径<textarea data-type="storePath"></textarea>
+    </div>
+</template>
+<template id="quote-template">
+    <div data-type="quote">
+        段落<textarea data-type="content"></textarea>
+        出处<textarea data-type="source"></textarea>
+    </div>
+</template>
+<template id="pinyinText-template">
+    <div data-type="pinyinText">
+        拼音<textarea data-type="pinyin"></textarea>
+        文字<textarea data-type="content"></textarea>
+    </div>
+</template>
+<script src="/util.js"></script>
+<script>
+    let subjects = []
+
+    let state = {
+        subject: {
+            index: 0,
+            id: null,
+            choice: document.getElementById('subjectChoice')
+        },
+        grade: {
+            index: 0,
+            value: 20,
+            name: 'low',
+            choice: document.getElementById('gradeChoice')
+        },
+        volume: {
+            index: 0,
+            id: null,
+            choice: document.getElementById('volumeChoice'),
+            title: document.getElementById('volumeTitle'),
+            maxOrder: 1
+        },
+        knowledgePoint: {
+            index: 0,
+            id: null,
+            choice: document.getElementById('knowledgePointChoice'),
+            title: document.getElementById('knowledgePointTitle'),
+            maxOrder: 1
+        },
+        currentSelectedElement: null,
+        contents: document.getElementById('contents'),
+        buttons: document.getElementById('buttons')
+    }
+
+    let createOption = function(value, title) {
+        let option = document.createElement('option')
+        option.setAttribute("value", value)
+        option.appendChild(document.createTextNode(title))
+        return option
+    }
+
+    let refillChoice = function(choice, data) {
+        choice.innerHTML = ''
+        for (let i = 0; i < data.length; ++i) {
+            choice.appendChild(createOption(data[i].id, data[i].name))
+        }
+        choice.selectedIndex = 0
+    }
+
+    g.ajaxProcess('GET', '/api/subjects', [
+        {name: 'Accept', value: 'application/json'}
+    ], null, function(data) {
+        subjects = data
+        for (let i = 0; i < subjects.length; ++i) {
+            subjects[i].low = []
+            subjects[i].high = []
+            g.ajaxProcess('GET', '/api/subjects/' + subjects[i].id + '/low/volumes', [
+                {name: 'Accept', value: 'application/json'}
+            ], null, function(volumes) {
+                subjects[i].low = volumes
+                for (let j = 0; j < subjects[i].low.length; ++j) {
+                    g.ajaxProcess('GET', '/api/volumes/' + subjects[i].low[j].id + '/knowledge-points', [
+                        {name: 'Accept', value: 'application/json'}
+                    ], null, function(knowledgePoints) {
+                        subjects[i].low[j].knowledgePoints = knowledgePoints
+                    })
+                }
+            })
+            g.ajaxProcess('GET', '/api/subjects/' + subjects[i].id + '/high/volumes', [
+                {name: 'Accept', value: 'application/json'}
+            ], null, function(volumes) {
+                subjects[i].high = volumes
+                for (let j = 0; j < subjects[i].high.length; ++j) {
+                    g.ajaxProcess('GET', '/api/volumes/' + subjects[i].high[j].id + '/knowledge-points', [
+                        {name: 'Accept', value: 'application/json'}
+                    ], null, function(knowledgePoints) {
+                        subjects[i].high[j].knowledgePoints = knowledgePoints
+                    })
+                }
+            })
+        }
+
+        refillChoice(state.subject.choice, subjects)
+        changeGrade(state.grade.choice)
+        refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+        changeVolume(state.volume.choice, state.volume.title)
+        refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+        changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+        state.contents.style.visibility = 'hidden'
+    })
+
+
+    let changeKnowledgePoint = function(knowledgePointChoice, knowledgePoint) {
+        state.knowledgePoint.index = knowledgePointChoice.selectedIndex
+        state.knowledgePoint.id = knowledgePointChoice.value
+        knowledgePoint.value = ''
+        let opt = knowledgePointChoice.options.item(state.knowledgePoint.index)
+        if (opt) {
+            knowledgePoint.value = opt.text
+        }
+    }
+
+    state.knowledgePoint.choice.addEventListener('change', function (e) {
+        changeKnowledgePoint(e.target, state.knowledgePoint.title)
+    }, false)
+
+    let changeVolume = function(volumeChoice, volume) {
+        state.volume.index = volumeChoice.selectedIndex
+        state.volume.id = volumeChoice.value
+        volume.value = ''
+        let opt = volumeChoice.options.item(state.volume.index)
+        if (opt) {
+            volume.value = opt.text
+        }
+    }
+
+    state.volume.choice.addEventListener('change', function (e) {
+        changeVolume(e.target, state.volume.title)
+        state.knowledgePoint.choice.selectedIndex = 0
+        changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+    }, false)
+
+    let changeGrade = function(gradeChoice) {
+        state.grade.index = gradeChoice.selectedIndex
+        state.grade.value = gradeChoice.value
+        switch (state.grade.value) {
+            case '20':
+                state.grade.name = 'low'
+                break
+            case '21':
+                state.grade.name = 'high'
+                break
+        }
+    }
+
+    state.grade.choice.addEventListener('change', function (e) {
+        changeGrade(e.target)
+        state.volume.choice.selectedIndex = 0
+        changeVolume(state.volume.choice, state.volume.title)
+        state.knowledgePoint.choice.selectedIndex = 0
+        changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+    }, false)
+
+    state.subject.choice.addEventListener('change', function (e) {
+        state.subject.index = e.target.selectedIndex
+        state.subject.id = e.target.value
+        state.grade.choice.selectedIndex = 0
+        changeGrade(state.grade.choice)
+        state.volume.choice.selectedIndex = 0
+        changeVolume(state.volume.choice, state.volume.title)
+        state.knowledgePoint.choice.selectedIndex = 0
+        changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+    }, false)
+
+    let appendVolumeButton = document.getElementById('appendVolume')
+    appendVolumeButton.addEventListener('click', function(e) {
+        g.ajaxProcess('POST', '/api/volumes', [
+            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+            {name: 'Accept', value: 'application/json'}
+        ], {
+            subjectId: state.subject.id,
+            grade: parseInt(state.grade.value),
+            name: state.volume.title.value,
+            order: state.volume.maxOrder
+        }, function(volumeResult) {
+            if (volumeResult.meta.code < 400) {
+                let volume = volumeResult.data
+                volume.knowledgePoints = []
+                subjects[state.subject.index][state.grade.name].push(volume)
+                refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+                state.volume.choice.selectedIndex = subjects[state.subject.index][state.grade.name].length - 1
+                changeVolume(state.volume.choice, state.volume.title)
+                refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                ++state.volume.maxOrder
+                alert("添加成功")
+            } else {
+                //alert(volumeResult.data)
+                alert("添加失败")
+            }
+        })
+    }, false)
+
+    let updateVolumeButton = document.getElementById('updateVolume')
+    updateVolumeButton.addEventListener('click', function(e) {
+        g.ajaxProcess('PUT', '/api/volumes/' + state.volume.id, [
+            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+            {name: 'Accept', value: 'application/json'}
+        ], {
+            name: state.volume.title.value
+        }, function(volumeResult) {
+            if (volumeResult.meta.code < 400) {
+                let knowledgePoints = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints
+                let volume = volumeResult.data
+                volume.knowledgePoints = knowledgePoints
+                subjects[state.subject.index][state.grade.name][state.volume.index] = volume
+                refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+                state.volume.choice.selectedIndex = state.volume.index
+                changeVolume(state.volume.choice, state.volume.title)
+                alert("修改成功")
+            } else {
+                //alert(volumeResult.data)
+                alert("修改失败")
+            }
+        })
+    }, false)
+
+    let appendKnowledgePointButton = document.getElementById('appendKnowledgePoint')
+    appendKnowledgePointButton.addEventListener('click', function(e) {
+        g.ajaxProcess('POST', '/api/knowledge-points', [
+            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+            {name: 'Accept', value: 'application/json'}
+        ], {
+            volumeId: state.volume.id,
+            name: state.knowledgePoint.title.value,
+            order: state.knowledgePoint.maxOrder
+        }, function(knowledgePointResult) {
+            if (knowledgePointResult.meta.code < 400) {
+                let knowledgePoint = knowledgePointResult.data
+                subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.push(knowledgePoint)
+                refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                state.knowledgePoint.choice.selectedIndex = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.length - 1
+                changeVolume(state.knowledgePoint.choice, state.knowledgePoint.title)
+                state.contents.style.visibility = 'visible'
+                ++state.knowledgePoint.maxOrder
+                alert("添加成功")
+            } else {
+                //alert(knowledgePointResult.data)
+                alert("添加失败")
+            }
+        })
+    }, false)
+
+    let updateKnowledgePointButton = document.getElementById('updateKnowledgePointButton')
+    updateKnowledgePointButton.addEventListener('click', function(e) {
+        g.ajaxProcess('PUT', '/api/knowledge-points/' + state.knowledgePoint.id, [
+            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+            {name: 'Accept', value: 'application/json'}
+        ], {
+            name: state.knowledgePoint.title.value
+        }, function(knowledgePointResult) {
+            if (knowledgePointResult.meta.code < 400) {
+                subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index] = knowledgePointResult.data
+                refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                state.knowledgePoint.choice.selectedIndex = state.knowledgePoint.index
+                changeVolume(state.knowledgePoint.choice, state.knowledgePoint.title)
+                alert("修改成功")
+            } else {
+                //alert(knowledgePointResult.data)
+                alert("修改失败")
+            }
+        })
+    }, false)
+
+    state.contents.addEventListener('click', function (e) {
+        let elm = e.target
+        for (; ;) {
+            if (elm.parentNode == e.currentTarget) {
+                break
+            }
+            elm = elm.parentNode
+        }
+        if (elm != state.currentSelectedElement) {
+            if (state.currentSelectedElement) {
+                state.currentSelectedElement.removeClass('active')
+            }
+            state.currentSelectedElement = elm
+            state.currentSelectedElement.addClass('active')
+        }
+    }, false)
+
+    let movePrevious = document.getElementById('movePrevious')
+    movePrevious.addEventListener('click', function (e) {
+        let previousSibling = state.currentSelectedElement.previousElementSibling
+        state.contents.removeChild(state.currentSelectedElement)
+        state.contents.insertBefore(state.currentSelectedElement, previousSibling)
+    }, false)
+
+    let moveNext = document.getElementById('moveNext')
+    moveNext.addEventListener('click', function (e) {
+        let nextNextSibling = state.currentSelectedElement.nextElementSibling.nextElementSibling
+        state.contents.removeChild(state.currentSelectedElement)
+        state.contents.insertBefore(state.currentSelectedElement, nextNextSibling)
+    }, false)
+
+    let appendText = document.getElementById('appendText')
+    appendText.addEventListener('click', function (e) {
+        let text = document.createElement('textarea')
+        text.setAttribute("data-type", 'text')
+        state.contents.appendChild(text)
+        state.currentSelectedElement = text
+    }, false)
+
+    let appendImage = document.getElementById('appendImage')
+    appendImage.addEventListener('click', function (e) {
+        let image = document.createElement('input')
+        image.setAttribute("data-type", 'image')
+        image.setAttribute("name", 'file')
+        image.setAttribute("type", 'file')
+        state.contents.appendChild(image)
+        state.currentSelectedElement = image
+    }, false)
+
+    let appendProblem = document.getElementById('appendProblem')
+    appendProblem.addEventListener('click', function (e) {
+        let pt = document.getElementById('problem-template')
+        let p = pt.content.children[0].cloneNode(true)
+        state.contents.appendChild(p)
+        state.currentSelectedElement = p
+    }, false)
+
+    let appendPinyinText = document.getElementById('appendPinyinText')
+    appendPinyinText.addEventListener('click', function (e) {
+        let py = document.getElementById('pinyinText-template')
+        let p = py.content.children[0].cloneNode(true)
+        state.contents.appendChild(p)
+        state.currentSelectedElement = p
+    }, false)
+
+    let appendVideo = document.getElementById('appendVideo')
+    appendVideo.addEventListener('click', function (e) {
+        let video = document.getElementById('video-template')
+        let p = video.content.children[0].cloneNode(true)
+        state.contents.appendChild(p)
+        state.currentSelectedElement = p
+    }, false)
+
+    let appendImageText = document.getElementById('appendImageText')
+    appendImageText.addEventListener('click', function (e) {
+        let pt = document.getElementById('imageText-template')
+        let p = pt.content.children[0].cloneNode(true)
+        state.contents.appendChild(p)
+        state.currentSelectedElement = p
+    }, false)
+
+    let appendQuote = document.getElementById('appendQuote')
+    appendQuote.addEventListener('click', function (e) {
+        let pt = document.getElementById('quote-template')
+        let p = pt.content.children[0].cloneNode(true)
+        state.contents.appendChild(p)
+        state.currentSelectedElement = p
+    }, false)
+
+    let uploadFile = function(file, postProcess) {
+        var formData = new FormData();
+        formData.append("file", file);
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                if (request.status == 200) {
+                    postProcess(JSON.parse(request.responseText))
+                }
+            }
+        }
+        request.open("POST", "/api/medias");
+        request.send(formData);
+    }
+
+    let genericProc = function(entityPath, data) {
+        if (state.currentSelectedElement.dataset.id) {
+            g.ajaxProcess('PUT', '/api/' + entityPath + '/' + state.currentSelectedElement.dataset.id, [
+                {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                {name: 'Accept', value: 'application/json'}
+            ], data, function (result) {
+                if (result.meta.code < 400) {
+                    alert("修改成功")
+                } else {
+                    alert("修改失败")
+                }
+            })
+        } else {
+            g.ajaxProcess('POST', '/api/' + entityPath, [
+                {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                {name: 'Accept', value: 'application/json'}
+            ], data, function (result) {
+                if (result.meta.code < 400) {
+                    state.currentSelectedElement.dataset.id = result.data.id
+                    alert("添加成功")
+                } else {
+                    alert("添加失败")
+                }
+            })
+        }
+    }
+
+    let submitProblem = function(imageId, videoId) {
+        g.ajaxProcess('POST', '/api/problems', [
+            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+            {name: 'Accept', value: 'application/json'}
+        ], {
+            name: state.currentSelectedElement.querySelector('[data-type="title"]').value,
+            imageId: imageId,
+            videoId: videoId,
+        }, function (result) {
+            if (result.meta.code < 400) {
+                state.currentSelectedElement.dataset.id = result.data.id
+                let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
+                let sas = standardAnswer.split(',')
+                for (let i = 0; i < sas.length; ++i) {
+                    let answerItem = {
+                        problemId: problem.id,
+                        name: parseInt(sas[i]) - 1
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: "/api/problem-standard-answers",
+                        data: JSON.stringify(answerItem),
+                        dataType: "json",
+                        async: false,
+                        contentType: "application/json; charset=utf-8"
+                    })
+                }
+
+                let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
+                let optValues = [options[0].value, options[1].value, options[2].value, options[3].value]
+
+                for (let i = 0; i < optValues.length; ++i) {
+                    let option = {
+                        problemId: problem.id,
+                        name: optValues[i]
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: "/api/problem-options",
+                        data: JSON.stringify(option),
+                        dataType: "json",
+                        async: false,
+                        contentType: "application/json; charset=utf-8",
+                    })
+                }
+                alert("添加成功")
+            } else {
+                alert("添加失败")
+            }
+        })
+    }
+
+    let submit = document.getElementById('submit')
+    submit.addEventListener('click', function (e) {
+        switch (state.currentSelectedElement.dataset.type) {
+            case 'text':
+                genericProc('texts', {content: state.currentSelectedElement.value})
+                break
+            case 'image':
+                uploadFile(state.currentSelectedElement.files[0], function(result) {
+                    if (result.meta.code < 400) {
+                        state.currentSelectedElement.dataset.id = result.data.id
+                        alert("添加成功")
+                    } else {
+                        alert("添加失败")
+                    }
+                })
+                break
+            case 'problem':
+                if (!state.currentSelectedElement.dataset.id) {
+                    if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
+                        if (state.currentSelectedElement.querySelector('[data-type="image"]').files.length > 0) {
+                            uploadFile(currentSelectedElement.querySelector('[data-type="image"]').files[0], function (imageResult) {
+                                if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length > 0) {
+                                    uploadFile(currentSelectedElement.querySelector('[data-type="videoImg"]').files[0], function (videoResult) {
+                                        submitProblem(imageResult.data.id, videoResult.data.id)
+                                    })
+                                } else {
+                                    submitProblem(imageResult.data.id)
+                                }
+                            })
+                        }
+                        if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length > 0) {
+                            uploadFile(currentSelectedElement.querySelector('[data-type="videoImg"]').files[0], function (result) {
+                                submitProblem(null, result.data.id)
+                            })
+                        } else {
+                            submitProblem()
+                        }
+                    }
+                } else {
+                    alert("问题不提供修改功能")
+                }
+                break
+            case 'imageText':
+                let imageControl = state.currentSelectedElement.querySelector('[data-type="image"]')
+                if (!imageControl.dataset.id) {
+                    if (imageControl.files.length > 0) {
+                        uploadFile(imageControl.files[0], function(result) {
+                            if (result.meta.code < 400) {
+                                imageControl.dataset.id = result.data.id
+                                genericProc('image-texts', {
+                                    imageId: imageControl.dataset.id,
+                                    content: state.currentSelectedElement.value
+                                })
+                            } else {
+                                alert('image upload error')
+                            }
+                        })
+                    } else {
+                        alert('must choose image')
+                    }
+                }
+                break
+            case 'video':
+                let imageControl = state.currentSelectedElement.querySelector('[data-type="image"]')
+                if (!imageControl.dataset.id) {
+                    if (imageControl.files.length > 0) {
+                        uploadFile(imageControl.files[0], function(result) {
+                            if (result.meta.code < 400) {
+                                imageControl.dataset.id = result.data.id
+                                genericProc('videos', {
+                                    imageId: imageControl.dataset.id,
+                                    storePath: state.currentSelectedElement.value
+                                })
+                            } else {
+                                alert('image upload error')
+                            }
+                        })
+                    } else {
+                        alert('must choose image')
+                    }
+                }
+                break
+            case 'quote':
+                genericProc('quotes', {
+                    source: state.currentSelectedElement.querySelector('[data-type="source"]').value,
+                    content: state.currentSelectedElement.querySelector('[data-type="content"]').value
+                })
+                break
+            case 'pinyinText':
+                genericProc('quotes', {
+                    source: state.currentSelectedElement.querySelector('[data-type="pinyin"]').value,
+                    content: state.currentSelectedElement.querySelector('[data-type="content"]').value
+                })
+                break
+        }
+        state.currentSelectedElement.removeClass('active')
+        state.currentSelectedElement.addClass('saved')
+    }, false)
+
+    let save = document.getElementById('save')
+    save.addEventListener('click', function (e) {
+        let children = state.contents.children
+        for (let i = 0; i < children.length; ++i) {
+            g.ajaxProcess('POST', '/api/knowledge-point-content-maps', [
+                {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                {name: 'Accept', value: 'application/json'}
+            ], {
+                knowledgePointId: state.knowledgePoint.id,
+                type: children[i].dataset.type,
+                order: i + 1,
+                objectId: children[i].dataset.id
+            }, function(result) {
+                //
+            })
+        }
+        state.buttons.style.visibility = 'hidden'
+        state.contents.innerHTML = ''
+        alert("添加成功")
+    }, false)
+</script>
+</body>
+</html>
