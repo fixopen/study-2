@@ -826,17 +826,19 @@ public class PublicAccounts {
         Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
         }.getType());
         WechatUser wechatUser = wechatUserFromToken(wu);
-        Date now = new Date();
-        User user = insertUserInfoByWechatUser(now, wechatUser);
-        Long userId = user.getId();
-        Session s = putSession(now, userId);
 
         Response result = null;
-        try {
-            //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        Date now = new Date();
+        User user = insertUserInfoByWechatUser(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -857,16 +859,18 @@ public class PublicAccounts {
         Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
         }.getType());
         WechatUser wechatUser = wechatUserFromToken(wu);
-        Date now = new Date();
-        User user = insertUserInfoByWechatUser(now, wechatUser);
-        Long userId = user.getId();
-        Session s = putSession(now, userId);
 
         Response result = null;
-        try {
-            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/basic-info.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        Date now = new Date();
+        User user = insertUserInfoByWechatUser(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/basic-info.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
