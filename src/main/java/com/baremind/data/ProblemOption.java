@@ -18,8 +18,19 @@ public class ProblemOption {
     @Column(name = "problem_id")
     private Long problemId;
 
+    @Column(name = "image_id")
+    private Long imageId;
+
     @Column(name = "name")
     private String name;
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
+    }
 
     public Long getId() {
         return id;
