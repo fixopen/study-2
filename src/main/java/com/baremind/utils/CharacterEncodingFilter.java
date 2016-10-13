@@ -42,6 +42,7 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
             }
             w.write(buffer, 0, receiveLength);
         }
+        servletInputStream.close();
         w.close();
     }
 

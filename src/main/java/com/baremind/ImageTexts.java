@@ -40,7 +40,7 @@ public class ImageTexts {
                 String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
                 if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
                     String fileName = now + "." + postfix;
-                    String pyshicalpath = Properties.getPropertyValue("physicalpath");
+                    String pyshicalpath = Properties.getPropertyValue("testphysicalpath");
                     String uploadedFileLocation = pyshicalpath + fileName;
                     File file = new File(uploadedFileLocation);
                     FileOutputStream w = new FileOutputStream(file);
@@ -54,7 +54,7 @@ public class ImageTexts {
                     imageText.setMimeType(contentType);
                     imageText.setName(fileName);
                     imageText.setSize(p.getSize());
-                    String virtualPath = Properties.getPropertyValue("virtualpath") + fileName;
+                    String virtualPath = Properties.getPropertyValue("testvirtualpath") + fileName;
                     imageText.setStorePath(virtualPath);
                     imageText.setContent(content);
                     JPAEntry.genericPost(imageText);

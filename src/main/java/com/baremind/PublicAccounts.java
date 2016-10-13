@@ -613,8 +613,8 @@ public class PublicAccounts {
         //user.setRefreshToken();
         //user.setSex(p.Infos.get(sex));
         wechatUser.setSex(userInfo.sex);
-        wechatUser.setSubscribe(userInfo.subscribe_time);
-        wechatUser.setSubscribeTime(userInfo.subscribe);
+        wechatUser.setSubscribe(userInfo.subscribe);
+        wechatUser.setSubscribeTime(userInfo.subscribe_time);
         wechatUser.setLanguage(userInfo.language);
         wechatUser.setRemark(userInfo.remark);
         wechatUser.setGroupId(userInfo.groupid);
@@ -763,21 +763,7 @@ public class PublicAccounts {
         return user;
     }
 
-    @GET
-    @Path("user")
-    @Produces(MediaType.TEXT_HTML)
-    public Response validation(@Context HttpServletRequest request, @QueryParam("code") String code) {
-        Client client = ClientBuilder.newClient();
-        Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
-        String responseBody = response.readEntity(String.class);
-        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
-        }.getType());
+    private static WechatUser wechatUserFromToken(Map<String, Object> wu) {
         WechatUser wechatUser = new WechatUser();
         for (String key : wu.keySet()) {
             switch (key) {
@@ -803,7 +789,25 @@ public class PublicAccounts {
                     break;
             }
         }
+        return wechatUser;
+    }
 
+    @GET
+    @Path("card")
+    @Produces(MediaType.TEXT_HTML)
+    public Response card(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+            .path("/sns/oauth2/access_token")
+            .queryParam("appid", appID)
+            .queryParam("secret", secret)
+            .queryParam("code", code)
+            .queryParam("grant_type", "authorization_code")
+            .request().get();
+        String responseBody = response.readEntity(String.class);
+        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
+        }.getType());
+        WechatUser wechatUser = wechatUserFromToken(wu);
         Date now = new Date();
         User user = insertUserInfoByWechatUser(now, wechatUser);
         Long userId = user.getId();
@@ -813,6 +817,36 @@ public class PublicAccounts {
         try {
             //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("account")
+    @Produces(MediaType.TEXT_HTML)
+    public Response account(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+            .path("/sns/oauth2/access_token")
+            .queryParam("appid", appID)
+            .queryParam("secret", secret)
+            .queryParam("code", code)
+            .queryParam("grant_type", "authorization_code")
+            .request().get();
+        String responseBody = response.readEntity(String.class);
+        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
+        }.getType());
+        WechatUser wechatUser = wechatUserFromToken(wu);
+        Date now = new Date();
+        User user = insertUserInfoByWechatUser(now, wechatUser);
+        Long userId = user.getId();
+        Session s = putSession(now, userId);
+
+        Response result = null;
+        try {
+            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/basic-info.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

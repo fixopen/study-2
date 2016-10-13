@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+
 @Path("knowledge-points")
 public class KnowledgePoints {
     private <T> T findItem(List<T> container, Predicate<T> p) {
@@ -268,6 +269,9 @@ public class KnowledgePoints {
                                 pm.put("options", problemOptions);
                                 pm.put("standardAnswers", problemStandardAnswers);
                                 pm.put("title", problemItem.getTitle());
+                                pm.put("storePath", problemItem.getStorePath());
+                                pm.put("videoUrl", problemItem.getVideoUrl());
+                                pm.put("videoImage", problemItem.getVideoImage());
                                 orderedProblems.add(pm);
                             }
                             break;
@@ -290,7 +294,13 @@ public class KnowledgePoints {
                 totalResult.put("contents", orderedContents);
 
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
-                    totalResult.put("video", videoObjects.get(0));
+                    Video video = videoObjects.get(0);
+                    Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
+                    Map<String, Object> vm = new HashMap<>();
+                    vm.put("cover", image.getStorePath());
+                    vm.put("id", video.getId());
+                    vm.put("storePath", video.getStorePath());
+                    totalResult.put("video", vm);
                 }
 
                 Map<String, Object> interaction = new HashMap<>();
@@ -351,7 +361,7 @@ public class KnowledgePoints {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
             orders.put("order", "ASC");
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject ,orders);
+            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject, orders);
             if (!knowledgePoints.isEmpty()) {
                 result = Response.ok(new Gson().toJson(knowledgePoints)).build();
             }
