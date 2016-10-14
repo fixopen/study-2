@@ -432,6 +432,7 @@ public class PublicAccounts {
         private String unionid;
         private String remark;
         private int groupid;
+        private String info;
 
         public int getSubscribe() {
             return subscribe;
@@ -536,6 +537,14 @@ public class PublicAccounts {
         public void setGroupid(int groupid) {
             this.groupid = groupid;
         }
+
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
     }
 
     public static WechatUserInfo getUserInfo(String openId) {
@@ -560,6 +569,7 @@ public class PublicAccounts {
             if (responseBody.contains("openid")) {
                 //{"access_token":"ACCESS_TOKEN","expires_in":7200}
                 result = new Gson().fromJson(responseBody, WechatUserInfo.class);
+                result.setInfo(responseBody);
                 isContinue = false;
             } else {
                 if (responseBody.contains("errcode")) {
@@ -595,8 +605,9 @@ public class PublicAccounts {
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("openid")) {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
-            Logs.insert(144l, "log", 144l, "userInfo = " + responseBody);
+            //Logs.insert(144l, "log", 144l, "userInfo = " + responseBody);
             result = new Gson().fromJson(responseBody, WechatUserInfo.class);
+            result.setInfo(responseBody);
         } else {
             Logs.insert(144l, "log", 144l, "errorInfo = " + responseBody);
         }
@@ -642,7 +653,7 @@ public class PublicAccounts {
         wechatUser.setCountry(userInfo.country);
         //user.setExpiry();
         wechatUser.setHead(userInfo.headimgurl);
-        wechatUser.setInfo(userInfo.toString());
+        wechatUser.setInfo(userInfo.getInfo());
         wechatUser.setNickname(userInfo.nickname);
         //user.setPrivilege();
         wechatUser.setProvince(userInfo.province);
