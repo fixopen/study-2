@@ -104,7 +104,11 @@
                     })
                 },
                 error: function (r) {
-                    alert('I am sorry, not get subjects')
+                    if (r.statusCode == 404) {
+                        window.location.href = '/validationCode.html?userid=' + userId
+                    } else {
+                        alert('I am sorry, not get subjects')
+                    }
                 }
             })
         },
