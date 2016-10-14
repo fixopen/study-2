@@ -48,22 +48,26 @@
             </li>
             <li class="mine_zuli">
                 <span class="mine_leftsp">昵称</span>
-                <input class="mine_rightip" type="text" value="${nickname}">
+                <input class="mine_rightip" type="text" value="${name}" readonly>
                 <img class="mine_rightimg" src="more.png" alt="">
             </li>
             <li class="mine_zuli">
                 <span class="mine_leftsp">账号</span>
-                <input class="mine_rightip" type="text" value="${id}">
+                <input class="mine_rightip" type="text" value="${id}" readonly>
             </li>
             <li class="mine_zuli">
+                <a href="info.html?userid=${id}">
                 <span class="mine_leftsp">我的资料</span>
                 <img class="mine_rightimg" src="more.png" alt="">
+                </a>
             </li>
         </ul>
         <ul class="mine_zUl">
             <li class="mine_zuli">
+                <a href="cards.html?userid=${id}">
                 <span class="mine_leftsp">我的学习卡</span>
                 <img class="mine_rightimg" src="more.png" alt="">
+                </a>
             </li>
         </ul>
         <ul class="mine_zUl">
@@ -72,8 +76,10 @@
                 <img class="mine_rightimg" src="more.png" alt="">
             </li>
             <li class="mine_zuli">
+                <a href="help.html">
                 <span class="mine_leftsp">帮助</span>
                 <img class="mine_rightimg" src="more.png" alt="">
+                </a>
             </li>
         </ul>
     </div>
