@@ -47,7 +47,7 @@ $(function () {
                 containerId: 'knowledge',
                 alterTemplates: [
                     {type: 'normal', templateId: 'knowledge-point-template'},
-                    {type: 'challenge', templateId: 'knowledge-test-template'}
+                    {type: 'pk', templateId: 'knowledge-test-template'}
                 ]
             });
             // proc({

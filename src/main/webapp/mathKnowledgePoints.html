@@ -24,7 +24,9 @@
     <div class="rain-main">
         <div class="biaoti_div" id="title"></div>
         <div class="mulu_div" id="whole_width" style="margin-bottom: 0.3125rem;">
-            <ul class="cont_sul" id="knowledge"></ul>
+            <ul class="cont_sul" id="knowledge">
+                <li class="neir_li"></li>
+            </ul>
             <!--<ul class="cont_sul" id="knowledge-test"></ul>-->
         </div>
     </div>
@@ -34,7 +36,7 @@
     <span class="biti_span">${title}</span>
 </template>
 <template id="knowledge-point-template">
-    <li class="neir_li">
+    <div>
         <div class="neir_lidiv">
             <a class="neir_pzi" href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
         </div>
@@ -43,10 +45,10 @@
             <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
         </div>
         <img src="img/fenjie1.png" alt="">
-    </li>
+    </div>
 </template>
 <template id="knowledge-test-template">
-    <li class="neir_li">
+    <div>
         <div class="neir_lidiv">
             <a class="neir_pzi daTi" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${volumeId}">${name}</a>
         </div>
@@ -60,7 +62,7 @@
             <div class="split_line" id="split_line"></div>
             <span class="lianjie lianjie02"></span>
         </div>
-    </li>
+    </div>
 </template>
 <!--<template id="point-test">-->
     <!--<div>-->
