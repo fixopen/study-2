@@ -217,16 +217,17 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
-        Random rand = new Random();
-        Long logId = rand.nextLong();
+        //Random rand = new Random();
+        //Long logId = rand.nextLong();
         //Logs.insert(id, "log", logId, "start");
         Response result = Response.status(412).build();
         User user = JPAEntry.getObject(User.class, "id", id);
         if (user != null) {
             //Logs.insert(id, "log", logId, "user exist");
             Map<String, Object> validCodeConditions = new HashMap<>();
+            String phoneNumber = ac.getPhoneNumber();
             //Logs.insert(id, "log", logId, "create map");
-            validCodeConditions.put("phoneNumber", ac.getPhoneNumber());
+            validCodeConditions.put("phoneNumber", phoneNumber);
             //Logs.insert(id, "log", logId, "put phone number");
             validCodeConditions.put("validCode", ac.getValidCode());
             //Logs.insert(id, "log", logId, "start query validation_codes table");
@@ -254,7 +255,22 @@ public class Users {
                                 break;
                             case 1:
                                 //Logs.insert(id, "log", logId, "card exists");
-                                user.setTelephone(ac.getPhoneNumber());
+                                User telephoneUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
+                                if (telephoneUser != null && telephoneUser.getId().longValue() != id.longValue()) {
+                                    WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
+                                    List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", id);
+                                    EntityManager em = JPAEntry.getEntityManager();
+                                    em.getTransaction().begin();
+                                    for (Card card : bindedCards) {
+                                        card.setUserId(id);
+                                        em.merge(card);
+                                    }
+                                    em.remove(errorWechatUser);
+                                    em.remove(telephoneUser);
+                                    em.getTransaction().commit();
+                                }
+
+                                user.setTelephone(phoneNumber);
                                 JPAEntry.genericPut(user);
                                 Card c = cs.get(0);
                                 if (c.getActiveTime() == null) {

@@ -221,7 +221,8 @@ CREATE TABLE problem_options (
     id bigint NOT NULL,
     problem_id bigint,
     name text,
-    image_id bigint
+    image_id bigint,
+    index integer
 );
 
 
@@ -234,7 +235,7 @@ ALTER TABLE problem_options OWNER TO fixopen;
 CREATE TABLE problem_standard_answers (
     id bigint NOT NULL,
     problem_id bigint,
-    index bigint
+    index integer
 );
 
 
@@ -248,6 +249,7 @@ CREATE TABLE problems (
     id bigint NOT NULL,
     name text,
     image_id bigint,
+    index integer,
     video_id bigint
 );
 
@@ -423,6 +425,7 @@ CREATE TABLE volumes (
     subject_id bigint,
     grade integer,
     name character varying(64),
+    image_id bigint,
     "order" integer
 );
 

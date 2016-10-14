@@ -24,6 +24,9 @@ public class ProblemOption {
     @Column(name = "image_id")
     private Long imageId;
 
+    @Column(name = "index")
+    private Integer index;
+
     public Long getId() {
         return id;
     }
@@ -54,5 +57,13 @@ public class ProblemOption {
 
     public void setImageId(Long imageId) {
         this.imageId = imageId;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 }

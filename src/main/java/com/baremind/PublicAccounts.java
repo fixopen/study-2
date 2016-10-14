@@ -432,6 +432,7 @@ public class PublicAccounts {
         private String unionid;
         private String remark;
         private int groupid;
+        private String info;
 
         public int getSubscribe() {
             return subscribe;
@@ -536,6 +537,14 @@ public class PublicAccounts {
         public void setGroupid(int groupid) {
             this.groupid = groupid;
         }
+
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
     }
 
     public static WechatUserInfo getUserInfo(String openId) {
@@ -561,6 +570,7 @@ public class PublicAccounts {
             if (responseBody.contains("openid")) {
                 //{"access_token":"ACCESS_TOKEN","expires_in":7200}
                 result = new Gson().fromJson(responseBody, WechatUserInfo.class);
+                result.setInfo(responseBody);
                 isContinue = false;
             } else {
                 if (responseBody.contains("errcode")) {
@@ -580,7 +590,27 @@ public class PublicAccounts {
         return result;
     }
 
-    public static User fillUserByWechatUserInfo(Date now, WechatUserInfo userInfo) {
+    public static WechatUserInfo getUserInfo(String token, String openId) {
+        // http请求方式: GET（请使用https协议）
+        //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+        WechatUserInfo result = null;
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+            .path("/sns/userinfo")
+            .queryParam("access_token", token)
+            .queryParam("openid", openId)
+            .queryParam("lang", "zh_CN")
+            .request().get();
+        String responseBody = response.readEntity(String.class);
+        if (responseBody.contains("openid")) {
+            //{"access_token":"ACCESS_TOKEN","expires_in":7200}
+            result = new Gson().fromJson(responseBody, WechatUserInfo.class);
+            result.setInfo(responseBody);
+        }
+        return result;
+    }
+
+    public static User fillUserByUserInfo(Date now, WechatUserInfo userInfo) {
         long userId = IdGenerator.getNewId();
         User user = new User();
         user.setId(userId);
@@ -608,7 +638,7 @@ public class PublicAccounts {
         return user;
     }
 
-    public static WechatUser fillWechatUserByWechatUserInfo(Long userId, WechatUserInfo userInfo) {
+    public static WechatUser fillWechatUserByUserInfo(Long userId, WechatUserInfo userInfo) {
         WechatUser wechatUser = new WechatUser();
         wechatUser.setId(IdGenerator.getNewId());
         //Logs.insert(0l, "debug", 12l, wechatUser.getId().toString());
@@ -619,7 +649,7 @@ public class PublicAccounts {
         wechatUser.setCountry(userInfo.country);
         //user.setExpiry();
         wechatUser.setHead(userInfo.headimgurl);
-        wechatUser.setInfo(userInfo.toString());
+        wechatUser.setInfo(userInfo.getInfo());
         wechatUser.setNickname(userInfo.nickname);
         //user.setPrivilege();
         wechatUser.setProvince(userInfo.province);
@@ -637,12 +667,12 @@ public class PublicAccounts {
         return wechatUser;
     }
 
-    public static User insertUserInfoByOpenId(Date now, String openId) {
+    public static User insertUserByOpenId(Date now, String openId) {
         WechatUserInfo userInfo = getUserInfo(openId);
         User user = null;
         if (userInfo != null) {
-            user = fillUserByWechatUserInfo(now, userInfo);
-            WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
+            user = fillUserByUserInfo(now, userInfo);
+            WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
 
             EntityManager em = JPAEntry.getEntityManager();
             em.getTransaction().begin();
@@ -695,7 +725,7 @@ public class PublicAccounts {
         Date now = new Date();
         Long userId;
         if (dbWechatUser == null) {
-            User user = insertUserInfoByOpenId(now, openId);
+            User user = insertUserByOpenId(now, openId);
             userId = user.getId();
         } else {
             userId = dbWechatUser.getUserId();
@@ -739,34 +769,34 @@ public class PublicAccounts {
         return Response.ok(result).build();
     }
 
-    public static void fillWechatUserTokenInfo(WechatUser dbWechatUser, WechatUser wechatUser) {
-        Date expiry = wechatUser.getExpiry();
+    public static void appendTokenInfo(WechatUser dbWechatUser, WechatUser tokenInfo) {
+        Date expiry = tokenInfo.getExpiry();
         if (expiry != null) {
             dbWechatUser.setExpiry(expiry);
         }
-        String head = wechatUser.getRefreshToken();
+        String head = tokenInfo.getRefreshToken();
         if (head != null) {
             dbWechatUser.setRefreshToken(head);
         }
-        String token = wechatUser.getToken();
+        String token = tokenInfo.getToken();
         if (token != null) {
             dbWechatUser.setToken(token);
         }
-        String unionId = wechatUser.getUnionId();
+        String unionId = tokenInfo.getUnionId();
         if (unionId != null) {
             dbWechatUser.setUnionId(unionId);
         }
     }
 
-    public static User insertUserInfoByWechatUser(Date now, WechatUser wechatUser) {
+    public static User getOrInsertUserByTokenInfo(Date now, WechatUser tokenInfo) {
         User user = null;
-        WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
+        WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", tokenInfo.getOpenId());
         if (dbWechatUser == null) {
-            WechatUserInfo userInfo = getUserInfo(wechatUser.getOpenId());
+            WechatUserInfo userInfo = getUserInfo(tokenInfo.getToken(), tokenInfo.getOpenId());
             if (userInfo != null) {
-                user = fillUserByWechatUserInfo(now, userInfo);
-                dbWechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
-                fillWechatUserTokenInfo(dbWechatUser, wechatUser);
+                user = fillUserByUserInfo(now, userInfo);
+                dbWechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
+                appendTokenInfo(dbWechatUser, tokenInfo);
 
                 EntityManager em = JPAEntry.getEntityManager();
                 em.getTransaction().begin();
@@ -775,13 +805,14 @@ public class PublicAccounts {
                 em.getTransaction().commit();
             }
         } else {
-            fillWechatUserTokenInfo(dbWechatUser, wechatUser);
+            appendTokenInfo(dbWechatUser, tokenInfo);
             JPAEntry.genericPut(dbWechatUser);
+            user = JPAEntry.getObject(User.class, "id", dbWechatUser.getUserId());
         }
         return user;
     }
 
-    private static WechatUser wechatUserFromToken(Map<String, Object> wu) {
+    private static WechatUser convertTokenInfo(Map<String, Object> wu) {
         WechatUser wechatUser = new WechatUser();
         for (String key : wu.keySet()) {
             switch (key) {
@@ -810,10 +841,7 @@ public class PublicAccounts {
         return wechatUser;
     }
 
-    @GET
-    @Path("card")
-    @Produces(MediaType.TEXT_HTML)
-    public Response card(@Context HttpServletRequest request, @QueryParam("code") String code) {
+    private static Map<String, Object> getTokenByCode(String code) {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/sns/oauth2/access_token")
@@ -823,13 +851,20 @@ public class PublicAccounts {
             .queryParam("grant_type", "authorization_code")
             .request().get();
         String responseBody = response.readEntity(String.class);
-        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
+        return new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
         }.getType());
-        WechatUser wechatUser = wechatUserFromToken(wu);
+    }
+
+    @GET
+    @Path("card")
+    @Produces(MediaType.TEXT_HTML)
+    public Response card(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
 
         Response result = null;
         Date now = new Date();
-        User user = insertUserInfoByWechatUser(now, wechatUser);
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
             Session s = putSession(now, userId);
@@ -847,22 +882,12 @@ public class PublicAccounts {
     @Path("account")
     @Produces(MediaType.TEXT_HTML)
     public Response account(@Context HttpServletRequest request, @QueryParam("code") String code) {
-        Client client = ClientBuilder.newClient();
-        Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
-        String responseBody = response.readEntity(String.class);
-        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
-        }.getType());
-        WechatUser wechatUser = wechatUserFromToken(wu);
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
 
         Response result = null;
         Date now = new Date();
-        User user = insertUserInfoByWechatUser(now, wechatUser);
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
             Session s = putSession(now, userId);
@@ -873,6 +898,23 @@ public class PublicAccounts {
             }
         }
         return result;
+    }
+
+    Response follow(WechatPush p) {
+        String openId = p.getFromUserName();
+        WechatUser wu = JPAEntry.getObject(WechatUser.class, "openId", openId);
+        if (wu == null) {
+            WechatUserInfo userInfo = getUserInfo(openId);
+            Date now = new Date();
+            User user = fillUserByUserInfo(now, userInfo);
+            WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
+            EntityManager em = JPAEntry.getEntityManager();
+            em.getTransaction().begin();
+            em.persist(user);
+            em.persist(wechatUser);
+            em.getTransaction().commit();
+        }
+        return Response.ok().build();
     }
 
     //获取微信服务器ID
@@ -943,7 +985,7 @@ public class PublicAccounts {
                 } else {
                     WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
                     if (dbWechatUser == null) {
-                        insertUserInfoByOpenId(now, openId);
+                        insertUserByOpenId(now, openId);
                     }
                 }
             }
@@ -1035,62 +1077,6 @@ public class PublicAccounts {
 
         return Response.ok(new File("E:\\projects\\study-2\\src\\main\\webapp\\validationCode.html"), "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
         //return Response.ok(new File("/data/program/swtomcat/webapps/ROOT/validationCode.html"), "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
-    }
-
-    Response follow(WechatPush p) {
-        //666
-        //System.out.println(us);
-        String openId = p.Infos.get("openid");
-        WechatUser wu = JPAEntry.getObject(WechatUser.class, "openId", openId);
-        if (wu == null) {
-            WechatUser user = new WechatUser();
-            user.setId(IdGenerator.getNewId());
-            user.setOpenId(p.Infos.get("openid"));
-            user.setRefId(p.Infos.get("unionid"));
-            user.setCity(p.Infos.get("city"));
-            user.setCountry(p.Infos.get("country"));
-            //user.setExpiry();
-            user.setHead(p.Infos.get("headimgurl"));
-            user.setInfo("");
-            user.setNickname(p.Infos.get("nickname"));
-            //user.setPrivilege();
-            user.setProvince(p.Infos.get("province"));
-            //user.setRefId();
-            //user.setRefreshToken();
-            //user.setSex(p.Infos.get(sex));
-            Long sex = Long.parseLong(p.Infos.get("sex"));
-            user.setSex(sex.intValue());
-            user.setSubscribe(Integer.parseInt(p.Infos.get("subscribe")));
-            user.setSubscribeTime(Integer.parseInt(p.Infos.get("subscribe_time")));
-
-            user.setLanguage(p.Infos.get("language"));
-            user.setRemark(p.Infos.get("remark"));
-            //user.setHeadimgurl(p.Infos.get("headimgurl"));
-            user.setGroupId(Integer.parseInt(p.Infos.get("groupid")));
-            //user.setToken();
-            user.setUnionId(p.Infos.get("unionid"));
-            long userId = IdGenerator.getNewId();
-            User u = new User();
-            u.setId(userId);
-            u.setHead(p.Infos.get("headimgurl"));
-            u.setName(p.Infos.get("nickname"));
-            //u.setLoginName(us.nickname);
-            u.setSex(sex.intValue());
-            Date now = new Date();
-            u.setCreateTime(now);
-            u.setUpdateTime(now);
-            u.setIsAdministrator(false);
-            u.setSite("http://www.xiaoyuzhishi.com");
-            u.setAmount(0.0f);
-            user.setUserId(userId);
-
-            EntityManager em = JPAEntry.getEntityManager();
-            em.getTransaction().begin();
-            em.persist(user);
-            em.persist(u);
-            em.getTransaction().commit();
-        }
-        return Response.ok().build();
     }
 
     //自定义菜单查询接口

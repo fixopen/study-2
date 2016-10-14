@@ -16,14 +16,14 @@ public class AnswerRecord {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "index")
-    private Integer index;
-
     @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "problem_id")
     private Long problemId;
+
+    @Column(name = "index")
+    private Integer index;
 
     @Column(name = "create_time")
     private Date createTime;

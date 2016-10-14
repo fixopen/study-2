@@ -22,6 +22,9 @@ public class Problem {
     @Column(name = "image_id")
     private Long imageId;
 
+    @Column(name = "index")
+    private Integer index;
+
     @Column(name = "video_id")
     private Long videoId;
 
@@ -47,6 +50,14 @@ public class Problem {
 
     public void setImageId(Long imageId) {
         this.imageId = imageId;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     public Long getVideoId() {

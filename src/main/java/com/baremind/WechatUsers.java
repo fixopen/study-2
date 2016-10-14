@@ -69,7 +69,7 @@ public class WechatUsers {
         Long userId;
         String sessionId;
         if (wechatUser == null) {
-            User user = PublicAccounts.insertUserInfoByOpenId(now, openId);
+            User user = PublicAccounts.insertUserByOpenId(now, openId);
             userId = user.getId();
             Session s = PublicAccounts.putSession(now, user.getId());
             sessionId = s.getIdentity();

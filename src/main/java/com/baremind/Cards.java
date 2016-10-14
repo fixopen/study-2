@@ -213,9 +213,9 @@ public class Cards {
                     existcard.setPassword(password);
                 }
 
-                Long subject = existcard.getSubject();
+                Long subject = existcard.getSubjectId();
                 if (subject != null) {
-                    existcard.setSubject(subject);
+                    existcard.setSubjectId(subject);
                 }
 
                 Long userId = existcard.getUserId();
