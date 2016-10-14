@@ -248,6 +248,13 @@
 </div>
 
 <script>
+//    var code = getUrlParameter('code')
+//    ajax('GET', 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + code + '&grant_type=authorization_code', [], null, function(result) {
+//        ajax('GET', 'https://api.weixin.qq.com/sns/userinfo?access_token=' + result.access_token + '&openid=' + result.openid + '&lang=zh_CN', [], null, function(r) {
+//            //
+//        })
+//    })
+
     var activeCodeButton = document.getElementById('activeCode');
     activeCodeButton.addEventListener('click', activeCode, false);
 
