@@ -18,7 +18,7 @@ public class Card {
     private Long id;
 
     @Column(name = "user_id")
-    private Long UserId;
+    private Long userId;
 
     @Column(name = "no")
     private String no;
@@ -50,11 +50,11 @@ public class Card {
     }
 
     public Long getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Long userId) {
-        UserId = userId;
+        userId = userId;
     }
 
     public String getNo() {

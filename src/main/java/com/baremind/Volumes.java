@@ -7,12 +7,9 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,22 +78,15 @@ public class Volumes {
             if (!knowledgePoints.isEmpty()) {
                 List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
                 for (KnowledgePoint kp : knowledgePoints) {
-
-                    EntityManager em = JPAEntry.getEntityManager();
-                    String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
-                    Query lq = em.createQuery(statsLikes, Long.class);
-                    Long likeCount = (Long) lq.getSingleResult();
-
-                    String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
-                    Query rq = em.createQuery(statsReads, Long.class);
-                    Long readCount = (Long) rq.getSingleResult();
-
                     Map<String, Object> kpm = new HashMap<>();
                     kpm.put("id", kp.getId());
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
-                    kpm.put("likeCount", likeCount);
-                    kpm.put("readCount", readCount);
+                    kpm.put("likeCount", Logs.getStatsCount("knowledge-point", kp.getId(), "like"));
+                    kpm.put("readCount", Logs.getStatsCount("knowledge-point", kp.getId(), "read"));
+                    String type = "normal";
+                    //SELECT count(m), type FROM KnowledgePointContentMap m WHERE m.KnowledgePointId = kp.getId() GROUP BY m.type
+                    kpm.put("type", type);
                     kpsm.add(kpm);
                 }
                 //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id

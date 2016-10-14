@@ -7,17 +7,17 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
           id="viewport"/>
-    <meta name="format-detection" content="telphone=no"/>
+    <meta name="format-detection" content="telephone=no"/>
 
     <!-- 引入样式表 -->
-    <link rel="stylesheet" href="../../css/global.css">
-    <link rel="stylesheet" href="../../css/common.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="cards.css">
 
     <!-- 引入js -->
-    <script type="text/javascript" src="../../js/zepto.min.js"></script>
-    <script type="text/javascript" src="../../js/touch.js"></script>
-    <script type="text/javascript" src="../../js/selector.js"></script>
+    <script type="text/javascript" src="/zepto/zepto.min.js"></script>
+    <script type="text/javascript" src="/zepto/touch.js"></script>
+    <script type="text/javascript" src="/zepto/selector.js"></script>
 
 </head>
 <body>
@@ -35,56 +35,79 @@
 <!-- 弹窗结束 -->
 <div class="wrap">
     <div class="mine_zilo">
-        <ul class="mine_zUl">
-            <li class="mine_zuli">
-                <span class="mine_leftsp">卡号</span>
-                <span class="mine_rightip">小雨知时</span>
-            </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">学习类型</span>
-                <span class="mine_rightip">语文</span>
-            </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">激活时间</span>
-                <span class="mine_rightip">2016-08-29</span>
-            </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">剩余雨点</span>
-                <span class="mine_rightip">200点</span>
-            </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">有效期</span>
-                <span class="mine_rightip">2017-08-29</span>
-            </li>
-        </ul>
-        <ul class="mine_zUl">
-            <li class="mine_zuli">
-                <span class="mine_leftsp">卡号</span>
-                <span class="mine_rightip">小雨知时1</span>
-            </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">学习类型</span>
-                <span class="mine_rightip">数学</span>
-            </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">激活时间</span>
-                <span class="mine_rightip">2016-08-29</span>
-            </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">剩余雨点</span>
-                <span class="mine_rightip">200点</span>
-            </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">有效期</span>
-                <span class="mine_rightip">2017-08-29</span>
-            </li>
-        </ul>
+        <div id="card"></div>
         <div class="bottom_bdiv">
             <a class="bottom_btn Btn01" click="curseDetailTap();" href="#">充值</a>
-            <a class="bottom_btn Btn02" href="#">添加卡号</a>
+            <a id="appendCard" class="bottom_btn Btn02" href="#">添加卡号</a>
         </div>
     </div>
 </div>
-<script type="text/javascript" src="js/index.js"></script>
+<template id="card-template">
+    <ul class="mine_zUl">
+        <li class="mine_zuli">
+            <span class="mine_leftsp">卡号</span>
+            <span class="mine_rightip">${no}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">学习类型</span>
+            <span class="mine_rightip">${subjectName}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">激活时间</span>
+            <span class="mine_rightip">${activeTime}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">剩余雨点</span>
+            <span class="mine_rightip">${amount}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">有效期</span>
+            <span class="mine_rightip">${endTime}</span>
+        </li>
+    </ul>
+</template>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script type="text/javascript">
+    var userId = g.getUrlParameter('userid')
+    var appendCardLink = document.getElementById('appendCard')
+    appendCardLink.setAttribute('href', '/validationCode.html?userid=' + userId)
+
+    $.ajax({
+        type: 'get',
+        url: '/api/users/' + userId + '/cards',
+        dataType: 'json',
+        success: function (cards) {
+            proc({
+                containerId: 'card',
+                data: cards,
+                templateId: 'card-template'
+            })
+        },
+        error: function (r) {
+            alert('获取用户信息失败，请刷新以重试')
+        }
+    })
+
+    $(".Btn02").each(function (index, el) {
+        $(this).tap(function () {
+            $('.tan').show();
+            $('.window1').eq(0).show();
+        });
+    });
+    $(".p_btn.btn01").each(function (index, el) {
+        $(this).tap(function () {
+            $('.tan').hide();
+            $('.window1').eq(0).hide();
+        });
+    });
+    // 弹窗关闭按钮
+    $(".windowClose").each(function (index, el) {
+        $(this).tap(function () {
+            $('.tan').hide();
+            $('.window1').eq(0).hide();
+        });
+    });
+</script>
 </body>
 </html>
