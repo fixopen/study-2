@@ -837,10 +837,7 @@ public class PublicAccounts {
         return wechatUser;
     }
 
-    @GET
-    @Path("card")
-    @Produces(MediaType.TEXT_HTML)
-    public Response card(@Context HttpServletRequest request, @QueryParam("code") String code) {
+    private static Map<String, Object> getTokenByCode(String code) {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
             .path("/sns/oauth2/access_token")
@@ -850,8 +847,15 @@ public class PublicAccounts {
             .queryParam("grant_type", "authorization_code")
             .request().get();
         String responseBody = response.readEntity(String.class);
-        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
+        return new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
         }.getType());
+    }
+
+    @GET
+    @Path("card")
+    @Produces(MediaType.TEXT_HTML)
+    public Response card(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
         WechatUser wechatUser = wechatUserFromToken(wu);
         //Logs.insert(144l, "log", 144l, "1: " + responseBody);
 
@@ -876,17 +880,7 @@ public class PublicAccounts {
     @Path("account")
     @Produces(MediaType.TEXT_HTML)
     public Response account(@Context HttpServletRequest request, @QueryParam("code") String code) {
-        Client client = ClientBuilder.newClient();
-        Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
-        String responseBody = response.readEntity(String.class);
-        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
-        }.getType());
+        Map<String, Object> wu = getTokenByCode(code);
         WechatUser wechatUser = wechatUserFromToken(wu);
 
         Response result = null;
