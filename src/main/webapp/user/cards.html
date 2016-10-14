@@ -73,15 +73,39 @@
     var appendCardLink = document.getElementById('appendCard')
     appendCardLink.setAttribute('href', '/validationCode.html?userid=' + userId)
 
+    var getSubjectNameById = function(subjects, id) {
+        var result = ''
+        for (var i = 0; i < subjects.length; ++i) {
+            if (subjects[i].id == id) {
+                result = subjects[i].name
+                break
+            }
+        }
+        return result
+    }
+
     $.ajax({
         type: 'get',
         url: '/api/users/' + userId + '/cards',
         dataType: 'json',
         success: function (cards) {
-            proc({
-                containerId: 'card',
-                data: cards,
-                templateId: 'card-template'
+            $.ajax({
+                type: 'get',
+                url: '/api/subjects',
+                dataType: 'json',
+                success: function (subjects) {
+                    for (var i = 0; i < cards.length; ++i) {
+                        cards[i].subjectName = getSubjectNameById(subjects, cards[i].subject)
+                    }
+                    proc({
+                        containerId: 'card',
+                        data: cards,
+                        templateId: 'card-template'
+                    })
+                },
+                error: function (r) {
+                    alert('I am sorry, not get subjects')
+                }
             })
         },
         error: function (r) {

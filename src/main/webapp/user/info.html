@@ -56,13 +56,14 @@
         </li>
     </ul>
 </template>
+<script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script type="text/javascript">
     var userId = g.getUrlParameter('userid')
 
     $.ajax({
         type: 'get',
-        url: '/api/users/' + userId + '/cards',
+        url: '/api/users/' + userId,
         dataType: 'json',
         success: function (user) {
             proc({

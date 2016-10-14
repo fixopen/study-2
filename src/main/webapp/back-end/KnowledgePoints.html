@@ -678,6 +678,7 @@
         appendProblem.addEventListener('click', function (e) {
             let pt = document.getElementById('problem-template')
             let p = pt.content.children[0].cloneNode(true)
+            p.dataset.optionid = 0
             contents.appendChild(p)
             currentSelectedElement = p
         }, false)
