@@ -217,7 +217,7 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCards(@PathParam("id") Long id) {
         Response result = Response.status(404).build();
-        List<Card> cards = JPAEntry.getList(Card.class, "user_id", id);
+        List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
         if (!cards.isEmpty()) {
             result = Response.ok(new Gson().toJson(cards)).build();
         }
