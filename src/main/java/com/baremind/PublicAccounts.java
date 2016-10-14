@@ -781,17 +781,17 @@ public class PublicAccounts {
         }
     }
 
-    public static User insertUserInfoByWechatUser(Date now, WechatUser wechatUser) {
+    public static User insertUserInfoByWechatUser(Date now, WechatUser tokenInfo) {
         User user = null;
-        WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
+        WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", tokenInfo.getOpenId());
         if (dbWechatUser == null) {
             //Logs.insert(144l, "log", 144l, "2: not find in DB");
-            WechatUserInfo userInfo = getUserInfo(wechatUser.getToken(), wechatUser.getOpenId());
+            WechatUserInfo userInfo = getUserInfo(tokenInfo.getToken(), tokenInfo.getOpenId());
             if (userInfo != null) {
                 //Logs.insert(144l, "log", 144l, "3: get user info");
                 user = fillUserByWechatUserInfo(now, userInfo);
                 dbWechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
-                fillWechatUserTokenInfo(dbWechatUser, wechatUser);
+                fillWechatUserTokenInfo(dbWechatUser, tokenInfo);
 
                 EntityManager em = JPAEntry.getEntityManager();
                 em.getTransaction().begin();
@@ -801,7 +801,7 @@ public class PublicAccounts {
             }
         } else {
             //Logs.insert(144l, "log", 144l, "2: find in DB");
-            fillWechatUserTokenInfo(dbWechatUser, wechatUser);
+            fillWechatUserTokenInfo(dbWechatUser, tokenInfo);
             JPAEntry.genericPut(dbWechatUser);
             user = JPAEntry.getObject(User.class, "id", dbWechatUser.getUserId());
         }

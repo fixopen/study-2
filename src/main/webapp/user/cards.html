@@ -104,16 +104,16 @@
                     })
                 },
                 error: function (r) {
-                    if (r.statusCode == 404) {
-                        window.location.href = '/validationCode.html?userid=' + userId
-                    } else {
-                        alert('I am sorry, not get subjects')
-                    }
+                    alert('I am sorry, not get subjects')
                 }
             })
         },
         error: function (r) {
-            alert('获取用户信息失败，请刷新以重试')
+            if (r.status == 404) {
+                //window.location.href = '/validationCode.html?userid=' + userId
+            } else {
+                alert('获取用户信息失败，请刷新以重试')
+            }
         }
     })
 

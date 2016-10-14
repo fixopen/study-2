@@ -269,18 +269,20 @@ public class Users {
                                 //Logs.insert(id, "log", logId, "card exists");
                                 User errorUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
                                 if (errorUser != null) {
-                                    WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", errorUser.getId());
-                                    EntityManager em = JPAEntry.getEntityManager();
-                                    em.getTransaction().begin();
-                                    em.remove(errorWechatUser);
-                                    em.remove(errorUser);
-                                    List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", errorUser.getId());
-                                    for (Card card : bindedCards) {
-                                        card.setUserId(id);
-                                        em.merge(card);
+                                    if (errorUser.getId().longValue() != user.getId().longValue()) {
+                                        WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", errorUser.getId());
+                                        EntityManager em = JPAEntry.getEntityManager();
+                                        em.getTransaction().begin();
+                                        em.remove(errorWechatUser);
+                                        em.remove(errorUser);
+                                        List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", errorUser.getId());
+                                        for (Card card : bindedCards) {
+                                            card.setUserId(id);
+                                            em.merge(card);
+                                        }
+                                        em.getTransaction().commit();
+                                        Logs.insert(errorUser.getId(), "move-card", errorWechatUser.getId(), phoneNumber);
                                     }
-                                    em.getTransaction().commit();
-                                    Logs.insert(errorUser.getId(), "move-card", errorWechatUser.getId(), phoneNumber);
                                 }
 
                                 user.setTelephone(phoneNumber);
