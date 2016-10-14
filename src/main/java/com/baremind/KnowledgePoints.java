@@ -159,6 +159,7 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
                 List<String> pinyinIds = new ArrayList<>();
+                List<String> optionIds = new ArrayList<>();
 
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
@@ -265,7 +266,20 @@ public class KnowledgePoints {
                                 } else {
                                     pm.put("type", "单选题");
                                 }
-                                pm.put("options", problemOptions);
+                                Map<String, Object> opm = new HashMap<>();
+                                //获取每一个选项 option
+                                for(ProblemOption option : problemOptions) {
+                                    System.out.println(option);
+                                    opm.put("optionId",option.getId());
+                                    opm.put("name",option.getName());
+                                    /*List<Image> ppp = getList(em, option.getImageId(), Image.class);
+                                    for(Image image : ppp){
+                                        System.out.println(image);
+                                        opm.put("optionImagePath",image.getStorePath());
+                                    }*/
+                                }
+                                /*opm.put("id",optionImage)*/
+                                pm.put("options", opm);
                                 pm.put("standardAnswers", problemStandardAnswers);
                                 pm.put("title", problemItem.getTitle());
                                 pm.put("storePath", problemItem.getStorePath());

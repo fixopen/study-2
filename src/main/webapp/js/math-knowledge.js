@@ -26,11 +26,41 @@ $(function () {
         async: false,
         success: function (knowledgePoints) {
             alert(JSON.stringify(knowledgePoints))
+            // let kp = []
+            // for (let i = 0; i < knowledgePoints.length; ++i) {
+            //     kp[i] = knowledgePoints[i]
+            // }
+            // let ktt = null
+            // let kpt = []
+            // if (kp.length > 0) {
+            //     ktt = kp[kp.length - 1]
+            //     kp.pop()
+            //     kpt = kp
+            // }
+            // function select(knowledgePoints) {
+            //     if(data.knowledgePoints.name=="挑战百分百"){
+            //
+            //     }
+            // }
             proc({
                 data: knowledgePoints,
-                containerId: 'knowledge-point',
-                templateId: 'knowledge-point-template'
+                containerId: 'knowledge',
+                alterTemplates: [
+                    {type: 'normal', templateId: 'knowledge-point-template'},
+                    {type: 'challenge', templateId: 'knowledge-test-template'}
+                ]
             });
+            // proc({
+            //     data: kpt,
+            //     containerId: 'knowledge-point',
+            //     templateId: 'knowledge-point-template'
+            // });
+            //
+            // proc({
+            //     data: ktt,
+            //     containerId: 'knowledge-test',
+            //     templateId: 'knowledge-test-template'
+            // });
         }
     })
 })

@@ -74,6 +74,11 @@ $(function () {
                 async: false,
                 success: function (data) {
                     alert(JSON.stringify(data))
+                    proc({
+                        templateId: 'video-template',
+                        data: data.video,
+                        containerId: 'video'
+                    })
                     // 上一个，下一个---------------------------------------------------------------
                     let baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
 
@@ -179,7 +184,9 @@ $(function () {
                                             }
                                         }
                                     })
-                                }else{
+
+                                } else {
+
                                     let id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
@@ -244,12 +251,6 @@ $(function () {
                         ]
                     });
 
-                    proc({
-                        templateId: 'video-template',
-                        data: data.video,
-                        containerId: 'video'
-                    });
-
                     //data.problems
                     let ps = []
                     for (let i = 0; i < data.problems.length; ++i) {
@@ -259,8 +260,10 @@ $(function () {
                     let strongestBrains = []
                     if (ps.length > 0) {
                         pk = ps[ps.length - 1]
-                        strongestBrains = ps.pop()
+                        ps.pop()
+                        strongestBrains = ps
                     }
+
                     proc({
                         templateId: 'strongest-brain-template',
                         data: strongestBrains,
@@ -271,11 +274,11 @@ $(function () {
                                 dataFieldName: 'options',
                                 templateId: 'strongest-brain-option-template'
                             },
-                            {
-                                extPoint: 'explain',
-                                dataFieldName: 'video',
-                                templateId: 'video-template'
-                            }
+                            // {
+                            //     extPoint: 'explain',
+                            //     dataFieldName: 'video',
+                            //     templateId: 'video-template'
+                            // }
                         ]
                     });
 

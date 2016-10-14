@@ -18,44 +18,46 @@
     <script type="text/javascript" src="zepto/zepto.min.js"></script>
     <script type="text/javascript" src="zepto/touch.js"></script>
     <script type="text/javascript" src="zepto/selector.js"></script>
-    <script type="text/javascript" src="js/math-test-detail.js"></script>
-    <script type="text/javascript" src="basic.js"></script>
+
 </head>
 <body>
 <div class="wrap">
     <h3 class="head_h3">
-        <span class="head_himg">挑战百分百</span>
+        <span class="head_himg" id="title"></span>
     </h3>
     <div class="rain-main">
-        <ul id="question">
-        </ul>
+        <ul id="question"></ul>
     </div>
 </div>
 
 <!--templates-->
-<template id="video-template">
-    <div>
-        <img class="muld_images" src="${coverHref}" alt="${coverDescription}">
-        <video>
-        </video>
-    </div>
+<!--<template id="video-template">-->
+    <!--<div>-->
+        <!--<img class="muld_images" src="${coverHref}" alt="${coverDescription}">-->
+        <!--<video>-->
+        <!--</video>-->
+    <!--</div>-->
+<!--</template>-->
+<template id="title-template">
+    <span>${title}</span>
 </template>
 <template id="question-option-template">
     <!--<li>${option}</li>-->
     <li class="mld_daanLi">
         <span class="daan_quan">${name}</span>
         <input type="radio" class="daana" name="daan1">
+        <!--<label for="daan_s3A">${name}</label>-->
         <label>${option}</label>
     </li>
 </template>
 <template id="question-template">
-    <li class="mulu_div">
+    <li  class="mulu_div">
         <div class="mld_xiaoUl">
             <div class="mld_Ulli">
                 <div>${title}</div>
-                <img class="ceshi_ti1" src="${img}" alt="">
-                <ul class="mld_daanUl" data-ext-point="options"></ul>
-                <div data-ext-point="explain"></div>
+                <img class="ceshi_ti1" src="${storePath}" alt="">
+                <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+                <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
             </div>
         </div>
         <div class="lian_jie">
@@ -64,5 +66,34 @@
         </div>
     </li>
 </template>
+
+<!--<template id="question-option-template">-->
+    <!--&lt;!&ndash;<li>${option}</li>&ndash;&gt;-->
+    <!--<li class="mld_daanLi">-->
+        <!--<span class="daan_quan">${name}</span>-->
+        <!--<input type="radio" class="daana" name="daan1">-->
+        <!--<label>${option}</label>-->
+    <!--</li>-->
+<!--</template>-->
+<!--<template id="question-template">-->
+    <!--<li class="mulu_div">-->
+        <!--<div class="mld_xiaoUl">-->
+            <!--<div class="mld_Ulli">-->
+                <!--<div>${title}</div>-->
+                <!--<img class="ceshi_ti1" src="${img}" alt="">-->
+                <!--<ul class="mld_daanUl" data-ext-point="options"></ul>-->
+                <!--<div data-ext-point="explain"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="lian_jie">-->
+            <!--<span class="lianjie lianjie01"></span>-->
+            <!--<span class="lianjie lianjie02"></span>-->
+        <!--</div>-->
+    <!--</li>-->
+<!--</template>-->
+<script type="text/javascript" src="basic.js"></script>
+<script type="text/javascript" src="util.js"></script>
+<script type="text/javascript" src="js/math-test-detail.js"></script>
+<script type="text/javascript" src="jquery/jquery.min.js"></script>
 </body>
 </html>

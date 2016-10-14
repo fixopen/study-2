@@ -92,6 +92,7 @@ a {
 .math_01 {
     width: 17.78125rem;
     height: 10.8125rem;
+    margin-bottom:2rem;
     padding-left: 0.625rem;
 }
 
@@ -99,7 +100,7 @@ a {
     color: #fe6568;
     text-indent: 2em;
     position: relative;
-    top: -1.25rem;
+    top: -2.25rem;
 }
 
 /* 最强大脑 */
@@ -241,8 +242,8 @@ li.mld_Ulli {
 }
 
 .ceshi_ti1 {
-    width: 11.96875rem;
-    height: 5.03125rem;
+    width: 15.96875rem;
+    height: 8.03125rem;
 }
 
 .ceshi_ti2 {
