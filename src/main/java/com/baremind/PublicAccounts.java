@@ -788,7 +788,7 @@ public class PublicAccounts {
             //Logs.insert(144l, "log", 144l, "2: not find in DB");
             WechatUserInfo userInfo = getUserInfo(wechatUser.getToken(), wechatUser.getOpenId());
             if (userInfo != null) {
-                Logs.insert(144l, "log", 144l, "3: get user info");
+                //Logs.insert(144l, "log", 144l, "3: get user info");
                 user = fillUserByWechatUserInfo(now, userInfo);
                 dbWechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
                 fillWechatUserTokenInfo(dbWechatUser, wechatUser);
@@ -859,7 +859,7 @@ public class PublicAccounts {
         Date now = new Date();
         User user = insertUserInfoByWechatUser(now, wechatUser);
         if (user != null) {
-            Logs.insert(144l, "log", 144l, "4: enter redirect content");
+            //Logs.insert(144l, "log", 144l, "4: enter redirect content");
             Long userId = user.getId();
             Session s = putSession(now, userId);
             try {

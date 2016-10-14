@@ -54,7 +54,7 @@ public class Card {
     }
 
     public void setUserId(Long userId) {
-        userId = userId;
+        this.userId = userId;
     }
 
     public String getNo() {
@@ -112,6 +112,4 @@ public class Card {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
-
-
 }
