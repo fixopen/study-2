@@ -67,6 +67,7 @@ $(function () {
         dataType: 'json',
         success: function (knowledgePointList) {
             let id = g.getUrlParameter('id');
+			alert(JSON.stringify(knowledgePointList))
             $.ajax({
                 type: "get",
                 url: 'api/knowledge-points/' + id + '/contents',
@@ -74,52 +75,35 @@ $(function () {
                 async: false,
                 success: function (data) {
                     alert(JSON.stringify(data))
-                    for (let i = 0; i < knowledgePointList.length; ++i) {
-                        if (knowledgePointList[i].id == id) {
-                            proc({
-                                templateId: 'title1-template',
-                                data: {title1: knowledgePointList[i].order},
-                                containerId: 'title1'
-                            });
-                            proc({
-                                templateId: 'title2-template',
-                                data: {title: knowledgePointList[i].title},
-                                containerId: 'title2'
-                            });
-                            break
-                        }
-                    }
-                    proc({
+                   proc({
                         templateId: 'video-template',
                         data: data.video,
                         containerId: 'video'
                     })
-                    // 上一个，下一个---------------------------------------------------------------
-                    let baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
-
-                    for (let i = 0; i < knowledgePointList.length; ++i) {
-                        let id = g.getUrlParameter('id')
-                        if (knowledgePointList[i].id == id) {
-                            let prevIndex = i;
-                            let nextIndex = i;
-                            if (i > 0) {
-                                prevIndex = i - 1
-                            }
-                            if (i < knowledgePointList.length - 1) {
-                                nextIndex = i + 1
-                            }
-                            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id;
-                            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id;
-                            break
-                        }
-                    }
-                    proc({
+					/*proc({
+                        templateId: 'challenge-template',
+                        data: data.quotes,
+                        containerId: 'challenge'
+                    });*/
+					proc({
                         templateId: 'interaction-template',
                         data: data.interaction,
                         containerId: 'interaction'
                     })
-
-                    // GET /knowledge-points/.../is-self-like
+					proc({
+                        templateId: 'comment-template',
+                        data: data.comments,
+                        containerId: 'comments'
+                    })
+					/*proc({
+						data: data.contents,
+						containerId: 'content',
+						alterTemplates: [
+							{type: 'text', templateId: 'content-text-template'},
+							{type: 'imageText', templateId: 'content-image-template'}
+						]
+                    });*/
+					// GET /knowledge-points/.../is-self-like
                     let id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
@@ -164,12 +148,9 @@ $(function () {
                             //liked = false
                         }
                     })
+					
                     //评论点赞
-                    proc({
-                        templateId: 'comment-template',
-                        data: data.comments,
-                        containerId: 'comments'
-                    })
+                    
 
                     $('.ul01_imgzan').on('click', function (e) {
                         let id = e.target.parentNode.dataset.id
@@ -226,8 +207,49 @@ $(function () {
                         })
 
                     })
+					
+					
+					// 上一个，下一个-----------------------------------------------------------
+					 let baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
+
+                    for (let i = 0; i < knowledgePointList.length; ++i) {
+                        let id = g.getUrlParameter('id')
+                        if (knowledgePointList[i].id == id) {
+                            let prevIndex = i;
+                            let nextIndex = i;
+                            if (i > 0) {
+                                prevIndex = i - 1
+                            }
+                            if (i < knowledgePointList.length - 1) {
+                                nextIndex = i + 1
+                            }
+                            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id;
+                            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id;
+                            break
+                        }
+                    }
+				
+					
+				/*	for (let i = 0; i < knowledgePointList.length; ++i) {
+						let id = g.getUrlParameter('id');
+                        if (knowledgePointList[i].id == id) {
+                            proc({
+                                templateId: 'title1-template',
+                                data: {title1: knowledgePointList[i].order},
+                                containerId: 'title1'
+                            });
+                            proc({
+                                templateId: 'title2-template',
+                                data: {title: knowledgePointList[i].title},
+                                containerId: 'title2'
+                            });
+                            break
+                        }
+                    }*/
+					
                     //-------------------------------------------------------------------------------
-                    for (let i = 0; i < data.problems.length; ++i) {
+                    
+					for (let i = 0; i < data.problems.length; ++i) {
                         let p = data.problems[i];
                         p.options[0].title = 'A';
                         p.options[1].title = 'B';
@@ -235,7 +257,21 @@ $(function () {
                         p.options[3].title = 'D'
                     }
 
-
+                    for (let i = 0; i < knowledgePointList.length; ++i) {
+                        if (knowledgePointList[i].id == id) {
+                            proc({
+                                templateId: 'title1-template',
+                                data: {title1: knowledgePointList[i].order},
+                                containerId: 'title1'
+                            });
+                            proc({
+                                templateId: 'title2-template',
+                                data: {title: knowledgePointList[i].title},
+                                containerId: 'title2'
+                            });
+                            break
+                        }
+                    }
 
                     proc({
                         templateId: 'challenge-template',
@@ -295,7 +331,8 @@ $(function () {
                             }
                         ]
                     });
-
+                   
+                
 
 
 
@@ -384,7 +421,8 @@ $(function () {
                     problemContainer.addEventListener('click', judgement, false)
 
                     let pkContainer = document.getElementById('pk')
-                    pkContainer.addEventListener('click', judgement, false)
+                    pkContainer.addEventListener('click', judgement, false) 
+                    
                 }
             })
         }
