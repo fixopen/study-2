@@ -114,6 +114,18 @@
 <template id="content-text-template">
     <p class="mulu_dp">${content}</p>
 </template>
+<template id="content-pingyincontent-template">
+    <div style="margin-left: 100px;" id="pycontent"></div>
+</template>
+<template id="content-pinyin-template">
+    <ruby >
+        <p>${content}</p>
+        <rt>${pinyin}</rt>
+    </ruby>
+</template>
+<template id="content-py-template">
+    <span>${content}</span>
+</template>
 <template id="content-img-template">
         <span>
         <img class="muld_images" src="${href}" alt="${description}">
@@ -121,15 +133,20 @@
 </template>
 <template id="video-template">
         <span>
-           <!--<a href="#"> <img src="${storePath}"/></a>-->
-            <video src="${storePath}"></video>
+           <a href="${storePath}">
+               <img src="${cover}"/>
+               <!--<img src="img/chinese-cover.jpg"/>-->
+           </a>
+            <!--<video src="${storePath}"></video>-->
             <!--alt="${coverDescription}-->
         </span>
 </template>
 <template id="problem-template">
     <li class="mld_Ulli">
-        <div>
-            <img class="mld_liImg" src="${href}" alt="${type}">${title}
+        <div class="addimg">
+            <!--<img class="mld_liImg" src="${href}" alt="${type}">${title}-->
+            <span>${type}</span>
+            ${title}
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
     </li>
@@ -146,10 +163,6 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <!--<img class="ul01_imgzan" src="img/zan.png" alt="">-->
-                <!--<span class="ul01_count" id="likeCount">${likeCount}</span>-->
-                <!--<button type="button" class="click-like" onclick="like()" id="icon"></button>-->
-                <!--<span class="ul01_count" id="likeCount">0</span>-->
                 <img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">
                 <span class="ul01_count" id="total">${likeCount}</span>
             </li>

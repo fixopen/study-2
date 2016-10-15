@@ -1,121 +1,4 @@
-﻿// function like(el) {
-//     var total = document.getElementById('total');
-//     total.innerText = parseInt(total.innerText) + 1;
-//     el.disabled = true;
-//     $(function () {
-//         $("#icon").one("click", function () {})
-//     })
-//     let data ={
-//         objectType:'knowledge-point',
-//         objectId:g.getUrlParameter("id"),
-//         action:'like'
-//     }
-//     $.ajax({
-//         type: "post",
-//         url: "/api/logs",
-//         data: JSON.stringify(data),
-//         dataType: "json",
-//         contentType: "application/json; charset=utf-8",
-//         success: function (like) {
-//             alert(JSON.stringify(like))
-//         }
-//     })
-// }
-
-//onclick="commentLike(this)"
-// function commentLike(el) {
-//     var total = document.getElementById('all');
-//     total.innerText = parseInt(total.innerText) + 1;
-//     el.disabled = true;
-//     let data = {
-//         objectType: 'comment',
-//         id: data.comments.id,
-//         action: 'like'
-//     }
-// // let commentId=
-//     $.ajax({
-//         type: "post",
-//         url: "/api/comments",
-//         data: JSON.stringify(data),
-//         dataType: "json",
-//         contentType: "application/json; charset=utf-8",
-//         success: function (like) {
-//             alert(JSON.stringify(like))
-//         }
-//     })
-// }
-
-
-// function like() {
-//     let data = {
-//         userId: 1,
-//         objectType: 'knowledge-point',
-//         objectId: g.getUrlParameter("id"),
-//         action: 'like'
-//     }
-// //     // let data ={
-// //     //     userId: 1,
-// //     //     objectType:'knowledge-point',
-// //     //     objectId:g.getUrlParameter("id"),
-// //     //     action:'unlike'
-// //     // }
-// //
-//     $.ajax({
-//         type: "post",
-//         url: "/api/logs",
-//         data: JSON.stringify(data),
-//         dataType: "json",
-//         contentType: "application/json; charset=utf-8",
-//         success: function like() {
-//             alert(JSON.stringify(data))
-//         }
-//     })
-// }
-
 $(function () {
-
-    // let liked = false
-    // let data ={
-    //     objectType:'knowledge-point',
-    //     objectId:g.getUrlParameter("id"),
-    //     action:'like'
-    // }
-    //
-    // $.ajax({
-    //     type: "get",
-    //     url: "/api/logs",
-    //     data: JSON.stringify(data),
-    //
-    //     // url: "/api/logs?filter=" + JSON.stringify({objectType: 'knowledge-point', objectId: g.getUrlParameter("id"), action: 'like'}),
-    //     // url: "api/logs?filter=" + JSON.stringify(g.getUrlParameter("id")),
-    //     dataType: "json",
-    //     success: function (like) {
-    //         liked = true
-    //     },
-    //     error: function (unlike) {
-    //         liked = false
-    //     }
-    // })
-    // //change icon via liked state
-    // // let icon = document.getElementById('icon')
-    // let icon =document.getElementById('icon');
-    // icon.addEventListener('click', function(e) {
-    //     if (liked) {
-    //         liked = false
-    //     // *   unlike
-    //     //     *   //event processor unlike
-    //     //     *       notification unlike
-    //     //     *       icon change to like, unliked
-    //     //     *       likeCount - 1
-    //     } else {
-    //         liked = true
-    //         //     *   like
-    //         //     *   //event processor like
-    //         //     *       notification like
-    //         // *       icon change to unlike, liked
-    //         // *       likeCount + 1
-    //     }
-    // }, false)
 
 // message---------
     let createComment = document.getElementById('createComment');
@@ -189,9 +72,81 @@ $(function () {
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
+                            // {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
+
+                    // pinyin
+                    let pinyins = []
+                    for(let i=0;i<data.contents.length;i++){
+                        if (data.contents[i].type == 'pinyinText') {
+                            pinyins.push(data.contents[i])
+                        }
+                    }
+
+                    let ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
+                        '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
+                        'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
+                        'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
+
+                    let isP = function(c) {
+                        let result = false
+                        for (let i = 0; i < ps.length; ++i) {
+                            if (ps[i] == c) {
+                                result = true
+                                break
+                            }
+                        }
+                        return result
+                    }
+
+                    for (let i = 0; i < pinyins.length; ++i) {
+                        let pinyinItem = pinyins[i]
+                        let pinyin = pinyinItem.pinyin.split(' ')
+                        let chineseIndex = 0;
+                        for (let j = 0; j < pinyin.length; ++j) {
+                            let pinyinValue = pinyin[j]
+                            let c = pinyinItem.content[chineseIndex]
+                            ++chineseIndex
+                            if (isP(c)) {
+                                 e = c
+                                c = pinyinItem.content[chineseIndex]
+                                ++chineseIndex
+                            }
+
+                            let g = {}
+                            g.bind = function (element, data) {
+                                element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, letiable) {
+                                    if (!letiable) {
+                                        return ""
+                                    }
+                                    return data[letiable];
+                                });
+                                return element
+                            };
+
+                            //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
+                            let e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                            let content=document.getElementById('content')
+                            g.bind(e, {"pinyin": pinyinValue, "content":c})
+                            content.appendChild(e)
+
+                            // let d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                            // let content=document.getElementById('pycontent')
+                            // g.bind(d, {"pinyin": pinyinValue, "content":c})
+                            // content.appendChild(d)
+                            //
+                            // let e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                            // g.bind(e, {"content":c})
+                            // content.appendChild(e)
+                        }
+                      //  let pinyin=data.contents[i].pinyin.split(" ");
+                        //alert(pinyin);
+                        //let content=data.contents[i].content.split('');
+                        //alert(content);
+
+                    }
 
                     proc({
                         templateId: 'video-template',
@@ -210,6 +165,95 @@ $(function () {
                         }
                     })
 
+                    //多选单选
+                    for(let i=0;i<data.problems.length;i++){
+                        if (data.problems[i].type == '多选题') {
+                            $('.addimg span').eq(i).removeClass('mld_liImg').addClass('mld_liImg_');
+                        }else if(data.problems[i].type == '单选题'){
+                            $('.addimg span').eq(i).removeClass('mld_liImg_').addClass('mld_liImg');
+                        }
+                    }
+
+
+                    //answers
+                    let findProblem = function (problemId) {
+                        let problem = null
+                        for (let i = 0; i < data.problems.length; ++i) {
+                            if (data.problems[i].id == problemId) {
+                                problem = data.problems[i]
+                                break
+                            }
+                        }
+                        return problem
+                    }
+
+                    let getIndex = function (content) {
+                        let index = -1
+                        switch (content) {
+                            case 'A':
+                                index = 0
+                                break
+                            case 'B':
+                                index = 1
+                                break
+                            case 'C':
+                                index = 2
+                                break
+                            case 'D':
+                                index = 3
+                                break
+                            default:
+                                break
+                        }
+                        return index
+                    }
+
+                    let compareAnswer = function (index, standardAnswers) {
+                        let finded = false
+                        for (let j = 0; j < standardAnswers.length; ++j) {
+                            if (index == standardAnswers[j].name) {
+                                finded = true
+                                break
+                            }
+                        }
+                        return finded
+                    }
+
+
+                    let problemContainer = document.getElementById('problem')
+                    problemContainer.addEventListener('click', function (e) {
+                        //e.currentTarget == problemContainer
+                        let clickedElement = e.target
+                        let trueImage = document.createElement('img')
+                        trueImage.setAttribute('class', 'daan_error')
+                        trueImage.setAttribute('src', 'img/true.png')
+                        trueImage.setAttribute('alt', '')
+
+                        let falseImage = document.createElement('img')
+                        falseImage.setAttribute('class', 'daan_error')
+                        falseImage.setAttribute('src', 'img/error.png')
+                        falseImage.setAttribute('alt', '')
+
+                        if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
+                            let problemId = clickedElement.parentNode.parentNode.dataset.id
+                            let problem = findProblem(problemId)
+                            if (problem) {
+                                let index = getIndex(clickedElement.textContent)
+                                let r = compareAnswer(index, problem.standardAnswers)
+                                if (r) {
+                                    clickedElement.parentNode.addClass('daanLi_true')
+                                    clickedElement.innerHTML = ''
+                                    clickedElement.appendChild(trueImage)
+                                } else {
+                                    clickedElement.parentNode.addClass('daanLi_error')
+                                    clickedElement.innerHTML = ''
+                                    clickedElement.appendChild(falseImage)
+                                }
+                            }
+                        }
+                    }, false)
+
+                    //上一课下一课
                     let baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
                     for (let i = 0; i < knowledgePointList.length; ++i) {
                         let id = g.getUrlParameter('id')
@@ -234,7 +278,7 @@ $(function () {
                         containerId: 'interaction'
                     })
 
-                   // GET /knowledge-points/.../is-self-like
+                   // likes
                     let id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
@@ -254,7 +298,7 @@ $(function () {
                                         success: function (unlike) {
                                             icon.setAttribute('src', 'img/zan.png');
                                             --data.interaction.likeCount
-                                            e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                            e.target.nextElementSibling.textContent = data.interaction.likeCount;
                                             liked = false;
                                         }
                                     })
@@ -337,89 +381,10 @@ $(function () {
                                 }
                             }
                         })
-
                     })
-
-                    let findProblem = function (problemId) {
-                        let problem = null
-                        for (let i = 0; i < data.problems.length; ++i) {
-                            if (data.problems[i].id == problemId) {
-                                problem = data.problems[i]
-                                break
-                            }
-                        }
-                        return problem
-                    }
-
-                    let getIndex = function (content) {
-                        let index = -1
-                        switch (content) {
-                            case 'A':
-                                index = 0
-                                break
-                            case 'B':
-                                index = 1
-                                break
-                            case 'C':
-                                index = 2
-                                break
-                            case 'D':
-                                index = 3
-                                break
-                            default:
-                                break
-                        }
-                        return index
-                    }
-
-                    let compareAnswer = function (index, standardAnswers) {
-                        let finded = false
-                        for (let j = 0; j < standardAnswers.length; ++j) {
-                            if (index == standardAnswers[j].name) {
-                                finded = true
-                                break
-                            }
-                        }
-                        return finded
-                    }
-
-
-                    let problemContainer = document.getElementById('problem')
-                    problemContainer.addEventListener('click', function (e) {
-                        //e.currentTarget == problemContainer
-                        let clickedElement = e.target
-                        let trueImage = document.createElement('img')
-                        trueImage.setAttribute('class', 'daan_error')
-                        trueImage.setAttribute('src', 'img/true.png')
-                        trueImage.setAttribute('alt', '')
-
-                        let falseImage = document.createElement('img')
-                        falseImage.setAttribute('class', 'daan_error')
-                        falseImage.setAttribute('src', 'img/error.png')
-                        falseImage.setAttribute('alt', '')
-
-                        if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            let problemId = clickedElement.parentNode.parentNode.dataset.id
-                            let problem = findProblem(problemId)
-                            if (problem) {
-                                let index = getIndex(clickedElement.textContent)
-                                let r = compareAnswer(index, problem.standardAnswers)
-                                if (r) {
-                                    clickedElement.parentNode.addClass('daanLi_true')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(trueImage)
-                                } else {
-                                    clickedElement.parentNode.addClass('daanLi_error')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(falseImage)
-                                }
-                            }
-                        }
-                    }, false)
-
-
                 }
             })
         }
     })
 })
+

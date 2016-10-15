@@ -97,6 +97,26 @@ public class Volumes {
                     kpm.put("name", kp.getTitle());
                     kpm.put("likeCount", likeCount);
                     kpm.put("readCount", readCount);
+                    String type = "normal";
+                    String statsType = "SELECT count(*), type FROM knowledge_point_content_maps WHERE knowledge_point_id = " + kp.getId().toString() + " GROUP BY type";
+                    /*Query s = em.createNativeQuery(statsType , "type");*/
+                    Query query = em.createNativeQuery(statsType);
+                    /*String ss = (String) s.getSingleResult();*/
+                    List list = query.getResultList();
+
+                    /*System.out.println(list);*/
+                    /*list.contains("abc");*/
+
+                   if(list.size() == 1){
+                       Object[] tempObj = (Object[]) list.get(0);
+                      /* System.out.println(tempObj[1]);*/
+                       String dc = (String) tempObj[1];
+                       String pm = "problem";
+                       if(dc.equals(pm)){
+                           type = "pk";
+                       }
+                   }
+                    kpm.put("type", type);
                     kpsm.add(kpm);
                 }
                 //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id
@@ -105,6 +125,70 @@ public class Volumes {
         }
         return result;
     }
+
+
+//    @GET
+//    @Path("{id}/shuxue/knowledge-points")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getshuKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+//        Response result = Response.status(401).build();
+//        if (JPAEntry.isLogining(sessionId)) {
+//            result = Response.status(404).build();
+//
+//            Map<String, Object> conditions = new HashMap<>();
+//            conditions.put("volumeId", id);
+//            Map<String, String> orders = new HashMap<>();
+//            orders.put("order", "ASC");
+//            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions, orders);
+//            if (!knowledgePoints.isEmpty()) {
+//                List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
+//                for (KnowledgePoint kp : knowledgePoints) {
+//
+//                    EntityManager em = JPAEntry.getEntityManager();
+//                    String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
+//                    Query lq = em.createQuery(statsLikes, Long.class);
+//                    Long likeCount = (Long) lq.getSingleResult();
+//
+//                    String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
+//                    Query rq = em.createQuery(statsReads, Long.class);
+//                    Long readCount = (Long) rq.getSingleResult();
+//
+//                    Map<String, Object> kpm = new HashMap<>();
+//                    kpm.put("id", kp.getId());
+//                    kpm.put("volumeId", kp.getVolumeId());
+//                    kpm.put("name", kp.getTitle());
+//                    kpm.put("likeCount", likeCount);
+//                    kpm.put("readCount", readCount);
+//                    String type = "normal";
+//                    String statsType = "SELECT count(*), type FROM knowledge_point_content_maps WHERE knowledge_point_id = " + kp.getId().toString() + " GROUP BY type";
+//                    /*Query s = em.createNativeQuery(statsType , "type");*/
+//                    Query query = em.createNativeQuery(statsType);
+//                    /*String ss = (String) s.getSingleResult();*/
+//                    List list = query.getResultList();
+//
+//                    System.out.println(list);
+//                    /*list.contains("abc");*/
+//
+//                    if(list.size() == 1){
+//                        Object[] tempObj = (Object[]) list.get(0);
+//                      /* System.out.println(tempObj[1]);*/
+//                        String dc = (String) tempObj[1];
+//                        String pm = "problem";
+//                        if(dc.equals(pm)){
+//                            Map tsm = new HashMap();
+//
+//                            type = "pk";
+//                        }
+//                    }
+//                    kpm.put("type", type);
+//                    kpsm.add(kpm);
+//                }
+//                //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id
+//                result = Response.ok(new Gson().toJson(kpsm)).build();
+//            }
+//        }
+//        return result;
+//    }
 
     @PUT //根据id修改
     @Path("{id}")
