@@ -7,6 +7,8 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -62,6 +64,32 @@ public class Volumes {
         return result;
     }
 
+    public static class StatsInfo {
+        private Long count;
+        private String objectType;
+
+        public StatsInfo(Long count, String objectType) {
+            this.count = count;
+            this.objectType = objectType;
+        }
+
+        public Long getCount() {
+            return count;
+        }
+
+        public void setCount(Long count) {
+            this.count = count;
+        }
+
+        public String getObjectType() {
+            return objectType;
+        }
+
+        public void setObjectType(String objectType) {
+            this.objectType = objectType;
+        }
+    }
+
     @GET
     @Path("{id}/knowledge-points")
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,6 +112,27 @@ public class Volumes {
                     kpm.put("name", kp.getName());
                     kpm.put("likeCount", Logs.getStatsCount("knowledge-point", kp.getId(), "like"));
                     kpm.put("readCount", Logs.getStatsCount("knowledge-point", kp.getId(), "read"));
+                    String type = "normal";
+//                    String query = "SELECT NEW com.baremind.Volumes.StatsInfo(count(m), m.objectType) FROM KnowledgePointContentMap m GROUP BY m.objectType";
+//                    EntityManager em = JPAEntry.getEntityManager();
+//                    Query q = em.createQuery(query);
+//                    List sl = q.getResultList();
+//                    if (sl.size() == 1) {
+//                        StatsInfo s = (StatsInfo)sl.get(0);
+//                        if (s.objectType.equals("problem")) {
+//                            type = "pk";
+//                        }
+//                    }
+                    String query = "SELECT m.objectType FROM KnowledgePointContentMap m GROUP BY m.objectType";
+                    EntityManager em = JPAEntry.getEntityManager();
+                    TypedQuery<String> q = em.createQuery(query, String.class);
+                    List<String> sl = q.getResultList();
+                    if (sl.size() == 1) {
+                        if (sl.get(0).equals("problem")) {
+                            type = "pk";
+                        }
+                    }
+                    kpm.put("type", type);
                     kpsm.add(kpm);
                 }
                 //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id
