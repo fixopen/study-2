@@ -1,18 +1,18 @@
 $(function () {
 
-    let trueImage = document.createElement('img');
+    var trueImage = document.createElement('img');
     trueImage.setAttribute('class', 'daan_error');
     trueImage.setAttribute('src', 'img/true.png');
     trueImage.setAttribute('alt', '');
 
-    let falseImage = document.createElement('img');
+    var falseImage = document.createElement('img');
     falseImage.setAttribute('class', 'daan_error');
     falseImage.setAttribute('src', 'img/error.png');
     falseImage.setAttribute('alt', '');
 
 
 
-    let volumeId = g.getUrlParameter("volumeId");
+    var volumeId = g.getUrlParameter("volumeId");
     $.ajax({
         type: 'get',
         url: 'api/knowledge-points?filter=' + JSON.stringify({
@@ -20,7 +20,7 @@ $(function () {
         }),
         dataType: 'json',
         success: function (knowledgePointList) {
-            let id = g.getUrlParameter('id');
+            var id = g.getUrlParameter('id');
             $.ajax({
                 type: "get",
                 url: 'api/knowledge-points/' + id + '/contents',
@@ -28,7 +28,7 @@ $(function () {
                 async: false,
                 success: function (data) {
                     alert(JSON.stringify(data))
-                    for (let i = 0; i < knowledgePointList.length; ++i) {
+                    for (var i = 0; i < knowledgePointList.length; ++i) {
                         if (knowledgePointList[i].id == id) {
                             proc({
                                 templateId: 'title-template',
@@ -38,8 +38,8 @@ $(function () {
                             break
                         }
                     }
-                    for (let i = 0; i < data.problems.length; ++i) {
-                        let p = data.problems[i];
+                    for (var i = 0; i < data.problems.length; ++i) {
+                        var p = data.problems[i];
                         p.options[0].title = 'A';
                         p.options[1].title = 'B';
                         p.options[2].title = 'C';
@@ -58,9 +58,9 @@ $(function () {
                             }
                         ]
                     });
-                    let findProblem = function (problemId) {
-                        let problem = null
-                        for (let i = 0; i < data.problems.length; ++i) {
+                    var findProblem = function (problemId) {
+                        var problem = null
+                        for (var i = 0; i < data.problems.length; ++i) {
                             if (data.problems[i].id == problemId) {
                                 problem = data.problems[i]
                                 break
@@ -69,8 +69,8 @@ $(function () {
                         return problem
                     }
 
-                    let getIndex = function (content) {
-                        let index = -1
+                    var getIndex = function (content) {
+                        var index = -1
                         switch (content) {
                             case 'A':
                                 index = 0
@@ -90,9 +90,9 @@ $(function () {
                         return index
                     }
 
-                    let compareAnswer = function (index, standardAnswers) {
-                        let finded = false
-                        for (let j = 0; j < standardAnswers.length; ++j) {
+                    var compareAnswer = function (index, standardAnswers) {
+                        var finded = false
+                        for (var j = 0; j < standardAnswers.length; ++j) {
                             if (index == standardAnswers[j].name) {
                                 finded = true
                                 break
@@ -101,16 +101,16 @@ $(function () {
                         return finded
                     }
 
-                    let judgement = function (e) {
+                    var judgement = function (e) {
                         //e.currentTarget == problemContainer
-                        let clickedElement = e.target;
+                        var clickedElement = e.target;
 
                         if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            let problemId = clickedElement.parentNode.parentNode.dataset.id
-                            let problem = findProblem(problemId);
+                            var problemId = clickedElement.parentNode.parentNode.dataset.id
+                            var problem = findProblem(problemId);
                             if (problem) {
-                                let index = getIndex(clickedElement.textContent);
-                                let r = compareAnswer(index, problem.standardAnswers);
+                                var index = getIndex(clickedElement.textContent);
+                                var r = compareAnswer(index, problem.standardAnswers);
                                 if (r) {
                                     clickedElement.parentNode.addClass('daanLi_true');
                                     clickedElement.innerHTML = '';
@@ -122,7 +122,7 @@ $(function () {
                                 }
                             }
                         }
-                        let data = {
+                        var data = {
                             objectType: 'knowledge-point',
                             objectId: 'problemId',
                             objectName: 'index',
@@ -138,7 +138,7 @@ $(function () {
                             }
                         })
                     };
-                    let problemContainer = document.getElementById('question')
+                    var problemContainer = document.getElementById('question')
                     problemContainer.addEventListener('click', judgement, false)
 
                 }

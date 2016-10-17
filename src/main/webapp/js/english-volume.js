@@ -1,7 +1,7 @@
 $(function () {
 
 
-    let volumesR;
+    var volumesR;
     filter = {
         subjectId: 3,
         grade: 20
@@ -14,7 +14,7 @@ $(function () {
             volumesR = vs;
         }
     });
-    let volumesP;
+    var volumesP;
     filter = {
         subjectId: 3,
         grade: 21

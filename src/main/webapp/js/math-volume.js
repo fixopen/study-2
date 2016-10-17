@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    //let subjectId  =  getUrlParameter('subjectId')
+    //var subjectId  =  getUrlParameter('subjectId')
     $.ajax({
         type: "get",
         url: 'api/volumes?filter=' + JSON.stringify({

@@ -1,5 +1,5 @@
 $(function () {
-    let data = {
+    var data = {
         title: 'My family',
         contents: [
             {

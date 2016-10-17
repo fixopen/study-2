@@ -63,7 +63,7 @@ $(document).ready(function () {
 
     })
 
-    let volumesL
+    var volumesL
     filter = {
         subjectId: 1,
         grade: 20
@@ -78,7 +78,7 @@ $(document).ready(function () {
         }
     })
 
-    let volumesH
+    var volumesH
     filter = {
         subjectId: 1,
         grade: 21
@@ -94,21 +94,21 @@ $(document).ready(function () {
         }
     })
 
-    let doc = document
+    var doc = document
 
-    let getTemplate = function (templateId) {
-        let result
-        let template = doc.getElementById(templateId)
+    var getTemplate = function (templateId) {
+        var result
+        var template = doc.getElementById(templateId)
         if (template) {
             result = template.content.children[0]
         }
         return result
     }
 
-    let bind = function (element, data) {
+    var bind = function (element, data) {
         if (element) {
             element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
-                let result = ''
+                var result = ''
                 if (data && variable) {
                     result = data[variable]
                 }
@@ -117,36 +117,36 @@ $(document).ready(function () {
         }
     }
 
-    let proc = function (option) {
+    var proc = function (option) {
         //prepare template
-        let template = option.template
+        var template = option.template
         if (!template) {
             template = getTemplate(option.templateId)
         }
         //prepare alt templates
-        let templates
+        var templates
         if (option.alterTemplates) {
             templates = []
-            for (let i = 0; i < option.alterTemplates.length; ++i) {
-                let altTemplate = getTemplate(option.alterTemplates[i].templateId)
+            for (var i = 0; i < option.alterTemplates.length; ++i) {
+                var altTemplate = getTemplate(option.alterTemplates[i].templateId)
                 if (altTemplate) {
                     templates.push({type: option.alterTemplates[i].type, template: altTemplate})
                 }
             }
         }
         //prepare container
-        let container = option.container
+        var container = option.container
         if (!container) {
             container = doc.getElementById(option.containerId)
         }
         if ((template || templates) && container) {
             //clone element via template or alt templates
-            let cloneElement = function (type) {
-                let element
+            var cloneElement = function (type) {
+                var element
                 if (template) {
                     element = template.cloneNode(true)
                 } else if (templates) {
-                    for (let j = 0; j < templates.length; ++j) {
+                    for (var j = 0; j < templates.length; ++j) {
                         if (type == templates[j].type) {
                             element = templates[j].template.cloneNode(true)
                             break
@@ -156,26 +156,26 @@ $(document).ready(function () {
                 return element
             }
             //proc second bind
-            let procSecond = function (data, element) {
+            var procSecond = function (data, element) {
                 if (option.secondBind) {
                     //prepare second templates
-                    let secondTemplates = []
+                    var secondTemplates = []
                     if (Array.isArray(option.secondBind)) {
-                        for (let i = 0; i < option.secondBind.length; ++i) {
-                            let secondTemplate = getTemplate(option.secondBind[i].templateId)
+                        for (var i = 0; i < option.secondBind.length; ++i) {
+                            var secondTemplate = getTemplate(option.secondBind[i].templateId)
                             secondTemplates.push({
                                 extPoint: option.secondBind[i].extPoint,
                                 template: secondTemplate
                             })
                         }
                     } else {
-                        let secondTemplate = getTemplate(option.secondBind.templateId)
+                        var secondTemplate = getTemplate(option.secondBind.templateId)
                         secondTemplates.push({extPoint: option.secondBind.extPoint, template: secondTemplate})
                     }
                     //get second template from second templates
-                    let getSecondTemplate = function (secondTemplates, extPoint) {
-                        let secondTemplate
-                        for (let j = 0; j < secondTemplates.length; ++j) {
+                    var getSecondTemplate = function (secondTemplates, extPoint) {
+                        var secondTemplate
+                        for (var j = 0; j < secondTemplates.length; ++j) {
                             if (secondTemplates[j].extPoint == extPoint) {
                                 secondTemplate = secondTemplates[j].template
                             }
@@ -183,7 +183,7 @@ $(document).ready(function () {
                         return secondTemplate
                     }
                     if (Array.isArray(option.secondBind)) {
-                        for (let i = 0; i < option.secondBind.length; ++i) {
+                        for (var i = 0; i < option.secondBind.length; ++i) {
                             proc({
                                 container: element.querySelector('*[data-ext-point="' + option.secondBind[i].extPoint + '"]'),
                                 template: getSecondTemplate(secondTemplates, option.secondBind[i].extPoint),
@@ -200,8 +200,8 @@ $(document).ready(function () {
                 }
             }
             if (Array.isArray(option.data)) { //data is array of object
-                for (let i = 0; i < option.data.length; ++i) {
-                    let element = cloneElement(option.data[i].type)
+                for (var i = 0; i < option.data.length; ++i) {
+                    var element = cloneElement(option.data[i].type)
                     if (element) {
                         bind(element, option.data[i])
                         procSecond(option.data[i], element)
@@ -209,7 +209,7 @@ $(document).ready(function () {
                     }
                 }
             } else { //data is object
-                let element = cloneElement()
+                var element = cloneElement()
                 if (element) {
                     bind(element, option.data)
                     procSecond(option.data, element)
