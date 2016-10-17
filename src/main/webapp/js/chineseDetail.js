@@ -1,4 +1,3 @@
-
 $(function () {
 
 // message---------
@@ -26,7 +25,8 @@ $(function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    alert(JSON.stringify(data))
+                    location.reload();
+                    //alert(JSON.stringify(data))
                 }
             })
         }
