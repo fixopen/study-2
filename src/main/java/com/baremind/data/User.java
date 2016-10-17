@@ -41,7 +41,7 @@ public class User {
     private Date birthday;
 
     @Column(name = "sex")
-    private Integer sex;
+    private Long sex;
 
     @Column(name = "site")
     private String site;
@@ -58,8 +58,8 @@ public class User {
     @Column(name = "class")
     private String classname;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "location")
+    private String location;
 
     @Column(name = "description")
     private String description;
@@ -153,12 +153,12 @@ public class User {
         this.classname = classname;
     }
 
-    public String getAddress() {
-        return address;
+    public String getLocation() {
+        return location;
     }
 
-    public void setAddress(String location) {
-        this.address = location;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getDescription() {
@@ -201,11 +201,11 @@ public class User {
         this.birthday = birthday;
     }
 
-    public Integer getSex() {
+    public Long getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(Long sex) {
         this.sex = sex;
     }
 
@@ -232,4 +232,6 @@ public class User {
     public void setGrade(String grade) {
         this.grade = grade;
     }
+
+
 }

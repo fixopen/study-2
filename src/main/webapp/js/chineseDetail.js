@@ -77,76 +77,79 @@ $(function () {
                         ]
                     })
 
-                    // pinyin
-                    let pinyins = []
-                    for(let i=0;i<data.contents.length;i++){
-                        if (data.contents[i].type == 'pinyinText') {
-                            pinyins.push(data.contents[i])
-                        }
-                    }
+                    // pinyin-----begin------
+                    // let pinyins = []
+                    // for(let i=0;i<data.contents.length;i++){
+                    //     if (data.contents[i].type == 'pinyinText') {
+                    //         pinyins.push(data.contents[i])
+                    //     }
+                    // }
+                    //
+                    // let ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
+                    //     '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
+                    //     'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
+                    //     'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
+                    //
+                    // let isP = function(c) {
+                    //     let result = false
+                    //     for (let i = 0; i < ps.length; ++i) {
+                    //         if (ps[i] == c) {
+                    //             result = true
+                    //             break
+                    //         }
+                    //     }
+                    //     return result
+                    // }
+                    //
+                    // for (let i = 0; i < pinyins.length; ++i) {
+                    //     let pinyinItem = pinyins[i]
+                    //     let pinyin = pinyinItem.pinyin.split(' ')
+                    //     let chineseIndex = 0;
+                    //     for (let j = 0; j < pinyin.length; ++j) {
+                    //         let pinyinValue = pinyin[j]
+                    //         let c = pinyinItem.content[chineseIndex]
+                    //         ++chineseIndex
+                    //         if (isP(c)) {
+                    //              e = c
+                    //             c = pinyinItem.content[chineseIndex]
+                    //             ++chineseIndex
+                    //         }
+                    //
+                    //         let g = {}
+                    //         g.bind = function (element, data) {
+                    //             element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, letiable) {
+                    //                 if (!letiable) {
+                    //                     return ""
+                    //                 }
+                    //                 return data[letiable];
+                    //             });
+                    //             return element
+                    //         };
+                    //
+                    //         //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
+                    //         let e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //         let content=document.getElementById('content')
+                    //         g.bind(e, {"pinyin": pinyinValue, "content":c})
+                    //         content.appendChild(e)
+                    //
+                    //         // let d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //         // let content=document.getElementById('pycontent')
+                    //         // g.bind(d, {"pinyin": pinyinValue, "content":c})
+                    //         // content.appendChild(d)
+                    //         //
+                    //         // let e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                    //         // g.bind(e, {"content":c})
+                    //         // content.appendChild(e)
+                    //     }
+                    //   //  let pinyin=data.contents[i].pinyin.split(" ");
+                    //     //alert(pinyin);
+                    //     //let content=data.contents[i].content.split('');
+                    //     //alert(content);
+                    //
+                    // }
+                    //pinyin-----end-----
 
-                    let ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
-                        '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
-                        'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
-                        'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
 
-                    let isP = function(c) {
-                        let result = false
-                        for (let i = 0; i < ps.length; ++i) {
-                            if (ps[i] == c) {
-                                result = true
-                                break
-                            }
-                        }
-                        return result
-                    }
-
-                    for (let i = 0; i < pinyins.length; ++i) {
-                        let pinyinItem = pinyins[i]
-                        let pinyin = pinyinItem.pinyin.split(' ')
-                        let chineseIndex = 0;
-                        for (let j = 0; j < pinyin.length; ++j) {
-                            let pinyinValue = pinyin[j]
-                            let c = pinyinItem.content[chineseIndex]
-                            ++chineseIndex
-                            if (isP(c)) {
-                                 e = c
-                                c = pinyinItem.content[chineseIndex]
-                                ++chineseIndex
-                            }
-
-                            let g = {}
-                            g.bind = function (element, data) {
-                                element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, letiable) {
-                                    if (!letiable) {
-                                        return ""
-                                    }
-                                    return data[letiable];
-                                });
-                                return element
-                            };
-
-                            //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
-                            let e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                            let content=document.getElementById('content')
-                            g.bind(e, {"pinyin": pinyinValue, "content":c})
-                            content.appendChild(e)
-
-                            // let d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                            // let content=document.getElementById('pycontent')
-                            // g.bind(d, {"pinyin": pinyinValue, "content":c})
-                            // content.appendChild(d)
-                            //
-                            // let e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
-                            // g.bind(e, {"content":c})
-                            // content.appendChild(e)
-                        }
-                      //  let pinyin=data.contents[i].pinyin.split(" ");
-                        //alert(pinyin);
-                        //let content=data.contents[i].content.split('');
-                        //alert(content);
-
-                    }
 
                     proc({
                         templateId: 'video-template',

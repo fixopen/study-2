@@ -142,6 +142,7 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
+
                 JPAEntry.log(JPAEntry.getLoginId(sessionId), "read", "knowledge-point", id);
 
                 Map<String, Object> conditions = new HashMap<>();
@@ -159,8 +160,9 @@ public class KnowledgePoints {
                 List<String> quoteIds = new ArrayList<>();
                 List<String> pinyinIds = new ArrayList<>();
 
+
                 for (KnowledgePointContentMap item : maps) {
-                    switch (item.getObjectType()) {
+                    switch (item.getType()) {
                         case "text":
                             textIds.add(item.getObjectId().toString());
                             break;
@@ -202,13 +204,12 @@ public class KnowledgePoints {
                 List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
 
                 List<PinyinText> pinyinTextObject = getList(em, pinyinIds, PinyinText.class);
-
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
                 List<Object> orderedQuotes = new ArrayList<>();
-
+                List<Object> orderedPinyins = new ArrayList<>();
                 for (final KnowledgePointContentMap item : maps) {
-                    switch (item.getObjectType()) {
+                    switch (item.getType()) {
                         case "text":
                             if (textObjects != null) {
                                 Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
@@ -237,8 +238,7 @@ public class KnowledgePoints {
                                 itm.put("id", it.getId());
                                 itm.put("type", "imageText");
                                 itm.put("content", it.getContent());
-                                Image image = JPAEntry.getObject(Image.class, "id", it.getImageId());
-                                itm.put("href", image.getStorePath());
+                                itm.put("href", it.getStorePath());
                                 orderedContents.add(itm);
                             }
                             break;
@@ -266,24 +266,25 @@ public class KnowledgePoints {
                                 } else {
                                     pm.put("type", "单选题");
                                 }
-                                List<Map<String, Object>> poms = new ArrayList<>();
-                                for (ProblemOption o : problemOptions) {
-                                    Map<String, Object> pom = new HashMap<>();
-                                    pom.put("id", o.getId());
-                                    pom.put("name", o.getName());
-                                    Image image = JPAEntry.getObject(Image.class, "id", o.getImageId());
-                                    pom.put("image", image);
-                                    poms.add(pom);
+                                Map<String, Object> opm = new HashMap<>();
+                                //获取每一个选项 option
+                                for(ProblemOption option : problemOptions) {
+                                    System.out.println(option);
+                                    opm.put("optionId",option.getId());
+                                    opm.put("name",option.getName());
+                                    List<String> optionIds = new ArrayList<>();
+                                   if(option.getImageId() != null){
+                                        Image storePath = JPAEntry.getObject(Image.class, "id", option.getImageId());
+                                            opm.put("optionImagePath", storePath.getStorePath());
+                                    }
                                 }
-                                pm.put("options", poms);
+                                /*opm.put("id",optionImage)*/
+                                pm.put("options", opm);
                                 pm.put("standardAnswers", problemStandardAnswers);
-                                pm.put("name", problemItem.getName());
-                                Image image = JPAEntry.getObject(Image.class, "id", problemItem.getImageId());
-                                pm.put("storePath", image.getStorePath());
-                                Video video = JPAEntry.getObject(Video.class, "id", problemItem.getVideoId());
-                                pm.put("videoUrl", video.getStorePath());
-                                Image cover = JPAEntry.getObject(Image.class, "id", video.getCover());
-                                pm.put("videoImage", cover.getStorePath());
+                                pm.put("title", problemItem.getTitle());
+                                pm.put("storePath", problemItem.getStorePath());
+                                pm.put("videoUrl", problemItem.getVideoUrl());
+                                pm.put("videoImage", problemItem.getVideoImage());
                                 orderedProblems.add(pm);
                             }
                             break;
@@ -301,14 +302,14 @@ public class KnowledgePoints {
                 }
 
                 Map<String, Object> totalResult = new HashMap<>();
-                totalResult.put("title", p.getName());
+                totalResult.put("title", p.getTitle());
                 totalResult.put("quotes", orderedQuotes);
                 totalResult.put("contents", orderedContents);
 
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     Video video = videoObjects.get(0);
-                    Map<String, Object> vm = new HashMap<>();
                     Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
+                    Map<String, Object> vm = new HashMap<>();
                     vm.put("cover", image.getStorePath());
                     vm.put("id", video.getId());
                     vm.put("storePath", video.getStorePath());
@@ -321,7 +322,6 @@ public class KnowledgePoints {
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
-                /*totalResult.put("pinyins", orderedPinyins);*/
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
@@ -332,6 +332,7 @@ public class KnowledgePoints {
                     Map<String, Object> commentMap = new HashMap<>();
                     commentMap.put("id", comment.getId());
                     commentMap.put("content", comment.getContent());
+                    commentMap.put("clientId", comment.getClientId());
                     SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     commentMap.put("createTime", time.format(comment.getCreateTime()));
                     commentMap.put("objectId", comment.getObjectId());
@@ -342,7 +343,6 @@ public class KnowledgePoints {
                     commentMaps.add(commentMap);
                 }
                 totalResult.put("comments", commentMaps);
-
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
             }
@@ -405,21 +405,34 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             KnowledgePoint existknowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (existknowledgePoint != null) {
+                int grade = knowledgePoint.getGrade();
+                if (grade != 0) {
+                    existknowledgePoint.getGrade();
+                }
+                String storePath = knowledgePoint.getStorePath();
+                if (storePath != null) {
+                    existknowledgePoint.setStorePath(storePath);
+                }
                 int order = knowledgePoint.getOrder();
                 if (order != 0) {
                     existknowledgePoint.setOrder(order);
                 }
-
-                String title = knowledgePoint.getName();
-                if (title != null) {
-                    existknowledgePoint.setName(title);
+                Long subjectId = knowledgePoint.getSubjectId();
+                if (sessionId != null) {
+                    existknowledgePoint.setSubjectId(subjectId);
                 }
-
+                String title = knowledgePoint.getTitle();
+                if (title != null) {
+                    existknowledgePoint.setTitle(title);
+                }
+                String videoUrl = knowledgePoint.getVideoUrl();
+                if (videoUrl != null) {
+                    existknowledgePoint.setVideoUrl(videoUrl);
+                }
                 Long volumeId = knowledgePoint.getVolumeId();
                 if (volumeId != null) {
                     existknowledgePoint.setVolumeId(volumeId);
                 }
-
                 JPAEntry.genericPut(existknowledgePoint);
                 result = Response.ok(existknowledgePoint).build();
             }

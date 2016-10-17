@@ -16,8 +16,8 @@ public class AnswerRecord {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "index")
-    private Integer index;
+    @Column(name = "answer")
+    private Long answer;
 
     @Column(name = "user_id")
     private Long userId;
@@ -25,8 +25,8 @@ public class AnswerRecord {
     @Column(name = "problem_id")
     private Long problemId;
 
-    @Column(name = "create_time")
-    private Date createTime;
+    @Column(name = "commit_time")
+    private Date commitTime;
 
     public Long getId() {
         return id;
@@ -36,12 +36,12 @@ public class AnswerRecord {
         this.id = id;
     }
 
-    public Integer getIndex() {
-        return index;
+    public Long getAnswer() {
+        return answer;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setAnswer(Long answer) {
+        this.answer = answer;
     }
 
     public Long getUserId() {
@@ -60,11 +60,11 @@ public class AnswerRecord {
         this.problemId = problemId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCommitTime() {
+        return commitTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCommitTime(Date commitTime) {
+        this.commitTime = commitTime;
     }
 }

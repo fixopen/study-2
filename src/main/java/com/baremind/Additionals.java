@@ -69,26 +69,29 @@ public class Additionals {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            Additional existAdditional = JPAEntry.getObject(Additional.class, "id", id);
-            if (existAdditional != null) {
-                String tableName = additional.getObjectType();
-                if (tableName != null) {
-                    existAdditional.setObjectType(tableName);
+            Additional existadditional = JPAEntry.getObject(Additional.class, "id", id);
+            if (existadditional != null) {
+                String name = additional.getName();
+                if (name != null) {
+                    existadditional.setName(name);
                 }
                 Long objectId = additional.getObjectId();
                 if (objectId != null) {
-                    existAdditional.setObjectId(objectId);
+                    existadditional.setObjectId(objectId);
                 }
-                String name = additional.getName();
-                if (name != null) {
-                    existAdditional.setName(name);
+                String tableName = additional.getTableName();
+                if (tableName != null) {
+                    existadditional.getTableName();
                 }
                 String value = additional.getValue();
                 if (value != null) {
-                    existAdditional.setValue(value);
+                    existadditional.setValue(value);
                 }
-                JPAEntry.genericPut(existAdditional);
-                result = Response.ok(existAdditional).build();
+                existadditional.setObjectId(additional.getObjectId());
+                existadditional.setTableName(additional.getTableName());
+                existadditional.setValue(additional.getValue());
+                JPAEntry.genericPut(existadditional);
+                result = Response.ok(existadditional).build();
             }
         }
         return result;

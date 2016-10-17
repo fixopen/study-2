@@ -92,6 +92,14 @@ public class Video {
         this.storePath = storePath;
     }
 
+  /*  public Long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Long duration) {
+        this.duration = duration;
+    }*/
+
     public Double getBitRate() {
         return bitRate;
     }
@@ -99,4 +107,6 @@ public class Video {
     public void setBitRate(Double bitRate) {
         this.bitRate = bitRate;
     }
+
+
 }

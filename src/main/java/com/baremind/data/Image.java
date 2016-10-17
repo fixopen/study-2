@@ -88,4 +88,6 @@ public class Image {
     public void setMainColor(Integer mainColor) {
         this.mainColor = mainColor;
     }
+
+
 }

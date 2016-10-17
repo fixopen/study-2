@@ -21,6 +21,7 @@ public class PinyinText {
     @Column(name = "content")
     private String content;
 
+
     public Long getId() {
         return id;
     }

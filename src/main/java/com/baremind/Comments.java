@@ -123,19 +123,19 @@ public class Comments {
             result = Response.status(404).build();
             Comment existComment = JPAEntry.getObject(Comment.class, "id", id);
             if (existComment != null) {
-                Long userId = comment.getUserId();
-                if (userId != null) {
-                    existComment.setUserId(userId);
-                }
-
-                String objectType = comment.getObjectType();
-                if (objectType != null) {
-                    existComment.setObjectType(objectType);
+                String clientId = comment.getClientId();
+                if (clientId != null) {
+                    existComment.setClientId(clientId);
                 }
 
                 Long objectId = comment.getObjectId();
                 if (objectId != null) {
                     existComment.setObjectId(objectId);
+                }
+
+                String objectType = comment.getObjectType();
+                if (objectType != null) {
+                    existComment.setObjectType(objectType);
                 }
 
                 String content = comment.getContent();
@@ -147,6 +147,11 @@ public class Comments {
                 if (updateTime != null) {
                     Date now = new Date();
                     existComment.setUpdateTime(now);
+                }
+
+                Long userId = comment.getUserId();
+                if (userId != null) {
+                    existComment.setUserId(userId);
                 }
 
                 JPAEntry.genericPut(existComment);

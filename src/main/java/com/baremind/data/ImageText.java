@@ -15,11 +15,34 @@ public class ImageText {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "image_id")
-    private Long imageId;
+    @Column(name = "mime_type")
+    private String mimeType;
+
+    @Column(name = "size")
+    private Long size;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "ext")
+    private String ext;
+
+    @Column(name = "store_path")
+    private String storePath;
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "main_color")
+    private Integer mainColor;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public Long getId() {
         return id;
@@ -29,19 +52,53 @@ public class ImageText {
         this.id = id;
     }
 
-    public Long getImageId() {
-        return imageId;
+    public String getMimeType() {
+        return mimeType;
     }
 
-    public void setImageId(Long imageId) {
-        this.imageId = imageId;
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 
-    public String getContent() {
-        return content;
+    public Long getSize() {
+        return size;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setSize(Long size) {
+        this.size = size;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
+    }
+
+    public String getStorePath() {
+        return storePath;
+    }
+
+    public void setStorePath(String storePath) {
+        this.storePath = storePath;
+    }
+
+    public Integer getMainColor() {
+        return mainColor;
+    }
+
+    public void setMainColor(Integer mainColor) {
+        this.mainColor = mainColor;
+    }
+
+
 }

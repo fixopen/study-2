@@ -7,9 +7,12 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,12 +81,33 @@ public class Volumes {
             if (!knowledgePoints.isEmpty()) {
                 List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
                 for (KnowledgePoint kp : knowledgePoints) {
+
+                    EntityManager em = JPAEntry.getEntityManager();
+                    String statsLikes = "SELECT COUNT(l) FROM Log l WHERE l.action = 'like' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
+                    Query lq = em.createQuery(statsLikes, Long.class);
+                    Long likeCount = (Long) lq.getSingleResult();
+
+                    String statsReads = "SELECT COUNT(l) FROM Log l WHERE l.action = 'read' and l.objectType = 'knowledge-point' AND l.objectId = " + kp.getId().toString();
+                    Query rq = em.createQuery(statsReads, Long.class);
+                    Long readCount = (Long) rq.getSingleResult();
+
                     Map<String, Object> kpm = new HashMap<>();
                     kpm.put("id", kp.getId());
                     kpm.put("volumeId", kp.getVolumeId());
-                    kpm.put("name", kp.getName());
-                    kpm.put("likeCount", Logs.getStatsCount("knowledge-point", kp.getId(), "like"));
-                    kpm.put("readCount", Logs.getStatsCount("knowledge-point", kp.getId(), "read"));
+                    kpm.put("name", kp.getTitle());
+                    kpm.put("likeCount", likeCount);
+                    kpm.put("readCount", readCount);
+                    /*String type = "normal";
+                    String statsType = "SELECT count(*), type FROM knowledge_point_content_maps WHERE knowledge_point_id = " + kp.getId().toString() +"GROUP BY type;
+                    Query rq = em.createQuery(statsType);
+                    String readCount = rq.getSingleResult();*/
+
+
+                    //SELECT count(*), type FROM knowledge_point_content_maps WHERE knowledge_point_id = kp.getId() GROUP BY type
+                    //problem 3
+                    //text 5
+                    /*type = "pk";
+                    kpm.put("type", type);*/
                     kpsm.add(kpm);
                 }
                 //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id
@@ -103,9 +127,9 @@ public class Volumes {
             result = Response.status(404).build();
             Volume existvolume = JPAEntry.getObject(Volume.class, "id", id);
             if (existvolume != null) {
-                String title = volume.getName();
+                String title = volume.getTitle();
                 if (title != null) {
-                    existvolume.setName(title);
+                    existvolume.setTitle(title);
                 }
                 int grade = volume.getGrade();
                 if (grade != 0) {

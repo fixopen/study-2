@@ -153,9 +153,9 @@ public class Schedulers {
                     existScheduler.setTeacherDescription(teacherDescription);
                 }
 
-                String title = scheduler.getName();
+                String title = scheduler.getTitle();
                 if (title != null) {
-                    existScheduler.setName(title);
+                    existScheduler.setTitle(title);
                 }
 
                 int week = scheduler.getWeek();

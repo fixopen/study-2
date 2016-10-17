@@ -12,9 +12,13 @@ import java.util.Date;
 @Entity
 @Table(name = "comments")
 public class Comment {
+
     @Id
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "client_id")
+    private String clientId;
 
     @Column(name = "user_id")
     private Long userId;
@@ -40,6 +44,14 @@ public class Comment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public Long getUserId() {
@@ -89,4 +101,6 @@ public class Comment {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+
 }

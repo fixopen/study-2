@@ -1,7 +1,6 @@
 package com.baremind;
 
 
-import com.baremind.data.Image;
 import com.baremind.data.ImageText;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -19,10 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by User on 2016/9/20.
@@ -50,20 +46,16 @@ public class ImageTexts {
                     FileOutputStream w = new FileOutputStream(file);
                     CharacterEncodingFilter.saveFile(w, inputStream);
 
-                    Image image = new Image();
-                    image.setId(IdGenerator.getNewId());
-                    image.setExt(postfix);
-                    image.setMimeType(contentType);
-                    image.setName(fileName);
-                    image.setSize(p.getSize());
-                    String virtualPath = Properties.getPropertyValue("testvirtualpath") + fileName;
-                    image.setStorePath(virtualPath);
-
-                    ImageText imageText = new ImageText();
-                    imageText.setId(IdGenerator.getNewId());
-                    imageText.setImageId(image.getId());
                     String content = request.getParameter("content");
                     content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
+                    ImageText imageText = new ImageText();
+                    imageText.setId(IdGenerator.getNewId());
+                    imageText.setExt(postfix);
+                    imageText.setMimeType(contentType);
+                    imageText.setName(fileName);
+                    imageText.setSize(p.getSize());
+                    String virtualPath = Properties.getPropertyValue("testvirtualpath") + fileName;
+                    imageText.setStorePath(virtualPath);
                     imageText.setContent(content);
                     JPAEntry.genericPost(imageText);
 
@@ -135,9 +127,34 @@ public class ImageTexts {
             result = Response.status(404).build();
             ImageText existimage = JPAEntry.getObject(ImageText.class, "id", id);
             if (existimage != null) {
-                Long size = imageText.getImageId();
+                String ext = imageText.getExt();
+                if (ext != null) {
+                    existimage.setName(ext);
+                }
+
+                Integer mainColor = imageText.getMainColor();
+                if (mainColor != null) {
+                    existimage.getMainColor();
+                }
+
+                String mimeType = imageText.getMimeType();
+                if (mimeType != null) {
+                    existimage.setMimeType(mimeType);
+                }
+
+                Long size = imageText.getSize();
                 if (size != null) {
-                    existimage.setImageId(size);
+                    existimage.setSize(size);
+                }
+
+                String storePath = imageText.getStorePath();
+                if (storePath != null) {
+                    existimage.setStorePath(storePath);
+                }
+
+                String name = imageText.getName();
+                if (name != null) {
+                    existimage.setName(name);
                 }
 
                 String content = imageText.getContent();

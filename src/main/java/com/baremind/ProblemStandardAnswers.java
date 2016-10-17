@@ -73,14 +73,14 @@ public class ProblemStandardAnswers {
             filterObject.put("id", id);
             ProblemStandardAnswer existmedia = JPAEntry.getObject(ProblemStandardAnswer.class, "id", id);
             if (existmedia != null) {
+                Long name = problemsStandardAnswer.getName();
+                if (name != 0) {
+                    existmedia.setName(name);
+                }
+
                 Long problemId = problemsStandardAnswer.getProblemId();
                 if (problemId != null) {
                     existmedia.setProblemId(problemId);
-                }
-
-                Integer name = problemsStandardAnswer.getIndex();
-                if (name != 0) {
-                    existmedia.setIndex(name);
                 }
 
                 JPAEntry.genericPut(existmedia);
