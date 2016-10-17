@@ -25,7 +25,7 @@ $(function () {
         dataType: 'json',
         async: false,
         success: function (knowledgePoints) {
-            alert(JSON.stringify(knowledgePoints))
+            //alert(JSON.stringify(knowledgePoints))
             // let kp = []
             // for (let i = 0; i < knowledgePoints.length; ++i) {
             //     kp[i] = knowledgePoints[i]

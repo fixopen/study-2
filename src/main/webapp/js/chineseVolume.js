@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     $.ajax({
         type: "get",
         url: 'api/volumes?filter=' + JSON.stringify({
