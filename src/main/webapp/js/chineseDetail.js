@@ -1,3 +1,4 @@
+
 $(function () {
 
 // message---------
@@ -30,7 +31,6 @@ $(function () {
             })
         }
     }
-
     //knowledge-points
     var volumeId = g.getUrlParameter('volumeId')
     $.ajax({
@@ -47,7 +47,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    alert(JSON.stringify(data))
+                   // alert(JSON.stringify(data))
                     for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i]
                         p.options[0].title = 'A'
@@ -73,12 +73,12 @@ $(function () {
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
-                            // {type: 'pinyinText', templateId: 'content-pinyin-template'},
+                            // {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
 
-                    // pinyin--begin--
+                    // pinyin-----begin------
                     // var pinyins = []
                     // for(var i=0;i<data.contents.length;i++){
                     //     if (data.contents[i].type == 'pinyinText') {
@@ -88,7 +88,7 @@ $(function () {
                     //
                     // var ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
                     //     '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
-                    // 'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
+                    //     'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
                     //     'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
                     //
                     // var isP = function(c) {
@@ -111,11 +111,11 @@ $(function () {
                     //         var c = pinyinItem.content[chineseIndex]
                     //         ++chineseIndex
                     //         if (isP(c)) {
-                    //             e = c
+                    //              e = c
                     //             c = pinyinItem.content[chineseIndex]
                     //             ++chineseIndex
                     //         }
-                    //         //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
+                    //
                     //         var g = {}
                     //         g.bind = function (element, data) {
                     //             element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
@@ -126,10 +126,21 @@ $(function () {
                     //             });
                     //             return element
                     //         };
+                    //
+                    //         //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
                     //         var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
                     //         var content=document.getElementById('content')
                     //         g.bind(e, {"pinyin": pinyinValue, "content":c})
                     //         content.appendChild(e)
+                    //
+                    //         // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //         // var content=document.getElementById('pycontent')
+                    //         // g.bind(d, {"pinyin": pinyinValue, "content":c})
+                    //         // content.appendChild(d)
+                    //         //
+                    //         // var e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                    //         // g.bind(e, {"content":c})
+                    //         // content.appendChild(e)
                     //     }
                     //   //  var pinyin=data.contents[i].pinyin.split(" ");
                     //     //alert(pinyin);
@@ -137,7 +148,8 @@ $(function () {
                     //     //alert(content);
                     //
                     // }
-                    //pinyin--end--
+                    //pinyin-----end-----
+
 
 
                     proc({
@@ -313,13 +325,13 @@ $(function () {
                         }
                     })
 
-                    //comments-likes
+
                     proc({
                         templateId: 'comment-template',
                         data: data.comments,
                         containerId: 'comments'
                     })
-
+                    //comments-likes
                     $('.ul01_imgzan_').on('click', function (e) {
                         var id = e.target.parentNode.dataset.id
                         $.ajax({
@@ -377,3 +389,4 @@ $(function () {
         }
     })
 })
+

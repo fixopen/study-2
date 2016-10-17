@@ -109,8 +109,8 @@
 </template>
 <template id="video-template">
     <div>
-        <a href="${video}"><img class="muld_images" src="${coverHref}" alt="${coverDescription}"></a>
-        <!--<video></video>-->
+        <a href="${storePath}"><img class="muld_images" src="${cover}" alt=""></a>
+        <!--${cover}--><!--${coverDescription}-->
     </div>
 </template>
 <template id="strongest-brain-option-template">
@@ -118,21 +118,24 @@
     <li class="mld_daanLi">
         <span class="daan_quan">${title}</span>
         <input type="radio" id="daan_s3A" class="daana" name="daan1">
+        <img class="ceshi_ti1" src="${optionImagePath}" alt="">
         <label for="daan_s3A">${name}</label>
     </li>
 </template>
 <template id="strongest-brain-template">
     <li class="mld_Ulli">
         <div>${title}</div>
-        <img class="ceshi_ti1" src="${img}" alt="">
+        <img class="ceshi_ti1" src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
-        <div data-ext-point="explain"></div>
+        <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
+        <!--<div data-ext-point="explain"></div>-->
     </li>
     <!--</ul>-->
 </template>
 <template id="pk-template">
     <li class="mld_Ulli">
         <div>${title}</div>
+        <img class="ceshi_ti1" src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
     </li>
 </template>
@@ -152,6 +155,7 @@
         </ul>
     </div>
 </template>
+
 <template id="comment-template">
     <ul class="muluBn_center">
         <li class="liuyan_li lion_01">

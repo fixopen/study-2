@@ -59,27 +59,31 @@
     <button id="submit">submit</button>
     <button id="save">save</button>
 </div>
+<div id="problems" style="hidden">
+
+    <button id="appendProblemText" data-type="problemText">append problemText</button>
+    <button id="appendProblemImage" data-type="problemImage">append problemImage</button>
+    <button id="appendProblemImageText" data-type="problemImageText">append problemImageText</button>
+
+</div>
 <template id="problem-template">
     <div data-type="problem">
         问题<textarea data-type="title"></textarea>
         图片<input type="file" data-type="image"/>
-            <!--<input type="text" data-type="order"/>-->
+        <input type="text" data-type="index"/>
+        <br/>
         标准答案<input type="text" data-type="standardAnswers"/>
-        <!--<button id="appendProblemText" data-type="problemText">append problemText</button>
-        <button id="appendProblemImage" data-type="problemImage">append problemImage</button>
-        <button id="appendProblemImageText" data-type="problemImageText">append problemImageText</button>-->
-        <ol>
-            <li>
-                <input type="text" data-type="option" data-identity="1"/>
-                <!--<input/>-->
-            </li>
-            <li><input type="text" data-type="option" data-identity="2"/></li>
-            <li><input type="text" data-type="option" data-identity="3"/></li>
-            <li><input type="text" data-type="option" data-identity="4"/></li>
-        </ol>
+        
         视频图片<input type="file" data-type="videoImg"/>
         视频路径(手动输入)<input type="text" data-type="video"/>
+        <button data-type="append">append problem option</button>
     </div>
+</template>
+<template id="problem-option-template">
+        <li data-type="option">
+            <input type="file" data-type="imageo"/>
+            <input type="text" data-type="content"/>
+        </li>
 </template>
 <template id="imageText-template">
     <div data-type="imageText">
@@ -107,6 +111,7 @@
 </template>
 <script type="text/javascript">
     document.getElementById("buttons").style.visibility = "hidden";//隐藏
+    document.getElementById("problems").style.visibility = "hidden";//隐藏
     let subjects = []
     let currentSubjectIndex = 0
     let currentSubject
@@ -118,6 +123,7 @@
     let currentKnowledgePoint
 
     $(function () {
+		var problemIdDD
         $.ajax({
             type: "get",
             url: "/api/subjects",
@@ -567,6 +573,7 @@
                     knowledgePointSelect.selectedIndex = knowledgePointSelect.options.length - 1
                     alert("添加成功")
                     document.getElementById("buttons").style.visibility = "visible" //显示
+					problemIdDD == ""
                 },
                 error: function (knowledgePoint) {
                     alert("添加失败")
@@ -678,6 +685,12 @@
         appendProblem.addEventListener('click', function (e) {
             let pt = document.getElementById('problem-template')
             let p = pt.content.children[0].cloneNode(true)
+            let append = p.querySelector('[data-type="append"]')
+            append.addEventListener('click', function(e) {
+                let pot = document.getElementById('problem-option-template')
+                let po = pot.content.children[0].cloneNode(true)
+                contents.appendChild(po)
+            }, false)
             contents.appendChild(p)
             currentSelectedElement = p
         }, false)
@@ -714,7 +727,7 @@
             currentSelectedElement = p
         }, false)
 
-        let submitFile = function(typeName, postProces) {
+        let submitFile = function(typeName, postProcess) {
           var formData = new FormData();
           formData.append("file", currentSelectedElement.querySelector('[data-type="' + typeName + '"]').files[0]);
           var request = new XMLHttpRequest();
@@ -729,16 +742,17 @@
           request.open("POST", "/api/medias");
           request.send(formData);
         }
-
-        let problemProcess = function(returndata) {
-          videoImg = returndata.id
+		
+        let problemProcess = function(returndata, imagePath) {
           var data = {
               videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
               title: currentSelectedElement.querySelector('[data-type="title"]').value,
               knowledgePointId: parseInt(currentKnowledgePoint),
               volumeId: parseInt(currentVolume),
               subjectId: parseInt(currentSubject),
-              videoImage: videoImg
+              videoImage: returndata ? returndata.id : null,
+			  storePath: imagePath,
+              index: currentSelectedElement.querySelector('[data-type="index"]').value
           }
           $.ajax({
               type: "post",
@@ -747,6 +761,7 @@
               dataType: "json",
               contentType: "application/json; charset=utf-8",
               success: function (problem) {
+				  problemIdDD = problem.id
                   currentSelectedElement.dataset.id = problem.id
                   let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
                   let sas = standardAnswer.split(',')
@@ -762,32 +777,38 @@
                           dataType: "json",
                           async: false,
                           contentType: "application/json; charset=utf-8"
+						  
                       })
                   }
-
-                  let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
-                  let optValues = [options[0].value, options[1].value, options[2].value, options[3].value]
-
-                  for (let i = 0; i < optValues.length; ++i) {
-                      let option = {
-                          problemId: problem.id,
-                          name: optValues[i]
-                      }
-                      $.ajax({
-                          type: "post",
-                          url: "/api/problem-options",
-                          data: JSON.stringify(option),
-                          dataType: "json",
-                          async: false,
-                          contentType: "application/json; charset=utf-8",
-                      })
-                  }
-                 /* alert("添加成功")*/
               }
           })
         }
+		let optionProcess = function(problemIdDD,iId, postProcess){
+            let option = {}
+			let name = currentSelectedElement.querySelector('[data-type="content"]').value
+            option.problemId=problemIdDD,
+            option.name = name,
+            option.imageId = iId
+             $.ajax({
+                      type: "post",
+                      url: "/api/problem-options",
+                      data: JSON.stringify(option),
+                      dataType: "json",
+                      async: false,
+                      contentType: "application/json; charset=utf-8",
+                      success: function(data){
+                          alert("添加成功")
+                        currentSelectedElement.dataset.id = returndata.id
+                        alert(JSON.stringify(option))
 
-        let imageTextProcess = function(typeName, typevalue, postProces){
+                      },
+                      error: function(data){
+                        alert(JSON.stringify(option))
+                        alert("添加失败")
+                      }
+                  })
+		    }
+        let imageTextProcess = function(typeName, typevalue, postProcess){
             var formData = new FormData();
             formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
             formData.append("content", currentSelectedElement.querySelector('[data-type="content"]').value);
@@ -861,33 +882,70 @@
                     request.send(formData);
                     alert("添加成功")
                     break;
+				case 'option':
+					if(problemIdDD == undefined || problemIdDD == ""){
+						alert("请先提交问题后，才能提交选项！")
+					}else{
+					    let iId = null;
+                        if(currentSelectedElement.querySelector('[data-type="imageo"]').files.length == 0){
+                            optionProcess(problemIdDD,iId)
+                        }else{
+                            var formData = new FormData();
+                            formData.append("file", currentSelectedElement.querySelector('[data-type="imageo"]').files[0]);
+                            var request = new XMLHttpRequest();
+                            request.onreadystatechange = function () {
+                                if (request.readyState === 4) {
+                                    if (request.status == 200) {
+                                        returndata = JSON.parse(request.responseText)
+                                        /*postProcess(returndata)*/
+                                        iId = returndata.id
+                                        optionProcess(problemIdDD,iId)
+                                    }
+                                }
+                            }
+                            request.open("POST", "/api/medias");
+                            request.send(formData);
+                        }
+					}
+					break;
+					
                 case'problem':
-                    if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
-                        alert("问题不提供修改功能")
-                    } else {
-                        if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
-                            if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
-                                submitFile('videoImg', function(returndata) {
-                                    problemProcess(returndata)
-                                })
-                            } else {
-                                submitFile('image', function(returndata) {
-                                    submitFile('videoImg', function(returndata) {
-                                        problemProcess(returndata)
+                        if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                            alert("问题不提供修改功能")
+                        } else {
+                            if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
+                                if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
+                                    if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length == 0) {
+                                        problemProcess()
+                                    } else {
+                                        submitFile('videoImg', function(returndata) {
+                                            problemProcess(returndata)
+                                        })
+                                    }
+                                } else {
+                                    submitFile('image', function(returndata) {
+                                        if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length == 0) {
+                                            problemProcess()
+                                        } else {
+                                            submitFile('videoImg', function(rd) {
+                                                problemProcess(rd, returndata.storePath)
+                                            })
+                                        }
                                     })
-                                })
+                                }
                             }
                         }
-                    }
                     break
                 case 'imageText':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         delete currentSelectedElement.dataset.id
                         imageTextProcess("image","content",function(returndata){
+							currentSelectedElement.dataset.id = returndata.id
                             alert("修改成功")
                         })
                     } else {
                         imageTextProcess("image","content",function(returndata){
+							currentSelectedElement.dataset.id = returndata.id
                             alert("添加成功")
                         })
                     }
@@ -937,6 +995,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (quote) {
+								currentSelectedElement.dataset.id = quote.id
                                 alert("修改成功")
                             },
                             error: function (quote) {
@@ -981,6 +1040,7 @@
                             contentType: "application/json; charset=utf-8",
                             success: function (pinyin) {
                                 alert("修改成功")
+								currentSelectedElement.dataset.id = pinyin.id
                             },
                             error: function (pinyin) {
                                 alert("修改失败")
@@ -1015,7 +1075,6 @@
             currentSelectedElement.addClass('saved')
             //currentSelectedElement.querySelector('[data-type="text"]').setAttribute('readonly', 'readonly')
         }, false)
-
         let save = document.getElementById('save')
         save.addEventListener('click', function (e) {
             let children = contents.children
@@ -1039,6 +1098,16 @@
                     contentType: "application/json; charset=utf-8",
                     async: false,
                     success: function (kpcm) {
+
+                        /*let kpcm = JSON.stringify(kpcm);*/
+                        if(kpcm.type == "option"){
+                            let id = kpcm.id
+                            $.ajax({
+                                type:"delete",
+                                url:"/api/knowledge-point-content-maps/" + id,
+                            })
+                        }
+
                     }
                 })
             }
