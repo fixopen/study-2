@@ -37,6 +37,17 @@ public class Problem {
     @Column(name = "video_image")
     private Long videoImage;
 
+    @Column(name = "index")
+    private Long index;
+
+    public Long getIndex() {
+        return index;
+    }
+
+    public void setIndex(Long index) {
+        this.index = index;
+    }
+
     public Long getVideoImage() {
         return videoImage;
     }
