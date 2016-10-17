@@ -4,7 +4,7 @@
         data: {title: g.getUrlParameter('volume')},
         containerId: 'title'
     })
-    let volumeId = parseInt(g.getUrlParameter('volumeId'));
+    var volumeId = parseInt(g.getUrlParameter('volumeId'));
     $.ajax({
         type: "get",
         // url: 'api/knowledge-points?filter=' + JSON.stringify({
@@ -16,7 +16,7 @@
         dataType: 'json',
         async: false,
         success: function (knowledgePoints) {
-            alert(JSON.stringify(knowledgePoints))
+           // alert(JSON.stringify(knowledgePoints))
             proc({
                 data: knowledgePoints,
                 containerId: 'knowledge-point',

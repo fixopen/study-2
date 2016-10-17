@@ -1,15 +1,15 @@
 $(function () {
 
 // message---------
-    let createComment = document.getElementById('createComment');
+    var createComment = document.getElementById('createComment');
     createComment.addEventListener('click', writeMessage, false);
     function writeMessage() {
         $('#commentWriter').toggle();
-        let btn = document.getElementById('btn');
+        var btn = document.getElementById('btn');
         btn.addEventListener('click', submit, false);
         function submit(e) {
-            let textarea = document.getElementById('textarea');
-            let value = textarea.value;
+            var textarea = document.getElementById('textarea');
+            var value = textarea.value;
             textarea.value = '';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
@@ -30,8 +30,8 @@ $(function () {
             })
         }
     }
-
-    let volumeId = g.getUrlParameter('volumeId')
+    //knowledge-points
+    var volumeId = g.getUrlParameter('volumeId')
     $.ajax({
         type: 'get',
         url: 'api/knowledge-points?filter=' + JSON.stringify({
@@ -39,16 +39,16 @@ $(function () {
         }),
         dataType: 'json',
         success: function (knowledgePointList) {
-            let id = g.getUrlParameter('id')
+            var id = g.getUrlParameter('id')
             $.ajax({
                 type: "get",
                 url: 'api/knowledge-points/' + id + '/contents',
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    alert(JSON.stringify(data))
-                    for (let i = 0; i < data.problems.length; ++i) {
-                        let p = data.problems[i]
+                   // alert(JSON.stringify(data))
+                    for (var i = 0; i < data.problems.length; ++i) {
+                        var p = data.problems[i]
                         p.options[0].title = 'A'
                         p.options[1].title = 'B'
                         p.options[2].title = 'C'
@@ -78,21 +78,21 @@ $(function () {
                     })
 
                     // pinyin-----begin------
-                    // let pinyins = []
-                    // for(let i=0;i<data.contents.length;i++){
+                    // var pinyins = []
+                    // for(var i=0;i<data.contents.length;i++){
                     //     if (data.contents[i].type == 'pinyinText') {
                     //         pinyins.push(data.contents[i])
                     //     }
                     // }
                     //
-                    // let ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
+                    // var ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
                     //     '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
                     //     'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
                     //     'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
                     //
-                    // let isP = function(c) {
-                    //     let result = false
-                    //     for (let i = 0; i < ps.length; ++i) {
+                    // var isP = function(c) {
+                    //     var result = false
+                    //     for (var i = 0; i < ps.length; ++i) {
                     //         if (ps[i] == c) {
                     //             result = true
                     //             break
@@ -101,13 +101,13 @@ $(function () {
                     //     return result
                     // }
                     //
-                    // for (let i = 0; i < pinyins.length; ++i) {
-                    //     let pinyinItem = pinyins[i]
-                    //     let pinyin = pinyinItem.pinyin.split(' ')
-                    //     let chineseIndex = 0;
-                    //     for (let j = 0; j < pinyin.length; ++j) {
-                    //         let pinyinValue = pinyin[j]
-                    //         let c = pinyinItem.content[chineseIndex]
+                    // for (var i = 0; i < pinyins.length; ++i) {
+                    //     var pinyinItem = pinyins[i]
+                    //     var pinyin = pinyinItem.pinyin.split(' ')
+                    //     var chineseIndex = 0;
+                    //     for (var j = 0; j < pinyin.length; ++j) {
+                    //         var pinyinValue = pinyin[j]
+                    //         var c = pinyinItem.content[chineseIndex]
                     //         ++chineseIndex
                     //         if (isP(c)) {
                     //              e = c
@@ -115,35 +115,35 @@ $(function () {
                     //             ++chineseIndex
                     //         }
                     //
-                    //         let g = {}
+                    //         var g = {}
                     //         g.bind = function (element, data) {
-                    //             element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, letiable) {
-                    //                 if (!letiable) {
+                    //             element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
+                    //                 if (!variable) {
                     //                     return ""
                     //                 }
-                    //                 return data[letiable];
+                    //                 return data[variable];
                     //             });
                     //             return element
                     //         };
                     //
                     //         //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
-                    //         let e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                    //         let content=document.getElementById('content')
+                    //         var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //         var content=document.getElementById('content')
                     //         g.bind(e, {"pinyin": pinyinValue, "content":c})
                     //         content.appendChild(e)
                     //
-                    //         // let d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                    //         // let content=document.getElementById('pycontent')
+                    //         // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //         // var content=document.getElementById('pycontent')
                     //         // g.bind(d, {"pinyin": pinyinValue, "content":c})
                     //         // content.appendChild(d)
                     //         //
-                    //         // let e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                    //         // var e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
                     //         // g.bind(e, {"content":c})
                     //         // content.appendChild(e)
                     //     }
-                    //   //  let pinyin=data.contents[i].pinyin.split(" ");
+                    //   //  var pinyin=data.contents[i].pinyin.split(" ");
                     //     //alert(pinyin);
-                    //     //let content=data.contents[i].content.split('');
+                    //     //var content=data.contents[i].content.split('');
                     //     //alert(content);
                     //
                     // }
@@ -169,7 +169,7 @@ $(function () {
                     })
 
                     //多选单选
-                    for(let i=0;i<data.problems.length;i++){
+                    for(var i=0;i<data.problems.length;i++){
                         if (data.problems[i].type == '多选题') {
                             $('.addimg span').eq(i).removeClass('mld_liImg').addClass('mld_liImg_');
                         }else if(data.problems[i].type == '单选题'){
@@ -179,9 +179,9 @@ $(function () {
 
 
                     //answers
-                    let findProblem = function (problemId) {
-                        let problem = null
-                        for (let i = 0; i < data.problems.length; ++i) {
+                    var findProblem = function (problemId) {
+                        var problem = null
+                        for (var i = 0; i < data.problems.length; ++i) {
                             if (data.problems[i].id == problemId) {
                                 problem = data.problems[i]
                                 break
@@ -190,8 +190,8 @@ $(function () {
                         return problem
                     }
 
-                    let getIndex = function (content) {
-                        let index = -1
+                    var getIndex = function (content) {
+                        var index = -1
                         switch (content) {
                             case 'A':
                                 index = 0
@@ -211,9 +211,9 @@ $(function () {
                         return index
                     }
 
-                    let compareAnswer = function (index, standardAnswers) {
-                        let finded = false
-                        for (let j = 0; j < standardAnswers.length; ++j) {
+                    var compareAnswer = function (index, standardAnswers) {
+                        var finded = false
+                        for (var j = 0; j < standardAnswers.length; ++j) {
                             if (index == standardAnswers[j].name) {
                                 finded = true
                                 break
@@ -223,26 +223,26 @@ $(function () {
                     }
 
 
-                    let problemContainer = document.getElementById('problem')
+                    var problemContainer = document.getElementById('problem')
                     problemContainer.addEventListener('click', function (e) {
                         //e.currentTarget == problemContainer
-                        let clickedElement = e.target
-                        let trueImage = document.createElement('img')
+                        var clickedElement = e.target
+                        var trueImage = document.createElement('img')
                         trueImage.setAttribute('class', 'daan_error')
                         trueImage.setAttribute('src', 'img/true.png')
                         trueImage.setAttribute('alt', '')
 
-                        let falseImage = document.createElement('img')
+                        var falseImage = document.createElement('img')
                         falseImage.setAttribute('class', 'daan_error')
                         falseImage.setAttribute('src', 'img/error.png')
                         falseImage.setAttribute('alt', '')
 
                         if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            let problemId = clickedElement.parentNode.parentNode.dataset.id
-                            let problem = findProblem(problemId)
+                            var problemId = clickedElement.parentNode.parentNode.dataset.id
+                            var problem = findProblem(problemId)
                             if (problem) {
-                                let index = getIndex(clickedElement.textContent)
-                                let r = compareAnswer(index, problem.standardAnswers)
+                                var index = getIndex(clickedElement.textContent)
+                                var r = compareAnswer(index, problem.standardAnswers)
                                 if (r) {
                                     clickedElement.parentNode.addClass('daanLi_true')
                                     clickedElement.innerHTML = ''
@@ -257,12 +257,12 @@ $(function () {
                     }, false)
 
                     //上一课下一课
-                    let baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
-                    for (let i = 0; i < knowledgePointList.length; ++i) {
-                        let id = g.getUrlParameter('id')
+                    var baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
+                    for (var i = 0; i < knowledgePointList.length; ++i) {
+                        var id = g.getUrlParameter('id')
                         if (knowledgePointList[i].id == id) {
-                            let prevIndex = i
-                            let nextIndex = i
+                            var prevIndex = i
+                            var nextIndex = i
                             if (i > 0) {
                                 prevIndex = i - 1
                             }
@@ -282,14 +282,14 @@ $(function () {
                     })
 
                    // likes
-                    let id = g.getUrlParameter("id")
+                    var id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
                         url: 'api/knowledge-points/' + id + '/is-self-like',
                         dataType: "json",
                         success: function (like) {
-                            let liked = like.like
-                            let icon = document.getElementById('icon');
+                            var liked = like.like
+                            var icon = document.getElementById('icon');
                             icon.addEventListener('click', function (e) {
                                 if (liked) {
                                     $.ajax({
@@ -327,22 +327,23 @@ $(function () {
                         }
                     })
 
+
                     proc({
                         templateId: 'comment-template',
                         data: data.comments,
                         containerId: 'comments'
                     })
-
+                    //comments-likes
                     $('.ul01_imgzan_').on('click', function (e) {
-                        let id = e.target.parentNode.dataset.id
+                        var id = e.target.parentNode.dataset.id
                         $.ajax({
                             type: "get",
                             url: 'api/comments/' + id + '/is-self-like',
                             dataType: "json",
                             success: function (like) {
-                               let  likeds = like.like;
+                               var  likeds = like.like;
                                if(likeds){
-                                    let id = e.target.parentNode.dataset.id
+                                    var id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
                                         url: '/api/comments/' + id + '/unlike',
@@ -350,7 +351,7 @@ $(function () {
                                         dataType: "json",
                                         contentType: "application/json; charset=utf-8",
                                         success: function (unlike) {
-                                            for (let i = 0; i < data.comments.length; ++i) {
+                                            for (var i = 0; i < data.comments.length; ++i) {
                                                 if (data.comments[i].id == id) {
                                                     e.target.setAttribute('src', 'img/zan.png');
                                                     --data.comments[i].likeCount;
@@ -362,7 +363,7 @@ $(function () {
                                         }
                                     })
                                 }else{
-                                    let id = e.target.parentNode.dataset.id
+                                    var id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
                                         url: '/api/comments/' + id + '/like',
@@ -370,7 +371,7 @@ $(function () {
                                         dataType: "json",
                                         contentType: "application/json; charset=utf-8",
                                         success: function (like) {
-                                            for (let i = 0; i < data.comments.length; ++i) {
+                                            for (var i = 0; i < data.comments.length; ++i) {
                                                 if (data.comments[i].id == id) {
                                                     e.target.setAttribute('src', 'img/zan-over.png');
                                                     ++data.comments[i].likeCount;

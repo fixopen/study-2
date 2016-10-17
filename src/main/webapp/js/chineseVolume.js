@@ -1,9 +1,8 @@
 $(document).ready(function () {
-
     $.ajax({
         type: "get",
         url: 'api/volumes?filter=' + JSON.stringify({
-            subjectId: 1, //parseInt(subjectId),
+            subjectId: 1,
             grade: 20
         }),
         success: function (volumesL) {
