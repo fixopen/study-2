@@ -85,16 +85,15 @@ public class Volumes {
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
 
-                    if(Logs.getStatsCount("knowledge-point", kp.getId(), "like") == null){
-                        kpm.put("likeCount", 0);
-                    }else{
-                        kpm.put("likeCount", Logs.getStatsCount("knowledge-point", kp.getId(), "like"));
+                    kpm.put("likeCount", 0);
+                    Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
+                    if (likeCount != null) {
+                        kpm.put("likeCount", likeCount);
                     }
-
-                    if(Logs.getStatsCount("knowledge-point", kp.getId(), "read") == null){
-                        kpm.put("readCount", 0);
-                    }else{
-                        kpm.put("readCount", Logs.getStatsCount("knowledge-point", kp.getId(), "read"));
+                    kpm.put("readCount", 0);
+                    Long readCount = Logs.getStatsCount("knowledge-point", kp.getId(), "read");
+                    if (readCount != null) {
+                        kpm.put("readCount", readCount);
                     }
 
                     //SELECT count(m), type FROM KnowledgePointContentMap m WHERE m.KnowledgePointId = kp.getId() GROUP BY m.type

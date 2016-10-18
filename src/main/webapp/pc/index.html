@@ -51,13 +51,13 @@
 						<tr>
 							<td>手机号：</td>
 							<td>
-								<!--<input type="text" placeholder="请输入11位手机号，该手机号将成为您的账号" id="phonecode" class="mobile-input" required pattern="\d{11}">-->
-								<!--<input type="button" class="send-btn" value="发送验证码" id="phone_btn">class="get-captcha_button" class="mobile-input"-->
+								<input type="text" placeholder="请输入11位手机号，该手机号将成为您的账号" id="phonecode" class="mobile-input" required pattern="\d{11}">
+								<input type="button" class="send-btn" value="发送验证码" id="phone_btn"><!--class="get-captcha_button" class="mobile-input"-->
 								<!--<input type="captcha" id="phonecode"  required pattern="\d{11}" v-on="blur:captchaCheck" class="form-control flat" placeholder="请输入11位手机号，该手机号将成为您的账号" style="width:160px;display:inline;">
 								<button v-on="click:onSubmit"  class="send-btn" value="发送验证码" id="phone_btn" style="display:inline">获取手机验证码</button>-->
 								<!--<input type="text" placeholder="请输入11位手机号，该手机号将成为您的账号" id="phonecode" class="mobile-input" required pattern="\d{11}">-->
-								<input type="captcha" v-on="blur:captchaCheck" id="phonecode" class="mobile-input" required pattern="\d{11}" placeholder="手机验证码" style="width:245px;display:inline;">
-								<button v-on="click:onSubmit" class="send-btn" id="phone_btn" style="display:inline">获取手机验证码</button>
+								<!--<input type="captcha" v-on="blur:captchaCheck" id="phonecode" class="mobile-input" required pattern="\d{11}" placeholder="手机验证码" style="width:245px;display:inline;">
+								<button v-on="click:onSubmit" class="send-btn" id="phone_btn" style="display:inline">获取手机验证码</button>-->
 								<!--<a href="javascript:;" class="send-agin"></a><br>-->
 								<!-- 59S重新发送 -->
 								<i class="error" id="phonecodeerror"></i>
@@ -161,6 +161,7 @@
 									break;
 								case 405:
 									document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
+									window.location.href = 'D登录.html'
 									break;
 								case 401:
 									document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
@@ -226,7 +227,7 @@
 					alert("请填写手机号")
 				}else{
 					let proc = function () {
-						e.target.value = " (" + printnr + ")秒后\n重新发送"
+						e.target.value = " (" + printnr + ")秒后\n重新发送"//字太多了导致吧input挤下去了
 						--printnr
 						if (printnr <= 0) {
 							e.target.value = " 重新发送 "

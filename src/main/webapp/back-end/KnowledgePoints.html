@@ -747,7 +747,7 @@
             request.open("POST", "/api/medias");
             request.send(formData);
         }
-        let imageId = null;
+
         let problemProcess = function (returndata, imagePath) {
             var data = {
                 videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
@@ -766,6 +766,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (problem) {
+                    let imageId = null;
                     problemIdDD = problem.id
                     currentSelectedElement.dataset.id = problem.id
                     let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
@@ -803,7 +804,6 @@
                                         if (request.status == 200) {
                                             returndata = JSON.parse(request.responseText)
                                             imageId = returndata.id
-                                            alert("执行图片块")
                                             let option = {
                                                 problemId: problemIdDD,
                                                 imageId: imageId,
@@ -835,7 +835,6 @@
                                 request.send(formData);
                             }else{
                                 imageId = null;
-                                alert("执行字体块")
                                 let option = {
                                     problemId: problemIdDD,
                                     imageId: imageId,
@@ -862,6 +861,31 @@
                                 })
                             }
 
+                           /* let option = {
+                                problemId: problemIdDD,
+                                imageId: imageId,
+                                name: option1content
+                            }
+
+                            $.ajax({
+                                type: "post",
+                                url: "/api/problem-options",
+                                data: JSON.stringify(option),
+                                dataType: "json",
+                                async: false,
+                                contentType: "application/json; charset=utf-8",
+                                success: function(data){
+                                    alert("添加成功")
+                                    /!*currentSelectedElement.dataset.id = returndata.id
+                                     alert(JSON.stringify(option))*!/
+
+                                },
+                                error: function(data){
+                                    alert(JSON.stringify(data))
+                                    alert("添加失败")
+                                }
+                            })*/
+
 
                         }
 
@@ -877,7 +901,31 @@
          option.problemId=problemIdDD,
          option.name = name,
          option.imageId = iId
+         alert("执行字体块")
+         let option = {
+         problemId: problemIdDD,
+         imageId: imageId,
+         name: option1content
+         }
 
+         $.ajax({
+         type: "post",
+         url: "/api/problem-options",
+         data: JSON.stringify(option),
+         dataType: "json",
+         async: false,
+         contentType: "application/json; charset=utf-8",
+         success: function(data){
+         alert("添加成功")
+         /*currentSelectedElement.dataset.id = returndata.id
+         alert(JSON.stringify(option))
+
+            },
+            error: function(data){
+        alert(JSON.stringify(data))
+        alert("添加失败")
+    }
+    })
          }*/
         let imageTextProcess = function (typeName, typevalue, postProcess) {
             var formData = new FormData();
@@ -995,11 +1043,15 @@
                                 }
                             } else {
                                 submitFile('image', function (returndata) {
+                                    let imagePath = returndata.storePath
                                     if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length == 0) {
-                                        problemProcess()
+                                         returndata = null;
+                                        problemProcess(returndata,imagePath)
+
                                     } else {
-                                        submitFile('videoImg', function (rd) {
-                                            problemProcess(rd, returndata.storePath)
+
+                                        submitFile('videoImg', function (returndata) {
+                                            problemProcess(returndata,imagePath)
                                         })
                                     }
                                 })
