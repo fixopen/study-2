@@ -467,7 +467,7 @@
     let appendQuote = document.getElementById('appendQuote')
     appendQuote.addEventListener('click', function (e) {
         let qt = document.getElementById('quote-template')
-        let q = pt.content.children[0].cloneNode(true)
+        let q = qt.content.children[0].cloneNode(true)
         state.contents.appendChild(q)
         state.currentSelectedElement = q
     }, false)
@@ -561,8 +561,8 @@
                     if (image.files.length > 0) {
                         if (!image.dataset.id) {
                             uploadFile(image.files[0], function(r) {
-                                image.dataset.id = r.data.id
-                                submitOption(result.data.id, content, r.data.id)
+                                image.dataset.id = r.id
+                                submitOption(result.data.id, content, r.id)
                             })
                         } else {
                             submitOption(result.data.id, content)
@@ -586,31 +586,26 @@
                 break
             case 'image':
                 uploadFile(state.currentSelectedElement.files[0], function(result) {
-                    if (result.meta.code < 400) {
-                        state.currentSelectedElement.dataset.id = result.data.id
-                        alert("添加成功")
-                    } else {
-                        alert("添加失败")
-                    }
+                    state.currentSelectedElement.dataset.id = result.id
                 })
                 break
             case 'problem':
                 if (!state.currentSelectedElement.dataset.id) {
                     if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
                         if (state.currentSelectedElement.querySelector('[data-type="image"]').files.length > 0) {
-                            uploadFile(currentSelectedElement.querySelector('[data-type="image"]').files[0], function (imageResult) {
-                                if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length > 0) {
-                                    uploadFile(currentSelectedElement.querySelector('[data-type="videoImg"]').files[0], function (videoResult) {
-                                        submitProblem(imageResult.data.id, videoResult.data.id)
+                            uploadFile(state.currentSelectedElement.querySelector('[data-type="image"]').files[0], function (imageResult) {
+                                if (state.currentSelectedElement.querySelector('[data-type="videoImg"]').files.length > 0) {
+                                    uploadFile(state.currentSelectedElement.querySelector('[data-type="videoImg"]').files[0], function (videoResult) {
+                                        submitProblem(imageResult.id, videoResult.id)
                                     })
                                 } else {
-                                    submitProblem(imageResult.data.id)
+                                    submitProblem(imageResult.id)
                                 }
                             })
                         }
-                        if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length > 0) {
-                            uploadFile(currentSelectedElement.querySelector('[data-type="videoImg"]').files[0], function (result) {
-                                submitProblem(null, result.data.id)
+                        if (state.currentSelectedElement.querySelector('[data-type="videoImg"]').files.length > 0) {
+                            uploadFile(state.currentSelectedElement.querySelector('[data-type="videoImg"]').files[0], function (result) {
+                                submitProblem(null, result.id)
                             })
                         } else {
                             submitProblem()
@@ -625,15 +620,11 @@
                 if (!imageControl.dataset.id) {
                     if (imageControl.files.length > 0) {
                         uploadFile(imageControl.files[0], function(result) {
-                            if (result.meta.code < 400) {
-                                imageControl.dataset.id = result.data.id
-                                genericProc('image-texts', {
-                                    imageId: imageControl.dataset.id,
-                                    content: state.currentSelectedElement.value
-                                })
-                            } else {
-                                alert('image upload error')
-                            }
+                            imageControl.dataset.id = result.id
+                            genericProc('image-texts', {
+                                imageId: imageControl.dataset.id,
+                                content: state.currentSelectedElement.value
+                            })
                         })
                     } else {
                         alert('must choose image')
@@ -645,15 +636,11 @@
                 if (!imageControl.dataset.id) {
                     if (imageControl.files.length > 0) {
                         uploadFile(imageControl.files[0], function(result) {
-                            if (result.meta.code < 400) {
-                                imageControl.dataset.id = result.data.id
-                                genericProc('videos', {
-                                    imageId: imageControl.dataset.id,
-                                    storePath: state.currentSelectedElement.value
-                                })
-                            } else {
-                                alert('image upload error')
-                            }
+                            imageControl.dataset.id = result.id
+                            genericProc('videos', {
+                                imageId: imageControl.dataset.id,
+                                storePath: state.currentSelectedElement.value
+                            })
                         })
                     } else {
                         alert('must choose image')
