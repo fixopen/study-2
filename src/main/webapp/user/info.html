@@ -2,9 +2,97 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>UserInfo</title>
+    <title>我的资料</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="info.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="/zepto/zepto.min.js"></script>
+    <script type="text/javascript" src="/zepto/touch.js"></script>
+    <script type="text/javascript" src="/zepto/selector.js"></script>
+
 </head>
 <body>
+<div class="wrap">
+    <div class="mine_zilo" id="user"></div>
+</div>
+<template id="user-template">
+    <ul class="mine_zUl">
+        <li class="mine_zuli">
+            <span class="mine_leftsp">真实姓名</span>
+            <input class="mine_rightip" type="text" placeholder="请输入真实姓名" value="${name}">
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">手机号</span>
+            <input class="mine_rightip" type="tel" value="${telephone}">
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">性别</span>
+            <input class="mine_rightip" type="text" value="${sexName}">
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">出生年月</span>
+            <input class="mine_rightip" type="date" value="${birthday}">
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">收货地址</span>
+            <input class="mine_rightip" type="text" placeholder="请输入收货地址" value="${location}">
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">就读学校</span>
+            <input class="mine_rightip" type="text" value="${school}">
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">所在班级</span>
+            <input class="mine_rightip" type="text" value="${grade} ${classname}">
+        </li>
+    </ul>
+</template>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script type="text/javascript">
+    var userId = g.getUrlParameter('userid')
 
+    var getSexName = function(v) {
+        var result = '未知'
+        switch (v) {
+            case 1:
+                result = '男'
+                break
+            case 2:
+                result = '女'
+                break
+            case 0:
+                break
+            default:
+                break
+        }
+    }
+
+    $.ajax({
+        type: 'get',
+        url: '/api/users/' + userId,
+        dataType: 'json',
+        success: function (user) {
+            user.sexName = getSexName(user.sex)
+            proc({
+                containerId: 'user',
+                data: user,
+                templateId: 'user-template'
+            })
+        },
+        error: function (r) {
+            alert('获取用户信息失败，请刷新以重试')
+        }
+    })
+</script>
 </body>
 </html>

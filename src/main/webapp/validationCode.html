@@ -74,7 +74,7 @@
         }
 
         var userId = getUrlParameter('userid');
-        var sessionId = getUrlParameter('sessionid')
+        //var sessionId = getUrlParameter('sessionid')
         //var openId = getUrlParameter('openid');
 
         var timeoutId;
@@ -149,6 +149,7 @@
                 alert('手机号不能为空')
             }
         }
+        var o = 0
 
         var o = 0
 
@@ -256,6 +257,13 @@
 </div>
 
 <script>
+//    var code = getUrlParameter('code')
+//    ajax('GET', 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + code + '&grant_type=authorization_code', [], null, function(result) {
+//        ajax('GET', 'https://api.weixin.qq.com/sns/userinfo?access_token=' + result.access_token + '&openid=' + result.openid + '&lang=zh_CN', [], null, function(r) {
+//            //
+//        })
+//    })
+
     var activeCodeButton = document.getElementById('activeCode');
     activeCodeButton.addEventListener('click', activeCode, false);
 
@@ -274,7 +282,10 @@
     var phoneNumber = document.getElementById('phoneNumber')
     phoneNumber.addEventListener('change', enableActive, false)
 
-
+    var cardNo = document.getElementById('cardNo')
+    cardNo.addEventListener('change', function(e) {
+        o = 0
+    }, false)
     //$('#activeCode').tap(activeCode)
 
     //$('#save').tap(save)

@@ -26,10 +26,17 @@
             <!--<span class="biti_span">横式问题找怪物</span>-->
         </div>
         <div class="mulu_div" id="whole_width" style="margin-bottom: 0.3125rem;">
-            <ul class="cont_sul" id="knowledge-point"></ul>
+            <ul class="cont_sul" id="knowledge">
+            </ul>
         </div>
     </div>
 </div>
+    <!--<div class="wrap">-->
+        <!--<div class="rain-main">-->
+            <!--<div class="biaoti_div" id="title"></div>-->
+            <!--<div class="mulu_div"  id="knowledge"></div>-->
+        <!--</div>-->
+    <!--</div>-->
 <!--templates-->
 <template id="title-template">
     <span class="biti_span">${title}</span>
@@ -38,7 +45,7 @@
     <li class="neir_li">
         <div class="neir_lidiv">
             <!--<a class="neir_pzi" href="#">${title}</a>-->
-            <a class="neir_pzi" href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
+            <a class="neir_pzi"  href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
         </div>
         <div class="neir_ridiv">
             <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
@@ -47,25 +54,82 @@
         <img src="img/fenjie1.png" alt="">
     </li>
 </template>
+<!--<template id="knowledge-point-template">-->
+    <!--<div>-->
+        <!--<ul class="cont_sul" >-->
+            <!--<li class="neir_li">-->
+                <!--<div class="neir_lidiv">-->
+                    <!--<a class="neir_pzi" href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>-->
+                <!--</div>-->
+                <!--<div class="neir_ridiv">-->
+                    <!--<a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>-->
+                    <!--<a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>-->
+                <!--</div>-->
+                <!--<img id="fenjie" src="img/fenjie1.png" alt="">-->
+            <!--</li>-->
+        <!--</ul></div>-->
+<!--</template>-->
 <template id="knowledge-test-template">
     <li class="neir_li_li">
         <div class="neir_lidiv">
             <!--<a class="neir_pzi daTi" href="#">${title}</a>-->
-            <a class="neir_pzi" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${volumeId}">${name}</a>
+            <a class="neir_pzi daTi" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${volumeId}">${name}</a>
         </div>
         <div class="neir_ridiv">
             <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
             <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
         </div>
-        <div class="lian_jie">
+        <div class="lian_jie" >
             <span class="lianjie lianjie01"></span>
-            <div class="split_line" id="split_line"></div>
+            <div class="split_line"></div>
             <span class="lianjie lianjie02"></span>
         </div>
     </li>
+
 </template>
+<!--<template id="knowledge-test-template">-->
+    <!--<div class="neir_li_li">-->
+        <!--<ul class="cont_sul">-->
+            <!--<li class="neir_li">-->
+                <!--<div class="neir_lidiv">-->
+                    <!--<a class="neir_pzi daTi" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${volumeId}">${name}</a>-->
+                <!--</div>-->
+                <!--<div class="neir_ridiv">-->
+                    <!--<a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>-->
+                    <!--<a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>-->
+                <!--</div>-->
+
+            <!--</li>-->
+        <!--</ul>-->
+        <!--<div class="lian_jie">-->
+            <!--<img src="i" alt="">-->
+            <!--&lt;!&ndash;<span class="lianjie lianjie01"></span>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="split_line" id="split_line"></div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span class="lianjie lianjie02"></span>&ndash;&gt;-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</template>-->
+<!--<template id="point-test">-->
+    <!--<div>-->
+        <!--<div>-->
+            <!--<ol data-ext-point="knowledgePoints" data-id="${id}"></ol>-->
+        <!--</div>-->
+        <!--<dv>-->
+            <!--<ol data-ext-point="knowledgePoints" data-id="${id}"></ol>-->
+        <!--</dv>-->
+    <!--</div>-->
+<!--</template>-->
+
 <script type="text/javascript" src="basic.js"></script>
 <script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="js/math-knowledge.js"></script>
+<script>
+    $(window).resize(function(){
+        $(".split_line").css("width", $("#whole_width").width())
+    })
+    window.onpageshow = function(){
+        $(".split_line").css("width", $("#whole_width").width())
+    }
+</script>
 </body>
 </html>

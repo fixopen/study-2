@@ -212,6 +212,18 @@ public class Users {
         }
     }
 
+    @GET
+    @Path("{id}/cards")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCards(@PathParam("id") Long id) {
+        Response result = Response.status(404).build();
+        List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
+        if (!cards.isEmpty()) {
+            result = Response.ok(new Gson().toJson(cards)).build();
+        }
+        return result;
+    }
+
     @POST
     @Path("{id}/cards")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -259,7 +271,7 @@ public class Users {
                                 if (telephoneUser != null && telephoneUser.getId().longValue() != id.longValue()) {
                                     WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
                                     List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", id);
-                                    EntityManager em = JPAEntry.getEntityManager();
+                                    EntityManager em = JPAEntry.getNewEntityManager();
                                     em.getTransaction().begin();
                                     for (Card card : bindedCards) {
                                         card.setUserId(id);
@@ -268,6 +280,8 @@ public class Users {
                                     em.remove(errorWechatUser);
                                     em.remove(telephoneUser);
                                     em.getTransaction().commit();
+                                    em.close();
+                                    Logs.insert(telephoneUser.getId(), "move-card", errorWechatUser.getId(), phoneNumber);
                                 }
 
                                 user.setTelephone(phoneNumber);
@@ -299,12 +313,13 @@ public class Users {
                     result = Response.status(520).build();
                     break;
             }
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             for (ValidationCode validationCode : validationCodes) {
                 em.remove(validationCode);
             }
             em.getTransaction().commit();
+            em.close();
             //Logs.insert(id, "log", logId, "remove validation codes");
         }
         return result;
@@ -369,12 +384,13 @@ public class Users {
                 result = Response.status(520).build();
                 break;
         }
-        EntityManager em = JPAEntry.getEntityManager();
+        EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         for (ValidationCode validationCode : validationCodes) {
             em.remove(validationCode);
         }
         em.getTransaction().commit();
+        em.close();
         //Response result = Response.status(500).build();
         return result;
     }

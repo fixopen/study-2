@@ -159,6 +159,7 @@ public class KnowledgePoints {
                 List<String> quoteIds = new ArrayList<>();
                 List<String> pinyinIds = new ArrayList<>();
 
+
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getObjectType()) {
                         case "text":
@@ -340,7 +341,6 @@ public class KnowledgePoints {
                     commentMaps.add(commentMap);
                 }
                 totalResult.put("comments", commentMaps);
-
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
             }

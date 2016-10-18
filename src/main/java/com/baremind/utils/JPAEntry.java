@@ -29,6 +29,13 @@ public class JPAEntry {
         return entityManager;
     }
 
+    public static EntityManager getNewEntityManager() {
+        if (factory == null) {
+            factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        }
+        return factory.createEntityManager();
+    }
+
     public static <T> T getObject(Class<T> type, String fieldName, Object fieldValue) {
         T result = null;
         EntityManager em = getEntityManager();
@@ -98,17 +105,27 @@ public class JPAEntry {
     }
 
     public static void genericPost(Object o) {
-        EntityManager em = JPAEntry.getEntityManager();
+        EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         em.persist(o);
         em.getTransaction().commit();
+        em.close();
     }
 
     public static void genericPut(Object o) {
-        EntityManager em = JPAEntry.getEntityManager();
+        EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         em.merge(o);
         em.getTransaction().commit();
+        em.close();
+    }
+
+    public static void genericDelete(Object o) {
+        EntityManager em = JPAEntry.getNewEntityManager();
+        em.getTransaction().begin();
+        em.remove(o);
+        em.getTransaction().commit();
+        em.close();
     }
 
     public static boolean isLogining(String sessionId) {

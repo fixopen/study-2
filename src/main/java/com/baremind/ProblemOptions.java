@@ -89,4 +89,19 @@ public class ProblemOptions {
         }
         return result;
     }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteOption(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            ProblemOption po = JPAEntry.getObject(ProblemOption.class, "id", id);
+            if (po != null) {
+                JPAEntry.genericDelete(po);
+                result = Response.ok(200).build();
+            }
+        }
+        return result;
+    }
 }

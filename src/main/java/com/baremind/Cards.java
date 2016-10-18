@@ -112,7 +112,7 @@ public class Cards {
 
     private void parseAndInsert(String csvFilename) {
         try {
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csvFilename)));
             String record;
@@ -129,6 +129,7 @@ public class Cards {
                 q.executeUpdate();
             }
             em.getTransaction().commit();
+            em.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

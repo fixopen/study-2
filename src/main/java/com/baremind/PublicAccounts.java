@@ -581,6 +581,7 @@ public class PublicAccounts {
                             isContinue = true;
                             break;
                         default:
+                            Logs.insert(0l, "wechatError", 100l, responseBody);
                             isContinue = false;
                             break;
                     }
@@ -606,6 +607,8 @@ public class PublicAccounts {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
             result = new Gson().fromJson(responseBody, WechatUserInfo.class);
             result.setInfo(responseBody);
+        } else {
+            Logs.insert(144l, "log", 144l, "errorInfo = " + responseBody);
         }
         return result;
     }
@@ -674,11 +677,12 @@ public class PublicAccounts {
             user = fillUserByUserInfo(now, userInfo);
             WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
 
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             em.persist(wechatUser);
             em.persist(user);
             em.getTransaction().commit();
+            em.close();
         }
         return user;
     }
@@ -798,11 +802,12 @@ public class PublicAccounts {
                 dbWechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
                 appendTokenInfo(dbWechatUser, tokenInfo);
 
-                EntityManager em = JPAEntry.getEntityManager();
+                EntityManager em = JPAEntry.getNewEntityManager();
                 em.getTransaction().begin();
                 em.persist(dbWechatUser);
                 em.persist(user);
                 em.getTransaction().commit();
+                em.close();
             }
         } else {
             appendTokenInfo(dbWechatUser, tokenInfo);
@@ -908,11 +913,12 @@ public class PublicAccounts {
             Date now = new Date();
             User user = fillUserByUserInfo(now, userInfo);
             WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             em.persist(user);
             em.persist(wechatUser);
             em.getTransaction().commit();
+            em.close();
         }
         return Response.ok().build();
     }
@@ -942,6 +948,7 @@ public class PublicAccounts {
 
     //获取接口调用凭证
     public static String[] getUserList(String nextOpenid) {
+        prepare();
         // http请求方式: GET（请使用https协议）
         // https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
         prepare();
@@ -1043,11 +1050,12 @@ public class PublicAccounts {
             u.setAmount(0.0f);
             user.setUserId(userId);
 
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             em.persist(user);
             em.persist(u);
             em.getTransaction().commit();
+            em.close();
         }
         return Response.ok().build();
     }
