@@ -45,10 +45,10 @@ a {
     top: -0.3125rem;
     z-index: 2;
 }
-
-.option{
-    height:130px;
+.content{
+    margin-bottom: 10px;
 }
+
 .daoyu_xxku {
     padding: 0.625rem;
     text-indent: 2em;
@@ -107,7 +107,7 @@ a {
     top: -1.25rem;
 }
 
-/* 鏈€寮哄ぇ鑴?*/
+/* 最强大脑 */
 .biti_chuagun {
     display: inline-block;
     font-size: 1.0rem;
@@ -171,15 +171,7 @@ li.mld_Ulli {
     margin-right: 0.25rem;
 }
 
-.daan_error{
-    float: left;
-    position: relative;
-    /*top: -1.625rem;*/
-    top: 0;
-    left: 0;
-    width: 1.625rem;
-    height: 1.625rem;
-}
+
 .daan_true{
     float: left;
     position: relative;
@@ -205,8 +197,6 @@ li.mld_Ulli {
     float: left;
     margin-right: 3.75rem;
     position: relative;
-    width:100%;
-    height:40px;
 }
 
 .muld_images {
@@ -248,7 +238,6 @@ li.mld_Ulli {
 }
 
 
-
 .lian_jie {
     position: relative;
     top: 0;
@@ -278,7 +267,7 @@ li.mld_Ulli {
     right: 2.5rem;
 }
 
-/* 鑴戝姏澶K */
+/* 脑力大PK */
 .bdiv_Pk {
     width: 8.375rem;
     margin: 1.875rem auto 0;
@@ -298,7 +287,7 @@ li.mld_Ulli {
 .zongjie_txt {
     color: #444;
     font-size: 0.9375rem;
-    font-family: "鑻规柟";
+    font-family: "苹方";
     width: 100%;
     line-height: 1rem;
     min-height: 5.0rem;
@@ -308,7 +297,7 @@ li.mld_Ulli {
     box-sizing: border-box;
 }
 
-/*鍐欑暀瑷€*/
+/*写留言*/
 .textarea{
     width: 100%;
     padding: 0.9375rem;
@@ -326,7 +315,7 @@ li.mld_Ulli {
     border-radius: 0.3125rem;
 }
 
-/* 鐣欒█ */
+/* 留言 */
 .mulu_bottom {
     width: 100%;
     padding: 0.9375rem;
@@ -400,7 +389,7 @@ li.mld_Ulli {
     margin-top: 0.3125rem;
 }
 
-/* 绛旀 */
+/* 答案 */
 .daana {
     width: 100%;
     min-height: 1.5625rem;

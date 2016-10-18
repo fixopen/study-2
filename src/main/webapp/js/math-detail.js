@@ -20,18 +20,19 @@ $(function () {
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     alert(JSON.stringify(data))
+                    location.reload();
                 }
             })
         }
     }
 
     var trueImage = document.createElement('img');
-  //  trueImage.setAttribute('class', 'daan_error');
+    //  trueImage.setAttribute('class', 'daan_error');
     trueImage.setAttribute('src', 'img/true.png');
     trueImage.setAttribute('alt', '');
 
     var falseImage = document.createElement('img');
-   // falseImage.setAttribute('class', 'daan_error');
+    // falseImage.setAttribute('class', 'daan_error');
     falseImage.setAttribute('src', 'img/error.png');
     falseImage.setAttribute('alt', '');
 
@@ -73,6 +74,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
+                   // alert(JSON.stringify(data))
                     proc({
                         templateId: 'video-template',
                         data: data.video,
@@ -214,7 +216,7 @@ $(function () {
                     for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i];
                         for (var j = 0; j < p.options.length; ++j) {
-                             p.options[j].title = String.fromCharCode(65+j);
+                            p.options[j].title = String.fromCharCode(65+j);
                             // p.options[1].title = 'B';
                             // p.options[2].title = 'C';
                             // p.options[3].title = 'D'
