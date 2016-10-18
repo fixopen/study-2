@@ -68,20 +68,19 @@
     <div data-type="problem">
         问题标题<textarea data-type="title"></textarea>
         图片<input type="file" data-type="image"/>
-        <input type="text" data-type="order"/>
+        <input type="text" data-type="index"/>
         标准答案<input type="text" data-type="standardAnswers"/>
-        <button id="appendProblemText" data-type="problemText">append problemText</button>
-        <button id="appendProblemImage" data-type="problemImage">append problemImage</button>
-        <button id="appendProblemImageText" data-type="problemImageText">append problemImageText</button>
-        <ol>
-            <li><input type="text" data-type="option" data-identity="1"/></li>
-            <li><input type="text" data-type="option" data-identity="2"/></li>
-            <li><input type="text" data-type="option" data-identity="3"/></li>
-            <li><input type="text" data-type="option" data-identity="4"/></li>
-        </ol>
+        <button data-type="appendOption">append option</button>
+        <ol data-type="options"></ol>
         视频图片<input type="file" data-type="videoCover"/>
         视频路径(手动输入)<input type="text" data-type="video"/>
     </div>
+</template>
+<template id="problem-option-template">
+    <li data-type="option">
+        <input type="text" data-type="content"/>
+        <input type="file" data-type="image"/>
+    </li>
 </template>
 <template id="imageText-template">
     <div data-type="imageText">
@@ -416,10 +415,19 @@
     appendProblem.addEventListener('click', function (e) {
         let pt = document.getElementById('problem-template')
         let p = pt.content.children[0].cloneNode(true)
+        let optionOrder = 0
         let image = p.querySelector('[data-type="image"]')
         image.addEventListener('change', function(e) {
-          delete image.dataset.id
+          delete e.target.dataset.id
         }, false)
+        let appendOption = p.querySelector('[data-type="appendOption"]')
+        appendOption.addEventListener('click', function(e) {
+            let options = e.target.parentNode.querySelector('[data-type="options"]')
+            let option = document.getElementById('problem-option-template').children[0].cloneNode(true)
+            option.setAttribute('data-identity', optionOrder)
+            ++optionOrder
+            options.appendChild(option)
+        })
         state.contents.appendChild(p)
         state.currentSelectedElement = p
     }, false)
@@ -517,11 +525,11 @@
         }, function (result) {
             if (result.meta.code < 400) {
                 state.currentSelectedElement.dataset.id = result.data.id
-                let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
+                let standardAnswer = state.currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
                 let sas = standardAnswer.split(',')
                 for (let i = 0; i < sas.length; ++i) {
                     let answerItem = {
-                        problemId: problem.id,
+                        problemId: result.data.id,
                         name: parseInt(sas[i]) - 1
                     }
                     $.ajax({
@@ -534,22 +542,34 @@
                     })
                 }
 
-                let options = currentSelectedElement.querySelectorAll('[data-type="option"]')
-                let optValues = [options[0].value, options[1].value, options[2].value, options[3].value]
-
-                for (let i = 0; i < optValues.length; ++i) {
-                    let option = {
-                        problemId: problem.id,
-                        name: optValues[i]
-                    }
-                    $.ajax({
-                        type: "post",
-                        url: "/api/problem-options",
-                        data: JSON.stringify(option),
-                        dataType: "json",
-                        async: false,
-                        contentType: "application/json; charset=utf-8",
+                let submitOption = function(problemId, name, imageId) {
+                    g.ajaxProcess('POST', '/api/problem-options', [
+                        {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                        {name: 'Accept', value: 'application/json'}
+                    ], {
+                        problemId: problemId,
+                        name: name,
+                        imageId: imageId
+                    }, function(result){
+                        //do nothing
                     })
+                }
+                let options = state.currentSelectedElement.querySelectorAll('[data-type="option"]')
+                for (let i = 0; i < options.length; ++i) {
+                    let image = options[i].querySelector('[data-type="image"]')
+                    let content = options[i].querySelector('[data-type="content"]').value
+                    if (image.files.length > 0) {
+                        if (!image.dataset.id) {
+                            uploadFile(image.files[0], function(r) {
+                                image.dataset.id = r.data.id
+                                submitOption(result.data.id, content, r.data.id)
+                            })
+                        } else {
+                            submitOption(result.data.id, content)
+                        }
+                    } else {
+                        submitOption(result.data.id, content)
+                    }
                 }
                 alert("添加成功")
             } else {
