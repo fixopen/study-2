@@ -52,7 +52,12 @@
 							<td>手机号：</td>
 							<td>
 								<input type="text" placeholder="请输入11位手机号，该手机号将成为您的账号" id="phonecode" class="mobile-input" required pattern="\d{11}">
-								<input type="button" class="send-btn" value="发送验证码" id="phone_btn">
+								<input type="button" class="send-btn" value="发送验证码" id="phone_btn"><!--class="get-captcha_button" class="mobile-input"-->
+								<!--<input type="captcha" id="phonecode"  required pattern="\d{11}" v-on="blur:captchaCheck" class="form-control flat" placeholder="请输入11位手机号，该手机号将成为您的账号" style="width:160px;display:inline;">
+								<button v-on="click:onSubmit"  class="send-btn" value="发送验证码" id="phone_btn" style="display:inline">获取手机验证码</button>-->
+								<!--<input type="text" placeholder="请输入11位手机号，该手机号将成为您的账号" id="phonecode" class="mobile-input" required pattern="\d{11}">-->
+								<!--<input type="captcha" v-on="blur:captchaCheck" id="phonecode" class="mobile-input" required pattern="\d{11}" placeholder="手机验证码" style="width:245px;display:inline;">
+								<button v-on="click:onSubmit" class="send-btn" id="phone_btn" style="display:inline">获取手机验证码</button>-->
 								<!--<a href="javascript:;" class="send-agin"></a><br>-->
 								<!-- 59S重新发送 -->
 								<i class="error" id="phonecodeerror"></i>
@@ -62,8 +67,9 @@
 						<tr>
 							<td>验证码：</td>
 							<td>
-								<input type="text" placeholder="请输入验证码" id="validationCode" class="card-input" required pattern="\d{6}"><br>
+							    <input type="text" placeholder="请输入验证码" id="validationCode" class="card-input" required pattern="\d{6}"><br>
 								<i class="error" id="validationCodeerror"></i>
+
 								<!--验证码错误请重新输入-->
 							</td>
 						</tr>
@@ -117,93 +123,98 @@
 			}else{
 				document.getElementById("validationCodeerror").innerHTML = ""
 			}
+            if(cardCode == "" || password == "" || phonecode == "" ||validationCode == ""){
 
-			let data = {
-				cardNo: phonecode,
-				password: password,
-				phoneNumber: phonecode,
-				validCode: validationCode
-			}
-			$.ajax({
-				type: "POST",
-				url: "/api/users/pccards",
-				data: JSON.stringify(data),
-				dataType: "json",
-				contentType: "application/json; charset=utf-8",
-				success: function (save) {
-					if (save.status < 400) {
-						g.setCookie("phonecode",document.getElementById('phonecode').value)
-						window.location.href = '激活成功.html'
-
-					}
-					else {
-						switch (save.status) {
-							case 500:
-
-								document.getElementById("error").innerHTML ="<font size='10px' color='red' >你的手机号和别人都重复了</font>";
-								break;
-								/*case 412:
-								 document.getElementById("tipid").innerHTML = "请返回的我的首页";
-								 break;*/
-							case 520:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520</font>";
-								break;
-							case 404:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
-								break;
-							case 405:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
-								break;
-							case 401:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
-								break;
-							case 410:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
-								break;
-							case 200:
-								g.setCookie("phonecode",document.getElementById('phonecode').value)
-								window.location.href = '激活成功.html'
-								break;
-						}
-					}
-				},
-				error:function (save) {
-					if (save.status < 400) {
-						g.setCookie("phonecode",document.getElementById('phonecode').value)
-						window.location.href = '激活成功.html'
-					}
-					else {
-						switch (save.status) {
-							case 500:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误500，请联系程序猿叔叔。email：15210038357@163.com</font>";
-								break;
-								/*case 412:
-								 document.getElementById("tipid").innerHTML = "请返回的我的首页";
-								 break;*/
-							case 520:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520，请联系程序猿叔叔。email：15210038357@163.com</font>";
-								break;
-							case 404:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
-								break;
-							case 405:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
-								break;
-							case 401:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
-								break;
-							case 410:
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
-								break;
-							case 200:
-								g.setCookie("phonecode",document.getElementById('phonecode').value)
-								window.location.href = '激活成功.html'
-
-								break;
-						}
-					}
+			}else{
+				let data = {
+					cardNo: phonecode,
+					password: password,
+					phoneNumber: phonecode,
+					validCode: validationCode
 				}
-			})
+				$.ajax({
+					type: "POST",
+					url: "/api/users/pccards",
+					data: JSON.stringify(data),
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					success: function (save) {
+						if (save.status < 400) {
+							g.setCookie("phonecode",document.getElementById('phonecode').value)
+							window.location.href = '激活成功.html'
+
+						}
+						else {
+							switch (save.status) {
+								case 500:
+
+									document.getElementById("error").innerHTML ="<font size='10px' color='red' >你的手机号和别人都重复了</font>";
+									break;
+									/*case 412:
+									 document.getElementById("tipid").innerHTML = "请返回的我的首页";
+									 break;*/
+								case 520:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520</font>";
+									break;
+								case 404:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
+									break;
+								case 405:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
+									window.location.href = 'D登录.html'
+									break;
+								case 401:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
+									break;
+								case 410:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
+									break;
+								case 200:
+									g.setCookie("phonecode",document.getElementById('phonecode').value)
+									window.location.href = '激活成功.html'
+									break;
+							}
+						}
+					},
+					error:function (save) {
+						if (save.status < 400) {
+							g.setCookie("phonecode",document.getElementById('phonecode').value)
+							window.location.href = '激活成功.html'
+						}
+						else {
+							switch (save.status) {
+								case 500:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号重复，请输出新的手机号</font>";
+									break;
+									/*case 412:
+									 document.getElementById("tipid").innerHTML = "请返回的我的首页";
+									 break;*/
+								case 520:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520</font>";
+									break;
+								case 404:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
+									break;
+								case 405:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
+									break;
+								case 401:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
+									break;
+								case 410:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
+									break;
+								case 200:
+									g.setCookie("phonecode",document.getElementById('phonecode').value)
+									window.location.href = '激活成功.html'
+
+									break;
+							}
+						}
+					}
+				})
+			}
+
 		}, false)
 
 
@@ -216,7 +227,7 @@
 					alert("请填写手机号")
 				}else{
 					let proc = function () {
-						e.target.value = " (" + printnr + ")秒后\n重新发送"
+						e.target.value = " (" + printnr + ")秒后\n重新发送"//字太多了导致吧input挤下去了
 						--printnr
 						if (printnr <= 0) {
 							e.target.value = " 重新发送 "

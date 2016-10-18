@@ -45,6 +45,9 @@ a {
     top: -0.3125rem;
     z-index: 2;
 }
+.content{
+    margin-bottom: 10px;
+}
 
 .daoyu_xxku {
     padding: 0.625rem;
@@ -92,14 +95,16 @@ a {
 .math_01 {
     width: 17.78125rem;
     height: 10.8125rem;
-    padding-left: 0.625rem;
+    clear: both;
+    display: block;
+    margin:auto;
 }
 
 .math_color {
     color: #fe6568;
     text-indent: 2em;
     position: relative;
-    top: -0.25rem;
+    top: -1.25rem;
 }
 
 /* 最强大脑 */
@@ -166,15 +171,7 @@ li.mld_Ulli {
     margin-right: 0.25rem;
 }
 
-.daan_error{
-    float: left;
-    position: relative;
-    /*top: -1.625rem;*/
-    top: 0;
-    left: 0;
-    width: 1.625rem;
-    height: 1.625rem;
-}
+
 .daan_true{
     float: left;
     position: relative;
@@ -240,15 +237,6 @@ li.mld_Ulli {
     color: #24cbd1;
 }
 
-.ceshi_ti1 {
-    width: 11.96875rem;
-    height: 5.03125rem;
-}
-
-.ceshi_ti2 {
-    width: 12.1875rem;
-    height: 3.3125rem;
-}
 
 .lian_jie {
     position: relative;

@@ -13,7 +13,7 @@ $(function () {
         data: {title: g.getUrlParameter('volume')},
         containerId: 'title'
     })
-    let volumeId = parseInt(g.getUrlParameter('volumeId'));
+    var volumeId = parseInt(g.getUrlParameter('volumeId'));
     $.ajax({
         type: "get",
         // url: 'api/knowledge-points?filter=' + JSON.stringify({
@@ -25,13 +25,13 @@ $(function () {
         dataType: 'json',
         async: false,
         success: function (knowledgePoints) {
-            //alert(JSON.stringify(knowledgePoints))
-            // let kp = []
-            // for (let i = 0; i < knowledgePoints.length; ++i) {
+            alert(JSON.stringify(knowledgePoints))
+            // var kp = []
+            // for (var i = 0; i < knowledgePoints.length; ++i) {
             //     kp[i] = knowledgePoints[i]
             // }
-            // let ktt = null
-            // let kpt = []
+            // var ktt = null
+            // var kpt = []
             // if (kp.length > 0) {
             //     ktt = kp[kp.length - 1]
             //     kp.pop()
@@ -51,16 +51,6 @@ $(function () {
                 ]
             });
             // proc({
-            //     // data: knowledgePoints,
-            //     data: data.knowledgePoints,
-            //     containerId: 'knowledge-point',
-            //     alterTemplates: [
-            //         {type: 'point', templateId: 'knowledge-point-template'},
-            //         {type: 'test', templateId: 'knowledge-test-template'}
-            //     ]
-            // })
-
-            // proc({
             //     data: kpt,
             //     containerId: 'knowledge-point',
             //     templateId: 'knowledge-point-template'
@@ -71,10 +61,6 @@ $(function () {
             //     containerId: 'knowledge-test',
             //     templateId: 'knowledge-test-template'
             // });
-
-
-
         }
     })
-
 })
