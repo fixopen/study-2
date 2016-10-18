@@ -84,8 +84,19 @@ public class Volumes {
                     kpm.put("id", kp.getId());
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
-                    kpm.put("likeCount", Logs.getStatsCount("knowledge-point", kp.getId(), "like"));
-                    kpm.put("readCount", Logs.getStatsCount("knowledge-point", kp.getId(), "read"));
+
+                    if(Logs.getStatsCount("knowledge-point", kp.getId(), "like") == null){
+                        kpm.put("likeCount", 0);
+                    }else{
+                        kpm.put("likeCount", Logs.getStatsCount("knowledge-point", kp.getId(), "like"));
+                    }
+
+                    if(Logs.getStatsCount("knowledge-point", kp.getId(), "read") == null){
+                        kpm.put("readCount", 0);
+                    }else{
+                        kpm.put("readCount", Logs.getStatsCount("knowledge-point", kp.getId(), "read"));
+                    }
+
                     //SELECT count(m), type FROM KnowledgePointContentMap m WHERE m.KnowledgePointId = kp.getId() GROUP BY m.type
                     String type = "normal";
                     String statsType = "SELECT count(*), type FROM knowledge_point_content_maps WHERE knowledge_point_id = " + kp.getId().toString() + " GROUP BY type";
