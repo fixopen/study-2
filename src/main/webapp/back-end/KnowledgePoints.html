@@ -73,17 +73,28 @@
         <input type="text" data-type="index"/>
         <br/>
         标准答案<input type="text" data-type="standardAnswers"/>
+<<<<<<< HEAD
+        
+=======
         <ol data-type="options"></ol>
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
         视频图片<input type="file" data-type="videoImg"/>
         视频路径(手动输入)<input type="text" data-type="video"/>
         <button data-type="append">append problem option</button>
     </div>
 </template>
 <template id="problem-option-template">
+<<<<<<< HEAD
+        <li data-type="option">
+            <input type="file" data-type="imageo"/>
+            <input type="text" data-type="content"/>
+        </li>
+=======
     <li data-type="option">
         <input type="file" data-type="imageo"/>
         <input type="text" data-type="content"/>
     </li>
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
 </template>
 <template id="imageText-template">
     <div data-type="imageText">
@@ -110,7 +121,11 @@
     </div>
 </template>
 <script type="text/javascript">
+<<<<<<< HEAD
+    document.getElementById("buttons").style.visibility = "hidden";//隐藏
+=======
     /* document.getElementById("buttons").style.visibility = "hidden";//隐藏*/
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
     document.getElementById("problems").style.visibility = "hidden";//隐藏
     let subjects = []
     let currentSubjectIndex = 0
@@ -686,6 +701,18 @@
             let i = 0;
             let pt = document.getElementById('problem-template')
             let p = pt.content.children[0].cloneNode(true)
+<<<<<<< HEAD
+<<<<<<< HEAD
+            let append = p.querySelector('[data-type="append"]')
+            append.addEventListener('click', function(e) {
+                let pot = document.getElementById('problem-option-template')
+                let po = pot.content.children[0].cloneNode(true)
+                contents.appendChild(po)
+            }, false)
+=======
+            p.dataset.optionid = 0
+>>>>>>> 0aaeca6e5e850cb094d7486e36bc0517af4d5bf7
+=======
             let append = p.querySelector('[data-type="append"]')
             append.addEventListener('click', function (e) {
                 let pot = document.getElementById('problem-option-template')
@@ -696,6 +723,7 @@
                 options.appendChild(po)
 
             }, false)
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
             contents.appendChild(p)
             currentSelectedElement = p
         }, false)
@@ -732,6 +760,98 @@
             currentSelectedElement = p
         }, false)
 
+<<<<<<< HEAD
+        let submitFile = function(typeName, postProcess) {
+          var formData = new FormData();
+          formData.append("file", currentSelectedElement.querySelector('[data-type="' + typeName + '"]').files[0]);
+          var request = new XMLHttpRequest();
+          request.onreadystatechange = function () {
+              if (request.readyState === 4) {
+                  if (request.status == 200) {
+                      returndata = JSON.parse(request.responseText)
+                      postProcess(returndata)
+                  }
+              }
+          }
+          request.open("POST", "/api/medias");
+          request.send(formData);
+        }
+		var problemIdDD
+        let problemProcess = function(returndata, imagePath) {
+          var data = {
+              videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
+              title: currentSelectedElement.querySelector('[data-type="title"]').value,
+              knowledgePointId: parseInt(currentKnowledgePoint),
+              volumeId: parseInt(currentVolume),
+              subjectId: parseInt(currentSubject),
+              videoImage: returndata ? returndata.id : null,
+			  storePath: imagePath,
+              index: currentSelectedElement.querySelector('[data-type="index"]').value
+          }
+          $.ajax({
+              type: "post",
+              url: "/api/problems",
+              data: JSON.stringify(data),
+              dataType: "json",
+              contentType: "application/json; charset=utf-8",
+              success: function (problem) {
+				  problemIdDD = problem.id
+                  currentSelectedElement.dataset.id = problem.id
+                  let standardAnswer = currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
+                  let sas = standardAnswer.split(',')
+                  for (let i = 0; i < sas.length; ++i) {
+                      let answerItem = {
+                          problemId: problem.id,
+                          name: parseInt(sas[i]) - 1
+                      }
+                      $.ajax({
+                          type: "post",
+                          url: "/api/problem-standard-answers",
+                          data: JSON.stringify(answerItem),
+                          dataType: "json",
+                          async: false,
+                          contentType: "application/json; charset=utf-8"
+						  
+                      })
+                  }
+              }
+          })
+        }
+		let optionProcess = function(problemIdDD, postProcess){
+			 
+					let imageId
+					submitFile("imageo",function(returndata){
+						imageId = returndata.id
+					})
+					
+                  let name = currentSelectedElement.querySelector('[data-type="content"]').value
+                 let option = {
+					problemId: problemIdDD,
+					imageId : imageId,
+					name : name
+				 }
+				 $.ajax({
+                          type: "post",
+                          url: "/api/problem-options",
+                          data: JSON.stringify(option),
+                          dataType: "json",
+                          async: false,
+                          contentType: "application/json; charset=utf-8",
+						  success: function(data){
+							alert(JSON.stringify(option))
+							alert("添加成功")
+						  },
+						  error: function(data){
+							alert(JSON.stringify(option))
+							alert("添加失败")
+						  }
+                      })
+				
+				 
+					
+		}
+        let imageTextProcess = function(typeName, typevalue, postProcess){
+=======
         let submitFile = function (typeName, postProcess) {
             var formData = new FormData();
             formData.append("file", currentSelectedElement.querySelector('[data-type="' + typeName + '"]').files[0]);
@@ -928,6 +1048,7 @@
     })
          }*/
         let imageTextProcess = function (typeName, typevalue, postProcess) {
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
             var formData = new FormData();
             formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
             formData.append("content", currentSelectedElement.querySelector('[data-type="content"]').value);
@@ -1001,6 +1122,42 @@
                     request.send(formData);
                     alert("添加成功")
                     break;
+<<<<<<< HEAD
+				case 'option':
+					if(problemIdDD == undefined || problemIdDD == ""){
+						alert("请先提交问题后，才能提交选项！")
+					}else{
+						optionProcess(problemIdDD,function(op){
+							problemIdDD == ""
+						})
+					}
+					break;
+					
+                case'problem':
+                        if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
+                            alert("问题不提供修改功能")
+                        } else {
+                            if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
+                                if (currentSelectedElement.querySelector('[data-type="image"]').files.length == 0) {
+                                    if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length == 0) {
+                                        problemProcess()
+                                    } else {
+                                        submitFile('videoImg', function(returndata) {
+                                            problemProcess(returndata)
+                                        })
+                                    }
+                                } else {
+                                    submitFile('image', function(returndata) {
+                                        if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length == 0) {
+                                            problemProcess()
+                                        } else {
+                                            submitFile('videoImg', function(rd) {
+                                                problemProcess(rd, returndata.storePath)
+                                            })
+                                        }
+                                    })
+                                }
+=======
                     /*case 'option':
                      if(problemIdDD == undefined || problemIdDD == ""){
                      alert("请先提交问题后，才能提交选项！")
@@ -1055,13 +1212,22 @@
                                         })
                                     }
                                 })
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
                             }
                         }
-                    }
                     break
                 case 'imageText':
                     if (currentSelectedElement.dataset.id && (currentSelectedElement.dataset.id != '')) {
                         delete currentSelectedElement.dataset.id
+<<<<<<< HEAD
+                        imageTextProcess("image","content",function(returndata){
+							currentSelectedElement.dataset.id = returndata.id
+                            alert("修改成功")
+                        })
+                    } else {
+                        imageTextProcess("image","content",function(returndata){
+							currentSelectedElement.dataset.id = returndata.id
+=======
                         imageTextProcess("image", "content", function (returndata) {
                             currentSelectedElement.dataset.id = returndata.id
                             alert("修改成功")
@@ -1069,6 +1235,7 @@
                     } else {
                         imageTextProcess("image", "content", function (returndata) {
                             currentSelectedElement.dataset.id = returndata.id
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
                             alert("添加成功")
                         })
                     }
@@ -1118,7 +1285,11 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (quote) {
+<<<<<<< HEAD
+								currentSelectedElement.dataset.id = quote.id
+=======
                                 currentSelectedElement.dataset.id = quote.id
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
                                 alert("修改成功")
                             },
                             error: function (quote) {
@@ -1163,7 +1334,11 @@
                             contentType: "application/json; charset=utf-8",
                             success: function (pinyin) {
                                 alert("修改成功")
+<<<<<<< HEAD
+								currentSelectedElement.dataset.id = pinyin.id
+=======
                                 currentSelectedElement.dataset.id = pinyin.id
+>>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
                             },
                             error: function (pinyin) {
                                 alert("修改失败")

@@ -1,5 +1,6 @@
-package com.baremind;
+package com.baremind.algorithm;
 
+import com.baremind.Logs;
 import com.baremind.data.*;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -159,7 +160,6 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
                 List<String> pinyinIds = new ArrayList<>();
-                List<String> optionIds = new ArrayList<>();
 
 
                 for (KnowledgePointContentMap item : maps) {
@@ -267,48 +267,27 @@ public class KnowledgePoints {
                                 } else {
                                     pm.put("type", "单选题");
                                 }
-<<<<<<< HEAD
                                 Map<String, Object> opm = new HashMap<>();
                                 //获取每一个选项 option
                                 for(ProblemOption option : problemOptions) {
                                     System.out.println(option);
                                     opm.put("optionId",option.getId());
                                     opm.put("name",option.getName());
-                                    /*List<Image> ppp = getList(em, option.getImageId(), Image.class);
-                                    for(Image image : ppp){
+                                    List<String> optionIds = new ArrayList<>();
+                                    optionIds.add(option.getImageId().toString());
+                                    List<Image> storePath = getList(em, optionIds, Image.class);
+                                    for(Image image : storePath){
                                         System.out.println(image);
                                         opm.put("optionImagePath",image.getStorePath());
-                                    }*/
+                                    }
                                 }
                                 /*opm.put("id",optionImage)*/
                                 pm.put("options", opm);
-=======
-
-
-                                //获取每一个选项 option
-                                ArrayList apm = new ArrayList();
-                                for(ProblemOption option : problemOptions) {
-                                    Map<String, Object> opm = new HashMap<>();
-                                    opm.put("optionId",option.getId());
-                                    opm.put("name",option.getName());
-                                    List<String> optionIds = new ArrayList<>();
-                                   if(option.getImageId() != null){
-                                        Image storePath = JPAEntry.getObject(Image.class, "id", option.getImageId());
-                                            opm.put("optionImagePath", storePath.getStorePath());
-                                    }
-                                    apm.add(opm);
-                                }
-                                pm.put("options", apm);
->>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
                                 pm.put("standardAnswers", problemStandardAnswers);
                                 pm.put("title", problemItem.getTitle());
                                 pm.put("storePath", problemItem.getStorePath());
                                 pm.put("videoUrl", problemItem.getVideoUrl());
-                                if(problemItem.getVideoImage() !=null){
-                                    Image im = JPAEntry.getObject(Image.class, "id", problemItem.getVideoImage());
-                                    pm.put("videoImage", im.getStorePath());
-                                }
-
+                                pm.put("videoImage", problemItem.getVideoImage());
                                 orderedProblems.add(pm);
                             }
                             break;
@@ -334,7 +313,6 @@ public class KnowledgePoints {
                     Video video = videoObjects.get(0);
                     Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
                     Map<String, Object> vm = new HashMap<>();
-
                     vm.put("cover", image.getStorePath());
                     vm.put("id", video.getId());
                     vm.put("storePath", video.getStorePath());
@@ -368,6 +346,7 @@ public class KnowledgePoints {
                     commentMaps.add(commentMap);
                 }
                 totalResult.put("comments", commentMaps);
+
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
             }
