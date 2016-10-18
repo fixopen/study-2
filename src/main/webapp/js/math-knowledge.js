@@ -13,7 +13,7 @@ $(function () {
         data: {title: g.getUrlParameter('volume')},
         containerId: 'title'
     })
-    let volumeId = parseInt(g.getUrlParameter('volumeId'));
+    var volumeId = parseInt(g.getUrlParameter('volumeId'));
     $.ajax({
         type: "get",
         // url: 'api/knowledge-points?filter=' + JSON.stringify({
@@ -26,12 +26,12 @@ $(function () {
         async: false,
         success: function (knowledgePoints) {
             alert(JSON.stringify(knowledgePoints))
-            // let kp = []
-            // for (let i = 0; i < knowledgePoints.length; ++i) {
+            // var kp = []
+            // for (var i = 0; i < knowledgePoints.length; ++i) {
             //     kp[i] = knowledgePoints[i]
             // }
-            // let ktt = null
-            // let kpt = []
+            // var ktt = null
+            // var kpt = []
             // if (kp.length > 0) {
             //     ktt = kp[kp.length - 1]
             //     kp.pop()

@@ -42,7 +42,7 @@
         </div>
         <!--最强讲解-->
         <div class="mulu_div youKuang">
-            <div id="content"></div>
+            <div id="content" class="content"></div>
             <div id="video"></div>
             <!--<img class="muld_images" src="img/math5.png" alt="">-->
         </div>
@@ -118,17 +118,17 @@
     <li class="mld_daanLi">
         <span class="daan_quan">${title}</span>
         <input type="radio" id="daan_s3A" class="daana" name="daan1">
-        <img class="ceshi_ti1" src="${optionImagePath}" alt="">
+        <!--<img src="${optionImagePath}" alt="">-->
         <label for="daan_s3A">${name}</label>
     </li>
 </template>
 <template id="strongest-brain-template">
     <li class="mld_Ulli">
         <div>${title}</div>
-        <img class="ceshi_ti1" src="${storePath}" alt="">
+        <img src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
         <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
-        <!--<div data-ext-point="explain"></div>-->
+        <div data-ext-point="explain"></div>
     </li>
     <!--</ul>-->
 </template>
