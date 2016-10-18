@@ -678,11 +678,12 @@ public class PublicAccounts {
             user = fillUserByWechatUserInfo(now, userInfo);
             WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
 
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             em.persist(wechatUser);
             em.persist(user);
             em.getTransaction().commit();
+            em.close();
         }
         return user;
     }
@@ -804,11 +805,12 @@ public class PublicAccounts {
                 dbWechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
                 fillWechatUserTokenInfo(dbWechatUser, tokenInfo);
 
-                EntityManager em = JPAEntry.getEntityManager();
+                EntityManager em = JPAEntry.getNewEntityManager();
                 em.getTransaction().begin();
                 em.persist(dbWechatUser);
                 em.persist(user);
                 em.getTransaction().commit();
+                em.close();
             }
         } else {
             //Logs.insert(144l, "log", 144l, "2: find in DB");
@@ -1015,11 +1017,12 @@ public class PublicAccounts {
             u.setAmount(0.0f);
             user.setUserId(userId);
 
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             em.persist(user);
             em.persist(u);
             em.getTransaction().commit();
+            em.close();
         }
         return Response.ok().build();
     }
@@ -1097,11 +1100,12 @@ public class PublicAccounts {
             u.setAmount(0.0f);
             user.setUserId(userId);
 
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             em.persist(user);
             em.persist(u);
             em.getTransaction().commit();
+            em.close();
         }
         return Response.ok().build();
     }

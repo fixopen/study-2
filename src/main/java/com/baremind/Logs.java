@@ -56,12 +56,13 @@ public class Logs {
         filter.put("objectId", objectId);
         filter.put("action", "like");
         List<Log> logs = JPAEntry.getList(Log.class, filter);
-        EntityManager em = JPAEntry.getEntityManager();
+        EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         for (Log log : logs) {
             em.remove(log);
         }
         em.getTransaction().commit();
+        em.close();
         return (long)logs.size();
     }
 
@@ -179,10 +180,7 @@ public class Logs {
             result = Response.status(404).build();
             Log l = JPAEntry.getObject(Log.class, "id", id);
             if (l != null) {
-                EntityManager em = JPAEntry.getEntityManager();
-                em.getTransaction().begin();
-                em.remove(l);
-                em.getTransaction().commit();
+                JPAEntry.genericDelete(l);
                 result = Response.ok(200).build();
             }
         }
