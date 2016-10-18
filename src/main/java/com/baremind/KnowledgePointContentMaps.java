@@ -1,11 +1,15 @@
 package com.baremind;
 
+import com.baremind.data.KnowledgePoint;
 import com.baremind.data.KnowledgePointContentMap;
+import com.baremind.data.Log;
+import com.baremind.data.ProblemOption;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -109,4 +113,24 @@ public class KnowledgePointContentMaps {
         }
         return result;
     }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            KnowledgePointContentMap knowledgePointContentMapse = JPAEntry.getObject(KnowledgePointContentMap.class, "id", id);
+            /*KnowledgePointContentMap po = JPAEntry.getObject(KnowledgePointContentMap.class, "object_id", object_id);*/
+            if (knowledgePointContentMapse != null) {
+                EntityManager em = JPAEntry.getEntityManager();
+                em.getTransaction().begin();
+                em.remove(knowledgePointContentMapse);
+                em.getTransaction().commit();
+                result = Response.ok(200).build();
+            }
+        }
+        return result;
+    }
+
 }
