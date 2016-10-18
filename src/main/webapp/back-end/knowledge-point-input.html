@@ -528,14 +528,13 @@
                 let standardAnswer = state.currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
                 let sas = standardAnswer.split(',')
                 for (let i = 0; i < sas.length; ++i) {
-                    let answerItem = {
-                        problemId: result.data.id,
-                        name: parseInt(sas[i]) - 1
-                    }
                     $.ajax({
                         type: "post",
                         url: "/api/problem-standard-answers",
-                        data: JSON.stringify(answerItem),
+                        data: JSON.stringify({
+                            problemId: result.data.id,
+                            index: parseInt(sas[i]) - 1
+                        }),
                         dataType: "json",
                         async: false,
                         contentType: "application/json; charset=utf-8"
