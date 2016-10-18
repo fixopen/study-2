@@ -1,14 +1,14 @@
 $(function () {
 //添加评论
-    var createComment=document.getElementById('createComment');
+    let createComment=document.getElementById('createComment');
     createComment .addEventListener('click', writeMessage, false);
     function writeMessage() {
         $('#commentWriter').toggle();
-        var btn=document.getElementById('btn');
+        let btn=document.getElementById('btn');
         btn.addEventListener('click', submit, false);
         function submit(e) {
-            var textarea=document.getElementById('textarea');
-            var value=textarea.value;
+            let textarea=document.getElementById('textarea');
+            let value=textarea.value;
             textarea.value='';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
@@ -19,24 +19,24 @@ $(function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    //alert(JSON.stringify(data))
+                    alert(JSON.stringify(data))
                 }
             })
         }
     }
 
-    var trueImage = document.createElement('img');
-    trueImage.setAttribute('class', 'daan_error');
+    let trueImage = document.createElement('img');
+  //  trueImage.setAttribute('class', 'daan_error');
     trueImage.setAttribute('src', 'img/true.png');
     trueImage.setAttribute('alt', '');
 
-    var falseImage = document.createElement('img');
-    falseImage.setAttribute('class', 'daan_error');
+    let falseImage = document.createElement('img');
+   // falseImage.setAttribute('class', 'daan_error');
     falseImage.setAttribute('src', 'img/error.png');
     falseImage.setAttribute('alt', '');
 
     // // //change icon via liked state
-    // var icon = document.getElementById('icon')
+    // let icon = document.getElementById('icon')
     // icon.addEventListener('click', function(e) {
     //     if (liked) {
     //         liked = false
@@ -58,7 +58,7 @@ $(function () {
 
 
 
-    var volumeId = g.getUrlParameter("volumeId");
+    let volumeId = g.getUrlParameter("volumeId");
     $.ajax({
         type: 'get',
         url: 'api/knowledge-points?filter=' + JSON.stringify({
@@ -66,52 +66,53 @@ $(function () {
         }),
         dataType: 'json',
         success: function (knowledgePointList) {
-            var id = g.getUrlParameter('id');
-			//alert(JSON.stringify(knowledgePointList))
+            let id = g.getUrlParameter('id');
             $.ajax({
                 type: "get",
                 url: 'api/knowledge-points/' + id + '/contents',
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    //alert(JSON.stringify(data))
-                   proc({
+                    alert(JSON.stringify(data))
+                    proc({
                         templateId: 'video-template',
                         data: data.video,
                         containerId: 'video'
                     })
-					/*proc({
-                        templateId: 'challenge-template',
-                        data: data.quotes,
-                        containerId: 'challenge'
-                    });*/
-					proc({
+                    // 上一个，下一个---------------------------------------------------------------
+                    let baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
+
+                    for (let i = 0; i < knowledgePointList.length; ++i) {
+                        let id = g.getUrlParameter('id')
+                        if (knowledgePointList[i].id == id) {
+                            let prevIndex = i;
+                            let nextIndex = i;
+                            if (i > 0) {
+                                prevIndex = i - 1
+                            }
+                            if (i < knowledgePointList.length - 1) {
+                                nextIndex = i + 1
+                            }
+                            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id;
+                            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id;
+                            break
+                        }
+                    }
+                    proc({
                         templateId: 'interaction-template',
                         data: data.interaction,
                         containerId: 'interaction'
                     })
-					proc({
-                        templateId: 'comment-template',
-                        data: data.comments,
-                        containerId: 'comments'
-                    })
-					/*proc({
-						data: data.contents,
-						containerId: 'content',
-						alterTemplates: [
-							{type: 'text', templateId: 'content-text-template'},
-							{type: 'imageText', templateId: 'content-image-template'}
-						]
-                    });*/
-					// GET /knowledge-points/.../is-self-like
-                    var id = g.getUrlParameter("id")
+
+                    // GET /knowledge-points/.../is-self-like
+                    let id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
                         url: 'api/knowledge-points/' + id + '/is-self-like',
                         dataType: "json",
                         success: function (like) {
-                            var liked = like.like
-                            var icon = document.getElementById('icon');
+                            let liked = like.like
+                            let icon = document.getElementById('icon');
                             icon.addEventListener('click', function (e) {
                                 if (liked) {
                                     $.ajax({
@@ -148,20 +149,23 @@ $(function () {
                             //liked = false
                         }
                     })
-					
                     //评论点赞
-                    
+                    proc({
+                        templateId: 'comment-template',
+                        data: data.comments,
+                        containerId: 'comments'
+                    })
 
                     $('.ul01_imgzan').on('click', function (e) {
-                        var id = e.target.parentNode.dataset.id
+                        let id = e.target.parentNode.dataset.id
                         $.ajax({
                             type: "get",
                             url: 'api/comments/' + id + '/is-self-like',
                             dataType: "json",
                             success: function (like) {
-                                var  likeds = like.like;
+                                let  likeds = like.like;
                                 if(likeds){
-                                    var id = e.target.parentNode.dataset.id
+                                    let id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
                                         url: '/api/comments/' + id + '/unlike',
@@ -169,7 +173,7 @@ $(function () {
                                         dataType: "json",
                                         contentType: "application/json; charset=utf-8",
                                         success: function (unlike) {
-                                            for (var i = 0; i < data.comments.length; ++i) {
+                                            for (let i = 0; i < data.comments.length; ++i) {
                                                 if (data.comments[i].id == id) {
                                                     e.target.setAttribute('src', 'img/zan.png');
                                                     --data.comments[i].likeCount;
@@ -183,7 +187,7 @@ $(function () {
 
                                 } else {
 
-                                    var id = e.target.parentNode.dataset.id
+                                    let id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
                                         url: '/api/comments/' + id + '/like',
@@ -191,7 +195,7 @@ $(function () {
                                         dataType: "json",
                                         contentType: "application/json; charset=utf-8",
                                         success: function (like) {
-                                            for (var i = 0; i < data.comments.length; ++i) {
+                                            for (let i = 0; i < data.comments.length; ++i) {
                                                 if (data.comments[i].id == id) {
                                                     e.target.setAttribute('src', 'img/zan-over.png');
                                                     ++data.comments[i].likeCount;
@@ -207,57 +211,16 @@ $(function () {
                         })
 
                     })
-					
-					
-					// 上一个，下一个-----------------------------------------------------------
-					 var baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
-
-                    for (var i = 0; i < knowledgePointList.length; ++i) {
-                        var id = g.getUrlParameter('id')
-                        if (knowledgePointList[i].id == id) {
-                            var prevIndex = i;
-                            var nextIndex = i;
-                            if (i > 0) {
-                                prevIndex = i - 1
-                            }
-                            if (i < knowledgePointList.length - 1) {
-                                nextIndex = i + 1
-                            }
-                            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id;
-                            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id;
-                            break
-                        }
-                    }
-				
-					
-				/*	for (var i = 0; i < knowledgePointList.length; ++i) {
-						var id = g.getUrlParameter('id');
-                        if (knowledgePointList[i].id == id) {
-                            proc({
-                                templateId: 'title1-template',
-                                data: {title1: knowledgePointList[i].order},
-                                containerId: 'title1'
-                            });
-                            proc({
-                                templateId: 'title2-template',
-                                data: {title: knowledgePointList[i].title},
-                                containerId: 'title2'
-                            });
-                            break
-                        }
-                    }*/
-					
                     //-------------------------------------------------------------------------------
-                    
-					for (var i = 0; i < data.problems.length; ++i) {
-                        var p = data.problems[i];
+                    for (let i = 0; i < data.problems.length; ++i) {
+                        let p = data.problems[i];
                         p.options[0].title = 'A';
                         p.options[1].title = 'B';
                         p.options[2].title = 'C';
                         p.options[3].title = 'D'
                     }
 
-                    for (var i = 0; i < knowledgePointList.length; ++i) {
+                    for (let i = 0; i < knowledgePointList.length; ++i) {
                         if (knowledgePointList[i].id == id) {
                             proc({
                                 templateId: 'title1-template',
@@ -289,12 +252,12 @@ $(function () {
                     });
 
                     //data.problems
-                    var ps = []
-                    for (var i = 0; i < data.problems.length; ++i) {
+                    let ps = []
+                    for (let i = 0; i < data.problems.length; ++i) {
                         ps[i] = data.problems[i]
                     }
-                    var pk = null
-                    var strongestBrains = []
+                    let pk = null
+                    let strongestBrains = []
                     if (ps.length > 0) {
                         pk = ps[ps.length - 1]
                         ps.pop()
@@ -331,15 +294,14 @@ $(function () {
                             }
                         ]
                     });
-                   
-                
+
 
 
 
                     // 选项判错--------------------------------------------------------
-                    var findProblem = function (problemId) {
-                        var problem = null
-                        for (var i = 0; i < data.problems.length; ++i) {
+                    let findProblem = function (problemId) {
+                        let problem = null
+                        for (let i = 0; i < data.problems.length; ++i) {
                             if (data.problems[i].id == problemId) {
                                 problem = data.problems[i]
                                 break
@@ -348,8 +310,8 @@ $(function () {
                         return problem
                     }
 
-                    var getIndex = function (content) {
-                        var index = -1
+                    let getIndex = function (content) {
+                        let index = -1
                         switch (content) {
                             case 'A':
                                 index = 0
@@ -369,9 +331,9 @@ $(function () {
                         return index
                     }
 
-                    var compareAnswer = function (index, standardAnswers) {
-                        var finded = false
-                        for (var j = 0; j < standardAnswers.length; ++j) {
+                    let compareAnswer = function (index, standardAnswers) {
+                        let finded = false
+                        for (let j = 0; j < standardAnswers.length; ++j) {
                             if (index == standardAnswers[j].name) {
                                 finded = true
                                 break
@@ -380,16 +342,16 @@ $(function () {
                         return finded
                     }
 
-                    var judgement = function (e) {
+                    let judgement = function (e) {
                         //e.currentTarget == problemContainer
-                        var clickedElement = e.target;
+                        let clickedElement = e.target;
 
                         if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            var problemId = clickedElement.parentNode.parentNode.dataset.id
-                            var problem = findProblem(problemId);
+                            let problemId = clickedElement.parentNode.parentNode.dataset.id
+                            let problem = findProblem(problemId);
                             if (problem) {
-                                var index = getIndex(clickedElement.textContent);
-                                var r = compareAnswer(index, problem.standardAnswers);
+                                let index = getIndex(clickedElement.textContent);
+                                let r = compareAnswer(index, problem.standardAnswers);
                                 if (r) {
                                     clickedElement.parentNode.addClass('daanLi_true');
                                     clickedElement.innerHTML = '';
@@ -401,7 +363,7 @@ $(function () {
                                 }
                             }
                         }
-                        var data = {
+                        let data = {
                             objectType: 'knowledge-point',
                             objectId: 'problemId',
                             objectName: 'index',
@@ -413,16 +375,15 @@ $(function () {
                             async: false,
                             data: data,
                             success: function (data) {
-                                //alert(JSON.stringify(data))
+                                alert(JSON.stringify(data))
                             }
                         })
                     };
-                    var problemContainer = document.getElementById('strongest-brain')
+                    let problemContainer = document.getElementById('strongest-brain')
                     problemContainer.addEventListener('click', judgement, false)
 
-                    var pkContainer = document.getElementById('pk')
-                    pkContainer.addEventListener('click', judgement, false) 
-                    
+                    let pkContainer = document.getElementById('pk')
+                    pkContainer.addEventListener('click', judgement, false)
                 }
             })
         }
