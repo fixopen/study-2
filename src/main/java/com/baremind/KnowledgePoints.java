@@ -267,44 +267,25 @@ public class KnowledgePoints {
                                 } else {
                                     pm.put("type", "单选题");
                                 }
-<<<<<<< HEAD
-                                Map<String, Object> opm = new HashMap<>();
-                                //获取每一个选项 option
-                                for(ProblemOption option : problemOptions) {
-                                    System.out.println(option);
-                                    opm.put("optionId",option.getId());
-                                    opm.put("name",option.getName());
-                                    /*List<Image> ppp = getList(em, option.getImageId(), Image.class);
-                                    for(Image image : ppp){
-                                        System.out.println(image);
-                                        opm.put("optionImagePath",image.getStorePath());
-                                    }*/
-                                }
-                                /*opm.put("id",optionImage)*/
-                                pm.put("options", opm);
-=======
-
 
                                 //获取每一个选项 option
-                                ArrayList apm = new ArrayList();
-                                for(ProblemOption option : problemOptions) {
+                                ArrayList<Map<String, Object>> apm = new ArrayList();
+                                for (ProblemOption option : problemOptions) {
                                     Map<String, Object> opm = new HashMap<>();
-                                    opm.put("optionId",option.getId());
-                                    opm.put("name",option.getName());
-                                    List<String> optionIds = new ArrayList<>();
-                                   if(option.getImageId() != null){
+                                    opm.put("optionId", option.getId());
+                                    opm.put("name", option.getName());
+                                    if (option.getImageId() != null) {
                                         Image storePath = JPAEntry.getObject(Image.class, "id", option.getImageId());
-                                            opm.put("optionImagePath", storePath.getStorePath());
+                                        opm.put("optionImagePath", storePath.getStorePath());
                                     }
                                     apm.add(opm);
                                 }
                                 pm.put("options", apm);
->>>>>>> 52cd3b1a43a05906f6fdd4d9ca28783a2864174e
                                 pm.put("standardAnswers", problemStandardAnswers);
                                 pm.put("title", problemItem.getTitle());
                                 pm.put("storePath", problemItem.getStorePath());
                                 pm.put("videoUrl", problemItem.getVideoUrl());
-                                if(problemItem.getVideoImage() !=null){
+                                if (problemItem.getVideoImage() != null) {
                                     Image im = JPAEntry.getObject(Image.class, "id", problemItem.getVideoImage());
                                     pm.put("videoImage", im.getStorePath());
                                 }

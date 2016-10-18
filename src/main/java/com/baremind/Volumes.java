@@ -80,6 +80,18 @@ public class Volumes {
             if (!knowledgePoints.isEmpty()) {
                 List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
                 for (KnowledgePoint kp : knowledgePoints) {
+                    String statsContent = "SELECT count(*) FROM knowledge_point_content_maps WHERE knowledge_point_id = " + kp.getId().toString();
+                    EntityManager em = JPAEntry.getEntityManager();
+                    Query cq = em.createNativeQuery(statsContent);
+                    List qc = cq.getResultList();
+                    if (qc.size() == 1) {
+                        Object[] tempObj = (Object[]) qc.get(0);
+                        Long c = (Long) tempObj[0];
+                        if (c == 0) {
+                            continue;
+                        }
+                    }
+
                     Map<String, Object> kpm = new HashMap<>();
                     kpm.put("id", kp.getId());
                     kpm.put("volumeId", kp.getVolumeId());
@@ -99,8 +111,8 @@ public class Volumes {
                     //SELECT count(m), type FROM KnowledgePointContentMap m WHERE m.KnowledgePointId = kp.getId() GROUP BY m.type
                     String type = "normal";
                     String statsType = "SELECT count(*), type FROM knowledge_point_content_maps WHERE knowledge_point_id = " + kp.getId().toString() + " GROUP BY type";
-                    EntityManager em = JPAEntry.getEntityManager();
-                    Query query = em.createNativeQuery(statsType);
+                    EntityManager eman = JPAEntry.getEntityManager();
+                    Query query = eman.createNativeQuery(statsType);
                     List list = query.getResultList();
                     if (list.size() == 1) {
                         Object[] tempObj = (Object[]) list.get(0);
