@@ -127,6 +127,7 @@ public class Schedulers {
                     existScheduler.setStartTime(startTime);
                 }
 
+
                 int state = scheduler.getState();
                 if (state != 0) {
                     existScheduler.setState(state);
@@ -146,6 +147,18 @@ public class Schedulers {
                 String teacher = scheduler.getTeacher();
                 if (teacher != null) {
                     existScheduler.setTeacher(teacher);
+                }
+                String cover = scheduler.getCover();
+                if (cover != null) {
+                    existScheduler.setCover(cover);
+                }
+                String cdnLink = scheduler.getCdnLink();
+                if (cdnLink != null) {
+                    existScheduler.setCdnLink(cdnLink);
+                }
+                String directLink = scheduler.getDirectLink();
+                if (directLink != null) {
+                    existScheduler.setDirectLink(directLink);
                 }
 
                 String teacherDescription = scheduler.getTeacherDescription();
