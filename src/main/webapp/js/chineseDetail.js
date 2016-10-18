@@ -10,6 +10,12 @@ $(function () {
         function submit(e) {
             var textarea = document.getElementById('textarea');
             var value = textarea.value;
+            if(value.length<1){
+                //alert('wrong');
+                return false;
+            }else{
+                return true;
+            }
             textarea.value = '';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
