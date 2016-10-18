@@ -32,10 +32,10 @@ public class Cards {
     private static final String[] serials = new String[]{"1"};
 
     @POST
-    @Path("generate")
+    @Path("generate/{subject}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cardsGenerator(@CookieParam("sessionId") String sessionId, byte[] contents) {
+    public Response cardsGenerator(@CookieParam("sessionId") String sessionId, @PathParam("subject") String subject, byte[] contents) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             try {
