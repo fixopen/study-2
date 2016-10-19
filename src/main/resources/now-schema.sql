@@ -222,7 +222,8 @@ CREATE TABLE problem_options (
     problem_id bigint,
     name text,
     image_id bigint,
-    index integer
+    index integer,
+    order integer
 );
 
 
@@ -328,6 +329,7 @@ ALTER TABLE sessions OWNER TO fixopen;
 
 CREATE TABLE subjects (
     id bigint NOT NULL,
+    no name,
     name character varying(64)
 );
 

@@ -27,6 +27,9 @@ public class ProblemOption {
     @Column(name = "index")
     private Integer index;
 
+    @Column(name = "\"order\"")
+    private Integer order;
+
     public Long getId() {
         return id;
     }
@@ -65,5 +68,13 @@ public class ProblemOption {
 
     public void setIndex(Integer index) {
         this.index = index;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }

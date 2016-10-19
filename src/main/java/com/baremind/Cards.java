@@ -24,18 +24,13 @@ import java.util.Map;
 
 @Path("cards")
 public class Cards {
-    private static final String[] subjects = new String[]{"01", "02", "03"};
-    private static final int MATH = 0;
-    private static final int CHINESE = 1;
-    private static final int ENGLISH = 2;
-    private static final String[] grades = new String[]{"20", "21"};
     private static final String[] serials = new String[]{"1"};
 
     @POST
-    @Path("generate/{subject}")
+    @Path("generate/{subjectNo}/{grade}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cardsGenerator(@CookieParam("sessionId") String sessionId, @PathParam("subject") String subject, byte[] contents) {
+    public Response cardsGenerator(@CookieParam("sessionId") String sessionId, @PathParam("subjectNo") String subjectNo, @PathParam("grade") String grade, byte[] contents) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             try {
@@ -44,8 +39,10 @@ public class Cards {
                 Long start = (Long) q.get("start");
                 Long count = (Long) q.get("count");
                 for (int i = 0; i < count; ++i) {
+                    String serialNo = start.toString(); //7-char
+                    String no = subjectNo + grade + serials[0] + serialNo;
                     //generate card no
-                    //generate random number
+                    //generate 8-char random number
                     //record to database
                     //write to file
                 }
