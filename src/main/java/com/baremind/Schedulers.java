@@ -4,7 +4,6 @@ import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.GsonBuilder;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -60,25 +59,41 @@ public class Schedulers {
     @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
+        Response r = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-         /*   GsonBuilder b = new GsonBuilder();
-            b.registerTypeAdapter(Time.class, new MyTypeAdapter(){
-
+            //schedulers.remove(0);
+            Collections.sort(schedulers, (left, right) -> {
+                int result = 0;
+                if (left.getYear() > right.getYear()) {
+                    result = -1;
+                } else if (left.getYear() < right.getYear()) {
+                    result = 1;
+                } else {
+                    if (left.getWeek() > right.getWeek()) {
+                        result = -1;
+                    } else if (left.getWeek() < right.getWeek()) {
+                        result = 1;
+                    } else {
+                        if (left.getDay() > right.getDay()) {
+                            result = -1;
+                        } else if (left.getDay() < right.getDay()) {
+                            result = 1;
+                        } else {
+                            if (left.getStartTime().getTime() > right.getStartTime().getTime()) {
+                                result = -1;
+                            } else if (left.getStartTime().getTime() < right.getStartTime().getTime()) {
+                                result = 1;
+                            }
+                        }
+                    }
+                }
+                return result;
             });
-*//*
-
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Calendar c1 = Calendar.getInstance();
-            c1.setTime(new Date());
-            String sss = format.format(c1.getTime());
-*//*
-*/
-            result = Response.ok(new Gson().toJson(schedulers)).build();
+            r = Response.ok(new Gson().toJson(schedulers)).build();
         }
-        return result;
+        return r;
     }
 
     @GET //获取classroom-key

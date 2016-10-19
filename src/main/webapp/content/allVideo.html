@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>直播课</title>
+    <title>直播课 </title>
     <!-- 禁止拉伸和全屏设置 -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
@@ -276,6 +276,7 @@
         course = result.data
         for (var i = 0; i < course.length; ++i) {
             var m = moment().year(course[i].year).week(course[i].week).day(course[i].day)
+            var m = moment().year(course[i].year).week(course[i].week).day(course[i].day).hour(...).minute(...)
             course[i].month = m.month()
             course[i].day = m.date() - 1
             if (course[i].grade == 20) {
