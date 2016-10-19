@@ -1,5 +1,7 @@
 package com.baremind;
 
+import com.baremind.data.Image;
+import com.baremind.data.ProblemOption;
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -60,25 +62,62 @@ public class Schedulers {
     @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
+        Response r = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-         /*   GsonBuilder b = new GsonBuilder();
-            b.registerTypeAdapter(Time.class, new MyTypeAdapter(){
+                Collections.sort(schedulers, (left, right) -> {
+                    int result = 0;
+                    if (left.getYear() > right.getYear()) {
+                        result = -1;
+                    } else if (left.getYear() < right.getYear()) {
+                        result = 1;
+                    } else {
+                        if (left.getWeek() > right.getWeek()) {
+                            result = -1;
+                        } else if (left.getWeek() < right.getWeek()) {
+                            result = 1;
+                        } else {
+                            if (left.getDay() > right.getDay()) {
+                                result = -1;
+                            } else if (left.getDay() < right.getDay()) {
+                                result = 1;
+                            } else {
+                                if (left.getStartTime().getTime() > right.getStartTime().getTime()) {
+                                    result = -1;
+                                } else if (left.getStartTime().getTime() < right.getStartTime().getTime()) {
+                                    result = 1;
+                                }
+                            }
+                        }
+                    }
+                    return result;
+                });
+                ArrayList a2 = new ArrayList();
+                ArrayList a1 = new ArrayList();
+                ArrayList a  =  new  ArrayList();
+                ArrayList AA  =  new  ArrayList();
+            for (Scheduler scheduler : schedulers) {
+                if (scheduler.getState() == 2) {
+                    a2.add(scheduler);
+                }
+                if (scheduler.getState() == 1) {
+                    a1.add(scheduler);
+                }
+                if (scheduler.getState() == 0) {
+                    a.add(scheduler);
+                }
+            }
 
-            });
-*//*
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Calendar c1 = Calendar.getInstance();
-            c1.setTime(new Date());
-            String sss = format.format(c1.getTime());
-*//*
-*/
-            result = Response.ok(new Gson().toJson(schedulers)).build();
+            AA.add(a1);
+            AA.add(a2);
+            AA.add(a);
+
+            //left.getYear() - right.getYear(), left.getWeek() - right.getWeek(), left.getDay() - right.getDay()
+            r = Response.ok(new Gson().toJson(AA)).build();
         }
-        return result;
+        return r;
     }
 
     @GET //获取classroom-key
