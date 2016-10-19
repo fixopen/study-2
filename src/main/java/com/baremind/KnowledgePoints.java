@@ -12,10 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Path("knowledge-points")
@@ -205,6 +202,7 @@ public class KnowledgePoints {
                 List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
 
                 List<PinyinText> pinyinTextObject = getList(em, pinyinIds, PinyinText.class);
+
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
                 List<Object> orderedQuotes = new ArrayList<>();
@@ -269,6 +267,7 @@ public class KnowledgePoints {
                                 }
 
                                 //获取每一个选项 option
+                                Collections.sort(problemOptions, (left, right) -> left.getOrder().intValue() - right.getOrder().intValue());
                                 ArrayList<Map<String, Object>> apm = new ArrayList();
                                 for (ProblemOption option : problemOptions) {
                                     Map<String, Object> opm = new HashMap<>();
@@ -332,6 +331,7 @@ public class KnowledgePoints {
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
+                /*totalResult.put("pinyins", orderedPinyins);*/
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");

@@ -10,6 +10,9 @@ $(function () {
         function submit(e) {
             var textarea = document.getElementById('textarea');
             var value = textarea.value;
+            if(value.length<1){
+                return false;
+            }
             textarea.value = '';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
@@ -25,7 +28,8 @@ $(function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    alert(JSON.stringify(data))
+                    location.reload();
+                    //alert(JSON.stringify(data))
                 }
             })
         }
@@ -46,7 +50,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                   // alert(JSON.stringify(data))
+                   //alert(JSON.stringify(data))
                     for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i]
                         p.options[0].title = 'A'
@@ -72,6 +76,7 @@ $(function () {
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
+                            {type: 'imageText', templateId: 'content-imagetext-template'},
                             // {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
@@ -228,12 +233,12 @@ $(function () {
                         //e.currentTarget == problemContainer
                         var clickedElement = e.target
                         var trueImage = document.createElement('img')
-                        trueImage.setAttribute('class', 'daan_error')
+                        // trueImage.setAttribute('class', 'daan_error')
                         trueImage.setAttribute('src', 'img/true.png')
                         trueImage.setAttribute('alt', '')
 
                         var falseImage = document.createElement('img')
-                        falseImage.setAttribute('class', 'daan_error')
+                        // falseImage.setAttribute('class', 'daan_error')
                         falseImage.setAttribute('src', 'img/error.png')
                         falseImage.setAttribute('alt', '')
 
@@ -321,9 +326,6 @@ $(function () {
                                     })
                                 }
                             }, false)
-                        },
-                        error: function (unlike) {
-                            //liked = false
                         }
                     })
 
@@ -391,4 +393,5 @@ $(function () {
         }
     })
 })
+
 

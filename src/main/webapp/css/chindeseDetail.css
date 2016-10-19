@@ -170,6 +170,7 @@ li.mld_Ulli {
     float: left;
     margin-right: 3.75rem;
     position: relative;
+    width: 100%;
 }
 
 .ul01_flet {
@@ -192,6 +193,8 @@ li.mld_Ulli {
 .ul01_imgzan {
     width: 1.0625rem;
     height: 1.0625rem;
+    position: relative;
+    top: 0.09375rem;
 }
 .ul01_imgzan_ {
     width: 1.0625rem;

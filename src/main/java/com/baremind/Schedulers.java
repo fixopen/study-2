@@ -1,5 +1,7 @@
 package com.baremind;
 
+import com.baremind.data.Image;
+import com.baremind.data.ProblemOption;
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -91,7 +93,27 @@ public class Schedulers {
                 }
                 return result;
             });
-            r = Response.ok(new Gson().toJson(schedulers)).build();
+            ArrayList<Scheduler> a2 = new ArrayList<>();
+            ArrayList<Scheduler> a1 = new ArrayList<>();
+            ArrayList<Scheduler> a = new ArrayList<>();
+            for (Scheduler scheduler : schedulers) {
+                if (scheduler.getState() == 2) {
+                    a2.add(scheduler);
+                }
+                if (scheduler.getState() == 1) {
+                    a1.add(scheduler);
+                }
+                if (scheduler.getState() == 0) {
+                    a.add(scheduler);
+                }
+            }
+            ArrayList<Scheduler> result = new ArrayList<>();
+            result.addAll(a1);
+            result.addAll(a2);
+            result.addAll(a);
+
+            //left.getYear() - right.getYear(), left.getWeek() - right.getWeek(), left.getDay() - right.getDay()
+            r = Response.ok(new Gson().toJson(result)).build();
         }
         return r;
     }
