@@ -35,7 +35,7 @@
 <template id="video-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a href="${cdnLink}">
+            <a href="${directLink}">
                 <img src="${cover}" alt="">
                 <div class="video-list-mask">
                         <span class="live-radio">
@@ -173,7 +173,7 @@
 <template id="featured-video-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a href="${cdnLink}">
+            <a href="wait-play.html">
                 <img src="${cover}" alt="">
                 <div class="video-list-mask">
                         <span class="live-radio">
@@ -248,6 +248,7 @@
     var state = {
         container: document.getElementById('videoList')
     }
+
     if (state == 0) {
         course.type = 'passed'
     } else if (state == 1) {
@@ -255,15 +256,20 @@
     } else {
         course.type = 'featured'
     }
-
     var refreshCourseState = function () {
         var now = new Date()
         for (var i = 0; i < course.length; ++i) {
+            var ET = moment().year(course[i].year).week(course[i].week).day(course[i].day).hour(18).minute(30).second(0)
+            var ST = moment().year(course[i].year).week(course[i].week).day(course[i].day).hour(18).minute(0).second(0)
             course[i].type = 'passed'
-            if (course[i].endTime > now) {
+            if (ET > now) {
+                //content[i].endTimecontent[i].startTime
                 course[i].type = 'current'
-                if (course[i].startTime > now) {
+                if ( ST> now) {
                     course[i].type = 'featured'
+//                    if(course[i].endTime<now){
+//                        course[i].type='passed'
+//                    }
                 }
             }
         }
