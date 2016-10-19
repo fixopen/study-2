@@ -115,12 +115,17 @@
 <template id="content-text-template">
     <p class="mulu_dp">${content}</p>
 </template>
+<template id="content-imagetext-template">
+    <p class="mulu_dp">${content}
+        <img src="${href}" style="width:40px;height: 40px;vertical-align:middle">
+    </p>
+</template>
 <template id="content-pingyincontent-template">
     <div style="margin-left: 100px;" id="pycontent"></div>
 </template>
 <template id="content-pinyin-template">
     <ruby >
-        <p>${content}</p>
+        <rb>${content}</rb>
         <rt>${pinyin}</rt>
     </ruby>
 </template>

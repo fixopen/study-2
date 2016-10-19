@@ -50,7 +50,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                   // alert(JSON.stringify(data))
+                   //alert(JSON.stringify(data))
                     for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i]
                         p.options[0].title = 'A'
@@ -76,6 +76,7 @@ $(function () {
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
+                            {type: 'imageText', templateId: 'content-imagetext-template'},
                             // {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
