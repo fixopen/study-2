@@ -9,6 +9,9 @@ $(function () {
         function submit(e) {
             var textarea=document.getElementById('textarea');
             var value=textarea.value;
+            if(value.length<1){
+                return false;
+            }
             textarea.value='';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
@@ -19,7 +22,6 @@ $(function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    alert(JSON.stringify(data))
                     location.reload();
                 }
             })
@@ -378,7 +380,7 @@ $(function () {
                             async: false,
                             data: data,
                             success: function (data) {
-                                alert(JSON.stringify(data))
+                                //alert(JSON.stringify(data))
                             }
                         })
                     };

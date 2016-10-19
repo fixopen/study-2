@@ -67,6 +67,7 @@ public class ProblemOptions {
                     problemOption.setName(content);
                     problemOption.setImageId(imageText.getId());
                     problemOption.setProblemId(problemId);
+                   // problemOption.setOrder();
                     JPAEntry.genericPost(problemOption);
                    result = Response.ok(new Gson().toJson(problemOption)).build();
                 } else {
@@ -144,6 +145,11 @@ public class ProblemOptions {
                 Long problemId = problemsOption.getProblemId();
                 if (problemId != null) {
                     existmedia.setProblemId(problemId);
+                }
+
+                Long order = problemsOption.getOrder();
+                if (order != 0) {
+                    existmedia.setOrder(order);
                 }
 
                 JPAEntry.genericPut(existmedia);

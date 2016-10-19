@@ -8,6 +8,7 @@
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait">
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="/css/global.css">
@@ -26,7 +27,6 @@
     <!-- main -->
     <div class="rain-main">
         <ul class="video-list" id="videoList"></ul>
-
         <div class="pullUp">
             <span class="pullUpLabel">本周课程已结束，请关注下周课程！</span>
         </div>
@@ -35,21 +35,23 @@
 <template id="video-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a href="javascript:void(0)">
-                <img src="images/kcdh1.jpg" alt="">
+            <a href="${cdnLink}">
+                <img src="${cover}" alt="">
                 <div class="video-list-mask">
-								<span class="live-radio">
-									<img src="images/zb-live.png" alt="">
-								</span>
+                        <span class="live-radio">
+                            <img src="../img/zb-live.png" alt="">
+                            <!--图片会随着具体情况改变-->
+                        </span>
                     <div class="play-btn">
-                        <img src="images/live-play.png" alt="">
+                        <img src="../img/live-play.png" alt="">
+                        <!--图片会随着具体情况改变-->
                     </div>
                     <div class="course-box">
                         <h3 class="live-title">
-                            第<span>1</span>讲
+                            <span>${title}</span>
                         </h3>
                         <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法
+                                 onmouseout=this.start()>${description}
                         </marquee>
                     </div>
                 </div>
@@ -57,58 +59,43 @@
         </div>
         <div class="course-intro">
             <div class="course-intro-in">
-                <div class="course-speaker">
-                    <div class="fl">
-                        已播放<i>10</i>分钟&nbsp;
-                        <i>赵老师</i>主讲<br>
-                        <i>121</i>人正在听
-                    </div>
-                    <div class="fr">
-                        <div>一年级</div>
-                        <div class="course-detail-btn">
-                            课程详情<br>
-                            <img src="images/xiala-btn.png" alt="">
-                        </div>
+                <div class="course-time course-speaker">
+                    <i>${year}年${month}月${day}日</i>&nbsp;
+                    <!--时间需要服务器自己计算-->
+                    <i>${startTime}</i>开讲
+                    <span class="fr">${grade}</span>
+                </div>
+                <div class="tear-course course-speaker">
+                    <div class="fl"><i>${teacher}</i>老师主讲</div>
+                    <div class="course-detail-btn fr">
+                        课程详情<br>
+                        <img src="../img/xiala-btn.png" alt="">
                     </div>
                 </div>
                 <div class="course-detail">
                     <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
+                        <img src="../img/abc.png" alt="">
                         课程简介
                     </h3>
-                    <p>一、汉语拼音</p>
-                    <p class="tim2">
-                        1.读准汉语拼音的声母、韵母、声调认读的音节。
-                    </p>
-                    <p class="tim2">
-                        2.能默写声母、韵母并抄写音节，上写得正确整。
-                    </p>
-                    <p>二、识字、写字</p>
-                    <p class="tim2">
-                        1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-                    </p>
-                    <p class="tim2">
-                        2.能借助汉语拼音解字义。
-                    </p>
+                    <p class="tim2">${description}</p>
 
                     <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
+                        <img src="../img/zjr_btn.png" alt="">
                         主讲人简介
                     </h3>
-                    <p class="tim2"> 董
-                        霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+                    <p class="tim2">${teacherDescription}</p>
 
                     <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
+                        <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>2016-03-11 10:22:33</p>
+                    <p>${startTime}</p>
 
-                    <h3 class="sml-tit brief4">
-                        <img src="images/cksc_btn.png" alt="">
-                        课程时长
-                    </h3>
-                    <p>30分钟</p>
+                    <!--<h3 class="sml-tit brief4">-->
+                    <!--<img src="../img/cksc_btn.png" alt="">-->
+                    <!--课程时长-->
+                    <!--</h3>-->
+                    <!--<p>${courseDuration}</p>-->
                 </div>
             </div>
         </div>
@@ -117,21 +104,23 @@
 <template id="passed-video-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a href="javascript:void(0)">
-                <img src="images/kcdh2.jpg" alt="">
+            <a href="${cdnLink}">
+                <img src="${cover}" alt="">
                 <div class="video-list-mask">
-								<span class="live-radio">
-									<img src="images/zb-wait.png" alt="">
-								</span>
+                        <span class="live-radio">
+                            <img src="../img/zb-lu.png" alt="">
+                            <!--图片会随着具体情况改变-->
+                        </span>
                     <div class="play-btn">
-                        <img src="images/wait-play.png" alt="">
+                        <img src="../img/lu-play.png" alt="">
+                        <!--图片会随着具体情况改变-->
                     </div>
                     <div class="course-box">
                         <h3 class="live-title">
-                            第<span>1</span>讲
+                            <span>${title}</span>
                         </h3>
                         <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法
+                                 onmouseout=this.start()>${description}
                         </marquee>
                     </div>
                 </div>
@@ -139,58 +128,43 @@
         </div>
         <div class="course-intro">
             <div class="course-intro-in">
-                <div class="course-speaker">
-                    <div class="fl">
-                        已播放<i>10</i>分钟&nbsp;
-                        <i>赵老师</i>主讲<br>
-                        <i>121</i>人正在听
-                    </div>
-                    <div class="fr">
-                        <div>一年级</div>
-                        <div class="course-detail-btn">
-                            课程详情<br>
-                            <img src="images/xiala-btn.png" alt="">
-                        </div>
+                <div class="course-time course-speaker">
+                    <i>${year}年${month}月${day}日</i>&nbsp;
+                    <!--时间需要服务器自己计算-->
+                    <i>${startTime}</i>开讲
+                    <span class="fr">${grade}</span>
+                </div>
+                <div class="tear-course course-speaker">
+                    <div class="fl"><i>${teacher}</i>老师主讲</div>
+                    <div class="course-detail-btn fr">
+                        课程详情<br>
+                        <img src="../img/xiala-btn.png" alt="">
                     </div>
                 </div>
                 <div class="course-detail">
                     <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
+                        <img src="../img/abc.png" alt="">
                         课程简介
                     </h3>
-                    <p>一、汉语拼音</p>
-                    <p class="tim2">
-                        1.读准汉语拼音的声母、韵母、声调认读的音节。
-                    </p>
-                    <p class="tim2">
-                        2.能默写声母、韵母并抄写音节，上写得正确整。
-                    </p>
-                    <p>二、识字、写字</p>
-                    <p class="tim2">
-                        1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-                    </p>
-                    <p class="tim2">
-                        2.能借助汉语拼音解字义。
-                    </p>
+                    <p class="tim2">${description}</p>
 
                     <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
+                        <img src="../img/zjr_btn.png" alt="">
                         主讲人简介
                     </h3>
-                    <p class="tim2"> 董
-                        霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+                    <p class="tim2">${teacherDescription}</p>
 
                     <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
+                        <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>2016-03-11 10:22:33</p>
+                    <p>${startTime}</p>
 
-                    <h3 class="sml-tit brief4">
-                        <img src="images/cksc_btn.png" alt="">
-                        课程时长
-                    </h3>
-                    <p>30分钟</p>
+                    <!--<h3 class="sml-tit brief4">-->
+                    <!--<img src="../img/cksc_btn.png" alt="">-->
+                    <!--课程时长-->
+                    <!--</h3>-->
+                    <!--<p>${courseDuration}</p>-->
                 </div>
             </div>
         </div>
@@ -199,21 +173,23 @@
 <template id="featured-video-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a href="javascript:void(0)">
-                <img src="images/kcdh3.jpg" alt="">
+            <a href="${cdnLink}">
+                <img src="${cover}" alt="">
                 <div class="video-list-mask">
-								<span class="live-radio">
-									<img src="images/zb-lu.png" alt="">
-								</span>
+                        <span class="live-radio">
+                            <img src="../img/zb-wait.png" alt="">
+                            <!--图片会随着具体情况改变-->
+                        </span>
                     <div class="play-btn">
-                        <img src="images/lu-play.png" alt="">
+                        <img src="../img/wait-play.png" alt="">
+                        <!--图片会随着具体情况改变-->
                     </div>
                     <div class="course-box">
                         <h3 class="live-title">
-                            第<span>1</span>讲
+                            <span>${title}</span>
                         </h3>
                         <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法
+                                 onmouseout=this.start()>${description}
                         </marquee>
                     </div>
                 </div>
@@ -221,305 +197,50 @@
         </div>
         <div class="course-intro">
             <div class="course-intro-in">
-                <div class="course-speaker">
-                    <div class="fl">
-                        已播放<i>10</i>分钟&nbsp;
-                        <i>赵老师</i>主讲<br>
-                        <i>121</i>人正在听
-                    </div>
-                    <div class="fr">
-                        <div>一年级</div>
-                        <div class="course-detail-btn">
-                            课程详情<br>
-                            <img src="images/xiala-btn.png" alt="">
-                        </div>
+                <div class="course-time course-speaker">
+                    <i>${year}年${month}月${day}日</i>&nbsp;
+                    <!--时间需要服务器自己计算-->
+                    <i>${startTime}</i>开讲
+                    <span class="fr">${grade}</span>
+                </div>
+                <div class="tear-course course-speaker">
+                    <div class="fl"><i>${teacher}</i>老师主讲</div>
+                    <div class="course-detail-btn fr">
+                        课程详情<br>
+                        <img src="../img/xiala-btn.png" alt="">
                     </div>
                 </div>
                 <div class="course-detail">
                     <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
+                        <img src="../img/abc.png" alt="">
                         课程简介
                     </h3>
-                    <p>一、汉语拼音</p>
-                    <p class="tim2">
-                        1.读准汉语拼音的声母、韵母、声调认读的音节。
-                    </p>
-                    <p class="tim2">
-                        2.能默写声母、韵母并抄写音节，上写得正确整。
-                    </p>
-                    <p>二、识字、写字</p>
-                    <p class="tim2">
-                        1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-                    </p>
-                    <p class="tim2">
-                        2.能借助汉语拼音解字义。
-                    </p>
+                    <p class="tim2">${description}</p>
 
                     <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
+                        <img src="../img/zjr_btn.png" alt="">
                         主讲人简介
                     </h3>
-                    <p class="tim2"> 董
-                        霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+                    <p class="tim2">${teacherDescription}</p>
 
                     <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
+                        <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>2016-03-11 10:22:33</p>
+                    <p>${startTime}</p>
 
                     <h3 class="sml-tit brief4">
-                        <img src="images/cksc_btn.png" alt="">
+                        <img src="../img/cksc_btn.png" alt="">
                         课程时长
                     </h3>
-                    <p>30分钟</p>
+                    <p>${duration}</p>
                 </div>
             </div>
         </div>
     </li>
 </template>
-<template id="garbage">
-    <li class="video-list-li">
-        <div class="video-list-play">
-            <a href="javascript:void(0)">
-                <img src="images/kcdh1.jpg" alt="">
-                <div class="video-list-mask">
-								<span class="live-radio">
-									<img src="images/zb-live.png" alt="">
-								</span>
-                    <div class="play-btn">
-                        <img src="images/live-play.png" alt="">
-                    </div>
-                    <div class="course-box">
-                        <h3 class="live-title">
-                            第<span>1</span>讲
-                        </h3>
-                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法
-                        </marquee>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="course-intro">
-            <div class="course-intro-in">
-                <div class="course-speaker">
-                    <div class="fl">
-                        已播放<i>10</i>分钟&nbsp;
-                        <i>赵老师</i>主讲<br>
-                        <i>121</i>人正在听
-                    </div>
-                    <div class="fr">
-                        <div>一年级</div>
-                        <div class="course-detail-btn">
-                            课程详情<br>
-                            <img src="images/xiala-btn.png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="course-detail">
-                    <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p>一、汉语拼音</p>
-                    <p class="tim2">
-                        1.读准汉语拼音的声母、韵母、声调认读的音节。
-                    </p>
-                    <p class="tim2">
-                        2.能默写声母、韵母并抄写音节，上写得正确整。
-                    </p>
-                    <p>二、识字、写字</p>
-                    <p class="tim2">
-                        1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-                    </p>
-                    <p class="tim2">
-                        2.能借助汉语拼音解字义。
-                    </p>
 
-                    <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2"> 董
-                        霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>2016-03-11 10:22:33</p>
-
-                    <h3 class="sml-tit brief4">
-                        <img src="images/cksc_btn.png" alt="">
-                        课程时长
-                    </h3>
-                    <p>30分钟</p>
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="video-list-li">
-        <div class="video-list-play">
-            <a href="javascript:void(0)">
-                <img src="images/kcdh2.jpg" alt="">
-                <div class="video-list-mask">
-								<span class="live-radio">
-									<img src="images/zb-wait.png" alt="">
-								</span>
-                    <div class="play-btn">
-                        <img src="images/wait-play.png" alt="">
-                    </div>
-                    <div class="course-box">
-                        <h3 class="live-title">
-                            第<span>1</span>讲
-                        </h3>
-                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法
-                        </marquee>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="course-intro">
-            <div class="course-intro-in">
-                <div class="course-speaker">
-                    <div class="fl">
-                        已播放<i>10</i>分钟&nbsp;
-                        <i>赵老师</i>主讲<br>
-                        <i>121</i>人正在听
-                    </div>
-                    <div class="fr">
-                        <div>一年级</div>
-                        <div class="course-detail-btn">
-                            课程详情<br>
-                            <img src="images/xiala-btn.png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="course-detail">
-                    <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p>一、汉语拼音</p>
-                    <p class="tim2">
-                        1.读准汉语拼音的声母、韵母、声调认读的音节。
-                    </p>
-                    <p class="tim2">
-                        2.能默写声母、韵母并抄写音节，上写得正确整。
-                    </p>
-                    <p>二、识字、写字</p>
-                    <p class="tim2">
-                        1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-                    </p>
-                    <p class="tim2">
-                        2.能借助汉语拼音解字义。
-                    </p>
-
-                    <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2"> 董
-                        霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>2016-03-11 10:22:33</p>
-
-                    <h3 class="sml-tit brief4">
-                        <img src="images/cksc_btn.png" alt="">
-                        课程时长
-                    </h3>
-                    <p>30分钟</p>
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="video-list-li">
-        <div class="video-list-play">
-            <a href="javascript:void(0)">
-                <img src="images/kcdh3.jpg" alt="">
-                <div class="video-list-mask">
-								<span class="live-radio">
-									<img src="images/zb-lu.png" alt="">
-								</span>
-                    <div class="play-btn">
-                        <img src="images/lu-play.png" alt="">
-                    </div>
-                    <div class="course-box">
-                        <h3 class="live-title">
-                            第<span>1</span>讲
-                        </h3>
-                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法
-                        </marquee>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="course-intro">
-            <div class="course-intro-in">
-                <div class="course-speaker">
-                    <div class="fl">
-                        已播放<i>10</i>分钟&nbsp;
-                        <i>赵老师</i>主讲<br>
-                        <i>121</i>人正在听
-                    </div>
-                    <div class="fr">
-                        <div>一年级</div>
-                        <div class="course-detail-btn">
-                            课程详情<br>
-                            <img src="images/xiala-btn.png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="course-detail">
-                    <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p>一、汉语拼音</p>
-                    <p class="tim2">
-                        1.读准汉语拼音的声母、韵母、声调认读的音节。
-                    </p>
-                    <p class="tim2">
-                        2.能默写声母、韵母并抄写音节，上写得正确整。
-                    </p>
-                    <p>二、识字、写字</p>
-                    <p class="tim2">
-                        1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-                    </p>
-                    <p class="tim2">
-                        2.能借助汉语拼音解字义。
-                    </p>
-
-                    <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2"> 董
-                        霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>2016-03-11 10:22:33</p>
-
-                    <h3 class="sml-tit brief4">
-                        <img src="images/cksc_btn.png" alt="">
-                        课程时长
-                    </h3>
-                    <p>30分钟</p>
-                </div>
-            </div>
-        </div>
-    </li>
-</template>
+<script src="/moment/moment.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script type="text/javascript">
@@ -527,10 +248,17 @@
     var state = {
         container: document.getElementById('videoList')
     }
+    if (state == 0) {
+        course.type = 'passed'
+    } else if (state == 1) {
+        course.type = 'current'
+    } else {
+        course.type = 'featured'
+    }
 
-    var refreshCourseState = function() {
+    var refreshCourseState = function () {
         var now = new Date()
-        for (var i =  0; i < course.length; ++i) {
+        for (var i = 0; i < course.length; ++i) {
             course[i].type = 'passed'
             if (course[i].endTime > now) {
                 course[i].type = 'current'
@@ -544,8 +272,17 @@
     curseDetailTap(); //点击“课程详情”
     g.ajaxProcess('GET', '/api/schedulers', [
         {name: 'Accept', value: 'application/json'}
-    ], null, function(result) {
+    ], null, function (result) {
         course = result.data
+        for (var i = 0; i < course.length; ++i) {
+            var m = moment().year(course[i].year).week(course[i].week).day(course[i].day)
+            course[i].month = m.month()
+            course[i].day = m.date() - 1
+            if (course[i].grade == 20) {
+                course[i].grade = '低年级'
+            } else course[i].grade = '高年级'
+
+        }
         refreshCourseState()
         proc({
             containerId: 'videoList',
@@ -565,7 +302,7 @@
                 }
             ]
         })
-        setInterval(function() {
+        setInterval(function () {
             refreshCourseState()
             state.container.innerHTML = ''
             proc({
@@ -588,6 +325,8 @@
             })
         }, 60 * 1000)
     })
+    subjectTab();//课程选项卡
+    curseDetailTap(); //点击“课程详情”
 </script>
 </body>
 </html>
