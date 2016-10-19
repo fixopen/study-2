@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -80,13 +81,12 @@ public class Volumes {
             if (!knowledgePoints.isEmpty()) {
                 List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
                 for (KnowledgePoint kp : knowledgePoints) {
-                    String statsContent = "SELECT count(*) FROM knowledge_point_content_maps WHERE knowledge_point_id = " + kp.getId().toString();
+                    String statsContent = "SELECT count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + kp.getId().toString();
                     EntityManager em = JPAEntry.getEntityManager();
-                    Query cq = em.createNativeQuery(statsContent);
-                    List qc = cq.getResultList();
+                    TypedQuery<Long> cq = em.createQuery(statsContent, Long.class);
+                    List<Long> qc = cq.getResultList();
                     if (qc.size() == 1) {
-                        Object[] tempObj = (Object[]) qc.get(0);
-                        Long c = (Long) tempObj[0];
+                        Long c = qc.get(0);
                         if (c == 0) {
                             continue;
                         }
