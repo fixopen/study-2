@@ -159,6 +159,7 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
                 List<String> pinyinIds = new ArrayList<>();
+                List<String> optionIds = new ArrayList<>();
 
 
                 for (KnowledgePointContentMap item : maps) {
@@ -268,17 +269,15 @@ public class KnowledgePoints {
                                     pm.put("type", "单选题");
                                 }
 
-
                                 //获取每一个选项 option
-                                ArrayList apm = new ArrayList();
-                                for(ProblemOption option : problemOptions) {
+                                ArrayList<Map<String, Object>> apm = new ArrayList();
+                                for (ProblemOption option : problemOptions) {
                                     Map<String, Object> opm = new HashMap<>();
-                                    opm.put("optionId",option.getId());
-                                    opm.put("name",option.getName());
-                                    List<String> optionIds = new ArrayList<>();
-                                   if(option.getImageId() != null){
+                                    opm.put("optionId", option.getId());
+                                    opm.put("name", option.getName());
+                                    if (option.getImageId() != null) {
                                         Image storePath = JPAEntry.getObject(Image.class, "id", option.getImageId());
-                                            opm.put("optionImagePath", storePath.getStorePath());
+                                        opm.put("optionImagePath", storePath.getStorePath());
                                     }
                                     apm.add(opm);
                                 }
@@ -287,7 +286,7 @@ public class KnowledgePoints {
                                 pm.put("title", problemItem.getTitle());
                                 pm.put("storePath", problemItem.getStorePath());
                                 pm.put("videoUrl", problemItem.getVideoUrl());
-                                if(problemItem.getVideoImage() !=null){
+                                if (problemItem.getVideoImage() != null) {
                                     Image im = JPAEntry.getObject(Image.class, "id", problemItem.getVideoImage());
                                     pm.put("videoImage", im.getStorePath());
                                 }

@@ -47,6 +47,15 @@ public class Scheduler {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "cover")
+    private String cover;
+
+    @Column(name = "cdn_link")
+    private String cdnLink;
+
+    @Column(name = "direct_link")
+    private String directLink;
+
     @Column(name = "description")
     private String description;
 
@@ -55,6 +64,30 @@ public class Scheduler {
 
     @Column(name = "teacher_description")
     private String teacherDescription;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public String getCdnLink() {
+        return cdnLink;
+    }
+
+    public void setCdnLink(String cdnLink) {
+        this.cdnLink = cdnLink;
+    }
+
+    public String getDirectLink() {
+        return directLink;
+    }
+
+    public void setDirectLink(String directLink) {
+        this.directLink = directLink;
+    }
 
     public Long getId() {
         return id;

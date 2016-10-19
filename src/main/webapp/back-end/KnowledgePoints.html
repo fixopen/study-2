@@ -795,7 +795,7 @@
                             var option1 = options.querySelector('[data-li="' + li + '"]')
                             var option1content = option1.querySelector('[data-type="content"]').value
                             var option1image = option1.querySelector('[data-type="imageo"]')
-                            if(option1image.files.length != 0){
+                            if (option1image.files.length != 0) {
                                 var formData = new FormData();
                                 formData.append("file", option1image.files[0]);
                                 var request = new XMLHttpRequest();
@@ -817,13 +817,13 @@
                                                 dataType: "json",
                                                 async: false,
                                                 contentType: "application/json; charset=utf-8",
-                                                success: function(data){
+                                                success: function (data) {
                                                     alert("添加成功")
                                                     /*currentSelectedElement.dataset.id = returndata.id
                                                      alert(JSON.stringify(option))*/
 
                                                 },
-                                                error: function(data){
+                                                error: function (data) {
                                                     alert(JSON.stringify(data))
                                                     alert("添加失败")
                                                 }
@@ -833,7 +833,7 @@
                                 }
                                 request.open("POST", "/api/medias");
                                 request.send(formData);
-                            }else{
+                            } else {
                                 imageId = null;
                                 let option = {
                                     problemId: problemIdDD,
@@ -848,43 +848,43 @@
                                     dataType: "json",
                                     async: false,
                                     contentType: "application/json; charset=utf-8",
-                                    success: function(data){
+                                    success: function (data) {
                                         alert("添加成功")
                                         /*currentSelectedElement.dataset.id = returndata.id
                                          alert(JSON.stringify(option))*/
 
                                     },
-                                    error: function(data){
+                                    error: function (data) {
                                         alert(JSON.stringify(data))
                                         alert("添加失败")
                                     }
                                 })
                             }
 
-                           /* let option = {
-                                problemId: problemIdDD,
-                                imageId: imageId,
-                                name: option1content
-                            }
+                            /* let option = {
+                             problemId: problemIdDD,
+                             imageId: imageId,
+                             name: option1content
+                             }
 
-                            $.ajax({
-                                type: "post",
-                                url: "/api/problem-options",
-                                data: JSON.stringify(option),
-                                dataType: "json",
-                                async: false,
-                                contentType: "application/json; charset=utf-8",
-                                success: function(data){
-                                    alert("添加成功")
-                                    /!*currentSelectedElement.dataset.id = returndata.id
-                                     alert(JSON.stringify(option))*!/
+                             $.ajax({
+                             type: "post",
+                             url: "/api/problem-options",
+                             data: JSON.stringify(option),
+                             dataType: "json",
+                             async: false,
+                             contentType: "application/json; charset=utf-8",
+                             success: function(data){
+                             alert("添加成功")
+                             /!*currentSelectedElement.dataset.id = returndata.id
+                             alert(JSON.stringify(option))*!/
 
-                                },
-                                error: function(data){
-                                    alert(JSON.stringify(data))
-                                    alert("添加失败")
-                                }
-                            })*/
+                             },
+                             error: function(data){
+                             alert(JSON.stringify(data))
+                             alert("添加失败")
+                             }
+                             })*/
 
 
                         }
@@ -920,12 +920,12 @@
          /*currentSelectedElement.dataset.id = returndata.id
          alert(JSON.stringify(option))
 
-            },
-            error: function(data){
-        alert(JSON.stringify(data))
-        alert("添加失败")
-    }
-    })
+         },
+         error: function(data){
+         alert(JSON.stringify(data))
+         alert("添加失败")
+         }
+         })
          }*/
         let imageTextProcess = function (typeName, typevalue, postProcess) {
             var formData = new FormData();
@@ -1045,13 +1045,13 @@
                                 submitFile('image', function (returndata) {
                                     let imagePath = returndata.storePath
                                     if (currentSelectedElement.querySelector('[data-type="videoImg"]').files.length == 0) {
-                                         returndata = null;
-                                        problemProcess(returndata,imagePath)
+                                        returndata = null;
+                                        problemProcess(returndata, imagePath)
 
                                     } else {
 
                                         submitFile('videoImg', function (returndata) {
-                                            problemProcess(returndata,imagePath)
+                                            problemProcess(returndata, imagePath)
                                         })
                                     }
                                 })

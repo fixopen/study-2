@@ -1,14 +1,12 @@
 package com.baremind;
 
 import com.baremind.data.ImageText;
-import com.baremind.data.Log;
 import com.baremind.data.ProblemOption;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -53,7 +51,7 @@ public class ProblemOptions {
                     String problem = request.getParameter("problemId");
                     /*problem = new String(problemId.getBytes("ISO-8859-1"), "UTF-8");*/
                     /*Long problemId = (Long)*/
-                        Long problemId = Long.parseLong(problem);
+                    Long problemId = Long.parseLong(problem);
                     ImageText imageText = new ImageText();
                     imageText.setId(IdGenerator.getNewId());
                     imageText.setExt(postfix);
@@ -75,10 +73,7 @@ public class ProblemOptions {
                     result = Response.status(415).build();
                     //上传图片的格式不正确
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ServletException e) {
-
+            } catch (IOException | ServletException e) {
                 e.printStackTrace();
             }
         }
@@ -160,16 +155,13 @@ public class ProblemOptions {
 
     @DELETE
     @Path("{id}")
-    public Response deleteLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response deleteOption(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            Log l = JPAEntry.getObject(Log.class, "id", id);
-            if (l != null) {
-                EntityManager em = JPAEntry.getEntityManager();
-                em.getTransaction().begin();
-                em.remove(l);
-                em.getTransaction().commit();
+            ProblemOption po = JPAEntry.getObject(ProblemOption.class, "id", id);
+            if (po != null) {
+                JPAEntry.genericDelete(po);
                 result = Response.ok(200).build();
             }
         }

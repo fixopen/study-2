@@ -1,15 +1,11 @@
 package com.baremind;
 
-import com.baremind.data.KnowledgePoint;
 import com.baremind.data.KnowledgePointContentMap;
-import com.baremind.data.Log;
-import com.baremind.data.ProblemOption;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
-import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -123,10 +119,7 @@ public class KnowledgePointContentMaps {
             KnowledgePointContentMap knowledgePointContentMapse = JPAEntry.getObject(KnowledgePointContentMap.class, "id", id);
             /*KnowledgePointContentMap po = JPAEntry.getObject(KnowledgePointContentMap.class, "object_id", object_id);*/
             if (knowledgePointContentMapse != null) {
-                EntityManager em = JPAEntry.getEntityManager();
-                em.getTransaction().begin();
-                em.remove(knowledgePointContentMapse);
-                em.getTransaction().commit();
+                JPAEntry.genericDelete(knowledgePointContentMapse);
                 result = Response.ok(200).build();
             }
         }
