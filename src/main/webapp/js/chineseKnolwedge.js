@@ -4,7 +4,7 @@
         data: {title: g.getUrlParameter('volume')},
         containerId: 'title'
     })
-    let volumeId = parseInt(g.getUrlParameter('volumeId'));
+    var volumeId = parseInt(g.getUrlParameter('volumeId'));
     $.ajax({
         type: "get",
         // url: 'api/knowledge-points?filter=' + JSON.stringify({

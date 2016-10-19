@@ -202,6 +202,7 @@ public class KnowledgePoints {
                 List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
 
                 List<PinyinText> pinyinTextObject = getList(em, pinyinIds, PinyinText.class);
+
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
                 List<Object> orderedQuotes = new ArrayList<>();
@@ -330,6 +331,7 @@ public class KnowledgePoints {
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
+                /*totalResult.put("pinyins", orderedPinyins);*/
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");

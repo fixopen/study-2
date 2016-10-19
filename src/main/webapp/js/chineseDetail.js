@@ -50,7 +50,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                   alert(JSON.stringify(data))
+                   //alert(JSON.stringify(data))
                     for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i]
                         p.options[0].title = 'A'
@@ -393,4 +393,5 @@ $(function () {
         }
     })
 })
+
 
