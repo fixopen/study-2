@@ -81,7 +81,7 @@ public class Volumes {
             if (!knowledgePoints.isEmpty()) {
                 List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
                 for (KnowledgePoint kp : knowledgePoints) {
-                    String statsContent = "SELECT count(m) FROM knowledgePointContentMap m WHERE m.knowledgePointId = " + kp.getId().toString();
+                    String statsContent = "SELECT count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + kp.getId().toString();
                     EntityManager em = JPAEntry.getEntityManager();
                     TypedQuery<Long> cq = em.createQuery(statsContent, Long.class);
                     List<Long> qc = cq.getResultList();

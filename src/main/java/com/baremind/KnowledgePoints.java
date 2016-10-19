@@ -146,7 +146,7 @@ public class KnowledgePoints {
                 JPAEntry.log(JPAEntry.getLoginId(sessionId), "read", "knowledge-point", id);
 
                 Map<String, Object> conditions = new HashMap<>();
-                conditions.put("KnowledgePointId", id);
+                conditions.put("knowledgePointId", id);
 
                 Map<String, String> orders = new HashMap<>();
                 orders.put("order", "ASC");
