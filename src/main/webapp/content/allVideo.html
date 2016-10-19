@@ -77,7 +77,7 @@
                         <img src="../img/abc.png" alt="">
                         课程简介
                     </h3>
-                    <p data-ext-point="detailList"></p>
+                    <p class="tim2">${description}</p>
 
                     <h3 class="sml-tit brief2">
                         <img src="../img/zjr_btn.png" alt="">
@@ -92,8 +92,8 @@
                     <p>${startTime}</p>
 
                     <!--<h3 class="sml-tit brief4">-->
-                        <!--<img src="../img/cksc_btn.png" alt="">-->
-                        <!--课程时长-->
+                    <!--<img src="../img/cksc_btn.png" alt="">-->
+                    <!--课程时长-->
                     <!--</h3>-->
                     <!--<p>${courseDuration}</p>-->
                 </div>
@@ -146,7 +146,7 @@
                         <img src="../img/abc.png" alt="">
                         课程简介
                     </h3>
-                    <p data-ext-point="detailList"></p>
+                    <p class="tim2">${description}</p>
 
                     <h3 class="sml-tit brief2">
                         <img src="../img/zjr_btn.png" alt="">
@@ -230,8 +230,8 @@
                     <p>${startTime}</p>
 
                     <h3 class="sml-tit brief4">
-                    <img src="../img/cksc_btn.png" alt="">
-                    课程时长
+                        <img src="../img/cksc_btn.png" alt="">
+                        课程时长
                     </h3>
                     <p>${duration}</p>
                 </div>
@@ -248,15 +248,17 @@
     var state = {
         container: document.getElementById('videoList')
     }
-    if(state==0){
-        course.type='passed'
-    }else if(state==1){
-        course.type='current'
-    }else {course.type='featured'}
+    if (state == 0) {
+        course.type = 'passed'
+    } else if (state == 1) {
+        course.type = 'current'
+    } else {
+        course.type = 'featured'
+    }
 
-    var refreshCourseState = function() {
+    var refreshCourseState = function () {
         var now = new Date()
-        for (var i =  0; i < course.length; ++i) {
+        for (var i = 0; i < course.length; ++i) {
             course[i].type = 'passed'
             if (course[i].endTime > now) {
                 course[i].type = 'current'
@@ -270,15 +272,15 @@
     curseDetailTap(); //点击“课程详情”
     g.ajaxProcess('GET', '/api/schedulers', [
         {name: 'Accept', value: 'application/json'}
-    ], null, function(result) {
+    ], null, function (result) {
         course = result.data
         for (var i = 0; i < course.length; ++i) {
             var m = moment().year(course[i].year).week(course[i].week).day(course[i].day)
             course[i].month = m.month()
-            course[i].day = m.date()
-            if(course[i].grade==20){
-                course[i].grade='低年级'
-            }else course[i].grade='高年级'
+            course[i].day = m.date() - 1
+            if (course[i].grade == 20) {
+                course[i].grade = '低年级'
+            } else course[i].grade = '高年级'
 
         }
         refreshCourseState()
@@ -300,7 +302,7 @@
                 }
             ]
         })
-        setInterval(function() {
+        setInterval(function () {
             refreshCourseState()
             state.container.innerHTML = ''
             proc({
@@ -323,6 +325,8 @@
             })
         }, 60 * 1000)
     })
+    subjectTab();//课程选项卡
+    curseDetailTap(); //点击“课程详情”
 </script>
 </body>
 </html>
