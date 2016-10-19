@@ -4,6 +4,7 @@ import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
+import com.google.gson.GsonBuilder;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -63,6 +64,18 @@ public class Schedulers {
         if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
+         /*   GsonBuilder b = new GsonBuilder();
+            b.registerTypeAdapter(Time.class, new MyTypeAdapter(){
+
+            });
+*//*
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Calendar c1 = Calendar.getInstance();
+            c1.setTime(new Date());
+            String sss = format.format(c1.getTime());
+*//*
+*/
             result = Response.ok(new Gson().toJson(schedulers)).build();
         }
         return result;

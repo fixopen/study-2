@@ -278,7 +278,11 @@ public class KnowledgePoints {
                                         Image storePath = JPAEntry.getObject(Image.class, "id", option.getImageId());
                                         opm.put("optionImagePath", storePath.getStorePath());
                                     }
+                                   /* Map<String, String> orders = new HashMap<>();
+                                    orders.put("order", "ASC");
+                                    List<ProblemOption> problemOptions1 = JPAEntry.getList(ProblemOption.class, filterObject, orders);*/
                                     apm.add(opm);
+
                                 }
                                 pm.put("options", apm);
                                 pm.put("standardAnswers", problemStandardAnswers);

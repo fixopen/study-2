@@ -83,6 +83,7 @@
     <li data-type="option">
         <input type="file" data-type="imageo"/>
         <input type="text" data-type="content"/>
+        <input type="text" data-type="order"/>
     </li>
 </template>
 <template id="imageText-template">
@@ -748,6 +749,80 @@
             request.send(formData);
         }
 
+        let problemoption = function(li,problemIdDD,option1content){
+            var options = currentSelectedElement.querySelector('[data-type="options"]')
+            var option1 = options.querySelector('[data-li="' + li + '"]')
+            var option1content = option1.querySelector('[data-type="content"]').value
+            var option1order = option1.querySelector('[data-type="order"]').value
+            var option1image = option1.querySelector('[data-type="imageo"]')
+
+            var formData = new FormData();
+            formData.append("file", option1image.files[0]);
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function () {
+                if (request.readyState === 4) {
+                    if (request.status == 200) {
+                        returndata = JSON.parse(request.responseText)
+                        imageId = returndata.id
+                        addproblemoption(problemIdDD,imageId,option1content,option1order)
+                        /*let option = {
+                            problemId: problemIdDD,
+                            imageId: imageId,
+                            name: option1content
+                        }
+
+                        $.ajax({
+                            type: "post",
+                            url: "/api/problem-options",
+                            data: JSON.stringify(option),
+                            dataType: "json",
+                            async: false,
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                alert("添加成功")
+                                /!*currentSelectedElement.dataset.id = returndata.id
+                                 alert(JSON.stringify(option))*!/
+
+                            },
+                            error: function (data) {
+                                alert(JSON.stringify(data))
+                                alert("添加失败")
+                            }
+                        })*/
+                    }
+                }
+            }
+            request.open("POST", "/api/medias");
+            request.send(formData);
+        }
+
+        let addproblemoption = function(problemIdDD,imageId,option1content,option1order){
+            let option = {
+                problemId: problemIdDD,
+                imageId: imageId,
+                name: option1content,
+                order: option1order
+            }
+
+            $.ajax({
+                type: "post",
+                url: "/api/problem-options",
+                data: JSON.stringify(option),
+                dataType: "json",
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    alert("添加成功")
+                    /*currentSelectedElement.dataset.id = returndata.id
+                     alert(JSON.stringify(option))*/
+
+                },
+                error: function (data) {
+                    alert(JSON.stringify(data))
+                    alert("添加失败")
+                }
+            })
+        }
         let problemProcess = function (returndata, imagePath) {
             var data = {
                 videoUrl: currentSelectedElement.querySelector('[data-type="video"]').value,
@@ -794,9 +869,11 @@
                             var options = currentSelectedElement.querySelector('[data-type="options"]')
                             var option1 = options.querySelector('[data-li="' + li + '"]')
                             var option1content = option1.querySelector('[data-type="content"]').value
+                            var option1order = option1.querySelector('[data-type="order"]').value
                             var option1image = option1.querySelector('[data-type="imageo"]')
                             if (option1image.files.length != 0) {
-                                var formData = new FormData();
+                                problemoption(li,problemIdDD,option1content)
+                                /*var formData = new FormData();
                                 formData.append("file", option1image.files[0]);
                                 var request = new XMLHttpRequest();
                                 request.onreadystatechange = function () {
@@ -819,8 +896,8 @@
                                                 contentType: "application/json; charset=utf-8",
                                                 success: function (data) {
                                                     alert("添加成功")
-                                                    /*currentSelectedElement.dataset.id = returndata.id
-                                                     alert(JSON.stringify(option))*/
+                                                    /!*currentSelectedElement.dataset.id = returndata.id
+                                                     alert(JSON.stringify(option))*!/
 
                                                 },
                                                 error: function (data) {
@@ -832,10 +909,10 @@
                                     }
                                 }
                                 request.open("POST", "/api/medias");
-                                request.send(formData);
+                                request.send(formData);*/
                             } else {
                                 imageId = null;
-                                let option = {
+                                /*let option = {
                                     problemId: problemIdDD,
                                     imageId: imageId,
                                     name: option1content
@@ -850,15 +927,16 @@
                                     contentType: "application/json; charset=utf-8",
                                     success: function (data) {
                                         alert("添加成功")
-                                        /*currentSelectedElement.dataset.id = returndata.id
-                                         alert(JSON.stringify(option))*/
+                                        /!*currentSelectedElement.dataset.id = returndata.id
+                                         alert(JSON.stringify(option))*!/
 
                                     },
                                     error: function (data) {
                                         alert(JSON.stringify(data))
                                         alert("添加失败")
                                     }
-                                })
+                                })*/
+                                addproblemoption(problemIdDD,imageId,option1content,option1order)
                             }
 
                             /* let option = {

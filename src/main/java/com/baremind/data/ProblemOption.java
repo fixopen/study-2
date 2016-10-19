@@ -21,8 +21,19 @@ public class ProblemOption {
     @Column(name = "image_id")
     private Long imageId;
 
+    @Column(name = "\"order\"")
+    private Long order;
+
     @Column(name = "name")
     private String name;
+
+    public Long getOrder() {
+        return order;
+    }
+
+    public void setOrder(Long order) {
+        this.order = order;
+    }
 
     public Long getImageId() {
         return imageId;
