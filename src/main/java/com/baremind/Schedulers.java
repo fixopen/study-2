@@ -1,7 +1,5 @@
 package com.baremind;
 
-import com.baremind.data.Image;
-import com.baremind.data.ProblemOption;
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -107,10 +105,10 @@ public class Schedulers {
                     a.add(scheduler);
                 }
             }
-            ArrayList<Scheduler> result = new ArrayList<>();
-            result.addAll(a1);
-            result.addAll(a2);
-            result.addAll(a);
+            ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
+            result.add(a1);
+            result.add(a2);
+            result.add(a);
 
             //left.getYear() - right.getYear(), left.getWeek() - right.getWeek(), left.getDay() - right.getDay()
             r = Response.ok(new Gson().toJson(result)).build();

@@ -313,13 +313,7 @@ public class Users {
                     result = Response.status(520).build();
                     break;
             }
-            EntityManager em = JPAEntry.getNewEntityManager();
-            em.getTransaction().begin();
-            for (ValidationCode validationCode : validationCodes) {
-                em.remove(validationCode);
-            }
-            em.getTransaction().commit();
-            em.close();
+            JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", phoneNumber);
             //Logs.insert(id, "log", logId, "remove validation codes");
         }
         return result;
