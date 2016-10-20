@@ -270,11 +270,9 @@ public class Users {
                                 User errorUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
                                 if (errorUser != null) {
                                     if (errorUser.getId().longValue() != user.getId().longValue()) {
-                                        WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", errorUser.getId());
+                                        JPAEntry.genericDelete(WechatUser.class, "userId", errorUser.getId());
+                                        JPAEntry.genericDelete(User.class, "id", errorUser.getId());
                                         EntityManager em = JPAEntry.getNewEntityManager();
-                                        em.getTransaction().begin();
-                                        em.remove(errorWechatUser);
-                                        em.remove(errorUser);
                                         List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", errorUser.getId());
                                         for (Card card : bindedCards) {
                                             card.setUserId(id);
@@ -282,7 +280,7 @@ public class Users {
                                         }
                                         em.getTransaction().commit();
                                         em.close();
-                                        Logs.insert(errorUser.getId(), "move-card", errorWechatUser.getId(), phoneNumber);
+                                        Logs.insert(errorUser.getId(), "move-card", errorUser.getId(), phoneNumber);
                                     }
                                 }
 

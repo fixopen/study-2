@@ -112,14 +112,12 @@ public class KnowledgePointContentMaps {
 
     @DELETE
     @Path("{id}")
-    public Response deleteLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response deleteKnowledgePoint(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            KnowledgePointContentMap knowledgePointContentMapse = JPAEntry.getObject(KnowledgePointContentMap.class, "id", id);
-            /*KnowledgePointContentMap po = JPAEntry.getObject(KnowledgePointContentMap.class, "object_id", object_id);*/
-            if (knowledgePointContentMapse != null) {
-                JPAEntry.genericDelete(knowledgePointContentMapse);
+            long count = JPAEntry.genericDelete(KnowledgePointContentMap.class, "id", id);
+            if (count > 0) {
                 result = Response.ok(200).build();
             }
         }
