@@ -26,7 +26,12 @@
 <div class="wrap">
     <!-- main -->
     <div class="rain-main">
-        <ul class="video-list" id="videoList"></ul>
+        <header class="rain-header">
+            <a href="../curriculumSchedule.html" class="rain-header-a"></a>
+        </header>
+        <ul class="video-list" id="currentVideoList"></ul>
+        <ul class="video-list" id="futureVideoList"></ul>
+        <ul class="video-list" id="passedVideoList"></ul>
         <div class="pullUp">
             <span class="pullUpLabel">本周课程已结束，请关注下周课程！</span>
         </div>
@@ -170,7 +175,7 @@
         </div>
     </li>
 </template>
-<template id="featured-video-template">
+<template id="future-video-template">
     <li class="video-list-li">
         <div class="video-list-play">
             <a href="wait-play.html">
@@ -246,91 +251,96 @@
 <script type="text/javascript">
     var course = []
     var state = {
-        container: document.getElementById('videoList')
+        currentContainer: document.getElementById('currentVideoList'),
+        futureContainer: document.getElementById('futureVideoList'),
+        passedContainer: document.getElementById('passedVideoList'),
+        currentTemplate: getTemplate('video-template'),
+        futureTemplate: getTemplate('future-video-template'),
+        passedTemplate: getTemplate('passed-video-template')
     }
 
-    if (state == 0) {
-        course.type = 'passed'
-    } else if (state == 1) {
-        course.type = 'current'
-    } else {
-        course.type = 'featured'
-    }
     var refreshCourseState = function () {
         var now = new Date()
-        for (var i = 0; i < course.length; ++i) {
-            var ET = moment().year(course[i].year).week(course[i].week).day(course[i].day).hour(18).minute(30).second(0)
-            var ST = moment().year(course[i].year).week(course[i].week).day(course[i].day).hour(18).minute(0).second(0)
-            course[i].type = 'passed'
-            if (ET > now) {
-                //content[i].endTimecontent[i].startTime
-                course[i].type = 'current'
-                if ( ST> now) {
-                    course[i].type = 'featured'
-//                    if(course[i].endTime<now){
-//                        course[i].type='passed'
-//                    }
-                }
+        for (var i = 0; i < course[0].length; ++i) {
+            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(18).minute(30).second(0)
+            course[0][i].type = 'current'
+            if (ET.valueOf() < now.getTime( )) {
+                course[0][i].type = 'passed'
+                course[2].unshift(course[0][i])//向数组的开头添加一个或更多元素，并返回新的长度
+                course[0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
+            }
+        }
+        for (var i = 0; i < course[1].length; ++i) {
+            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(18).minute(0).second(0)
+            course[1][i].type = 'future'
+            if (ST.valueOf() < now.getTime( )) {
+                course[1][i].type = 'current'
+                course[0].unshift(course[1][i])
+                course[1].splice(i, 1)
             }
         }
     }
 
-    curseDetailTap(); //点击“课程详情”
     g.ajaxProcess('GET', '/api/schedulers', [
         {name: 'Accept', value: 'application/json'}
     ], null, function (result) {
         course = result.data
         for (var i = 0; i < course.length; ++i) {
-            var m = moment().year(course[i].year).week(course[i].week).day(course[i].day)
-            course[i].month = m.month()
-            course[i].day = m.date() - 1
-            if (course[i].grade == 20) {
-                course[i].grade = '低年级'
-            } else course[i].grade = '高年级'
-
-        }
-        refreshCourseState()
-        proc({
-            containerId: 'videoList',
-            data: course,
-            alterTemplates: [
-                {
-                    type: 'passed',
-                    templateId: 'passed-video-template'
-                },
-                {
-                    type: 'current',
-                    templateId: 'video-template'
-                },
-                {
-                    type: 'featured',
-                    templateId: 'featured-video-template'
+            for (var j = 0; j < course[i].length; ++j) {
+                var m = moment().year(course[i][j].year).week(course[i][j].week).day(course[i][j].day)
+                course[i][j].month = m.month()
+                course[i][j].day = m.date() - 1
+                if (course[i][j].grade == 20) {
+                    course[i][j].grade = '低年级'
+                } else {
+                    course[i][j].grade = '高年级'
                 }
-            ]
+                switch (i) {
+                    case 0:
+                        course[i][j].type = 'current'
+                        break
+                    case 1:
+                        course[i][j].type = 'future'
+                        break
+                    case 2:
+                        course[i][j].type = 'passed'
+                        break
+                }
+            }
+        }
+        proc({
+            container: state.currentContainer,
+            data: course[0],
+            template: state.currentTemplate
         })
+        proc({
+            container: state.futureContainer,
+            data: course[1],
+            template: state.futureTemplate
+        })
+        proc({
+            container: state.passedContainer,
+            data: course[2],
+            template: state.passedTemplate
+        })
+
         setInterval(function () {
             refreshCourseState()
-            state.container.innerHTML = ''
+            state.currentContainer.innerHTML = ''
             proc({
-                containerId: 'videoList',
-                data: course,
-                alterTemplates: [
-                    {
-                        type: 'passed',
-                        templateId: 'passed-video-template'
-                    },
-                    {
-                        type: 'current',
-                        templateId: 'video-template'
-                    },
-                    {
-                        type: 'featured',
-                        templateId: 'featured-video-template'
-                    }
-                ]
+                container: state.currentContainer,
+                data: course[0],
+                template: state.currentTemplate
+            })
+            state.futureContainer.innerHTML = ''
+            proc({
+                container: state.futureContainer,
+                data: course[1],
+                template: state.futureTemplate
             })
         }, 60 * 1000)
     })
+
     subjectTab();//课程选项卡
     curseDetailTap(); //点击“课程详情”
 </script>
