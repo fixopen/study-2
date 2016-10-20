@@ -120,12 +120,17 @@ public class JPAEntry {
         em.close();
     }
 
-    public static void genericDelete(Object o) {
+    public static long genericDelete(Class type, String name, Object value) {
         EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
-        em.remove(o);
+        List os = JPAEntry.getList(type, name, value);
+        long result = os.size();
+        for (Object o : os) {
+            em.remove(o);
+        }
         em.getTransaction().commit();
         em.close();
+        return result;
     }
 
     public static boolean isLogining(String sessionId) {

@@ -1,12 +1,9 @@
 package com.baremind;
 
-import com.baremind.data.Image;
-import com.baremind.data.ProblemOption;
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.GsonBuilder;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -66,37 +63,37 @@ public class Schedulers {
         if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-                Collections.sort(schedulers, (left, right) -> {
-                    int result = 0;
-                    if (left.getYear() > right.getYear()) {
+            //schedulers.remove(0);
+            Collections.sort(schedulers, (left, right) -> {
+                int result = 0;
+                if (left.getYear() > right.getYear()) {
+                    result = -1;
+                } else if (left.getYear() < right.getYear()) {
+                    result = 1;
+                } else {
+                    if (left.getWeek() > right.getWeek()) {
                         result = -1;
-                    } else if (left.getYear() < right.getYear()) {
+                    } else if (left.getWeek() < right.getWeek()) {
                         result = 1;
                     } else {
-                        if (left.getWeek() > right.getWeek()) {
+                        if (left.getDay() > right.getDay()) {
                             result = -1;
-                        } else if (left.getWeek() < right.getWeek()) {
+                        } else if (left.getDay() < right.getDay()) {
                             result = 1;
                         } else {
-                            if (left.getDay() > right.getDay()) {
+                            if (left.getStartTime().getTime() > right.getStartTime().getTime()) {
                                 result = -1;
-                            } else if (left.getDay() < right.getDay()) {
+                            } else if (left.getStartTime().getTime() < right.getStartTime().getTime()) {
                                 result = 1;
-                            } else {
-                                if (left.getStartTime().getTime() > right.getStartTime().getTime()) {
-                                    result = -1;
-                                } else if (left.getStartTime().getTime() < right.getStartTime().getTime()) {
-                                    result = 1;
-                                }
                             }
                         }
                     }
-                    return result;
-                });
-                ArrayList a2 = new ArrayList();
-                ArrayList a1 = new ArrayList();
-                ArrayList a  =  new  ArrayList();
-                ArrayList AA  =  new  ArrayList();
+                }
+                return result;
+            });
+            ArrayList<Scheduler> a2 = new ArrayList<>();
+            ArrayList<Scheduler> a1 = new ArrayList<>();
+            ArrayList<Scheduler> a = new ArrayList<>();
             for (Scheduler scheduler : schedulers) {
                 if (scheduler.getState() == 2) {
                     a2.add(scheduler);
@@ -108,14 +105,13 @@ public class Schedulers {
                     a.add(scheduler);
                 }
             }
-
-
-            AA.add(a1);
-            AA.add(a2);
-            AA.add(a);
+            ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
+            result.add(a1);
+            result.add(a2);
+            result.add(a);
 
             //left.getYear() - right.getYear(), left.getWeek() - right.getWeek(), left.getDay() - right.getDay()
-            r = Response.ok(new Gson().toJson(AA)).build();
+            r = Response.ok(new Gson().toJson(result)).build();
         }
         return r;
     }
