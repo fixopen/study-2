@@ -286,7 +286,6 @@
     ], null, function (result) {
         course = result.data
         for (var i = 0; i < course.length; ++i) {
-<<<<<<< HEAD
             for (var j = 0; j < course[i].length; ++j) {
                 var m = moment().year(course[i][j].year).week(course[i][j].week).day(course[i][j].day)
                 course[i][j].month = m.month()
@@ -308,16 +307,7 @@
                         break
                 }
             }
-=======
-            var m = moment().year(course[i].year).week(course[i].week).day(course[i].day)
-            var m = moment().year(course[i].year).week(course[i].week).day(course[i].day).hour(...).minute(...)
-            course[i].month = m.month()
-            course[i].day = m.date() - 1
-            if (course[i].grade == 20) {
-                course[i].grade = '低年级'
-            } else course[i].grade = '高年级'
 
->>>>>>> ce6bedc5cdb3880170a92a8242843dc9e837ec25
         }
         proc({
             container: state.currentContainer,
