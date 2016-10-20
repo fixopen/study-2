@@ -313,7 +313,7 @@ public class Users {
                     result = Response.status(520).build();
                     break;
             }
-            JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", phoneNumber);
+            //JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", phoneNumber);
             //Logs.insert(id, "log", logId, "remove validation codes");
         }
         return result;
