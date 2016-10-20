@@ -19,7 +19,7 @@ import java.util.*;
 @Path("schedulers")
 public class Schedulers {
     @GET //查询(获取本周)课表
-    @Path("this-week")
+    @Path("weeks/this-week")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getThisWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
@@ -39,7 +39,7 @@ public class Schedulers {
     }
 
     @GET //根据周查询课表
-    @Path("{week}")
+    @Path("weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @PathParam("week") Integer week) {
         Response result = Response.status(401).build();
@@ -56,9 +56,24 @@ public class Schedulers {
         return result;
     }
 
+    @GET //根据周查询课表
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
+            if (scheduler != null) {
+                result = Response.ok(new Gson().toJson(scheduler)).build();
+            }
+        }
+        return result;
+    }
+
     @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getSchedulers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response r = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
@@ -145,7 +160,7 @@ public class Schedulers {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Integer id, Scheduler scheduler) {
+    public Response updateScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Scheduler scheduler) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
