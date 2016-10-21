@@ -19,7 +19,7 @@ import java.util.*;
 
 @Path("schedulers")
 public class Schedulers {
-    @GET //查询(获取本周)课表
+    /*@GET //查询(获取本周)课表
     @Path("weeks/this-week")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getThisWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
@@ -39,7 +39,7 @@ public class Schedulers {
         }
         return result;
     }
-
+*/
     @GET //根据周查询课表
     @Path("weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,7 +53,8 @@ public class Schedulers {
             filterObject.put("year", year);
             filterObject.put("week", week);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-            Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
             result = Response.ok(gson.toJson(schedulers)).build();
         }
         return result;
@@ -68,7 +69,8 @@ public class Schedulers {
             result = Response.status(404).build();
             Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
             if (scheduler != null) {
-                Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
                 result = Response.ok(gson.toJson(scheduler)).build();
             }
         }
@@ -129,7 +131,8 @@ public class Schedulers {
             result.add(a2);
             result.add(a);
 
-            Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+            //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             r = Response.ok(gson.toJson(result)).build();
         }
         return r;
@@ -179,7 +182,7 @@ public class Schedulers {
                     existScheduler.setDuration(duration);
                 }
 
-                Time endTime = scheduler.getEndTime();
+                Date endTime = scheduler.getEndTime();
                 if (endTime != null) {
                     existScheduler.setEndTime(endTime);
                 }
@@ -189,7 +192,7 @@ public class Schedulers {
                     existScheduler.setGrade(grade);
                 }
 
-                Time startTime = scheduler.getStartTime();
+                Date startTime = scheduler.getStartTime();
                 if (startTime != null) {
                     existScheduler.setStartTime(startTime);
                 }
