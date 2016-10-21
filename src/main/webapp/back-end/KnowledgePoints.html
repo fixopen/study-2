@@ -883,38 +883,7 @@
             })
 
         }
-        /*let optionProcess = function(problemIdDD,iId, postProcess){
-         let option = {}
-         let name = currentSelectedElement.querySelector('[data-type="content"]').value
-         option.problemId=problemIdDD,
-         option.name = name,
-         option.imageId = iId
-         alert("执行字体块")
-         let option = {
-         problemId: problemIdDD,
-         imageId: imageId,
-         name: option1content
-         }
 
-         $.ajax({
-         type: "post",
-         url: "/api/problem-options",
-         data: JSON.stringify(option),
-         dataType: "json",
-         async: false,
-         contentType: "application/json; charset=utf-8",
-         success: function(data){
-         alert("添加成功")
-         /*currentSelectedElement.dataset.id = returndata.id
-         alert(JSON.stringify(option))
-
-         },
-         error: function(data){
-         alert(JSON.stringify(data))
-         alert("添加失败")
-         }
-         })
-         }*/
         let imageTextProcess = function (typeName, typevalue, postProcess) {
             var formData = new FormData();
             formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);
