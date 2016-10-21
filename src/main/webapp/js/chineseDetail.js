@@ -131,7 +131,7 @@ $(function () {
                     //             return element
                     //         };
                     //
-                    //         //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
+                    //         //<ruby><rb>c</rb><rt>pinyinValue</rt></ruby><span>c</span>
                     //         var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
                     //         var content=document.getElementById('content')
                     //         g.bind(e, {"pinyin": pinyinValue, "content":c})
@@ -227,7 +227,6 @@ $(function () {
                         return finded
                     }
 
-
                     var problemContainer = document.getElementById('problem')
                     problemContainer.addEventListener('click', function (e) {
                         //e.currentTarget == problemContainer
@@ -260,6 +259,61 @@ $(function () {
                             }
                         }
                     }, false)
+
+
+                    // //判断对错
+                    // //var problemContainer = document.getElementById('problem')
+                    // problemContainer.addEventListener('click', function (e) {
+                    //     for(var i=0;i<data.problems.length;i++){
+                    //         var clickedElement = e.target
+                    //         if (data.problems[i].type == '单选题') {
+                    //             if (clickedElement.hasClass('daan_quan')) {
+                    //                 clickedElement.addClass('daanLi_nowBai');
+                    //                 clickedElement.parentNode.addClass('daanLi_now');
+                    //                 clickedElement.parentNode.siblings().removeClass('daanLi_now');
+                    //                 clickedElement.parentNode.siblings().children('span').removeClass('daanLi_nowBai');
+                    //             }
+                    //         }else if(data.problems[i].type == '多选题'){
+                    //             if (clickedElement.hasClass('daan_quan')) {
+                    //                 clickedElement.addClass('daanLi_nowBai');
+                    //                 clickedElement.parentNode.addClass('daanLi_now');
+                    //             }
+                    //         }
+                    //     }
+                    //
+                    // }, false)
+                    //
+                    // var trueImage = document.createElement('img')
+                    // // trueImage.setAttribute('class', 'daan_error')
+                    // trueImage.setAttribute('src', 'img/true.png')
+                    // trueImage.setAttribute('alt', '')
+                    //
+                    // var falseImage = document.createElement('img')
+                    // // falseImage.setAttribute('class', 'daan_error')
+                    // falseImage.setAttribute('src', 'img/error.png')
+                    // falseImage.setAttribute('alt', '')
+                    //
+                    // var btn = document.getElementsByClassName('btnTrue');
+                    // btn.addEventListener('click', function (e) {
+                    //     var clickedElement = e.target;
+                    //     var problemId = clickedElement.parentNode.dataset.id;
+                    //     var problem = findProblem(problemId);
+                    //     if (problem) {
+                    //         var index = getIndex(clickedElement.textContent);
+                    //         var r = compareAnswer(index, problem.standardAnswers);
+                    //         if (r) {
+                    //             clickedElement.parentNode.addClass('daanLi_true');
+                    //             clickedElement.innerHTML = '';
+                    //             clickedElement.appendChild(trueImage);
+                    //         } else {
+                    //             clickedElement.parentNode.addClass('daanLi_error');
+                    //             clickedElement.innerHTML = '';
+                    //             clickedElement.appendChild(falseImage);
+                    //         }
+                    //     }
+                    // }, false)
+                    //
+                    //
 
                     //上一课下一课
                     var baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
@@ -393,5 +447,4 @@ $(function () {
         }
     })
 })
-
 
