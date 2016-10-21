@@ -55,15 +55,7 @@ public class Logs {
         filter.put("objectType", objectType);
         filter.put("objectId", objectId);
         filter.put("action", "like");
-        List<Log> logs = JPAEntry.getList(Log.class, filter);
-        EntityManager em = JPAEntry.getNewEntityManager();
-        em.getTransaction().begin();
-        for (Log log : logs) {
-            em.remove(log);
-        }
-        em.getTransaction().commit();
-        em.close();
-        return (long)logs.size();
+        return JPAEntry.genericDelete(Log.class, filter);
     }
 
     @GET
