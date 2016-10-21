@@ -15,7 +15,7 @@ public class TimeTypeAdapter implements JsonSerializer<java.sql.Time>{
     //private final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     public JsonElement serialize(Time time, Type type, JsonSerializationContext jsonSerializationContext) {
-        System.out.println("时间：" + time);
+        //System.out.println("时间：" + time);
         String TimeFormatAsString = time.toString();
         /*String TimeFormatAsString = "";*/
         //new JsonPrimitive(TimeFormatAsString)
