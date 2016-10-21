@@ -55,15 +55,7 @@ public class Logs {
         filter.put("objectType", objectType);
         filter.put("objectId", objectId);
         filter.put("action", "like");
-        List<Log> logs = JPAEntry.getList(Log.class, filter);
-        EntityManager em = JPAEntry.getNewEntityManager();
-        em.getTransaction().begin();
-        for (Log log : logs) {
-            em.remove(log);
-        }
-        em.getTransaction().commit();
-        em.close();
-        return (long)logs.size();
+        return JPAEntry.genericDelete(Log.class, filter);
     }
 
     @GET
@@ -174,14 +166,13 @@ public class Logs {
 
     @DELETE
     @Path("{id}")
-    public Response deleteLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response deleteLog(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            Log l = JPAEntry.getObject(Log.class, "id", id);
-            if (l != null) {
-                JPAEntry.genericDelete(l);
-                result = Response.ok(200).build();
+            long count = JPAEntry.genericDelete(Log.class, "id", id);
+            if (count > 0) {
+                result = Response.ok().build();
             }
         }
         return result;

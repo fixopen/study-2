@@ -765,30 +765,6 @@
                         returndata = JSON.parse(request.responseText)
                         imageId = returndata.id
                         addproblemoption(problemIdDD,imageId,option1content,option1order)
-                        /*let option = {
-                            problemId: problemIdDD,
-                            imageId: imageId,
-                            name: option1content
-                        }
-
-                        $.ajax({
-                            type: "post",
-                            url: "/api/problem-options",
-                            data: JSON.stringify(option),
-                            dataType: "json",
-                            async: false,
-                            contentType: "application/json; charset=utf-8",
-                            success: function (data) {
-                                alert("添加成功")
-                                /!*currentSelectedElement.dataset.id = returndata.id
-                                 alert(JSON.stringify(option))*!/
-
-                            },
-                            error: function (data) {
-                                alert(JSON.stringify(data))
-                                alert("添加失败")
-                            }
-                        })*/
                     }
                 }
             }
@@ -813,9 +789,6 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     alert("添加成功")
-                    /*currentSelectedElement.dataset.id = returndata.id
-                     alert(JSON.stringify(option))*/
-
                 },
                 error: function (data) {
                     alert(JSON.stringify(data))
@@ -860,151 +833,30 @@
                             contentType: "application/json; charset=utf-8"
 
                         })
+                    }
 
-                        let a = currentSelectedElement.querySelectorAll('[data-type="option"]')
-                        a = JSON.stringify(a.length)
+                    let a = currentSelectedElement.querySelectorAll('[data-type="option"]')
+                    a = JSON.stringify(a.length)
 
-                        for (let i = 0; i < a; ++i) {
-                            let li = i + 1;
-                            var options = currentSelectedElement.querySelector('[data-type="options"]')
-                            var option1 = options.querySelector('[data-li="' + li + '"]')
-                            var option1content = option1.querySelector('[data-type="content"]').value
-                            var option1order = option1.querySelector('[data-type="order"]').value
-                            var option1image = option1.querySelector('[data-type="imageo"]')
-                            if (option1image.files.length != 0) {
-                                problemoption(li,problemIdDD,option1content)
-                                /*var formData = new FormData();
-                                formData.append("file", option1image.files[0]);
-                                var request = new XMLHttpRequest();
-                                request.onreadystatechange = function () {
-                                    if (request.readyState === 4) {
-                                        if (request.status == 200) {
-                                            returndata = JSON.parse(request.responseText)
-                                            imageId = returndata.id
-                                            let option = {
-                                                problemId: problemIdDD,
-                                                imageId: imageId,
-                                                name: option1content
-                                            }
-
-                                            $.ajax({
-                                                type: "post",
-                                                url: "/api/problem-options",
-                                                data: JSON.stringify(option),
-                                                dataType: "json",
-                                                async: false,
-                                                contentType: "application/json; charset=utf-8",
-                                                success: function (data) {
-                                                    alert("添加成功")
-                                                    /!*currentSelectedElement.dataset.id = returndata.id
-                                                     alert(JSON.stringify(option))*!/
-
-                                                },
-                                                error: function (data) {
-                                                    alert(JSON.stringify(data))
-                                                    alert("添加失败")
-                                                }
-                                            })
-                                        }
-                                    }
-                                }
-                                request.open("POST", "/api/medias");
-                                request.send(formData);*/
-                            } else {
-                                imageId = null;
-                                /*let option = {
-                                    problemId: problemIdDD,
-                                    imageId: imageId,
-                                    name: option1content
-                                }
-
-                                $.ajax({
-                                    type: "post",
-                                    url: "/api/problem-options",
-                                    data: JSON.stringify(option),
-                                    dataType: "json",
-                                    async: false,
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (data) {
-                                        alert("添加成功")
-                                        /!*currentSelectedElement.dataset.id = returndata.id
-                                         alert(JSON.stringify(option))*!/
-
-                                    },
-                                    error: function (data) {
-                                        alert(JSON.stringify(data))
-                                        alert("添加失败")
-                                    }
-                                })*/
-                                addproblemoption(problemIdDD,imageId,option1content,option1order)
-                            }
-
-                            /* let option = {
-                             problemId: problemIdDD,
-                             imageId: imageId,
-                             name: option1content
-                             }
-
-                             $.ajax({
-                             type: "post",
-                             url: "/api/problem-options",
-                             data: JSON.stringify(option),
-                             dataType: "json",
-                             async: false,
-                             contentType: "application/json; charset=utf-8",
-                             success: function(data){
-                             alert("添加成功")
-                             /!*currentSelectedElement.dataset.id = returndata.id
-                             alert(JSON.stringify(option))*!/
-
-                             },
-                             error: function(data){
-                             alert(JSON.stringify(data))
-                             alert("添加失败")
-                             }
-                             })*/
-
-
+                    for (let i = 0; i < a; ++i) {
+                        let li = i + 1;
+                        var options = currentSelectedElement.querySelector('[data-type="options"]')
+                        var option1 = options.querySelector('[data-li="' + li + '"]')
+                        var option1content = option1.querySelector('[data-type="content"]').value
+                        var option1order = option1.querySelector('[data-type="order"]').value
+                        var option1image = option1.querySelector('[data-type="imageo"]')
+                        if (option1image.files.length != 0) {
+                            problemoption(li,problemIdDD,option1content)
+                        } else {
+                            imageId = null;
+                            addproblemoption(problemIdDD,imageId,option1content,option1order)
                         }
-
-
                     }
                 }
             })
 
         }
-        /*let optionProcess = function(problemIdDD,iId, postProcess){
-         let option = {}
-         let name = currentSelectedElement.querySelector('[data-type="content"]').value
-         option.problemId=problemIdDD,
-         option.name = name,
-         option.imageId = iId
-         alert("执行字体块")
-         let option = {
-         problemId: problemIdDD,
-         imageId: imageId,
-         name: option1content
-         }
 
-         $.ajax({
-         type: "post",
-         url: "/api/problem-options",
-         data: JSON.stringify(option),
-         dataType: "json",
-         async: false,
-         contentType: "application/json; charset=utf-8",
-         success: function(data){
-         alert("添加成功")
-         /*currentSelectedElement.dataset.id = returndata.id
-         alert(JSON.stringify(option))
-
-         },
-         error: function(data){
-         alert(JSON.stringify(data))
-         alert("添加失败")
-         }
-         })
-         }*/
         let imageTextProcess = function (typeName, typevalue, postProcess) {
             var formData = new FormData();
             formData.append("file", currentSelectedElement.querySelector('[data-type="image"]').files[0]);

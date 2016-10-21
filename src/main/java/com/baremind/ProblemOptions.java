@@ -165,10 +165,9 @@ public class ProblemOptions {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            ProblemOption po = JPAEntry.getObject(ProblemOption.class, "id", id);
-            if (po != null) {
-                JPAEntry.genericDelete(po);
-                result = Response.ok(200).build();
+            long count = JPAEntry.genericDelete(ProblemOption.class, "id", id);
+            if (count > 0) {
+                result = Response.ok().build();
             }
         }
         return result;

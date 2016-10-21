@@ -4,8 +4,8 @@ import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.GsonBuilder;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -20,7 +20,7 @@ import java.util.*;
 @Path("schedulers")
 public class Schedulers {
     @GET //查询(获取本周)课表
-    @Path("this-week")
+    @Path("weeks/this-week")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getThisWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
@@ -34,13 +34,14 @@ public class Schedulers {
             filterObject.put("year", year);
             filterObject.put("week", weekNo);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-            result = Response.ok(new Gson().toJson(schedulers)).build();
+            Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+            result = Response.ok(gson.toJson(schedulers)).build();
         }
         return result;
     }
 
     @GET //根据周查询课表
-    @Path("{week}")
+    @Path("weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @PathParam("week") Integer week) {
         Response result = Response.status(401).build();
@@ -57,28 +58,79 @@ public class Schedulers {
         return result;
     }
 
+    @GET //根据周查询课表
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
+            if (scheduler != null) {
+                result = Response.ok(new Gson().toJson(scheduler)).build();
+            }
+        }
+        return result;
+    }
+
     @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
+    public Response getSchedulers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        Response r = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-         /*   GsonBuilder b = new GsonBuilder();
-            b.registerTypeAdapter(Time.class, new MyTypeAdapter(){
-
+            //schedulers.remove(0);
+            Collections.sort(schedulers, (left, right) -> {
+                int result = 0;
+                if (left.getYear() > right.getYear()) {
+                    result = -1;
+                } else if (left.getYear() < right.getYear()) {
+                    result = 1;
+                } else {
+                    if (left.getWeek() > right.getWeek()) {
+                        result = -1;
+                    } else if (left.getWeek() < right.getWeek()) {
+                        result = 1;
+                    } else {
+                        if (left.getDay() > right.getDay()) {
+                            result = -1;
+                        } else if (left.getDay() < right.getDay()) {
+                            result = 1;
+                        } else {
+                            if (left.getStartTime().getTime() > right.getStartTime().getTime()) {
+                                result = -1;
+                            } else if (left.getStartTime().getTime() < right.getStartTime().getTime()) {
+                                result = 1;
+                            }
+                        }
+                    }
+                }
+                return result;
             });
-*//*
+            ArrayList<Scheduler> a2 = new ArrayList<>();
+            ArrayList<Scheduler> a1 = new ArrayList<>();
+            ArrayList<Scheduler> a = new ArrayList<>();
+            for (Scheduler scheduler : schedulers) {
+                if (scheduler.getState() == 2) {
+                    a2.add(scheduler);
+                }
+                if (scheduler.getState() == 1) {
+                    a1.add(scheduler);
+                }
+                if (scheduler.getState() == 0) {
+                    a.add(scheduler);
+                }
+            }
+            ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
+            result.add(a1);
+            result.add(a2);
+            result.add(a);
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Calendar c1 = Calendar.getInstance();
-            c1.setTime(new Date());
-            String sss = format.format(c1.getTime());
-*//*
-*/
-            result = Response.ok(new Gson().toJson(schedulers)).build();
+            //left.getYear() - right.getYear(), left.getWeek() - right.getWeek(), left.getDay() - right.getDay()
+            r = Response.ok(new Gson().toJson(result)).build();
         }
-        return result;
+        return r;
     }
 
     @GET //获取classroom-key
@@ -110,7 +162,7 @@ public class Schedulers {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Integer id, Scheduler scheduler) {
+    public Response updateScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Scheduler scheduler) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
@@ -142,9 +194,9 @@ public class Schedulers {
 
 
                 int state = scheduler.getState();
-                if (state != 0) {
+
                     existScheduler.setState(state);
-                }
+
 
                 int day = scheduler.getDay();
                 if (day != 0) {

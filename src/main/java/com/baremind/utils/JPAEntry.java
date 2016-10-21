@@ -66,6 +66,11 @@ public class JPAEntry {
     }
 
     public static <T> List<T> getList(Class<T> type, Map<String, Object> conditions, Map<String, String> orders) {
+        EntityManager em = getEntityManager();
+        return getList(em, type, conditions, orders);
+    }
+
+    public static <T> List<T> getList(EntityManager em, Class<T> type, Map<String, Object> conditions, Map<String, String> orders) {
         String jpql = "SELECT o FROM " + type.getSimpleName() + " o";
         boolean isFirst = true;
         if (conditions != null) {
@@ -91,7 +96,6 @@ public class JPAEntry {
                 jpql += "o." + order.getKey() + " " + order.getValue();
             }
         }
-        EntityManager em = getEntityManager();
         final TypedQuery<T> q = em.createQuery(jpql, type);
         if (conditions != null) {
             conditions.forEach((key, value) -> {
@@ -120,12 +124,23 @@ public class JPAEntry {
         em.close();
     }
 
-    public static void genericDelete(Object o) {
+    public static long genericDelete(Class type, Map<String, Object> conditions) {
         EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
-        em.remove(o);
+        List os = JPAEntry.getList(em, type, conditions, null);
+        long result = os.size();
+        for (Object o : os) {
+            em.remove(o);
+        }
         em.getTransaction().commit();
         em.close();
+        return result;
+    }
+
+    public static long genericDelete(Class type, String name, Object value) {
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put(name, value);
+        return genericDelete(type, conditions);
     }
 
     public static boolean isLogining(String sessionId) {

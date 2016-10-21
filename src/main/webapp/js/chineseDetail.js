@@ -320,7 +320,6 @@ $(function () {
                         }
                     }, false)
 
-
                     //上一课下一课
                     var baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
                     for (var i = 0; i < knowledgePointList.length; ++i) {
