@@ -270,17 +270,21 @@ public class Users {
                                 User errorUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
                                 if (errorUser != null) {
                                     if (errorUser.getId().longValue() != user.getId().longValue()) {
-                                        JPAEntry.genericDelete(WechatUser.class, "userId", errorUser.getId());
-                                        JPAEntry.genericDelete(User.class, "id", errorUser.getId());
-                                        EntityManager em = JPAEntry.getNewEntityManager();
-                                        List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", errorUser.getId());
-                                        for (Card card : bindedCards) {
-                                            card.setUserId(id);
-                                            em.merge(card);
+                                        WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
+                                        WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", errorUser.getId());
+                                        if (wechatUser.getOpenId().equals(errorWechatUser.getOpenId())) {
+                                            JPAEntry.genericDelete(WechatUser.class, "userId", errorUser.getId());
+                                            JPAEntry.genericDelete(User.class, "id", errorUser.getId());
+                                            EntityManager em = JPAEntry.getNewEntityManager();
+                                            List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", errorUser.getId());
+                                            for (Card card : bindedCards) {
+                                                card.setUserId(id);
+                                                em.merge(card);
+                                            }
+                                            em.getTransaction().commit();
+                                            em.close();
+                                            Logs.insert(errorUser.getId(), "move-card", errorUser.getId(), phoneNumber);
                                         }
-                                        em.getTransaction().commit();
-                                        em.close();
-                                        Logs.insert(errorUser.getId(), "move-card", errorUser.getId(), phoneNumber);
                                     }
                                 }
 
