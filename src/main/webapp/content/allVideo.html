@@ -289,7 +289,7 @@
             for (var j = 0; j < course[i].length; ++j) {
                 var m = moment().year(course[i][j].year).week(course[i][j].week).day(course[i][j].day)
                 course[i][j].month = m.month()
-                course[i][j].day = m.date() - 1
+                course[i]     [j].day = m.date() - 1
                 if (course[i][j].grade == 20) {
                     course[i][j].grade = '低年级'
                 } else {
