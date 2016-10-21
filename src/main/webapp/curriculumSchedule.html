@@ -95,71 +95,73 @@
             //alert(JSON.stringify(result))
             course = result
             for(var i = 0;i < course.length; ++i){
+                var startHour = parseInt(course[i].startTime.substr(0, 2))
                 switch (course[i].day) {
                     case 0:
-                        if (course[i].startTime < 11) {
+                        if (startHour < 11) {
                             courseTable[0][0].push(course[i])
-                        } else if (courseTable[i].startTime < 18) {
+                        } else if (startHour < 18) {
                             courseTable[0][1].push(course[i])
                         } else {
                             courseTable[0][2].push(course[i])
                         }
                         break
                     case 1:
-                        if (course[i].startTime < 11) {
+                        if (startHour < 11) {
                             courseTable[1][0].push(course[i])
-                        } else if (courseTable[i].startTime < 18) {
+                        } else if (startHour < 18) {
                             courseTable[1][1].push(course[i])
                         } else {
                             courseTable[1][2].push(course[i])
                         }
                         break
                     case 2:
-                        if (course[i].startTime < 11) {
+                        if (startHour < 11) {
                             courseTable[2][0].push(course[i])
-                        } else if (courseTable[i].startTime < 18) {
+                        } else if (startHour < 18) {
                             courseTable[2][1].push(course[i])
                         } else {
                             courseTable[2][2].push(course[i])
                         }
                         break
                     case 3:
-                        if (course[i].startTime < 11) {
+                        if (startHour < 11) {
                             courseTable[3][0].push(course[i])
-                        } else if (courseTable[i].startTime < 18) {
+                        } else if (startHour < 18) {
                             courseTable[3][1].push(course[i])
                         } else {
                             courseTable[3][2].push(course[i])
                         }
                         break
                     case 4:
-                        if (course[i].startTime < 11) {
+                        if (startHour < 11) {
                             courseTable[4][0].push(course[i])
-                        } else if (courseTable[i].startTime < 18) {
+                        } else if (startHour < 18) {
                             courseTable[4][1].push(course[i])
                         } else {
                             courseTable[4][2].push(course[i])
                         }
                         break
                     case 5:
-                        if (course[i].startTime < 11) {
+                        if (startHour < 11) {
                             courseTable[5][0].push(course[i])
-                        } else if (courseTable[i].startTime < 18) {
+                        } else if (startHour < 18) {
                             courseTable[5][1].push(course[i])
                         } else {
                             courseTable[5][2].push(course[i])
                         }
                         break
                     case 6:
-                        if (course[i].startTime < 11) {
+                        if (startHour < 11) {
                             courseTable[6][0].push(course[i])
-                        } else if (courseTable[i].startTime < 18) {
+                        } else if (startHour < 18) {
                             courseTable[6][1].push(course[i])
                         } else {
                             courseTable[6][2].push(course[i])
                         }
                         break
                 }
+
             }
             for (var i = 0; i < courseTable.length; ++i) {
                 for (var j = 0; j < courseTable[i].length; ++j) {
