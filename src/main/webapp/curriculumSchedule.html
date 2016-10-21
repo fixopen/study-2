@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Z-直播课-课程表</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait">
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/curriculumSchedule.css">
+    <script src="basic.js"></script>
+    <script src="jquery/jquery.min.js"></script>
+
+
+</head>
+<body>
+<div class="wrap">
+    <!-- main -->
+    <div class="rain-main">
+        <header class="timetable-hd"></header>
+        <!-- 课程表内容 -->
+        <table class="timetable-main">
+            <tr class="tableTitle">
+                <td></td>
+                <td>上午</td>
+                <td>下午</td>
+                <td>晚上</td>
+            </tr>
+            <tbody id="timetable" class="weekRoll">
+            <tr class="tableTitle">
+                <td>日</td>
+                <td id="cell21"></td>
+                <td id="cell22"></td>
+                <td id="cell23"></td>
+            </tr>
+            <tr class="tableTitle">
+                <td>一</td>
+                <td id="cell31"></td>
+                <td id="cell32"></td>
+                <td id="cell33"></td>
+            </tr>
+            <tr class="tableTitle">
+                <td>二</td>
+                <td id="cell41"></td>
+                <td id="cell42"></td>
+                <td id="cell43"></td>
+            </tr>
+            <tr class="tableTitle">
+                <td>三</td>
+                <td id="cell51"></td>
+                <td id="cell52"></td>
+                <td id="cell53"></td>
+            </tr>
+            <tr class="tableTitle">
+                <td>四</td>
+                <td id="cell61"></td>
+                <td id="cell62"></td>
+                <td id="cell63"></td>
+            </tr>
+            <tr class="tableTitle">
+                <td>五</td>
+                <td id="cell71"></td>
+                <td id="cell72"></td>
+                <td id="cell73"></td>
+            </tr>
+            <tr class="tableTitle">
+                <td>六</td>
+                <td id="cell11"></td>
+                <td id="cell12"></td>
+                <td id="cell13"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 固定底部 -->
+        <div class="timetable-bd"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var courseTable = [[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]]]
+    $.ajax({
+        type: "get",
+        url: '/api/schedulers/weeks/this-week',
+        dataType: "json",
+        success: function (result) {
+            alert(JSON.stringify(result))
+            course = result
+            for(var i = 0;i < course.length; ++i){
+                switch (course[i].day) {
+                    case 0:
+                        if (course[i].startTime < 11) {
+                            courseTable[0][0].push(course[i])
+                        } else if (courseTable[i].startTime < 18) {
+                            courseTable[0][1].push(course[i])
+                        } else {
+                            courseTable[0][2].push(course[i])
+                        }
+                        break
+                    case 1:
+                        if (course[i].startTime < 11) {
+                            courseTable[1][0].push(course[i])
+                        } else if (courseTable[i].startTime < 18) {
+                            courseTable[1][1].push(course[i])
+                        } else {
+                            courseTable[1][2].push(course[i])
+                        }
+                        break
+                    case 2:
+                        if (course[i].startTime < 11) {
+                            courseTable[2][0].push(course[i])
+                        } else if (courseTable[i].startTime < 18) {
+                            courseTable[2][1].push(course[i])
+                        } else {
+                            courseTable[2][2].push(course[i])
+                        }
+                        break
+                    case 3:
+                        if (course[i].startTime < 11) {
+                            courseTable[3][0].push(course[i])
+                        } else if (courseTable[i].startTime < 18) {
+                            courseTable[3][1].push(course[i])
+                        } else {
+                            courseTable[3][2].push(course[i])
+                        }
+                        break
+                    case 4:
+                        if (course[i].startTime < 11) {
+                            courseTable[4][0].push(course[i])
+                        } else if (courseTable[i].startTime < 18) {
+                            courseTable[4][1].push(course[i])
+                        } else {
+                            courseTable[4][2].push(course[i])
+                        }
+                        break
+                    case 5:
+                        if (course[i].startTime < 11) {
+                            courseTable[5][0].push(course[i])
+                        } else if (courseTable[i].startTime < 18) {
+                            courseTable[5][1].push(course[i])
+                        } else {
+                            courseTable[5][2].push(course[i])
+                        }
+                        break
+                    case 6:
+                        if (course[i].startTime < 11) {
+                            courseTable[6][0].push(course[i])
+                        } else if (courseTable[i].startTime < 18) {
+                            courseTable[6][1].push(course[i])
+                        } else {
+                            courseTable[6][2].push(course[i])
+                        }
+                        break
+                }
+            }
+            for (var i = 0; i < courseTable.length; ++i) {
+                for (var j = 0; j < courseTable[i].length; ++j) {
+                    var cell = document.getElementById('cell' + (i + 1) + (j + 1))
+                    for (var k = 0; k < courseTable[i][j].length; ++k) {
+                        var content = document.createElement('span')
+                        var c = document.createTextNode(courseTable[i][j][k].title + '(' +courseTable[i][j][k].startTime +'-'+ courseTable[i][j][k].endTime+')')
+                        content.appendChild(c)
+                        cell.appendChild(content)
+                    }
+                }
+            }
+        }
+    })
+//    $(function () {
+//        let data =
+//                [
+//            {
+//                week: '一',
+//                morning: [{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+//                afternoon: [{itemClass:'英语(8:00-10:00)'}],
+//                evening:[{itemClass:'英语(8:00-10:00)'}]
+//            },
+//            {
+//                week: '二',
+//                morning: [{itemClass:'英语(11:00-10:00)'}],
+//                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+//                evening:[{itemClass:'英语(11:00-10:00)'}]
+//            },
+//
+//            {
+//                week: '三',
+//                morning: [{itemClass:'英语(11:00-10:00)'}],
+//                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+//                evening:[{itemClass:'英语(11:00-10:00)'}]
+//            },
+//
+//            {
+//                week: '四',
+//                morning: [{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}],
+//                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+//                evening:[{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}]
+//            },
+//
+//            {
+//                week: '五',
+//                morning: [{itemClass:'英语(8:00-10:00)'}],
+//                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+//                evening:[{itemClass:'英语(8:00-10:00)'}]
+//            },
+//
+//            {
+//                week: '六',
+//                morning: [{itemClass:'英语(8:00-10:00)'}],
+//                afternoon: [{itemClass:'英语(8:00-10:00)'}],
+//                evening:[{itemClass:'英语(8:00-10:00)'}]
+//            },
+//            {
+//                week: '七',
+//                morning:[{itemClass:'英语(8:00-10:00)'}],
+//                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+//                evening:[{itemClass:'英语(8:00-10:00)'}]
+//
+//            }
+//        ]
+</script>
+
+</body>
+</html>
