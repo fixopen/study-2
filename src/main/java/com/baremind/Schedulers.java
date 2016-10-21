@@ -5,6 +5,7 @@ import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -33,11 +34,8 @@ public class Schedulers {
             filterObject.put("year", year);
             filterObject.put("week", weekNo);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-            //System.out.println("Hello="+new Gson().toJson(schedulers));
-           /* Gson gson = new GsonBuilder().setDateFormat("HH:mm:ss").registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter()).registerTypeAdapter(java.sql.Date.class, new SQLDateTypeAdapter()).create();
-            return gson.toJson(map);*/
-            //Gson gson = new GsonBuilder().setDateFormat("HH:mm:ss").create();
-            result = Response.ok(new Gson().toJson(schedulers)).build();
+            Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+            result = Response.ok(gson.toJson(schedulers)).build();
         }
         return result;
     }
