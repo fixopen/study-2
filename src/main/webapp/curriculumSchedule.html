@@ -33,16 +33,7 @@
                 <td>晚上</td>
             </tr>
             <tbody id="timetable" class="weekRoll">
-<<<<<<< HEAD
 
-=======
-            <tr class="tableTitle">
-                <td>日</td>
-                <td id="cell21"></td>
-                <td id="cell22"></td>
-                <td id="cell23"></td>
-            </tr>
->>>>>>> f0a6b1a1963e35633288c75a7ca26251e9794168
             <tr class="tableTitle">
                 <td>一</td>
                 <td id="cell31"></td>
@@ -79,15 +70,13 @@
                 <td id="cell12"></td>
                 <td id="cell13"></td>
             </tr>
-<<<<<<< HEAD
+
             <tr class="tableTitle">
                 <td>日</td>
                 <td id="cell21"></td>
                 <td id="cell22"></td>
                 <td id="cell23"></td>
             </tr>
-=======
->>>>>>> f0a6b1a1963e35633288c75a7ca26251e9794168
             </tbody>
         </table>
 
@@ -103,7 +92,7 @@
         url: '/api/schedulers/weeks/this-week',
         dataType: "json",
         success: function (result) {
-            alert(JSON.stringify(result))
+            //alert(JSON.stringify(result))
             course = result
             for(var i = 0;i < course.length; ++i){
                 switch (course[i].day) {
@@ -177,18 +166,11 @@
                     var cell = document.getElementById('cell' + (i + 1) + (j + 1))
                     for (var k = 0; k < courseTable[i][j].length; ++k) {
                         var content = document.createElement('span')
-<<<<<<< HEAD
-                        var c = document.createTextNode(courseTable[i][j][k].title + '('+courseTable[i][j][k].startTime +'-'+ courseTable[i][j][k].endTime+')')
-                        var br = document.createElement('br')
-                        content.appendChild(c)
-                        content.appendChild(br)
-=======
                         var c = document.createTextNode(courseTable[i][j][k].title + '(' +courseTable[i][j][k].startTime +'-'+ courseTable[i][j][k].endTime+')')
                         var br = document.createElement('br')
                         content.appendChild(c)
                         content.appendChild(br)
                         content.appendChild(c)
->>>>>>> f0a6b1a1963e35633288c75a7ca26251e9794168
                         cell.appendChild(content)
                     }
                 }
