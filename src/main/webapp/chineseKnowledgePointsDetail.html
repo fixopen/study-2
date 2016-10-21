@@ -155,13 +155,17 @@
             ${title}
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <a class="btnTrue" href="#">查看答案</a>
+        </div>
     </li>
 </template>
 <template id="problem-option-template">
     <li class="mld_daanLi">
         <span class="daan_quan">${title}</span>
-        <input type="radio" id="daan_s3A" class="daana" name="daan3">
-        <label for="daan_s3A">${name}</label>
+        <!--<input type="radio" id="daan_s3A" class="daana" name="daan3">-->
+        <!--<label for="daan_s3A">${name}</label>-->
+        <input  class="daana" name="daan3">${name}
     </li>
 </template>
 <template id="interaction-template">
@@ -203,29 +207,13 @@
         </li>
     </ul>
 </template>
+<template id="trueImage">
+    <img src="img/true.png" alt="">
+</template>
+<template id="falseImage">
+    <img src="img/error.png" alt="">
+</template>
 
-<!--<template id="comment-template">-->
-    <!--<li class="muluBn_center">-->
-        <!--<div class="row" data-id="${id}">-->
-            <!--<div class="col-xs-2 liuyan_li lion_01">-->
-                <!--<img src="${avatar}" alt="">-->
-            <!--</div>-->
-            <!--<div class="col-xs-9 liuyan_li lion_02 topUl topUl_top litop_fleft">-->
-                <!--<span>${name}</span>-->
-                <!--<div class="topUl_center tcmar_top">${content}</div>-->
-                <!--<div class="topUl_bottom tcmar_top">-->
-                    <!--<div class="litop_fleft">${createTime}</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="col-xs-1">-->
-                <!--<div class="litop_friht">-->
-                    <!--<img class="ul01_imgzan" src="img/zan.png">-->
-                    <!--<span class="ul01_count">${likeCount}</span>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</li>-->
-<!--</template>-->
 <script type="text/javascript" src="basic.js"></script>
 <script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="js/chineseDetail.js"></script>

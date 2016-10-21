@@ -131,7 +131,7 @@ $(function () {
                     //             return element
                     //         };
                     //
-                    //         //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
+                    //         //<ruby><rb>c</rb><rt>pinyinValue</rt></ruby><span>c</span>
                     //         var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
                     //         var content=document.getElementById('content')
                     //         g.bind(e, {"pinyin": pinyinValue, "content":c})
@@ -173,7 +173,7 @@ $(function () {
                         }
                     })
 
-                    //多选单选
+                    //多选单选样式
                     for(var i=0;i<data.problems.length;i++){
                         if (data.problems[i].type == '多选题') {
                             $('.addimg span').eq(i).removeClass('mld_liImg').addClass('mld_liImg_');
@@ -183,7 +183,7 @@ $(function () {
                     }
 
 
-                    //answers
+                    //判断对错
                     var findProblem = function (problemId) {
                         var problem = null
                         for (var i = 0; i < data.problems.length; ++i) {
@@ -195,26 +195,26 @@ $(function () {
                         return problem
                     }
 
-                    var getIndex = function (content) {
-                        var index = -1
-                        switch (content) {
-                            case 'A':
-                                index = 0
-                                break
-                            case 'B':
-                                index = 1
-                                break
-                            case 'C':
-                                index = 2
-                                break
-                            case 'D':
-                                index = 3
-                                break
-                            default:
-                                break
-                        }
-                        return index
-                    }
+                    // var getIndex = function (content) {
+                    //     var index = -1
+                    //     switch (content) {
+                    //         case 'A':
+                    //             index = 0
+                    //             break
+                    //         case 'B':
+                    //             index = 1
+                    //             break
+                    //         case 'C':
+                    //             index = 2
+                    //             break
+                    //         case 'D':
+                    //             index = 3
+                    //             break
+                    //         default:
+                    //             break
+                    //     }
+                    //     return index
+                    // }
 
                     var compareAnswer = function (index, standardAnswers) {
                         var finded = false
@@ -227,39 +227,99 @@ $(function () {
                         return finded
                     }
 
+                 //   var problemContainer = document.getElementById('problem')
+                    // problemContainer.addEventListener('click', function (e) {
+                    //     //e.currentTarget == problemContainer
+                    //     var clickedElement = e.target
+                    //     var trueImage = document.createElement('img')
+                    //     // trueImage.setAttribute('class', 'daan_error')
+                    //     trueImage.setAttribute('src', 'img/true.png')
+                    //     trueImage.setAttribute('alt', '')
+                    //
+                    //     var falseImage = document.createElement('img')
+                    //     // falseImage.setAttribute('class', 'daan_error')
+                    //     falseImage.setAttribute('src', 'img/error.png')
+                    //     falseImage.setAttribute('alt', '')
+                    //
+                    //     if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
+                    //         var problemId = clickedElement.parentNode.parentNode.dataset.id
+                    //         var problem = findProblem(problemId)
+                    //         if (problem) {
+                    //             var index = getIndex(clickedElement.textContent)
+                    //             var r = compareAnswer(index, problem.standardAnswers)
+                    //             if (r) {
+                    //                 clickedElement.parentNode.addClass('daanLi_true')
+                    //                 clickedElement.innerHTML = ''
+                    //                 clickedElement.appendChild(trueImage)
+                    //             } else {
+                    //                 clickedElement.parentNode.addClass('daanLi_error')
+                    //                 clickedElement.innerHTML = ''
+                    //                 clickedElement.appendChild(falseImage)
+                    //             }
+                    //         }
+                    //     }
+                    // }, false)
 
-                    var problemContainer = document.getElementById('problem')
+                    var falseImage=getTemplate('falseImage');
+                    var trueImage=getTemplate('trueImage');
+                    var problemContainer = document.getElementById('problem');
                     problemContainer.addEventListener('click', function (e) {
-                        //e.currentTarget == problemContainer
-                        var clickedElement = e.target
-                        var trueImage = document.createElement('img')
-                        // trueImage.setAttribute('class', 'daan_error')
-                        trueImage.setAttribute('src', 'img/true.png')
-                        trueImage.setAttribute('alt', '')
-
-                        var falseImage = document.createElement('img')
-                        // falseImage.setAttribute('class', 'daan_error')
-                        falseImage.setAttribute('src', 'img/error.png')
-                        falseImage.setAttribute('alt', '')
-
-                        if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            var problemId = clickedElement.parentNode.parentNode.dataset.id
-                            var problem = findProblem(problemId)
-                            if (problem) {
-                                var index = getIndex(clickedElement.textContent)
-                                var r = compareAnswer(index, problem.standardAnswers)
-                                if (r) {
-                                    clickedElement.parentNode.addClass('daanLi_true')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(trueImage)
-                                } else {
-                                    clickedElement.parentNode.addClass('daanLi_error')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(falseImage)
+                        var clickedElement = e.target;
+                        if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')) {
+                            var problemType = clickedElement.parentNode.parentNode.previousElementSibling.firstElementChild.textContent;
+                            var titleElement = clickedElement.previousElementSibling
+                            switch (problemType) {
+                                case '多选题':
+                                    if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected == true) {
+                                        titleElement.dataset.selected = false;
+                                        //
+                                        titleElement.removeClass('daanLi_nowBai');
+                                        titleElement.parentNode.removeClass('daanLi_now');
+                                    } else {
+                                        titleElement.dataset.selected = true;
+                                        //
+                                        titleElement.addClass('daanLi_nowBai');
+                                        titleElement.parentNode.addClass('daanLi_now');
+                                    }
+                                    break
+                                case '单选题':
+                                    var optionsContainer = clickedElement.parentNode.parentNode;
+                                    for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                        var option = optionsContainer.children[i];
+                                        if (option.children[0].dataset.selected == 'true') {
+                                            option.children[0].dataset.selected = false;
+                                            option.children[0].removeClass('daanLi_nowBai');
+                                            option.children[0].parentNode.removeClass('daanLi_now');
+                                        }
+                                    }
+                                    titleElement.dataset.selected = true;
+                                    titleElement.addClass('daanLi_nowBai');
+                                    titleElement.parentNode.addClass('daanLi_now');
+                                    break
+                            }
+                        } else if (clickedElement.hasClass('btnTrue')) {
+                            var optionsContainer = clickedElement.parentNode.previousElementSibling;
+                            for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                var option = optionsContainer.children[i];
+                                var problem = findProblem(optionsContainer.dataset.id);
+                                if (compareAnswer(i, problem.standardAnswers)) {
+                                    option.addClass('daanLi_true');
+                                    option.firstElementChild.innerHTML = ''
+                                    option.firstElementChild.removeClass('daanLi_nowBai');
+                                    option.firstElementChild.appendChild(trueImage.cloneNode(true))
+                                }
+                                if (option.children[0].dataset.selected == 'true' || option.children[0].dataset.selected == true) {
+                                    if (!compareAnswer(i, problem.standardAnswers)) {
+                                        option.addClass('daanLi_error');
+                                        option.firstElementChild.innerHTML = ''
+                                        option.firstElementChild.removeClass('daanLi_nowBai');
+                                        option.firstElementChild.appendChild(falseImage.cloneNode(true))
+                                    }
                                 }
                             }
                         }
                     }, false)
+
 
                     //上一课下一课
                     var baseUrl = 'chineseKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
