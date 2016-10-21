@@ -96,6 +96,7 @@ ul.mld_xiaoUl {
 li.mld_Ulli {
     list-style-position: outside;
     line-height: 2.5rem;
+    position: relative;
 }
 
 /*.mld_liImg {*/
@@ -153,7 +154,13 @@ li.mld_Ulli {
     width: 1.625rem;
     height: 1.625rem;
 }
-
+.daanLi_now{
+    color: orange;
+}
+.daanLi_nowBai{
+    color: #fff;
+    background-color: orange;
+}
 .daanLi_error {
     color: #fe6568;
 }
@@ -171,6 +178,17 @@ li.mld_Ulli {
     margin-right: 3.75rem;
     position: relative;
     width: 100%;
+}
+.baoBtn{
+    font-size: 0.785rem;
+    width: 100%;
+    height: 0.75rem;
+    line-height: 0.75rem;
+    text-align: right;
+}
+.btnTrue{
+    color: #24cbd1;
+    text-decoration: underline;
 }
 
 .ul01_flet {
@@ -313,11 +331,20 @@ li.mld_Ulli {
 }
 
 /* 答案 */
-.daana {
+/*.daana {*/
+    /*width: 100%;*/
+    /*min-height: 1.5625rem;*/
+    /*position: absolute;*/
+    /*top: 0.46875rem;*/
+    /*left: 0;*/
+    /*z-index: -1;*/
+/*}*/
+.daana{
     width: 100%;
-    min-height: 1.5625rem;
+    min-height: 2.5625rem;
     position: absolute;
-    top: 0.46875rem;
     left: 0;
-    z-index: -1;
+    z-index: 10;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
