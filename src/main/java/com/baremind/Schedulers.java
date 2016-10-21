@@ -53,7 +53,8 @@ public class Schedulers {
             filterObject.put("year", year);
             filterObject.put("week", week);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-            result = Response.ok(new Gson().toJson(schedulers)).build();
+            Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+            result = Response.ok(gson.toJson(schedulers)).build();
         }
         return result;
     }
@@ -67,7 +68,8 @@ public class Schedulers {
             result = Response.status(404).build();
             Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
             if (scheduler != null) {
-                result = Response.ok(new Gson().toJson(scheduler)).build();
+                Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+                result = Response.ok(gson.toJson(scheduler)).build();
             }
         }
         return result;
@@ -127,8 +129,8 @@ public class Schedulers {
             result.add(a2);
             result.add(a);
 
-            //left.getYear() - right.getYear(), left.getWeek() - right.getWeek(), left.getDay() - right.getDay()
-            r = Response.ok(new Gson().toJson(result)).build();
+            Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+            r = Response.ok(gson.toJson(result)).build();
         }
         return r;
     }
