@@ -765,30 +765,6 @@
                         returndata = JSON.parse(request.responseText)
                         imageId = returndata.id
                         addproblemoption(problemIdDD,imageId,option1content,option1order)
-                        /*let option = {
-                            problemId: problemIdDD,
-                            imageId: imageId,
-                            name: option1content
-                        }
-
-                        $.ajax({
-                            type: "post",
-                            url: "/api/problem-options",
-                            data: JSON.stringify(option),
-                            dataType: "json",
-                            async: false,
-                            contentType: "application/json; charset=utf-8",
-                            success: function (data) {
-                                alert("添加成功")
-                                /!*currentSelectedElement.dataset.id = returndata.id
-                                 alert(JSON.stringify(option))*!/
-
-                            },
-                            error: function (data) {
-                                alert(JSON.stringify(data))
-                                alert("添加失败")
-                            }
-                        })*/
                     }
                 }
             }
@@ -813,9 +789,6 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     alert("添加成功")
-                    /*currentSelectedElement.dataset.id = returndata.id
-                     alert(JSON.stringify(option))*/
-
                 },
                 error: function (data) {
                     alert(JSON.stringify(data))
