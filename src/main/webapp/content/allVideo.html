@@ -134,7 +134,7 @@
         <div class="course-intro">
             <div class="course-intro-in">
                 <div class="course-time course-speaker">
-                    <i>${year}年${month}月${day}日</i>&nbsp;
+                    <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
                     <!--时间需要服务器自己计算-->
                     <i>${startTime}</i>开讲
                     <span class="fr">${grade}</span>
@@ -233,12 +233,6 @@
                         上线时间
                     </h3>
                     <p>${startTime}</p>
-
-                    <h3 class="sml-tit brief4">
-                        <img src="../img/cksc_btn.png" alt="">
-                        课程时长
-                    </h3>
-                    <p>${duration}</p>
                 </div>
             </div>
         </div>
@@ -274,7 +268,7 @@
             }
         }
         for (var i = 0; i < course[1].length; ++i) {
-            var ST = Date.parse(course[1][i].endTime)
+            var ST = Date.parse(course[1][i].startTime)
 //            var startHour = parseInt(course[1][i].startTime.substr(0, 2))
 //            var startMinute = parseInt(course[1][i].startTime.substr(3, 2))
 //            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
