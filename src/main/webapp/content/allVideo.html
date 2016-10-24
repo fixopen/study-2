@@ -33,7 +33,7 @@
         <ul class="video-list" id="futureVideoList"></ul>
         <ul class="video-list" id="passedVideoList"></ul>
         <div class="pullUp">
-            <span class="pullUpLabel">本周课程已结束，请关注下周课程！</span>
+            <span class="pullUpLabel">往期课程已结束，请关注下周课程！</span>
         </div>
     </div>
 </div>
@@ -109,7 +109,7 @@
 <template id="passed-video-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a href="${cdnLink}">
+            <a href="video.html?src=${cdnLink}">
                 <img src="${cover}" alt="">
                 <div class="video-list-mask">
                         <span class="live-radio">
@@ -262,22 +262,29 @@
     var refreshCourseState = function () {
         var now = new Date()
         for (var i = 0; i < course[0].length; ++i) {
-            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
-            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
-            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)
+            var ET = Date.parse(course[0][i].endTime)
+//            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
+//            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
+//            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)
             course[0][i].type = 'current'
-            if (ET.valueOf() < now.getTime( )) {
+            if (ET.getTime() < now.getTime( )) {
                 course[0][i].type = 'passed'
                 course[2].unshift(course[0][i])//向数组的开头添加一个或更多元素，并返回新的长度
                 course[0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
             }
         }
         for (var i = 0; i < course[1].length; ++i) {
-            var startHour = parseInt(course[0][i].startTime.substr(0, 2))
-            var startMinute = parseInt(course[0][i].startTime.substr(3, 2))
-            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
+            var ST = Date.parse(course[1][i].endTime)
+//            var startHour = parseInt(course[1][i].startTime.substr(0, 2))
+//            var startMinute = parseInt(course[1][i].startTime.substr(3, 2))
+//            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
             course[1][i].type = 'future'
-            if (ST.valueOf() < now.getTime( )) {
+//            alert('ST year: ' + ST.year() + ' month: ' + ST.month() + ' day: ' + ST.date())
+//            alert('now year: ' + now.getYear() + ' month: ' + now.getMonth() + ' day: ' + now.getDate())
+//            var nowTime = moment(now)
+//            alert('now year: ' + nowTime.year() + ' month: ' + nowTime.month() + ' day: ' + nowTime.date())
+//            alert('startTime: ' + ST.toDate().getTime() + '\n now: ' + now.getTime() + '\n diff is ' + (ST.toDate().getTime() - now.getTime()) / 1000 / 3600 / 24)
+            if (ST.getTime() < now.getTime( )) {
                 course[1][i].type = 'current'
                 course[0].unshift(course[1][i])
                 course[1].splice(i, 1)
@@ -294,7 +301,7 @@
             for (var j = 0; j < course[i].length; ++j) {
                 var m = moment().year(course[i][j].year).week(course[i][j].week).day(course[i][j].day)
                 course[i][j].month = m.month()
-                course[i]     [j].day = m.date() - 1
+                course[i][j].day = m.date()
                 if (course[i][j].grade == 20) {
                     course[i][j].grade = '低年级'
                 } else {

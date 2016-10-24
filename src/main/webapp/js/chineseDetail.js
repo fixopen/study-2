@@ -137,6 +137,8 @@ $(function () {
                     //         g.bind(e, {"pinyin": pinyinValue, "content":c})
                     //         content.appendChild(e)
                     //
+                    //
+                    //         ruby=getTemplate('content-pinyin-template').cloneNode(true);
                     //         // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
                     //         // var content=document.getElementById('pycontent')
                     //         // g.bind(d, {"pinyin": pinyinValue, "content":c})
