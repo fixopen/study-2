@@ -201,6 +201,4 @@ public class Scheduler {
     public void setDay(int day) {
         this.day = day;
     }
-
-
 }
