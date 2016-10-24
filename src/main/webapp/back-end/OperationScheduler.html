@@ -171,12 +171,19 @@
             post()
         }
         function post() {
+            let startTime = $("#startTime").val();
+            let endTime = $("#endTime").val();
+            let time = '+08:00';
+            startTime = startTime.replace(/ /, "T");
+            endTime = endTime.replace(/ /, "T");
+            startTime = startTime+time;
+            endTime = endTime+time;
             let data = {
                 year: $("#year").val(),
                 week: $("#week").val(),
                 day: $("#day").val(),
-                startTime: $("#startTime").val(),
-                endTime: $("#endTime").val(),
+                startTime: startTime,
+                endTime: endTime,
                 duration: $("#duration").val(),
                 subjectId: $("input[name='subjectId']:checked").val(),
                 grade: $("input[name='grade']:checked").val(),
