@@ -116,18 +116,25 @@
 <template id="strongest-brain-option-template">
     <!--<li>${option}</li>-->
     <li class="mld_daanLi">
-        <span class="daan_quan">${title}</span>
-        <input type="radio" id="daan_s3A" class="daana" name="daan1">
+        <span class="daan_quan" >${title}</span>
+        <input   type="radio" class="daana" name="daan3">${name}
+        <!--<input type="radio" id="daan_s3A" class="daana" name="daan1">-->
         <img src="${optionImagePath}" class="option" alt="">
-        <label for="daan_s3A">${name}</label>
+        <!--<label for="daan_s3A">${name}</label>-->
+
     </li>
 </template>
 <template id="strongest-brain-template">
     <li class="mld_Ulli">
-        <div>${title}</div>
+        <div class="addimg">${title}</div>
         <img src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+        <div class="baoBtn" data-id="${id}">
+            <a class="btnTrue" href="#">查看答案</a>
+        </div>
         <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
+    </li>
+</template>
         <!--<div data-ext-point="explain"></div>-->
     </li>
     <!--</ul>-->
@@ -180,7 +187,12 @@
         </li>
     </ul>
 </template>
-
+<template id="trueImage">
+    <img src="img/true.png" alt="">
+</template>
+<template id="falseImage">
+    <img src="img/error.png" alt="">
+</template>
 
 
 <script type="text/javascript" src="basic.js"></script>

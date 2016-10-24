@@ -36,47 +36,47 @@
 
             <tr class="tableTitle">
                 <td>一</td>
+                <td id="cell21"></td>
+                <td id="cell22"></td>
+                <td id="cell23"></td>
+            </tr>
+            <tr class="tableTitle">
+                <td>二</td>
                 <td id="cell31"></td>
                 <td id="cell32"></td>
                 <td id="cell33"></td>
             </tr>
             <tr class="tableTitle">
-                <td>二</td>
+                <td>三</td>
                 <td id="cell41"></td>
                 <td id="cell42"></td>
                 <td id="cell43"></td>
             </tr>
             <tr class="tableTitle">
-                <td>三</td>
+                <td>四</td>
                 <td id="cell51"></td>
                 <td id="cell52"></td>
                 <td id="cell53"></td>
             </tr>
             <tr class="tableTitle">
-                <td>四</td>
+                <td>五</td>
                 <td id="cell61"></td>
                 <td id="cell62"></td>
                 <td id="cell63"></td>
             </tr>
             <tr class="tableTitle">
-                <td>五</td>
+                <td>六</td>
                 <td id="cell71"></td>
                 <td id="cell72"></td>
                 <td id="cell73"></td>
             </tr>
             <tr class="tableTitle">
-                <td>六</td>
+                <td>日</td>
                 <td id="cell11"></td>
                 <td id="cell12"></td>
                 <td id="cell13"></td>
             </tr>
 
-            <tr class="tableTitle">
-                <td>日</td>
-                <td id="cell21"></td>
-                <td id="cell22"></td>
-                <td id="cell23"></td>
-            </tr>
             </tbody>
         </table>
 
@@ -84,18 +84,21 @@
         <div class="timetable-bd"></div>
     </div>
 </div>
-
+<script src="/moment/moment.min.js"></script>
 <script type="text/javascript">
     var courseTable = [[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]]]
+    var m = moment(new Date())
+    var w = m.week()
     $.ajax({
         type: "get",
-        url: '/api/schedulers/weeks/this-week',
+        url: '/api/schedulers/weeks/' + w,
         dataType: "json",
         success: function (result) {
             //alert(JSON.stringify(result))
             course = result
             for(var i = 0;i < course.length; ++i){
-                var startHour = parseInt(course[i].startTime.substr(0, 2))
+                var startHour = parseInt(course[i].startTime.substr(11, 2))
+                //一个新的字符串，包含从 stringObject 的 start（包括 start 所指的字符） 处开始的 length 个字符。如果没有指定 length，那么返回的字符串包含从 start 到 stringObject 的结尾的字符。
                 switch (course[i].day) {
                     case 0:
                         if (startHour < 11) {
@@ -168,7 +171,7 @@
                     var cell = document.getElementById('cell' + (i + 1) + (j + 1))
                     for (var k = 0; k < courseTable[i][j].length; ++k) {
                         var content = document.createElement('span')
-                        var c = document.createTextNode(courseTable[i][j][k].title + '(' +courseTable[i][j][k].startTime +'-'+ courseTable[i][j][k].endTime+')')
+                        var c = document.createTextNode(courseTable[i][j][k].title + '(' +courseTable[i][j][k].startTime +'到'+ courseTable[i][j][k].endTime+')')
                         var br = document.createElement('br')
                         content.appendChild(c)
                         content.appendChild(br)
