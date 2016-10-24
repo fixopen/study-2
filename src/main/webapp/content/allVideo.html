@@ -262,7 +262,9 @@
     var refreshCourseState = function () {
         var now = new Date()
         for (var i = 0; i < course[0].length; ++i) {
-            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(18).minute(30).second(0)
+            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
+            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
+            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)
             course[0][i].type = 'current'
             if (ET.valueOf() < now.getTime( )) {
                 course[0][i].type = 'passed'
@@ -271,7 +273,9 @@
             }
         }
         for (var i = 0; i < course[1].length; ++i) {
-            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(18).minute(0).second(0)
+            var startHour = parseInt(course[0][i].startTime.substr(0, 2))
+            var startMinute = parseInt(course[0][i].startTime.substr(3, 2))
+            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
             course[1][i].type = 'future'
             if (ST.valueOf() < now.getTime( )) {
                 course[1][i].type = 'current'
@@ -284,6 +288,7 @@
     g.ajaxProcess('GET', '/api/schedulers', [
         {name: 'Accept', value: 'application/json'}
     ], null, function (result) {
+//        alert(JSON.stringify(result))
         course = result.data
         for (var i = 0; i < course.length; ++i) {
             for (var j = 0; j < course[i].length; ++j) {
