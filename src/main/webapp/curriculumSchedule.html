@@ -34,6 +34,7 @@
             </tr>
             <tbody id="timetable" class="weekRoll">
 
+
             <tr class="tableTitle">
                 <td>一</td>
                 <td id="cell31"></td>
@@ -70,7 +71,6 @@
                 <td id="cell12"></td>
                 <td id="cell13"></td>
             </tr>
-
             <tr class="tableTitle">
                 <td>日</td>
                 <td id="cell21"></td>
@@ -84,18 +84,21 @@
         <div class="timetable-bd"></div>
     </div>
 </div>
-
+<script src="/moment/moment.min.js"></script>
 <script type="text/javascript">
     var courseTable = [[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]]]
+    var m = moment(new Date())
+    var w = m.week()
     $.ajax({
         type: "get",
-        url: '/api/schedulers/weeks/this-week',
+        url: '/api/schedulers/weeks/' + w,
         dataType: "json",
         success: function (result) {
             //alert(JSON.stringify(result))
             course = result
             for(var i = 0;i < course.length; ++i){
-                var startHour = parseInt(course[i].startTime.substr(0, 2))
+                var startHour = parseInt(course[i].startTime.substr(11, 2))
+                //一个新的字符串，包含从 stringObject 的 start（包括 start 所指的字符） 处开始的 length 个字符。如果没有指定 length，那么返回的字符串包含从 start 到 stringObject 的结尾的字符。
                 switch (course[i].day) {
                     case 0:
                         if (startHour < 11) {

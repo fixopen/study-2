@@ -28,15 +28,15 @@ $(function () {
         }
     }
 
-    var trueImage = document.createElement('img');
-    //  trueImage.setAttribute('class', 'daan_error');
-    trueImage.setAttribute('src', 'img/true.png');
-    trueImage.setAttribute('alt', '');
-
-    var falseImage = document.createElement('img');
-    // falseImage.setAttribute('class', 'daan_error');
-    falseImage.setAttribute('src', 'img/error.png');
-    falseImage.setAttribute('alt', '');
+    // var trueImage = document.createElement('img');
+    // //  trueImage.setAttribute('class', 'daan_error');
+    // trueImage.setAttribute('src', 'img/true.png');
+    // trueImage.setAttribute('alt', '');
+    //
+    // var falseImage = document.createElement('img');
+    // // falseImage.setAttribute('class', 'daan_error');
+    // falseImage.setAttribute('src', 'img/error.png');
+    // falseImage.setAttribute('alt', '');
 
     // // //change icon via liked state
     // var icon = document.getElementById('icon')
@@ -269,6 +269,20 @@ $(function () {
                         strongestBrains = ps
                     }
 
+
+
+                    proc({
+                        templateId: 'pk-template',
+                        data: pk,
+                        containerId: 'pk',
+                        secondBind: [
+                            {
+                                extPoint: 'options',
+                                dataFieldName: 'options',
+                                templateId: 'strongest-brain-option-template'
+                            }
+                        ]
+                    });
                     proc({
                         templateId: 'strongest-brain-template',
                         data: strongestBrains,
@@ -287,21 +301,6 @@ $(function () {
                         ]
                     });
 
-                    proc({
-                        templateId: 'pk-template',
-                        data: pk,
-                        containerId: 'pk',
-                        secondBind: [
-                            {
-                                extPoint: 'options',
-                                dataFieldName: 'options',
-                                templateId: 'strongest-brain-option-template'
-                            }
-                        ]
-                    });
-
-
-
 
                     // 选项判错--------------------------------------------------------
                     var findProblem = function (problemId) {
@@ -315,26 +314,26 @@ $(function () {
                         return problem
                     }
 
-                    var getIndex = function (content) {
-                        var index = -1
-                        switch (content) {
-                            case 'A':
-                                index = 0
-                                break
-                            case 'B':
-                                index = 1
-                                break
-                            case 'C':
-                                index = 2
-                                break
-                            case 'D':
-                                index = 3
-                                break
-                            default:
-                                break
-                        }
-                        return index
-                    }
+                    // var getIndex = function (content) {
+                    //     var index = -1
+                    //     switch (content) {
+                    //         case 'A':
+                    //             index = 0
+                    //             break
+                    //         case 'B':
+                    //             index = 1
+                    //             break
+                    //         case 'C':
+                    //             index = 2
+                    //             break
+                    //         case 'D':
+                    //             index = 3
+                    //             break
+                    //         default:
+                    //             break
+                    //     }
+                    //     return index
+                    // }
 
                     var compareAnswer = function (index, standardAnswers) {
                         var finded = false
@@ -346,49 +345,91 @@ $(function () {
                         }
                         return finded
                     }
-
-                    var judgement = function (e) {
-                        //e.currentTarget == problemContainer
+                    var falseImage=getTemplate('falseImage');
+                    var trueImage=getTemplate('trueImage');
+                    var problemContainer = document.getElementById('strongest-brain');
+                    problemContainer.addEventListener('click', function (e) {
                         var clickedElement = e.target;
-
-                        if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            var problemId = clickedElement.parentNode.parentNode.dataset.id
-                            var problem = findProblem(problemId);
-                            if (problem) {
-                                var index = getIndex(clickedElement.textContent);
-                                var r = compareAnswer(index, problem.standardAnswers);
-                                if (r) {
-                                    clickedElement.parentNode.addClass('daanLi_true');
-                                    clickedElement.innerHTML = '';
-                                    clickedElement.appendChild(trueImage.cloneNode(true))
-                                } else {
-                                    clickedElement.parentNode.addClass('daanLi_error')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(falseImage.cloneNode(true))
+                        if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')) {
+                            var titleElement = clickedElement.previousElementSibling
+                                    var optionsContainer = clickedElement.parentNode.parentNode;
+                                    for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                        var option = optionsContainer.children[i];
+                                        if (option.children[0].dataset.selected == 'true') {
+                                            option.children[0].dataset.selected = false;
+                                            option.children[0].removeClass('daanLi_nowBai');
+                                            option.children[0].parentNode.removeClass('daanLi_now');
+                                        }
+                                    }
+                                    titleElement.dataset.selected = true;
+                                    titleElement.addClass('daanLi_nowBai');
+                                    titleElement.parentNode.addClass('daanLi_now');
+                            // var problemContainer = document.getElementById('strongest-brain')
+                            // problemContainer.addEventListener('click', judgement, false)
+                            //
+                            // var pkContainer = document.getElementById('pk')
+                            // pkContainer.addEventListener('click', judgement, false)
+                        } else if (clickedElement.hasClass('btnTrue')) {
+                            var optionsContainer = clickedElement.parentNode.previousElementSibling;
+                            for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                var option = optionsContainer.children[i];
+                                var problem = findProblem(optionsContainer.dataset.id);
+                                if (compareAnswer(i, problem.standardAnswers)) {
+                                    option.addClass('daanLi_true');
+                                    option.firstElementChild.innerHTML = ''
+                                    option.firstElementChild.removeClass('daanLi_nowBai');
+                                    option.firstElementChild.appendChild(trueImage.cloneNode(true))
+                                }
+                                if (option.children[0].dataset.selected == 'true' || option.children[0].dataset.selected == true) {
+                                    if (!compareAnswer(i, problem.standardAnswers)) {
+                                        option.addClass('daanLi_error');
+                                        option.firstElementChild.innerHTML = ''
+                                        option.firstElementChild.removeClass('daanLi_nowBai');
+                                        option.firstElementChild.appendChild(falseImage.cloneNode(true))
+                                    }
                                 }
                             }
                         }
-                        var data = {
-                            objectType: 'knowledge-point',
-                            objectId: 'problemId',
-                            objectName: 'index',
-                            action: 'click'
-                        };
-                        $.ajax({
-                            type: "post",
-                            url: 'api/answer-records',
-                            async: false,
-                            data: data,
-                            success: function (data) {
-                                //alert(JSON.stringify(data))
-                            }
-                        })
-                    };
-                    var problemContainer = document.getElementById('strongest-brain')
-                    problemContainer.addEventListener('click', judgement, false)
+                    }, false)
 
-                    var pkContainer = document.getElementById('pk')
-                    pkContainer.addEventListener('click', judgement, false)
+                    // var judgement = function (e) {
+                    //     //e.currentTarget == problemContainer
+                    //     var clickedElement = e.target;
+                    //
+                    //     if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
+                    //         var problemId = clickedElement.parentNode.parentNode.dataset.id
+                    //         var problem = findProblem(problemId);
+                    //         if (problem) {
+                    //             var index = getIndex(clickedElement.textContent);
+                    //             var r = compareAnswer(index, problem.standardAnswers);
+                    //             if (r) {
+                    //                 clickedElement.parentNode.addClass('daanLi_true');
+                    //                 clickedElement.innerHTML = '';
+                    //                 clickedElement.appendChild(trueImage.cloneNode(true))
+                    //             } else {
+                    //                 clickedElement.parentNode.addClass('daanLi_error')
+                    //                 clickedElement.innerHTML = ''
+                    //                 clickedElement.appendChild(falseImage.cloneNode(true))
+                    //             }
+                    //         }
+                    //     }
+                    //     var data = {
+                    //         objectType: 'knowledge-point',
+                    //         objectId: 'problemId',
+                    //         objectName: 'index',
+                    //         action: 'click'
+                    //     };
+                    //     $.ajax({
+                    //         type: "post",
+                    //         url: 'api/answer-records',
+                    //         async: false,
+                    //         data: data,
+                    //         success: function (data) {
+                    //             //alert(JSON.stringify(data))
+                    //         }
+                    //     })
+                    // };
+
                 }
             })
         }
