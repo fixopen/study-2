@@ -10,7 +10,6 @@ import com.google.gson.GsonBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Time;
 import java.util.*;
 
 //GET /api/schedulers/this-week
@@ -19,27 +18,6 @@ import java.util.*;
 
 @Path("schedulers")
 public class Schedulers {
-    /*@GET //查询(获取本周)课表
-    @Path("weeks/this-week")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getThisWeekScheduler(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Calendar cal = Calendar.getInstance();//创建一个日期实例
-            cal.setTime(new Date());//实例化一个日期
-            int year = cal.get(Calendar.YEAR);
-            int weekNo = cal.get(Calendar.WEEK_OF_YEAR);
-
-            Map<String, Object> filterObject = new HashMap<>(2);
-            filterObject.put("year", year);
-            filterObject.put("week", weekNo);
-            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-            Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
-            result = Response.ok(gson.toJson(schedulers)).build();
-        }
-        return result;
-    }
-*/
     @GET //根据周查询课表
     @Path("weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
