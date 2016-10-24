@@ -350,8 +350,8 @@ $(function () {
                     var problemContainer = document.getElementById('strongest-brain');
                     problemContainer.addEventListener('click', function (e) {
                         var clickedElement = e.target;
-                        if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')) {
-                            var titleElement = clickedElement.previousElementSibling
+                        if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')|| clickedElement.hasClass('option')) {
+                            var titleElement = clickedElement.parentNode.children[0]
                                     var optionsContainer = clickedElement.parentNode.parentNode;
                                     for (var i = 0; i < optionsContainer.children.length; ++i) {
                                         var option = optionsContainer.children[i];

@@ -411,11 +411,20 @@ li.mld_Ulli {
 }
 
 /* 答案 */
-.daana {
+/*.daana {*/
+    /*width: 100%;*/
+    /*min-height: 1.5625rem;*/
+    /*position: absolute;*/
+    /*top: 0.46875rem;*/
+    /*left: 0;*/
+    /*z-index: -1;*/
+/*}*/
+.daana{
     width: 100%;
-    min-height: 1.5625rem;
+    min-height: 2.5625rem;
     position: absolute;
-    top: 0.46875rem;
     left: 0;
-    z-index: -1;
+    z-index: 10;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
