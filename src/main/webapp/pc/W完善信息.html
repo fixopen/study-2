@@ -8,11 +8,14 @@
 	<link rel="stylesheet" href="css/base.css">
 	<link rel="stylesheet" href="css/common.css">
 	<link rel="stylesheet" href="css/fill.css">
+	<link rel="stylesheet" href="css/triangle.css">
 
 	<!-- 引入js -->
 	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
-	
+	<script type="text/javascript" src="../js/birthdy.js"></script>
+    <script src="js/city.js"></script>
+
 </head>
 <body>
 	<!-- 弹窗 -->
@@ -45,7 +48,7 @@
 				<tr>
 					<td><span class="xing">*</span>真实姓名：</td>
 					<td>
-						<input type="text" class="info-input">
+						<input type="text" class="info-input" id="name">
 						<i class="error-hou">请输入真实姓名</i>
 					</td>
 				</tr>
@@ -53,95 +56,65 @@
 					<td><span class="xing">*</span>性别：</td>
 					<td>
 						<label for="man">
-							<input type="radio" name="sex" id="man" checked="checked">
+							<input type="radio" name="sex" id="man" checked="checked" value="1">
 							男
 						</label>
 						<label for="woman">
-							<input type="radio" name="sex" id="woman" class="nv-left">
+							<input type="radio" name="sex" id="woman" class="nv-left" value="2">
 							女
 						</label>
 					</td>
 				</tr>
 				<tr>
 					<td><span class="xing">*</span>出生年月：</td>
-					<td>
-                        <div class="selectDiv">
-                            <span class="mrSelSpan">2016</span>
-                            <i class="sanjiao"></i>
-                            <ul class="selUl">
-                                <li class="selLi">2016</li>
-                            </ul>
-                        </div><span class="juli">年</span>
-                        <div class="selectDiv">
-                            <span class="mrSelSpan">09</span>
-                            <i class="sanjiao"></i>
-                            <ul class="selUl">
-                                <li class="selLi">09</li>
-                            </ul>
-                        </div><span class="juli">月</span>
-                        <div class="selectDiv">
-                            <span class="mrSelSpan">29</span>
-                            <i class="sanjiao"></i>
-                            <ul class="selUl">
-                                <li class="selLi">29</li>
-                            </ul>
-                        </div><span class="juli">日</span>
+					<td id="birthday_container">
+						<select name="year" class="myselect"></select>
+						<span class="juli">年</span>
+						<select name="month" class="myselect"></select>
+						<span class="juli">月</span>
+						<select name="day" class="myselect"></select>
+						<span class="juli">日</span>
                         <i class="error-hou">请选择出生年月</i>
                     </td>
 				</tr>
 				<tr>
 					<td><span class="xing">*</span>收货地址：</td>
 					<td>
-                        <div class="selectDiv">
-                            <span class="mrSelSpan">河北省</span>
-                            <i class="sanjiao"></i>
-                            <ul class="selUl">
-                                <li class="selLi">河北省</li>
-                            </ul>
-                        </div><span class="juli">省</span>
-                        <div class="selectDiv">
-                            <span class="mrSelSpan">石家庄</span>
-                            <i class="sanjiao"></i>
-                            <ul class="selUl">
-                                <li class="selLi">石家庄</li>
-                            </ul>
-                        </div><span class="juli">市</span>
-                        <div class="selectDiv">
-                            <span class="mrSelSpan"></span>
-                            <i class="sanjiao"></i>
-                            <ul class="selUl">
-                                <li class="selLi"></li>
-                            </ul>
-                        </div><span class="juli">区/县</span>
+						<select id="sheng" class="myselect"></select>
+						<span class="juli">省</span>
+						<select id="shi" class="myselect"></select>
+						<span class="juli">市</span>
+						<select id="qu" class="myselect"></select>
+						<span class="juli">区/县</span>
                         <i class="error-hou">请选择收货地址</i>
                     </td>
 				</tr>
 				<tr>
 					<td></td>
 					<td>
-						<input type="text" placeholder="详细地址" class="info-input">
+						<input type="text" id="receipt_address" placeholder="详细地址" class="info-input">
 						<i class="error-hou">请输入详细地址</i>
 					</td>
 				</tr>
 				<tr>
 					<td><span class="xing">*</span>收货手机号：</td>
 					<td>
-						<input type="text" value="13813811381" class="info-input">
+						<input type="text" class="info-input" id="phoneNumber">
 						<i class="error-hou">请填写收货手机号</i>
 					</td>
 				</tr>
 				<tr>
 					<td>就读学校：</td>
-					<td><input type="text" class="info-input"></td>
+					<td><input type="text" class="info-input" id="school"></td>
 				</tr>
 				<tr>
 					<td>所在班级：</td>
-					<td><input type="text" class="info-input"></td>
+					<td><input type="text" class="info-input" id="class"></td>
 				</tr>
 				<tr>
 					<td><span class="xing">*</span>微信账号：</td>
 					<td>
-						<input type="text" class="info-input">
+						<input type="text" class="info-input" id="WechatNumber">
 						<i class="error-hou">请输入微信账号</i>
 					</td>
 				</tr>
@@ -162,11 +135,71 @@
 	</div>
 
 	<script type="text/javascript">
-		popupHeight();//弹窗的宽高
-		simulateSelect();//下拉菜单
-		submitPopup(); //点击"提交"按钮，弹出弹窗
-		popupClose();//点击弹窗的关闭按钮，关闭弹窗
-		popupOk(); //点击弹窗"好的"按钮，关闭弹窗
+		$(function(){
+			$("#birthday_container").birthday();
+            console.log(city)
+			var sheng = document.getElementById("sheng");
+			var shi = document.getElementById("shi");
+			var qu = document.getElementById("qu");
+
+            sheng.options[0] = new Option("请选择省", "-1");
+            shi.options[0] = new Option("请选择市", "-1");
+            qu.options[0] = new Option("请选择区", "-1");
+            //创建省市区完毕
+            //循环第一步
+            for (var i = 0; i < city.length; i++) {
+                sheng.options[sheng.length] = new Option(city[i].name, i);
+                sheng.onchange = function() {
+                    //恢复默认选项
+                    //shi.options[0].selected = true;
+                    //qu.options[0].selected = true;
+                    //清空市区选项
+                    shi.options.length = 0;
+                    shi.options[shi.length] = new Option("请选择市", "-1");
+                    qu.options.length = 0;
+                    qu.options[qu.length] = new Option("请选择区", "-1");
+                    for (var j = 0; j < city[sheng.selectedIndex - 1].city.length; j++) {
+                        shi.options[shi.length] = new Option(city[sheng.selectedIndex - 1].city[j].name, j);
+                        shi.onchange = function() {
+                            //恢复默认选项
+                            //qu.options[0].selected = true;
+                            //清空区选项
+                            qu.options.length = 0;
+                            qu.options[qu.length] = new Option("请选择区", "-1");
+                            for (var k = 0; k < city[sheng.selectedIndex - 1].city[shi.selectedIndex - 1].area.length; k++) {
+                                qu.options[qu.length] = new Option(city[sheng.selectedIndex - 1].city[shi.selectedIndex - 1].area[k], k);
+                                qu.onchange = function() {
+                                    let xz = city[sheng.selectedIndex - 1].name+""+city[sheng.selectedIndex - 1].city[shi.selectedIndex - 1].name+""+this.options[this.selectedIndex].innerHTML
+                                    $("#receipt_address").val(xz)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+		})
+		let name = $("#name").val();
+		let sex = $("input[name='sex']:checked").val();
+		let birthday = $("#birthday_container").val();
+		let receipt_address = $("#receipt_address").val();
+		let phoneNumber = $("#phoneNumber").val();
+		let school = $("#school").val();
+		let classes = $("#class").val();
+		let WechatNumber = $("#WechatNumber").val();
+
+		let submit = document.getElementsByClassName("submit-btn")
+		submit.addEventListener('click', function(e){
+			if(){
+
+			}else{
+				popupHeight();//弹窗的宽高
+				submitPopup(); //点击"提交"按钮，弹出弹窗
+				popupClose();//点击弹窗的关闭按钮，关闭弹窗
+				popupOk(); //点击弹窗"好的"按钮，关闭弹窗
+			}
+		})
 	</script>
 </body>
 </html>

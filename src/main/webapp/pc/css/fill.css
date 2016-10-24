@@ -57,6 +57,17 @@ body{
     position: relative;
     top: -1px;
 }
+
+.myselect {
+    width: 112px;
+    height: 42px;
+    font-size: 14px;
+    color: #555;
+    -moz-appearance:none;
+    border: 1px solid #ccc;
+    /*//background: url(../images/bai.png) no-repeat center;*/
+}
+
 .sanjiao {
     display: inline-block;
     width: 26px;
