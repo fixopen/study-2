@@ -29,9 +29,38 @@
         <header class="rain-header">
             <a href="../curriculumSchedule.html" class="rain-header-a"></a>
         </header>
-        <ul class="video-list" id="currentVideoList"></ul>
-        <ul class="video-list" id="futureVideoList"></ul>
-        <ul class="video-list" id="passedVideoList"></ul>
+        <div class="subject-tab">
+            <ul class="subject-tab-box">
+                <li class="subject-tab-li cur zb-cur">
+                    语文
+                    <span class="zb-video"></span>
+                </li>
+                <li class="subject-tab-li zb-cur">
+                    数学
+                    <span class="zb-video"></span>
+                </li>
+                <li class="subject-tab-li">
+                    英语
+                </li>
+            </ul>
+            <div class="subject-line"></div>
+        </div>
+        <!-- video-list -->
+        <div id="live-broadcast">
+            <div class="subject-list cur">
+                <ul class="video-list"  id="chinese"></ul>
+                <ul class="video-list" id="currentVideoList"></ul>
+                <ul class="video-list" id="futureVideoList"></ul>
+                <ul class="video-list" id="passedVideoList"></ul>
+            </div>
+            <div class="subject-list" >
+                <ul class="video-list"  id="math"></ul>
+            </div>
+            <div class="subject-list"  >
+                <ul class="video-list" id="english"></ul>
+            </div>
+        </div>
+
         <div class="pullUp">
             <span class="pullUpLabel">往期课程已结束，请关注下周课程！</span>
         </div>
