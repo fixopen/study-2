@@ -301,7 +301,7 @@ $(function () {
                                         success: function (unlike) {
                                             icon.setAttribute('src', 'img/zan.png');
                                             --data.interaction.likeCount
-                                            e.target.nextElementSibling.textContent = data.interaction.likeCount;
+                                            e.target.nextElementSibling.textContent = '' + data.interaction.likeCount;
                                             liked = false;
                                         }
                                     })
@@ -315,7 +315,7 @@ $(function () {
                                         success: function (like) {
                                             icon.setAttribute('src', 'img/zan-over.png');
                                             ++data.interaction.likeCount;
-                                            e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                            e.target.nextElementSibling.textContent = '' + data.interaction.likeCount
                                             liked = true;
                                         }
                                     })
