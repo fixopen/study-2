@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Content</title>
+    <title>Content Input</title>
     <style>
         .active {
             background-color: yellow;
@@ -18,6 +18,7 @@
 <table border="1">
     <tr>
         <th>科目</th>
+        <th>操作</th>
         <th>年级</th>
         <th>标题</th>
         <th>操作</th>
@@ -25,7 +26,13 @@
         <th>操作</th>
     </tr>
     <tr>
-        <td><select id="subjectChoice"></select></td>
+        <td>
+            <select id="subjectChoice"></select>
+        </td>
+        <td>
+            <input type="button" id="appendSubject" value="添加"/>
+            <input type="button" id="updateSubject" value="修改"/>
+        </td>
         <td>
             <select id="gradeChoice">
                 <option value="20">低年级</option>
@@ -33,7 +40,6 @@
             </select>
         </td>
         <td>
-            <input type="text" id="volumeTitle"/>
             <select id="volumeChoice"></select>
         </td>
         <td>
@@ -41,7 +47,6 @@
             <input type="button" id="updateVolume" value="修改"/>
         </td>
         <td>
-            <input type="text" id="knowledgePointTitle"/>
             <select id="knowledgePointChoice"></select>
         </td>
         <td>
@@ -63,6 +68,123 @@
     <button id="moveNext">V</button>
     <button id="submit">submit</button>
     <button id="save">save</button>
+</div>
+<div class="modal fade" data-backdrop="static" id="subjectEditor" tabindex="-1" role="dialog"
+     aria-labelledby="subjectEditorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="subjectEditorLabel">Subject editor</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" class="form-horizontal" role="form">
+                    <div class="form-group hidden">
+                        <label for="subjectID" class="col-sm-2 control-label">id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="subjectID" placeholder="subject id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectNo" class="col-sm-2 control-label">no</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="subjectNo" placeholder="subject no">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectName" class="col-sm-2 control-label">name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="subjectName" placeholder="subject name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-backdrop="static" id="volumeEditor" tabindex="-1" role="dialog"
+     aria-labelledby="volumeEditorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="volumeEditorLabel">Volume editor</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" class="form-horizontal" role="form">
+                    <div class="form-group hidden">
+                        <label for="volumeID" class="col-sm-2 control-label">id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeID" placeholder="volume id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="volumeName" class="col-sm-2 control-label">name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeName" placeholder="volume name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="volumeCover" class="col-sm-2 control-label">cover</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" id="volumeCover" placeholder="volume cover">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="volumeOrder" class="col-sm-2 control-label">order</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeOrder" placeholder="volume order">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-backdrop="static" id="knowledgePointEditor" tabindex="-1" role="dialog"
+     aria-labelledby="knowledgePointEditorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="knowledgePointEditorLabel">Knowledge point editor</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" class="form-horizontal" role="form">
+                    <div class="form-group hidden">
+                        <label for="knowledgePointID" class="col-sm-2 control-label">id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="knowledgePointID" placeholder="knowledge point id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="knowledgePointName" class="col-sm-2 control-label">name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="knowledgePointName" placeholder="knowledge point name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="knowledgePointOrder" class="col-sm-2 control-label">order</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="knowledgePointOrder" placeholder="knowledge point order">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <template id="problem-template">
     <div data-type="problem">
@@ -114,7 +236,8 @@
         subject: {
             index: 0,
             id: null,
-            choice: document.getElementById('subjectChoice')
+            choice: document.getElementById('subjectChoice'),
+            title: document.getElementById('subjectTitle')
         },
         grade: {
             index: 0,
@@ -189,6 +312,16 @@
         }
     }
 
+    let changeSubject = function(subjectChoice, subject) {
+        state.subject.index = subjectChoice.selectedIndex
+        state.subject.id = subjectChoice.value
+        subject.value = ''
+        let opt = subjectChoice.options.item(state.subject.index)
+        if (opt) {
+            subject.value = opt.text
+        }
+    }
+
     g.ajaxProcess('GET', '/api/subjects', [
         {name: 'Accept', value: 'application/json'}
     ], null, function(data) {
@@ -223,6 +356,7 @@
         }
 
         refillChoice(state.subject.choice, subjects)
+        changeSubject(state.subject.choice, state.subject.title)
         changeGrade(state.grade.choice)
         refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
         changeVolume(state.volume.choice, state.volume.title)
@@ -252,12 +386,66 @@
     state.subject.choice.addEventListener('change', function (e) {
         state.subject.index = e.target.selectedIndex
         state.subject.id = e.target.value
+        changeSubject(state.subject.choice, state.subject.title)
         state.grade.choice.selectedIndex = 0
         changeGrade(state.grade.choice)
         state.volume.choice.selectedIndex = 0
         changeVolume(state.volume.choice, state.volume.title)
         state.knowledgePoint.choice.selectedIndex = 0
         changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+    }, false)
+
+    let appendSubjectButton = document.getElementById('appendSubject')
+    appendSubjectButton.addEventListener('click', function(e) {
+        g.ajaxProcess('POST', '/api/subjects', [
+            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+            {name: 'Accept', value: 'application/json'}
+        ], {
+            name: state.subject.title.value
+        }, function(subjectResult) {
+            if (subjectResult.meta.code < 400) {
+                let subject = subjectResult.data
+                subject.low = []
+                subject.high = []
+                subjects.push(subject)
+                refillChoice(state.subject.choice, subjects)
+                state.subject.choice.selectedIndex = subjects.length - 1
+                changeSubject(state.subject.choice, state.subject.title)
+                changeGrade(state.grade.choice)
+                refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+                changeVolume(state.volume.choice, state.volume.title)
+                refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+                state.contents.style.visibility = 'hidden'
+                alert('添加成功')
+            } else {
+                alert('添加失败')
+            }
+        })
+    }, false)
+
+    let updateSubjectButton = document.getElementById('updateSubject')
+    updateSubjectButton.addEventListener('click', function(e) {
+        g.ajaxProcess('PUT', '/api/subjects/' + state.subject.id, [
+            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+            {name: 'Accept', value: 'application/json'}
+        ], {
+            name: state.subject.title.value
+        }, function(volumeResult) {
+            if (volumeResult.meta.code < 400) {
+                let knowledgePoints = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints
+                let volume = volumeResult.data
+                volume.knowledgePoints = knowledgePoints
+                subjects[state.subject.index][state.grade.name][state.volume.index] = volume
+                refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+                state.volume.choice.selectedIndex = state.volume.index
+                changeVolume(state.volume.choice, state.volume.title)
+                alert("修改成功")
+            } else {
+                //alert(volumeResult.data)
+                alert("修改失败")
+            }
+        })
     }, false)
 
     let appendVolumeButton = document.getElementById('appendVolume')
@@ -280,10 +468,10 @@
                 changeVolume(state.volume.choice, state.volume.title)
                 refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
                 ++state.volume.maxOrder
-                alert("添加成功")
+                alert('添加成功')
             } else {
                 //alert(volumeResult.data)
-                alert("添加失败")
+                alert('添加失败')
             }
         })
     }, false)

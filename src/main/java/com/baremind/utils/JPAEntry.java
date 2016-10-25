@@ -112,6 +112,12 @@ public class JPAEntry {
         em.close();
     }
 
+    public static void genericPost(EntityManager em, Object o) {
+        em.getTransaction().begin();
+        em.persist(o);
+        em.getTransaction().commit();
+    }
+
     public static void genericPut(Object o) {
         EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
@@ -120,12 +126,24 @@ public class JPAEntry {
         em.close();
     }
 
+    public static void genericPut(EntityManager em, Object o) {
+        em.getTransaction().begin();
+        em.merge(o);
+        em.getTransaction().commit();
+    }
+
     public static void genericDelete(Object o) {
         EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         em.remove(o);
         em.getTransaction().commit();
         em.close();
+    }
+
+    public static void genericDelete(EntityManager em, Object o) {
+        em.getTransaction().begin();
+        em.remove(o);
+        em.getTransaction().commit();
     }
 
     public static boolean isLogining(String sessionId) {
