@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Time;
 import java.util.*;
 
 //GET /api/schedulers/this-week
@@ -103,33 +102,14 @@ public class Schedulers {
             result = Response.status(404).build();
             Scheduler existScheduler = JPAEntry.getObject(Scheduler.class, "id", id);
             if (existScheduler != null) {
-                String description = scheduler.getDescription();
-                if (description != null) {
-                    existScheduler.setDescription(description);
-                }
-                Integer duration = scheduler.getDuration();
-                if (duration != null) {
-                    existScheduler.setDuration(duration);
+                int year = scheduler.getYear();
+                if (year != 0) {
+                    existScheduler.setYear(year);
                 }
 
-                Time endTime = scheduler.getEndTime();
-                if (endTime != null) {
-                    existScheduler.setEndTime(endTime);
-                }
-
-                int grade = scheduler.getGrade();
-                if (grade != 0) {
-                    existScheduler.setGrade(grade);
-                }
-
-                Time startTime = scheduler.getStartTime();
-                if (startTime != null) {
-                    existScheduler.setStartTime(startTime);
-                }
-
-                int state = scheduler.getState();
-                if (state != 0) {
-                    existScheduler.setState(state);
+                int week = scheduler.getWeek();
+                if (week != 0) {
+                    existScheduler.setWeek(week);
                 }
 
                 int day = scheduler.getDay();
@@ -137,11 +117,45 @@ public class Schedulers {
                     existScheduler.setDay(day);
                 }
 
+                Date startTime = scheduler.getStartTime();
+                if (startTime != null) {
+                    existScheduler.setStartTime(startTime);
+                }
+
+                Date endTime = scheduler.getEndTime();
+                if (endTime != null) {
+                    existScheduler.setEndTime(endTime);
+                }
+
+                Integer duration = scheduler.getDuration();
+                if (duration != null) {
+                    existScheduler.setDuration(duration);
+                }
+
+                int state = scheduler.getState();
+                if (state != 0) {
+                    existScheduler.setState(state);
+                }
+
                 Long subjectId = scheduler.getSubjectId();
                 if (subjectId != null) {
                     existScheduler.setSubjectId(subjectId);
                 }
 
+                int grade = scheduler.getGrade();
+                if (grade != 0) {
+                    existScheduler.setGrade(grade);
+                }
+
+                String title = scheduler.getName();
+                if (title != null) {
+                    existScheduler.setName(title);
+                }
+
+                String description = scheduler.getDescription();
+                if (description != null) {
+                    existScheduler.setDescription(description);
+                }
 
                 String teacher = scheduler.getTeacher();
                 if (teacher != null) {
@@ -151,21 +165,6 @@ public class Schedulers {
                 String teacherDescription = scheduler.getTeacherDescription();
                 if (teacherDescription != null) {
                     existScheduler.setTeacherDescription(teacherDescription);
-                }
-
-                String title = scheduler.getName();
-                if (title != null) {
-                    existScheduler.setName(title);
-                }
-
-                int week = scheduler.getWeek();
-                if (week != 0) {
-                    existScheduler.setWeek(week);
-                }
-
-                int year = scheduler.getYear();
-                if (year != 0) {
-                    existScheduler.setYear(year);
                 }
 
                 JPAEntry.genericPut(existScheduler);

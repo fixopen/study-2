@@ -34,7 +34,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: additionals; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: additionals; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE additionals (
@@ -46,10 +46,10 @@ CREATE TABLE additionals (
 );
 
 
-ALTER TABLE additionals OWNER TO fixopen;
+ALTER TABLE additionals OWNER TO postgres;
 
 --
--- Name: answer_records; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: answer_records; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE answer_records (
@@ -61,10 +61,10 @@ CREATE TABLE answer_records (
 );
 
 
-ALTER TABLE answer_records OWNER TO fixopen;
+ALTER TABLE answer_records OWNER TO postgres;
 
 --
--- Name: cards; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: cards; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cards (
@@ -80,10 +80,10 @@ CREATE TABLE cards (
 );
 
 
-ALTER TABLE cards OWNER TO fixopen;
+ALTER TABLE cards OWNER TO postgres;
 
 --
--- Name: comments; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: comments; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comments (
@@ -97,10 +97,10 @@ CREATE TABLE comments (
 );
 
 
-ALTER TABLE comments OWNER TO fixopen;
+ALTER TABLE comments OWNER TO postgres;
 
 --
--- Name: devices; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: devices; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE devices (
@@ -112,10 +112,10 @@ CREATE TABLE devices (
 );
 
 
-ALTER TABLE devices OWNER TO fixopen;
+ALTER TABLE devices OWNER TO postgres;
 
 --
--- Name: image_texts; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: image_texts; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE image_texts (
@@ -125,10 +125,10 @@ CREATE TABLE image_texts (
 );
 
 
-ALTER TABLE image_texts OWNER TO fixopen;
+ALTER TABLE image_texts OWNER TO postgres;
 
 --
--- Name: medias; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: medias; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE medias (
@@ -141,10 +141,10 @@ CREATE TABLE medias (
 );
 
 
-ALTER TABLE medias OWNER TO fixopen;
+ALTER TABLE medias OWNER TO postgres;
 
 --
--- Name: images; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: images; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE images (
@@ -153,10 +153,10 @@ CREATE TABLE images (
 INHERITS (medias);
 
 
-ALTER TABLE images OWNER TO fixopen;
+ALTER TABLE images OWNER TO postgres;
 
 --
--- Name: knowledge_point_content_maps; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: knowledge_point_content_maps; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE knowledge_point_content_maps (
@@ -168,10 +168,10 @@ CREATE TABLE knowledge_point_content_maps (
 );
 
 
-ALTER TABLE knowledge_point_content_maps OWNER TO fixopen;
+ALTER TABLE knowledge_point_content_maps OWNER TO postgres;
 
 --
--- Name: knowledge_points; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: knowledge_points; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE knowledge_points (
@@ -182,10 +182,10 @@ CREATE TABLE knowledge_points (
 );
 
 
-ALTER TABLE knowledge_points OWNER TO fixopen;
+ALTER TABLE knowledge_points OWNER TO postgres;
 
 --
--- Name: logs; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: logs; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE logs (
@@ -198,10 +198,10 @@ CREATE TABLE logs (
 );
 
 
-ALTER TABLE logs OWNER TO fixopen;
+ALTER TABLE logs OWNER TO postgres;
 
 --
--- Name: pinyin_texts; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: pinyin_texts; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE pinyin_texts (
@@ -211,10 +211,10 @@ CREATE TABLE pinyin_texts (
 );
 
 
-ALTER TABLE pinyin_texts OWNER TO fixopen;
+ALTER TABLE pinyin_texts OWNER TO postgres;
 
 --
--- Name: problem_options; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: problem_options; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE problem_options (
@@ -223,14 +223,14 @@ CREATE TABLE problem_options (
     name text,
     image_id bigint,
     index integer,
-    order integer
+    "order" integer
 );
 
 
-ALTER TABLE problem_options OWNER TO fixopen;
+ALTER TABLE problem_options OWNER TO postgres;
 
 --
--- Name: problem_standard_answers; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: problem_standard_answers; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE problem_standard_answers (
@@ -240,10 +240,10 @@ CREATE TABLE problem_standard_answers (
 );
 
 
-ALTER TABLE problem_standard_answers OWNER TO fixopen;
+ALTER TABLE problem_standard_answers OWNER TO postgres;
 
 --
--- Name: problems; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: problems; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE problems (
@@ -255,10 +255,10 @@ CREATE TABLE problems (
 );
 
 
-ALTER TABLE problems OWNER TO fixopen;
+ALTER TABLE problems OWNER TO postgres;
 
 --
--- Name: properties; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: properties; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE properties (
@@ -268,10 +268,10 @@ CREATE TABLE properties (
 );
 
 
-ALTER TABLE properties OWNER TO fixopen;
+ALTER TABLE properties OWNER TO postgres;
 
 --
--- Name: quotes; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: quotes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE quotes (
@@ -281,10 +281,10 @@ CREATE TABLE quotes (
 );
 
 
-ALTER TABLE quotes OWNER TO fixopen;
+ALTER TABLE quotes OWNER TO postgres;
 
 --
--- Name: schedulers; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: schedulers; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE schedulers (
@@ -293,8 +293,8 @@ CREATE TABLE schedulers (
     week integer NOT NULL,
     day integer,
     state integer DEFAULT 0 NOT NULL,
-    start_time time without time zone,
-    end_time time without time zone,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
     duration bigint,
     subject_id bigint,
     grade integer,
@@ -305,10 +305,10 @@ CREATE TABLE schedulers (
 );
 
 
-ALTER TABLE schedulers OWNER TO fixopen;
+ALTER TABLE schedulers OWNER TO postgres;
 
 --
--- Name: sessions; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: sessions; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE sessions (
@@ -321,10 +321,10 @@ CREATE TABLE sessions (
 );
 
 
-ALTER TABLE sessions OWNER TO fixopen;
+ALTER TABLE sessions OWNER TO postgres;
 
 --
--- Name: subjects; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: subjects; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE subjects (
@@ -334,10 +334,10 @@ CREATE TABLE subjects (
 );
 
 
-ALTER TABLE subjects OWNER TO fixopen;
+ALTER TABLE subjects OWNER TO postgres;
 
 --
--- Name: tags; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: tags; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tags (
@@ -346,10 +346,10 @@ CREATE TABLE tags (
 );
 
 
-ALTER TABLE tags OWNER TO fixopen;
+ALTER TABLE tags OWNER TO postgres;
 
 --
--- Name: texts; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: texts; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE texts (
@@ -358,10 +358,10 @@ CREATE TABLE texts (
 );
 
 
-ALTER TABLE texts OWNER TO fixopen;
+ALTER TABLE texts OWNER TO postgres;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE users (
@@ -388,10 +388,10 @@ CREATE TABLE users (
 );
 
 
-ALTER TABLE users OWNER TO fixopen;
+ALTER TABLE users OWNER TO postgres;
 
 --
--- Name: validation_codes; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: validation_codes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE validation_codes (
@@ -402,10 +402,10 @@ CREATE TABLE validation_codes (
 );
 
 
-ALTER TABLE validation_codes OWNER TO fixopen;
+ALTER TABLE validation_codes OWNER TO postgres;
 
 --
--- Name: videos; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: videos; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE videos (
@@ -416,10 +416,10 @@ CREATE TABLE videos (
 INHERITS (medias);
 
 
-ALTER TABLE videos OWNER TO fixopen;
+ALTER TABLE videos OWNER TO postgres;
 
 --
--- Name: volumes; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: volumes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE volumes (
@@ -432,10 +432,10 @@ CREATE TABLE volumes (
 );
 
 
-ALTER TABLE volumes OWNER TO fixopen;
+ALTER TABLE volumes OWNER TO postgres;
 
 --
--- Name: wechat_users; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: wechat_users; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE wechat_users (
@@ -463,80 +463,80 @@ CREATE TABLE wechat_users (
 );
 
 
-ALTER TABLE wechat_users OWNER TO fixopen;
+ALTER TABLE wechat_users OWNER TO postgres;
 
 --
--- Name: mime_type; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: mime_type; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY images ALTER COLUMN mime_type SET DEFAULT ''::name;
 
 
 --
--- Name: size; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: size; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY images ALTER COLUMN size SET DEFAULT '-1'::integer;
 
 
 --
--- Name: name; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: name; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY images ALTER COLUMN name SET DEFAULT ''::name;
 
 
 --
--- Name: ext; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: ext; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY images ALTER COLUMN ext SET DEFAULT ''::name;
 
 
 --
--- Name: store_path; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: store_path; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY images ALTER COLUMN store_path SET DEFAULT ''::character varying;
 
 
 --
--- Name: mime_type; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: mime_type; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY videos ALTER COLUMN mime_type SET DEFAULT ''::name;
 
 
 --
--- Name: size; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: size; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY videos ALTER COLUMN size SET DEFAULT '-1'::integer;
 
 
 --
--- Name: name; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: name; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY videos ALTER COLUMN name SET DEFAULT ''::name;
 
 
 --
--- Name: ext; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: ext; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY videos ALTER COLUMN ext SET DEFAULT ''::name;
 
 
 --
--- Name: store_path; Type: DEFAULT; Schema: public; Owner: fixopen
+-- Name: store_path; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY videos ALTER COLUMN store_path SET DEFAULT ''::character varying;
 
 
 --
--- Name: additional__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: additional__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY additionals
@@ -544,7 +544,7 @@ ALTER TABLE ONLY additionals
 
 
 --
--- Name: answer_record__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: answer_record__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY answer_records
@@ -552,7 +552,7 @@ ALTER TABLE ONLY answer_records
 
 
 --
--- Name: card__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: card__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cards
@@ -560,7 +560,7 @@ ALTER TABLE ONLY cards
 
 
 --
--- Name: comment__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: comment__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comments
@@ -568,7 +568,7 @@ ALTER TABLE ONLY comments
 
 
 --
--- Name: content__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: content__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY texts
@@ -576,7 +576,7 @@ ALTER TABLE ONLY texts
 
 
 --
--- Name: device__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: device__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY devices
@@ -584,7 +584,7 @@ ALTER TABLE ONLY devices
 
 
 --
--- Name: image__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: image__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY images
@@ -592,7 +592,7 @@ ALTER TABLE ONLY images
 
 
 --
--- Name: image_text__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: image_text__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY image_texts
@@ -600,7 +600,7 @@ ALTER TABLE ONLY image_texts
 
 
 --
--- Name: knowledge_point__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: knowledge_point__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY knowledge_points
@@ -608,7 +608,7 @@ ALTER TABLE ONLY knowledge_points
 
 
 --
--- Name: knowledge_point_content_map__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: knowledge_point_content_map__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY knowledge_point_content_maps
@@ -616,7 +616,7 @@ ALTER TABLE ONLY knowledge_point_content_maps
 
 
 --
--- Name: log__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: log__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY logs
@@ -624,7 +624,7 @@ ALTER TABLE ONLY logs
 
 
 --
--- Name: media__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: media__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY medias
@@ -632,7 +632,7 @@ ALTER TABLE ONLY medias
 
 
 --
--- Name: pinyin_text__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: pinyin_text__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY pinyin_texts
@@ -640,7 +640,7 @@ ALTER TABLE ONLY pinyin_texts
 
 
 --
--- Name: problem__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: problem__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY problems
@@ -648,7 +648,7 @@ ALTER TABLE ONLY problems
 
 
 --
--- Name: problems_option__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: problems_option__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY problem_options
@@ -656,7 +656,7 @@ ALTER TABLE ONLY problem_options
 
 
 --
--- Name: problems_standard_answer__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: problems_standard_answer__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY problem_standard_answers
@@ -664,7 +664,7 @@ ALTER TABLE ONLY problem_standard_answers
 
 
 --
--- Name: property__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: property__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY properties
@@ -672,7 +672,7 @@ ALTER TABLE ONLY properties
 
 
 --
--- Name: quote__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: quote__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY quotes
@@ -680,7 +680,7 @@ ALTER TABLE ONLY quotes
 
 
 --
--- Name: scheduler__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: scheduler__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY schedulers
@@ -688,7 +688,7 @@ ALTER TABLE ONLY schedulers
 
 
 --
--- Name: session__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: session__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sessions
@@ -696,7 +696,7 @@ ALTER TABLE ONLY sessions
 
 
 --
--- Name: subject__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: subject__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY subjects
@@ -704,7 +704,7 @@ ALTER TABLE ONLY subjects
 
 
 --
--- Name: tag__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: tag__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tags
@@ -712,7 +712,7 @@ ALTER TABLE ONLY tags
 
 
 --
--- Name: user__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: user__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY users
@@ -720,7 +720,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: validation_code__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: validation_code__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY validation_codes
@@ -728,7 +728,7 @@ ALTER TABLE ONLY validation_codes
 
 
 --
--- Name: video__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: video__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY videos
@@ -736,7 +736,7 @@ ALTER TABLE ONLY videos
 
 
 --
--- Name: volume__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: volume__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY volumes
@@ -744,7 +744,7 @@ ALTER TABLE ONLY volumes
 
 
 --
--- Name: wechat_user__pk; Type: CONSTRAINT; Schema: public; Owner: fixopen
+-- Name: wechat_user__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY wechat_users
@@ -752,68 +752,68 @@ ALTER TABLE ONLY wechat_users
 
 
 --
--- Name: comment_content__idx; Type: INDEX; Schema: public; Owner: fixopen
+-- Name: comment_content__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX comment_content__idx ON comments USING gin (to_tsvector('english'::regconfig, content));
 
 
 --
--- Name: property_name__idx; Type: INDEX; Schema: public; Owner: fixopen
+-- Name: property_name__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX property_name__idx ON properties USING btree (name);
 
 
 --
--- Name: tag_name__idx; Type: INDEX; Schema: public; Owner: fixopen
+-- Name: tag_name__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX tag_name__idx ON tags USING btree (name);
 
 
 --
--- Name: user_email__idx; Type: INDEX; Schema: public; Owner: fixopen
+-- Name: user_email__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX user_email__idx ON users USING btree (email);
 
 
 --
--- Name: user_login_name__idx; Type: INDEX; Schema: public; Owner: fixopen
+-- Name: user_login_name__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX user_login_name__idx ON users USING btree (login_name);
 
 
 --
--- Name: user_name__idx; Type: INDEX; Schema: public; Owner: fixopen
+-- Name: user_name__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX user_name__idx ON users USING btree (name);
 
 
 --
--- Name: user_telephone__idx; Type: INDEX; Schema: public; Owner: fixopen
+-- Name: user_telephone__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX user_telephone__idx ON users USING btree (telephone);
 
 
 --
--- Name: wechat_user_token__idx; Type: INDEX; Schema: public; Owner: fixopen
+-- Name: wechat_user_token__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX wechat_user_token__idx ON wechat_users USING btree (token);
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: fixopen
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM fixopen;
-GRANT ALL ON SCHEMA public TO fixopen;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 

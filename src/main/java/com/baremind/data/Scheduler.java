@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Time;
+import java.util.Date;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -29,11 +30,11 @@ public class Scheduler {
     @Column(name = "state")
     private int state;
 
-    @Column(name = "start_time", columnDefinition = "time")
-    private Time startTime;
+    @Column(name = "start_time")
+    private Date startTime;
 
-    @Column(name = "end_time", columnDefinition = "time")
-    private Time endTime;
+    @Column(name = "end_time")
+    private Date endTime;
 
     @Column(name = "duration")
     private Integer duration;
@@ -96,19 +97,19 @@ public class Scheduler {
         this.state = state;
     }
 
-    public Time getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public Time getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Time endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
