@@ -309,16 +309,8 @@
 
                 if (subjects[state.subject.index]) {
                     state.refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
-                    state.volume.index = state.volume.choice.selectedIndex
-                    state.volume.value = subjects[state.subject.index][state.grade.name][state.volume.index]
-
-                    state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
-                    state.knowledgePoint.index = state.knowledgePoint.choice.selectedIndex
-                    if (subjects[state.subject.index][state.grade.name][state.volume.index]) {
-                        state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
-                    } else {
-                        state.knowledgePoint.value = null;
-                    }
+                    state.volume.choice.selectedIndex = 0
+                    state.volume.change(state.volume.choice.selectedIndex)
                 }
             },
             edit: function (subject) {
@@ -335,7 +327,7 @@
             choice: document.getElementById('subjectChoice'),
             append: document.getElementById('appendSubject'),
             update: document.getElementById('updateSubject'),
-            idControl: document.getElementById('subjectId'),
+            idControl: document.getElementById('subjectID'),
             noControl: document.getElementById('subjectNo'),
             nameControl: document.getElementById('subjectName'),
             submitControl: document.getElementById('subjectSubmit'),
@@ -369,7 +361,8 @@
                             subjects.push(subject)
 
                             state.refillChoice(state.subject.choice, subjects)
-                            state.subject.change(subjects.length - 1)
+                            state.subject.choice.selectedIndex = subjects.length - 1
+                            state.subject.change(state.subject.choice.selectedIndex)
                             state.contents.style.visibility = 'hidden'
                         }
                         //alert('添加成功')
@@ -390,7 +383,7 @@
                     result = 'high'
                 }
                 return result
-            }
+            },
             choice: document.getElementById('gradeChoice'),
             change: function (gradeChoice) {
                 state.grade.index = gradeChoice.selectedIndex
@@ -439,13 +432,14 @@
             change: function (index) {
                 state.volume.index = index
                 state.volume.value = subjects[state.subject.index][state.grade.name][state.volume.index]
-                state.knowledgePoint.choice.selectedIndex = 0
 
-                state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
-                state.knowledgePoint.index = state.knowledgePoint.choice.selectedIndex
                 if (subjects[state.subject.index][state.grade.name][state.volume.index]) {
-                    state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
+                    state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                    state.knowledgePoint.choice.selectedIndex = 0
+                    state.knowledgePoint.change(state.knowledgePoint.choice.selectedIndex)
                 } else {
+                    state.refillChoice(state.knowledgePoint.choice, [])
+                    state.knowledgePoint.choice.selectedIndex = 0
                     state.knowledgePoint.value = null;
                 }
             },
@@ -536,7 +530,7 @@
             choice: document.getElementById('knowledgePointChoice'),
             append: document.getElementById('appendKnowledgePoint'),
             update: document.getElementById('updateKnowledgePoint'),
-            idControl: document.getElementById('knowledgePointId'),
+            idControl: document.getElementById('knowledgePointID'),
             //volumeIdControl: document.getElementById('knowledgePointVolumeID'),
             nameControl: document.getElementById('knowledgePointName'),
             submitControl: document.getElementById('knowledgePointSubmit'),
@@ -617,19 +611,43 @@
                             state.refillChoice(state.subject.choice, subjects)
                             state.subject.change(0)
                             state.contents.style.visibility = 'hidden'
+                        },
+                        error: function(r) {
+                            state.refillChoice(state.subject.choice, subjects)
+                            state.subject.change(0)
+                            state.contents.style.visibility = 'hidden'
                         }
                     })
+                },
+                error: function(r) {
+                    state.refillChoice(state.subject.choice, subjects)
+                    state.subject.change(0)
+                    state.contents.style.visibility = 'hidden'
                 }
             })
+        },
+        error: function(r) {
         }
     })
 
-    state.knowledgePoint.choice.addEventListener('change', function (e) {
-        state.knowledgePoint.change(e.target.selectedIndex)
+    state.subject.choice.addEventListener('change', function (e) {
+        state.subject.change(e.target.selectedIndex)
     }, false)
 
-    state.volume.choice.addEventListener('change', function (e) {
-        state.volume.change(e.target.selectedIndex)
+    state.subject.append.addEventListener('click', function (e) {
+        state.subject.edit({
+            id: '',
+            no: '',
+            name: ''
+        })
+    }, false)
+
+    state.subject.update.addEventListener('click', function (e) {
+        state.subject.edit(state.subject.value)
+    }, false)
+
+    state.subject.submitControl.addEventListener('click', function (e) {
+        state.subject.submit()
     }, false)
 
     state.grade.choice.addEventListener('change', function (e) {
@@ -637,36 +655,48 @@
         state.volume.change(0)
     }, false)
 
-    state.subject.choice.addEventListener('change', function (e) {
-        state.subject.change(e.target.selectedIndex)
-    }, false)
-
-    state.subject.append.addEventListener('click', function (e) {
-        state.subject.edit({})
-    }, false)
-
-    state.subject.submit.addEventListener('click', function (e) {
-        state.subject.submit()
-    }, false)
-
-    state.subject.update.addEventListener('click', function (e) {
-        state.subject.edit(state.subject.value)
+    state.volume.choice.addEventListener('change', function (e) {
+        state.volume.change(e.target.selectedIndex)
     }, false)
 
     state.volume.append.addEventListener('click', function (e) {
-        state.volume.edit({})
+        state.volume.edit({
+            id: '',
+            subjectId: state.subject.value.id,
+            grade: state.grade.value,
+            name: '',
+            imageId: '',
+            order: state.volume.maxOrder
+        })
     }, false)
 
     state.volume.update.addEventListener('click', function (e) {
         state.volume.edit(state.volume.value)
     }, false)
 
+    state.volume.submitControl.addEventListener('click', function (e) {
+        state.volume.submit()
+    }, false)
+
+    state.knowledgePoint.choice.addEventListener('change', function (e) {
+        state.knowledgePoint.change(e.target.selectedIndex)
+    }, false)
+
     state.knowledgePoint.append.addEventListener('click', function (e) {
-        state.knowledgePoint.edit({})
+        state.knowledgePoint.edit({
+            id: '',
+            volumeId: state.volume.value.id,
+            name: '',
+            order: state.knowledgePoint.maxOrder
+        })
     }, false)
 
     state.knowledgePoint.update.addEventListener('click', function (e) {
         state.knowledgePoint.edit(state.knowledgePoint.value)
+    }, false)
+
+    state.knowledgePoint.submitControl.addEventListener('click', function (e) {
+        state.knowledgePoint.submit()
     }, false)
 
     state.contents.addEventListener('click', function (e) {
