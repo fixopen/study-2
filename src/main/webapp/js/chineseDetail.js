@@ -12,7 +12,7 @@ $(function () {
         function submit(e) {
             var textarea = document.getElementById('textarea');
             var value = textarea.value;
-            if(value.length<1){
+            if (value.length < 1) {
                 return false;
             }
             textarea.value = '';
@@ -36,6 +36,7 @@ $(function () {
             })
         }
     }
+
     //knowledge-points
     var volumeId = g.getUrlParameter('volumeId')
     $.ajax({
@@ -52,7 +53,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                   //alert(JSON.stringify(data))
+                    //alert(JSON.stringify(data))
                     for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i]
                         p.options[0].title = 'A'
@@ -84,80 +85,79 @@ $(function () {
                         ]
                     })
 
-                   // pinyin-----begin------
-                   //  var pinyins = []
-                   //  for(var i=0;i<data.contents.length;i++){
-                   //      if (data.contents[i].type == 'pinyinText') {
-                   //          pinyins.push(data.contents[i])
-                   //      }
-                   //  }
-                   //
-                   //  var ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
-                   //      '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
-                   //      'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
-                   //      'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
-                   //
-                   //  var isP = function(c) {
-                   //      var result = false
-                   //      for (var i = 0; i < ps.length; ++i) {
-                   //          if (ps[i] == c) {
-                   //              result = true
-                   //              break
-                   //          }
-                   //      }
-                   //      return result
-                   //  }
-                   //
-                   //  for (var i = 0; i < pinyins.length; ++i) {
-                   //      var pinyinItem = pinyins[i]
-                   //      var pinyin = pinyinItem.pinyin.split(' ')
-                   //      var chineseIndex = 0;
-                   //      for (var j = 0; j < pinyin.length; ++j) {
-                   //          var pinyinValue = pinyin[j]
-                   //          var c = pinyinItem.content[chineseIndex]
-                   //          ++chineseIndex
-                   //          if (isP(c)) {
-                   //               e = c
-                   //              c = pinyinItem.content[chineseIndex]
-                   //              ++chineseIndex
-                   //          }
-                   //
-                   //          var g = {}
-                   //          g.bind = function (element, data) {
-                   //              element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
-                   //                  if (!variable) {
-                   //                      return ""
-                   //                  }
-                   //                  return data[variable];
-                   //              });
-                   //              return element
-                   //          };
-                   //
-                   //          //<ruby><rb>c</rb><rt>pinyinValue</rt></ruby><span>c</span>
-                   //          var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                   //          var content=document.getElementById('content')
-                   //          g.bind(e, {"pinyin": pinyinValue, "content":c})
-                   //          content.appendChild(e)
-                   //
-                   //
-                   //          //ruby=getTemplate('content-pinyin-template').cloneNode(true);
-                   //          // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                   //          // var content=document.getElementById('pycontent')
-                   //          // g.bind(d, {"pinyin": pinyinValue, "content":c})
-                   //          // content.appendChild(d)
-                   //          //
-                   //          // var e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
-                   //          // g.bind(e, {"content":c})
-                   //          // content.appendChild(e)
-                   //      }
-                   //    //  var pinyin=data.contents[i].pinyin.split(" ");
-                   //      //alert(pinyin);
-                   //      //var content=data.contents[i].content.split('');
-                   //      //alert(content);
-                   //
-                   //  }
-                 //   pinyin-----end-----
-
+                    // pinyin-----begin------
+                    //  var pinyins = []
+                    //  for(var i=0;i<data.contents.length;i++){
+                    //      if (data.contents[i].type == 'pinyinText') {
+                    //          pinyins.push(data.contents[i])
+                    //      }
+                    //  }
+                    //
+                    //  var ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
+                    //      '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
+                    //      'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
+                    //      'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
+                    //
+                    //  var isP = function(c) {
+                    //      var result = false
+                    //      for (var i = 0; i < ps.length; ++i) {
+                    //          if (ps[i] == c) {
+                    //              result = true
+                    //              break
+                    //          }
+                    //      }
+                    //      return result
+                    //  }
+                    //
+                    //  for (var i = 0; i < pinyins.length; ++i) {
+                    //      var pinyinItem = pinyins[i]
+                    //      var pinyin = pinyinItem.pinyin.split(' ')
+                    //      var chineseIndex = 0;
+                    //      for (var j = 0; j < pinyin.length; ++j) {
+                    //          var pinyinValue = pinyin[j]
+                    //          var c = pinyinItem.content[chineseIndex]
+                    //          ++chineseIndex
+                    //          if (isP(c)) {
+                    //               e = c
+                    //              c = pinyinItem.content[chineseIndex]
+                    //              ++chineseIndex
+                    //          }
+                    //
+                    //          var g = {}
+                    //          g.bind = function (element, data) {
+                    //              element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
+                    //                  if (!variable) {
+                    //                      return ""
+                    //                  }
+                    //                  return data[variable];
+                    //              });
+                    //              return element
+                    //          };
+                    //
+                    //          //<ruby><rb>c</rb><rt>pinyinValue</rt></ruby><span>c</span>
+                    //          var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //          var content=document.getElementById('content')
+                    //          g.bind(e, {"pinyin": pinyinValue, "content":c})
+                    //          content.appendChild(e)
+                    //
+                    //
+                    //          //ruby=getTemplate('content-pinyin-template').cloneNode(true);
+                    //          // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //          // var content=document.getElementById('pycontent')
+                    //          // g.bind(d, {"pinyin": pinyinValue, "content":c})
+                    //          // content.appendChild(d)
+                    //          //
+                    //          // var e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                    //          // g.bind(e, {"content":c})
+                    //          // content.appendChild(e)
+                    //      }
+                    //    //  var pinyin=data.contents[i].pinyin.split(" ");
+                    //      //alert(pinyin);
+                    //      //var content=data.contents[i].content.split('');
+                    //      //alert(content);
+                    //
+                    //  }
+                    //   pinyin-----end-----
 
 
                     proc({
@@ -178,10 +178,10 @@ $(function () {
                     })
 
                     //文字样式
-                    for(var i=0;i<data.problems.length;i++){
+                    for (var i = 0; i < data.problems.length; i++) {
                         if (data.problems[i].type == '多选题') {
                             $('.addimg span').eq(i).removeClass('mld_liImg').addClass('mld_liImg_');
-                        }else if(data.problems[i].type == '单选题'){
+                        } else if (data.problems[i].type == '单选题') {
                             $('.addimg span').eq(i).removeClass('mld_liImg_').addClass('mld_liImg');
                         }
                     }
@@ -231,7 +231,7 @@ $(function () {
                         return finded
                     }
 
-                 //   var problemContainer = document.getElementById('problem')
+                    //   var problemContainer = document.getElementById('problem')
                     // problemContainer.addEventListener('click', function (e) {
                     //     //e.currentTarget == problemContainer
                     //     var clickedElement = e.target
@@ -264,8 +264,8 @@ $(function () {
                     //     }
                     // }, false)
 
-                    var falseImage=getTemplate('falseImage');
-                    var trueImage=getTemplate('trueImage');
+                    var falseImage = getTemplate('falseImage');
+                    var trueImage = getTemplate('trueImage');
                     var problemContainer = document.getElementById('problem');
                     problemContainer.addEventListener('click', function (e) {
                         var clickedElement = e.target;
@@ -349,7 +349,7 @@ $(function () {
                         containerId: 'interaction'
                     })
 
-                   // likes
+                    // likes
                     var id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
@@ -360,7 +360,7 @@ $(function () {
                             var icon = document.getElementById('icon');
                             if (liked) {
                                 icon.setAttribute('src', 'img/zan-over.png');
-                            }else {
+                            } else {
                                 icon.setAttribute('src', 'img/zan.png');
                             }
                             icon.addEventListener('click', function (e) {
@@ -411,13 +411,13 @@ $(function () {
                             url: 'api/comments/' + id + '/is-self-like',
                             dataType: "json",
                             success: function (like) {
-                               var  likeds = like.like;
-                               if (likeds) {
-                                   e.target.setAttribute('src', 'img/zan-over.png');
-                               }else {
-                                   e.target.setAttribute('src', 'img/zan.png');
-                               }
-                               if(likeds){
+                                var likeds = like.like;
+                                if (likeds) {
+                                    e.target.setAttribute('src', 'img/zan-over.png');
+                                } else {
+                                    e.target.setAttribute('src', 'img/zan.png');
+                                }
+                                if (likeds) {
                                     var id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
@@ -437,7 +437,7 @@ $(function () {
                                             }
                                         }
                                     })
-                                }else{
+                                } else {
                                     var id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
