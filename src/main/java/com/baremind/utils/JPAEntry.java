@@ -1,7 +1,7 @@
 package com.baremind.utils;
 
 import com.baremind.Logs;
-import com.baremind.data.Session;
+import com.baremind.data.User;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -146,7 +146,7 @@ public class JPAEntry {
     public static boolean isLogining(String userId) {
         final Map<String, Boolean> r = new HashMap<>();
         r.put("value", false);
-        isLogining(sessionId, a -> {
+        isLogining(userId, a -> {
             //a.setLastOperationTime(new Date());
             //genericPut(a);
             r.put("value", true);
@@ -158,7 +158,7 @@ public class JPAEntry {
     }
 
     public static void isLogining(String userId, Consumer<User> touchFunction) {
-        User u = getObject(User.class, "identity", Long.parseLong(userId));
+        User u = getObject(User.class, "id", Long.parseLong(userId));
         if (u != null) {
             touchFunction.accept(u);
         }
@@ -170,7 +170,7 @@ public class JPAEntry {
         isLogining(sessionId, a -> {
             //a.setLastOperationTime(new Date());
             //genericPut(a);
-            r.put("value", a.getUserId());
+            r.put("value", a.getId());
         });
         return r.get("value");
     }

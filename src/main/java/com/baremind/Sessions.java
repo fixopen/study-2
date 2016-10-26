@@ -75,9 +75,9 @@ public class Sessions {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSession(@CookieParam("userId") String userId, @PathParam("id") Long id, Session session) {
+    public Response updateSession(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Session session) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(aUserId)) {
             result = Response.status(404).build();
             Session existsession = JPAEntry.getObject(Session.class, "id", id);
             if (existsession != null) {

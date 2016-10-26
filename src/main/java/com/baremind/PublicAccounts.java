@@ -1055,7 +1055,7 @@ public class PublicAccounts {
     @Path("follow")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response follow(@CookieParam("userId") String userId, JAXBElement<Follow> follow) {
+    public Response follow(@CookieParam("userId") String aUserId, JAXBElement<Follow> follow) {
         Follow f = follow.getValue();
         if (f.Event.equals("subscribe")) {
             WechatUserInfo us = getUserInfo(f.FromUserName);

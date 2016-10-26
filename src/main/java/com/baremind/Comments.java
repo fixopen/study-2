@@ -23,7 +23,7 @@ public class Comments {
     public Response like(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            Log log = Logs.insert(sessionId, "comment", id, "like");
+            Log log = Logs.insert(Long.parseLong(userId), "comment", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;
@@ -36,7 +36,7 @@ public class Comments {
     public Response unlike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            Long count = Logs.deleteLike(sessionId, "comment", id);
+            Long count = Logs.deleteLike(Long.parseLong(userId), "comment", id);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
@@ -60,7 +60,7 @@ public class Comments {
     public Response getSelfLike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            Boolean has = Logs.has(userId, "comment", id, "like");
+            Boolean has = Logs.has(Long.parseLong(userId), "comment", id, "like");
             result = Response.ok("{\"like\":" + has.toString() + "}").build();
         }
         return result;
@@ -73,7 +73,7 @@ public class Comments {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             comment.setId(IdGenerator.getNewId());
-            comment.setUserId(userId);
+            comment.setUserId(Long.parseLong(userId));
             Date now = new Date();
             comment.setCreateTime(now);
             comment.setUpdateTime(now);
@@ -117,9 +117,9 @@ public class Comments {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateComment(@CookieParam("userId") String userId, @PathParam("id") Long id, Comment comment) {
+    public Response updateComment(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Comment comment) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(aUserId)) {
             result = Response.status(404).build();
             Comment existComment = JPAEntry.getObject(Comment.class, "id", id);
             if (existComment != null) {

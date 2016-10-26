@@ -166,9 +166,9 @@ public class Cards {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCard(@CookieParam("userId") String userId, @PathParam("id") Long id, Card card) {
+    public Response updateCard(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Card card) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(aUserId)) {
             result = Response.status(404).build();
             Card existcard = JPAEntry.getObject(Card.class, "id", id);
             if (existcard != null) {

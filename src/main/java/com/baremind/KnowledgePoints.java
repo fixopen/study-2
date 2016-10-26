@@ -75,7 +75,7 @@ public class KnowledgePoints {
     public Response like(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            Log log = Logs.insert(sessionId, "knowledge-point", id, "like");
+            Log log = Logs.insert(Long.parseLong(userId), "knowledge-point", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;
@@ -88,7 +88,7 @@ public class KnowledgePoints {
     public Response unlike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            Long count = Logs.deleteLike(sessionId, "knowledge-point", id);
+            Long count = Logs.deleteLike(Long.parseLong(userId), "knowledge-point", id);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
@@ -112,7 +112,7 @@ public class KnowledgePoints {
     public Response getSelfLike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            Boolean has = Logs.has(userId, "knowledge-point", id, "like");
+            Boolean has = Logs.has(Long.parseLong(userId), "knowledge-point", id, "like");
             result = Response.ok("{\"like\":" + has.toString() + "}").build();
         }
         return result;
@@ -140,7 +140,7 @@ public class KnowledgePoints {
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
 
-                JPAEntry.log(userId, "read", "knowledge-point", id);
+                JPAEntry.log(Long.parseLong(userId), "read", "knowledge-point", id);
 
                 Map<String, Object> conditions = new HashMap<>();
                 conditions.put("knowledgePointId", id);
@@ -156,8 +156,6 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
                 List<String> pinyinIds = new ArrayList<>();
-                List<String> optionIds = new ArrayList<>();
-
 
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getType()) {
@@ -277,11 +275,7 @@ public class KnowledgePoints {
                                         Image storePath = JPAEntry.getObject(Image.class, "id", option.getImageId());
                                         opm.put("optionImagePath", storePath.getStorePath());
                                     }
-                                   /* Map<String, String> orders = new HashMap<>();
-                                    orders.put("order", "ASC");
-                                    List<ProblemOption> problemOptions1 = JPAEntry.getList(ProblemOption.class, filterObject, orders);*/
                                     apm.add(opm);
-
                                 }
                                 pm.put("options", apm);
                                 pm.put("standardAnswers", problemStandardAnswers);

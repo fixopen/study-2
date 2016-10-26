@@ -25,7 +25,7 @@ public class Logs {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             log.setId(IdGenerator.getNewId());
-            log.setUserId(userId);
+            log.setUserId(Long.parseLong(userId));
             log.setCreateTime(new Date());
             JPAEntry.genericPost(log);
             result = Response.ok(log).build();
@@ -46,10 +46,10 @@ public class Logs {
     }
 
     public static Log insert(String sessionId, String objectType, Long objectId, String action) {
-        return insert(userId, objectType, objectId, action);
+        return insert(JPAEntry.getLoginId(sessionId), objectType, objectId, action);
     }
 
-    public static Long deleteLike(String sessionId, String objectType, Long objectId) {
+    public static Long deleteLike(Long userId, String objectType, Long objectId) {
         Map<String, Object> filter = new HashMap<>();
         filter.put("userId", userId);
         filter.put("objectType", objectType);
@@ -62,7 +62,7 @@ public class Logs {
     @Path("{id}/count")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLikeCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
-        return getLogsCount(sessionId, "knowledge-point", id, "like");
+        return getLogsCount(userId, "knowledge-point", id, "like");
     }
 
     @GET
@@ -132,9 +132,9 @@ public class Logs {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateLike(@CookieParam("userId") String userId, @PathParam("id") Long id, Log log) {
+    public Response updateLike(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Log log) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(aUserId)) {
             result = Response.status(404).build();
             Log existlike = JPAEntry.getObject(Log.class, "id", id);
             if (existlike != null) {

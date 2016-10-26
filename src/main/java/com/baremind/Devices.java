@@ -62,9 +62,9 @@ public class Devices {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateDevice(@CookieParam("userId") String userId, @PathParam("id") Long id, Device device) {
+    public Response updateDevice(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Device device) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(aUserId)) {
             result = Response.status(404).build();
             Device existdevice = JPAEntry.getObject(Device.class, "id", id);
             if (existdevice != null) {
