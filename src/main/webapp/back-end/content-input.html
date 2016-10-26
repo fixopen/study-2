@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Content Input</title>
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
     <style>
         .active {
             background-color: yellow;
@@ -122,6 +125,18 @@
                             <input type="text" class="form-control" id="volumeID" placeholder="volume id">
                         </div>
                     </div>
+                    <div class="form-group hidden">
+                        <label for="volumeID" class="col-sm-2 control-label">subject id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeSubjectID" placeholder="volume subject id">
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <label for="volumeID" class="col-sm-2 control-label">grade</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeGrade" placeholder="volume grade">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="volumeName" class="col-sm-2 control-label">name</label>
                         <div class="col-sm-10">
@@ -163,6 +178,12 @@
                         <label for="knowledgePointID" class="col-sm-2 control-label">id</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="knowledgePointID" placeholder="knowledge point id">
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <label for="knowledgePointName" class="col-sm-2 control-label">volume id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="knowledgePointVolumeId" placeholder="knowledge point volume id">
                         </div>
                     </div>
                     <div class="form-group">
@@ -229,135 +250,272 @@
         文字<textarea data-type="content"></textarea>
     </div>
 </template>
+<script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/bootstrap/bootstrap.min.js"></script>
+<script src="/react/react-dom.min.js"></script>
+<script src="/react/react.min.js"></script>
 <script src="/util.js"></script>
 <script>
     let subjects = []
 
     let state = {
+        createOption: function(value, title) {
+            let option = document.createElement('option')
+            option.setAttribute("value", value)
+            option.appendChild(document.createTextNode(title))
+            return option
+        },
+        refillChoice: function(choice, data) {
+            choice.innerHTML = ''
+            if (Array.isArray(data)) {
+                for (let i = 0; i < data.length; ++i) {
+                    choice.appendChild(state.createOption(data[i].id, data[i].name))
+                }
+            }
+            choice.selectedIndex = 0
+        },
         subject: {
             index: 0,
-            id: null,
+            value: null,
+            change: function(index) {
+                state.subject.index = index
+                state.subject.value = subjects[state.subject.index]
+
+                state.grade.choice.selectedIndex = 0
+                state.grade.change(state.grade.choice)
+
+                if (subjects[state.subject.index]) {
+                    state.refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+                    state.volume.index = state.volume.choice.selectedIndex
+                    state.volume.value = subjects[state.subject.index][state.grade.name][state.volume.index]
+
+                    state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                    state.knowledgePoint.index = state.knowledgePoint.choice.selectedIndex
+                    if (subjects[state.subject.index][state.grade.name][state.volume.index]) {
+                        state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
+                    } else {
+                        state.knowledgePoint.value = null;
+                    }
+                }
+            },
+            edit: function(subject) {
+                var titleValue = 'New Subject'
+                if (subject.id) {
+                    titleValue = 'Edit Subject'
+                }
+                $('#subjectEditorLabel').text(titleValue)
+                state.subject.idControl.value = subject.id
+                state.subject.noControl.value = subject.no
+                state.subject.nameControl.value = subject.name
+                $('#subjectEditor').modal('show')
+            },
             choice: document.getElementById('subjectChoice'),
-            title: document.getElementById('subjectTitle')
+            append: document.getElementById('appendSubject'),
+            update: document.getElementById('updateSubject'),
+            idControl: document.getElementById('subjectId'),
+            noControl: document.getElementById('subjectNo'),
+            nameControl: document.getElementById('subjectName'),
+            submitControl: document.getElementById('subjectSubmit'),
+            submit: function() {
+                let isUpdate = false
+                let method = 'POST'
+                let url = '/api/subjects'
+                if (state.subject.idControl.value != '') {
+                    isUpdate = true
+                    method = 'PUT'
+                    url = '/api/subjects/' + state.subject.value.id
+                }
+                g.ajaxProcess(method, url, [
+                    {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                    {name: 'Accept', value: 'application/json'}
+                ], {
+                    no: state.subject.noControl.value,
+                    name: state.subject.nameControl.value
+                }, function(subjectResult) {
+                    if (subjectResult.meta.code < 400) {
+                        if (isUpdate) {
+                            subjects[state.subject.index][state.grade.name][state.volume.index] = volume
+
+                            //
+                        } else {
+                            let subject = subjectResult.data
+                            subject.low = []
+                            subject.high = []
+                            subjects.push(subject)
+
+                            state.refillChoice(state.subject.choice, subjects)
+                            state.subject.change(subjects.length - 1)
+                            state.contents.style.visibility = 'hidden'
+                        }
+                        //alert('添加成功')
+                    } else {
+                        //alert('添加失败')
+                    }
+                })
+            }
         },
         grade: {
             index: 0,
             value: 20,
             name: 'low',
-            choice: document.getElementById('gradeChoice')
+            choice: document.getElementById('gradeChoice'),
+            change: function(gradeChoice) {
+                state.grade.index = gradeChoice.selectedIndex
+                state.grade.value = gradeChoice.value
+                switch (state.grade.value) {
+                    case '20':
+                        state.grade.name = 'low'
+                        break
+                    case '21':
+                        state.grade.name = 'high'
+                        break
+                }
+            }
         },
         volume: {
             index: 0,
-            id: null,
+            value: null,
+            maxOrder: 1,
+            change: function(index) {
+                state.volume.index = index
+                state.volume.value = subjects[state.subject.index][state.grade.name][state.volume.index]
+                state.knowledgePoint.choice.selectedIndex = 0
+
+                state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                state.knowledgePoint.index = state.knowledgePoint.choice.selectedIndex
+                if (subjects[state.subject.index][state.grade.name][state.volume.index]) {
+                    state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
+                } else {
+                    state.knowledgePoint.value = null;
+                }
+            },
+            edit: function(volume) {
+                var titleValue = 'New Volume'
+                if (volume.id) {
+                    titleValue = 'Edit Volume'
+                }
+                $('#volumeEditorLabel').text(titleValue)
+                $('#volumeID').val(volume.id)
+                $('#volumeName').val(volume.name)
+                $('#volumeCover').attr('src', volume.coverHref)
+                $('#volumeOrder').val(volume.order)
+                $('#volumeEditor').modal('show')
+            },
             choice: document.getElementById('volumeChoice'),
-            title: document.getElementById('volumeTitle'),
-            maxOrder: 1
+            append: document.getElementById('appendVolume'),
+            update: document.getElementById('updateVolume'),
+            idControl: document.getElementById('volumeID'),
+            //subjectIdControl: document.getElementById('volumeSubjectID'),
+            //gradeControl: document.getElementById('volumeGrade'),
+            coverControl: document.getElementById('volumeCover'),
+            nameControl: document.getElementById('volumeName'),
+            submitControl: document.getElementById('volumeSubmit'),
+            submit: function() {
+                let isUpdate = false
+                let method = 'POST'
+                let url = '/api/volumes'
+                if (state.subject.idControl.value != '') {
+                    isUpdate = true
+                    method = 'PUT'
+                    url = '/api/volumes/' + state.subject.value.id
+                }
+                g.ajaxProcess(method, url, [
+                    {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                    {name: 'Accept', value: 'application/json'}
+                ], {
+                    subjectId: state.subject.value.id,
+                    grade: parseInt(state.grade.value),
+                    imageId: parseInt(state.volume.coverControl.dataset.id),
+                    name: state.volume.nameControl.value,
+                    order: state.volume.maxOrder
+                }, function(volumeResult) {
+                    if (volumeResult.meta.code < 400) {
+                        if (isUpdate) {
+                            let knowledgePoints = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints
+                            let volume = volumeResult.data
+                            volume.knowledgePoints = knowledgePoints
+                            //
+                        } else {
+                            let volume = volumeResult.data
+                            volume.knowledgePoints = []
+                            subjects[state.subject.index][state.grade.name].push(volume)
+
+                            state.refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+                            state.volume.change(subjects[state.subject.index][state.grade.name].length - 1)
+                            ++state.volume.maxOrder
+                        }
+                        //alert('添加成功')
+                    } else {
+                        //alert(volumeResult.data)
+                        //alert('添加失败')
+                    }
+                })
+            }
         },
         knowledgePoint: {
             index: 0,
-            id: null,
+            value: null,
+            maxOrder: 1,
+            change: function(index) {
+                state.knowledgePoint.index = index
+                state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
+            },
+            edit: function(knowledgePoint) {
+                var titleValue = 'New Knowledge Point'
+                if (knowledgePoint.id) {
+                    titleValue = 'Edit Knowledge Point'
+                }
+                $('#knowledgePointEditorLabel').text(titleValue)
+                $('#knowledgePointID').val(volume.id)
+                $('#knowledgePointName').val(volume.name)
+                $('#knowledgePointOrder').val(volume.order)
+                $('#knowledgePointEditor').modal('show')
+            },
             choice: document.getElementById('knowledgePointChoice'),
-            title: document.getElementById('knowledgePointTitle'),
-            maxOrder: 1
+            append: document.getElementById('appendKnowledgePoint'),
+            update: document.getElementById('updateKnowledgePoint'),
+            idControl: document.getElementById('knowledgePointId'),
+            //volumeIdControl: document.getElementById('knowledgePointVolumeID'),
+            nameControl: document.getElementById('knowledgePointName'),
+            submitControl: document.getElementById('knowledgePointSubmit'),
+            submit: function() {
+                let isUpdate = false
+                let method = 'POST'
+                let url = '/api/knowledge-points'
+                if (state.subject.idControl.value != '') {
+                    isUpdate = true
+                    method = 'PUT'
+                    url = '/api/knowledge-points/' + state.subject.value.id
+                }
+                g.ajaxProcess(method, url, [
+                    {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                    {name: 'Accept', value: 'application/json'}
+                ], {
+                    volumeId: state.volume.id,
+                    name: state.knowledgePoint.title.value,
+                    order: state.knowledgePoint.maxOrder
+                }, function(knowledgePointResult) {
+                    if (knowledgePointResult.meta.code < 400) {
+                        if (isUpdate) {
+                            subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index] = knowledgePointResult.data
+                        } else {
+                            let knowledgePoint = knowledgePointResult.data
+                            subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.push(knowledgePoint)
+                            state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                            state.knowledgePoint.change(subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.length - 1)
+                            ++state.knowledgePoint.maxOrder
+                            alert("添加成功")
+                        }
+                    } else {
+                        //alert(knowledgePointResult.data)
+                        alert("添加失败")
+                    }
+                })
+            }
         },
         currentSelectedElement: null,
         contents: document.getElementById('contents'),
         buttons: document.getElementById('buttons')
-    }
-
-    let subjectEdit = function (subject) {
-        var titleValue = 'New Subject'
-        if (subject.id) {
-            titleValue = 'Edit Subject'
-        }
-        $('#subjectEditorLabel').text(titleValue)
-        $('#subjectID').val(subject.id)
-        $('#subjectNo').val(subject.no)
-        $('#subjectName').val(subject.name)
-        $('#subjectEditor').modal('show')
-    }
-
-    let volumeEdit = function (volume) {
-        var titleValue = 'New Volume'
-        if (volume.id) {
-            titleValue = 'Edit Volume'
-        }
-        $('#volumeEditorLabel').text(titleValue)
-        $('#volumeID').val(volume.id)
-        $('#volumeName').val(volume.name)
-        $('#volumeCover').attr('src', volume.coverHref)
-        $('#volumeOrder').val(volume.order)
-        $('#volumeEditor').modal('show')
-    }
-
-    let knowledgePointEdit = function (knowledgePoint) {
-        var titleValue = 'New Knowledge Point'
-        if (knowledgePoint.id) {
-            titleValue = 'Edit Knowledge Point'
-        }
-        $('#knowledgePointEditorLabel').text(titleValue)
-        $('#knowledgePointID').val(volume.id)
-        $('#knowledgePointName').val(volume.name)
-        $('#knowledgePointOrder').val(volume.order)
-        $('#knowledgePointEditor').modal('show')
-    }
-
-    let createOption = function(value, title) {
-        let option = document.createElement('option')
-        option.setAttribute("value", value)
-        option.appendChild(document.createTextNode(title))
-        return option
-    }
-
-    let refillChoice = function(choice, data) {
-        choice.innerHTML = ''
-        for (let i = 0; i < data.length; ++i) {
-            choice.appendChild(createOption(data[i].id, data[i].name))
-        }
-        choice.selectedIndex = 0
-    }
-
-    let changeKnowledgePoint = function(knowledgePointChoice, knowledgePoint) {
-        state.knowledgePoint.index = knowledgePointChoice.selectedIndex
-        state.knowledgePoint.id = knowledgePointChoice.value
-        knowledgePoint.value = ''
-        let opt = knowledgePointChoice.options.item(state.knowledgePoint.index)
-        if (opt) {
-            knowledgePoint.value = opt.text
-        }
-    }
-
-    let changeVolume = function(volumeChoice, volume) {
-        state.volume.index = volumeChoice.selectedIndex
-        state.volume.id = volumeChoice.value
-        volume.value = ''
-        let opt = volumeChoice.options.item(state.volume.index)
-        if (opt) {
-            volume.value = opt.text
-        }
-    }
-
-    let changeGrade = function(gradeChoice) {
-        state.grade.index = gradeChoice.selectedIndex
-        state.grade.value = gradeChoice.value
-        switch (state.grade.value) {
-            case '20':
-                state.grade.name = 'low'
-                break
-            case '21':
-                state.grade.name = 'high'
-                break
-        }
-    }
-
-    let changeSubject = function(subjectChoice, subject) {
-        state.subject.index = subjectChoice.selectedIndex
-        state.subject.id = subjectChoice.value
-        subject.value = ''
-        let opt = subjectChoice.options.item(state.subject.index)
-        if (opt) {
-            subject.value = opt.text
-        }
     }
 
     g.ajaxProcess('GET', '/api/subjects', [
@@ -393,212 +551,54 @@
             })
         }
 
-        refillChoice(state.subject.choice, subjects)
-        changeSubject(state.subject.choice, state.subject.title)
-        changeGrade(state.grade.choice)
-        refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
-        changeVolume(state.volume.choice, state.volume.title)
-        refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
-        changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+        state.refillChoice(state.subject.choice, subjects)
+        state.subject.change(0)
         state.contents.style.visibility = 'hidden'
     })
 
     state.knowledgePoint.choice.addEventListener('change', function (e) {
-        changeKnowledgePoint(e.target, state.knowledgePoint.title)
+        state.knowledgePoint.change(e.target.selectedIndex)
     }, false)
 
     state.volume.choice.addEventListener('change', function (e) {
-        changeVolume(e.target, state.volume.title)
-        state.knowledgePoint.choice.selectedIndex = 0
-        changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+        state.volume.change(e.target.selectedIndex)
     }, false)
 
     state.grade.choice.addEventListener('change', function (e) {
-        changeGrade(e.target)
-        state.volume.choice.selectedIndex = 0
-        changeVolume(state.volume.choice, state.volume.title)
-        state.knowledgePoint.choice.selectedIndex = 0
-        changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+        state.grade.change(e.target)
+        state.volume.change(0)
     }, false)
 
-    state.subject.choice.addEventListener('change', function (e) {
-        state.subject.index = e.target.selectedIndex
-        state.subject.id = e.target.value
-        changeSubject(state.subject.choice, state.subject.title)
-        state.grade.choice.selectedIndex = 0
-        changeGrade(state.grade.choice)
-        state.volume.choice.selectedIndex = 0
-        changeVolume(state.volume.choice, state.volume.title)
-        state.knowledgePoint.choice.selectedIndex = 0
-        changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
+    state.subject.choice.addEventListener('change', function(e) {
+        state.subject.change(e.target.selectedIndex)
     }, false)
 
-    let appendSubjectButton = document.getElementById('appendSubject')
-    appendSubjectButton.addEventListener('click', function(e) {
-        let subject = {}
-        subjectEdit(subject)
+    state.subject.append.addEventListener('click', function(e) {
+        state.subject.edit({})
     }, false)
 
-    let submitSubject = document.getElementById('subjectSubmit')
-    submitSubject.addEventListener('click', function(e) {
-        let form = e.target.parentNode.parentNode.parentNode
-        let method = 'POST'
-        let url = '/api/subjects'
-        if (form.getElementById('subjectID').value != '') {
-            method = 'PUT'
-            url = '/api/subjects/' + state.subject.id
-        }
-        g.ajaxProcess(method, url, [
-            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-            {name: 'Accept', value: 'application/json'}
-        ], {
-            no: form.getElementById('subjectNo').value,
-            name: form.getElementById('subjectName').value
-        }, function(subjectResult) {
-            if (subjectResult.meta.code < 400) {
-                let subject = subjectResult.data
-                subject.low = []
-                subject.high = []
-                subjects.push(subject)
-                refillChoice(state.subject.choice, subjects)
-                state.subject.choice.selectedIndex = subjects.length - 1
-                changeSubject(state.subject.choice, state.subject.title)
-                changeGrade(state.grade.choice)
-                refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
-                changeVolume(state.volume.choice, state.volume.title)
-                refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
-                changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
-                state.contents.style.visibility = 'hidden'
-                //alert('添加成功')
-            } else {
-                //alert('添加失败')
-            }
-        })
+    state.subject.submit.addEventListener('click', function(e) {
+        state.subject.submit()
     }, false)
 
-    let updateSubjectButton = document.getElementById('updateSubject')
-    updateSubjectButton.addEventListener('click', function(e) {
-        let subject = findSubjectById(state.subject.id)
-        subjectEdit(subject)
-        g.ajaxProcess('PUT', '/api/subjects/' + state.subject.id, [
-            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-            {name: 'Accept', value: 'application/json'}
-        ], {
-            name: state.subject.title.value
-        }, function(volumeResult) {
-            if (volumeResult.meta.code < 400) {
-                let knowledgePoints = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints
-                let volume = volumeResult.data
-                volume.knowledgePoints = knowledgePoints
-                subjects[state.subject.index][state.grade.name][state.volume.index] = volume
-                refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
-                state.volume.choice.selectedIndex = state.volume.index
-                changeVolume(state.volume.choice, state.volume.title)
-                alert("修改成功")
-            } else {
-                //alert(volumeResult.data)
-                alert("修改失败")
-            }
-        })
+    state.subject.update.addEventListener('click', function(e) {
+        state.subject.edit(state.subject.value)
     }, false)
 
-    let appendVolumeButton = document.getElementById('appendVolume')
-    appendVolumeButton.addEventListener('click', function(e) {
-        g.ajaxProcess('POST', '/api/volumes', [
-            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-            {name: 'Accept', value: 'application/json'}
-        ], {
-            subjectId: state.subject.id,
-            grade: parseInt(state.grade.value),
-            name: state.volume.title.value,
-            order: state.volume.maxOrder
-        }, function(volumeResult) {
-            if (volumeResult.meta.code < 400) {
-                let volume = volumeResult.data
-                volume.knowledgePoints = []
-                subjects[state.subject.index][state.grade.name].push(volume)
-                refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
-                state.volume.choice.selectedIndex = subjects[state.subject.index][state.grade.name].length - 1
-                changeVolume(state.volume.choice, state.volume.title)
-                refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
-                ++state.volume.maxOrder
-                alert('添加成功')
-            } else {
-                //alert(volumeResult.data)
-                alert('添加失败')
-            }
-        })
+    state.volume.append.addEventListener('click', function(e) {
+        state.volume.edit({})
     }, false)
 
-    let updateVolumeButton = document.getElementById('updateVolume')
-    updateVolumeButton.addEventListener('click', function(e) {
-        g.ajaxProcess('PUT', '/api/volumes/' + state.volume.id, [
-            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-            {name: 'Accept', value: 'application/json'}
-        ], {
-            name: state.volume.title.value
-        }, function(volumeResult) {
-            if (volumeResult.meta.code < 400) {
-                let knowledgePoints = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints
-                let volume = volumeResult.data
-                volume.knowledgePoints = knowledgePoints
-                subjects[state.subject.index][state.grade.name][state.volume.index] = volume
-                refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
-                state.volume.choice.selectedIndex = state.volume.index
-                changeVolume(state.volume.choice, state.volume.title)
-                alert("修改成功")
-            } else {
-                //alert(volumeResult.data)
-                alert("修改失败")
-            }
-        })
+    state.volume.update.addEventListener('click', function(e) {
+        state.volume.edit(state.volume.value)
     }, false)
 
-    let appendKnowledgePointButton = document.getElementById('appendKnowledgePoint')
-    appendKnowledgePointButton.addEventListener('click', function(e) {
-        g.ajaxProcess('POST', '/api/knowledge-points', [
-            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-            {name: 'Accept', value: 'application/json'}
-        ], {
-            volumeId: state.volume.id,
-            name: state.knowledgePoint.title.value,
-            order: state.knowledgePoint.maxOrder
-        }, function(knowledgePointResult) {
-            if (knowledgePointResult.meta.code < 400) {
-                let knowledgePoint = knowledgePointResult.data
-                subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.push(knowledgePoint)
-                refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
-                state.knowledgePoint.choice.selectedIndex = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.length - 1
-                changeVolume(state.knowledgePoint.choice, state.knowledgePoint.title)
-                state.contents.style.visibility = 'visible'
-                ++state.knowledgePoint.maxOrder
-                alert("添加成功")
-            } else {
-                //alert(knowledgePointResult.data)
-                alert("添加失败")
-            }
-        })
+    state.knowledgePoint.append.addEventListener('click', function(e) {
+        state.knowledgePoint.edit({})
     }, false)
 
-    let updateKnowledgePointButton = document.getElementById('updateKnowledgePointButton')
-    updateKnowledgePointButton.addEventListener('click', function(e) {
-        g.ajaxProcess('PUT', '/api/knowledge-points/' + state.knowledgePoint.id, [
-            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-            {name: 'Accept', value: 'application/json'}
-        ], {
-            name: state.knowledgePoint.title.value
-        }, function(knowledgePointResult) {
-            if (knowledgePointResult.meta.code < 400) {
-                subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index] = knowledgePointResult.data
-                refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
-                state.knowledgePoint.choice.selectedIndex = state.knowledgePoint.index
-                changeVolume(state.knowledgePoint.choice, state.knowledgePoint.title)
-                alert("修改成功")
-            } else {
-                //alert(knowledgePointResult.data)
-                alert("修改失败")
-            }
-        })
+    state.knowledgePoint.update.addEventListener('click', function(e) {
+        state.knowledgePoint.edit(state.knowledgePoint.value)
     }, false)
 
     state.contents.addEventListener('click', function (e) {
@@ -873,13 +873,13 @@
                 }
                 break
             case 'video':
-                let imageControl = state.currentSelectedElement.querySelector('[data-type="image"]')
-                if (!imageControl.dataset.id) {
-                    if (imageControl.files.length > 0) {
-                        uploadFile(imageControl.files[0], function(result) {
-                            imageControl.dataset.id = result.id
+                let videoCoverControl = state.currentSelectedElement.querySelector('[data-type="image"]')
+                if (!videoCoverControl.dataset.id) {
+                    if (videoCoverControl.files.length > 0) {
+                        uploadFile(videoCoverControl.files[0], function(result) {
+                            videoCoverControl.dataset.id = result.id
                             genericProc('videos', {
-                                imageId: imageControl.dataset.id,
+                                imageId: videoCoverControl.dataset.id,
                                 storePath: state.currentSelectedElement.value
                             })
                         })

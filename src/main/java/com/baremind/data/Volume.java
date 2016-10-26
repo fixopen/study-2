@@ -24,16 +24,11 @@ public class Volume {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "image_id")
+    private Long imageId;
+
     @Column(name = "\"order\"")
-    private int order;
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
+    private Integer order;
 
     public Long getId() {
         return id;
@@ -51,11 +46,11 @@ public class Volume {
         this.subjectId = subjectId;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
@@ -67,4 +62,19 @@ public class Volume {
         this.name = title;
     }
 
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
 }

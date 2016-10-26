@@ -358,6 +358,19 @@ g.getCookie = function (cookieName) {
     return result
 }
 
+g.SimpleProcessor = function(config) {
+    //load data/save data
+    //get data post process == modify/filter
+    //get data fail process
+    //put data pre process == collect
+    //put data success process
+    //put data fail process
+
+    //render
+
+    //event bind
+}
+
 //config: {data: dataOrApi,
 // dataPostprocess: function(data, index, params){}, dataParams: {},
 // renderScenes: [{container: c, template: t, range: {lowerBound: 0, upperBound: 6}}, ...],
