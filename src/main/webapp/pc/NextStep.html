@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>完善信息</title>
+
+    <!-- 引入css -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/fill.css">
+    <link rel="stylesheet" href="css/mima.css">
+    <script src="../jquery/jquery-3.1.1.min.js"></script>
+    <script src="../util.js"></script>
+
+</head>
+<body>
+<div class="logo-section">
+    <div class="inner">
+        <h1 class="logo">
+            <a href="javascript:;" class="logo-a" title="小雨知时">小雨知时</a>
+        </h1>
+        <div class="page-name">忘记密码</div>
+    </div>
+</div>
+
+<!-- info-content -->
+<div class="inner">
+    <div class="flower-content">
+        <div class="step">
+            <ul class="step-uli">
+                <li><img src="images/step1.png" alt=""></li>
+                <li><img src="images/step2.png" alt=""></li>
+                <li><img src="images/step03.png" alt=""></li>
+            </ul>
+            <ul class="step-zi">
+                <li class="step-zise ceng">身份认证</li>
+                <li class="step-zise step-range ceng">设置密码</li>
+                <li class="step-zise step-range">完成</li>
+            </ul>
+        </div>
+        <div class="step-success">
+            <table class="next-tab">
+                <tr>
+                    <td>账号：</td>
+                    <td id="Accountnumber"></td>
+                </tr>
+                <tr>
+                    <td>设置密码：</td>
+                    <td>
+                        <input class="hei44" type="password" id="pwd1" placeholder="请输入6-16位密码">
+                        <i class="error-hou" id="yierror"><!--请输入6-16位密码--></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>确认密码：</td>
+                    <td>
+                        <input class="hei44" type="password" id="pwd2" placeholder="请输入6-16位密码">
+                        <i class="error-hou" id="liangerror"><!--两次密码不一致--></i>
+                    </td>
+                </tr>
+            </table>
+            <div class="check-info">
+                <a href="W忘记密码-成功.html" class="check-btn">下一步</a>
+            </div>
+        </div>
+    </div>
+    <div class="perfect-bottom"></div>
+</div>
+
+<!-- copyright -->
+<div class="copyright">
+    Copyright 北京小雨知时教育科技有限公司 京ICP备16047890号-1
+    <img src="images/gongan.png" alt="">京公安网备1101082020142号
+    京ICP证160421号 All Rights Reserved <img src="images/tongji.gif" alt=""><br>
+    地址：北京市海淀区上地信息路1号2号楼5层505 电话：010-12345678
+</div>
+<script>
+    let Account = g.getCookie("Changepassword")
+    document.getElementById("Accountnumber").innerHTML = Account
+    function validatePWD1(){
+         var pwd1 = $("#pwd1").val();
+         var yierror = $("#yierror");
+         if(pwd1.length >=6 && pwd1.length <=16){
+         yierror.innerHTML=""
+         }else{
+         yierror.innerHTML="请输入6-16位密码"
+         }
+     }
+    function validatePWD2() {
+        var pwd1 = $("#pwd1").val();
+        var pwd2 = $("#pwd2").val();
+        var liangerror = $("#liangerror");
+        if (pwd1 != pwd2) {
+            liangerror.innerHTML = "密码输入不一致，请重新输入"
+        } else {
+            liangerror.innerHTML = ""
+        }
+    }
+</script>
+</body>
+</html>

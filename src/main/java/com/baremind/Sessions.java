@@ -18,9 +18,9 @@ public class Sessions {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createSession(@CookieParam("sessionId") String sessionId, Session session) {
+    public Response createSession(@CookieParam("userId") String userId, Session session) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             session.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(session);
             result = Response.ok(session).build();
@@ -31,9 +31,9 @@ public class Sessions {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response destroySession(@CookieParam("sessionId") String sessionId, Session session) {
+    public Response destroySession(@CookieParam("userId") String userId, Session session) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             session.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(session);
             result = Response.ok(session).build();
@@ -43,9 +43,9 @@ public class Sessions {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSessions(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getSessions(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Session> sessions = JPAEntry.getList(Session.class, filterObject);
@@ -59,9 +59,9 @@ public class Sessions {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSessionById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getSessionById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Session session = JPAEntry.getObject(Session.class, "id", id);
             if (session != null) {
@@ -75,9 +75,9 @@ public class Sessions {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSession(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Session session) {
+    public Response updateSession(@CookieParam("userId") String userId, @PathParam("id") Long id, Session session) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Session existsession = JPAEntry.getObject(Session.class, "id", id);
             if (existsession != null) {

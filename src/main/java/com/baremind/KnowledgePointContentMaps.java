@@ -20,9 +20,9 @@ public class KnowledgePointContentMaps {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProblem(@CookieParam("sessionId") String sessionId, KnowledgePointContentMap knowledgePointContentMap) {
+    public Response createProblem(@CookieParam("userId") String userId, KnowledgePointContentMap knowledgePointContentMap) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             knowledgePointContentMap.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(knowledgePointContentMap);
             result = Response.ok(new Gson().toJson(knowledgePointContentMap)).build();
@@ -32,9 +32,9 @@ public class KnowledgePointContentMaps {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblems(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getProblems(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<KnowledgePointContentMap> knowledgePointContentMapse = JPAEntry.getList(KnowledgePointContentMap.class, filterObject);
@@ -48,9 +48,9 @@ public class KnowledgePointContentMaps {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getProblemById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             KnowledgePointContentMap knowledgePointContentMapse = JPAEntry.getObject(KnowledgePointContentMap.class, "id", id);
             if (knowledgePointContentMapse != null) {
@@ -64,9 +64,9 @@ public class KnowledgePointContentMaps {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProblem(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, KnowledgePointContentMap knowledgePointContentMapses) {
+    public Response updateProblem(@CookieParam("userId") String userId, @PathParam("id") Long id, KnowledgePointContentMap knowledgePointContentMapses) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             KnowledgePointContentMap existproblem = JPAEntry.getObject(KnowledgePointContentMap.class, "id", id);
             if (existproblem != null) {
@@ -112,9 +112,9 @@ public class KnowledgePointContentMaps {
 
     @DELETE
     @Path("{id}")
-    public Response deleteKnowledgePoint(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response deleteKnowledgePoint(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             long count = JPAEntry.genericDelete(KnowledgePointContentMap.class, "id", id);
             if (count > 0) {

@@ -23,9 +23,9 @@ public class AnswerRecords {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAnsewrRecords(@CookieParam("sessionId") String sessionId, AnswerRecord answerRecord) {
+    public Response createAnsewrRecords(@CookieParam("userId") String userId, AnswerRecord answerRecord) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             answerRecord.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(answerRecord);
             result = Response.ok(answerRecord).build();
@@ -35,9 +35,9 @@ public class AnswerRecords {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAnswerRecord(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getAnswerRecord(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
@@ -53,9 +53,9 @@ public class AnswerRecords {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAnswerRecordById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getAnswerRecordById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             AnswerRecord answerRecord = JPAEntry.getObject(AnswerRecord.class, "id", id);
             if (answerRecord != null) {
@@ -69,9 +69,9 @@ public class AnswerRecords {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateAnswerRecord(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, AnswerRecord answerRecord) {
+    public Response updateAnswerRecord(@CookieParam("userId") String userId, @PathParam("id") Long id, AnswerRecord answerRecord) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             AnswerRecord existAnswerRecord = JPAEntry.getObject(AnswerRecord.class, "id", id);
             if (existAnswerRecord != null) {

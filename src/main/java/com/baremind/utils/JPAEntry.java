@@ -143,7 +143,7 @@ public class JPAEntry {
         return genericDelete(type, conditions);
     }
 
-    public static boolean isLogining(String sessionId) {
+    public static boolean isLogining(String userId) {
         final Map<String, Boolean> r = new HashMap<>();
         r.put("value", false);
         isLogining(sessionId, a -> {
@@ -157,10 +157,10 @@ public class JPAEntry {
         return r.get("value");
     }
 
-    public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
-        Session s = getObject(Session.class, "identity", sessionId);
-        if (s != null) {
-            touchFunction.accept(s);
+    public static void isLogining(String userId, Consumer<User> touchFunction) {
+        User u = getObject(User.class, "identity", Long.parseLong(userId));
+        if (u != null) {
+            touchFunction.accept(u);
         }
     }
 

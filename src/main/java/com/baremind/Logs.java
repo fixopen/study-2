@@ -21,11 +21,11 @@ public class Logs {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLike(@CookieParam("sessionId") String sessionId, Log log) {
+    public Response createLike(@CookieParam("userId") String userId, Log log) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             log.setId(IdGenerator.getNewId());
-            log.setUserId(JPAEntry.getLoginId(sessionId));
+            log.setUserId(userId);
             log.setCreateTime(new Date());
             JPAEntry.genericPost(log);
             result = Response.ok(log).build();
@@ -46,12 +46,12 @@ public class Logs {
     }
 
     public static Log insert(String sessionId, String objectType, Long objectId, String action) {
-        return insert(JPAEntry.getLoginId(sessionId), objectType, objectId, action);
+        return insert(userId, objectType, objectId, action);
     }
 
     public static Long deleteLike(String sessionId, String objectType, Long objectId) {
         Map<String, Object> filter = new HashMap<>();
-        filter.put("userId", JPAEntry.getLoginId(sessionId));
+        filter.put("userId", userId);
         filter.put("objectType", objectType);
         filter.put("objectId", objectId);
         filter.put("action", "like");
@@ -61,16 +61,16 @@ public class Logs {
     @GET
     @Path("{id}/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getLikeCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         return getLogsCount(sessionId, "knowledge-point", id, "like");
     }
 
     @GET
     @Path("{objectType}/{objectId}/{action}/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLogsCount(@CookieParam("sessionId") String sessionId, @PathParam("objectType") String objectType, @PathParam("objectId") Long objectId, @PathParam("action") String action) {
+    public Response getLogsCount(@CookieParam("userId") String userId, @PathParam("objectType") String objectType, @PathParam("objectId") Long objectId, @PathParam("action") String action) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             Long count = getStatsCount(objectType, objectId, action);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
@@ -100,9 +100,9 @@ public class Logs {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikes(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getLikes(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Log> logs = JPAEntry.getList(Log.class, filterObject);
@@ -116,9 +116,9 @@ public class Logs {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikeById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getLikeById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Log log = JPAEntry.getObject(Log.class, "id", id);
             if (log != null) {
@@ -132,9 +132,9 @@ public class Logs {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Log log) {
+    public Response updateLike(@CookieParam("userId") String userId, @PathParam("id") Long id, Log log) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Log existlike = JPAEntry.getObject(Log.class, "id", id);
             if (existlike != null) {
@@ -166,9 +166,9 @@ public class Logs {
 
     @DELETE
     @Path("{id}")
-    public Response deleteLog(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response deleteLog(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             long count = JPAEntry.genericDelete(Log.class, "id", id);
             if (count > 0) {

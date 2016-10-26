@@ -49,7 +49,7 @@
 				</tr>
 			</table>
 			<div class="btn-box">
-				<a href="W完善信息.html" class="submit-btn">保存并完善资料</a>
+				<a href="perfectInformation.html" id="submit" class="submit-btn">保存并完善资料</a>
 			</div>
 		</div>
 		<div class="perfect-bottom"></div>
@@ -70,6 +70,29 @@
 	$(function () {
 		let phonecode = g.getCookie("phonecode")
 		document.getElementById("phonecodeId").innerHTML=phonecode
+	})
+	let submit = document.getElementById("submit")
+	submit.addEventListener('click',function(e){
+		$.ajax({
+			type:"get",
+			url:"/api/user"
+		})
+		/*let data = {
+			username:
+		}
+		$.ajax({
+			type:"post",
+			url:"/api/users/un/pd/user"
+			data:JSON.stringify(data);
+			dataType:"json",
+			contentType: "application/json; charset=utf-8",
+			success:function(user){
+				alert("成功")
+			},
+			error:function(user){
+				alert("失败")
+			}
+		})*/
 	})
 </script>
 </body>
