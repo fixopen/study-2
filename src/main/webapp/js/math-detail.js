@@ -1,4 +1,7 @@
 $(function () {
+    var userId = g.getUrlParameter('userid')
+    g.setCookie('userId', userId)
+
 //添加评论
     var createComment=document.getElementById('createComment');
     createComment .addEventListener('click', writeMessage, false);
@@ -58,9 +61,6 @@ $(function () {
     //     }
     // }, false)
     // message---------
-
-
-
     var volumeId = g.getUrlParameter("volumeId");
     $.ajax({
         type: 'get',
