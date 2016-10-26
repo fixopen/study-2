@@ -521,31 +521,31 @@
     g.ajaxProcess('GET', '/api/subjects', [
         {name: 'Accept', value: 'application/json'}
     ], null, function(data) {
-        subjects = data
+        subjects = data.data
         for (let i = 0; i < subjects.length; ++i) {
             subjects[i].low = []
             subjects[i].high = []
             g.ajaxProcess('GET', '/api/subjects/' + subjects[i].id + '/low/volumes', [
                 {name: 'Accept', value: 'application/json'}
             ], null, function(volumes) {
-                subjects[i].low = volumes
+                subjects[i].low = volumes.data
                 for (let j = 0; j < subjects[i].low.length; ++j) {
                     g.ajaxProcess('GET', '/api/volumes/' + subjects[i].low[j].id + '/knowledge-points', [
                         {name: 'Accept', value: 'application/json'}
                     ], null, function(knowledgePoints) {
-                        subjects[i].low[j].knowledgePoints = knowledgePoints
+                        subjects[i].low[j].knowledgePoints = knowledgePoints.data
                     })
                 }
             })
             g.ajaxProcess('GET', '/api/subjects/' + subjects[i].id + '/high/volumes', [
                 {name: 'Accept', value: 'application/json'}
             ], null, function(volumes) {
-                subjects[i].high = volumes
+                subjects[i].high = volumes.data
                 for (let j = 0; j < subjects[i].high.length; ++j) {
                     g.ajaxProcess('GET', '/api/volumes/' + subjects[i].high[j].id + '/knowledge-points', [
                         {name: 'Accept', value: 'application/json'}
                     ], null, function(knowledgePoints) {
-                        subjects[i].high[j].knowledgePoints = knowledgePoints
+                        subjects[i].high[j].knowledgePoints = knowledgePoints.data
                     })
                 }
             })
