@@ -1,5 +1,4 @@
 $(function () {
-
 //添加评论
     var createComment=document.getElementById('createComment');
     createComment .addEventListener('click', writeMessage, false);
@@ -114,6 +113,11 @@ $(function () {
                         success: function (like) {
                             var liked = like.like
                             var icon = document.getElementById('icon');
+                            if (liked) {
+                                icon.setAttribute('src', 'img/zan-over.png');
+                            }else {
+                                icon.setAttribute('src', 'img/zan.png');
+                            }
                             icon.addEventListener('click', function (e) {
                                 if (liked) {
                                     $.ajax({
@@ -124,7 +128,7 @@ $(function () {
                                         contentType: "application/json; charset=utf-8",
                                         success: function (unlike) {
                                             icon.setAttribute('src', 'img/zan.png');
-                                            --data.interaction.likeCount
+                                            data.interaction.likeCount
                                             e.target.nextElementSibling.textContent = data.interaction.likeCount
                                             liked = false;
                                         }
@@ -165,6 +169,11 @@ $(function () {
                             dataType: "json",
                             success: function (like) {
                                 var  likeds = like.like;
+                                if (likeds) {
+                                    e.target.setAttribute('src', 'img/zan-over.png');
+                                }else {
+                                    e.target.setAttribute('src', 'img/zan.png');
+                                }
                                 if(likeds){
                                     var id = e.target.parentNode.dataset.id
                                     $.ajax({
