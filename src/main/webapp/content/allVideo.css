@@ -18,12 +18,12 @@
 
 /* subject-tab */
 .subject-tab{
-	margin-bottom: 0.4375rem;
+	margin-bottom: -3.562rem;
 	overflow: hidden;
 }
 .subject-line{
 	position: relative;
-	top: -0.0625rem;
+	top: -1.062rem;
 	width: 100%;
 	height: 0.21875rem;
 	background:url(../img/subject-tab-bg.png) no-repeat center;
@@ -82,8 +82,13 @@
 	overflow: hidden;
 }
 .video-list-li{
+	margin-top: 30px;
 	margin-bottom: 1.25rem;
 }
+.more{
+	margin-top: 30px;
+}
+
 .video-list-play{
 	width: 100%;
 	height: 10.625rem;

@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    var userId = g.getUrlParameter('userid')
+    g.setCookie('userId', userId)
+
     $.ajax({
         type: "get",
         url: 'api/volumes?filter=' + JSON.stringify({

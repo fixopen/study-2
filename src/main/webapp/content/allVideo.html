@@ -39,31 +39,30 @@
                     数学
                     <span class="zb-video"></span>
                 </li>
-                <li class="subject-tab-li">
-                    英语
-                </li>
             </ul>
             <div class="subject-line"></div>
         </div>
         <!-- video-list -->
-        <div id="live-broadcast">
-            <div class="subject-list cur">
-                <ul class="video-list"  id="chinese"></ul>
-                <ul class="video-list" id="currentVideoList"></ul>
-                <ul class="video-list" id="futureVideoList"></ul>
-                <ul class="video-list" id="passedVideoList"></ul>
+        <ul id="live-broadcast">
+            <li class="subject-list cur">
+                <ul class="video-list" id="chinese-currentVideoList"></ul>
+                <ul class="video-list" id="chinese-futureVideoList"></ul>
+                <ul class="video-list" id="chinese-passedVideoList"></ul>
+                <div class="more">
+                <div class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp">没有更多直播，点击查看往期录播视频</span>
+                </div>
+                <div class="video-all" id="btn">
+                    查看往期录播视频
+                </div>
             </div>
-            <div class="subject-list" >
-                <ul class="video-list"  id="math"></ul>
-            </div>
-            <div class="subject-list"  >
-                <ul class="video-list" id="english"></ul>
-            </div>
-        </div>
-
-        <div class="pullUp">
-            <span class="pullUpLabel">往期课程已结束，请关注下周课程！</span>
-        </div>
+            </li>
+            <li class="subject-list">
+                <ul class="video-list" id="math-currentVideoList" ></ul>
+                <ul class="video-list" id="math-futureVideoList"></ul>
+                <ul class="video-list" id="math-passedVideoList"></ul>
+            </li>
+        </ul>
     </div>
 </div>
 <template id="video-template">
@@ -72,10 +71,10 @@
             <a href="${directLink}">
                 <img src="${cover}" alt="">
                 <div class="video-list-mask">
-                        <span class="live-radio">
-                            <img src="../img/zb-live.png" alt="">
-                            <!--图片会随着具体情况改变-->
-                        </span>
+                    <span class="live-radio">
+                        <img src="../img/zb-live.png" alt="">
+                        <!--图片会随着具体情况改变-->
+                    </span>
                     <div class="play-btn">
                         <img src="../img/live-play.png" alt="">
                         <!--图片会随着具体情况改变-->
@@ -273,15 +272,6 @@
 <script src="/basic.js"></script>
 <script type="text/javascript">
     var course = []
-    var state = {
-        currentContainer: document.getElementById('currentVideoList'),
-        futureContainer: document.getElementById('futureVideoList'),
-        passedContainer: document.getElementById('passedVideoList'),
-        currentTemplate: getTemplate('video-template'),
-        futureTemplate: getTemplate('future-video-template'),
-        passedTemplate: getTemplate('passed-video-template')
-    }
-
     var refreshCourseState = function () {
         var now = new Date()
         for (var i = 0; i < course[0].length; ++i) {
@@ -315,11 +305,32 @@
         }
     }
 
-    g.ajaxProcess('GET', '/api/schedulers', [
+    g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":1}', [
         {name: 'Accept', value: 'application/json'}
     ], null, function (result) {
 //        alert(JSON.stringify(result))
         course = result.data
+        var state = {
+            currentContainer: document.getElementById('chinese-currentVideoList'),
+            futureContainer: document.getElementById('chinese-futureVideoList'),
+            passedContainer: document.getElementById('chinese-passedVideoList'),
+            currentTemplate: getTemplate('video-template'),
+            futureTemplate: getTemplate('future-video-template'),
+            passedTemplate: getTemplate('passed-video-template')
+        }
+        subjectTab();//课程选项卡
+        var moreVideo=document.getElementById('btn');
+        moreVideo .addEventListener('click', showPassed, false);
+        function showPassed(){
+            proc({
+                container: state.passedContainer,
+                data: course[2],
+                template: state.passedTemplate
+            })
+            document.getElementById("btn").style.display="none";
+            var va = document.getElementById("pullUp");
+            $("#pullUp").text("没有更多视频，敬请期待");
+        }
         for (var i = 0; i < course.length; ++i) {
             for (var j = 0; j < course[i].length; ++j) {
                 var m = moment().year(course[i][j].year).week(course[i][j].week).day(course[i][j].day)
@@ -342,8 +353,8 @@
                         break
                 }
             }
-
         }
+
         proc({
             container: state.currentContainer,
             data: course[0],
@@ -353,11 +364,6 @@
             container: state.futureContainer,
             data: course[1],
             template: state.futureTemplate
-        })
-        proc({
-            container: state.passedContainer,
-            data: course[2],
-            template: state.passedTemplate
         })
 
         setInterval(function () {
@@ -377,7 +383,86 @@
         }, 60 * 1000)
     })
 
-    subjectTab();//课程选项卡
+
+    g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":2}', [
+        {name: 'Accept', value: 'application/json'}
+    ], null, function (result) {
+//        alert(JSON.stringify(result))
+        course = result.data
+        var state = {
+            currentContainer: document.getElementById('math-currentVideoList'),
+            futureContainer: document.getElementById('math-futureVideoList'),
+            passedContainer: document.getElementById('math-passedVideoList'),
+            currentTemplate: getTemplate('video-template'),
+            futureTemplate: getTemplate('future-video-template'),
+            passedTemplate: getTemplate('passed-video-template')
+        }
+
+        for (var i = 0; i < course.length; ++i) {
+            for (var j = 0; j < course[i].length; ++j) {
+                var m = moment().year(course[i][j].year).week(course[i][j].week).day(course[i][j].day)
+                course[i][j].month = m.month()
+                course[i][j].day = m.date()
+                if (course[i][j].grade == 20) {
+                    course[i][j].grade = '低年级'
+                } else {
+                    course[i][j].grade = '高年级'
+                }
+                switch (i) {
+                    case 0:
+                        course[i][j].type = 'current'
+                        break
+                    case 1:
+                        course[i][j].type = 'future'
+                        break
+                    case 2:
+                        course[i][j].type = 'passed'
+                        break
+                }
+            }
+        }
+        proc({
+            container: state.currentContainer,
+            data: course[0],
+            template: state.currentTemplate
+        })
+        proc({
+            container: state.futureContainer,
+            data: course[1],
+            template: state.futureTemplate
+        })
+        proc({
+            container: state.passedContainer,
+            data: course[2],
+            template: state.passedTemplate
+        })
+//        var moreVideo=document.getElementById('btn');
+//        moreVideo .addEventListener('click', showPassed, false);
+//        function showPassed(){
+//
+//            document.getElementById("btn").style.display="none";
+//            var va = document.getElementById("pullUp");
+//            $("#pullUp").text("没有更多视频，敬请期待");
+//        }
+        setInterval(function () {
+            refreshCourseState()
+            state.currentContainer.innerHTML = ''
+            proc({
+                container: state.currentContainer,
+                data: course[0],
+                template: state.currentTemplate
+            })
+            state.futureContainer.innerHTML = ''
+            proc({
+                container: state.futureContainer,
+                data: course[1],
+                template: state.futureTemplate
+            })
+
+        }, 60 * 1000)
+    })
+
+
     curseDetailTap(); //点击“课程详情”
 </script>
 </body>

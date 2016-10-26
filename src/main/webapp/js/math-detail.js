@@ -1,4 +1,5 @@
 $(function () {
+
 //添加评论
     var createComment=document.getElementById('createComment');
     createComment .addEventListener('click', writeMessage, false);
@@ -58,9 +59,6 @@ $(function () {
     //     }
     // }, false)
     // message---------
-
-
-
     var volumeId = g.getUrlParameter("volumeId");
     $.ajax({
         type: 'get',
@@ -351,7 +349,8 @@ $(function () {
                     problemContainer.addEventListener('click', function (e) {
                         var clickedElement = e.target;
                         if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')|| clickedElement.hasClass('option')) {
-                            var titleElement = clickedElement.parentNode.children[0]
+                            var titleElement = clickedElement.parentNode.children[0];
+
                                     var optionsContainer = clickedElement.parentNode.parentNode;
                                     for (var i = 0; i < optionsContainer.children.length; ++i) {
                                         var option = optionsContainer.children[i];

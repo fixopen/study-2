@@ -115,6 +115,8 @@ li.mld_Ulli {
     border: 1px solid #24cbd1;
     color: #24cbd1;
     font-size: 0.625rem;
+    position: relative;
+    top: -0.09375rem;
 }
 .mld_liImg_{
     width:2.1875rem;
@@ -124,6 +126,8 @@ li.mld_Ulli {
     border: 1px solid #fe6568;
     color: #fe6568;
     font-size: 0.625rem;
+    position: relative;
+    top: -0.09375rem;
 }
 .daan_quan {
     display: inline-block;

@@ -1,4 +1,6 @@
 $(function () {
+    // var userId = g.getUrlParameter('userid')
+    // g.setCookie('userId', userId)
 
 // message---------
     var createComment = document.getElementById('createComment');
@@ -77,84 +79,84 @@ $(function () {
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
                             {type: 'imageText', templateId: 'content-imagetext-template'},
-                            // {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
+                            // {type: 'pinyinText', templateId: 'content-pinyin-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
 
-                    // pinyin-----begin------
-                    // var pinyins = []
-                    // for(var i=0;i<data.contents.length;i++){
-                    //     if (data.contents[i].type == 'pinyinText') {
-                    //         pinyins.push(data.contents[i])
-                    //     }
-                    // }
-                    //
-                    // var ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
-                    //     '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
-                    //     'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
-                    //     'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
-                    //
-                    // var isP = function(c) {
-                    //     var result = false
-                    //     for (var i = 0; i < ps.length; ++i) {
-                    //         if (ps[i] == c) {
-                    //             result = true
-                    //             break
-                    //         }
-                    //     }
-                    //     return result
-                    // }
-                    //
-                    // for (var i = 0; i < pinyins.length; ++i) {
-                    //     var pinyinItem = pinyins[i]
-                    //     var pinyin = pinyinItem.pinyin.split(' ')
-                    //     var chineseIndex = 0;
-                    //     for (var j = 0; j < pinyin.length; ++j) {
-                    //         var pinyinValue = pinyin[j]
-                    //         var c = pinyinItem.content[chineseIndex]
-                    //         ++chineseIndex
-                    //         if (isP(c)) {
-                    //              e = c
-                    //             c = pinyinItem.content[chineseIndex]
-                    //             ++chineseIndex
-                    //         }
-                    //
-                    //         var g = {}
-                    //         g.bind = function (element, data) {
-                    //             element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
-                    //                 if (!variable) {
-                    //                     return ""
-                    //                 }
-                    //                 return data[variable];
-                    //             });
-                    //             return element
-                    //         };
-                    //
-                    //         //<ruby><rb>c</rb><rt>pinyinValue</rt></ruby><span>c</span>
-                    //         var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                    //         var content=document.getElementById('content')
-                    //         g.bind(e, {"pinyin": pinyinValue, "content":c})
-                    //         content.appendChild(e)
-                    //
-                    //
-                    //         ruby=getTemplate('content-pinyin-template').cloneNode(true);
-                    //         // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                    //         // var content=document.getElementById('pycontent')
-                    //         // g.bind(d, {"pinyin": pinyinValue, "content":c})
-                    //         // content.appendChild(d)
-                    //         //
-                    //         // var e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
-                    //         // g.bind(e, {"content":c})
-                    //         // content.appendChild(e)
-                    //     }
-                    //   //  var pinyin=data.contents[i].pinyin.split(" ");
-                    //     //alert(pinyin);
-                    //     //var content=data.contents[i].content.split('');
-                    //     //alert(content);
-                    //
-                    // }
-                    //pinyin-----end-----
+                   // pinyin-----begin------
+                   //  var pinyins = []
+                   //  for(var i=0;i<data.contents.length;i++){
+                   //      if (data.contents[i].type == 'pinyinText') {
+                   //          pinyins.push(data.contents[i])
+                   //      }
+                   //  }
+                   //
+                   //  var ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
+                   //      '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
+                   //      'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
+                   //      'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
+                   //
+                   //  var isP = function(c) {
+                   //      var result = false
+                   //      for (var i = 0; i < ps.length; ++i) {
+                   //          if (ps[i] == c) {
+                   //              result = true
+                   //              break
+                   //          }
+                   //      }
+                   //      return result
+                   //  }
+                   //
+                   //  for (var i = 0; i < pinyins.length; ++i) {
+                   //      var pinyinItem = pinyins[i]
+                   //      var pinyin = pinyinItem.pinyin.split(' ')
+                   //      var chineseIndex = 0;
+                   //      for (var j = 0; j < pinyin.length; ++j) {
+                   //          var pinyinValue = pinyin[j]
+                   //          var c = pinyinItem.content[chineseIndex]
+                   //          ++chineseIndex
+                   //          if (isP(c)) {
+                   //               e = c
+                   //              c = pinyinItem.content[chineseIndex]
+                   //              ++chineseIndex
+                   //          }
+                   //
+                   //          var g = {}
+                   //          g.bind = function (element, data) {
+                   //              element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
+                   //                  if (!variable) {
+                   //                      return ""
+                   //                  }
+                   //                  return data[variable];
+                   //              });
+                   //              return element
+                   //          };
+                   //
+                   //          //<ruby><rb>c</rb><rt>pinyinValue</rt></ruby><span>c</span>
+                   //          var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                   //          var content=document.getElementById('content')
+                   //          g.bind(e, {"pinyin": pinyinValue, "content":c})
+                   //          content.appendChild(e)
+                   //
+                   //
+                   //          //ruby=getTemplate('content-pinyin-template').cloneNode(true);
+                   //          // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                   //          // var content=document.getElementById('pycontent')
+                   //          // g.bind(d, {"pinyin": pinyinValue, "content":c})
+                   //          // content.appendChild(d)
+                   //          //
+                   //          // var e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                   //          // g.bind(e, {"content":c})
+                   //          // content.appendChild(e)
+                   //      }
+                   //    //  var pinyin=data.contents[i].pinyin.split(" ");
+                   //      //alert(pinyin);
+                   //      //var content=data.contents[i].content.split('');
+                   //      //alert(content);
+                   //
+                   //  }
+                 //   pinyin-----end-----
 
 
 
@@ -175,7 +177,7 @@ $(function () {
                         }
                     })
 
-                    //多选单选样式
+                    //文字样式
                     for(var i=0;i<data.problems.length;i++){
                         if (data.problems[i].type == '多选题') {
                             $('.addimg span').eq(i).removeClass('mld_liImg').addClass('mld_liImg_');
