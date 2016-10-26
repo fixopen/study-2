@@ -1,7 +1,4 @@
 $(function () {
-    var userId = g.getUrlParameter('userid')
-    g.setCookie('userId', userId)
-
     // getUrlParameter = function (name) {
     //     var result = null
     //     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)") //构造一个含有目标参数的正则表达式对象
