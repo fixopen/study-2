@@ -17,9 +17,9 @@ public class Tags {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createTag(@CookieParam("sessionId") String sessionId, Tag tag) {
+    public Response createTag(@CookieParam("userId") String userId, Tag tag) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             tag.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(tag);
             result = Response.ok(tag).build();
@@ -29,9 +29,9 @@ public class Tags {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTags(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getTags(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Tag> tags = JPAEntry.getList(Tag.class, filterObject);
@@ -45,9 +45,9 @@ public class Tags {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTagById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getTagById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Tag tag = JPAEntry.getObject(Tag.class, "id", id);
             if (tag != null) {
@@ -61,9 +61,9 @@ public class Tags {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTag(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Tag tag) {
+    public Response updateTag(@CookieParam("userId") String userId, @PathParam("id") Long id, Tag tag) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Tag existtag = JPAEntry.getObject(Tag.class, "id", id);
             if (existtag != null) {

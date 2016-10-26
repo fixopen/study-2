@@ -20,9 +20,9 @@ public class WechatUsers {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createWechatUser(@CookieParam("sessionId") String sessionId, WechatUser wechatUser) {
+    public Response createWechatUser(@CookieParam("subjectId") String subjectId, WechatUser wechatUser) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(subjectId)) {
             wechatUser.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(wechatUser);
             result = Response.ok(wechatUser).build();
@@ -32,9 +32,9 @@ public class WechatUsers {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWechatUsers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getWechatUsers(@CookieParam("subjectId") String subjectId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(subjectId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<WechatUser> wechatUsers = JPAEntry.getList(WechatUser.class, filterObject);
@@ -48,9 +48,9 @@ public class WechatUsers {
     @GET//根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWechatUserById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getWechatUserById(@CookieParam("subjectId") String subjectId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(subjectId)) {
             result = Response.status(404).build();
             WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", id);
             if (wechatUser != null) {
@@ -85,9 +85,9 @@ public class WechatUsers {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateWechatUser(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, WechatUser wechatUser) {
+    public Response updateWechatUser(@CookieParam("subjectId") String subjectId, @PathParam("id") Long id, WechatUser wechatUser) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(subjectId)) {
             result = Response.status(404).build();
             WechatUser existwechatUser = JPAEntry.getObject(WechatUser.class, "id", id);
             if (existwechatUser != null) {

@@ -947,6 +947,50 @@ public class PublicAccounts {
         return result;
     }
 
+    @GET
+    @Path("chinese")
+    @Produces(MediaType.TEXT_HTML)
+    public Response chinese(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = wechatUserFromToken(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = insertUserInfoByWechatUser(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/chineseVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("math")
+    @Produces(MediaType.TEXT_HTML)
+    public Response math(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = wechatUserFromToken(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = insertUserInfoByWechatUser(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/mathVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
     //获取微信服务器ID
     //public static
 
@@ -1011,7 +1055,7 @@ public class PublicAccounts {
     @Path("follow")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response follow(@CookieParam("sessionId") String sessionId, JAXBElement<Follow> follow) {
+    public Response follow(@CookieParam("userId") String aUserId, JAXBElement<Follow> follow) {
         Follow f = follow.getValue();
         if (f.Event.equals("subscribe")) {
             WechatUserInfo us = getUserInfo(f.FromUserName);
@@ -1225,7 +1269,7 @@ public class PublicAccounts {
     @Path("click-link-menu")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response clickLinkMenu(@CookieParam("sessionId") String sessionId, ClickLink clickLink) {
+    public Response clickLinkMenu(@CookieParam("userId") String userId, ClickLink clickLink) {
         //没有处理，记得要做处理
         //step1: get user.id from openid
         //step2: record to sessions table
@@ -1237,7 +1281,7 @@ public class PublicAccounts {
     @Path("scan-code-push")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response scancodePush(@CookieParam("sessionId") String sessionId, ScancodePush scancodePush) {
+    public Response scancodePush(@CookieParam("userId") String userId, ScancodePush scancodePush) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1247,7 +1291,7 @@ public class PublicAccounts {
     @Path("scan-code-wait-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response scancode_waitmsg(@CookieParam("sessionId") String sessionId, ScancodePush scancodePush) {
+    public Response scancode_waitmsg(@CookieParam("userId") String userId, ScancodePush scancodePush) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1256,7 +1300,7 @@ public class PublicAccounts {
     @Path("picture-system-photo")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_sysphoto(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_sysphoto(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1266,7 +1310,7 @@ public class PublicAccounts {
     @Path("picture-photo-or-album")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_photo_or_album(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_photo_or_album(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1276,7 +1320,7 @@ public class PublicAccounts {
     @Path("pictures")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_weixin(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_weixin(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1285,7 +1329,7 @@ public class PublicAccounts {
     @Path("locations")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response location_select(@CookieParam("sessionId") String sessionId, LocationSelect locationSelect) {
+    public Response location_select(@CookieParam("userId") String userId, LocationSelect locationSelect) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1323,7 +1367,7 @@ public class PublicAccounts {
     @Path("text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response textmessage(@CookieParam("sessionId") String sessionId, TextMessage textMessage) {
+    public Response textmessage(@CookieParam("userId") String userId, TextMessage textMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1332,7 +1376,7 @@ public class PublicAccounts {
     @Path("picture-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response prcturemessage(@CookieParam("sessionId") String sessionId, PictureMessage pictureMessage) {
+    public Response prcturemessage(@CookieParam("userId") String userId, PictureMessage pictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1341,7 +1385,7 @@ public class PublicAccounts {
     @Path("voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response voiceMeessage(@CookieParam("sessionId") String sessionId, VoiceMeessage voiceMeessage) {
+    public Response voiceMeessage(@CookieParam("userId") String userId, VoiceMeessage voiceMeessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1352,7 +1396,7 @@ public class PublicAccounts {
     @Path("video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response videoMessage(@CookieParam("sessionId") String sessionId, VideoMessage videoMessage) {
+    public Response videoMessage(@CookieParam("userId") String userId, VideoMessage videoMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1362,7 +1406,7 @@ public class PublicAccounts {
     @Path("small-video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoideMeessage(@CookieParam("sessionId") String sessionId, VideoMessage videoMessage) {
+    public Response smallvoideMeessage(@CookieParam("userId") String userId, VideoMessage videoMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1371,7 +1415,7 @@ public class PublicAccounts {
     @Path("small-voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoiceMeessage(@CookieParam("sessionId") String sessionId, LocationInformation locationInformation) {
+    public Response smallvoiceMeessage(@CookieParam("userId") String userId, LocationInformation locationInformation) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1382,7 +1426,7 @@ public class PublicAccounts {
     @Path("link-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoiceMeessage(@CookieParam("sessionId") String sessionId, LinkMessage linkMessage) {
+    public Response smallvoiceMeessage(@CookieParam("userId") String userId, LinkMessage linkMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1391,7 +1435,7 @@ public class PublicAccounts {
     @Path("scan-code-claim")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response notconcerned(@CookieParam("sessionId") String sessionId, Scanning scanning) {
+    public Response notconcerned(@CookieParam("userId") String userId, Scanning scanning) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1402,7 +1446,7 @@ public class PublicAccounts {
     @Path("scan-code")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response concerned(@CookieParam("sessionId") String sessionId, Scanning scanning) {
+    public Response concerned(@CookieParam("userId") String userId, Scanning scanning) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1411,7 +1455,7 @@ public class PublicAccounts {
     @Path("position")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response position(@CookieParam("sessionId") String sessionId, Position position) {
+    public Response position(@CookieParam("userId") String userId, Position position) {
         //没有处理，记得要做处理
         //conflict to Jumplink
         return null;
@@ -1423,7 +1467,7 @@ public class PublicAccounts {
     @Path("menu")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response menu(@CookieParam("sessionId") String sessionId, Menu menu) {
+    public Response menu(@CookieParam("userId") String userId, Menu menu) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1433,7 +1477,7 @@ public class PublicAccounts {
     @Path("jump-link")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response Jumplink(@CookieParam("sessionId") String sessionId, Menu menu) {
+    public Response Jumplink(@CookieParam("userId") String userId, Menu menu) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1442,7 +1486,7 @@ public class PublicAccounts {
     @Path("return-text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replytextmessage(@CookieParam("sessionId") String sessionId, ReplyTextMessage replyTextMessage) {
+    public Response replytextmessage(@CookieParam("userId") String userId, ReplyTextMessage replyTextMessage) {
 
         return null;
     }
@@ -1451,7 +1495,7 @@ public class PublicAccounts {
     @Path("return-picture-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replypicturemessage(@CookieParam("sessionId") String sessionId, ReplyPictureMessage replyPictureMessage) {
+    public Response replypicturemessage(@CookieParam("userId") String userId, ReplyPictureMessage replyPictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1461,7 +1505,7 @@ public class PublicAccounts {
     @Path("return-voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyvoicemessage(@CookieParam("sessionId") String sessionId, ReplyPictureMessage replyPictureMessage) {
+    public Response replyvoicemessage(@CookieParam("userId") String userId, ReplyPictureMessage replyPictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1470,7 +1514,7 @@ public class PublicAccounts {
     @Path("return-video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyvoidemessage(@CookieParam("sessionId") String sessionId, ReplyVoideMessage replyVoideMessage) {
+    public Response replyvoidemessage(@CookieParam("userId") String userId, ReplyVoideMessage replyVoideMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1479,7 +1523,7 @@ public class PublicAccounts {
     @Path("return-music-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replymusicmessage(@CookieParam("sessionId") String sessionId, ReplyMusicMessage replyMusicMessage) {
+    public Response replymusicmessage(@CookieParam("userId") String userId, ReplyMusicMessage replyMusicMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1488,7 +1532,7 @@ public class PublicAccounts {
     @Path("return-image-text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyimagetextmessage(@CookieParam("sessionId") String sessionId, ReplyImageTextMessage replyImageTextMessage) {
+    public Response replyimagetextmessage(@CookieParam("userId") String userId, ReplyImageTextMessage replyImageTextMessage) {
         //没有处理，记得要做处理
         return null;
     }

@@ -66,9 +66,10 @@ function fontCartoon() { //激活成功页面，文字动画效果
 function submitPopup() { //点击"提交"按钮，弹出弹窗
 	var $submitBtn = $(".submit-btn");
 	var $popup = $(".popup");
-	$submitBtn.click(function(event) {
-		$popup.stop().show();
-	});
+	$popup.stop().show();
+	/*$submitBtn.click(function(event) {
+
+	});*/
 }
 
 function popupHeight() { //弹窗的宽高

@@ -21,9 +21,9 @@ public class Schedulers {
     @GET //根据周查询课表
     @Path("weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @PathParam("week") Integer week) {
+    public Response getWeekScheduler(@CookieParam("userId") String userId, @PathParam("week") Integer week) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             Calendar cal = Calendar.getInstance();//创建一个日期实例
             cal.setTime(new Date());//实例化一个日期
             int year = cal.get(Calendar.YEAR);
@@ -41,9 +41,9 @@ public class Schedulers {
     @GET //根据周查询课表
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getWeekScheduler(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
             if (scheduler != null) {
@@ -57,9 +57,9 @@ public class Schedulers {
 
     @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSchedulers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getSchedulers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response r = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
             //schedulers.remove(0);
@@ -119,9 +119,9 @@ public class Schedulers {
     @GET //获取classroom-key
     @Path("key")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKey(@CookieParam("sessionId") String sessionId) {
+    public Response getKey(@CookieParam("userId") String userId) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             String key = "";
             result = Response.ok("{\"key\":\"" + key + "\"}").build();
         }
@@ -131,9 +131,9 @@ public class Schedulers {
     @POST //添加课表
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createScheduler(@CookieParam("sessionId") String sessionId, Scheduler scheduler) {
+    public Response createScheduler(@CookieParam("userId") String userId, Scheduler scheduler) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             scheduler.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(scheduler);
             result = Response.ok(scheduler).build();
@@ -145,9 +145,9 @@ public class Schedulers {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Scheduler scheduler) {
+    public Response updateScheduler(@CookieParam("userId") String userId, @PathParam("id") Long id, Scheduler scheduler) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Scheduler existScheduler = JPAEntry.getObject(Scheduler.class, "id", id);
             if (existScheduler != null) {
