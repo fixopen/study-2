@@ -1,6 +1,6 @@
 $(function () {
-    var userId = g.getUrlParameter('userid')
-    g.setCookie('userId', userId)
+    // var userId = g.getUrlParameter('userid')
+    // g.setCookie('userId', userId)
 
 // message---------
     var createComment = document.getElementById('createComment');
@@ -22,7 +22,7 @@ $(function () {
                 type: "post",
                 url: "/api/comments",
                 data: JSON.stringify({
-                    userId: userId,
+                    userId: 1,
                     objectType: 'knowledge-point',
                     objectId: g.getUrlParameter("id"),
                     content: value
