@@ -60,7 +60,7 @@
                 </tr>
             </table>
             <div class="check-info">
-                <a href="W忘记密码-成功.html" class="check-btn">下一步</a>
+                <a href="javascript:;" class="check-btn" id="next">下一步</a>
             </div>
         </div>
     </div>
@@ -77,23 +77,59 @@
 <script>
     let Account = g.getCookie("Changepassword")
     document.getElementById("Accountnumber").innerHTML = Account
+
+    let p1 = document.getElementById("pwd1");
+    p1.addEventListener('blur',function(){
+        validatePWD1();
+    })
+    let p2 = document.getElementById("pwd2");
+    p2.addEventListener('blur',function(){
+        validatePWD2();
+    })
+    let next = document.getElementById("next");
+    next.addEventListener('click',function(){
+        let filter = {
+            telephone:Account
+        }
+        $.ajax({
+            type:"get",
+            url:"/api/users?filter="+ JSON.stringify(filter),
+            data:"json",
+            success:function(e){
+                alert("成功")
+            },
+            error:function(e){
+                alert("错误")
+            }
+        })
+        /*let data = {
+         password:pwd2
+         }
+         $.ajax({
+         type:"put",
+         url:"/api/users/",
+         data:JSON.stringify(data),
+         dataType:"json",
+         success:function(){
+
+         }
+         })*/
+    })
     function validatePWD1(){
          var pwd1 = $("#pwd1").val();
-         var yierror = $("#yierror");
          if(pwd1.length >=6 && pwd1.length <=16){
-         yierror.innerHTML=""
+             document.getElementById("yierror").innerHTML=""
          }else{
-         yierror.innerHTML="请输入6-16位密码"
+             document.getElementById("yierror").innerHTML="请输入6-16位密码"
          }
      }
     function validatePWD2() {
         var pwd1 = $("#pwd1").val();
         var pwd2 = $("#pwd2").val();
-        var liangerror = $("#liangerror");
         if (pwd1 != pwd2) {
-            liangerror.innerHTML = "密码输入不一致，请重新输入"
+            document.getElementById("liangerror").innerHTML = "密码输入不一致，请重新输入"
         } else {
-            liangerror.innerHTML = ""
+            document.getElementById("liangerror").innerHTML = ""
         }
     }
 </script>
