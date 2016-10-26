@@ -76,7 +76,7 @@
 	cardPosition();//请激活卡号垂直居中对齐
 </script>
 <script type="text/javascript">
-	function forget(){
+	/*function forget(){
 		if($("#telephone").val() == "" || $("#telephone").val().length !=11 ){
 			alert("书剑i")
 		}else{
@@ -84,7 +84,7 @@
 			 location.href="forgetPassword.html";
 		}
 
-	}
+	}*/
 	function submit(){
 		let telephone = $("#telephone").val();
 		let password = $("#password").val();
@@ -92,20 +92,33 @@
 			telephone: telephone,
 			password: password
 		}
-		let tele = {
+		/*let tele = {
 			telephone: telephone
-		}
-		let userId;
+		}*/
+		/*let userId;
 		var tips = document.getElementById("errortelephone");
-		var tip = document.getElementById("errorpassword");
+		var tip = document.getElementById("errorpassword");*/
 		$.ajax({
 			type:"post",
 			url:"/api/users/sessions",
-			data: JSON.stringify(data)
-			success:function(users){
-				location.href="perfectInformation.html";
-			},error:function(users){
-				alert("用户名或密码错误")
+			data: JSON.stringify(data),
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+			success:function(user){
+                if(user.status == 404){
+                    alert("用户名或密码错误")
+                }else{
+                    alert("成功")
+                    location.href="perfectInformation.html";
+                }
+			},
+            error:function(user){
+                if(user.status == 404){
+                    alert("用户名或密码错误")
+                }else{
+                    alert("成功")
+                    location.href="perfectInformation.html";
+                }
 				/*$.ajax({
 					type:"get",
 					url:"/api/users?filter="+ JSON.stringify(tele),

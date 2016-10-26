@@ -17,6 +17,7 @@
     <script src="js/city.js"></script>
 	<script src="city.min.js"></script>
 	<script src="jquery.cityselect.js"></script>
+    <script src="../util.js"></script>
 
 </head>
 <body>
@@ -138,6 +139,7 @@
 
 	<script type="text/javascript">
 		$(function(){
+            //alert(g.getCookie("userId"))
 			$("#birthday_container").birthday();
 			$("#city").citySelect({
 				prov: "河北",
@@ -145,6 +147,8 @@
 				dist: "长安区",
 				nodata: "none"
 			});
+
+
 		})
 
 		let submit = document.getElementById("submit")
@@ -185,54 +189,46 @@
 						classname: $("#class").val(),
 						nickname: $("#WechatNumber").val()
 					}
-					alert(JSON.stringify(data))
 					let filter= {
 						telephone: $("#phoneNumber").val()
 					}
 					$.ajax({
 						type:"get",
-						url:"/api/users?filter="+ JSON.stringify(filter),
+						url:"/api/users/self",
 						dataType:"json",
-						success:function(user){
-							for (var i = 0; i < user.length; ++i){
-								let userId = user[i].id
-								$.ajax({
-									type:"put",
-									url:"/api/users/" + userId,
-									data: JSON.stringify(data),
-									dataType: "json",
-									contentType: "application/json; charset=utf-8",
-									success: function (u) {
-										alert("修改成功")
-									},
-									error:function(i){
-										alert("修改失败")
-									}
-								})
-							}
-
-						},
-						error:function(user){
-							$.ajax({
-								type:"post",
-								url:"/api/users",
-								data: JSON.stringify(data),
-								dataType: "json",
-								contentType: "application/json; charset=utf-8",
-								success: function (u) {
-									alert("添加成功")
-								},
-								error:function(i){
-									alert("添加失败")
-								}
-							})
-						}
-					})
-
+						success:function(user) {
+                            $.ajax({
+                                type: "put",
+                                url: "/api/users/" + user.id,
+                                data: JSON.stringify(data),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (u) {
+                                    alert("修改成功")
+                                },
+                                error: function (i) {
+                                    alert("修改失败")
+                                }
+                            })
+                        },
+                       /* error:function(user){
+                            $.ajax({
+                                type:"post",
+                                url:"/api/users",
+                                data: JSON.stringify(data),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (u) {
+                                    alert("添加成功")
+                                },
+                                error:function(i){
+                                    alert("添加失败")
+                                }
+                            })
+                        }*/
+					});
 				}
-
 			}
-
 		})
 	</script>
 </body>

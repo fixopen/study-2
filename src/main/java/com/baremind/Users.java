@@ -5,6 +5,7 @@ import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.LongSerializationPolicy;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
@@ -20,34 +21,6 @@ public class Users {
     static String hostname = "https://sapi.253.com";
     static String username = "zhibo1";
     static String password = "Tch243450";
-    /*@GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getTags(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<User> users = JPAEntry.getList(User.class, filterObject);
-            if (!users.isEmpty()) {
-                result = Response.ok(new Gson().toJson(users)).build();
-            }
-        }
-        return result;
-    }
-
-    @POST //添
-    @Path("un/pd/user")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createTag(@CookieParam("sessionId") String sessionId, Tag tag) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            tag.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(tag);
-            result = Response.ok(tag).build();
-        }
-        return result;
-    }*/
 
     @GET
     @Path("telephones/{telephone}/code")
@@ -696,6 +669,22 @@ public class Users {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
+            User user = JPAEntry.getObject(User.class, "id", id);
+            if (user != null) {
+                result = Response.ok(new Gson().toJson(user)).build();
+            }
+        }
+        return result;
+    }
+
+    @GET //根据id查询
+    @Path("self")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserById(@CookieParam("userId") String userId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            result = Response.status(404).build();
+            Long id = Long.parseLong(userId);
             User user = JPAEntry.getObject(User.class, "id", id);
             if (user != null) {
                 result = Response.ok(new Gson().toJson(user)).build();
