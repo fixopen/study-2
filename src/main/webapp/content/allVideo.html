@@ -48,6 +48,14 @@
                 <ul class="video-list" id="chinese-currentVideoList"></ul>
                 <ul class="video-list" id="chinese-futureVideoList"></ul>
                 <ul class="video-list" id="chinese-passedVideoList"></ul>
+                <div class="more">
+                <div class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp">没有更多直播，点击查看往期录播视频</span>
+                </div>
+                <div class="video-all" id="btn">
+                    查看往期录播视频
+                </div>
+            </div>
             </li>
             <li class="subject-list">
                 <ul class="video-list" id="math-currentVideoList" ></ul>
@@ -55,15 +63,6 @@
                 <ul class="video-list" id="math-passedVideoList"></ul>
             </li>
         </ul>
-
-        <div class="more">
-            <div class="pullUp">
-                <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp">没有更多直播，点击查看往期录播视频</span>
-            </div>
-            <div class="video-all" id="btn">
-                查看往期录播视频
-            </div>
-        </div>
     </div>
 </div>
 <template id="video-template">
@@ -319,6 +318,7 @@
             futureTemplate: getTemplate('future-video-template'),
             passedTemplate: getTemplate('passed-video-template')
         }
+        subjectTab();//课程选项卡
         var moreVideo=document.getElementById('btn');
         moreVideo .addEventListener('click', showPassed, false);
         function showPassed(){
@@ -436,14 +436,14 @@
             data: course[2],
             template: state.passedTemplate
         })
-        var moreVideo=document.getElementById('btn');
-        moreVideo .addEventListener('click', showPassed, false);
-        function showPassed(){
-
-            document.getElementById("btn").style.display="none";
-            var va = document.getElementById("pullUp");
-            $("#pullUp").text("没有更多视频，敬请期待");
-        }
+//        var moreVideo=document.getElementById('btn');
+//        moreVideo .addEventListener('click', showPassed, false);
+//        function showPassed(){
+//
+//            document.getElementById("btn").style.display="none";
+//            var va = document.getElementById("pullUp");
+//            $("#pullUp").text("没有更多视频，敬请期待");
+//        }
         setInterval(function () {
             refreshCourseState()
             state.currentContainer.innerHTML = ''
@@ -462,7 +462,7 @@
         }, 60 * 1000)
     })
 
-    subjectTab();//课程选项卡
+
     curseDetailTap(); //点击“课程详情”
 </script>
 </body>

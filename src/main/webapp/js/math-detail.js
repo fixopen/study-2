@@ -1,6 +1,4 @@
 $(function () {
-    var userId = g.getUrlParameter('userid')
-    g.setCookie('userId', userId)
 
 //添加评论
     var createComment=document.getElementById('createComment');
