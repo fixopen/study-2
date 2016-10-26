@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Content Input</title>
-    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css"/>
     <style>
         .active {
             background-color: yellow;
@@ -102,7 +102,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button id="subjectSubmit" type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                            <button id="subjectSubmit" type="submit" data-loading-text="Loading..."
+                                    class="btn btn-primary">Save
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -128,7 +130,8 @@
                     <div class="form-group hidden">
                         <label for="volumeID" class="col-sm-2 control-label">subject id</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="volumeSubjectID" placeholder="volume subject id">
+                            <input type="text" class="form-control" id="volumeSubjectID"
+                                   placeholder="volume subject id">
                         </div>
                     </div>
                     <div class="form-group hidden">
@@ -157,7 +160,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button id="volumeSubmit" type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                            <button id="volumeSubmit" type="submit" data-loading-text="Loading..."
+                                    class="btn btn-primary">Save
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -177,30 +182,36 @@
                     <div class="form-group hidden">
                         <label for="knowledgePointID" class="col-sm-2 control-label">id</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="knowledgePointID" placeholder="knowledge point id">
+                            <input type="text" class="form-control" id="knowledgePointID"
+                                   placeholder="knowledge point id">
                         </div>
                     </div>
                     <div class="form-group hidden">
                         <label for="knowledgePointName" class="col-sm-2 control-label">volume id</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="knowledgePointVolumeId" placeholder="knowledge point volume id">
+                            <input type="text" class="form-control" id="knowledgePointVolumeId"
+                                   placeholder="knowledge point volume id">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="knowledgePointName" class="col-sm-2 control-label">name</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="knowledgePointName" placeholder="knowledge point name">
+                            <input type="text" class="form-control" id="knowledgePointName"
+                                   placeholder="knowledge point name">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="knowledgePointOrder" class="col-sm-2 control-label">order</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="knowledgePointOrder" placeholder="knowledge point order">
+                            <input type="text" class="form-control" id="knowledgePointOrder"
+                                   placeholder="knowledge point order">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button id="knowledgePointSubmit" type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                            <button id="knowledgePointSubmit" type="submit" data-loading-text="Loading..."
+                                    class="btn btn-primary">Save
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -252,20 +263,22 @@
 </template>
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/bootstrap/bootstrap.min.js"></script>
+<!--
 <script src="/react/react-dom.min.js"></script>
 <script src="/react/react.min.js"></script>
+-->
 <script src="/util.js"></script>
 <script>
     let subjects = []
 
     let state = {
-        createOption: function(value, title) {
+        createOption: function (value, title) {
             let option = document.createElement('option')
             option.setAttribute("value", value)
             option.appendChild(document.createTextNode(title))
             return option
         },
-        refillChoice: function(choice, data) {
+        refillChoice: function (choice, data) {
             choice.innerHTML = ''
             if (Array.isArray(data)) {
                 for (let i = 0; i < data.length; ++i) {
@@ -277,7 +290,17 @@
         subject: {
             index: 0,
             value: null,
-            change: function(index) {
+            getById: function (id) {
+                let result = null
+                for (let i = 0; i < subjects.length; ++i) {
+                    if (subjects[i].id == id) {
+                        result = subjects[i]
+                        break
+                    }
+                }
+                return result
+            },
+            change: function (index) {
                 state.subject.index = index
                 state.subject.value = subjects[state.subject.index]
 
@@ -298,7 +321,7 @@
                     }
                 }
             },
-            edit: function(subject) {
+            edit: function (subject) {
                 var titleValue = 'New Subject'
                 if (subject.id) {
                     titleValue = 'Edit Subject'
@@ -316,7 +339,7 @@
             noControl: document.getElementById('subjectNo'),
             nameControl: document.getElementById('subjectName'),
             submitControl: document.getElementById('subjectSubmit'),
-            submit: function() {
+            submit: function () {
                 let isUpdate = false
                 let method = 'POST'
                 let url = '/api/subjects'
@@ -325,20 +348,22 @@
                     method = 'PUT'
                     url = '/api/subjects/' + state.subject.value.id
                 }
-                g.ajaxProcess(method, url, [
-                    {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-                    {name: 'Accept', value: 'application/json'}
-                ], {
-                    no: state.subject.noControl.value,
-                    name: state.subject.nameControl.value
-                }, function(subjectResult) {
-                    if (subjectResult.meta.code < 400) {
+                $.ajax({
+                    type: method,
+                    url: url,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        no: state.subject.noControl.value,
+                        name: state.subject.nameControl.value
+                    }),
+                    success: function (subjectResult) {
                         if (isUpdate) {
                             subjects[state.subject.index][state.grade.name][state.volume.index] = volume
 
                             //
                         } else {
-                            let subject = subjectResult.data
+                            let subject = subjectResult
                             subject.low = []
                             subject.high = []
                             subjects.push(subject)
@@ -348,8 +373,9 @@
                             state.contents.style.visibility = 'hidden'
                         }
                         //alert('添加成功')
-                    } else {
-                        //alert('添加失败')
+                    },
+                    error: function (r) {
+                        //
                     }
                 })
             }
@@ -358,8 +384,15 @@
             index: 0,
             value: 20,
             name: 'low',
+            getNameByValue: function (v) {
+                let result = 'low'
+                if (v == 21) {
+                    result = 'high'
+                }
+                return result
+            }
             choice: document.getElementById('gradeChoice'),
-            change: function(gradeChoice) {
+            change: function (gradeChoice) {
                 state.grade.index = gradeChoice.selectedIndex
                 state.grade.value = gradeChoice.value
                 switch (state.grade.value) {
@@ -376,7 +409,34 @@
             index: 0,
             value: null,
             maxOrder: 1,
-            change: function(index) {
+            getById: function (id) {
+                let result = null
+                let finded = false
+                for (let i = 0; i < subjects.length; ++i) {
+                    for (let j = 0; j < subjects[i].low.length; ++j) {
+                        if (subjects[i].low[j].id == id) {
+                            result = subjects[i].low[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                    for (let j = 0; j < subjects[i].high.length; ++j) {
+                        if (subjects[i].high[j].id == id) {
+                            result = subjects[i].high[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                }
+                return result
+            },
+            change: function (index) {
                 state.volume.index = index
                 state.volume.value = subjects[state.subject.index][state.grade.name][state.volume.index]
                 state.knowledgePoint.choice.selectedIndex = 0
@@ -389,7 +449,7 @@
                     state.knowledgePoint.value = null;
                 }
             },
-            edit: function(volume) {
+            edit: function (volume) {
                 var titleValue = 'New Volume'
                 if (volume.id) {
                     titleValue = 'Edit Volume'
@@ -410,7 +470,7 @@
             coverControl: document.getElementById('volumeCover'),
             nameControl: document.getElementById('volumeName'),
             submitControl: document.getElementById('volumeSubmit'),
-            submit: function() {
+            submit: function () {
                 let isUpdate = false
                 let method = 'POST'
                 let url = '/api/volumes'
@@ -419,24 +479,26 @@
                     method = 'PUT'
                     url = '/api/volumes/' + state.subject.value.id
                 }
-                g.ajaxProcess(method, url, [
-                    {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-                    {name: 'Accept', value: 'application/json'}
-                ], {
-                    subjectId: state.subject.value.id,
-                    grade: parseInt(state.grade.value),
-                    imageId: parseInt(state.volume.coverControl.dataset.id),
-                    name: state.volume.nameControl.value,
-                    order: state.volume.maxOrder
-                }, function(volumeResult) {
-                    if (volumeResult.meta.code < 400) {
+                $.ajax({
+                    type: method,
+                    url: url,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        subjectId: state.subject.value.id,
+                        grade: parseInt(state.grade.value),
+                        imageId: parseInt(state.volume.coverControl.dataset.id),
+                        name: state.volume.nameControl.value,
+                        order: state.volume.maxOrder
+                    }),
+                    success: function (volumeResult) {
                         if (isUpdate) {
                             let knowledgePoints = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints
-                            let volume = volumeResult.data
+                            let volume = volumeResult
                             volume.knowledgePoints = knowledgePoints
                             //
                         } else {
-                            let volume = volumeResult.data
+                            let volume = volumeResult
                             volume.knowledgePoints = []
                             subjects[state.subject.index][state.grade.name].push(volume)
 
@@ -445,7 +507,7 @@
                             ++state.volume.maxOrder
                         }
                         //alert('添加成功')
-                    } else {
+                    }, error: function (r) {
                         //alert(volumeResult.data)
                         //alert('添加失败')
                     }
@@ -456,11 +518,11 @@
             index: 0,
             value: null,
             maxOrder: 1,
-            change: function(index) {
+            change: function (index) {
                 state.knowledgePoint.index = index
                 state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
             },
-            edit: function(knowledgePoint) {
+            edit: function (knowledgePoint) {
                 var titleValue = 'New Knowledge Point'
                 if (knowledgePoint.id) {
                     titleValue = 'Edit Knowledge Point'
@@ -478,7 +540,7 @@
             //volumeIdControl: document.getElementById('knowledgePointVolumeID'),
             nameControl: document.getElementById('knowledgePointName'),
             submitControl: document.getElementById('knowledgePointSubmit'),
-            submit: function() {
+            submit: function () {
                 let isUpdate = false
                 let method = 'POST'
                 let url = '/api/knowledge-points'
@@ -487,28 +549,31 @@
                     method = 'PUT'
                     url = '/api/knowledge-points/' + state.subject.value.id
                 }
-                g.ajaxProcess(method, url, [
-                    {name: 'Content-Type', value: 'application/json; charset=utf-8'},
-                    {name: 'Accept', value: 'application/json'}
-                ], {
-                    volumeId: state.volume.id,
-                    name: state.knowledgePoint.title.value,
-                    order: state.knowledgePoint.maxOrder
-                }, function(knowledgePointResult) {
-                    if (knowledgePointResult.meta.code < 400) {
+                $.ajax({
+                    type: method,
+                    url: url,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        volumeId: state.volume.id,
+                        name: state.knowledgePoint.title.value,
+                        order: state.knowledgePoint.maxOrder
+                    }),
+                    success: function (knowledgePointResult) {
                         if (isUpdate) {
-                            subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index] = knowledgePointResult.data
+                            subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index] = knowledgePointResult
                         } else {
-                            let knowledgePoint = knowledgePointResult.data
+                            let knowledgePoint = knowledgePointResult
                             subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.push(knowledgePoint)
                             state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
                             state.knowledgePoint.change(subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.length - 1)
                             ++state.knowledgePoint.maxOrder
-                            alert("添加成功")
+                            //alert("添加成功")
                         }
-                    } else {
+                    },
+                    error: function (r) {
                         //alert(knowledgePointResult.data)
-                        alert("添加失败")
+                        //alert("添加失败")
                     }
                 })
             }
@@ -518,42 +583,45 @@
         buttons: document.getElementById('buttons')
     }
 
-    g.ajaxProcess('GET', '/api/subjects', [
-        {name: 'Accept', value: 'application/json'}
-    ], null, function(data) {
-        subjects = data.data
-        for (let i = 0; i < subjects.length; ++i) {
-            subjects[i].low = []
-            subjects[i].high = []
-            g.ajaxProcess('GET', '/api/subjects/' + subjects[i].id + '/low/volumes', [
-                {name: 'Accept', value: 'application/json'}
-            ], null, function(volumes) {
-                subjects[i].low = volumes.data
-                for (let j = 0; j < subjects[i].low.length; ++j) {
-                    g.ajaxProcess('GET', '/api/volumes/' + subjects[i].low[j].id + '/knowledge-points', [
-                        {name: 'Accept', value: 'application/json'}
-                    ], null, function(knowledgePoints) {
-                        subjects[i].low[j].knowledgePoints = knowledgePoints.data
-                    })
-                }
-            })
-            g.ajaxProcess('GET', '/api/subjects/' + subjects[i].id + '/high/volumes', [
-                {name: 'Accept', value: 'application/json'}
-            ], null, function(volumes) {
-                subjects[i].high = volumes.data
-                for (let j = 0; j < subjects[i].high.length; ++j) {
-                    g.ajaxProcess('GET', '/api/volumes/' + subjects[i].high[j].id + '/knowledge-points', [
-                        {name: 'Accept', value: 'application/json'}
-                    ], null, function(knowledgePoints) {
-                        subjects[i].high[j].knowledgePoints = knowledgePoints.data
+    $.ajax({
+        type: 'GET',
+        url: '/api/subjects',
+        dataType: 'json',
+        success: function (ss) {
+            subjects = ss
+            for (let i = 0; i < subjects.length; ++i) {
+                subjects[i].low = []
+                subjects[i].high = []
+            }
+            $.ajax({
+                type: 'GET',
+                url: '/api/volumes',
+                dataType: 'json',
+                success: function (vs) {
+                    for (let i = 0; i < vs.length; ++i) {
+                        vs[i].knowledgePoints = []
+                        let s = state.subject.getById(vs[i].subjectId)
+                        let gn = state.grade.getNameByValue(vs[i].grade)
+                        s[gn].push(vs[i])
+                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/knowledge-points',
+                        dataType: 'json',
+                        success: function (kps) {
+                            for (let i = 0; i < kps.length; ++i) {
+                                let v = state.volume.getById(kps[i].volumeId)
+                                v.knowledgePoints.push(kps[i])
+                            }
+
+                            state.refillChoice(state.subject.choice, subjects)
+                            state.subject.change(0)
+                            state.contents.style.visibility = 'hidden'
+                        }
                     })
                 }
             })
         }
-
-        state.refillChoice(state.subject.choice, subjects)
-        state.subject.change(0)
-        state.contents.style.visibility = 'hidden'
     })
 
     state.knowledgePoint.choice.addEventListener('change', function (e) {
@@ -569,35 +637,35 @@
         state.volume.change(0)
     }, false)
 
-    state.subject.choice.addEventListener('change', function(e) {
+    state.subject.choice.addEventListener('change', function (e) {
         state.subject.change(e.target.selectedIndex)
     }, false)
 
-    state.subject.append.addEventListener('click', function(e) {
+    state.subject.append.addEventListener('click', function (e) {
         state.subject.edit({})
     }, false)
 
-    state.subject.submit.addEventListener('click', function(e) {
+    state.subject.submit.addEventListener('click', function (e) {
         state.subject.submit()
     }, false)
 
-    state.subject.update.addEventListener('click', function(e) {
+    state.subject.update.addEventListener('click', function (e) {
         state.subject.edit(state.subject.value)
     }, false)
 
-    state.volume.append.addEventListener('click', function(e) {
+    state.volume.append.addEventListener('click', function (e) {
         state.volume.edit({})
     }, false)
 
-    state.volume.update.addEventListener('click', function(e) {
+    state.volume.update.addEventListener('click', function (e) {
         state.volume.edit(state.volume.value)
     }, false)
 
-    state.knowledgePoint.append.addEventListener('click', function(e) {
+    state.knowledgePoint.append.addEventListener('click', function (e) {
         state.knowledgePoint.edit({})
     }, false)
 
-    state.knowledgePoint.update.addEventListener('click', function(e) {
+    state.knowledgePoint.update.addEventListener('click', function (e) {
         state.knowledgePoint.edit(state.knowledgePoint.value)
     }, false)
 
@@ -646,8 +714,8 @@
         image.setAttribute("data-type", 'image')
         image.setAttribute("name", 'file')
         image.setAttribute("type", 'file')
-        image.addEventListener('change', function(e) {
-          delete image.dataset.id
+        image.addEventListener('change', function (e) {
+            delete image.dataset.id
         }, false)
         state.contents.appendChild(image)
         state.currentSelectedElement = image
@@ -659,11 +727,11 @@
         let p = pt.content.children[0].cloneNode(true)
         let optionOrder = 0
         let image = p.querySelector('[data-type="image"]')
-        image.addEventListener('change', function(e) {
-          delete e.target.dataset.id
+        image.addEventListener('change', function (e) {
+            delete e.target.dataset.id
         }, false)
         let appendOption = p.querySelector('[data-type="appendOption"]')
-        appendOption.addEventListener('click', function(e) {
+        appendOption.addEventListener('click', function (e) {
             let options = e.target.parentNode.querySelector('[data-type="options"]')
             let option = document.getElementById('problem-option-template').children[0].cloneNode(true)
             option.setAttribute('data-identity', optionOrder)
@@ -687,8 +755,8 @@
         let vt = document.getElementById('video-template')
         let v = vt.content.children[0].cloneNode(true)
         let image = v.querySelector('[data-type="image"]')
-        image.addEventListener('change', function(e) {
-          delete image.dataset.id
+        image.addEventListener('change', function (e) {
+            delete image.dataset.id
         }, false)
         state.contents.appendChild(v)
         state.currentSelectedElement = v
@@ -699,8 +767,8 @@
         let itt = document.getElementById('imageText-template')
         let it = itt.content.children[0].cloneNode(true)
         let image = it.querySelector('[data-type="image"]')
-        image.addEventListener('change', function(e) {
-          delete image.dataset.id
+        image.addEventListener('change', function (e) {
+            delete image.dataset.id
         }, false)
         state.contents.appendChild(it)
         state.currentSelectedElement = it
@@ -714,7 +782,7 @@
         state.currentSelectedElement = q
     }, false)
 
-    let uploadFile = function(file, postProcess) {
+    let uploadFile = function (file, postProcess) {
         var formData = new FormData();
         formData.append("file", file);
         var request = new XMLHttpRequest();
@@ -729,7 +797,7 @@
         request.send(formData);
     }
 
-    let genericProc = function(entityPath, data) {
+    let genericProc = function (entityPath, data) {
         if (state.currentSelectedElement.dataset.id) {
             g.ajaxProcess('PUT', '/api/' + entityPath + '/' + state.currentSelectedElement.dataset.id, [
                 {name: 'Content-Type', value: 'application/json; charset=utf-8'},
@@ -756,7 +824,7 @@
         }
     }
 
-    let submitProblem = function(imageId, videoId) {
+    let submitProblem = function (imageId, videoId) {
         g.ajaxProcess('POST', '/api/problems', [
             {name: 'Content-Type', value: 'application/json; charset=utf-8'},
             {name: 'Accept', value: 'application/json'}
@@ -783,7 +851,7 @@
                     })
                 }
 
-                let submitOption = function(problemId, name, imageId) {
+                let submitOption = function (problemId, name, imageId) {
                     g.ajaxProcess('POST', '/api/problem-options', [
                         {name: 'Content-Type', value: 'application/json; charset=utf-8'},
                         {name: 'Accept', value: 'application/json'}
@@ -791,7 +859,7 @@
                         problemId: problemId,
                         name: name,
                         imageId: imageId
-                    }, function(result){
+                    }, function (result) {
                         //do nothing
                     })
                 }
@@ -801,7 +869,7 @@
                     let content = options[i].querySelector('[data-type="content"]').value
                     if (image.files.length > 0) {
                         if (!image.dataset.id) {
-                            uploadFile(image.files[0], function(r) {
+                            uploadFile(image.files[0], function (r) {
                                 image.dataset.id = r.id
                                 submitOption(result.data.id, content, r.id)
                             })
@@ -826,7 +894,7 @@
                 genericProc('texts', {content: state.currentSelectedElement.value})
                 break
             case 'image':
-                uploadFile(state.currentSelectedElement.files[0], function(result) {
+                uploadFile(state.currentSelectedElement.files[0], function (result) {
                     state.currentSelectedElement.dataset.id = result.id
                 })
                 break
@@ -860,7 +928,7 @@
                 let imageControl = state.currentSelectedElement.querySelector('[data-type="image"]')
                 if (!imageControl.dataset.id) {
                     if (imageControl.files.length > 0) {
-                        uploadFile(imageControl.files[0], function(result) {
+                        uploadFile(imageControl.files[0], function (result) {
                             imageControl.dataset.id = result.id
                             genericProc('image-texts', {
                                 imageId: imageControl.dataset.id,
@@ -876,7 +944,7 @@
                 let videoCoverControl = state.currentSelectedElement.querySelector('[data-type="image"]')
                 if (!videoCoverControl.dataset.id) {
                     if (videoCoverControl.files.length > 0) {
-                        uploadFile(videoCoverControl.files[0], function(result) {
+                        uploadFile(videoCoverControl.files[0], function (result) {
                             videoCoverControl.dataset.id = result.id
                             genericProc('videos', {
                                 imageId: videoCoverControl.dataset.id,
@@ -917,7 +985,7 @@
                 type: children[i].dataset.type,
                 order: i + 1,
                 objectId: children[i].dataset.id
-            }, function(result) {
+            }, function (result) {
                 //
             })
         }
