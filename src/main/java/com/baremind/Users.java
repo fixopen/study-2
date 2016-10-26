@@ -11,6 +11,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
@@ -415,6 +416,28 @@ public class Users {
         em.getTransaction().commit();
         em.close();
         //Response result = Response.status(500).build();
+        return result;
+    }
+
+    @POST
+    @Path("/sessions")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(User user) {
+        Response result = Response.status(404).build();
+        if (user.getTelephone() != null && user.getPassword() != null) {
+            Map<String, Object> conditions = new HashMap<>();
+            conditions.put("telephone", user.getTelephone());
+            conditions.put("password", user.getPassword());
+            User existUser = JPAEntry.getObject(User.class, conditions);
+            if (existUser != null) {
+                Session s = PublicAccounts.putSession(new Date(), existUser.getId());
+                result = Response.ok()
+                    .cookie(new NewCookie("userId", existUser.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .build();
+            }
+        }
         return result;
     }
 

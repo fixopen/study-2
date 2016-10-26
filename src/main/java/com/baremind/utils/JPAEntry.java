@@ -37,19 +37,61 @@ public class JPAEntry {
     }
 
     public static <T> T getObject(Class<T> type, String fieldName, Object fieldValue) {
+        HashMap<String, Object> condition = new HashMap<>(1);
+        condition.put(fieldName, fieldValue);
+        return getObject(type, condition);
+//        T result = null;
+//        EntityManager em = getEntityManager();
+//        String jpql = "SELECT a FROM " + type.getSimpleName() + " a WHERE a." + fieldName + " = :variable";
+//        try {
+//            result = em.createQuery(jpql, type)
+//                .setParameter("variable", fieldValue)
+//                .getSingleResult();
+//        } catch (NoResultException e) {
+//            //do noting
+//        } catch (NonUniqueResultException e) {
+//            List<T> t = em.createQuery(jpql, type)
+//                .setParameter("variable", fieldValue)
+//                .getResultList();
+//            result = t.get(0);
+//        }
+//        return result;
+    }
+
+    public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
         T result = null;
         EntityManager em = getEntityManager();
-        String jpql = "SELECT a FROM " + type.getSimpleName() + " a WHERE a." + fieldName + " = :variable";
+        String jpql = "SELECT a FROM " + type.getSimpleName() + " a ";
+        boolean isFirst = true;
+        if (conditions != null) {
+            for (Map.Entry<String, Object> item : conditions.entrySet()) {
+                if (isFirst) {
+                    jpql += " WHERE ";
+                    isFirst = false;
+                } else {
+                    jpql += " AND ";
+                }
+                jpql += "a." + item.getKey() + " = :" + item.getKey();
+            }
+        }
         try {
-            result = em.createQuery(jpql, type)
-                .setParameter("variable", fieldValue)
-                .getSingleResult();
+            TypedQuery<T> q = em.createQuery(jpql, type);
+            if (conditions != null) {
+                for (Map.Entry<String, Object> item : conditions.entrySet()) {
+                    q.setParameter(item.getKey(), item.getValue());
+                }
+            }
+            result = q.getSingleResult();
         } catch (NoResultException e) {
             //do noting
         } catch (NonUniqueResultException e) {
-            List<T> t = em.createQuery(jpql, type)
-                .setParameter("variable", fieldValue)
-                .getResultList();
+            TypedQuery<T> q = em.createQuery(jpql, type);
+            if (conditions != null) {
+                for (Map.Entry<String, Object> item : conditions.entrySet()) {
+                    q.setParameter(item.getKey(), item.getValue());
+                }
+            }
+            List<T> t = q.getResultList();
             result = t.get(0);
         }
         return result;

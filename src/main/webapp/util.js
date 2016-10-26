@@ -333,7 +333,7 @@ g.setCookie = function (name, value, path, days) {
     var exp = new Date()
     exp.setTime(exp.getTime() + days * 24 * 60 * 60 * 1000)
     //document.cookie[document.cookie.length] = name + "=" + encodeURIComponent(value) + ";expires=" + exp.toGMTString()
-    var pathParameter = ''
+    var pathParameter = '/api'
     if (path) {
         pathParameter = ";path=" + path
     }

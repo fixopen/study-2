@@ -99,10 +99,10 @@
 		var tips = document.getElementById("errortelephone");
 		var tip = document.getElementById("errorpassword");
 		$.ajax({
-			type:"get",
-			url:"/api/users?filter="+ JSON.stringify(data),
+			type:"post",
+			url:"/api/users/sessions",
+			data: JSON.stringify(data)
 			success:function(users){
-
 				location.href="perfectInformation.html";
 			},error:function(users){
 				alert("用户名或密码错误")
