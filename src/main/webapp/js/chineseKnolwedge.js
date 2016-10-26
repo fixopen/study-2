@@ -1,6 +1,6 @@
 ﻿$(function () {
-    var userId = g.getUrlParameter('userid')
-    g.setCookie('userId', userId)
+    // var userId = g.getUrlParameter('userid')
+    // g.setCookie('userId', userId)
     proc({
         templateId: 'title-template',
         data: {title: g.getUrlParameter('volume')},
