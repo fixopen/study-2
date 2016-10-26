@@ -74,6 +74,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="subjectEditorLabel">Subject editor</h4>
             </div>
             <div class="modal-body">
@@ -98,7 +99,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                            <button id="subjectSubmit" type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </form>
@@ -141,7 +142,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                            <button id="volumeSubmit" type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </form>
@@ -178,7 +179,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
+                            <button id="knowledgePointSubmit" type="submit" data-loading-text="Loading..." class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </form>
@@ -262,6 +263,43 @@
         currentSelectedElement: null,
         contents: document.getElementById('contents'),
         buttons: document.getElementById('buttons')
+    }
+
+    let subjectEdit = function (subject) {
+        var titleValue = 'New Subject'
+        if (subject.id) {
+            titleValue = 'Edit Subject'
+        }
+        $('#subjectEditorLabel').text(titleValue)
+        $('#subjectID').val(subject.id)
+        $('#subjectNo').val(subject.no)
+        $('#subjectName').val(subject.name)
+        $('#subjectEditor').modal('show')
+    }
+
+    let volumeEdit = function (volume) {
+        var titleValue = 'New Volume'
+        if (volume.id) {
+            titleValue = 'Edit Volume'
+        }
+        $('#volumeEditorLabel').text(titleValue)
+        $('#volumeID').val(volume.id)
+        $('#volumeName').val(volume.name)
+        $('#volumeCover').attr('src', volume.coverHref)
+        $('#volumeOrder').val(volume.order)
+        $('#volumeEditor').modal('show')
+    }
+
+    let knowledgePointEdit = function (knowledgePoint) {
+        var titleValue = 'New Knowledge Point'
+        if (knowledgePoint.id) {
+            titleValue = 'Edit Knowledge Point'
+        }
+        $('#knowledgePointEditorLabel').text(titleValue)
+        $('#knowledgePointID').val(volume.id)
+        $('#knowledgePointName').val(volume.name)
+        $('#knowledgePointOrder').val(volume.order)
+        $('#knowledgePointEditor').modal('show')
     }
 
     let createOption = function(value, title) {
@@ -397,11 +435,25 @@
 
     let appendSubjectButton = document.getElementById('appendSubject')
     appendSubjectButton.addEventListener('click', function(e) {
-        g.ajaxProcess('POST', '/api/subjects', [
+        let subject = {}
+        subjectEdit(subject)
+    }, false)
+
+    let submitSubject = document.getElementById('subjectSubmit')
+    submitSubject.addEventListener('click', function(e) {
+        let form = e.target.parentNode.parentNode.parentNode
+        let method = 'POST'
+        let url = '/api/subjects'
+        if (form.getElementById('subjectID').value != '') {
+            method = 'PUT'
+            url = '/api/subjects/' + state.subject.id
+        }
+        g.ajaxProcess(method, url, [
             {name: 'Content-Type', value: 'application/json; charset=utf-8'},
             {name: 'Accept', value: 'application/json'}
         ], {
-            name: state.subject.title.value
+            no: form.getElementById('subjectNo').value,
+            name: form.getElementById('subjectName').value
         }, function(subjectResult) {
             if (subjectResult.meta.code < 400) {
                 let subject = subjectResult.data
@@ -417,15 +469,17 @@
                 refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
                 changeKnowledgePoint(state.knowledgePoint.choice, state.knowledgePoint.title)
                 state.contents.style.visibility = 'hidden'
-                alert('添加成功')
+                //alert('添加成功')
             } else {
-                alert('添加失败')
+                //alert('添加失败')
             }
         })
     }, false)
 
     let updateSubjectButton = document.getElementById('updateSubject')
     updateSubjectButton.addEventListener('click', function(e) {
+        let subject = findSubjectById(state.subject.id)
+        subjectEdit(subject)
         g.ajaxProcess('PUT', '/api/subjects/' + state.subject.id, [
             {name: 'Content-Type', value: 'application/json; charset=utf-8'},
             {name: 'Accept', value: 'application/json'}
