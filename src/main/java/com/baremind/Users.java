@@ -1,9 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.Card;
-import com.baremind.data.User;
-import com.baremind.data.ValidationCode;
-import com.baremind.data.WechatUser;
+import com.baremind.data.*;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -22,6 +19,34 @@ public class Users {
     static String hostname = "https://sapi.253.com";
     static String username = "zhibo1";
     static String password = "Tch243450";
+    /*@GET //根据条件查询
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTags(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
+            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            List<User> users = JPAEntry.getList(User.class, filterObject);
+            if (!users.isEmpty()) {
+                result = Response.ok(new Gson().toJson(users)).build();
+            }
+        }
+        return result;
+    }
+
+    @POST //添
+    @Path("un/pd/user")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createTag(@CookieParam("sessionId") String sessionId, Tag tag) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            tag.setId(IdGenerator.getNewId());
+            JPAEntry.genericPost(tag);
+            result = Response.ok(tag).build();
+        }
+        return result;
+    }*/
 
     @GET
     @Path("telephones/{telephone}/code")
@@ -393,6 +418,37 @@ public class Users {
         return result;
     }
 
+    @GET
+    @Path("/code/pasd")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+        Response result = Response.status(401).build();
+
+            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, filterObject);
+            switch (validationCodes.size()) {
+                case 0:
+                    result = Response.status(404).build();
+                    break;
+                default:
+                    Date now = new Date();
+                    for(int i=0;i<validationCodes.size();i++){
+                        Date sendTime = validationCodes.get(i).getTimestamp();
+                        if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                            result = Response.ok(new Gson().toJson(validationCodes)).build();
+                        }else{
+                            result = Response.status(500).build();
+                        }
+                    }
+                    /*Date sendTime = validationCodes.get(0).getTimestamp();*/
+                    break;
+            }
+               /* result = Response.ok(new Gson().toJson(validationCodes)).build();*/
+
+
+        return result;
+    }
+
     @POST
     @Path("pccards")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -562,10 +618,13 @@ public class Users {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(@CookieParam("sessionId") String sessionId, User user) {
+    public Response createUser(@CookieParam("userId") String userId, User user) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             user.setId(IdGenerator.getNewId());
+            Date now = new Date();
+            user.setCreateTime(now);
+            user.setUpdateTime(now);
             JPAEntry.genericPost(user);
             result = Response.ok(user).build();
         }
@@ -576,9 +635,9 @@ public class Users {
     @Path("pcuser")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createPcUser(@CookieParam("sessionId") String sessionId, User user) {
+    public Response createPcUser(@CookieParam("userId") String userId, User user) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             user.setId(IdGenerator.getNewId());
             WechatUser wechatUser = new WechatUser();
             Date now = new Date();
@@ -594,9 +653,9 @@ public class Users {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUsers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getaaUsers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<User> users = JPAEntry.getList(User.class, filterObject);
@@ -610,9 +669,9 @@ public class Users {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getUserById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             User user = JPAEntry.getObject(User.class, "id", id);
             if (user != null) {
@@ -626,22 +685,15 @@ public class Users {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, /*byte[] userInfo*/User user) {
+    public Response updateUser(@CookieParam("userId") String userId, @PathParam("id") Long id, /*byte[] userInfo*/User user) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             User existuser = JPAEntry.getObject(User.class, "id", id);
             if (existuser != null) {
                 float amount = user.getAmount();
                 existuser.setAmount(amount);
-                //User user;
-                //try {
-                //    user = new Gson().fromJson(new String(userInfo, "UTF-8"), User.class);
-                //} catch (UnsupportedEncodingException e) {
-                //    e.printStackTrace();
-                //}
-                //float amount = user.getAmount();
-                //existuser.setAmount(amount);
+
                 Date birthday = user.getBirthday();
                 if (birthday != null) {
                     existuser.setBirthday(birthday);

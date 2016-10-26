@@ -17,9 +17,9 @@ public class Properties {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProperty(@CookieParam("sessionId") String sessionId, Property property) {
+    public Response createProperty(@CookieParam("userId") String userId, Property property) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             property.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(property);
             result = Response.ok(property).build();
@@ -29,9 +29,9 @@ public class Properties {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProperties(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getProperties(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Property> properties = JPAEntry.getList(Property.class, filterObject);
@@ -45,9 +45,9 @@ public class Properties {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPropertyById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getPropertyById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Property property = JPAEntry.getObject(Property.class, "id", id);
             if (property != null) {
@@ -70,9 +70,9 @@ public class Properties {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProperty(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Property property) {
+    public Response updateProperty(@CookieParam("userId") String userId, @PathParam("id") Long id, Property property) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Property existproperty = JPAEntry.getObject(Property.class, "id", id);
             if (existproperty != null) {

@@ -29,9 +29,9 @@ public class ImageTexts {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+    public Response postCSV(@Context HttpServletRequest request, @CookieParam("userId") String userId) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             try {
                 Part p = request.getPart("file");
                 String contentType = p.getContentType();
@@ -77,9 +77,9 @@ public class ImageTexts {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createImage(@CookieParam("sessionId") String sessionId, ImageText imageText) {
+    public Response createImage(@CookieParam("userId") String userId, ImageText imageText) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             imageText.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(imageText);
             result = Response.ok(imageText).build();
@@ -89,9 +89,9 @@ public class ImageTexts {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImages(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getImages(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<ImageText> imageTexts = JPAEntry.getList(ImageText.class, filterObject);
@@ -105,9 +105,9 @@ public class ImageTexts {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImageById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getImageById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             ImageText imageText = JPAEntry.getObject(ImageText.class, "id", id);
             if (imageText != null) {
@@ -121,9 +121,9 @@ public class ImageTexts {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateImage(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ImageText imageText) {
+    public Response updateImage(@CookieParam("userId") String userId, @PathParam("id") Long id, ImageText imageText) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             ImageText existimage = JPAEntry.getObject(ImageText.class, "id", id);
             if (existimage != null) {

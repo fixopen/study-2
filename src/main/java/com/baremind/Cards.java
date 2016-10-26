@@ -30,9 +30,9 @@ public class Cards {
     @Path("generate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cardsGenerator(@CookieParam("sessionId") String sessionId, byte[] contents) {
+    public Response cardsGenerator(@CookieParam("userId") String userId, byte[] contents) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             try {
                 Map<String, Object> q = new Gson().fromJson(new String(contents, StandardCharsets.UTF_8.toString()), new TypeToken<Map<String, Object>>() {
                 }.getType());
@@ -55,10 +55,10 @@ public class Cards {
 
     @POST //import
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
-    public Response importCardsViaBareContent(@CookieParam("sessionId") String sessionId, byte[] contents) {
+    public Response importCardsViaBareContent(@CookieParam("userId") String userId, byte[] contents) {
         String uploadedFileLocation = "tempFilename.csv";
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             writeToFile(contents, uploadedFileLocation);
             parseAndInsert(uploadedFileLocation);
             result = Response.ok("{\"state\":\"ok\"}").build();
@@ -106,9 +106,9 @@ public class Cards {
     @POST // 添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createCards(@CookieParam("sessionId") String sessionId, Card card) {
+    public Response createCards(@CookieParam("userId") String userId, Card card) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             card.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(card);
             result = Response.ok(card).build();
@@ -119,9 +119,9 @@ public class Cards {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCards(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getCards(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Cards> cards = JPAEntry.getList(Cards.class, filterObject);
@@ -135,11 +135,26 @@ public class Cards {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCardById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getCardById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Card card = JPAEntry.getObject(Card.class, "id", id);
+            if (card != null) {
+                result = Response.ok(new Gson().toJson(card)).build();
+            }
+        }
+        return result;
+    }
+
+    @GET //根据id查询
+    @Path("userId/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCardByuserId(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            result = Response.status(404).build();
+            Card card = JPAEntry.getObject(Card.class, "userId", id);
             if (card != null) {
                 result = Response.ok(new Gson().toJson(card)).build();
             }
@@ -151,9 +166,9 @@ public class Cards {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCard(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Card card) {
+    public Response updateCard(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Card card) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(aUserId)) {
             result = Response.status(404).build();
             Card existcard = JPAEntry.getObject(Card.class, "id", id);
             if (existcard != null) {

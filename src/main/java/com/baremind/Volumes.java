@@ -23,9 +23,9 @@ public class Volumes {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createVolume(@CookieParam("sessionId") String sessionId, /*byte[] volumeInfo*/ Volume volume) {
+    public Response createVolume(@CookieParam("userId") String userId, /*byte[] volumeInfo*/ Volume volume) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             volume.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(volume);
             result = Response.ok(volume).build();
@@ -35,9 +35,9 @@ public class Volumes {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getVolumes(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getVolumes(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
@@ -53,9 +53,9 @@ public class Volumes {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getVolumeById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getVolumeById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Volume volume = JPAEntry.getObject(Volume.class, "id", id);
             if (volume != null) {
@@ -68,9 +68,9 @@ public class Volumes {
     @GET
     @Path("{id}/knowledge-points")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getKnowledgePointsByVolumeId(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
 
             Map<String, Object> conditions = new HashMap<>();
@@ -200,9 +200,9 @@ public class Volumes {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateVolume(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Volume volume) {
+    public Response updateVolume(@CookieParam("userId") String userId, @PathParam("id") Long id, Volume volume) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Volume existvolume = JPAEntry.getObject(Volume.class, "id", id);
             if (existvolume != null) {
@@ -215,7 +215,7 @@ public class Volumes {
                     existvolume.setGrade(grade);
                 }
                 Long subjectId = volume.getSubjectId();
-                if (sessionId != null) {
+                if (subjectId != null) {
                     existvolume.setSubjectId(subjectId);
                 }
                 JPAEntry.genericPut(existvolume);

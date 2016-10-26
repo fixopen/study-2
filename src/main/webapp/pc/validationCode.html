@@ -76,8 +76,8 @@
 					</table>
 					<div id="error" style="" colour="red"></div>
 					<div class="activate-btn">
-						<!--<a href="激活成功.html" class="activate-now">立即激活</a><br>-->
-						<a href="D登录.html" class="activate-login">已激活去登录</a>
+						<!--<a href="activateSuccess.html" class="activate-now">立即激活</a><br>-->
+						<a href="signIn.html" class="activate-login">已激活去登录</a>
 						<div id="save" class="activate-now">立即激活</div>
 					</div>
 				</div>
@@ -141,7 +141,7 @@
 					success: function (save) {
 						if (save.status < 400) {
 							g.setCookie("phonecode",document.getElementById('phonecode').value)
-							window.location.href = '激活成功.html'
+							window.location.href = 'activateSuccess.html'
 
 						}
 						else {
@@ -161,7 +161,7 @@
 									break;
 								case 405:
 									document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
-									window.location.href = 'D登录.html'
+									window.location.href = 'signIn.html'
 									break;
 								case 401:
 									document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
@@ -171,7 +171,7 @@
 									break;
 								case 200:
 									g.setCookie("phonecode",document.getElementById('phonecode').value)
-									window.location.href = '激活成功.html'
+									window.location.href = 'activateSuccess.html'
 									break;
 							}
 						}
@@ -179,7 +179,7 @@
 					error:function (save) {
 						if (save.status < 400) {
 							g.setCookie("phonecode",document.getElementById('phonecode').value)
-							window.location.href = '激活成功.html'
+							window.location.href = 'activateSuccess.html'
 						}
 						else {
 							switch (save.status) {
@@ -206,7 +206,7 @@
 									break;
 								case 200:
 									g.setCookie("phonecode",document.getElementById('phonecode').value)
-									window.location.href = '激活成功.html'
+									window.location.href = 'activateSuccess.html'
 
 									break;
 							}
