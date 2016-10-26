@@ -412,7 +412,7 @@ $(function () {
                             dataType: "json",
                             success: function (like) {
                                var  likeds = like.like;
-                               if (liked) {
+                               if (likeds) {
                                    e.target.setAttribute('src', 'img/zan-over.png');
                                }else {
                                    e.target.setAttribute('src', 'img/zan.png');
