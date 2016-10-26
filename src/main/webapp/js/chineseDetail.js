@@ -358,6 +358,11 @@ $(function () {
                         success: function (like) {
                             var liked = like.like
                             var icon = document.getElementById('icon');
+                            if (liked) {
+                                icon.setAttribute('src', 'img/zan-over.png');
+                            }else {
+                                icon.setAttribute('src', 'img/zan.png');
+                            }
                             icon.addEventListener('click', function (e) {
                                 if (liked) {
                                     $.ajax({
@@ -407,6 +412,11 @@ $(function () {
                             dataType: "json",
                             success: function (like) {
                                var  likeds = like.like;
+                               if (liked) {
+                                   e.target.setAttribute('src', 'img/zan-over.png');
+                               }else {
+                                   e.target.setAttribute('src', 'img/zan.png');
+                               }
                                if(likeds){
                                     var id = e.target.parentNode.dataset.id
                                     $.ajax({
