@@ -50,9 +50,9 @@
                 <ul class="video-list" id="chinese-passedVideoList"></ul>
                 <div class="more">
                 <div class="pullUp">
-                    <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp">没有更多直播，点击查看往期录播视频</span>
+                    <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>
                 </div>
-                <div class="video-all" id="btn">
+                <div class="video-all" id="btn1">
                     查看往期录播视频
                 </div>
             </div>
@@ -61,6 +61,14 @@
                 <ul class="video-list" id="math-currentVideoList" ></ul>
                 <ul class="video-list" id="math-futureVideoList"></ul>
                 <ul class="video-list" id="math-passedVideoList"></ul>
+                <div class="more">
+                    <div class="pullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp">没有更多直播，点击查看往期录播视频</span>
+                    </div>
+                    <div class="video-all" id="btn">
+                        查看往期录播视频
+                    </div>
+                </div>
             </li>
         </ul>
     </div>
@@ -318,19 +326,8 @@
             futureTemplate: getTemplate('future-video-template'),
             passedTemplate: getTemplate('passed-video-template')
         }
-        subjectTab();//课程选项卡
-        var moreVideo=document.getElementById('btn');
-        moreVideo .addEventListener('click', showPassed, false);
-        function showPassed(){
-            proc({
-                container: state.passedContainer,
-                data: course[2],
-                template: state.passedTemplate
-            })
-            document.getElementById("btn").style.display="none";
-            var va = document.getElementById("pullUp");
-            $("#pullUp").text("没有更多视频，敬请期待");
-        }
+
+
         for (var i = 0; i < course.length; ++i) {
             for (var j = 0; j < course[i].length; ++j) {
                 var m = moment().year(course[i][j].year).week(course[i][j].week).day(course[i][j].day)
@@ -354,7 +351,19 @@
                 }
             }
         }
-
+        var moreVideo=document.getElementById('btn1');
+        moreVideo .addEventListener('click', showPassed, false);
+        function showPassed(){
+            proc({
+                container: state.passedContainer,
+                data: course[2],
+                template: state.passedTemplate
+            })
+            document.getElementById("btn1").style.display="none";
+            var va = document.getElementById("pullUp1");
+            $("#pullUp1").text("没有更多视频，敬请期待");
+            curseDetailTap(); //点击“课程详情”
+        }
         proc({
             container: state.currentContainer,
             data: course[0],
@@ -381,8 +390,8 @@
                 template: state.futureTemplate
             })
         }, 60 * 1000)
+        curseDetailTap(); //点击“课程详情”
     })
-
 
     g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":2}', [
         {name: 'Accept', value: 'application/json'}
@@ -397,7 +406,19 @@
             futureTemplate: getTemplate('future-video-template'),
             passedTemplate: getTemplate('passed-video-template')
         }
-
+        var moreVideo=document.getElementById('btn');
+        moreVideo .addEventListener('click', showPassed, false);
+        function showPassed(){
+            proc({
+                container: state.passedContainer,
+                data: course[2],
+                template: state.passedTemplate
+            })
+            document.getElementById("btn").style.display="none";
+            var va = document.getElementById("pullUp");
+            $("#pullUp").text("没有更多视频，敬请期待");
+            curseDetailTap(); //点击“课程详情”
+        }
         for (var i = 0; i < course.length; ++i) {
             for (var j = 0; j < course[i].length; ++j) {
                 var m = moment().year(course[i][j].year).week(course[i][j].week).day(course[i][j].day)
@@ -430,11 +451,6 @@
             container: state.futureContainer,
             data: course[1],
             template: state.futureTemplate
-        })
-        proc({
-            container: state.passedContainer,
-            data: course[2],
-            template: state.passedTemplate
         })
 //        var moreVideo=document.getElementById('btn');
 //        moreVideo .addEventListener('click', showPassed, false);
@@ -458,12 +474,12 @@
                 data: course[1],
                 template: state.futureTemplate
             })
-
         }, 60 * 1000)
+        curseDetailTap(); //点击“课程详情”
     })
 
+    subjectTab();//课程选项卡
 
-    curseDetailTap(); //点击“课程详情”
 </script>
 </body>
 </html>
