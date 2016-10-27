@@ -178,7 +178,7 @@ public class Schedulers {
 
                 int state = scheduler.getState();
 
-                    existScheduler.setState(state);
+                existScheduler.setState(state);
 
 
                 int day = scheduler.getDay();

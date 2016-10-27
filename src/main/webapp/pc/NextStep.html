@@ -79,26 +79,26 @@
     document.getElementById("Accountnumber").innerHTML = Account
 
     let p1 = document.getElementById("pwd1");
-    p1.addEventListener('blur',function(){
+    p1.addEventListener('blur', function () {
         validatePWD1();
     })
     let p2 = document.getElementById("pwd2");
-    p2.addEventListener('blur',function(){
+    p2.addEventListener('blur', function () {
         validatePWD2();
     })
     let next = document.getElementById("next");
-    next.addEventListener('click',function(){
+    next.addEventListener('click', function () {
         let filter = {
-            telephone:Account
+            telephone: Account
         }
         $.ajax({
-            type:"get",
-            url:"/api/users?filter="+ JSON.stringify(filter),
-            data:"json",
-            success:function(e){
+            type: "get",
+            url: "/api/users?filter=" + JSON.stringify(filter),
+            data: "json",
+            success: function (e) {
                 alert("成功")
             },
-            error:function(e){
+            error: function (e) {
                 alert("错误")
             }
         })
@@ -115,14 +115,14 @@
          }
          })*/
     })
-    function validatePWD1(){
-         var pwd1 = $("#pwd1").val();
-         if(pwd1.length >=6 && pwd1.length <=16){
-             document.getElementById("yierror").innerHTML=""
-         }else{
-             document.getElementById("yierror").innerHTML="请输入6-16位密码"
-         }
-     }
+    function validatePWD1() {
+        var pwd1 = $("#pwd1").val();
+        if (pwd1.length >= 6 && pwd1.length <= 16) {
+            document.getElementById("yierror").innerHTML = ""
+        } else {
+            document.getElementById("yierror").innerHTML = "请输入6-16位密码"
+        }
+    }
     function validatePWD2() {
         var pwd1 = $("#pwd1").val();
         var pwd2 = $("#pwd2").val();

@@ -47,24 +47,29 @@
     </script>
 </head>
 <body>
-<div class="common-margin-padding" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; background: url(../img/zb_bg.jpg) no-repeat center top; background-size: cover; overflow: scroll;">
+<div class="common-margin-padding"
+     style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; background: url(../img/zb_bg.jpg) no-repeat center top; background-size: cover; overflow: scroll;">
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div>
             <span class="common-font common-line-height title">卡号</span>
-            <input type="text" id="cardNo" class="common-font common-line-height common-border-style value" placeholder="请输入卡号" required pattern="\d+"/>
+            <input type="text" id="cardNo" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入卡号" required pattern="\d+"/>
         </div>
         <div>
             <span class="common-font common-line-height title">密码</span>
-            <input type="password" id="password" class="common-font common-line-height common-border-style value" placeholder="请输入密码" required/>
+            <input type="password" id="password" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入密码" required/>
         </div>
         <div>
             <span class="common-font common-line-height title">手机号</span>
-            <input type="tel" id="phoneNumber" class="common-font common-line-height common-border-style value" placeholder="请输入手机号" required pattern="\d+"/>
+            <input type="tel" id="phoneNumber" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入手机号" required pattern="\d+"/>
             <input type="button" id="activeCode" class="common-font common-border-style validButton" value="获取手机验证码"/>
         </div>
         <div>
             <span class="common-font common-line-height title">验证码</span>
-            <input type="text" id="validCode" class="common-font common-line-height common-border-style value" placeholder="请输入验证码" required pattern="\d{6}"/>
+            <input type="text" id="validCode" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入验证码" required pattern="\d{6}"/>
         </div>
     </section>
     <div id="tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
@@ -174,12 +179,12 @@
     saveButton.addEventListener('click', save, false);
 
     var validCode = document.getElementById('validCode')
-    validCode.addEventListener('change', function(e) {
+    validCode.addEventListener('change', function (e) {
         enableActive(activeCodeButton, ' 发送验证码 ')
     }, false)
 
     var phoneNumber = document.getElementById('phoneNumber')
-    phoneNumber.addEventListener('change', function(e) {
+    phoneNumber.addEventListener('change', function (e) {
         enableActive(activeCodeButton, ' 发送验证码 ')
     }, false)
 </script>

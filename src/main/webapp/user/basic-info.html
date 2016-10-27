@@ -57,16 +57,16 @@
             </li>
             <li>
                 <a href="info.html?userid=${id}" class="mine_zuli">
-                <span class="mine_leftsp">我的资料</span>
-                <img class="mine_rightimg" src="more.png" alt="">
+                    <span class="mine_leftsp">我的资料</span>
+                    <img class="mine_rightimg" src="more.png" alt="">
                 </a>
             </li>
         </ul>
         <ul class="mine_zUl">
             <li>
                 <a href="cards.html?userid=${id}" class="mine_zuli" style="width: 98%; height: 98%">
-                <span class="mine_leftsp">我的学习卡</span>
-                <img class="mine_rightimg" src="more.png" alt="">
+                    <span class="mine_leftsp">我的学习卡</span>
+                    <img class="mine_rightimg" src="more.png" alt="">
                 </a>
             </li>
         </ul>
@@ -95,14 +95,14 @@
         type: 'get',
         url: '/api/users/' + userId,
         dataType: 'json',
-        success: function(user) {
+        success: function (user) {
             proc({
                 containerId: 'user',
                 data: user,
                 templateId: 'user-template'
             })
         },
-        error: function(r) {
+        error: function (r) {
             alert('获取用户信息失败，请刷新以重试')
         }
     })

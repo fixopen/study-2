@@ -5,7 +5,6 @@ import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
-import com.google.gson.LongSerializationPolicy;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
@@ -148,13 +147,13 @@ public class Users {
         // Default instance of client
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/msg/HttpBatchSendSM")
-            .queryParam("account", username)
-            .queryParam("pswd", password)
-            .queryParam("mobile", phoneNumber)
-            .queryParam("msg", validInfo)
-            .queryParam("needstatus", true)
-            .request("text/plain").get();
+                .path("/msg/HttpBatchSendSM")
+                .queryParam("account", username)
+                .queryParam("pswd", password)
+                .queryParam("mobile", phoneNumber)
+                .queryParam("msg", validInfo)
+                .queryParam("needstatus", true)
+                .request("text/plain").get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("\n")) {
             String[] lines = responseBody.split("\n");
@@ -406,9 +405,9 @@ public class Users {
             if (existUser != null) {
                 Session s = PublicAccounts.putSession(new Date(), existUser.getId());
                 result = Response.ok()
-                    .cookie(new NewCookie("userId", existUser.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                    .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                    .build();
+                        .cookie(new NewCookie("userId", existUser.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                        .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                        .build();
             }
         }
         return result;
@@ -420,25 +419,25 @@ public class Users {
     public Response getUsers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
 
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, filterObject);
-            switch (validationCodes.size()) {
-                case 0:
-                    result = Response.status(404).build();
-                    break;
-                default:
-                    Date now = new Date();
-                    for(int i=0;i<validationCodes.size();i++){
-                        Date sendTime = validationCodes.get(i).getTimestamp();
-                        if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                            result = Response.ok(new Gson().toJson(validationCodes)).build();
-                        }else{
-                            result = Response.status(500).build();
-                        }
+        Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, filterObject);
+        switch (validationCodes.size()) {
+            case 0:
+                result = Response.status(404).build();
+                break;
+            default:
+                Date now = new Date();
+                for (int i = 0; i < validationCodes.size(); i++) {
+                    Date sendTime = validationCodes.get(i).getTimestamp();
+                    if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                        result = Response.ok(new Gson().toJson(validationCodes)).build();
+                    } else {
+                        result = Response.status(500).build();
                     }
+                }
                     /*Date sendTime = validationCodes.get(0).getTimestamp();*/
-                    break;
-            }
+                break;
+        }
                /* result = Response.ok(new Gson().toJson(validationCodes)).build();*/
 
 
@@ -473,12 +472,12 @@ public class Users {
                             break;
                         case 1:
                             Card c = cs.get(0);
-                            if(c.getActiveTime() == null){
+                            if (c.getActiveTime() == null) {
                                 c.setActiveTime(now);
                                 c.setAmount(588.0);
                                 JPAEntry.genericPut(c);
                                 result = Response.ok().build();
-                            }else{
+                            } else {
                                 result = Response.status(405).build();
                             }
                             break;

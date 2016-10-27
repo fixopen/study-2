@@ -354,8 +354,9 @@
     //}
 
     var closeWindow = document.getElementById('closeWindow')
-    closeWindow.addEventListener('click', function(e) {
-        WeixinJSBridge.invoke('closeWindow', {}, function (res) {})
+    closeWindow.addEventListener('click', function (e) {
+        WeixinJSBridge.invoke('closeWindow', {}, function (res) {
+        })
     }, false)
 </script>
 </body>
