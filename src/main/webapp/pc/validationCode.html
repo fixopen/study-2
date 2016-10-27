@@ -153,7 +153,6 @@
 						else {
 							switch (save.status) {
 								case 500:
-
 									document.getElementById("error").innerHTML ="<font size='10px' color='red' >你的手机号和别人都重复了</font>";
 									break;
 									/*case 412:
@@ -235,7 +234,7 @@
 					alert("请填写手机号")
 				}else{
 					let proc = function () {
-						e.target.value = " (" + printnr + ")秒后\n重新发送"//字太多了导致吧input挤下去了
+						e.target.value = " (" + printnr + ")秒后"//字太多了导致吧input挤下去了\n重新发送
 						--printnr
 						if (printnr <= 0) {
 							e.target.value = " 重新发送 "

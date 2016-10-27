@@ -85,11 +85,11 @@
 		}
 
 	}*/
-	let submit = document.getElementById("submit");
+	var submit = document.getElementById("submit");
 	submit.addEventListener('click',function(e){
-		let telephone = $("#telephone").val();
-		let password = $("#password").val();
-		let data = {
+		var telephone = $("#telephone").val();
+		var password = $("#password").val();
+		var data = {
 			telephone: telephone,
 			password: password
 		}
@@ -118,7 +118,7 @@
 				 type:"get",
 				 url:"/api/users?filter="+ JSON.stringify(tele),
 				 success:function(users){
-				 /!*let user = JSON.stringify(users.id);*!/
+				 /!*var user = JSON.stringify(users.id);*!/
 				 for(var i=0;i<users.length;++i){
 				 userId = users[i].id
 
@@ -146,10 +146,10 @@
 	})
 	/*function submit(){
 
-		/!*let tele = {
+		/!*var tele = {
 			telephone: telephone
 		}*!/
-		/!*let userId;
+		/!*var userId;
 		var tips = document.getElementById("errortelephone");
 		var tip = document.getElementById("errorpassword");*!/
 
