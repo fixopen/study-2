@@ -326,14 +326,18 @@ g.getUrlParameter = function (name) {
     return result //返回参数值
 }
 
-g.setCookie = function (name, value, days) {
+g.setCookie = function (name, value, path, days) {
     if (!days) {
         days = 30
     }
     var exp = new Date()
     exp.setTime(exp.getTime() + days * 24 * 60 * 60 * 1000)
     //document.cookie[document.cookie.length] = name + "=" + encodeURIComponent(value) + ";expires=" + exp.toGMTString()
-    document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + exp.toGMTString()
+    var pathParameter = ';path=/api'
+    if (path) {
+        pathParameter = ';path=' + path
+    }
+    document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + exp.toGMTString() + pathParameter
 }
 
 g.getCookie = function (cookieName) {
