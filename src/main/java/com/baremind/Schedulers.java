@@ -36,6 +36,7 @@ public class Schedulers {
             //System.out.println("Hello="+new Gson().toJson(schedulers));
            /* Gson gson = new GsonBuilder().setDateFormat("HH:mm:ss").registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter()).registerTypeAdapter(java.sql.Date.class, new SQLDateTypeAdapter()).create();
             return gson.toJson(map);*/
+            //Gson gson = new GsonBuilder().setDateFormat("HH:mm:ss").create();
             result = Response.ok(new Gson().toJson(schedulers)).build();
         }
         return result;
