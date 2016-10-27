@@ -51,7 +51,7 @@ public class KeyStoreManager {
             store.load(fileInputStream, secret.toCharArray());
 
             KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) store
-                .getEntry(alias, new KeyStore.PasswordProtection(secret.toCharArray()));
+                    .getEntry(alias, new KeyStore.PasswordProtection(secret.toCharArray()));
 
             fileInputStream.close();
             result = privateKeyEntry.getPrivateKey();

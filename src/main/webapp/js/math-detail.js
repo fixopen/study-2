@@ -1,24 +1,28 @@
 $(function () {
 //添加评论
-    var createComment=document.getElementById('createComment');
-    createComment .addEventListener('click', writeMessage, false);
+    var createComment = document.getElementById('createComment');
+    createComment.addEventListener('click', writeMessage, false);
     function writeMessage() {
         $('#commentWriter').toggle();
-        var btn=document.getElementById('btn');
+        var btn = document.getElementById('btn');
         btn.addEventListener('click', submit, false);
         function submit(e) {
-            var textarea=document.getElementById('textarea');
-            var value=textarea.value;
-            if(value.length<1){
+            var textarea = document.getElementById('textarea');
+            var value = textarea.value;
+            if (value.length < 1) {
                 return false;
             }
-            textarea.value='';
+            textarea.value = '';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
             $.ajax({
                 type: "post",
                 url: "/api/comments",
-                data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: value}),
+                data: JSON.stringify({
+                    objectType: 'knowledge-point',
+                    objectId: g.getUrlParameter("id"),
+                    content: value
+                }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -73,7 +77,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                   // alert(JSON.stringify(data))
+                    // alert(JSON.stringify(data))
                     proc({
                         templateId: 'video-template',
                         data: data.video,
@@ -115,7 +119,7 @@ $(function () {
                             var icon = document.getElementById('icon');
                             if (liked) {
                                 icon.setAttribute('src', 'img/zan-over.png');
-                            }else {
+                            } else {
                                 icon.setAttribute('src', 'img/zan.png');
                             }
                             icon.addEventListener('click', function (e) {
@@ -168,13 +172,13 @@ $(function () {
                             url: 'api/comments/' + id + '/is-self-like',
                             dataType: "json",
                             success: function (like) {
-                                var  likeds = like.like;
+                                var likeds = like.like;
                                 if (likeds) {
                                     e.target.setAttribute('src', 'img/zan-over.png');
-                                }else {
+                                } else {
                                     e.target.setAttribute('src', 'img/zan.png');
                                 }
-                                if(likeds){
+                                if (likeds) {
                                     var id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
@@ -225,7 +229,7 @@ $(function () {
                     for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i];
                         for (var j = 0; j < p.options.length; ++j) {
-                            p.options[j].title = String.fromCharCode(65+j);
+                            p.options[j].title = String.fromCharCode(65 + j);
                             // p.options[1].title = 'B';
                             // p.options[2].title = 'C';
                             // p.options[3].title = 'D'
@@ -275,7 +279,6 @@ $(function () {
                         ps.pop()
                         strongestBrains = ps
                     }
-
 
 
                     proc({
@@ -352,26 +355,26 @@ $(function () {
                         }
                         return finded
                     }
-                    var falseImage=getTemplate('falseImage');
-                    var trueImage=getTemplate('trueImage');
+                    var falseImage = getTemplate('falseImage');
+                    var trueImage = getTemplate('trueImage');
                     var problemContainer = document.getElementById('strongest-brain');
                     problemContainer.addEventListener('click', function (e) {
                         var clickedElement = e.target;
-                        if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')|| clickedElement.hasClass('option')) {
+                        if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana') || clickedElement.hasClass('option')) {
                             var titleElement = clickedElement.parentNode.children[0];
 
-                                    var optionsContainer = clickedElement.parentNode.parentNode;
-                                    for (var i = 0; i < optionsContainer.children.length; ++i) {
-                                        var option = optionsContainer.children[i];
-                                        if (option.children[0].dataset.selected == 'true') {
-                                            option.children[0].dataset.selected = false;
-                                            option.children[0].removeClass('daanLi_nowBai');
-                                            option.children[0].parentNode.removeClass('daanLi_now');
-                                        }
-                                    }
-                                    titleElement.dataset.selected = true;
-                                    titleElement.addClass('daanLi_nowBai');
-                                    titleElement.parentNode.addClass('daanLi_now');
+                            var optionsContainer = clickedElement.parentNode.parentNode;
+                            for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                var option = optionsContainer.children[i];
+                                if (option.children[0].dataset.selected == 'true') {
+                                    option.children[0].dataset.selected = false;
+                                    option.children[0].removeClass('daanLi_nowBai');
+                                    option.children[0].parentNode.removeClass('daanLi_now');
+                                }
+                            }
+                            titleElement.dataset.selected = true;
+                            titleElement.addClass('daanLi_nowBai');
+                            titleElement.parentNode.addClass('daanLi_now');
                             // var problemContainer = document.getElementById('strongest-brain')
                             // problemContainer.addEventListener('click', judgement, false)
                             //

@@ -749,7 +749,7 @@
             request.send(formData);
         }
 
-        let problemoption = function(li,problemIdDD,option1content){
+        let problemoption = function (li, problemIdDD, option1content) {
             var options = currentSelectedElement.querySelector('[data-type="options"]')
             var option1 = options.querySelector('[data-li="' + li + '"]')
             var option1content = option1.querySelector('[data-type="content"]').value
@@ -764,7 +764,7 @@
                     if (request.status == 200) {
                         returndata = JSON.parse(request.responseText)
                         imageId = returndata.id
-                        addproblemoption(problemIdDD,imageId,option1content,option1order)
+                        addproblemoption(problemIdDD, imageId, option1content, option1order)
                     }
                 }
             }
@@ -772,7 +772,7 @@
             request.send(formData);
         }
 
-        let addproblemoption = function(problemIdDD,imageId,option1content,option1order){
+        let addproblemoption = function (problemIdDD, imageId, option1content, option1order) {
             let option = {
                 problemId: problemIdDD,
                 imageId: imageId,
@@ -846,10 +846,10 @@
                         var option1order = option1.querySelector('[data-type="order"]').value
                         var option1image = option1.querySelector('[data-type="imageo"]')
                         if (option1image.files.length != 0) {
-                            problemoption(li,problemIdDD,option1content)
+                            problemoption(li, problemIdDD, option1content)
                         } else {
                             imageId = null;
-                            addproblemoption(problemIdDD,imageId,option1content,option1order)
+                            addproblemoption(problemIdDD, imageId, option1content, option1order)
                         }
                     }
                 }

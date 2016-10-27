@@ -26,6 +26,7 @@ public class Cards {
     private static final int ENGLISH = 2;
     private static final String[] grades = new String[]{"20", "21"};
     private static final String[] serials = new String[]{"1"};
+
     @POST
     @Path("generate")
     @Consumes(MediaType.APPLICATION_JSON)

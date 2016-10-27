@@ -4,85 +4,96 @@
 * @Last Modified by:   User
 * @Last Modified time: 2016-09-30 13:49:05
 */
-.body-color{
-	width: 100%;
-	height: 100%;
-	background-color: #0096dc;
+.body-color {
+    width: 100%;
+    height: 100%;
+    background-color: #0096dc;
 }
-.cloud-down{
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 197px;
-	background: url('../images/cloud1.png') no-repeat center top;
+
+.cloud-down {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 197px;
+    background: url('../images/cloud1.png') no-repeat center top;
 }
-.cloud-up{
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 160px;
-	background: url('../images/cloud2.png') no-repeat center top;
+
+.cloud-up {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 160px;
+    background: url('../images/cloud2.png') no-repeat center top;
 }
-.mountain{
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-	height: 340px;
-	background: url('../images/footer-bg.png') no-repeat center bottom;
+
+.mountain {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 340px;
+    background: url('../images/footer-bg.png') no-repeat center bottom;
 }
-.success{
-	position: absolute;
-	top: 260px;
-	width: 100%;
-	height: 300px;
-	text-align: center;
-	color: #fff;
-	font-size: 24px;
-	font-weight: bold;
-	overflow: hidden;
-	z-index: 9;
+
+.success {
+    position: absolute;
+    top: 260px;
+    width: 100%;
+    height: 300px;
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    overflow: hidden;
+    z-index: 9;
 }
-.activate-img{
-	position: absolute;
-	top: -60px;
-	margin-bottom: 60px;
-	width: 100%;
-	height: 54px;
-	background: url('../images/success.png') no-repeat center top;
+
+.activate-img {
+    position: absolute;
+    top: -60px;
+    margin-bottom: 60px;
+    width: 100%;
+    height: 54px;
+    background: url('../images/success.png') no-repeat center top;
 }
-.gold-bean,.go-set{
-	text-align: center;
+
+.gold-bean, .go-set {
+    text-align: center;
 }
-.gold-bean{
-	position: absolute;
-	top: 113px;
-	left: -2000px;
-	width: 100%;
-	height: 80px;
-	line-height: 80px;
-	margin-bottom: 60px;
-	overflow: hidden;
+
+.gold-bean {
+    position: absolute;
+    top: 113px;
+    left: -2000px;
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    margin-bottom: 60px;
+    overflow: hidden;
 }
-.gold-bean img{
-	vertical-align: middle;
-	margin: 0 12px;
+
+.gold-bean img {
+    vertical-align: middle;
+    margin: 0 12px;
 }
-.go-set{
-	position: absolute;
-	bottom: -50px;
-	width: 100%;
-	height: 50px;
-	overflow: hidden;
+
+.go-set {
+    position: absolute;
+    bottom: -50px;
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
 }
-.set-account{
-	display: inline-block;
-	width: 158px;
-	height: 48px;
-	line-height: 44px;
-	border: 1px solid #fff;
-	border-radius: 10px;
-	text-align: center;
+
+.set-account {
+    display: inline-block;
+    width: 158px;
+    height: 48px;
+    line-height: 44px;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    text-align: center;
 }
-.set-account img{
-	vertical-align: middle;
+
+.set-account img {
+    vertical-align: middle;
 }

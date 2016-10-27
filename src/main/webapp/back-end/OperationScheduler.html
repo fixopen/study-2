@@ -113,12 +113,12 @@
                 $("#duration").attr("value", scheduler.duration);
                 //alert(scheduler.subjectId)
                 //if(scheduler.subjectId == 1 || scheduler.subjectId == 2 || scheduler.subjectId == 3){
-                    $("#subjectId"+scheduler.subjectId).attr("checked",true);//勾选
+                $("#subjectId" + scheduler.subjectId).attr("checked", true);//勾选
                 //}
                 //subjectId: $("input[name='subjectId']:checked").val(scheduler[i].subjectId),
                 //$("input[name='grade']:checked").val(scheduler[i].year),
                 //alert(scheduler.grade)
-                $("#grade"+scheduler.grade).attr("checked",true);
+                $("#grade" + scheduler.grade).attr("checked", true);
 
                 $("#title").attr("value", scheduler.title);
                 //alert(scheduler.description)
@@ -132,7 +132,7 @@
                 //cover: coverInput.dataset.storePath,
                 $("#cdnLink").attr("value", scheduler.cdnLink);
                 $("#directLink").attr("value", scheduler.directLink);
-                $("#state"+scheduler.state).attr("checked",true);
+                $("#state" + scheduler.state).attr("checked", true);
             },
             error: function (scheduler) {
                 alert(JSON.stringify(scheduler))
@@ -158,14 +158,14 @@
 
     function submit() {
         if (!coverInput.dataset.storePath) {
-            if(coverInput.files.length == 0){
+            if (coverInput.files.length == 0) {
                 alert("请选中图片，如果不选中图片将无法进行添加或修改")
             }
             submitfile(function () {
                 post()
             });
         } else {
-            if(coverInput.files.length == 0){
+            if (coverInput.files.length == 0) {
                 alert("请选中图片，如果不选中图片将无法进行添加或修改")
             }
             post()
@@ -176,8 +176,8 @@
             let time = '+08:00';
             startTime = startTime.replace(/ /, "T");
             endTime = endTime.replace(/ /, "T");
-            startTime = startTime+time;
-            endTime = endTime+time;
+            startTime = startTime + time;
+            endTime = endTime + time;
             let data = {
                 year: $("#year").val(),
                 week: $("#week").val(),
@@ -206,7 +206,7 @@
                     contentType: "application/json; charset=utf-8",
                     success: function (scheduler) {
                         alert("修改成功")
-                        window.location.href="ShowScheduler.html"
+                        window.location.href = "ShowScheduler.html"
                     },
                     error: function (scheduler) {
                         alert("修改失败")
@@ -221,7 +221,7 @@
                     contentType: "application/json; charset=utf-8",
                     success: function (scheduler) {
                         alert("添加成功！")
-                        window.location.href="ShowScheduler.html"
+                        window.location.href = "ShowScheduler.html"
                     },
                     error: function (scheduler) {
                         alert("添加失败！")
