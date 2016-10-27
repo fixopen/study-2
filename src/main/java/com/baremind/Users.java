@@ -381,13 +381,13 @@ public class Users {
                 result = Response.status(520).build();
                 break;
         }
-        EntityManager em = JPAEntry.getNewEntityManager();
+       /* EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         for (ValidationCode validationCode : validationCodes) {
             em.remove(validationCode);
         }
         em.getTransaction().commit();
-        em.close();
+        em.close();*/
         //Response result = Response.status(500).build();
         return result;
     }
@@ -493,13 +493,13 @@ public class Users {
                 result = Response.status(520).build();
                 break;
         }
-        EntityManager em = JPAEntry.getNewEntityManager();
+       /* EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         for (ValidationCode validationCode : validationCodes) {
             em.remove(validationCode);
         }
         em.getTransaction().commit();
-        em.close();
+        em.close();*/
         return result;
     }
 

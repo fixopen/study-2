@@ -36,6 +36,17 @@ public class KnowledgePoint {
     @Column(name = "video_url")
     private String videoUrl;
 
+    @Column(name = "is_show")
+    private Boolean isShow;
+
+    public Boolean getShow() {
+        return isShow;
+    }
+
+    public void setShow(Boolean show) {
+        isShow = show;
+    }
+
     public Long getId() {
         return id;
     }
