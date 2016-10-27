@@ -449,10 +449,10 @@
                     titleValue = 'Edit Volume'
                 }
                 $('#volumeEditorLabel').text(titleValue)
-                $('#volumeID').val(volume.id)
-                $('#volumeName').val(volume.name)
-                $('#volumeCover').attr('src', volume.coverHref)
-                $('#volumeOrder').val(volume.order)
+                state.volume.idControl.value = volume.id
+                state.volume.nameControl.value = volume.name
+                state.volume.coverControl.src = volume.coverHref
+                state.volume.orderControl.value = volume.order
                 $('#volumeEditor').modal('show')
             },
             choice: document.getElementById('volumeChoice'),
@@ -461,8 +461,9 @@
             idControl: document.getElementById('volumeID'),
             //subjectIdControl: document.getElementById('volumeSubjectID'),
             //gradeControl: document.getElementById('volumeGrade'),
-            coverControl: document.getElementById('volumeCover'),
             nameControl: document.getElementById('volumeName'),
+            coverControl: document.getElementById('volumeCover'),
+            orderControl: document.getElementById('volumeOrder'),
             submitControl: document.getElementById('volumeSubmit'),
             submit: function () {
                 let isUpdate = false
@@ -471,7 +472,7 @@
                 if (state.subject.idControl.value != '') {
                     isUpdate = true
                     method = 'PUT'
-                    url = '/api/volumes/' + state.subject.value.id
+                    url = '/api/volumes/' + state.volume.value.id
                 }
                 $.ajax({
                     type: method,
@@ -497,7 +498,8 @@
                             subjects[state.subject.index][state.grade.name].push(volume)
 
                             state.refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
-                            state.volume.change(subjects[state.subject.index][state.grade.name].length - 1)
+                            state.volume.choice.selectedIndex = subjects[state.subject.index][state.grade.name].length - 1
+                            state.volume.change(state.volume.choice.selectedIndex)
                             ++state.volume.maxOrder
                         }
                         //alert('添加成功')
@@ -522,9 +524,9 @@
                     titleValue = 'Edit Knowledge Point'
                 }
                 $('#knowledgePointEditorLabel').text(titleValue)
-                $('#knowledgePointID').val(volume.id)
-                $('#knowledgePointName').val(volume.name)
-                $('#knowledgePointOrder').val(volume.order)
+                state.knowledgePoint.idControl.value = knowledgePoint.id
+                state.knowledgePoint.nameControl.value = knowledgePoint.name
+                state.knowledgePoint.orderControl.value = knowledgePoint.order
                 $('#knowledgePointEditor').modal('show')
             },
             choice: document.getElementById('knowledgePointChoice'),
@@ -533,6 +535,7 @@
             idControl: document.getElementById('knowledgePointID'),
             //volumeIdControl: document.getElementById('knowledgePointVolumeID'),
             nameControl: document.getElementById('knowledgePointName'),
+            orderControl: document.getElementById('knowledgePointOrder'),
             submitControl: document.getElementById('knowledgePointSubmit'),
             submit: function () {
                 let isUpdate = false
@@ -541,7 +544,7 @@
                 if (state.subject.idControl.value != '') {
                     isUpdate = true
                     method = 'PUT'
-                    url = '/api/knowledge-points/' + state.subject.value.id
+                    url = '/api/knowledge-points/' + state.knowledgePoint.value.id
                 }
                 $.ajax({
                     type: method,
@@ -550,7 +553,7 @@
                     dataType: 'json',
                     data: JSON.stringify({
                         volumeId: state.volume.id,
-                        name: state.knowledgePoint.title.value,
+                        name: state.knowledgePoint.nameControl.value,
                         order: state.knowledgePoint.maxOrder
                     }),
                     success: function (knowledgePointResult) {
@@ -560,7 +563,8 @@
                             let knowledgePoint = knowledgePointResult
                             subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.push(knowledgePoint)
                             state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
-                            state.knowledgePoint.change(subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.length - 1)
+                            state.knowledgePoint.choice.selectedIndex = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.length - 1
+                            state.knowledgePoint.change(state.knowledgePoint.choice.selectedIndex)
                             ++state.knowledgePoint.maxOrder
                             //alert("添加成功")
                         }
