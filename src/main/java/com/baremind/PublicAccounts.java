@@ -60,11 +60,11 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/token")
-            .queryParam("grant_type", "client_credential")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .request().get();
+                .path("/cgi-bin/token")
+                .queryParam("grant_type", "client_credential")
+                .queryParam("appid", appID)
+                .queryParam("secret", secret)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("access_token")) {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
@@ -173,9 +173,9 @@ public class PublicAccounts {
             Client client = ClientBuilder.newClient();
             Entity<CustomMenu> em = Entity.json(t);
             Response response = client.target(hostname)
-                .path("/cgi-bin/menu/create")
-                .queryParam("access_token", accessToken)
-                .request(MediaType.APPLICATION_JSON).post(em);
+                    .path("/cgi-bin/menu/create")
+                    .queryParam("access_token", accessToken)
+                    .request(MediaType.APPLICATION_JSON).post(em);
             GenericResult r = response.readEntity(GenericResult.class);
             if (r.errcode == 0) {
                 result = Response.ok(r).build();
@@ -564,11 +564,11 @@ public class PublicAccounts {
             }
             Client client = ClientBuilder.newClient();
             Response response = client.target(hostname)
-                .path("/cgi-bin/user/info")
-                .queryParam("access_token", accessToken)
-                .queryParam("openid", openId)
-                .queryParam("lang", "zh_CN")
-                .request().get();
+                    .path("/cgi-bin/user/info")
+                    .queryParam("access_token", accessToken)
+                    .queryParam("openid", openId)
+                    .queryParam("lang", "zh_CN")
+                    .request().get();
             String responseBody = response.readEntity(String.class);
             if (responseBody.contains("openid")) {
                 //{"access_token":"ACCESS_TOKEN","expires_in":7200}
@@ -601,11 +601,11 @@ public class PublicAccounts {
         WechatUserInfo result = null;
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/sns/userinfo")
-            .queryParam("access_token", token)
-            .queryParam("openid", openId)
-            .queryParam("lang", "zh_CN")
-            .request().get();
+                .path("/sns/userinfo")
+                .queryParam("access_token", token)
+                .queryParam("openid", openId)
+                .queryParam("lang", "zh_CN")
+                .request().get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("openid")) {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
@@ -719,12 +719,12 @@ public class PublicAccounts {
         long secondCount = new Date().getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
         String result = "<xml>\n" +
-            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-            "   <MsgType><![CDATA[text]]></MsgType>\n" +
-            "   <Content><![CDATA[" + content + "]]></Content>\n" +
-            "</xml>";
+                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+                "   <MsgType><![CDATA[text]]></MsgType>\n" +
+                "   <Content><![CDATA[" + content + "]]></Content>\n" +
+                "</xml>";
         return result;
     }
 
@@ -745,19 +745,19 @@ public class PublicAccounts {
         String currentEpochTime = Long.toString(secondCount);
 
         String result = "<xml>\n" +
-            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-            "   <MsgType><![CDATA[news]]></MsgType>\n" +
-            "   <ArticleCount>1</ArticleCount>\n" +
-            "   <Articles>\n" +
-            "       <item>\n" +
-            "           <Title><![CDATA[" + title + "]]></Title> \n" +
-            "           <Description><![CDATA[" + content + "]]></Description>\n" +
-            "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
-            "       </item>\n" +
-            "   </Articles>\n" +
-            "</xml>";
+                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+                "   <MsgType><![CDATA[news]]></MsgType>\n" +
+                "   <ArticleCount>1</ArticleCount>\n" +
+                "   <Articles>\n" +
+                "       <item>\n" +
+                "           <Title><![CDATA[" + title + "]]></Title> \n" +
+                "           <Description><![CDATA[" + content + "]]></Description>\n" +
+                "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
+                "       </item>\n" +
+                "   </Articles>\n" +
+                "</xml>";
         return result;
     }
 
@@ -857,12 +857,12 @@ public class PublicAccounts {
     private static Map<String, Object> getTokenByCode(String code) {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
+                .path("/sns/oauth2/access_token")
+                .queryParam("appid", appID)
+                .queryParam("secret", secret)
+                .queryParam("code", code)
+                .queryParam("grant_type", "authorization_code")
+                .request().get();
         String responseBody = response.readEntity(String.class);
         return new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
         }.getType());
@@ -1022,10 +1022,10 @@ public class PublicAccounts {
         ArrayList<String> result = new ArrayList<>();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/user/get")
-            .queryParam("access_token", accessToken)
-            .queryParam("next_openid", nextOpenid)
-            .request().get();
+                .path("/cgi-bin/user/get")
+                .queryParam("access_token", accessToken)
+                .queryParam("next_openid", nextOpenid)
+                .request().get();
         //{"total":2,"count":2,"data":{"openid":["","OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("data")) {
@@ -1197,9 +1197,9 @@ public class PublicAccounts {
         GenericResult result = new GenericResult();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/get")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/get")
+                .queryParam("access_token", accessToken)
+                .request().get();
         IPList ipList = response.readEntity(IPList.class);
         return result;
     }
@@ -1211,9 +1211,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/create")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/create")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1226,9 +1226,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/delete")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/menu/delete")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1242,9 +1242,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/addconditional")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/addconditional")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1257,9 +1257,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/delconditional")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/delconditional")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1341,9 +1341,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/trymatch")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/trymatch")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1355,9 +1355,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/get_current_selfmenu_info")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/get_current_selfmenu_info")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1543,9 +1543,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/add")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/add")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1557,9 +1557,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/update")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/update")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1571,9 +1571,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/del")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/del")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1586,9 +1586,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/uploadheadimg")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/uploadheadimg")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1599,9 +1599,9 @@ public class PublicAccounts {
         // https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/getkflist")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/customservice/kfaccount/getkflist")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1614,9 +1614,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/send")
-            .queryParam("access_token", accessToken)
-            .request().post(message);
+                .path("/customservice/kfaccount/send")
+                .queryParam("access_token", accessToken)
+                .request().post(message);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1630,9 +1630,9 @@ public class PublicAccounts {
         // curl -F media=@test.jpg "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=ACCESS_TOKEN"
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/media/uploadimg")
-            .queryParam("access_token", accessToken)
-            .request().post(message);
+                .path("/cgi-bin/media/uploadimg")
+                .queryParam("access_token", accessToken)
+                .request().post(message);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1645,9 +1645,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/media/uploadnews")
-            .queryParam("access_token", accessToken)
-            .request().post(articles);
+                .path("/cgi-bin/media/uploadnews")
+                .queryParam("access_token", accessToken)
+                .request().post(articles);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1658,9 +1658,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/message/custom/sendall")
-            .queryParam("access_token", accessToken)
-            .request().post(articles);
+                .path("/cgi-bin/message/custom/sendall")
+                .queryParam("access_token", accessToken)
+                .request().post(articles);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;

@@ -8,30 +8,36 @@ a {
     font-weight: bold;
     padding-top: 1.5rem;
 }
-.daanLi_now{
+
+.daanLi_now {
     color: orange;
 }
-.daanLi_nowBai{
+
+.daanLi_nowBai {
     color: #fff;
     background-color: orange;
 }
+
 .head_h3_s {
     text-align: center;
     font-size: 1.0625rem;
     font-weight: bold;
     padding-bottom: 0.8rem;
 }
-.baoBtn{
+
+.baoBtn {
     font-size: 0.785rem;
     width: 100%;
     height: 0.75rem;
     line-height: 0.75rem;
     text-align: right;
 }
-.btnTrue{
+
+.btnTrue {
     color: #24cbd1;
     text-decoration: underline;
 }
+
 .head_himg {
     display: inline-block;
     width: 6.03125rem;
@@ -61,7 +67,8 @@ a {
     top: -0.3125rem;
     z-index: 2;
 }
-.content{
+
+.content {
     margin-bottom: 10px;
 }
 
@@ -113,7 +120,7 @@ a {
     height: 10.8125rem;
     clear: both;
     display: block;
-    margin:auto;
+    margin: auto;
 }
 
 .math_color {
@@ -187,8 +194,7 @@ li.mld_Ulli {
     margin-right: 0.25rem;
 }
 
-
-.daan_true{
+.daan_true {
     float: left;
     position: relative;
     top: -1.625rem;
@@ -213,10 +219,11 @@ li.mld_Ulli {
     float: left;
     margin-right: 3.75rem;
     position: relative;
-    width:100%;
+    width: 100%;
 }
+
 /*.option{*/
-    /**/
+/**/
 /*}*/
 
 .muld_images {
@@ -257,7 +264,6 @@ li.mld_Ulli {
 .ul01_aBtn {
     color: #24cbd1;
 }
-
 
 .lian_jie {
     position: relative;
@@ -319,20 +325,21 @@ li.mld_Ulli {
 }
 
 /*写留言*/
-.textarea{
+.textarea {
     width: 100%;
     padding: 0.9375rem;
-    margin-top:0.9375rem;
+    margin-top: 0.9375rem;
     border-radius: 0.3125rem;
 }
-.sub-btn{
+
+.sub-btn {
     width: 100%;
-    height:2rem ;
+    height: 2rem;
     line-height: 2rem;
     background-color: #0BB20C;
     color: #ffffff;
     text-align: center;
-    margin-top:0.9375rem;
+    margin-top: 0.9375rem;
     border-radius: 0.3125rem;
 }
 
@@ -380,7 +387,7 @@ li.mld_Ulli {
 }
 
 .lion_02 {
-    width: 78%;
+    width: 77%;
 }
 
 .topUl {
@@ -412,14 +419,14 @@ li.mld_Ulli {
 
 /* 答案 */
 /*.daana {*/
-    /*width: 100%;*/
-    /*min-height: 1.5625rem;*/
-    /*position: absolute;*/
-    /*top: 0.46875rem;*/
-    /*left: 0;*/
-    /*z-index: -1;*/
+/*width: 100%;*/
+/*min-height: 1.5625rem;*/
+/*position: absolute;*/
+/*top: 0.46875rem;*/
+/*left: 0;*/
+/*z-index: -1;*/
 /*}*/
-.daana{
+.daana {
     width: 100%;
     min-height: 2.5625rem;
     position: absolute;

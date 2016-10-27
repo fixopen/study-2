@@ -67,9 +67,9 @@ public class ProblemOptions {
                     problemOption.setName(content);
                     problemOption.setImageId(imageText.getId());
                     problemOption.setProblemId(problemId);
-                   // problemOption.setOrder();
+                    // problemOption.setOrder();
                     JPAEntry.genericPost(problemOption);
-                   result = Response.ok(new Gson().toJson(problemOption)).build();
+                    result = Response.ok(new Gson().toJson(problemOption)).build();
                 } else {
                     result = Response.status(415).build();
                     //上传图片的格式不正确

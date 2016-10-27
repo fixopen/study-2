@@ -13,7 +13,9 @@
 </head>
 <body>
 <!-- style="margin: auto; width: 30%; height: 30%" -->
-<div id="ppt-container" style="float: left; width: 80%; height: 300px; text-align: center; vertical-align: middle"><div>点击显示PPT内容</div></div>
+<div id="ppt-container" style="float: left; width: 80%; height: 300px; text-align: center; vertical-align: middle">
+    <div>点击显示PPT内容</div>
+</div>
 <div style="float: right; width: 20%">
     <video id="video" controls style="width: 100%; height: 300px;">
         <source src="http://vid-11672.hls.chinanetcenter.broadcastapp.agoraio.cn/live/xiaoyu/playlist.m3u8"
@@ -37,7 +39,7 @@
 </template>
 <script>
     var pptContainer = document.getElementById('ppt-container')
-    pptContainer.addEventListener('click', function(e) {
+    pptContainer.addEventListener('click', function (e) {
         e.target.innerHTML = ''
         var pptContent = getTemplate('ppt-content')
         e.target.appendChild(pptContent)

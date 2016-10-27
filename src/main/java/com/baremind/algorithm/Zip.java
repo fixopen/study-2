@@ -114,8 +114,8 @@ public class Zip {
                     for (File file : files) {
                         if (file.isDirectory()) {
                             zipDirectory(zos, file.getPath(), basePath
-                                + file.getName().substring(file.getName().lastIndexOf(File.separator) + 1)
-                                + File.separator);
+                                    + file.getName().substring(file.getName().lastIndexOf(File.separator) + 1)
+                                    + File.separator);
                         } else {
                             zipFile(zos, file.getPath(), basePath);
                         }

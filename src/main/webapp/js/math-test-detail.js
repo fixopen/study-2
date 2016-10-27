@@ -11,7 +11,6 @@ $(function () {
     falseImage.setAttribute('alt', '');
 
 
-
     let volumeId = g.getUrlParameter("volumeId");
     $.ajax({
         type: 'get',

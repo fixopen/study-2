@@ -86,7 +86,7 @@
 </div>
 <script src="/moment/moment.min.js"></script>
 <script type="text/javascript">
-    var courseTable = [[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]]]
+    var courseTable = [[[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []]]
     var m = moment(new Date())
     var w = m.week()
     $.ajax({
@@ -96,7 +96,7 @@
         success: function (result) {
             //alert(JSON.stringify(result))
             course = result
-            for(var i = 0;i < course.length; ++i){
+            for (var i = 0; i < course.length; ++i) {
                 var startHour = parseInt(course[i].startTime.substr(11, 2))
                 //一个新的字符串，包含从 stringObject 的 start（包括 start 所指的字符） 处开始的 length 个字符。如果没有指定 length，那么返回的字符串包含从 start 到 stringObject 的结尾的字符。
                 switch (course[i].day) {
@@ -171,7 +171,7 @@
                     var cell = document.getElementById('cell' + (i + 1) + (j + 1))
                     for (var k = 0; k < courseTable[i][j].length; ++k) {
                         var content = document.createElement('span')
-                        var c = document.createTextNode(courseTable[i][j][k].title + '(' +courseTable[i][j][k].startTime +'  到  '+ courseTable[i][j][k].endTime+')')
+                        var c = document.createTextNode(courseTable[i][j][k].title + '(' + courseTable[i][j][k].startTime + '  到  ' + courseTable[i][j][k].endTime + ')')
                         var br = document.createElement('br')
                         content.appendChild(c)
                         content.appendChild(br)
@@ -182,57 +182,57 @@
             }
         }
     })
-//    $(function () {
-//        let data =
-//                [
-//            {
-//                week: '一',
-//                morning: [{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
-//                afternoon: [{itemClass:'英语(8:00-10:00)'}],
-//                evening:[{itemClass:'英语(8:00-10:00)'}]
-//            },
-//            {
-//                week: '二',
-//                morning: [{itemClass:'英语(11:00-10:00)'}],
-//                afternoon: [{itemClass:'英语(11:00-10:00)'}],
-//                evening:[{itemClass:'英语(11:00-10:00)'}]
-//            },
-//
-//            {
-//                week: '三',
-//                morning: [{itemClass:'英语(11:00-10:00)'}],
-//                afternoon: [{itemClass:'英语(11:00-10:00)'}],
-//                evening:[{itemClass:'英语(11:00-10:00)'}]
-//            },
-//
-//            {
-//                week: '四',
-//                morning: [{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}],
-//                afternoon: [{itemClass:'英语(11:00-10:00)'}],
-//                evening:[{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}]
-//            },
-//
-//            {
-//                week: '五',
-//                morning: [{itemClass:'英语(8:00-10:00)'}],
-//                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
-//                evening:[{itemClass:'英语(8:00-10:00)'}]
-//            },
-//
-//            {
-//                week: '六',
-//                morning: [{itemClass:'英语(8:00-10:00)'}],
-//                afternoon: [{itemClass:'英语(8:00-10:00)'}],
-//                evening:[{itemClass:'英语(8:00-10:00)'}]
-//            },
-//            {
-//                week: '七',
-//                morning:[{itemClass:'英语(8:00-10:00)'}],
-//                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
-//                evening:[{itemClass:'英语(8:00-10:00)'}]
-//
-//            }
-//        ]
+    //    $(function () {
+    //        let data =
+    //                [
+    //            {
+    //                week: '一',
+    //                morning: [{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+    //                afternoon: [{itemClass:'英语(8:00-10:00)'}],
+    //                evening:[{itemClass:'英语(8:00-10:00)'}]
+    //            },
+    //            {
+    //                week: '二',
+    //                morning: [{itemClass:'英语(11:00-10:00)'}],
+    //                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+    //                evening:[{itemClass:'英语(11:00-10:00)'}]
+    //            },
+    //
+    //            {
+    //                week: '三',
+    //                morning: [{itemClass:'英语(11:00-10:00)'}],
+    //                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+    //                evening:[{itemClass:'英语(11:00-10:00)'}]
+    //            },
+    //
+    //            {
+    //                week: '四',
+    //                morning: [{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}],
+    //                afternoon: [{itemClass:'英语(11:00-10:00)'}],
+    //                evening:[{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}]
+    //            },
+    //
+    //            {
+    //                week: '五',
+    //                morning: [{itemClass:'英语(8:00-10:00)'}],
+    //                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+    //                evening:[{itemClass:'英语(8:00-10:00)'}]
+    //            },
+    //
+    //            {
+    //                week: '六',
+    //                morning: [{itemClass:'英语(8:00-10:00)'}],
+    //                afternoon: [{itemClass:'英语(8:00-10:00)'}],
+    //                evening:[{itemClass:'英语(8:00-10:00)'}]
+    //            },
+    //            {
+    //                week: '七',
+    //                morning:[{itemClass:'英语(8:00-10:00)'}],
+    //                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
+    //                evening:[{itemClass:'英语(8:00-10:00)'}]
+    //
+    //            }
+    //        ]
 </script>
 
 </body>

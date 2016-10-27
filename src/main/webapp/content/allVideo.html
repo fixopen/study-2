@@ -49,16 +49,16 @@
                 <ul class="video-list" id="chinese-futureVideoList"></ul>
                 <ul class="video-list" id="chinese-passedVideoList"></ul>
                 <div class="more">
-                <div class="pullUp">
-                    <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>
+                    <div class="pullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>
+                    </div>
+                    <div class="video-all" id="btn1">
+                        查看往期录播视频
+                    </div>
                 </div>
-                <div class="video-all" id="btn1">
-                    查看往期录播视频
-                </div>
-            </div>
             </li>
             <li class="subject-list">
-                <ul class="video-list" id="math-currentVideoList" ></ul>
+                <ul class="video-list" id="math-currentVideoList"></ul>
                 <ul class="video-list" id="math-futureVideoList"></ul>
                 <ul class="video-list" id="math-passedVideoList"></ul>
                 <div class="more">
@@ -288,7 +288,7 @@
 //            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
 //            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)
             course[0][i].type = 'current'
-            if (ET.getTime() < now.getTime( )) {
+            if (ET.getTime() < now.getTime()) {
                 course[0][i].type = 'passed'
                 course[2].unshift(course[0][i])//向数组的开头添加一个或更多元素，并返回新的长度
                 course[0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
@@ -305,7 +305,7 @@
 //            var nowTime = moment(now)
 //            alert('now year: ' + nowTime.year() + ' month: ' + nowTime.month() + ' day: ' + nowTime.date())
 //            alert('startTime: ' + ST.toDate().getTime() + '\n now: ' + now.getTime() + '\n diff is ' + (ST.toDate().getTime() - now.getTime()) / 1000 / 3600 / 24)
-            if (ST.getTime() < now.getTime( )) {
+            if (ST.getTime() < now.getTime()) {
                 course[1][i].type = 'current'
                 course[0].unshift(course[1][i])
                 course[1].splice(i, 1)
@@ -351,19 +351,20 @@
                 }
             }
         }
-        var moreVideo=document.getElementById('btn1');
-        moreVideo .addEventListener('click', showPassed, false);
-        function showPassed(){
+        var moreVideo = document.getElementById('btn1');
+        moreVideo.addEventListener('click', showPassed, false);
+        function showPassed() {
             proc({
                 container: state.passedContainer,
                 data: course[0][2],
                 template: state.passedTemplate
             })
-            document.getElementById("btn1").style.display="none";
+            document.getElementById("btn1").style.display = "none";
             var va = document.getElementById("pullUp1");
             $("#pullUp1").text("没有更多视频，敬请期待");
             curseDetailTap(); //点击“课程详情”
         }
+
         proc({
             container: state.currentContainer,
             data: course[0][0],
@@ -406,19 +407,20 @@
             futureTemplate: getTemplate('future-video-template'),
             passedTemplate: getTemplate('passed-video-template')
         }
-        var moreVideo=document.getElementById('btn');
-        moreVideo .addEventListener('click', showPassed, false);
-        function showPassed(){
+        var moreVideo = document.getElementById('btn');
+        moreVideo.addEventListener('click', showPassed, false);
+        function showPassed() {
             proc({
                 container: state.passedContainer,
                 data: course[1][2],
                 template: state.passedTemplate
             })
-            document.getElementById("btn").style.display="none";
+            document.getElementById("btn").style.display = "none";
             var va = document.getElementById("pullUp");
             $("#pullUp").text("没有更多视频，敬请期待");
             curseDetailTap(); //点击“课程详情”
         }
+
         for (var i = 0; i < course[1].length; ++i) {
             for (var j = 0; j < course[1][i].length; ++j) {
                 var m = moment().year(course[1][i][j].year).week(course[1][i][j].week).day(course[1][i][j].day)
