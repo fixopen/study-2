@@ -33,6 +33,9 @@ public class Schedulers {
             filterObject.put("year", year);
             filterObject.put("week", weekNo);
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
+            //System.out.println("Hello="+new Gson().toJson(schedulers));
+           /* Gson gson = new GsonBuilder().setDateFormat("HH:mm:ss").registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter()).registerTypeAdapter(java.sql.Date.class, new SQLDateTypeAdapter()).create();
+            return gson.toJson(map);*/
             result = Response.ok(new Gson().toJson(schedulers)).build();
         }
         return result;
@@ -192,9 +195,9 @@ public class Schedulers {
 
 
                 int state = scheduler.getState();
-                if (state != 0) {
+
                     existScheduler.setState(state);
-                }
+
 
                 int day = scheduler.getDay();
                 if (day != 0) {
