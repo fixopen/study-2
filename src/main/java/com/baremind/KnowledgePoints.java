@@ -343,6 +343,9 @@ public class KnowledgePoints {
                     commentMap.put("objectType", comment.getObjectType());
                     commentMap.put("updateTime", comment.getUpdateTime());
                     commentMap.put("userId", comment.getUserId());
+                    User user = JPAEntry.getObject(User.class, "id", comment.getUserId());
+                    commentMap.put("userName", user.getName());
+                    commentMap.put("userAvatar", user.getHead());
                     commentMap.put("likeCount", Logs.getStatsCount("comment", comment.getId(), "like"));
                     commentMaps.add(commentMap);
                 }
@@ -413,6 +416,10 @@ public class KnowledgePoints {
                 if (grade != 0) {
                     existknowledgePoint.getGrade();
                 }
+                Boolean show = knowledgePoint.getShow();
+              /*  if(show == true){
+                    existknowledgePoint.setShow(show);
+                }*/
                 String storePath = knowledgePoint.getStorePath();
                 if (storePath != null) {
                     existknowledgePoint.setStorePath(storePath);

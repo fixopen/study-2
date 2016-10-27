@@ -77,8 +77,8 @@
 					<div id="error" style="" colour="red"></div>
 					<div class="activate-btn">
 						<!--<a href="activateSuccess.html" class="activate-now">立即激活</a><br>-->
+						<div id="save" class="activate-now">立即激活</div><br/>
 						<a href="signIn.html" class="activate-login">已激活去登录</a>
-						<div id="save" class="activate-now">立即激活</div>
 					</div>
 				</div>
 			</div>
@@ -103,38 +103,44 @@
 			let password = document.getElementById('password').value
 			let phonecode = document.getElementById('phonecode').value
 			let validationCode = document.getElementById('validationCode').value
+			let success1
+			let success2
+			let success3
+			let success4
 			if(cardCode.length != 12){
 				document.getElementById("cardCodeerror").innerHTML = "卡号错误，请重新输入"
 			}else{
 				document.getElementById("cardCodeerror").innerHTML = ""
+				success1 = 2
 			}
 			if(password.length != 8){
 				document.getElementById("passworderror").innerHTML = "密码错误，请重新输入"
 			}else{
 				document.getElementById("passworderror").innerHTML = ""
+				success2 = 2
 			}
 			if(phonecode.length != 11){
 				document.getElementById("phonecodeerror").innerHTML = "手机号格式错误，请重新输入"
 			}else{
 				document.getElementById("phonecodeerror").innerHTML = ""
+				success3 = 2
 			}
 			if(validationCode.length != 6){
 				document.getElementById("validationCodeerror").innerHTML = "验证码错误请重新输入"
 			}else{
 				document.getElementById("validationCodeerror").innerHTML = ""
+				success4 = 2
 			}
-            if(cardCode == "" || password == "" || phonecode == "" ||validationCode == ""){
-
-			}else{
+            if(success1 ==2 &&  success2 ==2 &&  success3 ==2 && success4 ==2){
 				let data = {
-					cardNo: phonecode,
+					cardNo: cardCode,
 					password: password,
 					phoneNumber: phonecode,
 					validCode: validationCode
 				}
 				$.ajax({
 					type: "POST",
-					url: "/api/users/pccards",
+					url: "/api/users/cards",
 					data: JSON.stringify(data),
 					dataType: "json",
 					contentType: "application/json; charset=utf-8",
@@ -213,6 +219,8 @@
 						}
 					}
 				})
+			}else{
+
 			}
 
 		}, false)
@@ -241,18 +249,15 @@
 						url: "/api/users/telephones/" + phonecode + "/code",
 						dataType: "json",
 						success: function (r) {
-							if (r.status < 400) {
 								document.getElementById("error").innerHTML = "<font size='10px' color='red' >发送成功，请注意查收</font>"
-							} else {
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >发送失败，请重新获取验证码</font>"
-							}
 						},
 						error: function (r) {
-							if (r.status < 400) {
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >发送成功，请注意查收</font>"
-							} else {
-								document.getElementById("error").innerHTML = "<font size='10px' color='red' >发送失败，请重新获取验证码</font>"
+							switch (r.status){
+								case 0:
+									document.getElementById("error").innerHTML = "<font size='10px' color='red' >发送成功，请注意查收</font>"
+									break;
 							}
+								document.getElementById("error").innerHTML = "<font size='10px' color='red' >发送失败，请重新获取验证码</font>"
 						}
 					})
 					/*ajax('GET', '/api/users/telephones/' + phonecode + '/code', [{name: 'Accept', value: 'application/json'}], function (r) {
