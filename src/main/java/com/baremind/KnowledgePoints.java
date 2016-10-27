@@ -344,8 +344,10 @@ public class KnowledgePoints {
                     commentMap.put("updateTime", comment.getUpdateTime());
                     commentMap.put("userId", comment.getUserId());
                     User user = JPAEntry.getObject(User.class, "id", comment.getUserId());
-                    commentMap.put("userName", user.getName());
-                    commentMap.put("userAvatar", user.getHead());
+                    if(user != null){
+                        commentMap.put("userName", user.getName());
+                        commentMap.put("userAvatar", user.getHead());
+                    }
                     commentMap.put("likeCount", Logs.getStatsCount("comment", comment.getId(), "like"));
                     commentMaps.add(commentMap);
                 }
