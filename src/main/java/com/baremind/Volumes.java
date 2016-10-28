@@ -96,6 +96,7 @@ public class Volumes {
                     kpm.put("id", kp.getId());
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
+                    kpm.put("showTime", kp.getShowTime());
 
                     kpm.put("likeCount", 0);
                     Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");

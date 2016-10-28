@@ -154,18 +154,18 @@
 
         var phone = null;
         $.ajax({
-            type:"get",
-            url:"/api/users/self",
-            dataType:"json",
-            success:function (e) {
+            type: "get",
+            url: "/api/users/self",
+            dataType: "json",
+            success: function (e) {
                 let u = e.id
                 userId = parseInt(u);
                 let a = e.telephone;
-                phone = parseInt(a) ;
+                phone = parseInt(a);
                 //document.getElementById("phoneNumber").innerHTML = phone
                 $("#phoneNumber").val(phone)
             },
-            error:function (e) {
+            error: function (e) {
                 location.href = "signIn.html";
             }
         })
@@ -173,79 +173,79 @@
 
     let submit = document.getElementById("submit")
     submit.addEventListener('click', function (e) {
-    /*    if ($("#phoneNumber").val().length != 11) {
-            document.getElementById("erroru").innerHTML = "请输入11位手机号";
+        /*    if ($("#phoneNumber").val().length != 11) {
+         document.getElementById("erroru").innerHTML = "请输入11位手机号";
+         } else {
+         document.getElementById("erroru").innerHTML = "";
+         */
+        if ($("#name").val() == "" || $("input[name='sex']:checked").val() == "" || $("#phoneNumber").val() == "" || $("#WechatNumber").val() == "" || $("#receipt_address").val() == "") {
+            popupHeight();//弹窗的宽高
+            submitPopup(); //点击"提交"按钮，弹出弹窗
+            popupClose();//点击弹窗的关闭按钮，关闭弹窗
+            popupOk(); //点击弹窗"好的"按钮，关闭弹窗
         } else {
-            document.getElementById("erroru").innerHTML = "";
-*/
-            if ($("#name").val() == "" || $("input[name='sex']:checked").val() == "" || $("#phoneNumber").val() == "" || $("#WechatNumber").val() == "" || $("#receipt_address").val() == "") {
-                popupHeight();//弹窗的宽高
-                submitPopup(); //点击"提交"按钮，弹出弹窗
-                popupClose();//点击弹窗的关闭按钮，关闭弹窗
-                popupOk(); //点击弹窗"好的"按钮，关闭弹窗
-            } else {
 
-                let yval = $("select[name='year']").val();
-                let mval = $("select[name='month']").val();
-                let dval = $("select[name='day']").val();
-                if (mval.replace(/\D/g, '').length < 2) {
-                    mval = "0" + mval;
-                }
-                if (dval.replace(/\D/g, '').length < 2) {
-                    dval = "0" + dval;
-                }
-                let birthday = new Date(yval + "-" + mval + "-" + dval);
-                let provval = $("select[class='prov']").val();
-                let cityval = $("select[class='city']").val();
-                let distval = $("select[class='dist']").val();
-                let address = provval + "省" + cityval + "市" + distval + $("#receipt_address").val()
-                let data = {
-                    name: $("#name").val(),
-                    sex: $("input[name='sex']:checked").val(),
-                    telephone: $("#phoneNumber").val(),
-                    birthday: birthday,
-                    receipt_address: address,
-                    school: $("#school").val(),
-                    classname: $("#class").val(),
+            let yval = $("select[name='year']").val();
+            let mval = $("select[name='month']").val();
+            let dval = $("select[name='day']").val();
+            if (mval.replace(/\D/g, '').length < 2) {
+                mval = "0" + mval;
+            }
+            if (dval.replace(/\D/g, '').length < 2) {
+                dval = "0" + dval;
+            }
+            let birthday = new Date(yval + "-" + mval + "-" + dval);
+            let provval = $("select[class='prov']").val();
+            let cityval = $("select[class='city']").val();
+            let distval = $("select[class='dist']").val();
+            let address = provval + "省" + cityval + "市" + distval + $("#receipt_address").val()
+            let data = {
+                name: $("#name").val(),
+                sex: $("input[name='sex']:checked").val(),
+                telephone: $("#phoneNumber").val(),
+                birthday: birthday,
+                receipt_address: address,
+                school: $("#school").val(),
+                classname: $("#class").val(),
 
+            }
+            let wechatdata = {
+                userId: userId,
+                info: $("#WechatNumber").val(),
+                nickname: $("#name").val(),
+                sex: $("input[name='sex']:checked").val(),
+                city: cityval,
+                province: provval
+            }
+            let filter = {
+                telephone: $("#phoneNumber").val()
+            }
+            $.ajax({
+                type: "put",
+                url: "/api/users/" + userId,
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (u) {
+                    $.ajax({
+                        type: "post",
+                        url: "/api/wechat-users",
+                        data: JSON.stringify(wechatdata),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (e) {
+                            location.href = "perfectSuccess.html";
+                        },
+                        error: function (e) {
+                            alert(JSON.stringify(e))
+                        }
+                    })
+                    alert("修改成功")
+                },
+                error: function (i) {
+                    alert(JSON.stringify(i))
                 }
-                let wechatdata = {
-                    userId:userId,
-                    info: $("#WechatNumber").val(),
-                    nickname: $("#name").val(),
-                    sex: $("input[name='sex']:checked").val(),
-                    city:cityval,
-                    province:provval
-                }
-                let filter = {
-                    telephone: $("#phoneNumber").val()
-                }
-                        $.ajax({
-                            type: "put",
-                            url: "/api/users/" + userId,
-                            data: JSON.stringify(data),
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (u) {
-                                $.ajax({
-                                    type:"post",
-                                    url:"/api/wechat-users",
-                                    data: JSON.stringify(wechatdata),
-                                    dataType:"json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success:function(e){
-                                        location.href = "perfectSuccess.html";
-                                    },
-                                    error:function (e) {
-                                        alert(JSON.stringify(e))
-                                    }
-                                })
-                                alert("修改成功")
-                            },
-                            error: function (i) {
-                                alert(JSON.stringify(i))
-                            }
-                        })
+            })
 
 //                     $.ajax({
 //                         type:"post",
@@ -260,7 +260,7 @@
 //                            alert("添加失败")
 //                         }
 //                     })
-            }
+        }
     })
 </script>
 </body>

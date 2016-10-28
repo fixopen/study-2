@@ -38,14 +38,14 @@
             <tr>
                 <td>密码：</td>
                 <td>
-                    <input type="password" placeholder="请输入6-16位登录密码" class="info-input"  id="pwd1" >
+                    <input type="password" placeholder="请输入6-16位登录密码" class="info-input" id="pwd1">
                     <i class="error-hou" id="errorpwd1"><!--请输入6-16位登录密码--></i>
                 </td>
             </tr>
             <tr>
                 <td>确认密码：</td>
                 <td>
-                    <input type="password" placeholder="请再输入一次" class="info-input" id="pwd2" >
+                    <input type="password" placeholder="请再输入一次" class="info-input" id="pwd2">
                     <i class="error-hou" id="errorpwd2"><!--请重新输入密码--></i>
                 </td>
             </tr>
@@ -72,25 +72,25 @@
     $(function () {
         var phone = null;
         $.ajax({
-            type:"get",
-            url:"/api/users/self",
-            dataType:"json",
-            success:function (e) {
-                if(e.password){
-                    if(e.name  &&　e.sex  && e.telephone && e.birthday && e.receipt_address ){
+            type: "get",
+            url: "/api/users/self",
+            dataType: "json",
+            success: function (e) {
+                if (e.password) {
+                    if (e.name && e.sex && e.telephone && e.birthday && e.receipt_address) {
                         location.href = "signIn.html";
-                    }else{
+                    } else {
                         location.href = "perfectInformation.html";
                     }
-                }else{
+                } else {
 
                 }
                 let a = e.telephone;
-                phone = parseInt(a) ;
+                phone = parseInt(a);
                 document.getElementById("phonecodeId").innerHTML = phone
 
             },
-            error:function (e) {
+            error: function (e) {
                 location.href = "signIn.html";
             }
         })
@@ -111,21 +111,21 @@
         let data = {
             telephone: $("#phonecodeId").val(),
             password: $("#pwd2").val()
-         }
-         alert(JSON.stringify(data))
-         $.ajax({
-             type:"post",
-             url:"/api/users/",
-             data:JSON.stringify(data),
-             dataType:"json",
-             contentType: "application/json; charset=utf-8",
-             success:function(user){
-                 location.href = "perfectInformation.html.html";
-             },
-             error:function(user){
+        }
+        alert(JSON.stringify(data))
+        $.ajax({
+            type: "post",
+            url: "/api/users/",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (user) {
+                location.href = "perfectInformation.html.html";
+            },
+            error: function (user) {
                 alert(JSON.stringify(user));
-             }
-         })
+            }
+        })
     })
     function validatePWD1() {
         var pwd1 = $("#pwd1").val();

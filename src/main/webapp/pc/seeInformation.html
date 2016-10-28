@@ -122,14 +122,14 @@
     //simulateSelect();//下拉菜单
     let userId
     $.ajax({
-        type:"get",
-        url:"/api/users/self",
-        dataType:"json",
-        success:function (e) {
+        type: "get",
+        url: "/api/users/self",
+        dataType: "json",
+        success: function (e) {
             let u = e.id
             userId = parseInt(u);
             let filter = {
-                userId:userId
+                userId: userId
             }
             $.ajax({
                 type: 'get',
@@ -164,25 +164,25 @@
                 }
             })
             /*$.ajax({
-               type:"get",
-               url:"/api/wechat-users/?filter="+ JSON.stringify(filter),
-               dataType:"json",
-               success:function(i){
-                   alert(JSON.stringify(i.info))
-                   proc({
-                       containerId: 'information',
-                       data: i,
-                       templateId: 'information-template'
-                   })
-               },
-               error:function (i) {
-                   location.href = "perfectInformation.html";
-                   alert(JSON.stringify(i))
-               }
-           })*/
+             type:"get",
+             url:"/api/wechat-users/?filter="+ JSON.stringify(filter),
+             dataType:"json",
+             success:function(i){
+             alert(JSON.stringify(i.info))
+             proc({
+             containerId: 'information',
+             data: i,
+             templateId: 'information-template'
+             })
+             },
+             error:function (i) {
+             location.href = "perfectInformation.html";
+             alert(JSON.stringify(i))
+             }
+             })*/
 
         },
-        error:function (e) {
+        error: function (e) {
             location.href = "signIn.html";
         }
     })

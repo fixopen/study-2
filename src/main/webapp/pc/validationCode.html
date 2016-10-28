@@ -166,70 +166,70 @@
                         }
                     })
                     /* if (save.status < 400) {
-                        g.setCookie("phonecode", document.getElementById('phonecode').value)
-                        window.location.href = 'activateSuccess.html'
+                     g.setCookie("phonecode", document.getElementById('phonecode').value)
+                     window.location.href = 'activateSuccess.html'
 
-                    }
-                    else {
-                        switch (save.status) {
-                            case 500:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >你的手机号和别人都重复了</font>";
-                                break;
-                            case 520:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520</font>";
-                                break;
-                            case 404:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
-                                break;
-                            case 405:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
-                                window.location.href = 'signIn.html'
-                                break;
-                            case 401:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
-                                break;
-                            case 410:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
-                                break;
-                            case 200:
-                                let filter ={
-                                    id :
-                                }
-                                $.ajax({
-                                    type:"get",
-                                    url:"/api/users?filter="+ JSON.stringify()
-                                })
-                                g.setCookie("phonecode", document.getElementById('phonecode').value)
-                                window.location.href = 'activateSuccess.html'
-                                break;
-                        }
-                    }*/
+                     }
+                     else {
+                     switch (save.status) {
+                     case 500:
+                     document.getElementById("error").innerHTML = "<font size='10px' color='red' >你的手机号和别人都重复了</font>";
+                     break;
+                     case 520:
+                     document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520</font>";
+                     break;
+                     case 404:
+                     document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
+                     break;
+                     case 405:
+                     document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
+                     window.location.href = 'signIn.html'
+                     break;
+                     case 401:
+                     document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
+                     break;
+                     case 410:
+                     document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
+                     break;
+                     case 200:
+                     let filter ={
+                     id :
+                     }
+                     $.ajax({
+                     type:"get",
+                     url:"/api/users?filter="+ JSON.stringify()
+                     })
+                     g.setCookie("phonecode", document.getElementById('phonecode').value)
+                     window.location.href = 'activateSuccess.html'
+                     break;
+                     }
+                     }*/
                 },
                 error: function (save) {
-                        switch (save.status) {
-                            case 500:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号重复，请输出新的手机号</font>";
-                                break;
-                            case 520:
-                                document.getElementById("error").innerHTML = "<font size='10px' color ='red' >后台错误520</font>";
-                                break;
-                            case 404:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
-                                break;
-                            case 405:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
-                                break;
-                            case 401:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
-                                break;
-                            case 410:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
-                                break;
-                            case 200:
-                                g.setCookie("phonecode", document.getElementById('phonecode').value)
-                                window.location.href = 'activateSuccess.html'
-                                break;
-                }
+                    switch (save.status) {
+                        case 500:
+                            document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号重复，请输出新的手机号</font>";
+                            break;
+                        case 520:
+                            document.getElementById("error").innerHTML = "<font size='10px' color ='red' >后台错误520</font>";
+                            break;
+                        case 404:
+                            document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
+                            break;
+                        case 405:
+                            document.getElementById("error").innerHTML = "<font size='10px' color='red' >不可以重复激活</font>";
+                            break;
+                        case 401:
+                            document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号或验证码错误</font>";
+                            break;
+                        case 410:
+                            document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
+                            break;
+                        case 200:
+                            g.setCookie("phonecode", document.getElementById('phonecode').value)
+                            window.location.href = 'activateSuccess.html'
+                            break;
+                    }
                 }
             });
         } else {

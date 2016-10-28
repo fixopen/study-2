@@ -38,14 +38,14 @@ public class KnowledgePoint {
     private String videoUrl;
 
     @Column(name = "show_time")
-    private Date ShowTime;
+    private Date showTime;
 
     public Date getShowTime() {
-        return ShowTime;
+        return showTime;
     }
 
     public void setShowTime(Date showTime) {
-        ShowTime = showTime;
+        this.showTime = showTime;
     }
 
     public Long getId() {

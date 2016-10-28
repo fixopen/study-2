@@ -31,9 +31,9 @@ public class Sessions {
             if (existUser != null) {
                 Session s = PublicAccounts.putSession(new Date(), existUser.getId());
                 result = Response.ok()
-                    .cookie(new NewCookie("userId", existUser.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                    .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                    .build();
+                        .cookie(new NewCookie("userId", existUser.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                        .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                        .build();
             }
         }
         return result;
