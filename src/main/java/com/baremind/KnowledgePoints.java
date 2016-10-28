@@ -135,11 +135,12 @@ public class KnowledgePoints {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKnowledgePointsByVolumeId(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        Long selfId = Long.parseLong(userId);
+        if (JPAEntry.isLogining(selfId)) {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
-                JPAEntry.log(JPAEntry.getLoginId(sessionId), "read", "knowledge-point", id);
+                JPAEntry.log(selfId, "read", "knowledge-point", id);
                 Map<String, Object> conditions = new HashMap<>();
                 conditions.put("knowledgePointId", id);
 

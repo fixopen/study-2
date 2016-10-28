@@ -864,6 +864,24 @@ public class PublicAccounts {
         }.getType());
     }
 
+    Response follow(WechatPush p) {
+        String openId = p.getFromUserName();
+        WechatUser wu = JPAEntry.getObject(WechatUser.class, "openId", openId);
+        if (wu == null) {
+            WechatUserInfo userInfo = getUserInfo(openId);
+            Date now = new Date();
+            User user = fillUserByUserInfo(now, userInfo);
+            WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
+            EntityManager em = JPAEntry.getNewEntityManager();
+            em.getTransaction().begin();
+            em.persist(user);
+            em.persist(wechatUser);
+            em.getTransaction().commit();
+            em.close();
+        }
+        return Response.ok().build();
+    }
+
     @GET
     @Path("card")
     @Produces(MediaType.TEXT_HTML)
