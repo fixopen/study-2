@@ -361,6 +361,25 @@ g.getCookie = function (cookieName) {
     }
     return result
 }
+
+/*
+function sign(){
+    var phone = null;
+        $.ajax({
+            type:"get",
+            url:"/api/users/self",
+            dataType:"json",
+            success:function (e) {
+                let a = e.telephone;
+                phone = parseInt(a) ;
+            },
+            error:function (e) {
+                location.href = "signIn.html";
+            }
+        })
+
+    return phone;
+}*/
 /*function sign(cookieName) {
    var userId = g.getCookie(cookieName);
     if(userId == ""){
