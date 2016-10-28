@@ -38,15 +38,15 @@
             <tr>
                 <td>密码：</td>
                 <td>
-                    <input type="password" placeholder="请输入6-16位登录密码" class="info-input">
-                    <i class="error-hou">请输入6-16位登录密码</i>
+                    <input type="password" placeholder="请输入6-16位登录密码" class="info-input"  id="pwd1" >
+                    <i class="error-hou" id="errorpwd1"><!--请输入6-16位登录密码--></i>
                 </td>
             </tr>
             <tr>
                 <td>确认密码：</td>
                 <td>
-                    <input type="password" placeholder="请再输入一次" class="info-input">
-                    <i class="error-hou">请重新输入密码</i>
+                    <input type="password" placeholder="请再输入一次" class="info-input" id="pwd2" >
+                    <i class="error-hou" id="errorpwd2"><!--请重新输入密码--></i>
                 </td>
             </tr>
         </table>
@@ -70,32 +70,58 @@
 </script>
 <script>
     $(function () {
-        let phonecode = g.getCookie("phonecode")
+        let phonecode = sign("userId")
+        /*let phonecode = g.getCookie("phonecode")*/
         document.getElementById("phonecodeId").innerHTML = phonecode
     })
+
+    let p1 = document.getElementById("pwd1");
+    p1.addEventListener('blur', function () {
+        validatePWD1();
+    })
+    let p2 = document.getElementById("pwd2");
+    p2.addEventListener('blur', function () {
+        validatePWD2();
+    })
+
     let submit = document.getElementById("submit")
     submit.addEventListener('click', function (e) {
-        $.ajax({
-            type: "get",
-            url: "/api/user"
-        })
-        /*let data = {
-         username:
+        let data = {
+            telephone: $("#phonecodeId").val(),
+            password: $("#pwd2").val()
          }
-         $.ajax({
-         type:"post",
-         url:"/api/users/un/pd/user"
-         data:JSON.stringify(data);
-         dataType:"json",
-         contentType: "application/json; charset=utf-8",
-         success:function(user){
-         alert("成功")
-         },
-         error:function(user){
-         alert("失败")
-         }
-         })*/
+         alert(JSON.stringify(data))
+//         $.ajax({
+//             type:"post",
+//             url:"/api/users/",
+//             data:JSON.stringify(data),
+//             dataType:"json",
+//             contentType: "application/json; charset=utf-8",
+//             success:function(user){
+//                alert("成功");
+//             },
+//             error:function(user){
+//                alert("失败");
+//             }
+//         })
     })
+    function validatePWD1() {
+        var pwd1 = $("#pwd1").val();
+        if (pwd1.length >= 6 && pwd1.length <= 16) {
+            document.getElementById("errorpwd1").innerHTML = ""
+        } else {
+            document.getElementById("errorpwd1").innerHTML = "请输入6-16位登录密码"
+        }
+    }
+    function validatePWD2() {
+        var pwd1 = $("#pwd1").val();
+        var pwd2 = $("#pwd2").val();
+        if (pwd1 != pwd2) {
+            document.getElementById("errorpwd2").innerHTML = "密码输入不一致，请重新输入密码"
+        } else {
+            document.getElementById("errorpwd2").innerHTML = ""
+        }
+    }
 </script>
 </body>
 </html>

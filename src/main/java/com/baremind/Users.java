@@ -475,8 +475,19 @@ public class Users {
                             if (c.getActiveTime() == null) {
                                 c.setActiveTime(now);
                                 c.setAmount(588.0);
+                                User users = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
+                                if(users == null){
+                                    User user = new User();
+                                    user.setId(IdGenerator.getNewId());
+                                    user.setTelephone(ac.getPhoneNumber());
+                                    JPAEntry.genericPost(user);
+                                    c.setUserId(user.getId());
+                                }else{
+                                   c.setUserId(users.getId());
+                                }
                                 JPAEntry.genericPut(c);
-                                result = Response.ok().build();
+                                result = Response.ok(new Gson().toJson(c)).build();
+
                             } else {
                                 result = Response.status(405).build();
                             }
@@ -626,7 +637,7 @@ public class Users {
         return result;
     }
 
-    @POST //添
+    /*@POST //添
     @Path("pcuser")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -634,17 +645,17 @@ public class Users {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             user.setId(IdGenerator.getNewId());
-            WechatUser wechatUser = new WechatUser();
+           // WechatUser wechatUser = new WechatUser();
             Date now = new Date();
-            wechatUser.setUserId(user.getId());
+            //wechatUser.setUserId(user.getId());
             user.setCreateTime(now);
             user.setUpdateTime(now);
-           /* wechatUser.setRefId();*/
+           *//* wechatUser.setRefId();*//*
             JPAEntry.genericPost(user);
             result = Response.ok(user).build();
         }
         return result;
-    }
+    }*/
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
