@@ -4,10 +4,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "get",
-        url: 'api/volumes?filter=' + JSON.stringify({
-            subjectId: 1, //parseInt(subjectId),
-            grade: 20
-        }),
+        url: 'api/subjects/1/low/volumes',
         success: function (volumesL) {
             // proc({
             //     templateId: 'volumes-template',
@@ -27,10 +24,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "get",
-        url: 'api/volumes?filter=' + JSON.stringify({
-            subjectId: 1,
-            grade: 21
-        }),
+        url: 'api/subjects/1/high/volumes',
         success: function (volumesH) {
             // proc({
             //     templateId: 'volumes-template',
