@@ -362,8 +362,8 @@ g.getCookie = function (cookieName) {
     return result
 }
 
-/*
-function sign(){
+
+/*function sign(){
     var phone = null;
         $.ajax({
             type:"get",
