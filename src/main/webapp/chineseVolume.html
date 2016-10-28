@@ -20,6 +20,9 @@
     <script type="text/javascript" src="zepto/selector.js"></script>
 </head>
 <body>
+<!-- 课程更新弹窗 -->
+<div class="tan" style="display:block"></div>
+<div class="new-class" style="display:block"></div>
 
 <div class="wrap">
     <div class="rain-main">
@@ -44,7 +47,16 @@
         </div>
     </div>
 </div>
-<template id="volumes-template">
+<template id="volumes-new-template">
+    <li class="neir_li">
+        <img class="new-label" src="img/new-label.png" alt="">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" data-id="${id}" data-type="volume"
+               href="chineseKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
+        </div>
+    </li>
+</template>
+<template id="volumes-old-template">
     <li class="neir_li">
         <div class="neir_lidiv">
             <a class="neir_pzi" data-id="${id}" data-type="volume"

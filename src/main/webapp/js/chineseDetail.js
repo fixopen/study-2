@@ -349,7 +349,7 @@ $(function () {
                         containerId: 'interaction'
                     })
 
-                    // likes
+                    // likes---点赞
                     var id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
@@ -395,7 +395,7 @@ $(function () {
                                 }
                             }, false)
                         }
-                    })
+                    });
 
 
                     proc({
