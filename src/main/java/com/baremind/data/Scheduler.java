@@ -5,7 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -19,16 +18,16 @@ public class Scheduler {
     private Long id;
 
     @Column(name = "year")
-    private int year;
+    private Integer year;
 
     @Column(name = "week")
-    private int week;
+    private Integer week;
 
     @Column(name = "day")
-    private int day;
+    private Integer day;
 
     @Column(name = "state")
-    private int state;
+    private Integer state;
 
     @Column(name = "start_time")
     private Date startTime;
@@ -48,6 +47,15 @@ public class Scheduler {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "cover")
+    private String cover;
+
+    @Column(name = "cdn_link")
+    private String cdnLink;
+
+    @Column(name = "direct_link")
+    private String directLink;
+
     @Column(name = "description")
     private String description;
 
@@ -65,35 +73,35 @@ public class Scheduler {
         this.id = id;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getWeek() {
+    public Integer getWeek() {
         return week;
     }
 
-    public void setWeek(int week) {
+    public void setWeek(Integer week) {
         this.week = week;
     }
 
-    public int getDay() {
+    public Integer getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(Integer day) {
         this.day = day;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
@@ -143,6 +151,30 @@ public class Scheduler {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public String getCdnLink() {
+        return cdnLink;
+    }
+
+    public void setCdnLink(String cdnLink) {
+        this.cdnLink = cdnLink;
+    }
+
+    public String getDirectLink() {
+        return directLink;
+    }
+
+    public void setDirectLink(String directLink) {
+        this.directLink = directLink;
     }
 
     public String getDescription() {

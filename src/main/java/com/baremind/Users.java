@@ -149,13 +149,13 @@ public class Users {
         // Default instance of client
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/msg/HttpBatchSendSM")
-            .queryParam("account", username)
-            .queryParam("pswd", password)
-            .queryParam("mobile", phoneNumber)
-            .queryParam("msg", validInfo)
-            .queryParam("needstatus", true)
-            .request("text/plain").get();
+                .path("/msg/HttpBatchSendSM")
+                .queryParam("account", username)
+                .queryParam("pswd", password)
+                .queryParam("mobile", phoneNumber)
+                .queryParam("msg", validInfo)
+                .queryParam("needstatus", true)
+                .request("text/plain").get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("\n")) {
             String[] lines = responseBody.split("\n");
@@ -269,21 +269,23 @@ public class Users {
                                 //Logs.insert(id, "log", logId, "card exists");
                                 User telephoneUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
                                 if (telephoneUser != null && telephoneUser.getId().longValue() != id.longValue()) {
-                                    WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
-                                    List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", id);
-                                    EntityManager em = JPAEntry.getNewEntityManager();
-                                    em.getTransaction().begin();
-                                    for (Card card : bindedCards) {
-                                        card.setUserId(id);
-                                        em.merge(card);
+                                    WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
+                                    WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", telephoneUser.getId());
+                                    if (wechatUser.getOpenId().equals(errorWechatUser.getOpenId())) {
+                                        List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", id);
+                                        EntityManager em = JPAEntry.getNewEntityManager();
+                                        em.getTransaction().begin();
+                                        for (Card card : bindedCards) {
+                                            card.setUserId(id);
+                                            em.merge(card);
+                                        }
+                                        em.remove(errorWechatUser);
+                                        em.remove(telephoneUser);
+                                        em.getTransaction().commit();
+                                        em.close();
+                                        Logs.insert(telephoneUser.getId(), "move-card", telephoneUser.getId(), phoneNumber);
                                     }
-                                    em.remove(errorWechatUser);
-                                    em.remove(telephoneUser);
-                                    em.getTransaction().commit();
-                                    em.close();
-                                    Logs.insert(telephoneUser.getId(), "move-card", errorWechatUser.getId(), phoneNumber);
                                 }
-
                                 user.setTelephone(phoneNumber);
                                 JPAEntry.genericPut(user);
                                 Card c = cs.get(0);
@@ -313,13 +315,7 @@ public class Users {
                     result = Response.status(520).build();
                     break;
             }
-            EntityManager em = JPAEntry.getNewEntityManager();
-            em.getTransaction().begin();
-            for (ValidationCode validationCode : validationCodes) {
-                em.remove(validationCode);
-            }
-            em.getTransaction().commit();
-            em.close();
+            //JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", phoneNumber);
             //Logs.insert(id, "log", logId, "remove validation codes");
         }
         return result;
@@ -386,14 +382,6 @@ public class Users {
                 result = Response.status(520).build();
                 break;
         }
-        EntityManager em = JPAEntry.getNewEntityManager();
-        em.getTransaction().begin();
-        for (ValidationCode validationCode : validationCodes) {
-            em.remove(validationCode);
-        }
-        em.getTransaction().commit();
-        em.close();
-        //Response result = Response.status(500).build();
         return result;
     }
 
@@ -508,10 +496,13 @@ public class Users {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(@CookieParam("sessionId") String sessionId, User user) {
+    public Response createUser(@CookieParam("userId") String userId, User user) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             user.setId(IdGenerator.getNewId());
+            Date now = new Date();
+            user.setCreateTime(now);
+            user.setUpdateTime(now);
             JPAEntry.genericPost(user);
             result = Response.ok(user).build();
         }
@@ -520,9 +511,9 @@ public class Users {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUsers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getUsers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<User> users = JPAEntry.getList(User.class, filterObject);
@@ -540,7 +531,26 @@ public class Users {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             //if isAdmin
-            result = Response.status(404).build();
+            Long userId = 0l;
+            User admin = JPAEntry.getObject(User.class, "id", userId);
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Response.status(404).build();
+                User user = JPAEntry.getObject(User.class, "id", id);
+                if (user != null) {
+                    result = Response.ok(new Gson().toJson(user)).build();
+                }
+            }
+        }
+        return result;
+    }
+
+    @GET //根据id查询
+    @Path("self")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSelf(@CookieParam("userId") String userId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Long id = Long.parseLong(userId);
             User user = JPAEntry.getObject(User.class, "id", id);
             if (user != null) {
                 result = Response.ok(new Gson().toJson(user)).build();
@@ -553,22 +563,15 @@ public class Users {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, /*byte[] userInfo*/User user) {
+    public Response updateUser(@CookieParam("userId") String userId, @PathParam("id") Long id, /*byte[] userInfo*/User user) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             User existuser = JPAEntry.getObject(User.class, "id", id);
             if (existuser != null) {
                 float amount = user.getAmount();
                 existuser.setAmount(amount);
-                //User user;
-                //try {
-                //    user = new Gson().fromJson(new String(userInfo, "UTF-8"), User.class);
-                //} catch (UnsupportedEncodingException e) {
-                //    e.printStackTrace();
-                //}
-                //float amount = user.getAmount();
-                //existuser.setAmount(amount);
+
                 Date birthday = user.getBirthday();
                 if (birthday != null) {
                     existuser.setBirthday(birthday);

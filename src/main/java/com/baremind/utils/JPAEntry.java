@@ -2,8 +2,10 @@ package com.baremind.utils;
 
 import com.baremind.Logs;
 import com.baremind.data.Session;
+import com.baremind.data.User;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,19 +39,43 @@ public class JPAEntry {
     }
 
     public static <T> T getObject(Class<T> type, String fieldName, Object fieldValue) {
+        HashMap<String, Object> condition = new HashMap<>(1);
+        condition.put(fieldName, fieldValue);
+        return getObject(type, condition);
+    }
+
+    public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
         T result = null;
         EntityManager em = getEntityManager();
-        String jpql = "SELECT a FROM " + type.getSimpleName() + " a WHERE a." + fieldName + " = :variable";
+        String jpql = "SELECT a FROM " + type.getSimpleName() + " a ";
+        boolean isFirst = true;
+        if (conditions != null) {
+            for (Map.Entry<String, Object> item : conditions.entrySet()) {
+                if (isFirst) {
+                    jpql += " WHERE ";
+                    isFirst = false;
+                } else {
+                    jpql += " AND ";
+                }
+                jpql += "a." + item.getKey() + " = :" + item.getKey();
+            }
+        }
         try {
-            result = em.createQuery(jpql, type)
-                .setParameter("variable", fieldValue)
-                .getSingleResult();
+            TypedQuery<T> q = em.createQuery(jpql, type);
+            if (conditions != null) {
+                for (Map.Entry<String, Object> item : conditions.entrySet()) {
+                    q.setParameter(item.getKey(), item.getValue());
+                }
+            }
+            result = q.getSingleResult();
         } catch (NoResultException e) {
             //do noting
         } catch (NonUniqueResultException e) {
-            List<T> t = em.createQuery(jpql, type)
-                .setParameter("variable", fieldValue)
-                .getResultList();
+            final TypedQuery<T> q = em.createQuery(jpql, type);
+            if (conditions != null) {
+                conditions.forEach(q::setParameter);
+            }
+            List<T> t = q.getResultList();
             result = t.get(0);
         }
         return result;
@@ -66,6 +92,11 @@ public class JPAEntry {
     }
 
     public static <T> List<T> getList(Class<T> type, Map<String, Object> conditions, Map<String, String> orders) {
+        EntityManager em = getEntityManager();
+        return getList(em, type, conditions, orders);
+    }
+
+    public static <T> List<T> getList(EntityManager em, Class<T> type, Map<String, Object> conditions, Map<String, String> orders) {
         String jpql = "SELECT o FROM " + type.getSimpleName() + " o";
         boolean isFirst = true;
         if (conditions != null) {
@@ -91,15 +122,9 @@ public class JPAEntry {
                 jpql += "o." + order.getKey() + " " + order.getValue();
             }
         }
-        EntityManager em = getEntityManager();
         final TypedQuery<T> q = em.createQuery(jpql, type);
         if (conditions != null) {
-            conditions.forEach((key, value) -> {
-                q.setParameter(key, value);
-            });
-            //for (Map.Entry<String, Object> item : conditions.entrySet()) {
-            //    q.setParameter(item.getKey(), item.getValue());
-            //}
+            conditions.forEach(q::setParameter);
         }
         return q.getResultList();
     }
@@ -113,9 +138,7 @@ public class JPAEntry {
     }
 
     public static void genericPost(EntityManager em, Object o) {
-        em.getTransaction().begin();
         em.persist(o);
-        em.getTransaction().commit();
     }
 
     public static void genericPut(Object o) {
@@ -126,42 +149,59 @@ public class JPAEntry {
         em.close();
     }
 
-    public static void genericPut(EntityManager em, Object o) {
-        em.getTransaction().begin();
-        em.merge(o);
-        em.getTransaction().commit();
+    public static long genericDelete(Class type, String name, Object value) {
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put(name, value);
+        return genericDelete(type, conditions);
     }
 
-    public static void genericDelete(Object o) {
+    public static long genericDelete(Class type, Map<String, Object> conditions) {
         EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
-        em.remove(o);
+        List os = JPAEntry.getList(em, type, conditions, null);
+        long result = os.size();
+        for (Object o : os) {
+            em.remove(o);
+        }
         em.getTransaction().commit();
         em.close();
+        return result;
     }
 
-    public static void genericDelete(EntityManager em, Object o) {
-        em.getTransaction().begin();
-        em.remove(o);
-        em.getTransaction().commit();
+    public static Session getSession(String sessionId) {
+        return getObject(Session.class, "identity", sessionId);
+    }
+
+    public static boolean isLogining(Long userId) {
+        final Map<String, Boolean> r = new HashMap<>();
+        r.put("value", false);
+        isLogining(userId, a -> {
+            a.setLastOperationTime(new Date());
+            genericPut(a);
+            r.put("value", true);
+        });
+        return r.get("value");
+    }
+
+    public static void isLogining(Long userId, Consumer<Session> touchFunction) {
+        User u = getObject(User.class, "id", userId);
+        if (u != null) {
+            Session s = getObject(Session.class, "userId", userId);
+            if (s != null) {
+                touchFunction.accept(s);
+            }
+        }
     }
 
     public static boolean isLogining(String sessionId) {
         final Map<String, Boolean> r = new HashMap<>();
         r.put("value", false);
         isLogining(sessionId, a -> {
-            //a.setLastOperationTime(new Date());
-            //genericPut(a);
+            a.setLastOperationTime(new Date());
+            genericPut(a);
             r.put("value", true);
         });
-        //@@
-        r.put("value", true);
-        //@@
         return r.get("value");
-    }
-
-    public static Session getSession(String sessionId) {
-        return getObject(Session.class, "identity", sessionId);
     }
 
     public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
@@ -175,8 +215,8 @@ public class JPAEntry {
         final Map<String, Long> r = new HashMap<>();
         r.put("value", 0l);
         isLogining(sessionId, a -> {
-            //a.setLastOperationTime(new Date());
-            //genericPut(a);
+            a.setLastOperationTime(new Date());
+            genericPut(a);
             r.put("value", a.getUserId());
         });
         return r.get("value");

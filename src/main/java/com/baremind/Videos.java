@@ -5,18 +5,10 @@ import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
+
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +18,9 @@ public class Videos {
     @POST//添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createVideo(@CookieParam("sessionId") String sessionId, Video video) {
+    public Response createVideo(@CookieParam("userId") String userId, Video video) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             video.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(video);
             result = Response.ok(video).build();
@@ -38,9 +30,9 @@ public class Videos {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getVideos(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getVideos(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Video> videos = JPAEntry.getList(Video.class, filterObject);
@@ -54,9 +46,9 @@ public class Videos {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getVideoById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getVideoById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Video video = JPAEntry.getObject(Video.class, "id", id);
             if (video != null) {
@@ -70,9 +62,9 @@ public class Videos {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateVideo(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Video video) {
+    public Response updateVideo(@CookieParam("userId") String userId, @PathParam("id") Long id, Video video) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>(1);
             filterObject.put("id", id);

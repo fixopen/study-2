@@ -16,7 +16,7 @@ public class KnowledgePointContentMap {
     private Long id;
 
     @Column(name = "knowledge_point_id")
-    private Long KnowledgePointId;
+    private Long knowledgePointId;
 
     @Column(name = "object_type")
     private String objectType;
@@ -36,11 +36,11 @@ public class KnowledgePointContentMap {
     }
 
     public Long getKnowledgePointId() {
-        return KnowledgePointId;
+        return knowledgePointId;
     }
 
     public void setKnowledgePointId(Long knowledgePointId) {
-        KnowledgePointId = knowledgePointId;
+        this.knowledgePointId = knowledgePointId;
     }
 
     public String getObjectType() {

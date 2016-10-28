@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>直播课</title>
-	<!-- 禁止拉伸和全屏设置 -->
-  	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
-    <meta name="format-detection" content="telephone=no" />
+    <meta charset="UTF-8">
+    <title>直播课 </title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait">
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="/css/global.css">
@@ -20,483 +23,465 @@
 
 </head>
 <body>
-	<div class="wrap">
+<div class="wrap">
+    <!-- main -->
+    <div class="rain-main">
+        <header class="rain-header">
+            <a href="../curriculumSchedule.html" class="rain-header-a"></a>
+        </header>
+        <div class="subject-tab">
+            <ul class="subject-tab-box">
+                <li class="subject-tab-li cur zb-cur">
+                    语文
+                    <span class="zb-video"></span>
+                </li>
+                <li class="subject-tab-li zb-cur">
+                    数学
+                    <span class="zb-video"></span>
+                </li>
+            </ul>
+            <div class="subject-line"></div>
+        </div>
+        <!-- video-list -->
+        <ul id="live-broadcast">
+            <li class="subject-list cur">
+                <ul class="video-list" id="chinese-currentVideoList"></ul>
+                <ul class="video-list" id="chinese-futureVideoList"></ul>
+                <ul class="video-list" id="chinese-passedVideoList"></ul>
+                <div class="more">
+                    <div class="pullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>
+                    </div>
+                    <div class="video-all" id="btn1">
+                        查看往期录播视频
+                    </div>
+                </div>
+            </li>
+            <li class="subject-list">
+                <ul class="video-list" id="math-currentVideoList"></ul>
+                <ul class="video-list" id="math-futureVideoList"></ul>
+                <ul class="video-list" id="math-passedVideoList"></ul>
+                <div class="more">
+                    <div class="pullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp">没有更多直播，点击查看往期录播视频</span>
+                    </div>
+                    <div class="video-all" id="btn">
+                        查看往期录播视频
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<template id="video-template">
+    <li class="video-list-li">
+        <div class="video-list-play">
+            <a href="${directLink}">
+                <img src="${cover}" alt="">
+                <div class="video-list-mask">
+                    <span class="live-radio">
+                        <img src="../img/zb-live.png" alt="">
+                        <!--图片会随着具体情况改变-->
+                    </span>
+                    <div class="play-btn">
+                        <img src="../img/live-play.png" alt="">
+                        <!--图片会随着具体情况改变-->
+                    </div>
+                    <div class="course-box">
+                        <h3 class="live-title">
+                            <span>${title}</span>
+                        </h3>
+                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
+                                 onmouseout=this.start()>${description}
+                        </marquee>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course-intro-in">
+                <div class="course-time course-speaker">
+                    <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
+                    <!--时间需要服务器自己计算-->
+                    <i>${startTime}</i>开讲
+                    <span class="fr">${grade}</span>
+                </div>
+                <div class="tear-course course-speaker">
+                    <div class="fl"><i>${teacher}</i>老师主讲</div>
+                    <div class="course-detail-btn fr">
+                        课程详情<br>
+                        <img src="../img/xiala-btn.png" alt="">
+                    </div>
+                </div>
+                <div class="course-detail">
+                    <h3 class="sml-tit brief1">
+                        <img src="../img/abc.png" alt="">
+                        课程简介
+                    </h3>
+                    <p class="tim2">${description}</p>
 
-		<!-- main -->
-		<div class="rain-main">
-			<ul class="video-list">
-				<li class="video-list-li">
-					<div class="video-list-play">
-						<a href="http://www.ainemo.com/live/v/ff8080815766f8190157d122c6f12654">
-							<img src="allVideoImages/kcdh1.jpg" alt="">
-							<div class="video-list-mask">
-								<span class="live-radio">
-									<img src="allVideoImages/zb-live.png" alt="">
-								</span>
-								<div class="play-btn">
-									<img src="allVideoImages/live-play.png" alt="">
-								</div>
-								<div class="course-box">
-									<h3 class="live-title">
-										第<span>1</span>讲
-									</h3>
-									<marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop(); onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法</marquee>
-								</div>
-							</div>
-						</a>
-					</div>
-					<div class="course-intro">
-						<div class="course-intro-in">
-							<div class="course-speaker">
-								<div class="fl">
-									已播放<i>10</i>分钟&nbsp;
-									<i>赵老师</i>主讲<br>
-									<i>121</i>人正在听
-								</div>
-								<div class="fr">
-									<div>一年级</div>
-									<div class="course-detail-btn">
-										课程详情<br>
-										<img src="allVideoImages/xiala-btn.png" alt="">
-									</div>
-								</div>
-							</div>
-							<div class="course-detail">
-								<h3 class="sml-tit brief1">
-									<img src="allVideoImages/abc.png" alt="">
-									课程简介
-								</h3>
-								<p>一、汉语拼音</p>
-								<p class="tim2">
-									1.读准汉语拼音的声母、韵母、声调认读的音节。
-								</p>
-								<p class="tim2">
-									2.能默写声母、韵母并抄写音节，上写得正确整。
-								</p>
-								<p>二、识字、写字</p>
-								<p class="tim2">
-									1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-								</p>
-								<p class="tim2">
-									2.能借助汉语拼音解字义。 
-								</p>
+                    <h3 class="sml-tit brief2">
+                        <img src="../img/zjr_btn.png" alt="">
+                        主讲人简介
+                    </h3>
+                    <p class="tim2">${teacherDescription}</p>
 
-								<h3 class="sml-tit brief2">
-									<img src="allVideoImages/zjr_btn.png" alt="">
-									主讲人简介
-								</h3>
-								<p class="tim2">	董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+                    <h3 class="sml-tit brief3">
+                        <img src="../img/sxsj_btn.png" alt="">
+                        上线时间
+                    </h3>
+                    <p>${startTime}</p>
 
-								<h3 class="sml-tit brief3">
-									<img src="allVideoImages/sxsj_btn.png" alt="">
-									上线时间
-								</h3>
-								<p>2016-03-11    10:22:33</p>
+                    <!--<h3 class="sml-tit brief4">-->
+                    <!--<img src="../img/cksc_btn.png" alt="">-->
+                    <!--课程时长-->
+                    <!--</h3>-->
+                    <!--<p>${courseDuration}</p>-->
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
+<template id="passed-video-template">
+    <li class="video-list-li">
+        <div class="video-list-play">
+            <a href="video.html?src=${cdnLink}">
+                <img src="${cover}" alt="">
+                <div class="video-list-mask">
+                        <span class="live-radio">
+                            <img src="../img/zb-lu.png" alt="">
+                            <!--图片会随着具体情况改变-->
+                        </span>
+                    <div class="play-btn">
+                        <img src="../img/lu-play.png" alt="">
+                        <!--图片会随着具体情况改变-->
+                    </div>
+                    <div class="course-box">
+                        <h3 class="live-title">
+                            <span>${title}</span>
+                        </h3>
+                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
+                                 onmouseout=this.start()>${description}
+                        </marquee>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course-intro-in">
+                <div class="course-time course-speaker">
+                    <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
+                    <!--时间需要服务器自己计算-->
+                    <i>${startTime}</i>开讲
+                    <span class="fr">${grade}</span>
+                </div>
+                <div class="tear-course course-speaker">
+                    <div class="fl"><i>${teacher}</i>老师主讲</div>
+                    <div class="course-detail-btn fr">
+                        课程详情<br>
+                        <img src="../img/xiala-btn.png" alt="">
+                    </div>
+                </div>
+                <div class="course-detail">
+                    <h3 class="sml-tit brief1">
+                        <img src="../img/abc.png" alt="">
+                        课程简介
+                    </h3>
+                    <p class="tim2">${description}</p>
 
-								<h3 class="sml-tit brief4">
-									<img src="allVideoImages/cksc_btn.png" alt="">
-									课程时长
-								</h3>
-								<p>30分钟</p>
-							</div>
-						</div>
-					</div>
-				</li>
-				<li class="video-list-li">
-					<div class="video-list-play">
-						<a href="javascript:void(0)">
-							<img src="allVideoImages/kcdh2.jpg" alt="">
-							<div class="video-list-mask">
-								<span class="live-radio">
-									<img src="allVideoImages/zb-wait.png" alt="">
-								</span>
-								<div class="play-btn">
-									<img src="allVideoImages/wait-play.png" alt="">
-								</div>
-								<div class="course-box">
-									<h3 class="live-title">
-										第<span>1</span>讲
-									</h3>
-									<marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop(); onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法</marquee>
-								</div>
-							</div>
-						</a>
-					</div>
-					<div class="course-intro">
-						<div class="course-intro-in">
-							<div class="course-speaker">
-								<div class="fl">
-									已播放<i>10</i>分钟&nbsp;
-									<i>赵老师</i>主讲<br>
-									<i>121</i>人正在听
-								</div>
-								<div class="fr">
-									<div>一年级</div>
-									<div class="course-detail-btn">
-										课程详情<br>
-										<img src="allVideoImages/xiala-btn.png" alt="">
-									</div>
-								</div>
-							</div>
-							<div class="course-detail">
-								<h3 class="sml-tit brief1">
-									<img src="allVideoImages/abc.png" alt="">
-									课程简介
-								</h3>
-								<p>一、汉语拼音</p>
-								<p class="tim2">
-									1.读准汉语拼音的声母、韵母、声调认读的音节。
-								</p>
-								<p class="tim2">
-									2.能默写声母、韵母并抄写音节，上写得正确整。
-								</p>
-								<p>二、识字、写字</p>
-								<p class="tim2">
-									1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-								</p>
-								<p class="tim2">
-									2.能借助汉语拼音解字义。 
-								</p>
+                    <h3 class="sml-tit brief2">
+                        <img src="../img/zjr_btn.png" alt="">
+                        主讲人简介
+                    </h3>
+                    <p class="tim2">${teacherDescription}</p>
 
-								<h3 class="sml-tit brief2">
-									<img src="allVideoImages/zjr_btn.png" alt="">
-									主讲人简介
-								</h3>
-								<p class="tim2">	董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+                    <h3 class="sml-tit brief3">
+                        <img src="../img/sxsj_btn.png" alt="">
+                        上线时间
+                    </h3>
+                    <p>${startTime}</p>
 
-								<h3 class="sml-tit brief3">
-									<img src="allVideoImages/sxsj_btn.png" alt="">
-									上线时间
-								</h3>
-								<p>2016-03-11    10:22:33</p>
+                    <!--<h3 class="sml-tit brief4">-->
+                    <!--<img src="../img/cksc_btn.png" alt="">-->
+                    <!--课程时长-->
+                    <!--</h3>-->
+                    <!--<p>${courseDuration}</p>-->
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
+<template id="future-video-template">
+    <li class="video-list-li">
+        <div class="video-list-play">
+            <a href="wait-play.html">
+                <img src="${cover}" alt="">
+                <div class="video-list-mask">
+                        <span class="live-radio">
+                            <img src="../img/zb-wait.png" alt="">
+                            <!--图片会随着具体情况改变-->
+                        </span>
+                    <div class="play-btn">
+                        <img src="../img/wait-play.png" alt="">
+                        <!--图片会随着具体情况改变-->
+                    </div>
+                    <div class="course-box">
+                        <h3 class="live-title">
+                            <span>${title}</span>
+                        </h3>
+                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
+                                 onmouseout=this.start()>${description}
+                        </marquee>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course-intro-in">
+                <div class="course-time course-speaker">
+                    <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
+                    <!--时间需要服务器自己计算-->
+                    <i>${startTime}</i>开讲
+                    <span class="fr">${grade}</span>
+                </div>
+                <div class="tear-course course-speaker">
+                    <div class="fl"><i>${teacher}</i>老师主讲</div>
+                    <div class="course-detail-btn fr">
+                        课程详情<br>
+                        <img src="../img/xiala-btn.png" alt="">
+                    </div>
+                </div>
+                <div class="course-detail">
+                    <h3 class="sml-tit brief1">
+                        <img src="../img/abc.png" alt="">
+                        课程简介
+                    </h3>
+                    <p class="tim2">${description}</p>
 
-								<h3 class="sml-tit brief4">
-									<img src="allVideoImages/cksc_btn.png" alt="">
-									课程时长
-								</h3>
-								<p>30分钟</p>
-							</div>
-						</div>
-					</div>
-				</li>
-				<li class="video-list-li">
-					<div class="video-list-play">
-						<a href="javascript:void(0)">
-							<img src="allVideoImages/kcdh3.jpg" alt="">
-							<div class="video-list-mask">
-								<span class="live-radio">
-									<img src="allVideoImages/zb-lu.png" alt="">
-								</span>
-								<div class="play-btn">
-									<img src="allVideoImages/lu-play.png" alt="">
-								</div>
-								<div class="course-box">
-									<h3 class="live-title">
-										第<span>1</span>讲
-									</h3>
-									<marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop(); onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法</marquee>
-								</div>
-							</div>
-						</a>
-					</div>
-					<div class="course-intro">
-						<div class="course-intro-in">
-							<div class="course-speaker">
-								<div class="fl">
-									已播放<i>10</i>分钟&nbsp;
-									<i>赵老师</i>主讲<br>
-									<i>121</i>人正在听
-								</div>
-								<div class="fr">
-									<div>一年级</div>
-									<div class="course-detail-btn">
-										课程详情<br>
-										<img src="allVideoImages/xiala-btn.png" alt="">
-									</div>
-								</div>
-							</div>
-							<div class="course-detail">
-								<h3 class="sml-tit brief1">
-									<img src="allVideoImages/abc.png" alt="">
-									课程简介
-								</h3>
-								<p>一、汉语拼音</p>
-								<p class="tim2">
-									1.读准汉语拼音的声母、韵母、声调认读的音节。
-								</p>
-								<p class="tim2">
-									2.能默写声母、韵母并抄写音节，上写得正确整。
-								</p>
-								<p>二、识字、写字</p>
-								<p class="tim2">
-									1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-								</p>
-								<p class="tim2">
-									2.能借助汉语拼音解字义。 
-								</p>
+                    <h3 class="sml-tit brief2">
+                        <img src="../img/zjr_btn.png" alt="">
+                        主讲人简介
+                    </h3>
+                    <p class="tim2">${teacherDescription}</p>
 
-								<h3 class="sml-tit brief2">
-									<img src="allVideoImages/zjr_btn.png" alt="">
-									主讲人简介
-								</h3>
-								<p class="tim2">	董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+                    <h3 class="sml-tit brief3">
+                        <img src="../img/sxsj_btn.png" alt="">
+                        上线时间
+                    </h3>
+                    <p>${startTime}</p>
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
 
-								<h3 class="sml-tit brief3">
-									<img src="allVideoImages/sxsj_btn.png" alt="">
-									上线时间
-								</h3>
-								<p>2016-03-11    10:22:33</p>
+<script src="/moment/moment.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script type="text/javascript">
+    var course = []
+    var refreshCourseState = function () {
+        var now = new Date()
+        for (var i = 0; i < course[0].length; ++i) {
+            var ET = Date.parse(course[0][i].endTime)
+//            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
+//            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
+//            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)
+            course[0][i].type = 'current'
+            if (ET.getTime() < now.getTime()) {
+                course[0][i].type = 'passed'
+                course[2].unshift(course[0][i])//向数组的开头添加一个或更多元素，并返回新的长度
+                course[0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
+            }
+        }
+        for (var i = 0; i < course[1].length; ++i) {
+            var ST = Date.parse(course[1][i].startTime)
+//            var startHour = parseInt(course[1][i].startTime.substr(0, 2))
+//            var startMinute = parseInt(course[1][i].startTime.substr(3, 2))
+//            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
+            course[1][i].type = 'future'
+//            alert('ST year: ' + ST.year() + ' month: ' + ST.month() + ' day: ' + ST.date())
+//            alert('now year: ' + now.getYear() + ' month: ' + now.getMonth() + ' day: ' + now.getDate())
+//            var nowTime = moment(now)
+//            alert('now year: ' + nowTime.year() + ' month: ' + nowTime.month() + ' day: ' + nowTime.date())
+//            alert('startTime: ' + ST.toDate().getTime() + '\n now: ' + now.getTime() + '\n diff is ' + (ST.toDate().getTime() - now.getTime()) / 1000 / 3600 / 24)
+            if (ST.getTime() < now.getTime()) {
+                course[1][i].type = 'current'
+                course[0].unshift(course[1][i])
+                course[1].splice(i, 1)
+            }
+        }
+    }
 
-								<h3 class="sml-tit brief4">
-									<img src="allVideoImages/cksc_btn.png" alt="">
-									课程时长
-								</h3>
-								<p>30分钟</p>
-							</div>
-						</div>
-					</div>
-				</li>
-				<li class="video-list-li">
-					<div class="video-list-play">
-						<a href="javascript:void(0)">
-							<img src="allVideoImages/kcdh1.jpg" alt="">
-							<div class="video-list-mask">
-								<span class="live-radio">
-									<img src="allVideoImages/zb-live.png" alt="">
-								</span>
-								<div class="play-btn">
-									<img src="allVideoImages/live-play.png" alt="">
-								</div>
-								<div class="course-box">
-									<h3 class="live-title">
-										第<span>1</span>讲
-									</h3>
-									<marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop(); onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法</marquee>
-								</div>
-							</div>
-						</a>
-					</div>
-					<div class="course-intro">
-						<div class="course-intro-in">
-							<div class="course-speaker">
-								<div class="fl">
-									已播放<i>10</i>分钟&nbsp;
-									<i>赵老师</i>主讲<br>
-									<i>121</i>人正在听
-								</div>
-								<div class="fr">
-									<div>一年级</div>
-									<div class="course-detail-btn">
-										课程详情<br>
-										<img src="allVideoImages/xiala-btn.png" alt="">
-									</div>
-								</div>
-							</div>
-							<div class="course-detail">
-								<h3 class="sml-tit brief1">
-									<img src="allVideoImages/abc.png" alt="">
-									课程简介
-								</h3>
-								<p>一、汉语拼音</p>
-								<p class="tim2">
-									1.读准汉语拼音的声母、韵母、声调认读的音节。
-								</p>
-								<p class="tim2">
-									2.能默写声母、韵母并抄写音节，上写得正确整。
-								</p>
-								<p>二、识字、写字</p>
-								<p class="tim2">
-									1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-								</p>
-								<p class="tim2">
-									2.能借助汉语拼音解字义。 
-								</p>
+    g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":1}', [
+        {name: 'Accept', value: 'application/json'}
+    ], null, function (result) {
+//        alert(JSON.stringify(result))
+        course[0] = result.data
+        var state = {
+            currentContainer: document.getElementById('chinese-currentVideoList'),
+            futureContainer: document.getElementById('chinese-futureVideoList'),
+            passedContainer: document.getElementById('chinese-passedVideoList'),
+            currentTemplate: getTemplate('video-template'),
+            futureTemplate: getTemplate('future-video-template'),
+            passedTemplate: getTemplate('passed-video-template')
+        }
 
-								<h3 class="sml-tit brief2">
-									<img src="allVideoImages/zjr_btn.png" alt="">
-									主讲人简介
-								</h3>
-								<p class="tim2">	董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
 
-								<h3 class="sml-tit brief3">
-									<img src="allVideoImages/sxsj_btn.png" alt="">
-									上线时间
-								</h3>
-								<p>2016-03-11    10:22:33</p>
+        for (var i = 0; i < course[0].length; ++i) {
+            for (var j = 0; j < course[0][i].length; ++j) {
+                var m = moment().year(course[0][i][j].year).week(course[0][i][j].week).day(course[0][i][j].day)
+                course[0][i][j].month = m.month()
+                course[0][i][j].day = m.date()
+                if (course[0][i][j].grade == 20) {
+                    course[0][i][j].grade = '低年级'
+                } else {
+                    course[0][i][j].grade = '高年级'
+                }
+                switch (i) {
+                    case 0:
+                        course[0][i][j].type = 'current'
+                        break
+                    case 1:
+                        course[0][i][j].type = 'future'
+                        break
+                    case 2:
+                        course[0][i][j].type = 'passed'
+                        break
+                }
+            }
+        }
+        var moreVideo = document.getElementById('btn1');
+        moreVideo.addEventListener('click', showPassed, false);
+        function showPassed() {
+            proc({
+                container: state.passedContainer,
+                data: course[0][2],
+                template: state.passedTemplate
+            })
+            document.getElementById("btn1").style.display = "none";
+            var va = document.getElementById("pullUp1");
+            $("#pullUp1").text("没有更多视频，敬请期待");
+            curseDetailTap(); //点击“课程详情”
+        }
 
-								<h3 class="sml-tit brief4">
-									<img src="allVideoImages/cksc_btn.png" alt="">
-									课程时长
-								</h3>
-								<p>30分钟</p>
-							</div>
-						</div>
-					</div>
-				</li>
-				<li class="video-list-li">
-					<div class="video-list-play">
-						<a href="javascript:void(0)">
-							<img src="allVideoImages/kcdh2.jpg" alt="">
-							<div class="video-list-mask">
-								<span class="live-radio">
-									<img src="allVideoImages/zb-wait.png" alt="">
-								</span>
-								<div class="play-btn">
-									<img src="allVideoImages/wait-play.png" alt="">
-								</div>
-								<div class="course-box">
-									<h3 class="live-title">
-										第<span>1</span>讲
-									</h3>
-									<marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop(); onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法</marquee>
-								</div>
-							</div>
-						</a>
-					</div>
-					<div class="course-intro">
-						<div class="course-intro-in">
-							<div class="course-speaker">
-								<div class="fl">
-									已播放<i>10</i>分钟&nbsp;
-									<i>赵老师</i>主讲<br>
-									<i>121</i>人正在听
-								</div>
-								<div class="fr">
-									<div>一年级</div>
-									<div class="course-detail-btn">
-										课程详情<br>
-										<img src="allVideoImages/xiala-btn.png" alt="">
-									</div>
-								</div>
-							</div>
-							<div class="course-detail">
-								<h3 class="sml-tit brief1">
-									<img src="allVideoImages/abc.png" alt="">
-									课程简介
-								</h3>
-								<p>一、汉语拼音</p>
-								<p class="tim2">
-									1.读准汉语拼音的声母、韵母、声调认读的音节。
-								</p>
-								<p class="tim2">
-									2.能默写声母、韵母并抄写音节，上写得正确整。
-								</p>
-								<p>二、识字、写字</p>
-								<p class="tim2">
-									1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-								</p>
-								<p class="tim2">
-									2.能借助汉语拼音解字义。 
-								</p>
+        proc({
+            container: state.currentContainer,
+            data: course[0][0],
+            template: state.currentTemplate
+        })
+        proc({
+            container: state.futureContainer,
+            data: course[0][1],
+            template: state.futureTemplate
+        })
 
-								<h3 class="sml-tit brief2">
-									<img src="allVideoImages/zjr_btn.png" alt="">
-									主讲人简介
-								</h3>
-								<p class="tim2">	董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+        setInterval(function () {
+            refreshCourseState()
+            state.currentContainer.innerHTML = ''
+            proc({
+                container: state.currentContainer,
+                data: course[0][0],
+                template: state.currentTemplate
+            })
+            state.futureContainer.innerHTML = ''
+            proc({
+                container: state.futureContainer,
+                data: course[0][1],
+                template: state.futureTemplate
+            })
+        }, 60 * 1000)
+        curseDetailTap(); //点击“课程详情”
+    })
 
-								<h3 class="sml-tit brief3">
-									<img src="allVideoImages/sxsj_btn.png" alt="">
-									上线时间
-								</h3>
-								<p>2016-03-11    10:22:33</p>
+    g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":2}', [
+        {name: 'Accept', value: 'application/json'}
+    ], null, function (result) {
+//        alert(JSON.stringify(result))
+        course[1] = result.data
+        var state = {
+            currentContainer: document.getElementById('math-currentVideoList'),
+            futureContainer: document.getElementById('math-futureVideoList'),
+            passedContainer: document.getElementById('math-passedVideoList'),
+            currentTemplate: getTemplate('video-template'),
+            futureTemplate: getTemplate('future-video-template'),
+            passedTemplate: getTemplate('passed-video-template')
+        }
+        var moreVideo = document.getElementById('btn');
+        moreVideo.addEventListener('click', showPassed, false);
+        function showPassed() {
+            proc({
+                container: state.passedContainer,
+                data: course[1][2],
+                template: state.passedTemplate
+            })
+            document.getElementById("btn").style.display = "none";
+            var va = document.getElementById("pullUp");
+            $("#pullUp").text("没有更多视频，敬请期待");
+            curseDetailTap(); //点击“课程详情”
+        }
 
-								<h3 class="sml-tit brief4">
-									<img src="allVideoImages/cksc_btn.png" alt="">
-									课程时长
-								</h3>
-								<p>30分钟</p>
-							</div>
-						</div>
-					</div>
-				</li>
-				<li class="video-list-li">
-					<div class="video-list-play">
-						<a href="javascript:void(0)">
-							<img src="allVideoImages/kcdh3.jpg" alt="">
-							<div class="video-list-mask">
-								<span class="live-radio">
-									<img src="allVideoImages/zb-lu.png" alt="">
-								</span>
-								<div class="play-btn">
-									<img src="allVideoImages/lu-play.png" alt="">
-								</div>
-								<div class="course-box">
-									<h3 class="live-title">
-										第<span>1</span>讲
-									</h3>
-									<marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop(); onmouseout=this.start()>【新一语文】1期第一讲：语文作文与写作手法</marquee>
-								</div>
-							</div>
-						</a>
-					</div>
-					<div class="course-intro">
-						<div class="course-intro-in">
-							<div class="course-speaker">
-								<div class="fl">
-									已播放<i>10</i>分钟&nbsp;
-									<i>赵老师</i>主讲<br>
-									<i>121</i>人正在听
-								</div>
-								<div class="fr">
-									<div>一年级</div>
-									<div class="course-detail-btn">
-										课程详情<br>
-										<img src="allVideoImages/xiala-btn.png" alt="">
-									</div>
-								</div>
-							</div>
-							<div class="course-detail">
-								<h3 class="sml-tit brief1">
-									<img src="allVideoImages/abc.png" alt="">
-									课程简介
-								</h3>
-								<p>一、汉语拼音</p>
-								<p class="tim2">
-									1.读准汉语拼音的声母、韵母、声调认读的音节。
-								</p>
-								<p class="tim2">
-									2.能默写声母、韵母并抄写音节，上写得正确整。
-								</p>
-								<p>二、识字、写字</p>
-								<p class="tim2">
-									1.掌握汉字的基本笔画、笔顺规则、间架结构和常用的偏旁部首。
-								</p>
-								<p class="tim2">
-									2.能借助汉语拼音解字义。 
-								</p>
+        for (var i = 0; i < course[1].length; ++i) {
+            for (var j = 0; j < course[1][i].length; ++j) {
+                var m = moment().year(course[1][i][j].year).week(course[1][i][j].week).day(course[1][i][j].day)
+                course[1][i][j].month = m.month()
+                course[1][i][j].day = m.date()
+                if (course[1][i][j].grade == 20) {
+                    course[1][i][j].grade = '低年级'
+                } else {
+                    course[1][i][j].grade = '高年级'
+                }
+                switch (i) {
+                    case 0:
+                        course[1][i][j].type = 'current'
+                        break
+                    case 1:
+                        course[1][i][j].type = 'future'
+                        break
+                    case 2:
+                        course[1][i][j].type = 'passed'
+                        break
+                }
+            }
+        }
+        proc({
+            container: state.currentContainer,
+            data: course[1][0],
+            template: state.currentTemplate
+        })
+        proc({
+            container: state.futureContainer,
+            data: course[1][1],
+            template: state.futureTemplate
+        })
+//        var moreVideo=document.getElementById('btn');
+//        moreVideo .addEventListener('click', showPassed, false);
+//        function showPassed(){
+//
+//            document.getElementById("btn").style.display="none";
+//            var va = document.getElementById("pullUp");
+//            $("#pullUp").text("没有更多视频，敬请期待");
+//        }
+        setInterval(function () {
+            refreshCourseState()
+            state.currentContainer.innerHTML = ''
+            proc({
+                container: state.currentContainer,
+                data: course[1][0],
+                template: state.currentTemplate
+            })
+            state.futureContainer.innerHTML = ''
+            proc({
+                container: state.futureContainer,
+                data: course[1][1],
+                template: state.futureTemplate
+            })
+        }, 60 * 1000)
+        curseDetailTap(); //点击“课程详情”
+    })
 
-								<h3 class="sml-tit brief2">
-									<img src="allVideoImages/zjr_btn.png" alt="">
-									主讲人简介
-								</h3>
-								<p class="tim2">	董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+    subjectTab();//课程选项卡
 
-								<h3 class="sml-tit brief3">
-									<img src="allVideoImages/sxsj_btn.png" alt="">
-									上线时间
-								</h3>
-								<p>2016-03-11    10:22:33</p>
-
-								<h3 class="sml-tit brief4">
-									<img src="allVideoImages/cksc_btn.png" alt="">
-									课程时长
-								</h3>
-								<p>30分钟</p>
-							</div>
-						</div>
-					</div>
-				</li>
-			</ul>
-
-			<div class="pullUp">
-				<span class="pullUpLabel">本周课程已结束，请关注下周课程！</span>
-			</div>		
-		</div>
-
-	</div>	
-	<script type="text/javascript">
-		curseDetailTap(); //点击“课程详情”
-	</script>
+</script>
 </body>
 </html>

@@ -17,9 +17,9 @@ public class Problems {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProblem(@CookieParam("sessionId") String sessionId, Problem problem) {
+    public Response createProblem(@CookieParam("userId") String userId, Problem problem) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             problem.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(problem);
             result = Response.ok(problem).build();
@@ -29,9 +29,9 @@ public class Problems {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblems(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getProblems(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Problem> problems = JPAEntry.getList(Problem.class, filterObject);
@@ -45,9 +45,9 @@ public class Problems {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getProblemById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Problem problem = JPAEntry.getObject(Problem.class, "id", id);
             if (problem != null) {
@@ -61,9 +61,9 @@ public class Problems {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProblem(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Problem problem) {
+    public Response updateProblem(@CookieParam("userId") String userId, @PathParam("id") Long id, Problem problem) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Problem existproblem = JPAEntry.getObject(Problem.class, "id", id);
             if (existproblem != null) {

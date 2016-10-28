@@ -1,39 +1,46 @@
 $(function () {
 //添加评论
-    var createComment=document.getElementById('createComment');
-    createComment .addEventListener('click', writeMessage, false);
+    var createComment = document.getElementById('createComment');
+    createComment.addEventListener('click', writeMessage, false);
     function writeMessage() {
         $('#commentWriter').toggle();
-        var btn=document.getElementById('btn');
+        var btn = document.getElementById('btn');
         btn.addEventListener('click', submit, false);
         function submit(e) {
-            var textarea=document.getElementById('textarea');
-            var value=textarea.value;
-            textarea.value='';
+            var textarea = document.getElementById('textarea');
+            var value = textarea.value;
+            if (value.length < 1) {
+                return false;
+            }
+            textarea.value = '';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
             $.ajax({
                 type: "post",
                 url: "/api/comments",
-                data: JSON.stringify({objectType:'knowledge-point', objectId:g.getUrlParameter("id"), content: value}),
+                data: JSON.stringify({
+                    objectType: 'knowledge-point',
+                    objectId: g.getUrlParameter("id"),
+                    content: value
+                }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    //alert(JSON.stringify(data))
+                    location.reload();
                 }
             })
         }
     }
 
-    var trueImage = document.createElement('img');
-    trueImage.setAttribute('class', 'daan_error');
-    trueImage.setAttribute('src', 'img/true.png');
-    trueImage.setAttribute('alt', '');
-
-    var falseImage = document.createElement('img');
-    falseImage.setAttribute('class', 'daan_error');
-    falseImage.setAttribute('src', 'img/error.png');
-    falseImage.setAttribute('alt', '');
+    // var trueImage = document.createElement('img');
+    // //  trueImage.setAttribute('class', 'daan_error');
+    // trueImage.setAttribute('src', 'img/true.png');
+    // trueImage.setAttribute('alt', '');
+    //
+    // var falseImage = document.createElement('img');
+    // // falseImage.setAttribute('class', 'daan_error');
+    // falseImage.setAttribute('src', 'img/error.png');
+    // falseImage.setAttribute('alt', '');
 
     // // //change icon via liked state
     // var icon = document.getElementById('icon')
@@ -55,9 +62,6 @@ $(function () {
     //     }
     // }, false)
     // message---------
-
-
-
     var volumeId = g.getUrlParameter("volumeId");
     $.ajax({
         type: 'get',
@@ -67,43 +71,44 @@ $(function () {
         dataType: 'json',
         success: function (knowledgePointList) {
             var id = g.getUrlParameter('id');
-			//alert(JSON.stringify(knowledgePointList))
             $.ajax({
                 type: "get",
                 url: 'api/knowledge-points/' + id + '/contents',
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    //alert(JSON.stringify(data))
-                   proc({
+                    // alert(JSON.stringify(data))
+                    proc({
                         templateId: 'video-template',
                         data: data.video,
                         containerId: 'video'
                     })
-					/*proc({
-                        templateId: 'challenge-template',
-                        data: data.quotes,
-                        containerId: 'challenge'
-                    });*/
-					proc({
+                    // 上一个，下一个---------------------------------------------------------------
+                    var baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
+
+                    for (var i = 0; i < knowledgePointList.length; ++i) {
+                        var id = g.getUrlParameter('id')
+                        if (knowledgePointList[i].id == id) {
+                            var prevIndex = i;
+                            var nextIndex = i;
+                            if (i > 0) {
+                                prevIndex = i - 1
+                            }
+                            if (i < knowledgePointList.length - 1) {
+                                nextIndex = i + 1
+                            }
+                            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id;
+                            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id;
+                            break
+                        }
+                    }
+                    proc({
                         templateId: 'interaction-template',
                         data: data.interaction,
                         containerId: 'interaction'
                     })
-					proc({
-                        templateId: 'comment-template',
-                        data: data.comments,
-                        containerId: 'comments'
-                    })
-					/*proc({
-						data: data.contents,
-						containerId: 'content',
-						alterTemplates: [
-							{type: 'text', templateId: 'content-text-template'},
-							{type: 'imageText', templateId: 'content-image-template'}
-						]
-                    });*/
-					// GET /knowledge-points/.../is-self-like
+
+                    // GET /knowledge-points/.../is-self-like
                     var id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
@@ -112,6 +117,11 @@ $(function () {
                         success: function (like) {
                             var liked = like.like
                             var icon = document.getElementById('icon');
+                            if (liked) {
+                                icon.setAttribute('src', 'img/zan-over.png');
+                            } else {
+                                icon.setAttribute('src', 'img/zan.png');
+                            }
                             icon.addEventListener('click', function (e) {
                                 if (liked) {
                                     $.ajax({
@@ -122,7 +132,7 @@ $(function () {
                                         contentType: "application/json; charset=utf-8",
                                         success: function (unlike) {
                                             icon.setAttribute('src', 'img/zan.png');
-                                            --data.interaction.likeCount
+                                            data.interaction.likeCount
                                             e.target.nextElementSibling.textContent = data.interaction.likeCount
                                             liked = false;
                                         }
@@ -148,9 +158,12 @@ $(function () {
                             //liked = false
                         }
                     })
-					
                     //评论点赞
-                    
+                    proc({
+                        templateId: 'comment-template',
+                        data: data.comments,
+                        containerId: 'comments'
+                    })
 
                     $('.ul01_imgzan').on('click', function (e) {
                         var id = e.target.parentNode.dataset.id
@@ -159,8 +172,13 @@ $(function () {
                             url: 'api/comments/' + id + '/is-self-like',
                             dataType: "json",
                             success: function (like) {
-                                var  likeds = like.like;
-                                if(likeds){
+                                var likeds = like.like;
+                                if (likeds) {
+                                    e.target.setAttribute('src', 'img/zan-over.png');
+                                } else {
+                                    e.target.setAttribute('src', 'img/zan.png');
+                                }
+                                if (likeds) {
                                     var id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
@@ -207,54 +225,15 @@ $(function () {
                         })
 
                     })
-					
-					
-					// 上一个，下一个-----------------------------------------------------------
-					 var baseUrl = 'mathKnowledgePointsDetail.html?volumeId=' + volumeId + "&id="
-
-                    for (var i = 0; i < knowledgePointList.length; ++i) {
-                        var id = g.getUrlParameter('id')
-                        if (knowledgePointList[i].id == id) {
-                            var prevIndex = i;
-                            var nextIndex = i;
-                            if (i > 0) {
-                                prevIndex = i - 1
-                            }
-                            if (i < knowledgePointList.length - 1) {
-                                nextIndex = i + 1
-                            }
-                            data.interaction.previous = baseUrl + knowledgePointList[prevIndex].id;
-                            data.interaction.next = baseUrl + knowledgePointList[nextIndex].id;
-                            break
-                        }
-                    }
-				
-					
-				/*	for (var i = 0; i < knowledgePointList.length; ++i) {
-						var id = g.getUrlParameter('id');
-                        if (knowledgePointList[i].id == id) {
-                            proc({
-                                templateId: 'title1-template',
-                                data: {title1: knowledgePointList[i].order},
-                                containerId: 'title1'
-                            });
-                            proc({
-                                templateId: 'title2-template',
-                                data: {title: knowledgePointList[i].title},
-                                containerId: 'title2'
-                            });
-                            break
-                        }
-                    }*/
-					
                     //-------------------------------------------------------------------------------
-                    
-					for (var i = 0; i < data.problems.length; ++i) {
+                    for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i];
-                        p.options[0].title = 'A';
-                        p.options[1].title = 'B';
-                        p.options[2].title = 'C';
-                        p.options[3].title = 'D'
+                        for (var j = 0; j < p.options.length; ++j) {
+                            p.options[j].title = String.fromCharCode(65 + j);
+                            // p.options[1].title = 'B';
+                            // p.options[2].title = 'C';
+                            // p.options[3].title = 'D'
+                        }
                     }
 
                     for (var i = 0; i < knowledgePointList.length; ++i) {
@@ -301,6 +280,19 @@ $(function () {
                         strongestBrains = ps
                     }
 
+
+                    proc({
+                        templateId: 'pk-template',
+                        data: pk,
+                        containerId: 'pk',
+                        secondBind: [
+                            {
+                                extPoint: 'options',
+                                dataFieldName: 'options',
+                                templateId: 'strongest-brain-option-template'
+                            }
+                        ]
+                    });
                     proc({
                         templateId: 'strongest-brain-template',
                         data: strongestBrains,
@@ -319,22 +311,6 @@ $(function () {
                         ]
                     });
 
-                    proc({
-                        templateId: 'pk-template',
-                        data: pk,
-                        containerId: 'pk',
-                        secondBind: [
-                            {
-                                extPoint: 'options',
-                                dataFieldName: 'options',
-                                templateId: 'strongest-brain-option-template'
-                            }
-                        ]
-                    });
-                   
-                
-
-
 
                     // 选项判错--------------------------------------------------------
                     var findProblem = function (problemId) {
@@ -348,26 +324,26 @@ $(function () {
                         return problem
                     }
 
-                    var getIndex = function (content) {
-                        var index = -1
-                        switch (content) {
-                            case 'A':
-                                index = 0
-                                break
-                            case 'B':
-                                index = 1
-                                break
-                            case 'C':
-                                index = 2
-                                break
-                            case 'D':
-                                index = 3
-                                break
-                            default:
-                                break
-                        }
-                        return index
-                    }
+                    // var getIndex = function (content) {
+                    //     var index = -1
+                    //     switch (content) {
+                    //         case 'A':
+                    //             index = 0
+                    //             break
+                    //         case 'B':
+                    //             index = 1
+                    //             break
+                    //         case 'C':
+                    //             index = 2
+                    //             break
+                    //         case 'D':
+                    //             index = 3
+                    //             break
+                    //         default:
+                    //             break
+                    //     }
+                    //     return index
+                    // }
 
                     var compareAnswer = function (index, standardAnswers) {
                         var finded = false
@@ -379,50 +355,92 @@ $(function () {
                         }
                         return finded
                     }
-
-                    var judgement = function (e) {
-                        //e.currentTarget == problemContainer
+                    var falseImage = getTemplate('falseImage');
+                    var trueImage = getTemplate('trueImage');
+                    var problemContainer = document.getElementById('strongest-brain');
+                    problemContainer.addEventListener('click', function (e) {
                         var clickedElement = e.target;
+                        if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana') || clickedElement.hasClass('option')) {
+                            var titleElement = clickedElement.parentNode.children[0];
 
-                        if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            var problemId = clickedElement.parentNode.parentNode.dataset.id
-                            var problem = findProblem(problemId);
-                            if (problem) {
-                                var index = getIndex(clickedElement.textContent);
-                                var r = compareAnswer(index, problem.standardAnswers);
-                                if (r) {
-                                    clickedElement.parentNode.addClass('daanLi_true');
-                                    clickedElement.innerHTML = '';
-                                    clickedElement.appendChild(trueImage.cloneNode(true))
-                                } else {
-                                    clickedElement.parentNode.addClass('daanLi_error')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(falseImage.cloneNode(true))
+                            var optionsContainer = clickedElement.parentNode.parentNode;
+                            for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                var option = optionsContainer.children[i];
+                                if (option.children[0].dataset.selected == 'true') {
+                                    option.children[0].dataset.selected = false;
+                                    option.children[0].removeClass('daanLi_nowBai');
+                                    option.children[0].parentNode.removeClass('daanLi_now');
+                                }
+                            }
+                            titleElement.dataset.selected = true;
+                            titleElement.addClass('daanLi_nowBai');
+                            titleElement.parentNode.addClass('daanLi_now');
+                            // var problemContainer = document.getElementById('strongest-brain')
+                            // problemContainer.addEventListener('click', judgement, false)
+                            //
+                            // var pkContainer = document.getElementById('pk')
+                            // pkContainer.addEventListener('click', judgement, false)
+                        } else if (clickedElement.hasClass('btnTrue')) {
+                            var optionsContainer = clickedElement.parentNode.previousElementSibling;
+                            for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                var option = optionsContainer.children[i];
+                                var problem = findProblem(optionsContainer.dataset.id);
+                                if (compareAnswer(i, problem.standardAnswers)) {
+                                    option.addClass('daanLi_true');
+                                    option.firstElementChild.innerHTML = ''
+                                    option.firstElementChild.removeClass('daanLi_nowBai');
+                                    option.firstElementChild.appendChild(trueImage.cloneNode(true))
+                                }
+                                if (option.children[0].dataset.selected == 'true' || option.children[0].dataset.selected == true) {
+                                    if (!compareAnswer(i, problem.standardAnswers)) {
+                                        option.addClass('daanLi_error');
+                                        option.firstElementChild.innerHTML = ''
+                                        option.firstElementChild.removeClass('daanLi_nowBai');
+                                        option.firstElementChild.appendChild(falseImage.cloneNode(true))
+                                    }
                                 }
                             }
                         }
-                        var data = {
-                            objectType: 'knowledge-point',
-                            objectId: 'problemId',
-                            objectName: 'index',
-                            action: 'click'
-                        };
-                        $.ajax({
-                            type: "post",
-                            url: 'api/answer-records',
-                            async: false,
-                            data: data,
-                            success: function (data) {
-                                //alert(JSON.stringify(data))
-                            }
-                        })
-                    };
-                    var problemContainer = document.getElementById('strongest-brain')
-                    problemContainer.addEventListener('click', judgement, false)
+                    }, false)
 
-                    var pkContainer = document.getElementById('pk')
-                    pkContainer.addEventListener('click', judgement, false) 
-                    
+                    // var judgement = function (e) {
+                    //     //e.currentTarget == problemContainer
+                    //     var clickedElement = e.target;
+                    //
+                    //     if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
+                    //         var problemId = clickedElement.parentNode.parentNode.dataset.id
+                    //         var problem = findProblem(problemId);
+                    //         if (problem) {
+                    //             var index = getIndex(clickedElement.textContent);
+                    //             var r = compareAnswer(index, problem.standardAnswers);
+                    //             if (r) {
+                    //                 clickedElement.parentNode.addClass('daanLi_true');
+                    //                 clickedElement.innerHTML = '';
+                    //                 clickedElement.appendChild(trueImage.cloneNode(true))
+                    //             } else {
+                    //                 clickedElement.parentNode.addClass('daanLi_error')
+                    //                 clickedElement.innerHTML = ''
+                    //                 clickedElement.appendChild(falseImage.cloneNode(true))
+                    //             }
+                    //         }
+                    //     }
+                    //     var data = {
+                    //         objectType: 'knowledge-point',
+                    //         objectId: 'problemId',
+                    //         objectName: 'index',
+                    //         action: 'click'
+                    //     };
+                    //     $.ajax({
+                    //         type: "post",
+                    //         url: 'api/answer-records',
+                    //         async: false,
+                    //         data: data,
+                    //         success: function (data) {
+                    //             //alert(JSON.stringify(data))
+                    //         }
+                    //     })
+                    // };
+
                 }
             })
         }

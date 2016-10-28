@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>语文-课程详情</title>
+    <title>语文</title>
     <!-- 禁止拉伸和全屏设置 -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
@@ -12,7 +12,7 @@
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/chindeseDetail.css">
+    <link rel="stylesheet" href="css/chineseDetail.css">
     <!--<link rel="stylesheet" href="bootstrap/bootstrap.min.css">-->
 
     <!-- 引入js -->
@@ -81,7 +81,8 @@
         </div>
         <div class="mulu_div youKuang" id="origin"></div>
         <div>
-            <div class="mulu_div" id="content"></div>
+            <div class="mulu_div" id="content">
+            </div>
             <div class="mulu_div" id="video"></div>
         </div>
         <div class="biaoti_div">
@@ -114,12 +115,17 @@
 <template id="content-text-template">
     <p class="mulu_dp">${content}</p>
 </template>
+<template id="content-imagetext-template">
+    <p class="mulu_dp">${content}
+        <img src="${href}" style="width:40px;height: 40px;vertical-align:middle">
+    </p>
+</template>
 <template id="content-pingyincontent-template">
     <div style="margin-left: 100px;" id="pycontent"></div>
 </template>
 <template id="content-pinyin-template">
-    <ruby >
-        <p>${content}</p>
+    <ruby>
+        <rb>${content}</rb>
         <rt>${pinyin}</rt>
     </ruby>
 </template>
@@ -149,13 +155,17 @@
             ${title}
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <a class="btnTrue" href="#">查看答案</a>
+        </div>
     </li>
 </template>
 <template id="problem-option-template">
     <li class="mld_daanLi">
         <span class="daan_quan">${title}</span>
-        <input type="radio" id="daan_s3A" class="daana" name="daan3">
-        <label for="daan_s3A">${name}</label>
+        <!--<input type="radio" id="daan_s3A" class="daana" name="daan3">-->
+        <!--<label for="daan_s3A" class="label">${name}</label>-->
+        <input class="daana" name="daan3" type="radio">${name}
     </li>
 </template>
 <template id="interaction-template">
@@ -176,14 +186,14 @@
 <template id="comment-template">
     <ul class="muluBn_center">
         <li class="liuyan_li lion_01">
-            <img src="${avatar}" alt="">
+            <img src="${userAvatar}" alt="">
         </li>
         <li class="liuyan_li lion_02">
             <ul class="topUl">
                 <li class="topUl_top">
-                    <div class="litop_fleft">${name}</div>
+                    <div class="litop_fleft">${userName}</div>
                     <div class="litop_friht" data-id="${id}">
-                        <img class="ul01_imgzan_" src="img/zan.png" alt="" >
+                        <img class="ul01_imgzan_" src="img/zan.png" alt="">
                         <span class="ul01_count">${likeCount}</span>
                     </div>
                 </li>
@@ -197,29 +207,13 @@
         </li>
     </ul>
 </template>
+<template id="trueImage">
+    <img src="img/true.png" alt="">
+</template>
+<template id="falseImage">
+    <img src="img/error.png" alt="">
+</template>
 
-<!--<template id="comment-template">-->
-    <!--<li class="muluBn_center">-->
-        <!--<div class="row" data-id="${id}">-->
-            <!--<div class="col-xs-2 liuyan_li lion_01">-->
-                <!--<img src="${avatar}" alt="">-->
-            <!--</div>-->
-            <!--<div class="col-xs-9 liuyan_li lion_02 topUl topUl_top litop_fleft">-->
-                <!--<span>${name}</span>-->
-                <!--<div class="topUl_center tcmar_top">${content}</div>-->
-                <!--<div class="topUl_bottom tcmar_top">-->
-                    <!--<div class="litop_fleft">${createTime}</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="col-xs-1">-->
-                <!--<div class="litop_friht">-->
-                    <!--<img class="ul01_imgzan" src="img/zan.png">-->
-                    <!--<span class="ul01_count">${likeCount}</span>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</li>-->
-<!--</template>-->
 <script type="text/javascript" src="basic.js"></script>
 <script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="js/chineseDetail.js"></script>

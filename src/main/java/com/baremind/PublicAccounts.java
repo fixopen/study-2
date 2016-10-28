@@ -1,6 +1,7 @@
 package com.baremind;
 
 import com.baremind.algorithm.Securities;
+import com.baremind.data.Card;
 import com.baremind.data.Session;
 import com.baremind.data.User;
 import com.baremind.data.WechatUser;
@@ -27,7 +28,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
@@ -56,11 +60,11 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/token")
-            .queryParam("grant_type", "client_credential")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .request().get();
+                .path("/cgi-bin/token")
+                .queryParam("grant_type", "client_credential")
+                .queryParam("appid", appID)
+                .queryParam("secret", secret)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("access_token")) {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
@@ -169,9 +173,9 @@ public class PublicAccounts {
             Client client = ClientBuilder.newClient();
             Entity<CustomMenu> em = Entity.json(t);
             Response response = client.target(hostname)
-                .path("/cgi-bin/menu/create")
-                .queryParam("access_token", accessToken)
-                .request(MediaType.APPLICATION_JSON).post(em);
+                    .path("/cgi-bin/menu/create")
+                    .queryParam("access_token", accessToken)
+                    .request(MediaType.APPLICATION_JSON).post(em);
             GenericResult r = response.readEntity(GenericResult.class);
             if (r.errcode == 0) {
                 result = Response.ok(r).build();
@@ -561,11 +565,11 @@ public class PublicAccounts {
             }
             Client client = ClientBuilder.newClient();
             Response response = client.target(hostname)
-                .path("/cgi-bin/user/info")
-                .queryParam("access_token", accessToken)
-                .queryParam("openid", openId)
-                .queryParam("lang", "zh_CN")
-                .request().get();
+                    .path("/cgi-bin/user/info")
+                    .queryParam("access_token", accessToken)
+                    .queryParam("openid", openId)
+                    .queryParam("lang", "zh_CN")
+                    .request().get();
             String responseBody = response.readEntity(String.class);
             if (responseBody.contains("openid")) {
                 //{"access_token":"ACCESS_TOKEN","expires_in":7200}
@@ -597,11 +601,11 @@ public class PublicAccounts {
         WechatUserInfo result = null;
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/sns/userinfo")
-            .queryParam("access_token", token)
-            .queryParam("openid", openId)
-            .queryParam("lang", "zh_CN")
-            .request().get();
+                .path("/sns/userinfo")
+                .queryParam("access_token", token)
+                .queryParam("openid", openId)
+                .queryParam("lang", "zh_CN")
+                .request().get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("openid")) {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
@@ -714,12 +718,12 @@ public class PublicAccounts {
         long secondCount = new Date().getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
         String result = "<xml>\n" +
-            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-            "   <MsgType><![CDATA[text]]></MsgType>\n" +
-            "   <Content><![CDATA[" + content + "]]></Content>\n" +
-            "</xml>";
+                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+                "   <MsgType><![CDATA[text]]></MsgType>\n" +
+                "   <Content><![CDATA[" + content + "]]></Content>\n" +
+                "</xml>";
         return result;
     }
 
@@ -740,19 +744,19 @@ public class PublicAccounts {
         String currentEpochTime = Long.toString(secondCount);
 
         String result = "<xml>\n" +
-            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-            "   <MsgType><![CDATA[news]]></MsgType>\n" +
-            "   <ArticleCount>1</ArticleCount>\n" +
-            "   <Articles>\n" +
-            "       <item>\n" +
-            "           <Title><![CDATA[" + title + "]]></Title> \n" +
-            "           <Description><![CDATA[" + content + "]]></Description>\n" +
-            "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
-            "       </item>\n" +
-            "   </Articles>\n" +
-            "</xml>";
+                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+                "   <MsgType><![CDATA[news]]></MsgType>\n" +
+                "   <ArticleCount>1</ArticleCount>\n" +
+                "   <Articles>\n" +
+                "       <item>\n" +
+                "           <Title><![CDATA[" + title + "]]></Title> \n" +
+                "           <Description><![CDATA[" + content + "]]></Description>\n" +
+                "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
+                "       </item>\n" +
+                "   </Articles>\n" +
+                "</xml>";
         return result;
     }
 
@@ -849,12 +853,12 @@ public class PublicAccounts {
     private static Map<String, Object> getTokenByCode(String code) {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
+                .path("/sns/oauth2/access_token")
+                .queryParam("appid", appID)
+                .queryParam("secret", secret)
+                .queryParam("code", code)
+                .queryParam("grant_type", "authorization_code")
+                .request().get();
         String responseBody = response.readEntity(String.class);
         return new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
         }.getType());
@@ -905,22 +909,80 @@ public class PublicAccounts {
         return result;
     }
 
-    Response follow(WechatPush p) {
-        String openId = p.getFromUserName();
-        WechatUser wu = JPAEntry.getObject(WechatUser.class, "openId", openId);
-        if (wu == null) {
-            WechatUserInfo userInfo = getUserInfo(openId);
-            Date now = new Date();
-            User user = fillUserByUserInfo(now, userInfo);
-            WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
-            EntityManager em = JPAEntry.getNewEntityManager();
-            em.getTransaction().begin();
-            em.persist(user);
-            em.persist(wechatUser);
-            em.getTransaction().commit();
-            em.close();
+    @GET
+    @Path("user")
+    @Produces(MediaType.TEXT_HTML)
+    public Response user(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            List<Card> activeCards = JPAEntry.getList(Card.class, "userId", userId);
+            if (activeCards.isEmpty()) {
+                try {
+                    //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                    result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/basic-info.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return Response.ok().build();
+        return result;
+    }
+
+    @GET
+    @Path("chinese")
+    @Produces(MediaType.TEXT_HTML)
+    public Response chinese(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/chineseVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("math")
+    @Produces(MediaType.TEXT_HTML)
+    public Response math(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/mathVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     //获取微信服务器ID
@@ -955,10 +1017,10 @@ public class PublicAccounts {
         ArrayList<String> result = new ArrayList<>();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/user/get")
-            .queryParam("access_token", accessToken)
-            .queryParam("next_openid", nextOpenid)
-            .request().get();
+                .path("/cgi-bin/user/get")
+                .queryParam("access_token", accessToken)
+                .queryParam("next_openid", nextOpenid)
+                .request().get();
         //{"total":2,"count":2,"data":{"openid":["","OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("data")) {
@@ -1008,7 +1070,7 @@ public class PublicAccounts {
     @Path("follow")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response follow(@CookieParam("sessionId") String sessionId, JAXBElement<Follow> follow) {
+    public Response follow(@CookieParam("userId") String aUserId, JAXBElement<Follow> follow) {
         Follow f = follow.getValue();
         if (f.Event.equals("subscribe")) {
             WechatUserInfo us = getUserInfo(f.FromUserName);
@@ -1094,9 +1156,9 @@ public class PublicAccounts {
         GenericResult result = new GenericResult();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/get")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/get")
+                .queryParam("access_token", accessToken)
+                .request().get();
         IPList ipList = response.readEntity(IPList.class);
         return result;
     }
@@ -1108,9 +1170,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/create")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/create")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1123,9 +1185,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/delete")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/menu/delete")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1139,9 +1201,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/addconditional")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/addconditional")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1154,9 +1216,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/delconditional")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/delconditional")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1166,7 +1228,7 @@ public class PublicAccounts {
     @Path("click-link-menu")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response clickLinkMenu(@CookieParam("sessionId") String sessionId, ClickLink clickLink) {
+    public Response clickLinkMenu(@CookieParam("userId") String userId, ClickLink clickLink) {
         //没有处理，记得要做处理
         //step1: get user.id from openid
         //step2: record to sessions table
@@ -1178,7 +1240,7 @@ public class PublicAccounts {
     @Path("scan-code-push")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response scancodePush(@CookieParam("sessionId") String sessionId, ScancodePush scancodePush) {
+    public Response scancodePush(@CookieParam("userId") String userId, ScancodePush scancodePush) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1188,7 +1250,7 @@ public class PublicAccounts {
     @Path("scan-code-wait-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response scancode_waitmsg(@CookieParam("sessionId") String sessionId, ScancodePush scancodePush) {
+    public Response scancode_waitmsg(@CookieParam("userId") String userId, ScancodePush scancodePush) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1197,7 +1259,7 @@ public class PublicAccounts {
     @Path("picture-system-photo")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_sysphoto(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_sysphoto(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1207,7 +1269,7 @@ public class PublicAccounts {
     @Path("picture-photo-or-album")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_photo_or_album(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_photo_or_album(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1217,7 +1279,7 @@ public class PublicAccounts {
     @Path("pictures")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_weixin(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_weixin(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1226,7 +1288,7 @@ public class PublicAccounts {
     @Path("locations")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response location_select(@CookieParam("sessionId") String sessionId, LocationSelect locationSelect) {
+    public Response location_select(@CookieParam("userId") String userId, LocationSelect locationSelect) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1238,9 +1300,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/trymatch")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/trymatch")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1252,9 +1314,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/get_current_selfmenu_info")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/get_current_selfmenu_info")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1264,7 +1326,7 @@ public class PublicAccounts {
     @Path("text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response textmessage(@CookieParam("sessionId") String sessionId, TextMessage textMessage) {
+    public Response textmessage(@CookieParam("userId") String userId, TextMessage textMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1273,7 +1335,7 @@ public class PublicAccounts {
     @Path("picture-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response prcturemessage(@CookieParam("sessionId") String sessionId, PictureMessage pictureMessage) {
+    public Response prcturemessage(@CookieParam("userId") String userId, PictureMessage pictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1282,7 +1344,7 @@ public class PublicAccounts {
     @Path("voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response voiceMeessage(@CookieParam("sessionId") String sessionId, VoiceMeessage voiceMeessage) {
+    public Response voiceMeessage(@CookieParam("userId") String userId, VoiceMeessage voiceMeessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1293,7 +1355,7 @@ public class PublicAccounts {
     @Path("video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response videoMessage(@CookieParam("sessionId") String sessionId, VideoMessage videoMessage) {
+    public Response videoMessage(@CookieParam("userId") String userId, VideoMessage videoMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1303,7 +1365,7 @@ public class PublicAccounts {
     @Path("small-video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoideMeessage(@CookieParam("sessionId") String sessionId, VideoMessage videoMessage) {
+    public Response smallvoideMeessage(@CookieParam("userId") String userId, VideoMessage videoMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1312,7 +1374,7 @@ public class PublicAccounts {
     @Path("small-voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoiceMeessage(@CookieParam("sessionId") String sessionId, LocationInformation locationInformation) {
+    public Response smallvoiceMeessage(@CookieParam("userId") String userId, LocationInformation locationInformation) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1323,7 +1385,7 @@ public class PublicAccounts {
     @Path("link-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoiceMeessage(@CookieParam("sessionId") String sessionId, LinkMessage linkMessage) {
+    public Response smallvoiceMeessage(@CookieParam("userId") String userId, LinkMessage linkMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1332,7 +1394,7 @@ public class PublicAccounts {
     @Path("scan-code-claim")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response notconcerned(@CookieParam("sessionId") String sessionId, Scanning scanning) {
+    public Response notconcerned(@CookieParam("userId") String userId, Scanning scanning) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1343,7 +1405,7 @@ public class PublicAccounts {
     @Path("scan-code")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response concerned(@CookieParam("sessionId") String sessionId, Scanning scanning) {
+    public Response concerned(@CookieParam("userId") String userId, Scanning scanning) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1352,7 +1414,7 @@ public class PublicAccounts {
     @Path("position")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response position(@CookieParam("sessionId") String sessionId, Position position) {
+    public Response position(@CookieParam("userId") String userId, Position position) {
         //没有处理，记得要做处理
         //conflict to Jumplink
         return null;
@@ -1364,7 +1426,7 @@ public class PublicAccounts {
     @Path("menu")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response menu(@CookieParam("sessionId") String sessionId, Menu menu) {
+    public Response menu(@CookieParam("userId") String userId, Menu menu) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1374,7 +1436,7 @@ public class PublicAccounts {
     @Path("jump-link")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response Jumplink(@CookieParam("sessionId") String sessionId, Menu menu) {
+    public Response Jumplink(@CookieParam("userId") String userId, Menu menu) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1383,7 +1445,7 @@ public class PublicAccounts {
     @Path("return-text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replytextmessage(@CookieParam("sessionId") String sessionId, ReplyTextMessage replyTextMessage) {
+    public Response replytextmessage(@CookieParam("userId") String userId, ReplyTextMessage replyTextMessage) {
 
         return null;
     }
@@ -1392,7 +1454,7 @@ public class PublicAccounts {
     @Path("return-picture-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replypicturemessage(@CookieParam("sessionId") String sessionId, ReplyPictureMessage replyPictureMessage) {
+    public Response replypicturemessage(@CookieParam("userId") String userId, ReplyPictureMessage replyPictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1402,7 +1464,7 @@ public class PublicAccounts {
     @Path("return-voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyvoicemessage(@CookieParam("sessionId") String sessionId, ReplyPictureMessage replyPictureMessage) {
+    public Response replyvoicemessage(@CookieParam("userId") String userId, ReplyPictureMessage replyPictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1411,7 +1473,7 @@ public class PublicAccounts {
     @Path("return-video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyvoidemessage(@CookieParam("sessionId") String sessionId, ReplyVoideMessage replyVoideMessage) {
+    public Response replyvoidemessage(@CookieParam("userId") String userId, ReplyVoideMessage replyVoideMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1420,7 +1482,7 @@ public class PublicAccounts {
     @Path("return-music-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replymusicmessage(@CookieParam("sessionId") String sessionId, ReplyMusicMessage replyMusicMessage) {
+    public Response replymusicmessage(@CookieParam("userId") String userId, ReplyMusicMessage replyMusicMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1429,7 +1491,7 @@ public class PublicAccounts {
     @Path("return-image-text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyimagetextmessage(@CookieParam("sessionId") String sessionId, ReplyImageTextMessage replyImageTextMessage) {
+    public Response replyimagetextmessage(@CookieParam("userId") String userId, ReplyImageTextMessage replyImageTextMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1440,9 +1502,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/add")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/add")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1454,9 +1516,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/update")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/update")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1468,9 +1530,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/del")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/del")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1483,9 +1545,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/uploadheadimg")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/uploadheadimg")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1496,9 +1558,9 @@ public class PublicAccounts {
         // https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/getkflist")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/customservice/kfaccount/getkflist")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1511,9 +1573,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/send")
-            .queryParam("access_token", accessToken)
-            .request().post(message);
+                .path("/customservice/kfaccount/send")
+                .queryParam("access_token", accessToken)
+                .request().post(message);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1527,9 +1589,9 @@ public class PublicAccounts {
         // curl -F media=@test.jpg "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=ACCESS_TOKEN"
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/media/uploadimg")
-            .queryParam("access_token", accessToken)
-            .request().post(message);
+                .path("/cgi-bin/media/uploadimg")
+                .queryParam("access_token", accessToken)
+                .request().post(message);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1542,9 +1604,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/media/uploadnews")
-            .queryParam("access_token", accessToken)
-            .request().post(articles);
+                .path("/cgi-bin/media/uploadnews")
+                .queryParam("access_token", accessToken)
+                .request().post(articles);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1555,9 +1617,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/message/custom/sendall")
-            .queryParam("access_token", accessToken)
-            .request().post(articles);
+                .path("/cgi-bin/message/custom/sendall")
+                .queryParam("access_token", accessToken)
+                .request().post(articles);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;

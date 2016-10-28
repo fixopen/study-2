@@ -12,10 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Path("knowledge-points")
@@ -75,10 +72,10 @@ public class KnowledgePoints {
     @Path("{id}/like")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response like(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Log log = Logs.insert(sessionId, "knowledge-point", id, "like");
+        if (JPAEntry.isLogining(userId)) {
+            Log log = Logs.insert(Long.parseLong(userId), "knowledge-point", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;
@@ -88,10 +85,10 @@ public class KnowledgePoints {
     @Path("{id}/unlike")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response unlike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Long count = Logs.deleteLike(sessionId, "knowledge-point", id);
+        if (JPAEntry.isLogining(userId)) {
+            Long count = Logs.deleteLike(Long.parseLong(userId), "knowledge-point", id);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
@@ -100,9 +97,9 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/like-count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getLikeCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             Long likeCount = Logs.getStatsCount("knowledge-point", id, "like");
             result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
         }
@@ -112,10 +109,10 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/is-self-like")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getSelfLike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Boolean has = Logs.has(JPAEntry.getLoginId(sessionId), "knowledge-point", id, "like");
+        if (JPAEntry.isLogining(userId)) {
+            Boolean has = Logs.has(Long.parseLong(userId), "knowledge-point", id, "like");
             result = Response.ok("{\"like\":" + has.toString() + "}").build();
         }
         return result;
@@ -124,9 +121,9 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/read-count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getReadCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getReadCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             Long readCount = Logs.getStatsCount("knowledge-point", id, "read");
             result = Response.ok("{\"count\":" + readCount.toString() + "}").build();
         }
@@ -136,16 +133,15 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/contents")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getKnowledgePointsByVolumeId(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
                 JPAEntry.log(JPAEntry.getLoginId(sessionId), "read", "knowledge-point", id);
-
                 Map<String, Object> conditions = new HashMap<>();
-                conditions.put("KnowledgePointId", id);
+                conditions.put("knowledgePointId", id);
 
                 Map<String, String> orders = new HashMap<>();
                 orders.put("order", "ASC");
@@ -158,7 +154,6 @@ public class KnowledgePoints {
                 List<String> imageTextIds = new ArrayList<>();
                 List<String> quoteIds = new ArrayList<>();
                 List<String> pinyinIds = new ArrayList<>();
-
 
                 for (KnowledgePointContentMap item : maps) {
                     switch (item.getObjectType()) {
@@ -203,6 +198,7 @@ public class KnowledgePoints {
                 List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
 
                 List<PinyinText> pinyinTextObject = getList(em, pinyinIds, PinyinText.class);
+
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
                 List<Object> orderedQuotes = new ArrayList<>();
@@ -279,11 +275,17 @@ public class KnowledgePoints {
                                 pm.put("standardAnswers", problemStandardAnswers);
                                 pm.put("name", problemItem.getName());
                                 Image image = JPAEntry.getObject(Image.class, "id", problemItem.getImageId());
-                                pm.put("storePath", image.getStorePath());
+                                if (image != null) {
+                                    pm.put("storePath", image.getStorePath());
+                                }
                                 Video video = JPAEntry.getObject(Video.class, "id", problemItem.getVideoId());
-                                pm.put("videoUrl", video.getStorePath());
-                                Image cover = JPAEntry.getObject(Image.class, "id", video.getCover());
-                                pm.put("videoImage", cover.getStorePath());
+                                if (video != null) {
+                                    pm.put("videoUrl", video.getStorePath());
+                                    Image cover = JPAEntry.getObject(Image.class, "id", video.getCover());
+                                    if (cover != null) {
+                                        pm.put("videoImage", cover.getStorePath());
+                                    }
+                                }
                                 orderedProblems.add(pm);
                             }
                             break;
@@ -321,6 +323,7 @@ public class KnowledgePoints {
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
+                /*totalResult.put("pinyins", orderedPinyins);*/
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
@@ -337,6 +340,11 @@ public class KnowledgePoints {
                     commentMap.put("objectType", comment.getObjectType());
                     commentMap.put("updateTime", comment.getUpdateTime());
                     commentMap.put("userId", comment.getUserId());
+                    User user = JPAEntry.getObject(User.class, "id", comment.getUserId());
+                    if (user != null) {
+                        commentMap.put("userName", user.getName());
+                        commentMap.put("userAvatar", user.getHead());
+                    }
                     commentMap.put("likeCount", Logs.getStatsCount("comment", comment.getId(), "like"));
                     commentMaps.add(commentMap);
                 }
@@ -351,9 +359,9 @@ public class KnowledgePoints {
     @POST//添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createKnowledgePoint(@CookieParam("sessionId") String sessionId, KnowledgePoint knowledgePoint) {
+    public Response createKnowledgePoint(@CookieParam("userId") String userId, KnowledgePoint knowledgePoint) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             knowledgePoint.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(knowledgePoint);
             result = Response.ok(knowledgePoint).build();
@@ -363,9 +371,9 @@ public class KnowledgePoints {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePoints(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getKnowledgePoints(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
@@ -381,9 +389,9 @@ public class KnowledgePoints {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePointById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getKnowledgePointById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (knowledgePoint != null) {
@@ -397,27 +405,28 @@ public class KnowledgePoints {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateKnowledgePoint(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, KnowledgePoint knowledgePoint) {
+    public Response updateKnowledgePoint(@CookieParam("userId") String userId, @PathParam("id") Long id, KnowledgePoint knowledgePoint) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             KnowledgePoint existknowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (existknowledgePoint != null) {
-                int order = knowledgePoint.getOrder();
-                if (order != 0) {
-                    existknowledgePoint.setOrder(order);
-                }
-
-                String title = knowledgePoint.getName();
-                if (title != null) {
-                    existknowledgePoint.setName(title);
-                }
-
                 Long volumeId = knowledgePoint.getVolumeId();
                 if (volumeId != null) {
                     existknowledgePoint.setVolumeId(volumeId);
                 }
-
+                String title = knowledgePoint.getName();
+                if (title != null) {
+                    existknowledgePoint.setName(title);
+                }
+                int order = knowledgePoint.getOrder();
+                if (order != 0) {
+                    existknowledgePoint.setOrder(order);
+                }
+                Boolean show = knowledgePoint.getShow();
+                if (show != null) {
+                    existknowledgePoint.setShow(show);
+                }
                 JPAEntry.genericPut(existknowledgePoint);
                 result = Response.ok(existknowledgePoint).build();
             }

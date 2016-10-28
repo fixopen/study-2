@@ -1,4 +1,6 @@
 $(function () {
+    // var userId = g.getUrlParameter('userid')
+    // g.setCookie('userId', userId)
 
 // message---------
     var createComment = document.getElementById('createComment');
@@ -10,6 +12,9 @@ $(function () {
         function submit(e) {
             var textarea = document.getElementById('textarea');
             var value = textarea.value;
+            if (value.length < 1) {
+                return false;
+            }
             textarea.value = '';
             e.target.style.color = '#f5f5f5';
             // e.target.style.backgroundColor = '#3e8f3e';
@@ -17,7 +22,7 @@ $(function () {
                 type: "post",
                 url: "/api/comments",
                 data: JSON.stringify({
-                    userId: 1,
+                    //   userId: 1,
                     objectType: 'knowledge-point',
                     objectId: g.getUrlParameter("id"),
                     content: value
@@ -25,11 +30,13 @@ $(function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    alert(JSON.stringify(data))
+                    location.reload();
+                    //alert(JSON.stringify(data))
                 }
             })
         }
     }
+
     //knowledge-points
     var volumeId = g.getUrlParameter('volumeId')
     $.ajax({
@@ -46,7 +53,7 @@ $(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                   // alert(JSON.stringify(data))
+                    //alert(JSON.stringify(data))
                     for (var i = 0; i < data.problems.length; ++i) {
                         var p = data.problems[i]
                         p.options[0].title = 'A'
@@ -72,83 +79,85 @@ $(function () {
                         containerId: 'content',
                         alterTemplates: [
                             {type: 'text', templateId: 'content-text-template'},
-                            // {type: 'pinyinText', templateId: 'content-pinyincontent-template'},
+                            {type: 'imageText', templateId: 'content-imagetext-template'},
+                            // {type: 'pinyinText', templateId: 'content-pinyin-template'},
                             {type: 'image', templateId: 'content-img-template'}
                         ]
                     })
 
                     // pinyin-----begin------
-                    // var pinyins = []
-                    // for(var i=0;i<data.contents.length;i++){
-                    //     if (data.contents[i].type == 'pinyinText') {
-                    //         pinyins.push(data.contents[i])
-                    //     }
-                    // }
+                    //  var pinyins = []
+                    //  for(var i=0;i<data.contents.length;i++){
+                    //      if (data.contents[i].type == 'pinyinText') {
+                    //          pinyins.push(data.contents[i])
+                    //      }
+                    //  }
                     //
-                    // var ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
-                    //     '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
-                    //     'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
-                    //     'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
+                    //  var ps = ['，', '。', '？','！','《','》','；','、','“','”','：','（','）','——','……','·',
+                    //      '0','1','2','3','4','5','6','7','8','9','曉','堯','a','b','c','d','e','f','g','h','i','j','k','l','m',
+                    //      'n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N',
+                    //      'O','P','Q','R','S','T', 'U','V','W','X','Y','Z',]
                     //
-                    // var isP = function(c) {
-                    //     var result = false
-                    //     for (var i = 0; i < ps.length; ++i) {
-                    //         if (ps[i] == c) {
-                    //             result = true
-                    //             break
-                    //         }
-                    //     }
-                    //     return result
-                    // }
+                    //  var isP = function(c) {
+                    //      var result = false
+                    //      for (var i = 0; i < ps.length; ++i) {
+                    //          if (ps[i] == c) {
+                    //              result = true
+                    //              break
+                    //          }
+                    //      }
+                    //      return result
+                    //  }
                     //
-                    // for (var i = 0; i < pinyins.length; ++i) {
-                    //     var pinyinItem = pinyins[i]
-                    //     var pinyin = pinyinItem.pinyin.split(' ')
-                    //     var chineseIndex = 0;
-                    //     for (var j = 0; j < pinyin.length; ++j) {
-                    //         var pinyinValue = pinyin[j]
-                    //         var c = pinyinItem.content[chineseIndex]
-                    //         ++chineseIndex
-                    //         if (isP(c)) {
-                    //              e = c
-                    //             c = pinyinItem.content[chineseIndex]
-                    //             ++chineseIndex
-                    //         }
+                    //  for (var i = 0; i < pinyins.length; ++i) {
+                    //      var pinyinItem = pinyins[i]
+                    //      var pinyin = pinyinItem.pinyin.split(' ')
+                    //      var chineseIndex = 0;
+                    //      for (var j = 0; j < pinyin.length; ++j) {
+                    //          var pinyinValue = pinyin[j]
+                    //          var c = pinyinItem.content[chineseIndex]
+                    //          ++chineseIndex
+                    //          if (isP(c)) {
+                    //               e = c
+                    //              c = pinyinItem.content[chineseIndex]
+                    //              ++chineseIndex
+                    //          }
                     //
-                    //         var g = {}
-                    //         g.bind = function (element, data) {
-                    //             element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
-                    //                 if (!variable) {
-                    //                     return ""
-                    //                 }
-                    //                 return data[variable];
-                    //             });
-                    //             return element
-                    //         };
+                    //          var g = {}
+                    //          g.bind = function (element, data) {
+                    //              element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
+                    //                  if (!variable) {
+                    //                      return ""
+                    //                  }
+                    //                  return data[variable];
+                    //              });
+                    //              return element
+                    //          };
                     //
-                    //         //<ruby><p>c</p><rt>pinyinValue</rt></ruby>
-                    //         var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                    //         var content=document.getElementById('content')
-                    //         g.bind(e, {"pinyin": pinyinValue, "content":c})
-                    //         content.appendChild(e)
+                    //          //<ruby><rb>c</rb><rt>pinyinValue</rt></ruby><span>c</span>
+                    //          var e=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //          var content=document.getElementById('content')
+                    //          g.bind(e, {"pinyin": pinyinValue, "content":c})
+                    //          content.appendChild(e)
                     //
-                    //         // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
-                    //         // var content=document.getElementById('pycontent')
-                    //         // g.bind(d, {"pinyin": pinyinValue, "content":c})
-                    //         // content.appendChild(d)
-                    //         //
-                    //         // var e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
-                    //         // g.bind(e, {"content":c})
-                    //         // content.appendChild(e)
-                    //     }
-                    //   //  var pinyin=data.contents[i].pinyin.split(" ");
-                    //     //alert(pinyin);
-                    //     //var content=data.contents[i].content.split('');
-                    //     //alert(content);
                     //
-                    // }
-                    //pinyin-----end-----
-
+                    //          //ruby=getTemplate('content-pinyin-template').cloneNode(true);
+                    //          // var d=document.getElementById('content-pinyin-template').content.children[0].cloneNode(true)
+                    //          // var content=document.getElementById('pycontent')
+                    //          // g.bind(d, {"pinyin": pinyinValue, "content":c})
+                    //          // content.appendChild(d)
+                    //          //
+                    //          // var e=document.getElementById('content-py-template').content.children[0].cloneNode(true)
+                    //          // g.bind(e, {"content":c})
+                    //          // content.appendChild(e)
+                    //      }
+                    //    //  var pinyin=data.contents[i].pinyin.split(" ");
+                    //      //alert(pinyin);
+                    //      //var content=data.contents[i].content.split('');
+                    //      //alert(content);
+                    //
+                    //  }
+                    //   pinyin-----end-----
 
 
                     proc({
@@ -168,17 +177,17 @@ $(function () {
                         }
                     })
 
-                    //多选单选
-                    for(var i=0;i<data.problems.length;i++){
+                    //文字样式
+                    for (var i = 0; i < data.problems.length; i++) {
                         if (data.problems[i].type == '多选题') {
                             $('.addimg span').eq(i).removeClass('mld_liImg').addClass('mld_liImg_');
-                        }else if(data.problems[i].type == '单选题'){
+                        } else if (data.problems[i].type == '单选题') {
                             $('.addimg span').eq(i).removeClass('mld_liImg_').addClass('mld_liImg');
                         }
                     }
 
 
-                    //answers
+                    //判断对错
                     var findProblem = function (problemId) {
                         var problem = null
                         for (var i = 0; i < data.problems.length; ++i) {
@@ -190,26 +199,26 @@ $(function () {
                         return problem
                     }
 
-                    var getIndex = function (content) {
-                        var index = -1
-                        switch (content) {
-                            case 'A':
-                                index = 0
-                                break
-                            case 'B':
-                                index = 1
-                                break
-                            case 'C':
-                                index = 2
-                                break
-                            case 'D':
-                                index = 3
-                                break
-                            default:
-                                break
-                        }
-                        return index
-                    }
+                    // var getIndex = function (content) {
+                    //     var index = -1
+                    //     switch (content) {
+                    //         case 'A':
+                    //             index = 0
+                    //             break
+                    //         case 'B':
+                    //             index = 1
+                    //             break
+                    //         case 'C':
+                    //             index = 2
+                    //             break
+                    //         case 'D':
+                    //             index = 3
+                    //             break
+                    //         default:
+                    //             break
+                    //     }
+                    //     return index
+                    // }
 
                     var compareAnswer = function (index, standardAnswers) {
                         var finded = false
@@ -222,35 +231,94 @@ $(function () {
                         return finded
                     }
 
+                    //   var problemContainer = document.getElementById('problem')
+                    // problemContainer.addEventListener('click', function (e) {
+                    //     //e.currentTarget == problemContainer
+                    //     var clickedElement = e.target
+                    //     var trueImage = document.createElement('img')
+                    //     // trueImage.setAttribute('class', 'daan_error')
+                    //     trueImage.setAttribute('src', 'img/true.png')
+                    //     trueImage.setAttribute('alt', '')
+                    //
+                    //     var falseImage = document.createElement('img')
+                    //     // falseImage.setAttribute('class', 'daan_error')
+                    //     falseImage.setAttribute('src', 'img/error.png')
+                    //     falseImage.setAttribute('alt', '')
+                    //
+                    //     if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
+                    //         var problemId = clickedElement.parentNode.parentNode.dataset.id
+                    //         var problem = findProblem(problemId)
+                    //         if (problem) {
+                    //             var index = getIndex(clickedElement.textContent)
+                    //             var r = compareAnswer(index, problem.standardAnswers)
+                    //             if (r) {
+                    //                 clickedElement.parentNode.addClass('daanLi_true')
+                    //                 clickedElement.innerHTML = ''
+                    //                 clickedElement.appendChild(trueImage)
+                    //             } else {
+                    //                 clickedElement.parentNode.addClass('daanLi_error')
+                    //                 clickedElement.innerHTML = ''
+                    //                 clickedElement.appendChild(falseImage)
+                    //             }
+                    //         }
+                    //     }
+                    // }, false)
 
-                    var problemContainer = document.getElementById('problem')
+                    var falseImage = getTemplate('falseImage');
+                    var trueImage = getTemplate('trueImage');
+                    var problemContainer = document.getElementById('problem');
                     problemContainer.addEventListener('click', function (e) {
-                        //e.currentTarget == problemContainer
-                        var clickedElement = e.target
-                        var trueImage = document.createElement('img')
-                        trueImage.setAttribute('class', 'daan_error')
-                        trueImage.setAttribute('src', 'img/true.png')
-                        trueImage.setAttribute('alt', '')
-
-                        var falseImage = document.createElement('img')
-                        falseImage.setAttribute('class', 'daan_error')
-                        falseImage.setAttribute('src', 'img/error.png')
-                        falseImage.setAttribute('alt', '')
-
-                        if (clickedElement.hasClass('daan_quan')) { // == [class="daan_quan"]
-                            var problemId = clickedElement.parentNode.parentNode.dataset.id
-                            var problem = findProblem(problemId)
-                            if (problem) {
-                                var index = getIndex(clickedElement.textContent)
-                                var r = compareAnswer(index, problem.standardAnswers)
-                                if (r) {
-                                    clickedElement.parentNode.addClass('daanLi_true')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(trueImage)
-                                } else {
-                                    clickedElement.parentNode.addClass('daanLi_error')
-                                    clickedElement.innerHTML = ''
-                                    clickedElement.appendChild(falseImage)
+                        var clickedElement = e.target;
+                        if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')) {
+                            var problemType = clickedElement.parentNode.parentNode.previousElementSibling.firstElementChild.textContent;
+                            var titleElement = clickedElement.previousElementSibling
+                            switch (problemType) {
+                                case '多选题':
+                                    if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected == true) {
+                                        titleElement.dataset.selected = false;
+                                        //
+                                        titleElement.removeClass('daanLi_nowBai');
+                                        titleElement.parentNode.removeClass('daanLi_now');
+                                    } else {
+                                        titleElement.dataset.selected = true;
+                                        //
+                                        titleElement.addClass('daanLi_nowBai');
+                                        titleElement.parentNode.addClass('daanLi_now');
+                                    }
+                                    break
+                                case '单选题':
+                                    var optionsContainer = clickedElement.parentNode.parentNode;
+                                    for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                        var option = optionsContainer.children[i];
+                                        if (option.children[0].dataset.selected == 'true') {
+                                            option.children[0].dataset.selected = false;
+                                            option.children[0].removeClass('daanLi_nowBai');
+                                            option.children[0].parentNode.removeClass('daanLi_now');
+                                        }
+                                    }
+                                    titleElement.dataset.selected = true;
+                                    titleElement.addClass('daanLi_nowBai');
+                                    titleElement.parentNode.addClass('daanLi_now');
+                                    break
+                            }
+                        } else if (clickedElement.hasClass('btnTrue')) {
+                            var optionsContainer = clickedElement.parentNode.previousElementSibling;
+                            for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                var option = optionsContainer.children[i];
+                                var problem = findProblem(optionsContainer.dataset.id);
+                                if (compareAnswer(i, problem.standardAnswers)) {
+                                    option.addClass('daanLi_true');
+                                    option.firstElementChild.innerHTML = ''
+                                    option.firstElementChild.removeClass('daanLi_nowBai');
+                                    option.firstElementChild.appendChild(trueImage.cloneNode(true))
+                                }
+                                if (option.children[0].dataset.selected == 'true' || option.children[0].dataset.selected == true) {
+                                    if (!compareAnswer(i, problem.standardAnswers)) {
+                                        option.addClass('daanLi_error');
+                                        option.firstElementChild.innerHTML = ''
+                                        option.firstElementChild.removeClass('daanLi_nowBai');
+                                        option.firstElementChild.appendChild(falseImage.cloneNode(true))
+                                    }
                                 }
                             }
                         }
@@ -281,7 +349,7 @@ $(function () {
                         containerId: 'interaction'
                     })
 
-                   // likes
+                    // likes
                     var id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
@@ -290,6 +358,11 @@ $(function () {
                         success: function (like) {
                             var liked = like.like
                             var icon = document.getElementById('icon');
+                            if (liked) {
+                                icon.setAttribute('src', 'img/zan-over.png');
+                            } else {
+                                icon.setAttribute('src', 'img/zan.png');
+                            }
                             icon.addEventListener('click', function (e) {
                                 if (liked) {
                                     $.ajax({
@@ -301,7 +374,7 @@ $(function () {
                                         success: function (unlike) {
                                             icon.setAttribute('src', 'img/zan.png');
                                             --data.interaction.likeCount
-                                            e.target.nextElementSibling.textContent = '' + data.interaction.likeCount;
+                                            e.target.nextElementSibling.textContent = data.interaction.likeCount;
                                             liked = false;
                                         }
                                     })
@@ -315,15 +388,12 @@ $(function () {
                                         success: function (like) {
                                             icon.setAttribute('src', 'img/zan-over.png');
                                             ++data.interaction.likeCount;
-                                            e.target.nextElementSibling.textContent = '' + data.interaction.likeCount
+                                            e.target.nextElementSibling.textContent = data.interaction.likeCount
                                             liked = true;
                                         }
                                     })
                                 }
                             }, false)
-                        },
-                        error: function (unlike) {
-                            //liked = false
                         }
                     })
 
@@ -341,8 +411,13 @@ $(function () {
                             url: 'api/comments/' + id + '/is-self-like',
                             dataType: "json",
                             success: function (like) {
-                               var  likeds = like.like;
-                               if(likeds){
+                                var likeds = like.like;
+                                if (likeds) {
+                                    e.target.setAttribute('src', 'img/zan-over.png');
+                                } else {
+                                    e.target.setAttribute('src', 'img/zan.png');
+                                }
+                                if (likeds) {
                                     var id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
@@ -362,7 +437,7 @@ $(function () {
                                             }
                                         }
                                     })
-                                }else{
+                                } else {
                                     var id = e.target.parentNode.dataset.id
                                     $.ajax({
                                         type: "put",
@@ -391,4 +466,3 @@ $(function () {
         }
     })
 })
-

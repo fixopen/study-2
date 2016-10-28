@@ -10,11 +10,15 @@
 }
 
 .mine_zuli {
+    color: #444;
+    display: block;
     height: 3.71875rem;
     line-height: 3.71875rem;
     padding: 0 0.9375rem;
     border-bottom: 1px solid #e5e5e5;
     position: relative;
+    background: url('more.png') no-repeat 96% center;
+    background-size: 0.46875rem 0.71875rem;
 }
 
 .mine_leftsp {

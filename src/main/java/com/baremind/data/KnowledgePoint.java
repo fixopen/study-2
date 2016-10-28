@@ -24,6 +24,9 @@ public class KnowledgePoint {
     @Column(name = "\"order\"")
     private int order;
 
+    @Column(name = "is_show")
+    private Boolean isShow;
+
     public Long getId() {
         return id;
     }
@@ -54,5 +57,13 @@ public class KnowledgePoint {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public Boolean getShow() {
+        return isShow;
+    }
+
+    public void setShow(Boolean show) {
+        isShow = show;
     }
 }

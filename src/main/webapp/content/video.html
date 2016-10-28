@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>视频页</title>
+</head>
+<body>
+<div id="warp">
+    <video id="video" src="#" controls autoplay style="width: 1024px; margin-left: 11px;"></video>
+</div>
+<script src="/util.js"></script>
+<script>
+    var videoLink = g.getUrlParameter("src");
+    var video = document.getElementById('video')
+    video.setAttribute('src', videoLink)
+</script>
+</body>
+</html>

@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>数学-课程详情</title>
+    <title>数学</title>
     <!-- 禁止拉伸和全屏设置 -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
@@ -42,7 +42,7 @@
         </div>
         <!--最强讲解-->
         <div class="mulu_div youKuang">
-            <div id="content"></div>
+            <div id="content" class="content"></div>
             <div id="video"></div>
             <!--<img class="muld_images" src="img/math5.png" alt="">-->
         </div>
@@ -117,20 +117,26 @@
     <!--<li>${option}</li>-->
     <li class="mld_daanLi">
         <span class="daan_quan">${title}</span>
-        <input type="radio" id="daan_s3A" class="daana" name="daan1">
-        <img class="ceshi_ti1" src="${optionImagePath}" alt="">
-        <label for="daan_s3A">${name}</label>
+        <input type="radio" class="daana" name="daan3">${name}
+        <!--<input type="radio" id="daan_s3A" class="daana" name="daan1">-->
+        <img src="${optionImagePath}" class="option" alt="">
+        <!--<label for="daan_s3A">${name}</label>-->
     </li>
 </template>
 <template id="strongest-brain-template">
     <li class="mld_Ulli">
-        <div>${title}</div>
-        <img class="ceshi_ti1" src="${storePath}" alt="">
+        <div class="addimg">${title}</div>
+        <img src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+        <div class="baoBtn" data-id="${id}">
+            <a class="btnTrue" href="#">查看答案</a>
+        </div>
         <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
-        <!--<div data-ext-point="explain"></div>-->
     </li>
-    <!--</ul>-->
+</template>
+<!--<div data-ext-point="explain"></div>-->
+</li>
+<!--</ul>-->
 </template>
 <template id="pk-template">
     <li class="mld_Ulli">
@@ -159,14 +165,14 @@
 <template id="comment-template">
     <ul class="muluBn_center">
         <li class="liuyan_li lion_01">
-            <img src="${avatar}" alt="">
+            <img src="${userAvatar}" alt="">
         </li>
         <li class="liuyan_li lion_02">
             <ul class="topUl">
                 <li class="topUl_top">
-                    <div class="litop_fleft">${name}</div>
+                    <div class="litop_fleft">${userName}</div>
                     <div class="litop_friht" data-id="${id}">
-                        <img class="ul01_imgzan" src="img/zan.png" alt="" >
+                        <img class="ul01_imgzan" src="img/zan.png" alt="">
                         <span class="ul01_count">${likeCount}</span>
                     </div>
                 </li>
@@ -180,7 +186,12 @@
         </li>
     </ul>
 </template>
-
+<template id="trueImage">
+    <img src="img/true.png" alt="">
+</template>
+<template id="falseImage">
+    <img src="img/error.png" alt="">
+</template>
 
 
 <script type="text/javascript" src="basic.js"></script>
