@@ -70,9 +70,23 @@
 </script>
 <script>
     $(function () {
-        let phonecode = sign("userId")
+
+        $.ajax({
+            type:"get",
+            url:"/api/users/self",
+            dataType:"json",
+            success:function (e) {
+                let a = e.telephone;
+                let phone = parseInt(a);
+                document.getElementById("phonecodeId").innerHTML = phone
+            },
+            error:function (e) {
+                location.href = "signIn.html";
+            }
+        })
+
         /*let phonecode = g.getCookie("phonecode")*/
-        document.getElementById("phonecodeId").innerHTML = phonecode
+
     })
 
     let p1 = document.getElementById("pwd1");
