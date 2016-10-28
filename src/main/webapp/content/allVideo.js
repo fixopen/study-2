@@ -9,7 +9,7 @@ function subjectTab() { //课程选项卡
 
 function curseDetailTap() { //点击“课程详情”
     $(".course-detail-btn").each(function (index, el) {
-        var item = $(this)[0]
+        var item = el
         if (!item.dataset.setclick) {
             $(this).click(function () {
                 if ($(this).children("img").is(":visible")) {

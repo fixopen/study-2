@@ -20,6 +20,10 @@
     <script type="text/javascript" src="zepto/selector.js"></script>
 </head>
 <body>
+<!-- 课程更新弹窗 -->
+<div id="tan" style="display:block"></div>
+<div class="new-class" style="display:block"></div>
+
 <div class="wrap">
     <ol class="rain-main">
         <div class="bao_dul">
@@ -43,18 +47,24 @@
             <ol class="neir0_UL" id="volumes-hight">
             </ol>
         </div>
+    </ol>
 </div>
-</div>
+
 <!--templates-->
 <template id="volumes-template">
     <li class="neir_li">
+        <img class="new-label" src="img/new-label.png" alt="">
         <div class="neir_lidiv">
             <a class="neir_pzi" href="#">${title}</a>
         </div>
     </li>
 </template>
-<script type="text/javascript" src="js/turnOne.js"></script>
 <script type="text/javascript" src="js/math-volume.js"></script>
 <script type="text/javascript" src="basic.js"></script>
+<script type="text/javascript" src="js/turnOne.js"></script>
+<script type="text/javascript">
+    newClass();//课程更新弹窗
+</script>
+
 </body>
 </html>
