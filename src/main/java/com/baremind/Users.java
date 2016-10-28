@@ -682,7 +682,6 @@ public class Users {
     public Response getUserById(@CookieParam("userId") String userId) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
             Long id = Long.parseLong(userId);
             User user = JPAEntry.getObject(User.class, "id", id);
             if (user != null) {

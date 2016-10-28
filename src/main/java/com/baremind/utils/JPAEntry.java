@@ -1,6 +1,7 @@
 package com.baremind.utils;
 
 import com.baremind.Logs;
+import com.baremind.data.Session;
 import com.baremind.data.User;
 
 import javax.persistence.*;
@@ -193,16 +194,17 @@ public class JPAEntry {
             //genericPut(a);
             r.put("value", true);
         });
-        //@@
-        r.put("value", true);
-        //@@
         return r.get("value");
     }
 
     public static void isLogining(String userId, Consumer<User> touchFunction) {
-        User u = getObject(User.class, "id", Long.parseLong(userId));
+        Long id = Long.parseLong(userId);
+        User u = getObject(User.class, "id", id);
         if (u != null) {
-            touchFunction.accept(u);
+            Session s = getObject(Session.class, "userId", id);
+            if (s != null) {
+                touchFunction.accept(u);
+            }
         }
     }
 
