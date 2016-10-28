@@ -305,6 +305,9 @@ public class KnowledgePoints {
 
                 Map<String, Object> totalResult = new HashMap<>();
                 totalResult.put("title", p.getTitle());
+//                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+//                String now = gson.toJson(p.getShowTime());
+//                totalResult.put("showTime", now);
                 totalResult.put("quotes", orderedQuotes);
                 totalResult.put("contents", orderedContents);
 
@@ -418,10 +421,10 @@ public class KnowledgePoints {
                 if (grade != 0) {
                     existknowledgePoint.getGrade();
                 }
-                Boolean show = knowledgePoint.getShow();
-              /*  if(show == true){
-                    existknowledgePoint.setShow(show);
-                }*/
+                Date showTime = knowledgePoint.getShowTime();
+                if (showTime != null) {
+                    existknowledgePoint.setShowTime(showTime);
+                }
                 String storePath = knowledgePoint.getStorePath();
                 if (storePath != null) {
                     existknowledgePoint.setStorePath(storePath);

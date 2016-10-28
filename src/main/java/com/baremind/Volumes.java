@@ -3,6 +3,7 @@ package com.baremind;
 import com.baremind.data.KnowledgePoint;
 import com.baremind.data.Volume;
 import com.baremind.utils.CharacterEncodingFilter;
+import com.baremind.utils.Condition;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
@@ -13,10 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Path("volumes")
 public class Volumes {
@@ -75,6 +73,8 @@ public class Volumes {
 
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("volumeId", id);
+            Condition ltNow = new Condition("<", new Date());
+            conditions.put("showTime", ltNow);
             Map<String, String> orders = new HashMap<>();
             orders.put("order", "ASC");
             List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions, orders);
@@ -96,6 +96,7 @@ public class Volumes {
                     kpm.put("id", kp.getId());
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
+                    kpm.put("showTime", kp.getShowTime());
 
                     kpm.put("likeCount", 0);
                     Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
