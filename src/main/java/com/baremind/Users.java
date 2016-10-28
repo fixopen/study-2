@@ -1,6 +1,9 @@
 package com.baremind;
 
-import com.baremind.data.*;
+import com.baremind.data.Card;
+import com.baremind.data.User;
+import com.baremind.data.ValidationCode;
+import com.baremind.data.WechatUser;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -11,7 +14,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
@@ -213,9 +215,24 @@ public class Users {
     @GET
     @Path("{id}/cards")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCards(@PathParam("id") Long id) {
+    public Response getCards(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(404).build();
-        List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
+        User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+        if (admin != null && admin.getIsAdministrator()) {
+            List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
+            if (!cards.isEmpty()) {
+                result = Response.ok(new Gson().toJson(cards)).build();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("self/cards")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSelfCards(@CookieParam("userId") String userId) {
+        Response result = Response.status(404).build();
+        List<Card> cards = JPAEntry.getList(Card.class, "userId", Long.parseLong(userId));
         if (!cards.isEmpty()) {
             result = Response.ok(new Gson().toJson(cards)).build();
         }
