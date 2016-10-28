@@ -4,14 +4,11 @@ $(document).ready(function () {
     //let subjectId  =  getUrlParameter('subjectId')
     $.ajax({
         type: "get",
-        url: 'api/volumes?filter=' + JSON.stringify({
-            subjectId: 2, //parseInt(subjectId),
-            grade: 20
-        }),
+        url: 'api/subjects/2/low/volumes',
         success: function (volumesL) {
             proc({
                 data: volumesL,
-                containerId: 'volumesL',
+                containerId: 'volumes-low',
                 alterTemplates: [
                     {type: 'old', templateId: 'volumes-old-template'},
                     {type: 'new', templateId: 'volumes-new-template'},
@@ -22,14 +19,11 @@ $(document).ready(function () {
 
     $.ajax({
         type: "get",
-        url: 'api/volumes?filter=' + JSON.stringify({
-            subjectId: 2,
-            grade: 21
-        }),
+        url: 'api/subjects/2/high/volumes',
         success: function (volumesH) {
             proc({
                 data: volumesH,
-                containerId: 'volumesH',
+                containerId: 'volumes-hight',
                 alterTemplates: [
                     {type: 'old', templateId: 'volumes-old-template'},
                     {type: 'new', templateId: 'volumes-new-template'},
