@@ -367,7 +367,9 @@ public class Users {
                                     JPAEntry.genericPut(c);
                                     result = Response.ok().build();
                                 } else {
-                                    Response.status(412).build();
+                                    c.setUserId(user.getId());
+                                    JPAEntry.genericPut(c);
+                                    result = Response.ok().build();
                                 }
                             } else {
                                 result = Response.status(405).build();
@@ -516,26 +518,6 @@ public class Users {
         return result;
     }
 
-    @POST //添
-    @Path("pcuser")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createPcUser(@CookieParam("sessionId") String sessionId, User user) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            user.setId(IdGenerator.getNewId());
-            WechatUser wechatUser = new WechatUser();
-            Date now = new Date();
-            wechatUser.setUserId(user.getId());
-            user.setCreateTime(now);
-            user.setUpdateTime(now);
-           /* wechatUser.setRefId();*/
-            JPAEntry.genericPost(user);
-            result = Response.ok(user).build();
-        }
-        return result;
-    }
-
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
@@ -554,9 +536,10 @@ public class Users {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
+            //if isAdmin
             result = Response.status(404).build();
             User user = JPAEntry.getObject(User.class, "id", id);
             if (user != null) {

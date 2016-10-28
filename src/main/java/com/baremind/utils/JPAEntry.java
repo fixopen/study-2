@@ -160,8 +160,12 @@ public class JPAEntry {
         return r.get("value");
     }
 
+    public static Session getSession(String sessionId) {
+        return getObject(Session.class, "identity", sessionId);
+    }
+
     public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
-        Session s = getObject(Session.class, "identity", sessionId);
+        Session s = getSession(sessionId);
         if (s != null) {
             touchFunction.accept(s);
         }
@@ -180,13 +184,5 @@ public class JPAEntry {
 
     public static void log(Long userId, String action, String objectType, Long objectId) {
         Logs.insert(userId, objectType, objectId, action);
-//        Log log = new Log();
-//        log.setId(IdGenerator.getNewId());
-//        log.setUserId(userId);
-//        log.setAction(action);
-//        log.setObjectType(objectType);
-//        log.setObjectId(objectId);
-//        log.setCreateTime(new Date());
-//        genericPost(log);
     }
 }
