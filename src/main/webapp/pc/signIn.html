@@ -94,7 +94,7 @@
             password: password
         }
         $.ajax({
-            type: "post",
+            type: "put",
             url: "/api/sessions",
             data: JSON.stringify(data),
             dataType: "json",

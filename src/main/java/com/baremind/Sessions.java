@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Path("sessions")
 public class Sessions {
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(User user) {
