@@ -1,6 +1,7 @@
 package com.baremind;
 
 import com.baremind.data.Session;
+import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -8,13 +9,36 @@ import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Path("sessions")
 public class Sessions {
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(User user) {
+        Response result = Response.status(404).build();
+        if (user.getTelephone() != null && user.getPassword() != null) {
+            Map<String, Object> conditions = new HashMap<>();
+            conditions.put("telephone", user.getTelephone());
+            conditions.put("password", user.getPassword());
+            User existUser = JPAEntry.getObject(User.class, conditions);
+            if (existUser != null) {
+                Session s = PublicAccounts.putSession(new Date(), existUser.getId());
+                result = Response.ok()
+                    .cookie(new NewCookie("userId", existUser.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .build();
+            }
+        }
+        return result;
+    }
+
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

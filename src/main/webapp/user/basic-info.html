@@ -90,10 +90,11 @@
 </template>
 <script type="text/javascript">
     var userId = g.getUrlParameter('userid')
+    g.setCookie('userId', userId)
 
     $.ajax({
         type: 'get',
-        url: '/api/users/' + userId,
+        url: '/api/users/self',
         dataType: 'json',
         success: function (user) {
             proc({
