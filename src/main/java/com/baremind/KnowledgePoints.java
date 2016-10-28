@@ -306,9 +306,9 @@ public class KnowledgePoints {
 
                 Map<String, Object> totalResult = new HashMap<>();
                 totalResult.put("title", p.getTitle());
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                String now = gson.toJson(p.getShowTime());
-                totalResult.put("showTime", now);
+//                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+//                String now = gson.toJson(p.getShowTime());
+//                totalResult.put("showTime", now);
                 totalResult.put("quotes", orderedQuotes);
                 totalResult.put("contents", orderedContents);
 
