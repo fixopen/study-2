@@ -158,7 +158,8 @@
             url:"/api/users/self",
             dataType:"json",
             success:function (e) {
-                userId = e.id
+                let u = e.id
+                userId = parseInt(u);
                 let a = e.telephone;
                 phone = parseInt(a) ;
                 //document.getElementById("phoneNumber").innerHTML = phone
@@ -233,7 +234,7 @@
                                     dataType:"json",
                                     contentType: "application/json; charset=utf-8",
                                     success:function(e){
-                                        location.href = "signIn.html";
+                                        location.href = "perfectSuccess.html";
                                     },
                                     error:function (e) {
                                         alert(JSON.stringify(e))
