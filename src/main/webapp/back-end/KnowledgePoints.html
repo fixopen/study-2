@@ -25,6 +25,7 @@
         <th>标题</th>
         <th>操作</th>
         <th>知识点</th>
+        <th>展示时间</th>
         <th>操作</th>
     </tr>
     <tr>
@@ -40,6 +41,11 @@
         </td>
         <td><input type="text" id="knowledgePointTitle"/> <select id="knowledgePointTitleChoice"></select>
         </td>
+
+        <td>
+            <input type="text" id="showTime"/>
+        </td>
+
         <td><input type="button" id="appendknowledgePointTitle" value="添加"/>
             <button id="updateknowledgePointTitle">修改</button>
         </td>
@@ -540,11 +546,16 @@
                 order = kps[kps.length - 1].order + 1
             }
 
+            let showtime = $("#showTime").val()
+            let time = '+08:00';
+            showtime = showtime.replace(/ /, "T");
+            showtime = showtime + time;
             let data = {
                 subjectId: currentSubject,
                 grade: currentGrade,
                 volumeId: currentVolume,
                 title: knowledgePointTitle.value,
+                showTime: showtime,
                 order: order
             }
 
@@ -556,6 +567,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (knowledgePoint) {
                     currentKnowledgePoint = knowledgePoint.id
+                    alert("添加成功")
                     let gradeName = 'low'
                     switch (currentGrade) {
                         case 21:
@@ -572,7 +584,7 @@
                     option.appendChild(document.createTextNode(knowledgePoint.title))
                     knowledgePointSelect.appendChild(option)
                     knowledgePointSelect.selectedIndex = knowledgePointSelect.options.length - 1
-                    alert("添加成功")
+
                     /*  document.getElementById("buttons").style.visibility = "visible" //显示*/
                     problemIdDD == ""
                 },
@@ -585,10 +597,15 @@
 
         $('#updateknowledgePointTitle').on('click', function (e) {
             let knowledgePointTitle = document.getElementById('knowledgePointTitle')
+            let showtime = $("#showTime").val()
+            let time = '+08:00';
+            showtime = showtime.replace(/ /, "T");
+            showtime = showtime + time;
             let knowledgePointData = {
                 subjectId: currentSubject,
                 grade: currentGrade,
                 volumeId: currentVolume,
+                showTime: showtime,
                 title: knowledgePointTitle.value
             }
             $.ajax({

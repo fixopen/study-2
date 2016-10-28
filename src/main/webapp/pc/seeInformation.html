@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看信息</title>
+
+    <!-- 引入css -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/fill.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script src="../basic.js"></script>
+    <script src="../util.js"></script>
+</head>
+<body>
+<div class="logo-section">
+    <div class="inner">
+        <h1 class="logo">
+            <a href="javascript:;" class="logo-a" title="小雨知时">小雨知时</a>
+        </h1>
+        <div class="page-name">我的信息</div>
+        <div class="tip">网站、微信正在建设中，敬请期待！</div>
+    </div>
+</div>
+
+<!-- info-content -->
+<div id="card"></div>
+<template id="card-template">
+    <ul class="mine_zUl">
+        <li class="mine_zuli">
+            <span class="mine_leftsp">卡号</span>
+            <span class="mine_rightip">${no}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">学习类型</span>
+            <span class="mine_rightip">${subjectName}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">激活时间</span>
+            <span class="mine_rightip">${activeTime}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">剩余雨点</span>
+            <span class="mine_rightip">${amount}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">有效期</span>
+            <span class="mine_rightip">${endTime}</span>
+        </li>
+    </ul>
+</template>
+<!--<div id="information"></div>
+<template id="card-template">
+    <table class="myinfo-table">
+        <tr>
+            <td>卡号：</td>
+            <td>${no}</td>
+        </tr>
+        <tr>
+            <td>卡片余额：</td>
+            <td>${amount}</td>
+        </tr>
+        <tr>
+            <td>卡片类型：</td>
+            <td>${subjectName}</td>
+        </tr>
+    </table>
+</template>-->
+<!--<template id="information-template">
+    <div class="inner">
+        <div class="info-content">
+            <table class="myinfo-table">
+                <tr>
+                    <td>真实姓名：</td>
+                    <td>${name}</td>
+                </tr>
+                <tr>
+                    <td>手机号：</td>
+                    <td>${telephone}</td>
+                </tr>
+                <tr>
+                    <td>性别：</td>
+                    <td>${sex}</td>
+                </tr>
+                <tr>
+                    <td>出生年月：</td>
+                    <td>${birthday}</td>
+                </tr>
+                <tr>
+                    <td>收货地址：</td>
+                    <td>${address</td>
+                </tr>
+                <tr>
+                    <td>就读学校：</td>
+                    <td>${school}</td>
+                </tr>
+                <tr>
+                    <td>所在班级：</td>
+                    <td>${classname}</td>
+                </tr>
+                <tr>
+                    <td>微信账号：</td>
+                    <td>${info}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="perfect-bottom"></div>
+    </div>
+</template>-->
+<!-- copyright -->
+<div class="copyright">
+    Copyright 北京小雨知时教育科技有限公司 京ICP备16047890号-1
+    <img src="images/gongan.png" alt="">京公安网备1101082020142号
+    京ICP证160421号 All Rights Reserved <img src="images/tongji.gif" alt=""><br>
+    地址：北京市海淀区上地信息路1号2号楼5层505 电话：010-12345678
+</div>
+
+<script type="text/javascript">
+    //simulateSelect();//下拉菜单
+    let userId
+    $.ajax({
+        type: "get",
+        url: "/api/users/self",
+        dataType: "json",
+        success: function (e) {
+            let u = e.id
+            userId = parseInt(u);
+            let filter = {
+                userId: userId
+            }
+            $.ajax({
+                type: 'get',
+                url: '/api/users/' + userId + '/cards',
+                dataType: 'json',
+                success: function (cards) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/subjects',
+                        dataType: 'json',
+                        success: function (subjects) {
+                            for (var i = 0; i < cards.length; ++i) {
+                                cards[i].subjectName = getSubjectNameById(subjects, cards[i].subject)
+                            }
+                            proc({
+                                containerId: 'card',
+                                data: cards,
+                                templateId: 'card-template'
+                            })
+                        },
+                        error: function (r) {
+                            alert('I am sorry, not get subjects')
+                        }
+                    })
+                },
+                error: function (r) {
+                    if (r.status == 404) {
+                        //window.location.href = '/validationCode.html?userid=' + userId
+                    } else {
+                        alert('获取用户信息失败，请刷新以重试')
+                    }
+                }
+            })
+            /*$.ajax({
+             type:"get",
+             url:"/api/wechat-users/?filter="+ JSON.stringify(filter),
+             dataType:"json",
+             success:function(i){
+             alert(JSON.stringify(i.info))
+             proc({
+             containerId: 'information',
+             data: i,
+             templateId: 'information-template'
+             })
+             },
+             error:function (i) {
+             location.href = "perfectInformation.html";
+             alert(JSON.stringify(i))
+             }
+             })*/
+
+        },
+        error: function (e) {
+            location.href = "signIn.html";
+        }
+    })
+
+
+</script>
+</body>
+</html>

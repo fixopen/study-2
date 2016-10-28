@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.Log;
 import com.baremind.data.Subject;
 import com.baremind.data.Volume;
 import com.baremind.utils.CharacterEncodingFilter;
@@ -7,12 +8,12 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Path("subjects")
 public class Subjects {
@@ -25,6 +26,35 @@ public class Subjects {
             subject.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(subject);
             result = Response.ok(subject).build();
+        }
+        return result;
+    }
+
+    @POST
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response subjectPopup(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Log log = Logs.insert(Long.parseLong(userId), "subject", id, "popup");
+            result = Response.ok(new Gson().toJson(log)).build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/popup")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPopup(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Long popCount = Logs.getUserStatsCount(Long.parseLong(userId), "subject", id, "popup");
+            Boolean r = false;
+            if (popCount > 0) {
+                r = true;
+            }
+            result = Response.ok("{\"popup\":" + r + "}").build();
         }
         return result;
     }
@@ -73,7 +103,30 @@ public class Subjects {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
-                result = Response.ok(new Gson().toJson(volumes)).build();
+                List<Map<String, Object>> r = new ArrayList<>();
+                Date now = new Date();
+                Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+                for (Volume volume : volumes) {
+                    Map<String, Object> vm = new HashMap<>();
+                    vm.put("id", volume.getId());
+                    vm.put("grade", volume.getGrade());
+                    vm.put("order", volume.getOrder());
+                    vm.put("subjectId", volume.getSubjectId());
+                    vm.put("title", volume.getTitle());
+                    vm.put("type", "old");
+                    EntityManager em = JPAEntry.getEntityManager();
+                    String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.showTime > :yesterday AND l.showTime < :now";
+                    Query q = em.createQuery(stats, Long.class);
+                    q.setParameter("volumeId", volume.getId());
+                    q.setParameter("yesterday", yesterday);
+                    q.setParameter("now", now);
+                    Long count = (Long) q.getSingleResult();
+                    if (count > 0) {
+                        vm.put("type", "new");
+                    }
+                    r.add(vm);
+                }
+                result = Response.ok(new Gson().toJson(r)).build();
             }
         }
         return result;

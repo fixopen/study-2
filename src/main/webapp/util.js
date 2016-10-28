@@ -333,7 +333,7 @@ g.setCookie = function (name, value, path, days) {
     var exp = new Date()
     exp.setTime(exp.getTime() + days * 24 * 60 * 60 * 1000)
     //document.cookie[document.cookie.length] = name + "=" + encodeURIComponent(value) + ";expires=" + exp.toGMTString()
-    var pathParameter = '/api'
+    var pathParameter = ';path=/api'
     if (path) {
         pathParameter = ";path=" + path
     }
@@ -362,6 +362,42 @@ g.getCookie = function (cookieName) {
     return result
 }
 
+
+/*function sign(){
+ var phone = null;
+ $.ajax({
+ type:"get",
+ url:"/api/users/self",
+ dataType:"json",
+ success:function (e) {
+ let a = e.telephone;
+ phone = parseInt(a) ;
+ },
+ error:function (e) {
+ location.href = "signIn.html";
+ }
+ })
+
+ return phone;
+ }*/
+/*function sign(cookieName) {
+ var userId = g.getCookie(cookieName);
+ if(userId == ""){
+ location.href = "signIn.html"
+ }else{
+ $.ajax({
+ type:"get",
+ url:"/api/users/" + userId,
+ dataType:"json",
+ success:function (e) {
+ return e.getTemplate();
+ },
+ error:function (e) {
+ location.href = "signIn.html"
+ }
+ })
+ }
+ } */
 //config: {data: dataOrApi,
 // dataPostprocess: function(data, index, params){}, dataParams: {},
 // renderScenes: [{container: c, template: t, range: {lowerBound: 0, upperBound: 6}}, ...],

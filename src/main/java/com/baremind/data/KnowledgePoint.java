@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -36,15 +37,15 @@ public class KnowledgePoint {
     @Column(name = "video_url")
     private String videoUrl;
 
-    @Column(name = "is_show")
-    private Boolean isShow;
+    @Column(name = "show_time")
+    private Date showTime;
 
-    public Boolean getShow() {
-        return isShow;
+    public Date getShowTime() {
+        return showTime;
     }
 
-    public void setShow(Boolean show) {
-        isShow = show;
+    public void setShowTime(Date showTime) {
+        this.showTime = showTime;
     }
 
     public Long getId() {

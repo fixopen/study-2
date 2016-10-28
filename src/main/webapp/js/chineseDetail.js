@@ -22,7 +22,7 @@ $(function () {
                 type: "post",
                 url: "/api/comments",
                 data: JSON.stringify({
-                    userId: 1,
+                    //   userId: 1,
                     objectType: 'knowledge-point',
                     objectId: g.getUrlParameter("id"),
                     content: value
@@ -349,7 +349,7 @@ $(function () {
                         containerId: 'interaction'
                     })
 
-                    // likes
+                    // likes---点赞
                     var id = g.getUrlParameter("id")
                     $.ajax({
                         type: "get",
@@ -395,7 +395,7 @@ $(function () {
                                 }
                             }, false)
                         }
-                    })
+                    });
 
 
                     proc({
