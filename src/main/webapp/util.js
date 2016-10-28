@@ -361,7 +361,24 @@ g.getCookie = function (cookieName) {
     }
     return result
 }
-
+/*function sign(cookieName) {
+   var userId = g.getCookie(cookieName);
+    if(userId == ""){
+        location.href = "signIn.html"
+    }else{
+        $.ajax({
+            type:"get",
+            url:"/api/users/" + userId,
+            dataType:"json",
+            success:function (e) {
+                return e.getTemplate();
+            },
+            error:function (e) {
+                location.href = "signIn.html"
+            }
+        })
+    }
+} */
 //config: {data: dataOrApi,
 // dataPostprocess: function(data, index, params){}, dataParams: {},
 // renderScenes: [{container: c, template: t, range: {lowerBound: 0, upperBound: 6}}, ...],

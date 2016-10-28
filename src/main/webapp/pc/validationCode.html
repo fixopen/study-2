@@ -146,12 +146,26 @@
             }
             $.ajax({
                 type: "POST",
-                url: "/api/users/cards",
+                url: "/api/users/pccards",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (save) {
-                    if (save.status < 400) {
+                    let userId = JSON.stringify(save.userId);
+                    $.ajax({
+                        type: "get",
+                        url: "/api/users/" + userId,
+                        dataType: "json",
+                        success: function (e) {
+                            alert(JSON.stringify(e.password))
+                            alert("调到一个不用设置账户的页面")
+                        },
+                        error: function (e) {
+                            g.setCookie("phonecode", document.getElementById('phonecode').value)
+                            window.location.href = 'activateSuccess.html'
+                        }
+                    })
+                    /* if (save.status < 400) {
                         g.setCookie("phonecode", document.getElementById('phonecode').value)
                         window.location.href = 'activateSuccess.html'
 
@@ -161,9 +175,6 @@
                             case 500:
                                 document.getElementById("error").innerHTML = "<font size='10px' color='red' >你的手机号和别人都重复了</font>";
                                 break;
-                                /*case 412:
-                                 document.getElementById("tipid").innerHTML = "请返回的我的首页";
-                                 break;*/
                             case 520:
                                 document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520</font>";
                                 break;
@@ -181,27 +192,26 @@
                                 document.getElementById("error").innerHTML = "<font size='10px' color='red' >验证码超时</font>";
                                 break;
                             case 200:
+                                let filter ={
+                                    id :
+                                }
+                                $.ajax({
+                                    type:"get",
+                                    url:"/api/users?filter="+ JSON.stringify()
+                                })
                                 g.setCookie("phonecode", document.getElementById('phonecode').value)
                                 window.location.href = 'activateSuccess.html'
                                 break;
                         }
-                    }
+                    }*/
                 },
                 error: function (save) {
-                    if (save.status < 400) {
-                        g.setCookie("phonecode", document.getElementById('phonecode').value)
-                        window.location.href = 'activateSuccess.html'
-                    }
-                    else {
                         switch (save.status) {
                             case 500:
                                 document.getElementById("error").innerHTML = "<font size='10px' color='red' >手机号重复，请输出新的手机号</font>";
                                 break;
-                                /*case 412:
-                                 document.getElementById("tipid").innerHTML = "请返回的我的首页";
-                                 break;*/
                             case 520:
-                                document.getElementById("error").innerHTML = "<font size='10px' color='red' >后台错误520</font>";
+                                document.getElementById("error").innerHTML = "<font size='10px' color ='red' >后台错误520</font>";
                                 break;
                             case 404:
                                 document.getElementById("error").innerHTML = "<font size='10px' color='red' >卡号或密码错误</font>";
@@ -218,12 +228,10 @@
                             case 200:
                                 g.setCookie("phonecode", document.getElementById('phonecode').value)
                                 window.location.href = 'activateSuccess.html'
-
                                 break;
-                        }
-                    }
                 }
-            })
+                }
+            });
         } else {
 
         }
