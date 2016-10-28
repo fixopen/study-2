@@ -5,6 +5,7 @@ import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import javax.persistence.EntityManager;
@@ -127,7 +128,8 @@ public class Cards {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Cards> cards = JPAEntry.getList(Cards.class, filterObject);
             if (!cards.isEmpty()) {
-                result = Response.ok(new Gson().toJson(cards)).build();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                result = Response.ok(gson.toJson(cards)).build();
             }
         }
         return result;
@@ -142,7 +144,8 @@ public class Cards {
             result = Response.status(404).build();
             Card card = JPAEntry.getObject(Card.class, "id", id);
             if (card != null) {
-                result = Response.ok(new Gson().toJson(card)).build();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                result = Response.ok(gson.toJson(card)).build();
             }
         }
         return result;
@@ -157,7 +160,8 @@ public class Cards {
             result = Response.status(404).build();
             Card card = JPAEntry.getObject(Card.class, "userId", id);
             if (card != null) {
-                result = Response.ok(new Gson().toJson(card)).build();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                result = Response.ok(gson.toJson(card)).build();
             }
         }
         return result;

@@ -103,29 +103,7 @@ public class Subjects {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
-                List<Map<String, Object>> r = new ArrayList<>();
-                Date now = new Date();
-                Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-                for (Volume volume : volumes) {
-                    Map<String, Object> vm = new HashMap<>();
-                    vm.put("id", volume.getId());
-                    vm.put("grade", volume.getGrade());
-                    vm.put("order", volume.getOrder());
-                    vm.put("subjectId", volume.getSubjectId());
-                    vm.put("title", volume.getTitle());
-                    vm.put("type", "old");
-                    EntityManager em = JPAEntry.getEntityManager();
-                    String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.showTime > :yesterday AND l.showTime < :now";
-                    Query q = em.createQuery(stats, Long.class);
-                    q.setParameter("volumeId", volume.getId());
-                    q.setParameter("yesterday", yesterday);
-                    q.setParameter("now", now);
-                    Long count = (Long) q.getSingleResult();
-                    if (count > 0) {
-                        vm.put("type", "new");
-                    }
-                    r.add(vm);
-                }
+                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
                 result = Response.ok(new Gson().toJson(r)).build();
             }
         }
@@ -146,7 +124,8 @@ public class Subjects {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
-                result = Response.ok(new Gson().toJson(volumes)).build();
+                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
+                result = Response.ok(new Gson().toJson(r)).build();
             }
         }
         return result;

@@ -18,6 +18,17 @@ import java.util.*;
 
 @Path("volumes")
 public class Volumes {
+    public static List<Map<String, Object>> convertVolumes(List<Volume> volumes) {
+        List<Map<String, Object>> r = new ArrayList<>();
+        Date now = new Date();
+        Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        for (Volume volume : volumes) {
+            Map<String, Object> vm = Volume.convertToMap(volume, now, yesterday);
+            r.add(vm);
+        }
+        return r;
+    }
+
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,7 +53,8 @@ public class Volumes {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, filterObject, orders);
             if (!volumes.isEmpty()) {
-                result = Response.ok(new Gson().toJson(volumes)).build();
+                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
+                result = Response.ok(new Gson().toJson(r)).build();
             }
         }
         return result;
