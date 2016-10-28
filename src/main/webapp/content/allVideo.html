@@ -333,10 +333,18 @@
                 var m = moment().year(course[0][i][j].year).week(course[0][i][j].week).day(course[0][i][j].day)
                 course[0][i][j].month = m.month()
                 course[0][i][j].day = m.date()
-                if (course[0][i][j].grade == 20) {
-                    course[0][i][j].grade = '低年级'
+                if (course[0][i][j].grade == 1) {
+                    course[0][i][j].grade = '一年级'
+                } else if (course[0][i][j].grade == 2) {
+                    course[0][i][j].grade = '二年级'
+                } else if (course[0][i][j].grade == 3) {
+                    course[0][i][j].grade = '三年级'
+                } else if (course[0][i][j].grade == 4) {
+                    course[0][i][j].grade = '四年级'
+                } else if (course[0][i][j].grade == 5) {
+                    course[0][i][j].grade = '五年级'
                 } else {
-                    course[0][i][j].grade = '高年级'
+                    course[0][i][j].grade = '六年级'
                 }
                 switch (i) {
                     case 0:
@@ -397,7 +405,7 @@
     g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":2}', [
         {name: 'Accept', value: 'application/json'}
     ], null, function (result) {
-//        alert(JSON.stringify(result))
+       // alert(JSON.stringify(result))
         course[1] = result.data
         var state = {
             currentContainer: document.getElementById('math-currentVideoList'),
@@ -418,7 +426,7 @@
             document.getElementById("btn").style.display = "none";
             var va = document.getElementById("pullUp");
             $("#pullUp").text("没有更多视频，敬请期待");
-            curseDetailTap(); //点击“课程详情”
+          curseDetailTap(); //点击“课程详情”
         }
 
         for (var i = 0; i < course[1].length; ++i) {
@@ -426,10 +434,18 @@
                 var m = moment().year(course[1][i][j].year).week(course[1][i][j].week).day(course[1][i][j].day)
                 course[1][i][j].month = m.month()
                 course[1][i][j].day = m.date()
-                if (course[1][i][j].grade == 20) {
-                    course[1][i][j].grade = '低年级'
+                if (course[1][i][j].grade == 1) {
+                    course[1][i][j].grade = '一年级'
+                } else if (course[1][i][j].grade == 2) {
+                    course[1][i][j].grade = '二年级'
+                } else if (course[1][i][j].grade == 3) {
+                    course[1][i][j].grade = '三年级'
+                } else if (course[1][i][j].grade == 4) {
+                    course[1][i][j].grade = '四年级'
+                } else if (course[1][i][j].grade == 5) {
+                    course[1][i][j].grade = '五年级'
                 } else {
-                    course[1][i][j].grade = '高年级'
+                    course[1][i][j].grade = '六年级'
                 }
                 switch (i) {
                     case 0:
@@ -481,7 +497,7 @@
     })
 
     subjectTab();//课程选项卡
-
+//    curseDetailTap(); //点击“课程详情”
 </script>
 </body>
 </html>
