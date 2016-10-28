@@ -26,6 +26,7 @@ input[type="number"] {
 }
 
 /* 背景图 */
+
 .wrap {
     position: absolute;
     top: 0;
@@ -223,4 +224,5 @@ input[type="number"] {
     width: 2.5625rem;
     height: 2.21875rem;
 }
+
 /* new标签-end */

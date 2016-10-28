@@ -6,11 +6,6 @@ $(document).ready(function () {
         type: "get",
         url: 'api/subjects/1/low/volumes',
         success: function (volumesL) {
-            // proc({
-            //     templateId: 'volumes-template',
-            //     data: volumesL,
-            //     containerId: 'volumesL'
-            // });
             proc({
                 data: volumesL,
                 containerId: 'volumesL',
