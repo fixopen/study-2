@@ -105,8 +105,8 @@
             <tr>
                 <td><span class="xing">*</span>收货手机号：</td>
                 <td>
-                    <input type="text" class="info-input" id="phoneNumber" placeholder="请填写收货手机号">
-                    <i class="error-hou" id="erroru"><!--请填写收货手机号--></i>
+                    <input type="text" class="info-input" id="phoneNumber" readonly>
+                    <!--<i class="error-hou" id="erroru">&lt;!&ndash;请填写收货手机号&ndash;&gt;</i>placeholder="请填写收货手机号"-->
                 </td>
             </tr>
             <tr>
@@ -141,6 +141,7 @@
 </div>
 
 <script type="text/javascript">
+    let userId
     $(function () {
         //alert(g.getCookie("userId"))
         $("#birthday_container").birthday();
@@ -151,16 +152,31 @@
             nodata: "none"
         });
 
-
+        var phone = null;
+        $.ajax({
+            type:"get",
+            url:"/api/users/self",
+            dataType:"json",
+            success:function (e) {
+                userId = e.id
+                let a = e.telephone;
+                phone = parseInt(a) ;
+                //document.getElementById("phoneNumber").innerHTML = phone
+                $("#phoneNumber").val(phone)
+            },
+            error:function (e) {
+                location.href = "signIn.html";
+            }
+        })
     })
 
     let submit = document.getElementById("submit")
     submit.addEventListener('click', function (e) {
-        if ($("#phoneNumber").val().length != 11) {
+    /*    if ($("#phoneNumber").val().length != 11) {
             document.getElementById("erroru").innerHTML = "请输入11位手机号";
         } else {
             document.getElementById("erroru").innerHTML = "";
-
+*/
             if ($("#name").val() == "" || $("input[name='sex']:checked").val() == "" || $("#phoneNumber").val() == "" || $("#WechatNumber").val() == "" || $("#receipt_address").val() == "") {
                 popupHeight();//弹窗的宽高
                 submitPopup(); //点击"提交"按钮，弹出弹窗
@@ -190,48 +206,60 @@
                     receipt_address: address,
                     school: $("#school").val(),
                     classname: $("#class").val(),
-                    nickname: $("#WechatNumber").val()
+
+                }
+                let wechatdata = {
+                    userId:userId,
+                    info: $("#WechatNumber").val(),
+                    nickname: $("#name").val(),
+                    sex: $("input[name='sex']:checked").val(),
+                    city:cityval,
+                    province:provval
                 }
                 let filter = {
                     telephone: $("#phoneNumber").val()
                 }
-                $.ajax({
-                    type: "get",
-                    url: "/api/users/self",
-                    dataType: "json",
-                    success: function (user) {
                         $.ajax({
                             type: "put",
-                            url: "/api/users/" + user.id,
+                            url: "/api/users/" + userId,
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (u) {
+                                $.ajax({
+                                    type:"post",
+                                    url:"/api/wechat-users",
+                                    data: JSON.stringify(wechatdata),
+                                    dataType:"json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success:function(e){
+                                        location.href = "signIn.html";
+                                    },
+                                    error:function (e) {
+                                        alert(JSON.stringify(e))
+                                    }
+                                })
                                 alert("修改成功")
                             },
                             error: function (i) {
-                                alert("修改失败")
+                                alert(JSON.stringify(i))
                             }
                         })
-                    },
-                    /* error:function(user){
-                     $.ajax({
-                     type:"post",
-                     url:"/api/users",
-                     data: JSON.stringify(data),
-                     dataType: "json",
-                     contentType: "application/json; charset=utf-8",
-                     success: function (u) {
-                     alert("添加成功")
-                     },
-                     error:function(i){
-                     alert("添加失败")
-                     }
-                     })
-                     }*/
-                });
+
+//                     $.ajax({
+//                         type:"post",
+//                         url:"/api/users",
+//                         data: JSON.stringify(data),
+//                         dataType: "json",
+//                         contentType: "application/json; charset=utf-8",
+//                         success: function (u) {
+//                            alert("添加成功")
+//                         },
+//                         error:function(i){
+//                            alert("添加失败")
+//                         }
+//                     })
             }
-        }
     })
 </script>
 </body>

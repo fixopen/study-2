@@ -76,15 +76,24 @@
             url:"/api/users/self",
             dataType:"json",
             success:function (e) {
+                if(e.password){
+                    if(e.name  &&　e.sex  && e.telephone && e.birthday && e.receipt_address ){
+                        location.href = "signIn.html";
+                    }else{
+                        location.href = "perfectInformation.html";
+                    }
+                }else{
+
+                }
                 let a = e.telephone;
                 phone = parseInt(a) ;
                 document.getElementById("phonecodeId").innerHTML = phone
+
             },
             error:function (e) {
                 location.href = "signIn.html";
             }
         })
-
 
     })
 
@@ -104,19 +113,19 @@
             password: $("#pwd2").val()
          }
          alert(JSON.stringify(data))
-//         $.ajax({
-//             type:"post",
-//             url:"/api/users/",
-//             data:JSON.stringify(data),
-//             dataType:"json",
-//             contentType: "application/json; charset=utf-8",
-//             success:function(user){
-//                alert("成功");
-//             },
-//             error:function(user){
-//                alert("失败");
-//             }
-//         })
+         $.ajax({
+             type:"post",
+             url:"/api/users/",
+             data:JSON.stringify(data),
+             dataType:"json",
+             contentType: "application/json; charset=utf-8",
+             success:function(user){
+                 location.href = "perfectInformation.html.html";
+             },
+             error:function(user){
+                alert(JSON.stringify(user));
+             }
+         })
     })
     function validatePWD1() {
         var pwd1 = $("#pwd1").val();

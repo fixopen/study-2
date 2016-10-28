@@ -146,7 +146,7 @@
             }
             $.ajax({
                 type: "POST",
-                url: "/api/users/pccards",
+                url: "/api/users/cards",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -161,7 +161,7 @@
                             alert("调到一个不用设置账户的页面")
                         },
                         error: function (e) {
-                            g.setCookie("phonecode", document.getElementById('phonecode').value)
+//                            g.setCookie("phonecode", document.getElementById('phonecode').value)
                             window.location.href = 'activateSuccess.html'
                         }
                     })
