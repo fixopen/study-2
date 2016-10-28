@@ -70,14 +70,14 @@
 </script>
 <script>
     $(function () {
-
+        var phone = null;
         $.ajax({
             type:"get",
             url:"/api/users/self",
             dataType:"json",
             success:function (e) {
                 let a = e.telephone;
-                let phone = parseInt(a);
+                phone = parseInt(a) ;
                 document.getElementById("phonecodeId").innerHTML = phone
             },
             error:function (e) {
@@ -85,7 +85,6 @@
             }
         })
 
-        /*let phonecode = g.getCookie("phonecode")*/
 
     })
 
