@@ -424,9 +424,9 @@ public class KnowledgePoints {
                 if (order != 0) {
                     existknowledgePoint.setOrder(order);
                 }
-                Boolean show = knowledgePoint.getShow();
+                Date show = knowledgePoint.getShowTime();
                 if (show != null) {
-                    existknowledgePoint.setShow(show);
+                    existknowledgePoint.setShowTime(show);
                 }
                 JPAEntry.genericPut(existknowledgePoint);
                 result = Response.ok(existknowledgePoint).build();

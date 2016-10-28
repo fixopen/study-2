@@ -178,7 +178,8 @@ CREATE TABLE knowledge_points (
     id bigint NOT NULL,
     volume_id bigint,
     name character varying(64),
-    "order" integer
+    "order" integer,
+    show_time timestamp without time zone
 );
 
 

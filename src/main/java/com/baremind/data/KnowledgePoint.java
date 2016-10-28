@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -24,8 +25,8 @@ public class KnowledgePoint {
     @Column(name = "\"order\"")
     private int order;
 
-    @Column(name = "is_show")
-    private Boolean isShow;
+    @Column(name = "show_time")
+    private Date showTime;
 
     public Long getId() {
         return id;
@@ -59,11 +60,11 @@ public class KnowledgePoint {
         this.order = order;
     }
 
-    public Boolean getShow() {
-        return isShow;
+    public Date getShowTime() {
+        return showTime;
     }
 
-    public void setShow(Boolean show) {
-        isShow = show;
+    public void setShowTime(Date show) {
+        showTime = show;
     }
 }
