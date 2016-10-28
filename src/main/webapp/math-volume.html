@@ -51,20 +51,25 @@
 </div>
 
 <!--templates-->
-<template id="volumes-template">
+<template id="volumes-new-template">
     <li class="neir_li">
         <img class="new-label" src="img/new-label.png" alt="">
         <div class="neir_lidiv">
-            <a class="neir_pzi" href="#">${title}</a>
+            <a class="neir_pzi" data-id="${id}" data-type="volume"
+               href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
+        </div>
+    </li>
+</template>
+<template id="volumes-old-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" data-id="${id}" data-type="volume"
+               href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
         </div>
     </li>
 </template>
 <script type="text/javascript" src="js/math-volume.js"></script>
 <script type="text/javascript" src="basic.js"></script>
 <script type="text/javascript" src="js/turnOne.js"></script>
-<script type="text/javascript">
-    newClass();//课程更新弹窗
-</script>
-
 </body>
 </html>

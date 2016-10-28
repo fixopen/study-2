@@ -9,11 +9,6 @@ $(document).ready(function () {
             grade: 20
         }),
         success: function (volumesL) {
-            // proc({
-            //     templateId: 'volumes-template',
-            //     data: volumesL,
-            //     containerId: 'volumesL'
-            // });
             proc({
                 data: volumesL,
                 containerId: 'volumesL',
