@@ -3,7 +3,7 @@ $('.table_li').eq(0).css({"box-shadow": "0rem 0rem 1.25rem #fe6569"});
 $('.table_li').eq(0).children('img').show();
 
 
-$('.table_li').eq(0).click(function() {
+$('.table_li').eq(0).click(function () {
 
     $('.table_li').eq(0).children('img').show();
     $('.table_li').eq(1).children('img').hide();
@@ -14,7 +14,7 @@ $('.table_li').eq(0).click(function() {
 });
 
 
-$('.table_li').eq(1).click(function() {
+$('.table_li').eq(1).click(function () {
 
     $('.table_li').eq(0).children('img').hide();
     $('.table_li').eq(1).children('img').show();
@@ -27,7 +27,9 @@ $('.table_li').eq(1).click(function() {
 function newClass() { //课程更新弹窗
     $('.tan').show();
     $('.new-class').show();
-    $(".tan,.new-class").bind('touchmove', function(event) {
+
+
+    $(".tan,.new-class").bind('touchmove', function (event) {
         event.preventDefault();
     });
     $(".new-class").click(function () {
