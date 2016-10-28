@@ -28,6 +28,7 @@
 
 <!-- info-content -->
 <div id="card"></div>
+<div id="information"></div>
 <template id="card-template">
     <ul class="mine_zUl">
         <li class="mine_zuli">
@@ -36,7 +37,7 @@
         </li>
         <li class="mine_zuli">
             <span class="mine_leftsp">学习类型</span>
-            <span class="mine_rightip">${subjectName}</span>
+            <span class="mine_rightip">${subject}</span>
         </li>
         <li class="mine_zuli">
             <span class="mine_leftsp">激活时间</span>
@@ -69,7 +70,7 @@
         </tr>
     </table>
 </template>-->
-<!--<template id="information-template">
+<template id="information-template">
     <div class="inner">
         <div class="info-content">
             <table class="myinfo-table">
@@ -91,7 +92,7 @@
                 </tr>
                 <tr>
                     <td>收货地址：</td>
-                    <td>${address</td>
+                    <td>${location}</td>
                 </tr>
                 <tr>
                     <td>就读学校：</td>
@@ -109,7 +110,7 @@
         </div>
         <div class="perfect-bottom"></div>
     </div>
-</template>-->
+</template>
 <!-- copyright -->
 <div class="copyright">
     Copyright 北京小雨知时教育科技有限公司 京ICP备16047890号-1
@@ -129,31 +130,37 @@
             let u = e.id
             userId = parseInt(u);
             let filter = {
-                userId: userId
+                userId:userId
             }
             $.ajax({
                 type: 'get',
-                url: '/api/users/' + userId + '/cards',
+                url: '/api/wechat-users/?filter='+ JSON.stringify(filter),
+                dataType: 'json',
+                success: function (wechat) {
+                    e.info = wechat[0].info
+                   // alert(JSON.stringify(wechat))
+                    proc({
+                        containerId: 'information',
+                        data: e,
+                        templateId: 'information-template'
+                    })
+                },
+                error:function (wechat) {
+                    location.href = "perfectInformation.html";
+                }
+            })
+          $.ajax({
+                type: 'get',
+                url: '/api/users/self/cards',
                 dataType: 'json',
                 success: function (cards) {
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/subjects',
-                        dataType: 'json',
-                        success: function (subjects) {
-                            for (var i = 0; i < cards.length; ++i) {
-                                cards[i].subjectName = getSubjectNameById(subjects, cards[i].subject)
-                            }
-                            proc({
-                                containerId: 'card',
-                                data: cards,
-                                templateId: 'card-template'
-                            })
-                        },
-                        error: function (r) {
-                            alert('I am sorry, not get subjects')
-                        }
-                    })
+                   let car = JSON.stringify(cards)
+                   alert(car)
+                   /* proc({
+                        containerId: 'card',
+                        data: cards,
+                        templateId: 'card-template'
+                    })*/
                 },
                 error: function (r) {
                     if (r.status == 404) {
