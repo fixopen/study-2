@@ -59,6 +59,8 @@ public class JPAEntry {
 //        return result;
     }
 
+    //SELECT a FROM KnowledgePoint a WHERE a.volumeId = :volumeId AND a.showTime < :showTime
+    //setParameter("showTime", v)
     public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
         T result = null;
         EntityManager em = getEntityManager();
@@ -72,14 +74,22 @@ public class JPAEntry {
                 } else {
                     jpql += " AND ";
                 }
-                jpql += "a." + item.getKey() + " = :" + item.getKey();
+                String op = "=";
+                if (item.getValue() instanceof Condition) {
+                    op = ((Condition) item.getValue()).getOp();
+                }
+                jpql += "a." + item.getKey() + op + " :" + item.getKey();
             }
         }
         try {
             TypedQuery<T> q = em.createQuery(jpql, type);
             if (conditions != null) {
                 for (Map.Entry<String, Object> item : conditions.entrySet()) {
-                    q.setParameter(item.getKey(), item.getValue());
+                    Object value = item.getValue();
+                    if (item.getValue() instanceof Condition) {
+                        value = ((Condition) item.getValue()).getValue();
+                    }
+                    q.setParameter(item.getKey(), value);
                 }
             }
             result = q.getSingleResult();
@@ -124,7 +134,11 @@ public class JPAEntry {
                 } else {
                     jpql += " AND ";
                 }
-                jpql += "o." + item.getKey() + " = :" + item.getKey();
+                String op = "=";
+                if (item.getValue() instanceof Condition) {
+                    op = ((Condition) item.getValue()).getOp();
+                }
+                jpql += "o." + item.getKey() + op + " :" + item.getKey();
             }
         }
         if (orders != null) {
@@ -142,7 +156,11 @@ public class JPAEntry {
         final TypedQuery<T> q = em.createQuery(jpql, type);
         if (conditions != null) {
             conditions.forEach((key, value) -> {
-                q.setParameter(key, value);
+                Object v = value;
+                if (value instanceof Condition) {
+                    v = ((Condition) value).getValue();
+                }
+                q.setParameter(key, v);
             });
             //for (Map.Entry<String, Object> item : conditions.entrySet()) {
             //    q.setParameter(item.getKey(), item.getValue());
