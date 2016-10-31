@@ -55,6 +55,7 @@
     box-shadow: inset 0rem 0rem 0.5rem #f2e5ba;
     border-radius: 0.3125rem;
     box-sizing: border-box;
+    background-color: #fffcf2;
     position: relative;
     top: -0.625rem;
     left: 0rem;
@@ -71,7 +72,7 @@
 .neir0_UL {
     padding: 1.5625rem 0.625rem;
     box-sizing: border-box;
-    background-color: #fffcf2;
+
 }
 
 .neir_li {
