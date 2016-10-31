@@ -108,6 +108,7 @@ public class Volumes {
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
                     kpm.put("showTime", kp.getShowTime());
+
                     kpm.put("likeCount", 0);
                     kpm.put("starttype", "old");
                     Date now = new Date();
@@ -123,7 +124,6 @@ public class Volumes {
                     if (count > 0) {
                         kpm.put("starttype", "new");
                     }
-
 
 
                     Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");

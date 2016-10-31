@@ -1,7 +1,7 @@
 ﻿$(function () {
     // var userId = g.getUrlParameter('userid')
     // g.setCookie('userId', userId)
-  // location.reload();
+    // location.reload();
     proc({
         templateId: 'title-template',
         data: {title: g.getUrlParameter('volume')},
@@ -20,31 +20,37 @@
         async: false,
         success: function (knowledgePoints) {
             //alert(JSON.stringify(knowledgePoints))
-            // var now = new Date();
-            // for (var i = 0; i < knowledgePoints.length; ++i) {
-            //     var t = knowledgePoints[i].showTime;
-            //     if (t < now - 24) {
-            //         knowledgePoints[i].state = 'jiude';
-            //     } else {
-            //         knowledgePoints[i].state = 'xinde';
-            //     }
-            // }
+
+            //     proc({
+            //         data: knowledgePoints,
+            //         containerId: 'knowledge-point',
+            //         templateId: 'knowledge-point-template'
+            // });
+
+            var now = new Date()
+            for (var i = 0; i < knowledgePoints.length; ++i) {
+                var t = knowledgePoints[i].showTime;
+                //  console.log(t);
+                var t = new Date(t.replace(/-/g, "/"));
+                var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
+                if (h < 24) {
+                    knowledgePoints[i].type = 'new';
+                    // $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
+                } else {
+                    knowledgePoints[i].type = 'old';
+                    // $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
+                }
+            }
 
             proc({
                 data: knowledgePoints,
                 containerId: 'knowledge-point',
-                templateId: 'knowledge-point-template'
-            });
-
-            // for (var i = 0; i < knowledgePoints.length; i++) {
-            //     if (knowledgePoints[i].state == 'old') {
-            //         $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
-            //     } else if (knowledgePoints[i].state == 'new') {
-            //         $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
-            //     }
-            // }
+                alterTemplates: [
+                    {type: 'old', templateId: 'knowledge-point-old-template'},
+                    {type: 'new', templateId: 'knowledge-point-new-template'},
+                ]
+            })
 
         }
     })
-
 })
