@@ -50,6 +50,19 @@ $(function () {
                     {type: 'pk', templateId: 'knowledge-test-template'}
                 ]
             });
+            var now = new Date()
+            for (var i = 0; i < knowledgePoints.length; ++i) {
+                var t = new Date(knowledgePoints[i].showTime.replace(/-/g, "/"));
+                var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
+                if (h < 24) {
+                   // knowledgePoints[i].type = 'new';
+                   $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
+                } else {
+                   // knowledgePoints[i].type = 'old';
+                     $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
+                }
+            }
+
             // proc({
             //     data: kpt,
             //     containerId: 'knowledge-point',
