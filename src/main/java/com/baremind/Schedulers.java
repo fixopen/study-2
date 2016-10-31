@@ -95,8 +95,8 @@ public class Schedulers {
             ArrayList<Scheduler> a1 = new ArrayList<>();
             ArrayList<Scheduler> a = new ArrayList<>();
 
+            Date date = new Date();
             for (Scheduler scheduler : schedulers) {
-                Date date = new Date();
 
                 boolean flag1 = date.before(scheduler.getStartTime());
                 boolean flag2 = date.before(scheduler.getEndTime());
@@ -116,7 +116,6 @@ public class Schedulers {
                     //播过
                 }
             }
-
             ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
             result.add(a1);//正播
             result.add(a2); //未播
