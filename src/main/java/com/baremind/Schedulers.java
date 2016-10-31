@@ -62,63 +62,28 @@ public class Schedulers {
         Response r = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-            //schedulers.remove(0);
-            Collections.sort(schedulers, (left, right) -> {
-                int result = 0;
-                if (left.getYear() > right.getYear()) {
-                    result = -1;
-                } else if (left.getYear() < right.getYear()) {
-                    result = 1;
-                } else {
-                    if (left.getWeek() > right.getWeek()) {
-                        result = -1;
-                    } else if (left.getWeek() < right.getWeek()) {
-                        result = 1;
-                    } else {
-                        if (left.getDay() > right.getDay()) {
-                            result = -1;
-                        } else if (left.getDay() < right.getDay()) {
-                            result = 1;
-                        } else {
-                            if (left.getStartTime().getTime() > right.getStartTime().getTime()) {
-                                result = -1;
-                            } else if (left.getStartTime().getTime() < right.getStartTime().getTime()) {
-                                result = 1;
-                            }
-                        }
-                    }
-                }
-                return result;
-            });
-            ArrayList<Scheduler> a2 = new ArrayList<>();
-            ArrayList<Scheduler> a1 = new ArrayList<>();
-            ArrayList<Scheduler> a = new ArrayList<>();
-
-            Date date = new Date();
+            Map<String, String> orders = new HashMap<>();
+            orders.put("startTime", "DESC");
+            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
+            ArrayList<Scheduler> featured = new ArrayList<>();
+            ArrayList<Scheduler> playing = new ArrayList<>();
+            ArrayList<Scheduler> passed = new ArrayList<>();
+            Date now = new Date();
             for (Scheduler scheduler : schedulers) {
-                boolean flag1 = date.before(scheduler.getStartTime());
-                boolean flag2 = date.before(scheduler.getEndTime());
-                System.out.print("[flag1] " + flag1);
-                System.out.print("[flag2] " + flag2);
-                if (flag1 == false && flag2 == true) {
-                    a1.add(scheduler);
-                    //正播
-                }
-                if (flag1 == true && flag2 == true) {
-                    a2.add(scheduler);
-                    //未播
-
-                }
-                if (flag1 == false && flag2 == false) {
-                    a.add(scheduler);
-                    //播过
+                if (now.before(scheduler.getStartTime())) {
+                    featured.add(scheduler);
+                } else {
+                    if (now.before(scheduler.getEndTime())) {
+                        playing.add(scheduler);
+                    } else {
+                        passed.add(scheduler);
+                    }
                 }
             }
             ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
-            result.add(a1);//正播
-            result.add(a2); //未播
-            result.add(a);//播过
+            result.add(playing);//正播
+            result.add(featured); //未播
+            result.add(passed);//播过
             //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             r = Response.ok(gson.toJson(result)).build();
