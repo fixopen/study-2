@@ -71,6 +71,7 @@
 .neir0_UL {
     padding: 1.5625rem 0.625rem;
     box-sizing: border-box;
+    background-color: #fffcf2;
 }
 
 .neir_li {
@@ -78,6 +79,7 @@
     margin: 0.625rem;
     background-color: #ebfffb;
     border-radius: 1.25rem;
+    position: relative;
 }
 
 .neir_lidiv {

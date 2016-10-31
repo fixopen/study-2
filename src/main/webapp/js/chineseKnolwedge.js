@@ -29,11 +29,21 @@
             //         knowledgePoints[i].state = 'xinde';
             //     }
             // }
+
             proc({
                 data: knowledgePoints,
                 containerId: 'knowledge-point',
                 templateId: 'knowledge-point-template'
             });
+
+            // for (var i = 0; i < knowledgePoints.length; i++) {
+            //     if (knowledgePoints[i].state == 'old') {
+            //         $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
+            //     } else if (knowledgePoints[i].state == 'new') {
+            //         $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
+            //     }
+            // }
+
         }
     })
 

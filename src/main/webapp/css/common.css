@@ -211,8 +211,8 @@ input[type="number"] {
     display: none;
 }
 
-/* 课程更新弹窗-end 2016-10-27 */
-/* new标签-start */
+/*!* 课程更新弹窗-end 2016-10-27 *!*/
+/*!* new标签-start *!*/
 .new-label {
     position: absolute;
     left: -2.2rem;
