@@ -213,16 +213,6 @@ input[type="number"] {
 
 /* 课程更新弹窗-end 2016-10-27 */
 /* new标签-start */
-.new-label {
-    position: absolute;
-    left: -2.2rem;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
-    width: 2.5625rem;
-    height: 2.21875rem;
-}
+
 
 /* new标签-end */

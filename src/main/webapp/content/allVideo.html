@@ -283,19 +283,31 @@
     var refreshCourseState = function () {
         var now = new Date()
         for (var i = 0; i < course[0].length; ++i) {
-            var ET = Date.parse(course[0][i].endTime)
+            var endYear = course[0][i].endTime.substring(0,4)
+            var endMonth = course[0][i].endTime.substring(5,7)
+            var endDay = course[0][i].endTime.substring(8,10)
+            var endHour = course[0][i].endTime.substring(11,13)
+            var endMinute = course[0][i].endTime.substring(14,16)
+            var endHourSecond = course[0][i].endTime.substring(17,19)
+            var ET = new Date(parseInt(endYear), parseInt(endMonth),parseInt(endDay),parseInt(endHour),parseInt(endMinute),parseInt(endHourSecond))
 //            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
 //            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
-//            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)
+//            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)n
             course[0][i].type = 'current'
-            if (ET.getTime() < now.getTime()) {
+            if (+ET < +now) {//对于Date类型的变量，前面加+表示转换为其内部数值。
                 course[0][i].type = 'passed'
                 course[2].unshift(course[0][i])//向数组的开头添加一个或更多元素，并返回新的长度
                 course[0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
             }
         }
         for (var i = 0; i < course[1].length; ++i) {
-            var ST = Date.parse(course[1][i].startTime)
+            var startYear = course[0][i].startTime.substring(0,4)
+            var startMonth = course[0][i].startTime.substring(5,7)
+            var startDay = course[0][i].startTime.substring(8,10)
+            var startHour = course[0][i].startTime.substring(11,13)
+            var startMinute = course[0][i].startTime.substring(14,16)
+            var startSecond = course[0][i].startTime.substring(17,19)
+            var ST = new Date(parseInt(startYear), parseInt(startMonth), parseInt(startDay),parseInt(startHour),parseInt(startMinute),parseInt(startSecond))
 //            var startHour = parseInt(course[1][i].startTime.substr(0, 2))
 //            var startMinute = parseInt(course[1][i].startTime.substr(3, 2))
 //            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
@@ -305,7 +317,7 @@
 //            var nowTime = moment(now)
 //            alert('now year: ' + nowTime.year() + ' month: ' + nowTime.month() + ' day: ' + nowTime.date())
 //            alert('startTime: ' + ST.toDate().getTime() + '\n now: ' + now.getTime() + '\n diff is ' + (ST.toDate().getTime() - now.getTime()) / 1000 / 3600 / 24)
-            if (ST.getTime() < now.getTime()) {
+            if (+ST < +now) {
                 course[1][i].type = 'current'
                 course[0].unshift(course[1][i])
                 course[1].splice(i, 1)
