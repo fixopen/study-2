@@ -76,20 +76,20 @@
     cardPosition();//请激活卡号垂直居中对齐
 </script>
 <script type="text/javascript">
-    function forget(){
-         if($("#telephone").val() == "" && $("#telephone").val().length !=11 ){
-             document.getElementById("errortelephone").innerHTML="格式不正确，请输入正确的手机号！"
-         }else{
-             location.href="forgetPassword.html";
-         }
-     }
+    function forget() {
+        if ($("#telephone").val() == "" && $("#telephone").val().length != 11) {
+            document.getElementById("errortelephone").innerHTML = "格式不正确，请输入正确的手机号！"
+        } else {
+            location.href = "forgetPassword.html";
+        }
+    }
     var submit = document.getElementById("submit");
     submit.addEventListener('click', function (e) {
         var telephone = $("#telephone").val();
         var password = $("#password").val();
-        if($("#telephone").val() == "" && $("#telephone").val().length !=11 ) {
-           document.getElementById("errortelephone").innerHTML="格式不正确，请输入正确的手机号！"
-        }else{
+        if ($("#telephone").val() == "" && $("#telephone").val().length != 11) {
+            document.getElementById("errortelephone").innerHTML = "格式不正确，请输入正确的手机号！"
+        } else {
             var data = {
                 telephone: telephone,
                 password: password

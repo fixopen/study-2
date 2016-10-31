@@ -127,7 +127,6 @@ public class Volumes {
                     }
 
 
-
                     Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
                     if (likeCount != null) {
                         kpm.put("likeCount", likeCount);
