@@ -1,6 +1,8 @@
 package com.baremind;
+
 import java.text.*;
 import java.util.*;
+
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -107,16 +109,16 @@ public class Schedulers {
                 boolean flag2 = date.before(scheduler.getEndTime());
                 System.out.print("[flag1] " + flag1);
                 System.out.print("[flag2] " + flag2);
-                if(flag1 == false && flag2 == true){
+                if (flag1 == false && flag2 == true) {
                     a1.add(scheduler);
                     //正播
                 }
-                if(flag1 == true && flag2 == true){
+                if (flag1 == true && flag2 == true) {
                     a2.add(scheduler);
                     //未播
 
                 }
-                if(flag1 == false && flag2 == false){
+                if (flag1 == false && flag2 == false) {
                     a.add(scheduler);
                     //播过
                 }

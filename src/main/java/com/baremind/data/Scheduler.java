@@ -113,14 +113,14 @@ public class Scheduler {
         this.week = week;
     }
 
- /*   public int getState() {
-        return state;
-    }
+    /*   public int getState() {
+           return state;
+       }
 
-    public void setState(int state) {
-        this.state = state;
-    }
-*/
+       public void setState(int state) {
+           this.state = state;
+       }
+   */
     public Date getStartTime() {
         return startTime;
     }
