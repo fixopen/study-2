@@ -279,48 +279,85 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script type="text/javascript">
+    curseDetailTap(); //点击“课程详情”
     var course = []
-    var refreshCourseState = function () {
+    var refreshChineseState = function () {
         var now = new Date()
-        for (var i = 0; i < course[0].length; ++i) {
-            var endYear = course[0][i].endTime.substring(0,4)
-            var endMonth = course[0][i].endTime.substring(5,7)
-            var endDay = course[0][i].endTime.substring(8,10)
-            var endHour = course[0][i].endTime.substring(11,13)
-            var endMinute = course[0][i].endTime.substring(14,16)
-            var endHourSecond = course[0][i].endTime.substring(17,19)
-            var ET = new Date(parseInt(endYear), parseInt(endMonth),parseInt(endDay),parseInt(endHour),parseInt(endMinute),parseInt(endHourSecond))
+        for (var i = 0; i < course[0][0].length; ++i) {
+            var endYear = course[0][0][i].endTime.substring(0,4)
+            var endMonth = course[0][0][i].endTime.substring(5,7)
+            var endDay = course[0][0][i].endTime.substring(8,10)
+            var endHour = course[0][0][i].endTime.substring(11,13)
+            var endMinute = course[0][0][i].endTime.substring(14,16)
+            var endSecond = course[0][0][i].endTime.substring(17,19)
+            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
 //            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
 //            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
 //            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)n
             course[0][i].type = 'current'
             if (+ET < +now) {//对于Date类型的变量，前面加+表示转换为其内部数值。
-                course[0][i].type = 'passed'
-                course[2].unshift(course[0][i])//向数组的开头添加一个或更多元素，并返回新的长度
-                course[0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
+                course[0][0][i].type = 'passed'
+                course[0][2].unshift(course[0][0][i])//向数组的开头添加一个或更多元素，并返回新的长度
+                course[0][0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
             }
         }
-        for (var i = 0; i < course[1].length; ++i) {
-            var startYear = course[0][i].startTime.substring(0,4)
-            var startMonth = course[0][i].startTime.substring(5,7)
-            var startDay = course[0][i].startTime.substring(8,10)
-            var startHour = course[0][i].startTime.substring(11,13)
-            var startMinute = course[0][i].startTime.substring(14,16)
-            var startSecond = course[0][i].startTime.substring(17,19)
-            var ST = new Date(parseInt(startYear), parseInt(startMonth), parseInt(startDay),parseInt(startHour),parseInt(startMinute),parseInt(startSecond))
+        for (var i = 0; i < course[0][1].length; ++i) {
+            var startYear = course[0][1][i].startTime.substring(0,4)
+            var startMonth = course[0][1][i].startTime.substring(5,7)
+            var startDay = course[0][1][i].startTime.substring(8,10)
+            var startHour = course[0][1][i].startTime.substring(11,13)
+            var startMinute = course[0][1][i].startTime.substring(14,16)
+            var startSecond = course[0][1][i].startTime.substring(17,19)
+            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay),parseInt(startHour),parseInt(startMinute),parseInt(startSecond))
 //            var startHour = parseInt(course[1][i].startTime.substr(0, 2))
 //            var startMinute = parseInt(course[1][i].startTime.substr(3, 2))
 //            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
-            course[1][i].type = 'future'
+            course[0][1][i].type = 'future'
 //            alert('ST year: ' + ST.year() + ' month: ' + ST.month() + ' day: ' + ST.date())
 //            alert('now year: ' + now.getYear() + ' month: ' + now.getMonth() + ' day: ' + now.getDate())
 //            var nowTime = moment(now)
 //            alert('now year: ' + nowTime.year() + ' month: ' + nowTime.month() + ' day: ' + nowTime.date())
 //            alert('startTime: ' + ST.toDate().getTime() + '\n now: ' + now.getTime() + '\n diff is ' + (ST.toDate().getTime() - now.getTime()) / 1000 / 3600 / 24)
             if (+ST < +now) {
-                course[1][i].type = 'current'
-                course[0].unshift(course[1][i])
-                course[1].splice(i, 1)
+                course[0][1][i].type = 'current'
+                course[0][0].unshift(course[0][1][i])
+                course[0][1].splice(i, 1)
+            }
+        }
+    }
+    var refreshMathState = function () {
+        var now = new Date()
+        for (var i = 0; i < course[1][0].length; ++i) {
+            var endYear = course[1][0][i].endTime.substring(0,4)
+            var endMonth = course[1][0][i].endTime.substring(5,7)
+            var endDay = course[1][0][i].endTime.substring(8,10)
+            var endHour = course[1][0][i].endTime.substring(11,13)
+            var endMinute = course[1][0][i].endTime.substring(14,16)
+            var endSecond = course[1][0][i].endTime.substring(17,19)
+            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1,parseInt(endDay),parseInt(endHour),parseInt(endMinute),parseInt(endSecond))
+//            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
+//            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
+//            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)n
+            course[1][i].type = 'current'
+            if (+ET < +now) {//对于Date类型的变量，前面加+表示转换为其内部数值。
+                course[1][0][i].type = 'passed'
+                course[1][2].unshift(course[0][0][i])//向数组的开头添加一个或更多元素，并返回新的长度
+                course[1][0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
+            }
+        }
+        for (var i = 0; i < course[1][1].length; ++i) {
+            var startYear = course[1][1][i].startTime.substring(0,4)
+            var startMonth = course[1][1][i].startTime.substring(5,7)
+            var startDay = course[1][1][i].startTime.substring(8,10)
+            var startHour = course[1][1][i].startTime.substring(11,13)
+            var startMinute = course[1][1][i].startTime.substring(14,16)
+            var startSecond = course[1][1][i].startTime.substring(17,19)
+            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay),parseInt(startHour),parseInt(startMinute),parseInt(startSecond))
+            course[1][1][i].type = 'future'
+            if (+ST < +now) {
+                course[1][1][i].type = 'current'
+                course[1][0].unshift(course[1][1][i])
+                course[1][1].splice(i, 1)
             }
         }
     }
@@ -397,7 +434,7 @@
         })
 
         setInterval(function () {
-            refreshCourseState()
+            refreshChineseState()
             state.currentContainer.innerHTML = ''
             proc({
                 container: state.currentContainer,
@@ -491,7 +528,7 @@
 //            $("#pullUp").text("没有更多视频，敬请期待");
 //        }
         setInterval(function () {
-            refreshCourseState()
+            refreshMathState()
             state.currentContainer.innerHTML = ''
             proc({
                 container: state.currentContainer,
