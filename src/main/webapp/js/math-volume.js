@@ -33,12 +33,12 @@ $(document).ready(function () {
     });
     $.ajax({
         type: "get",
-        url: '/api/subjects/' + 2+ '/popup',
+        url: '/api/subjects/' + 2 + '/popup',
         dataType: "json",
         success: function (pop) {
             //{"popup": true|false}
             var isPopup = pop.popup
-            if(!isPopup){
+            if (!isPopup) {
                 newClass();//课程更新弹窗
                 $.ajax({
                     type: "post",
