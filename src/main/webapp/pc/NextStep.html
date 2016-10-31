@@ -75,7 +75,7 @@
     地址：北京市海淀区上地信息路1号2号楼5层505 电话：010-12345678
 </div>
 <script>
-    let Account = g.getCookie("Changepassword")
+    let Account = g.getCookie("phone");
     document.getElementById("Accountnumber").innerHTML = Account
 
     let p1 = document.getElementById("pwd1");
@@ -88,26 +88,13 @@
     })
     let next = document.getElementById("next");
     next.addEventListener('click', function () {
-        let filter = {
-            telephone: Account
-        }
-        $.ajax({
-            type: "get",
-            url: "/api/users?filter=" + JSON.stringify(filter),
-            data: "json",
-            success: function (e) {
-                alert("成功")
-            },
-            error: function (e) {
-                alert("错误")
-            }
-        })
+
         /*let data = {
          password:pwd2
          }
          $.ajax({
          type:"put",
-         url:"/api/users/",
+         url:"/api/users/"+ ,
          data:JSON.stringify(data),
          dataType:"json",
          success:function(){

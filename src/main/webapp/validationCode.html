@@ -19,8 +19,8 @@
     <script type="text/javascript" src="zepto/event.js"></script>
     <script type="text/javascript" src="zepto/touch.js"></script>
     <script type="text/javascript" src="zepto/selector.js"></script>
-    <script type="text/javascript" src="util.js"></script>
     -->
+    <script type="text/javascript" src="util.js"></script>
     <script>
         window.addEventListener('load', function (e) {
             var cardNo = document.getElementById("cardNo")
@@ -29,15 +29,15 @@
             }, false);
         }, false);
 
-        var getUrlParameter = function (name) {
-            var result = null;
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-            var r = window.location.search.substr(1).match(reg); //匹配目标参数
-            if (r != null) {
-                result = decodeURI(r[2]);
-            }
-            return result; //返回参数值
-        }
+        //        var getUrlParameter = function (name) {
+        //            var result = null;
+        //            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        //            var r = window.location.search.substr(1).match(reg); //匹配目标参数
+        //            if (r != null) {
+        //                result = decodeURI(r[2]);
+        //            }
+        //            return result; //返回参数值
+        //        }
 
         var ajax = function (method, url, headers, data, postProcess) {
             //alert('enter');
@@ -73,7 +73,10 @@
             //alert('send content');
         }
 
-        var userId = getUrlParameter('userid');
+        var userId = g.getUrlParameter('userid');
+        if (userId) {
+            g.setCookie("userId", userId)
+        }
         //var sessionId = getUrlParameter('sessionid')
         //var openId = getUrlParameter('openid');
 
@@ -168,7 +171,7 @@
                 data.password = document.getElementById('password').value;
                 data.phoneNumber = document.getElementById('phoneNumber').value;
                 data.validCode = document.getElementById('validCode').value;
-                ajax('POST', 'api/users/' + userId + '/cards', [
+                ajax('POST', 'api/users/self/cards', [
                     {name: 'Content-Type', value: 'application/json'},
                     {name: 'Accept', value: 'application/json'}
                 ], data, function (r) {
