@@ -7,7 +7,6 @@ import com.baremind.utils.Condition;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

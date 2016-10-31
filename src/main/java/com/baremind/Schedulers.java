@@ -1,8 +1,5 @@
 package com.baremind;
 
-import java.text.*;
-import java.util.*;
-
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -13,9 +10,7 @@ import com.google.gson.GsonBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.time.Instant;
+import java.util.*;
 
 
 //GET /api/schedulers/this-week
