@@ -109,7 +109,7 @@ public class Volumes {
                     kpm.put("name", kp.getTitle());
                     kpm.put("showTime", kp.getShowTime());
                     kpm.put("likeCount", 0);
-                    kpm.put("starttype", "old");
+                    kpm.put("stateType", "old");
                     Date now = new Date();
                     Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
 
@@ -121,7 +121,7 @@ public class Volumes {
                     q.setParameter("now", now);
                     Long count = (Long) q.getSingleResult();
                     if (count > 0) {
-                        kpm.put("starttype", "new");
+                        kpm.put("stateType", "new");
                     }
 
 
