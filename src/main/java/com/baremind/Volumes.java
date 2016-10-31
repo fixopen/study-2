@@ -7,6 +7,7 @@ import com.baremind.utils.Condition;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -107,7 +108,8 @@ public class Volumes {
                     kpm.put("id", kp.getId());
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
-                    kpm.put("showTime", kp.getShowTime());
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                    kpm.put("showTime", gson.toJson(kp.getShowTime()));
                     kpm.put("likeCount", 0);
                     kpm.put("stateType", "old");
                     Date now = new Date();
@@ -121,7 +123,7 @@ public class Volumes {
                     q.setParameter("now", now);
                     Long count = (Long) q.getSingleResult();
                     if (count > 0) {
-                        kpm.put("stateType", "new");
+                        kpm.put("stateType ", "new");
                     }
 
 
