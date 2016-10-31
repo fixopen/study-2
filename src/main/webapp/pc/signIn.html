@@ -76,84 +76,76 @@
     cardPosition();//请激活卡号垂直居中对齐
 </script>
 <script type="text/javascript">
-    /*function forget(){
-     if($("#telephone").val() == "" || $("#telephone").val().length !=11 ){
-     alert("手机号格式不正确")
-     }else{
-     g.setCookie("Changepassword",$("#telephone").val())
-     location.href="forgetPassword.html";
+    function forget(){
+         if($("#telephone").val() == "" && $("#telephone").val().length !=11 ){
+             document.getElementById("errortelephone").innerHTML="格式不正确，请输入正确的手机号！"
+         }else{
+             location.href="forgetPassword.html";
+         }
      }
-
-     }*/
     var submit = document.getElementById("submit");
     submit.addEventListener('click', function (e) {
         var telephone = $("#telephone").val();
         var password = $("#password").val();
-        var data = {
-            telephone: telephone,
-            password: password
-        }
-        $.ajax({
-            type: "put",
-            url: "/api/sessions",
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (user) {
-                if (user.status == 404) {
-                    alert("用户名或密码错误")
-                } else {
-                    alert("成功")
-                    location.href = "perfectInformation.html";
-                }
-            },
-            error: function (user) {
-                if (user.status == 404) {
-                    alert("用户名或密码错误")
-                } else {
-                    alert("成功")
-                    location.href = "perfectInformation.html";
-                }
-                /*$.ajax({
-                 type:"get",
-                 url:"/api/users?filter="+ JSON.stringify(tele),
-                 success:function(users){
-                 /!*var user = JSON.stringify(users.id);*!/
-                 for(var i=0;i<users.length;++i){
-                 userId = users[i].id
-
-                 $.ajax({
-                 type:"get",
-                 url:"/api/cards/userId/"+ userId,
-                 dataType:"json",
-                 success:function(cards){
-
-                 },
-                 error:function(cards){
-                 tips.innerHTML = "此号码尚未绑卡激活，请重新输入"
-                 }
-                 })
-                 }
-                 //alert(users.id)
-                 tip.innerHTML = "密码错误，请输入6-16位密码"
-                 },
-                 error:function(users){
-                 tips.innerHTML = "此号码尚未绑卡激活，请重新输入"
-                 }
-                 })*/
+        if($("#telephone").val() == "" && $("#telephone").val().length !=11 ) {
+           document.getElementById("errortelephone").innerHTML="格式不正确，请输入正确的手机号！"
+        }else{
+            var data = {
+                telephone: telephone,
+                password: password
             }
-        })
+            $.ajax({
+                type: "put",
+                url: "/api/sessions",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (user) {
+                    if (user.status == 404) {
+                        alert("用户名或密码错误")
+                    } else {
+                        alert("成功")
+                        location.href = "perfectInformation.html";
+                    }
+                },
+                error: function (user) {
+                    if (user.status == 404) {
+                        alert("用户名或密码错误")
+                    } else {
+                        alert("成功")
+                        location.href = "perfectInformation.html";
+                    }
+                    /*$.ajax({
+                     type:"get",
+                     url:"/api/users?filter="+ JSON.stringify(tele),
+                     success:function(users){
+                     /!*var user = JSON.stringify(users.id);*!/
+                     for(var i=0;i<users.length;++i){
+                     userId = users[i].id
+
+                     $.ajax({
+                     type:"get",
+                     url:"/api/cards/userId/"+ userId,
+                     dataType:"json",
+                     success:function(cards){
+
+                     },
+                     error:function(cards){
+                     tips.innerHTML = "此号码尚未绑卡激活，请重新输入"
+                     }
+                     })
+                     }
+                     //alert(users.id)
+                     tip.innerHTML = "密码错误，请输入6-16位密码"
+                     },
+                     error:function(users){
+                     tips.innerHTML = "此号码尚未绑卡激活，请重新输入"
+                     }
+                     })*/
+                }
+            })
+        }
     })
-    /*function submit(){
-
-     /!*var tele = {
-     telephone: telephone
-     }*!/
-     /!*var userId;
-     var tips = document.getElementById("errortelephone");
-     var tip = document.getElementById("errorpassword");*!/
-
-     }*/
 </script>
 </body>
 </html>

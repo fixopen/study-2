@@ -8,6 +8,7 @@ import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
@@ -221,7 +222,10 @@ public class Users {
         if (admin != null && admin.getIsAdministrator()) {
             List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
             if (!cards.isEmpty()) {
-                result = Response.ok(new Gson().toJson(cards)).build();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+               // result = Response.ok(gson.toJson(scheduler)).build();
+                result = Response.ok(gson.toJson(cards)).build();
             }
         }
         return result;
@@ -234,7 +238,8 @@ public class Users {
         Response result = Response.status(404).build();
         List<Card> cards = JPAEntry.getList(Card.class, "userId", Long.parseLong(userId));
         if (!cards.isEmpty()) {
-            result = Response.ok(new Gson().toJson(cards)).build();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(cards)).build();
         }
         return result;
     }
@@ -543,7 +548,8 @@ public class Users {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<User> users = JPAEntry.getList(User.class, filterObject);
             if (!users.isEmpty()) {
-                result = Response.ok(new Gson().toJson(users)).build();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                result = Response.ok(gson.toJson(users)).build();
             }
         }
         return result;
@@ -560,7 +566,8 @@ public class Users {
                 result = Response.status(404).build();
                 User user = JPAEntry.getObject(User.class, "id", id);
                 if (user != null) {
-                    result = Response.ok(new Gson().toJson(user)).build();
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                    result = Response.ok(gson.toJson(user)).build();
                 }
             }
         }
@@ -576,7 +583,8 @@ public class Users {
             Long id = Long.parseLong(userId);
             User user = JPAEntry.getObject(User.class, "id", id);
             if (user != null) {
-                result = Response.ok(new Gson().toJson(user)).build();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                result = Response.ok(gson.toJson(user)).build();
             }
         }
         return result;

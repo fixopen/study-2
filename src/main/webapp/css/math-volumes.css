@@ -71,9 +71,11 @@
 .neir0_UL {
     padding: 1.5625rem 0.625rem;
     box-sizing: border-box;
+    background-color: #fffcf2;
 }
 
 .neir_li {
+    position: relative;
     padding: 0.15625rem;
     margin: 0.625rem;
     background-color: #ebfffb;
@@ -86,7 +88,7 @@
     height: 3.125rem;
     border: 1.5px dashed #ffc500;
     border-radius: 1.25rem;
-    background: url(../img/flower.png) no-repeat 5% center, url(../img/flower2.png) no-repeat 95% center;
+    background: url(../img/flower1.png) no-repeat 5% center, url(../img/flower2.png) no-repeat 95% center;
     background-size: 0.875rem 1.25rem;
 }
 
@@ -121,4 +123,4 @@
     left: 30px;
     top: -10px;
     opacity: 0.5;
-} 
+}

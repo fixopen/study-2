@@ -18,6 +18,17 @@ import java.util.*;
 
 @Path("volumes")
 public class Volumes {
+    public static List<Map<String, Object>> convertVolumes(List<Volume> volumes) {
+        List<Map<String, Object>> r = new ArrayList<>();
+        Date now = new Date();
+        Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        for (Volume volume : volumes) {
+            Map<String, Object> vm = Volume.convertToMap(volume, now, yesterday);
+            r.add(vm);
+        }
+        return r;
+    }
+
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,7 +53,8 @@ public class Volumes {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, filterObject, orders);
             if (!volumes.isEmpty()) {
-                result = Response.ok(new Gson().toJson(volumes)).build();
+                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
+                result = Response.ok(new Gson().toJson(r)).build();
             }
         }
         return result;
@@ -70,7 +82,6 @@ public class Volumes {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
-
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("volumeId", id);
             Condition ltNow = new Condition("<", new Date());
@@ -97,8 +108,24 @@ public class Volumes {
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
                     kpm.put("showTime", kp.getShowTime());
-
                     kpm.put("likeCount", 0);
+                    kpm.put("starttype", "old");
+                    Date now = new Date();
+                    Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+
+                    String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.id = :id  AND l.showTime > :yesterday AND l.showTime < :now";
+                    Query q = em.createQuery(stats, Long.class);
+                    q.setParameter("volumeId", kp.getVolumeId());
+                    q.setParameter("id", kp.getId());
+                    q.setParameter("yesterday", yesterday);
+                    q.setParameter("now", now);
+                    Long count = (Long) q.getSingleResult();
+                    if (count > 0) {
+                        kpm.put("starttype", "new");
+                    }
+
+
+
                     Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
                     if (likeCount != null) {
                         kpm.put("likeCount", likeCount);

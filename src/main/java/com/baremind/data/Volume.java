@@ -1,9 +1,11 @@
 package com.baremind.data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.baremind.utils.JPAEntry;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -67,4 +69,24 @@ public class Volume {
         this.title = title;
     }
 
+    public static Map<String, Object> convertToMap(Volume volume, Date now, Date yesterday) {
+        Map<String, Object> vm = new HashMap<>();
+        vm.put("id", volume.getId());
+        vm.put("grade", volume.getGrade());
+        vm.put("order", volume.getOrder());
+        vm.put("subjectId", volume.getSubjectId());
+        vm.put("title", volume.getTitle());
+        vm.put("type", "old");
+        EntityManager em = JPAEntry.getEntityManager();
+        String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.showTime > :yesterday AND l.showTime < :now";
+        Query q = em.createQuery(stats, Long.class);
+        q.setParameter("volumeId", volume.getId());
+        q.setParameter("yesterday", yesterday);
+        q.setParameter("now", now);
+        Long count = (Long) q.getSingleResult();
+        if (count > 0) {
+            vm.put("type", "new");
+        }
+        return vm;
+    }
 }
