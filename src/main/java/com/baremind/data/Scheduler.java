@@ -26,8 +26,8 @@ public class Scheduler {
     @Column(name = "week")
     private int week;
 
-    @Column(name = "state")
-    private int state;
+  /*  @Column(name = "state")
+    private int state;*/
 
     @Column(name = "start_time")
     private Date startTime;
@@ -113,14 +113,14 @@ public class Scheduler {
         this.week = week;
     }
 
-    public int getState() {
+ /*   public int getState() {
         return state;
     }
 
     public void setState(int state) {
         this.state = state;
     }
-
+*/
     public Date getStartTime() {
         return startTime;
     }
