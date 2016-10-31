@@ -33,12 +33,13 @@
     </div>
 </div>
 <!-- 弹窗结束 -->
+
 <div class="wrap">
     <div class="mine_zilo">
         <div id="card"></div>
         <div class="bottom_bdiv">
             <a class="bottom_btn Btn01" click="curseDetailTap();" href="#">充值</a>
-            <a id="appendCard" class="bottom_btn Btn02" href="#">添加卡号</a>
+            <a id="appendCard" class="bottom_btn Btn02" href="/validationCode.html">添加卡号</a>
         </div>
     </div>
 </div>
@@ -69,10 +70,6 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script type="text/javascript">
-    var userId = g.getUrlParameter('userid')
-    var appendCardLink = document.getElementById('appendCard')
-    appendCardLink.setAttribute('href', '/validationCode.html?userid=' + userId)
-
     var getSubjectNameById = function (subjects, id) {
         var result = ''
         for (var i = 0; i < subjects.length; ++i) {
@@ -86,7 +83,7 @@
 
     $.ajax({
         type: 'get',
-        url: '/api/users/' + userId + '/cards',
+        url: '/api/users/self/cards',
         dataType: 'json',
         success: function (cards) {
             $.ajax({
