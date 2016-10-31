@@ -30,28 +30,32 @@
 <div id="card"></div>
 <div id="information"></div>
 <template id="card-template">
-    <ul class="mine_zUl">
-        <li class="mine_zuli">
-            <span class="mine_leftsp">卡号</span>
-            <span class="mine_rightip">${no}</span>
-        </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">学习类型</span>
-            <span class="mine_rightip">${subject}</span>
-        </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">激活时间</span>
-            <span class="mine_rightip">${activeTime}</span>
-        </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">剩余雨点</span>
-            <span class="mine_rightip">${amount}</span>
-        </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">有效期</span>
-            <span class="mine_rightip">${endTime}</span>
-        </li>
-    </ul>
+    <div class="inner">
+        <div class="info-content">
+            <table class="myinfo-table">
+                <tr>
+                    <td>卡号：</td>
+                    <td>${no}</td>
+                </tr>
+                <tr>
+                    <td>学习类型：</td>
+                    <td>${subject}</td>
+                </tr>
+                 <tr>
+                    <td>激活时间：</td>
+                    <td>${activeTime}</td>
+                </tr>
+                <tr>
+                    <td>剩余雨点：</td>
+                    <td>${amount}</td>
+                </tr>
+                <tr>
+                    <td>有效期：</td>
+                    <td>${endTime}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </template>
 <!--<div id="information"></div>
 <template id="card-template">
@@ -138,6 +142,17 @@
                 dataType: 'json',
                 success: function (wechat) {
                     e.info = wechat[0].info
+                    switch (wechat[0].sex){
+                        case 1:
+                            e.sex = "男";
+                            break;
+                        case 1:
+                            e.sex = "女";
+                            break;
+                        case 1:
+                            e.sex = "未设置";
+                            break;
+                    }
                    // alert(JSON.stringify(wechat))
                     proc({
                         containerId: 'information',
@@ -154,13 +169,27 @@
                 url: '/api/users/self/cards',
                 dataType: 'json',
                 success: function (cards) {
-                   let car = JSON.stringify(cards)
-                   alert(car)
-                   /* proc({
+                    for(var i =0; i<cards.length; ++i){
+                        //alert(cards[i].subject)
+                        let subject = cards[i].subject;
+                        if(subject == 1){
+                            cards[i].subject = "语文"
+                        }
+                        if(subject == undefined){
+                            cards[i].subject = "暂时美誉"
+                        }
+                        if(cards[i].subject == 2){
+                            cards[i].subject = "数学"
+                        }
+                        if(cards[i].subject == 3){
+                            cards[i].subject = "英语"
+                        }
+                    }
+                    proc({
                         containerId: 'card',
                         data: cards,
                         templateId: 'card-template'
-                    })*/
+                    })
                 },
                 error: function (r) {
                     if (r.status == 404) {
