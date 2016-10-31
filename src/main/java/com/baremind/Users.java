@@ -555,6 +555,26 @@ public class Users {
         return result;
     }
 
+    @GET //根据条件查询
+    @Path("phone/Verification")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getv(@QueryParam("filter") @DefaultValue("") String filter) {
+        Response result = result = Response.status(404).build();
+        Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, filterObject);
+        if (!validationCodes.isEmpty()) {
+            Date now = new Date();
+            Date sendTime = validationCodes.get(0).getTimestamp();
+            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                result = Response.ok(gson.toJson(validationCodes)).build();
+            } else {
+                result = Response.status(405).build();
+            }
+        }
+        return result;
+    }
+
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)

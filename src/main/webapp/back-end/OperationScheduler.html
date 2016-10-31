@@ -109,6 +109,7 @@
             url: "/api/schedulers/" + id,
             dataType: 'json',
             success: function (scheduler) {
+                alert(JSON.stringify(scheduler))
                 //alert(JOSN.stringify(scheduler))
                 $("#year").attr("value", scheduler.year);
                 $("#week").attr("value", scheduler.week);
@@ -128,12 +129,15 @@
 
                 $("#title").attr("value", scheduler.title);
                 //alert(scheduler.description)
-
+                //$("#description").attr("value", scheduler.description);
+               // $("#description").innerHTML = scheduler.description
                 document.getElementById('description').value = scheduler.description
                 //$("#description").val(scheduler.description);
                 $("#teacher").attr("value", scheduler.teacher);
                 //alert(scheduler.teacherDescription)
-                document.getElementById('teacherDescription').value = scheduler.description
+                //$("#teacherDescription").attr("value", scheduler.teacherDescription);
+               // $("#teacherDescription").innerHTML = scheduler.teacherDescription
+                document.getElementById('teacherDescription').value = scheduler.teacherDescription
                 //$("#teacherDescription").attr("value", scheduler.teacherDescription);
                 //cover: coverInput.dataset.storePath,
                 $("#cdnLink").attr("value", scheduler.cdnLink);

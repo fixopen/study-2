@@ -108,8 +108,8 @@ public class Volumes {
                     kpm.put("id", kp.getId());
                     kpm.put("volumeId", kp.getVolumeId());
                     kpm.put("name", kp.getTitle());
-                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                    kpm.put("showTime", gson.toJson(kp.getShowTime()));
+                    // Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()   gson.toJson(kp.getShowTime());
+                    kpm.put("showTime", kp.getShowTime());
                     kpm.put("likeCount", 0);
                     kpm.put("stateType", "old");
                     Date now = new Date();
