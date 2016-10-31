@@ -43,19 +43,19 @@ $(document).ready(function () {
         dataType: "json",
         success: function (pop) {
             //{"popup": true|false}
-           var isPopup = pop.popup
-           if(!isPopup){
-               newClass();//课程更新弹窗
-               $.ajax({
-                   type: "post",
-                   url: '/api/subjects/' + 1,
-                   data: JSON.stringify({}),
-                   dataType: "json",
-                   contentType: "application/json; charset=utf-8",
-                   success: function () {
-                   }
-               })
-           }
+            var isPopup = pop.popup
+            if (!isPopup) {
+                newClass();//课程更新弹窗
+                $.ajax({
+                    type: "post",
+                    url: '/api/subjects/' + 1,
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                    }
+                })
+            }
         }
     });
 

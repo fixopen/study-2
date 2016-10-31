@@ -8,12 +8,12 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Path("subjects")
 public class Subjects {

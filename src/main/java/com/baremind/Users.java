@@ -224,7 +224,7 @@ public class Users {
             if (!cards.isEmpty()) {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
-               // result = Response.ok(gson.toJson(scheduler)).build();
+                // result = Response.ok(gson.toJson(scheduler)).build();
                 result = Response.ok(gson.toJson(cards)).build();
             }
         }

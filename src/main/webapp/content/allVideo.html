@@ -283,14 +283,16 @@
     var course = []
     var refreshChineseState = function () {
         var now = new Date()
+
         for (var i = 0; i < course[0][0].length; ++i) {
-            var endYear = course[0][0][i].endTime.substring(0,4)
-            var endMonth = course[0][0][i].endTime.substring(5,7)
-            var endDay = course[0][0][i].endTime.substring(8,10)
-            var endHour = course[0][0][i].endTime.substring(11,13)
-            var endMinute = course[0][0][i].endTime.substring(14,16)
-            var endSecond = course[0][0][i].endTime.substring(17,19)
+            var endYear = course[0][0][i].endTime.substring(0, 4)
+            var endMonth = course[0][0][i].endTime.substring(5, 7)
+            var endDay = course[0][0][i].endTime.substring(8, 10)
+            var endHour = course[0][0][i].endTime.substring(11, 13)
+            var endMinute = course[0][0][i].endTime.substring(14, 16)
+            var endSecond = course[0][0][i].endTime.substring(17, 19)
             var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
+
 //            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
 //            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
 //            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)n
@@ -302,13 +304,14 @@
             }
         }
         for (var i = 0; i < course[0][1].length; ++i) {
-            var startYear = course[0][1][i].startTime.substring(0,4)
-            var startMonth = course[0][1][i].startTime.substring(5,7)
-            var startDay = course[0][1][i].startTime.substring(8,10)
-            var startHour = course[0][1][i].startTime.substring(11,13)
-            var startMinute = course[0][1][i].startTime.substring(14,16)
-            var startSecond = course[0][1][i].startTime.substring(17,19)
-            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay),parseInt(startHour),parseInt(startMinute),parseInt(startSecond))
+            var startYear = course[0][1][i].startTime.substring(0, 4)
+            var startMonth = course[0][1][i].startTime.substring(5, 7)
+            var startDay = course[0][1][i].startTime.substring(8, 10)
+            var startHour = course[0][1][i].startTime.substring(11, 13)
+            var startMinute = course[0][1][i].startTime.substring(14, 16)
+            var startSecond = course[0][1][i].startTime.substring(17, 19)
+            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay), parseInt(startHour), parseInt(startMinute), parseInt(startSecond))
+
 //            var startHour = parseInt(course[1][i].startTime.substr(0, 2))
 //            var startMinute = parseInt(course[1][i].startTime.substr(3, 2))
 //            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
@@ -328,13 +331,13 @@
     var refreshMathState = function () {
         var now = new Date()
         for (var i = 0; i < course[1][0].length; ++i) {
-            var endYear = course[1][0][i].endTime.substring(0,4)
-            var endMonth = course[1][0][i].endTime.substring(5,7)
-            var endDay = course[1][0][i].endTime.substring(8,10)
-            var endHour = course[1][0][i].endTime.substring(11,13)
-            var endMinute = course[1][0][i].endTime.substring(14,16)
-            var endSecond = course[1][0][i].endTime.substring(17,19)
-            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1,parseInt(endDay),parseInt(endHour),parseInt(endMinute),parseInt(endSecond))
+            var endYear = course[1][0][i].endTime.substring(0, 4)
+            var endMonth = course[1][0][i].endTime.substring(5, 7)
+            var endDay = course[1][0][i].endTime.substring(8, 10)
+            var endHour = course[1][0][i].endTime.substring(11, 13)
+            var endMinute = course[1][0][i].endTime.substring(14, 16)
+            var endSecond = course[1][0][i].endTime.substring(17, 19)
+            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
 //            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
 //            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
 //            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)n
@@ -346,13 +349,13 @@
             }
         }
         for (var i = 0; i < course[1][1].length; ++i) {
-            var startYear = course[1][1][i].startTime.substring(0,4)
-            var startMonth = course[1][1][i].startTime.substring(5,7)
-            var startDay = course[1][1][i].startTime.substring(8,10)
-            var startHour = course[1][1][i].startTime.substring(11,13)
-            var startMinute = course[1][1][i].startTime.substring(14,16)
-            var startSecond = course[1][1][i].startTime.substring(17,19)
-            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay),parseInt(startHour),parseInt(startMinute),parseInt(startSecond))
+            var startYear = course[1][1][i].startTime.substring(0, 4)
+            var startMonth = course[1][1][i].startTime.substring(5, 7)
+            var startDay = course[1][1][i].startTime.substring(8, 10)
+            var startHour = course[1][1][i].startTime.substring(11, 13)
+            var startMinute = course[1][1][i].startTime.substring(14, 16)
+            var startSecond = course[1][1][i].startTime.substring(17, 19)
+            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay), parseInt(startHour), parseInt(startMinute), parseInt(startSecond))
             course[1][1][i].type = 'future'
             if (+ST < +now) {
                 course[1][1][i].type = 'current'
@@ -454,7 +457,7 @@
     g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":2}', [
         {name: 'Accept', value: 'application/json'}
     ], null, function (result) {
-       // alert(JSON.stringify(result))
+        // alert(JSON.stringify(result))
         course[1] = result.data
         var state = {
             currentContainer: document.getElementById('math-currentVideoList'),
@@ -475,7 +478,7 @@
             document.getElementById("btn").style.display = "none";
             var va = document.getElementById("pullUp");
             $("#pullUp").text("没有更多视频，敬请期待");
-          curseDetailTap(); //点击“课程详情”
+            curseDetailTap(); //点击“课程详情”
         }
 
         for (var i = 0; i < course[1].length; ++i) {
@@ -546,7 +549,7 @@
     })
 
     subjectTab();//课程选项卡
-//    curseDetailTap(); //点击“课程详情”
+    //    curseDetailTap(); //点击“课程详情”
 </script>
 </body>
 </html>
