@@ -1,6 +1,5 @@
 package com.baremind;
-import java.text.*;
-import java.util.*;
+
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -11,9 +10,7 @@ import com.google.gson.GsonBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.time.Instant;
+import java.util.*;
 
 
 //GET /api/schedulers/this-week
@@ -98,57 +95,26 @@ public class Schedulers {
             ArrayList<Scheduler> a1 = new ArrayList<>();
             ArrayList<Scheduler> a = new ArrayList<>();
 
+            Date date = new Date();
             for (Scheduler scheduler : schedulers) {
-                Date date = new Date();
-               /* Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                DateFormat df = DateFormat.getDateTimeInstance();*/
-
                 boolean flag1 = date.before(scheduler.getStartTime());
                 boolean flag2 = date.before(scheduler.getEndTime());
                 System.out.print("[flag1] " + flag1);
                 System.out.print("[flag2] " + flag2);
-                if(flag1 == false && flag2 == true){
+                if (flag1 == false && flag2 == true) {
                     a1.add(scheduler);
                     //正播
                 }
-                if(flag1 == true && flag2 == true){
+                if (flag1 == true && flag2 == true) {
                     a2.add(scheduler);
                     //未播
 
                 }
-                if(flag1 == false && flag2 == false){
+                if (flag1 == false && flag2 == false) {
                     a.add(scheduler);
                     //播过
                 }
-               /* boolean flag1 = ceshi.isDateBefore(gson.toJson(scheduler.getStartTime()),gson.toJson(date));
-                boolean flag2 = ceshi.isDateBefore(gson.toJson(scheduler.getEndTime()),gson.toJson(date));
-                */
-
-               /* if (scheduler.getStartTime() > now.toInstant()  && scheduler.getEndTime().toInstant() > now.toInstant()) {
-                    a2.add(scheduler);
-                }
-                if (scheduler.getStartTime().toInstant() < now.toInstant() && scheduler.getEndTime().toInstant() < now.toInstant()) {
-                    a1.add(scheduler);
-                }
-                if (scheduler.getStartTime().toInstant() > now.toInstant() && scheduler.getEndTime().toInstant() < now.toInstant()  ) {
-                    a.add(scheduler);
-                }
-                        18:30   未播
-                        16:00   正播
-                        13:00   已播*/
             }
-            //判断时间date1是否在时间date2之前
-            //时间格式 2005-4-21 16:16:34
-           /* public static boolean isDateBefore(String date1,String date2){
-                try{
-                    DateFormat df = DateFormat.getDateTimeInstance();
-                    return df.parse(date1).before(df.parse(date2));
-                }catch(ParseException e){
-                    System.out.print("[SYS] " + e.getMessage());
-                    return false;
-                }
-            }*/
-
             ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
             result.add(a1);//正播
             result.add(a2); //未播
