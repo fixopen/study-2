@@ -80,6 +80,7 @@
         if ($("#telephone").val() == "" && $("#telephone").val().length != 11) {
             document.getElementById("errortelephone").innerHTML = "格式不正确，请输入正确的手机号！"
         } else {
+            g.setCookie("phone",$("#telephone").val(),'/')
             location.href = "forgetPassword.html";
         }
     }
