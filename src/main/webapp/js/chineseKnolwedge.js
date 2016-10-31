@@ -1,7 +1,7 @@
 ﻿$(function () {
     // var userId = g.getUrlParameter('userid')
     // g.setCookie('userId', userId)
-    // location.reload();
+
     proc({
         templateId: 'title-template',
         data: {title: g.getUrlParameter('volume')},
@@ -29,9 +29,7 @@
 
             var now = new Date()
             for (var i = 0; i < knowledgePoints.length; ++i) {
-                var t = knowledgePoints[i].showTime;
-                //  console.log(t);
-                var t = new Date(t.replace(/-/g, "/"));
+                var t = new Date(knowledgePoints[i].showTime.replace(/-/g, "/"));
                 var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
                 if (h < 24) {
                     knowledgePoints[i].type = 'new';
