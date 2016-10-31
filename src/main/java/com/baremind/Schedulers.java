@@ -97,8 +97,6 @@ public class Schedulers {
 
             for (Scheduler scheduler : schedulers) {
                 Date date = new Date();
-               /* Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                DateFormat df = DateFormat.getDateTimeInstance();*/
 
                 boolean flag1 = date.before(scheduler.getStartTime());
                 boolean flag2 = date.before(scheduler.getEndTime());
@@ -117,34 +115,7 @@ public class Schedulers {
                     a.add(scheduler);
                     //播过
                 }
-               /* boolean flag1 = ceshi.isDateBefore(gson.toJson(scheduler.getStartTime()),gson.toJson(date));
-                boolean flag2 = ceshi.isDateBefore(gson.toJson(scheduler.getEndTime()),gson.toJson(date));
-                */
-
-               /* if (scheduler.getStartTime() > now.toInstant()  && scheduler.getEndTime().toInstant() > now.toInstant()) {
-                    a2.add(scheduler);
-                }
-                if (scheduler.getStartTime().toInstant() < now.toInstant() && scheduler.getEndTime().toInstant() < now.toInstant()) {
-                    a1.add(scheduler);
-                }
-                if (scheduler.getStartTime().toInstant() > now.toInstant() && scheduler.getEndTime().toInstant() < now.toInstant()  ) {
-                    a.add(scheduler);
-                }
-                        18:30   未播
-                        16:00   正播
-                        13:00   已播*/
             }
-            //判断时间date1是否在时间date2之前
-            //时间格式 2005-4-21 16:16:34
-           /* public static boolean isDateBefore(String date1,String date2){
-                try{
-                    DateFormat df = DateFormat.getDateTimeInstance();
-                    return df.parse(date1).before(df.parse(date2));
-                }catch(ParseException e){
-                    System.out.print("[SYS] " + e.getMessage());
-                    return false;
-                }
-            }*/
 
             ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
             result.add(a1);//正播
