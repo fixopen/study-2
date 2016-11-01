@@ -242,14 +242,7 @@ public class Users {
         return result;
     }
 
-    @POST
-    @Path("{id}/cards")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
-        Random rand = new Random();
-        Long logId = rand.nextLong();
-        //Logs.insert(id, "log", logId, "start");
+    private Response activeCardImpl(Long id, ActiveCard ac) {
         Response result = Response.status(412).build();
         User user = JPAEntry.getObject(User.class, "id", id);
         if (user != null) {
@@ -339,6 +332,28 @@ public class Users {
             //Logs.insert(id, "log", logId, "remove validation codes");
         }
         return result;
+    }
+
+    @POST
+    @Path("{id}/cards")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
+        Random rand = new Random();
+        Long logId = rand.nextLong();
+        //Logs.insert(id, "log", logId, "start");
+        return activeCardImpl(id, ac);
+    }
+
+    @POST
+    @Path("self/cards")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response activeCard(@CookieParam("userId") String userId, ActiveCard ac) {
+        Random rand = new Random();
+        Long logId = rand.nextLong();
+        //Logs.insert(id, "log", logId, "start");
+        return activeCardImpl(Long.parseLong(userId), ac);
     }
 
     @POST

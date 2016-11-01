@@ -152,6 +152,7 @@
                 alert('手机号不能为空')
             }
         }
+
         var o = 0
 
         var save = function (e) {
@@ -166,12 +167,15 @@
 
                 var data = {};
                 var code = document.getElementById('cardNo').value
-                var cardNo = code.replace(/\s/ig, '');
-                data.cardNo = cardNo;
+                data.cardNo = code.replace(/\s/ig, '');
                 data.password = document.getElementById('password').value;
                 data.phoneNumber = document.getElementById('phoneNumber').value;
                 data.validCode = document.getElementById('validCode').value;
-                ajax('POST', 'api/users/self/cards', [
+                var url = 'api/users/self/cards'
+                if (userId) {
+                    url = 'api/users/' + userId + '/cards'
+                }
+                ajax('POST', url, [
                     {name: 'Content-Type', value: 'application/json'},
                     {name: 'Accept', value: 'application/json'}
                 ], data, function (r) {
@@ -262,13 +266,6 @@
 </div>
 
 <script>
-    //    var code = getUrlParameter('code')
-    //    ajax('GET', 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + code + '&grant_type=authorization_code', [], null, function(result) {
-    //        ajax('GET', 'https://api.weixin.qq.com/sns/userinfo?access_token=' + result.access_token + '&openid=' + result.openid + '&lang=zh_CN', [], null, function(r) {
-    //            //
-    //        })
-    //    })
-
     var activeCodeButton = document.getElementById('activeCode');
     activeCodeButton.addEventListener('click', activeCode, false);
 

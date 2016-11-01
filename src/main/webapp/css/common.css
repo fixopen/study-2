@@ -48,6 +48,7 @@ input[type="number"] {
     /* padding: 1.25rem 0.9375rem 0; */
     padding: 0.625rem 0.9375rem 0;
     box-sizing: border-box;
+    margin: 0;
 }
 
 /* 全屏视屏 */
