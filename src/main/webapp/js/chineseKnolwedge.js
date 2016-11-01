@@ -21,12 +21,10 @@
                 var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
                 if (h < 24) {
                     kp.type = 'new';
-                    //$('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
                     knowledgePoints.splice(i, 1);
                     knowledgePoints.unshift(kp);
                 } else {
                     kp.type = 'old';
-                    //$('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
                 }
             }
 
