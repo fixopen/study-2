@@ -10,33 +10,23 @@
     var volumeId = parseInt(g.getUrlParameter('volumeId'));
     $.ajax({
         type: "get",
-        // url: 'api/knowledge-points?filter=' + JSON.stringify({
-        //     subjectId: 1,
-        //     volumeId: parseInt(getUrlParameter('volumeId')),
-        //     grade: parseInt(getUrlParameter('grade'))
-        // }),
         url: 'api/volumes/' + volumeId + '/knowledge-points',
         dataType: 'json',
         async: false,
         success: function (knowledgePoints) {
-            //alert(JSON.stringify(knowledgePoints))
-
-            //     proc({
-            //         data: knowledgePoints,
-            //         containerId: 'knowledge-point',
-            //         templateId: 'knowledge-point-template'
-            // });
-
             var now = new Date()
             for (var i = 0; i < knowledgePoints.length; ++i) {
-                var t = new Date(knowledgePoints[i].showTime.replace(/-/g, "/"));
+                var kp = knowledgePoints[i];
+                var t = new Date(kp.showTime.replace(/-/g, "/"));
                 var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
                 if (h < 24) {
-                    knowledgePoints[i].type = 'new';
-                    // $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
+                    kp.type = 'new';
+                    //$('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
+                    knowledgePoints.splice(i, 1);
+                    knowledgePoints.unshift(kp);
                 } else {
-                    knowledgePoints[i].type = 'old';
-                    // $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
+                    kp.type = 'old';
+                    //$('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
                 }
             }
 
@@ -48,7 +38,6 @@
                     {type: 'new', templateId: 'knowledge-point-new-template'},
                 ]
             })
-
         }
     })
 })

@@ -46,6 +46,7 @@ $(function () {
         }),
         dataType: 'json',
         success: function (knowledgePointList) {
+           // alert(JSON.stringify(knowledgePointList))
             var id = g.getUrlParameter('id')
             $.ajax({
                 type: "get",
