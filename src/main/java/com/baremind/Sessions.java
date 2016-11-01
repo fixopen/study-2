@@ -27,13 +27,17 @@ public class Sessions {
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("telephone", user.getTelephone());
             conditions.put("password", user.getPassword());
+//            Logs.insert(8l, "perf", 33l, new Date().toString());
             User existUser = JPAEntry.getObject(User.class, conditions);
+//            Logs.insert(8l, "perf", 33l, new Date().toString());
             if (existUser != null) {
                 Session s = PublicAccounts.putSession(new Date(), existUser.getId());
+//                Logs.insert(8l, "perf", 33l, new Date().toString());
                 result = Response.ok()
                         .cookie(new NewCookie("userId", existUser.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                         .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                         .build();
+//                Logs.insert(8l, "perf", 33l, new Date().toString());
             }
         }
         return result;

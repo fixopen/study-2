@@ -55,11 +55,11 @@ $(function () {
                 var t = new Date(knowledgePoints[i].showTime.replace(/-/g, "/"));
                 var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
                 if (h < 24) {
-                   // knowledgePoints[i].type = 'new';
-                   $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
+                    // knowledgePoints[i].type = 'new';
+                    $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
                 } else {
-                   // knowledgePoints[i].type = 'old';
-                     $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
+                    // knowledgePoints[i].type = 'old';
+                    $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
                 }
             }
 

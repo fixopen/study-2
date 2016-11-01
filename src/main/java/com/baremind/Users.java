@@ -1,9 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.Card;
-import com.baremind.data.User;
-import com.baremind.data.ValidationCode;
-import com.baremind.data.WechatUser;
+import com.baremind.data.*;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -15,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
@@ -556,18 +554,56 @@ public class Users {
     }
 
     @GET //根据条件查询
+    @Path("no/userId/code")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser(@QueryParam("filter") @DefaultValue("") String filter) {
+        Response result = Response.status(404).build();
+        Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+        List<User> users = JPAEntry.getList(User.class, filterObject);
+        if (!users.isEmpty()) {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(users)).build();
+        }
+        return result;
+    }
+
+    @POST
     @Path("phone/Verification")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getv(@QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getv(ActiveCard activeCard) {
         Response result = result = Response.status(404).build();
-        Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, filterObject);
+        Map<String, Object> validationCodeConditions = new HashMap<>();
+        validationCodeConditions.put("phoneNumber", activeCard.getPhoneNumber());
+        validationCodeConditions.put("validCode", activeCard.getValidCode());
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+        Map<String, Object> validationCode = new HashMap<>();
+        validationCode.put("telephone", activeCard.getPhoneNumber());
         if (!validationCodes.isEmpty()) {
             Date now = new Date();
             Date sendTime = validationCodes.get(0).getTimestamp();
             if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                result = Response.ok(gson.toJson(validationCodes)).build();
+                List<User> users = JPAEntry.getList(User.class, validationCode);
+                if (!users.isEmpty()) {
+                    Session session = PublicAccounts.putSession(now, users.get(0).getId());
+                    result = Response.ok()
+                            .cookie(new NewCookie("userId", users.get(0).getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .build();
+                } else {
+                    User user = new User();
+                    user.setId(IdGenerator.getNewId());
+                    user.setCreateTime(now);
+                    user.setTelephone(activeCard.getPhoneNumber());
+                    user.setUpdateTime(now);
+                    user.setName("");
+                    user.setSex(0l);
+                    JPAEntry.genericPost(user);
+                    Session session = PublicAccounts.putSession(now, user.getId());
+                    result = Response.ok()
+                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .build();
+                }
             } else {
                 result = Response.status(405).build();
             }
@@ -575,6 +611,9 @@ public class Users {
         return result;
     }
 
+    /*  //PublicAccounts.putSession(now,)
+      Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+      result = Response.ok(gson.toJson(validationCodes)).build();*/
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -672,7 +711,7 @@ public class Users {
                     existuser.setSchool(school);
                 }
                 Long sex = user.getSex();
-                if (sex != 0) {
+                if (sex != null) {
                     existuser.setSex(sex);
                 }
                 String telephone = user.getTelephone();

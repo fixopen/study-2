@@ -40,10 +40,10 @@
         </div>
         <div class="step-success">
             <table class="next-tab">
-                <tr>
+                <!--<tr>
                     <td>账号：</td>
                     <td id="Accountnumber"></td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td>设置密码：</td>
                     <td>
@@ -75,9 +75,25 @@
     地址：北京市海淀区上地信息路1号2号楼5层505 电话：010-12345678
 </div>
 <script>
-    let Account = g.getCookie("phone");
-    document.getElementById("Accountnumber").innerHTML = Account
+    /*let Account = g.getCookie("phone");
+     if(Account == null || Account == "" || Account == )
+     document.getElementById("Accountnumber").innerHTML = Account*/
+    let userId;
+    $.ajax({
+        type: "get",
+        url: "/api/users/self",
+        dataType: "json",
+        success: function (e) {
+            let u = e.id
+            userId = parseInt(u);
+        },
+        error: function (e) {
+            location.href = "forgetPassword.html"
+        }
 
+    })
+    let i;
+    let j;
     let p1 = document.getElementById("pwd1");
     p1.addEventListener('blur', function () {
         validatePWD1();
@@ -88,26 +104,36 @@
     })
     let next = document.getElementById("next");
     next.addEventListener('click', function () {
+        if (i == 1 && j == 1) {
+            let data = {
+                password: $("#pwd2").val()
+            }
+            $.ajax({
+                type: "put",
+                url: "/api/users/" + userId,
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (e) {
+                    location.href = "passwordSuccess.html"
+                },
+                error: function (e) {
+                    alert(JSON.stringify(e))
+                }
+            })
+        } else {
+            alert("错误")
+        }
 
-        /*let data = {
-         password:pwd2
-         }
-         $.ajax({
-         type:"put",
-         url:"/api/users/"+ ,
-         data:JSON.stringify(data),
-         dataType:"json",
-         success:function(){
-
-         }
-         })*/
     })
     function validatePWD1() {
         var pwd1 = $("#pwd1").val();
         if (pwd1.length >= 6 && pwd1.length <= 16) {
             document.getElementById("yierror").innerHTML = ""
+            j = 1;
         } else {
             document.getElementById("yierror").innerHTML = "请输入6-16位密码"
+            j = 0;
         }
     }
     function validatePWD2() {
@@ -115,8 +141,10 @@
         var pwd2 = $("#pwd2").val();
         if (pwd1 != pwd2) {
             document.getElementById("liangerror").innerHTML = "密码输入不一致，请重新输入"
+            i = 0;
         } else {
             document.getElementById("liangerror").innerHTML = ""
+            i = 1;
         }
     }
 </script>
