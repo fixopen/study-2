@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var userId = g.getUrlParameter('userid')
     g.setCookie('userId', userId)
+
     //let subjectId  =  getUrlParameter('subjectId')
     $.ajax({
         type: "get",
