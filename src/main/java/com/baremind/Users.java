@@ -393,6 +393,10 @@ public class Users {
                                     user.setId(IdGenerator.getNewId());
                                     user.setTelephone(ac.getPhoneNumber());
                                     user.setLoginName(ac.getPhoneNumber());
+                                    user.setCreateTime(now);
+                                    user.setUpdateTime(now);
+                                    user.setName("");
+                                    user.setSex(0l);
                                     JPAEntry.genericPost(user);
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);

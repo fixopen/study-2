@@ -9,8 +9,7 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait">
     <style type="text/css">
-        .code
-        {
+        .code {
             font-family: Arial;
             font-style: italic;
             color: Red;
@@ -19,8 +18,8 @@
             letter-spacing: 3px;
             font-weight: bolder;
         }
-        .unchanged
-        {
+
+        .unchanged {
             border: 0;
         }
     </style>
@@ -36,8 +35,9 @@
 </head>
 <body>
 <form action="#">
-    <input type="text" id="input1" />
-    <input type="text" onclick="createCode()" readonly="readonly" id="checkCode" class="unchanged" style="width: 80px;background: #660099"/><br />
+    <input type="text" id="input1"/>
+    <input type="text" onclick="createCode()" readonly="readonly" id="checkCode" class="unchanged"
+           style="width: 80px;background: #660099"/><br/>
 </form>
 <script language="javascript" type="text/javascript">
 
@@ -46,6 +46,7 @@
     function createCode() {
         code = "";
         var checkCode = document.getElementById("checkCode");
+
         function RndNum(n) {
             var rnd = "";
             for (var i = 0; i < n; i++)

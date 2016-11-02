@@ -60,7 +60,7 @@
                         <td>
                             <input type="text" id="VCode" placeholder="请输入验证码" class="vertify-input fill-error">
 
-                                <img src="" height="50" width="120" id="myimg"/>
+                            <img src="" height="50" width="120" id="myimg"/>
 
                             <a href="javascript:;" class="change-one" id="changeimg">换一张</a><br>
                             <i class="error" id="tianerror"><!--验证码填写错误--></i>
@@ -200,7 +200,7 @@
                 ej = JSON.stringify(e)
                 str = e.substr(0, 4)
                 var bigimg = document.getElementById("myimg");
-                bigimg.src="/medias/vcode.png" + '?rand=' + Math.random();
+                bigimg.src = "/medias/vcode.png" + '?rand=' + Math.random();
                 alert(str)
                 // alert(str)
                 // var str = JSON.stringify(e.replace(/^(?:[^/]*\/){1}(.*)$/,"$1"))

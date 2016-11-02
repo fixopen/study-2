@@ -71,29 +71,29 @@
 <script>
     $(function () {
         var phone = null;
-        $.ajax({
-            type: "get",
-            url: "/api/users/self",
-            dataType: "json",
-            success: function (e) {
-                if (e.password) {
-                    if (e.name && e.sex && e.telephone && e.birthday && e.receipt_address) {
-                        location.href = "signIn.html";
-                    } else {
-                        location.href = "perfectInformation.html";
-                    }
-                } else {
+        /*$.ajax({
+         type: "get",
+         url: "/api/users/self",
+         dataType: "json",
+         success: function (e) {
+         if (e.password) {
+         if (e.name && e.sex && e.telephone && e.birthday && e.receipt_address) {
+         location.href = "signIn.html";
+         } else {
+         location.href = "perfectInformation.html";
+         }
+         } else {
 
-                }
-                let a = e.telephone;
-                phone = parseInt(a);
-                document.getElementById("phonecodeId").innerHTML = phone
+         }
+         let a = e.telephone;
+         phone = parseInt(a);
+         document.getElementById("phonecodeId").innerHTML = phone
 
-            },
-            error: function (e) {
-                location.href = "signIn.html";
-            }
-        })
+         },
+         error: function (e) {
+         location.href = "signIn.html";
+         }
+         })*/
 
     })
 
