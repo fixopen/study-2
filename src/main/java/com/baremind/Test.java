@@ -65,7 +65,8 @@ public class Test {
                 g.drawLine(r(0,w), r(0,h),r(0,w), r(0,h));
             }
         //把内存中创建的图像输出到文件中
-        String pyshicalpath = Properties.getPropertyValue("testphysicalpath");
+        String pyshicalpath = Properties.getPropertyValue("physicalpath");
+//        String pyshicalpath = Properties.getPropertyValue("testphysicalpath");
         String uploadedFileLocation = pyshicalpath + "vcode.png";
         File file = new File(uploadedFileLocation);
         // FileOutputStream w = new FileOutputStream(file);
@@ -78,7 +79,8 @@ public class Test {
 
 //        JAI.create(img, file, "PNG", null);
         // System.out.println("图片输出完成");
-        String path = Properties.getPropertyValue("testvirtualpath") + "vcode.png";
+//        String path = Properties.getPropertyValue("testvirtualpath") + "vcode.png";
+        String path = Properties.getPropertyValue("virtualpath") + "vcode.png";
 
         result = Response.ok(new Gson().toJson(yzm + "/" + path)).build();
         return result;
