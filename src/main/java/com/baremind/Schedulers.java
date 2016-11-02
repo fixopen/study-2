@@ -68,6 +68,7 @@ public class Schedulers {
             ArrayList<Scheduler> featured = new ArrayList<>();
             ArrayList<Scheduler> playing = new ArrayList<>();
             ArrayList<Scheduler> passed = new ArrayList<>();
+            ArrayList<Scheduler> featuredUpsideDown = new ArrayList<>();
             Date now = new Date();
             for (Scheduler scheduler : schedulers) {
                 if (now.before(scheduler.getStartTime())) {
@@ -82,6 +83,7 @@ public class Schedulers {
             }
             ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
             result.add(playing);//正播
+            Collections.reverse(featured); // 倒序排列
             result.add(featured); //未播
             result.add(passed);//播过
             //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
