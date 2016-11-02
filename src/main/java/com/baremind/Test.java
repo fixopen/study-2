@@ -5,6 +5,7 @@ package com.baremind;
  */
 
 import com.google.gson.Gson;
+import sun.text.resources.iw.JavaTimeSupplementary_iw_IL;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.*;
@@ -15,7 +16,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-//import javax.media.jai.JAI;
+/*import com.sun.media.*;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;*/
 
 @Path("util-img")
 public class Test {
@@ -72,6 +75,7 @@ public class Test {
             e.printStackTrace();
         }*/
         ImageIO.write(img, "png", file);
+
 //        JAI.create(img, file, "PNG", null);
         // System.out.println("图片输出完成");
         String path = Properties.getPropertyValue("testvirtualpath") + "vcode.png";
