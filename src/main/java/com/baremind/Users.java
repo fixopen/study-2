@@ -401,10 +401,6 @@ public class Users {
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
                                     result = Response.ok().build();
-
-
-
-
                                 } else {
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
