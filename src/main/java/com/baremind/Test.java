@@ -61,13 +61,18 @@ public class Test {
                 g.drawLine(r(0,w), r(0,h),r(0,w), r(0,h));
             }*/
         //把内存中创建的图像输出到文件中
-        String pyshicalpath = Properties.getPropertyValue("testphysicalpath");
+        String pyshicalpath = Properties.getPropertyValue("physicalpath");
         String uploadedFileLocation = pyshicalpath + "vcode.png";
         File file = new File(uploadedFileLocation);
         // FileOutputStream w = new FileOutputStream(file);
+       /* try{
+            com.sun.jimi.core.Jimi.putImage("image/jpeg", img, file);
+        }catch(Exception e){
+            e.printStackTrace();
+        }*/
         ImageIO.write(img, "png", file);
-        System.out.println("图片输出完成");
-        String path = Properties.getPropertyValue("testvirtualpath") + "vcode.png";
+       // System.out.println("图片输出完成");
+        String path = Properties.getPropertyValue("virtualpath") + "vcode.png";
 
         result = Response.ok(new Gson().toJson(yzm + "/" + path)).build();
         return result;
