@@ -42,27 +42,31 @@ $(function () {
             //
             //     }
             // }
+
+            var now = new Date()
+            for (var i = 0; i < knowledgePoints.length; ++i) {
+                var kp = knowledgePoints[i];
+                var t = new Date(kp.showTime.replace(/-/g, "/"));
+                var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
+                if (h < 24) {
+                    kp.type = 'normalNew';
+                    knowledgePoints.splice(i, 1);
+                    knowledgePoints.unshift(kp);
+                    // $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
+                } else {
+                    kp.type = 'normalOld';
+                    //   $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
+                }
+            }
             proc({
                 data: knowledgePoints,
                 containerId: 'knowledge',
                 alterTemplates: [
-                    {type: 'normal', templateId: 'knowledge-point-template'},
+                    {type: 'normalNew', templateId: 'knowledge-point-normalNew-template'},
+                    {type: 'normalOld', templateId: 'knowledge-point-normalOld-template'},
                     {type: 'pk', templateId: 'knowledge-test-template'}
                 ]
             });
-            var now = new Date()
-            for (var i = 0; i < knowledgePoints.length; ++i) {
-                var t = new Date(knowledgePoints[i].showTime.replace(/-/g, "/"));
-                var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
-                if (h < 24) {
-                   // knowledgePoints[i].type = 'new';
-                   $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
-                } else {
-                   // knowledgePoints[i].type = 'old';
-                     $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
-                }
-            }
-
             // proc({
             //     data: kpt,
             //     containerId: 'knowledge-point',

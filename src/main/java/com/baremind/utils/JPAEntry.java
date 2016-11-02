@@ -63,7 +63,9 @@ public class JPAEntry {
     //setParameter("showTime", v)
     public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
         T result = null;
+//        Logs.insert(8l, "perf", 32l, new Date().toString());
         EntityManager em = getEntityManager();
+//        Logs.insert(8l, "perf", 32l, new Date().toString());
         String jpql = "SELECT a FROM " + type.getSimpleName() + " a ";
         boolean isFirst = true;
         if (conditions != null) {
@@ -92,7 +94,9 @@ public class JPAEntry {
                     q.setParameter(item.getKey(), value);
                 }
             }
+//            Logs.insert(8l, "perf", 32l, new Date().toString());
             result = q.getSingleResult();
+//            Logs.insert(8l, "perf", 32l, new Date().toString());
         } catch (NoResultException e) {
             //do noting
         } catch (NonUniqueResultException e) {

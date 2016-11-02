@@ -16,11 +16,11 @@
                 var list = obj;
                 $("#show_list").empty();
                 $("#show_list").append("<tr><th colspan='10'>排课列表</th></tr>");
-                $("#show_list").append("<tr><td>ID</td><td>年</td><td>周</td><td>天</td><td>开始时间</td><td>结束时间</td><td>时长<td>主题</td><td>状态</td><td>操作(<button onclick='add()'>添加</button>)</td>");
+                $("#show_list").append("<tr><td>ID</td><td>年</td><td>周</td><td>天</td><td>开始时间</td><td>结束时间</td><td>时长<td>主题</td><td>操作(<button onclick='add()'>添加</button>)</td>");
                 for (var i = 0; i < list.length; ++i) {
                     for (var j = 0; j < list[i].length; ++j) {
                         $("#show_list").append("<tr><td>" + list[i][j].id + "</td><td>" + list[i][j].year + "</td><td>" + list[i][j].week + "</td><td>" + list[i][j].day + "</td>" +
-                                "<td>" + list[i][j].startTime + "</td><td>" + list[i][j].endTime + "</td><td>" + list[i][j].duration + "</td><td>" + list[i][j].title + "</td><td>" + list[i][j].state + "</td>" +
+                                "<td>" + list[i][j].startTime + "</td><td>" + list[i][j].endTime + "</td><td>" + list[i][j].duration + "</td><td>" + list[i][j].title + "</td>" +
                                 "<td>" +
                                 "<button onclick='update(" + list[i][j].id + ")'>修改</button>" +
                                 "</td></tr>");

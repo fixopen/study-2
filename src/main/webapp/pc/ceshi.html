@@ -2,291 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>激活卡</title>
+    <title></title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait">
+    <style type="text/css">
+        .code
+        {
+            font-family: Arial;
+            font-style: italic;
+            color: Red;
+            border: 0;
+            padding: 2px 3px;
+            letter-spacing: 3px;
+            font-weight: bolder;
+        }
+        .unchanged
+        {
+            border: 0;
+        }
+    </style>
 
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="validationCode.css">
-
-    <!--
     <script type="text/javascript" src="jquery/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="zepto/zepto.min.js"></script>
+    <!--<script type="text/javascript" src="zepto/zepto.min.js"></script>
     <script type="text/javascript" src="zepto/event.js"></script>
     <script type="text/javascript" src="zepto/touch.js"></script>
     <script type="text/javascript" src="zepto/selector.js"></script>
     <script type="text/javascript" src="util.js"></script>
     -->
-    <script>
-        window.addEventListener('load', function (e) {
-            var cardNo = document.getElementById("cardNo")
-            cardNo.addEventListener('keyup', function (e) {
-                e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
-            }, false);
-        }, false);
-
-        var getUrlParameter = function (name) {
-            var result = null;
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-            var r = window.location.search.substr(1).match(reg); //匹配目标参数
-            if (r != null) {
-                result = decodeURI(r[2]);
-            }
-            return result; //返回参数值
-        }
-
-        var ajax = function (method, url, headers, data, postProcess) {
-            //alert('enter');
-            var xhr = new XMLHttpRequest();
-            //alert('new xhr');
-            xhr.onreadystatechange = function () {
-                //alert('enter callback');
-                if (xhr.readyState === 4) {
-                    //alert('xhr state is 4');
-                    var result = {meta: {code: xhr.status, text: xhr.statusText}, data: null};
-                    if (xhr.responseText[0] == '{' || xhr.responseText[0] == '[') {
-                        //alert('xhr success');
-                        result.data = JSON.parse(xhr.responseText);
-                    } else {
-                        //alert('xhr failure');
-                        result.data = xhr.responseText;
-                    }
-                    postProcess(result);
-                }
-            }
-            //alert('set callback');
-            xhr.open(method, url, false);
-            //alert('open');
-            for (var i = 0, c = headers.length; i < c; ++i) {
-                xhr.setRequestHeader(headers[i].name, headers[i].value);
-            }
-            //alert('set headers');
-            var sendContent = null;
-            if (data != null) {
-                sendContent = JSON.stringify(data);
-            }
-            xhr.send(sendContent);
-            //alert('send content');
-        }
-
-        var userId = getUrlParameter('userid');
-        //var sessionId = getUrlParameter('sessionid')
-        //var openId = getUrlParameter('openid');
-
-        var timeoutId;
-
-        //ajax('GET', 'api/wechat-users/' + openId + "/identities", [
-        //    {name: 'Accept', value: 'application/json'}
-        //], null, function (ids) {
-        //    if (ids.meta.code < 400) {
-        //        userId = ids.data.userId
-        //        //g.setCookie('sessionId', ids.data.sessionId)
-        //    } else {
-        //        var tips = document.getElementById("tips")
-        //        tips.innerHTML = "Initialize error，place refresh this page"
-        //    }
-        //})
-
-        //        $.ajax({
-        //            type: 'get',
-        //            url: 'api/wechat-users/' + openId + "/identities",
-        //            dataType: 'json',
-        //            success: function(ids) {
-        //                userId = ids.data.userId;
-        //                g.setCookie('sessionId', ids.sessionId);
-        //            },
-        //            error: function(r) {
-        //                var tips = document.getElementById("tips");
-        //                tips.innerHTML = "Initialize error，place refresh this page";
-        //            }
-        //        })
-
-        var activeCode = function (e) {
-            //alert('active code')
-            var phoneNumber = document.getElementById('phoneNumber').value
-            if (phoneNumber != "") {
-                ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
-                    {name: 'Accept', value: 'application/json'}
-                ], null, function (r) {
-                    var tips = document.getElementById("tips")
-                    if (r.meta.code < 400) {
-                        tips.innerHTML = '发送成功，请注意查收'
-                    } else {
-                        tips.innerHTML = '发送失败，请重新获取验证码'
-                    }
-                })
-
-//            $.ajax({
-//                type: 'get',
-//                url: 'api/users/telephones/' + phoneNumber + '/code',
-//                dataType: 'json',
-//                success: function (data) {
-//                    var tips = document.getElementById('tips')
-//                    tips.innerHTML = '发送成功，请注意查收'
-//                },
-//                error: function (r) {
-//                    var tips = document.getElementById('tips')
-//                    tips.innerHTML = '发送失败，请重新获取验证码'
-//                }
-//            })
-                var timeoutCount = 180;
-                var proc = function () {
-                    e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
-                    --timeoutCount;
-                    e.target.disabled = true
-                    if (timeoutCount <= 0) {
-                        e.target.value = ' 重新发送 ';
-                        clearInterval(timeoutId);
-                        e.target.disabled = false
-                    }
-                }
-                timeoutId = setInterval(proc, 1000);
-            } else {
-                alert('手机号不能为空')
-            }
-        }
-        var o = 0
-
-        var save = function (e) {
-            if (o == 1) {
-                var tips = document.getElementById("tips");
-                tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                return
-            }
-            if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
-                alert("输入框不能为空")
-            } else {
-
-                var data = {};
-                var code = document.getElementById('cardNo').value
-                var cardNo = code.replace(/\s/ig, '');
-                data.cardNo = cardNo;
-                data.password = document.getElementById('password').value;
-                data.phoneNumber = document.getElementById('phoneNumber').value;
-                data.validCode = document.getElementById('validCode').value;
-                ajax('POST', 'api/users/' + userId + '/cards', [
-                    {name: 'Content-Type', value: 'application/json'},
-                    {name: 'Accept', value: 'application/json'}
-                ], data, function (r) {
-                    if (r.meta.code < 400) {
-                        location.href = 'Gold.html';
-                    } else {
-                        //alert('save error');
-                        var tips = document.getElementById("tips");
-                        //alert('get tips');
-                        switch (r.meta.code) {
-                            case 500:
-                                tips.innerHTML = "你的手机号跟别人重复啦";
-                                break;
-                            case 412:
-                                tips.innerHTML = "请返回的我的首页";
-                                break;
-                            case 520:
-                                tips.innerHTML = "后台错误520";
-                                break;
-                            case 404:
-                                tips.innerHTML = "卡号或密码错误";
-                                break;
-                            case 405:
-                                tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                                o = 1;
-                                break;
-                            case 401:
-                                tips.innerHTML = "手机号或验证码错误";
-                                break;
-                            case 410:
-                                tips.innerHTML = "验证码超时";
-                                break;
-                            case 200:
-                                window.location.href = 'Gold.html';
-                                break;
-                        }
-                    }
-                })
-            }
-        }
-
-        var enableActive = function (e) {
-            clearInterval(timeoutId);
-            var activeCodeButton = document.getElementById('activeCode');
-            activeCodeButton.disabled = false
-            activeCodeButton.value = '发送验证码'
-        }
-    </script>
 
 </head>
 <body>
-<div style="padding-top: 0.625rem;" class="wrap">
-    <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
-        <div class="set-li">
-            <span class="set-span">卡号</span>
-            <input class="set-input" type="text" placeholder="请输入卡号" id="cardNo" style="height:20px; font-size:18px;"
-                   onkeyup="test()"
-                   required pattern="\d+">
-        </div>
-        <div class="set-li">
-            <span class="set-span">密码</span>
-            <input class="set-input" type="password" placeholder="请输入密码" id="password"
-                   style="height:20px; font-size:18px;" required>
-        </div>
-        <div class="set-li">
-            <span class="set-span">手机号</span>
-            <input class="set-input" type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+"
-                   style="height:20px; width: 115px; font-size:18px;">
-            <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"
-                   class="send-btn cur">
-        </div>
-        <div class="set-li">
-            <span class="set-span">验证码</span>
-            <input class="set-input" type="text" placeholder="请输入验证码" id="validCode"
-                   style="height:20px; font-size:18px;" required
-                   pattern="\d{6}">
-        </div>
-    </section>
-    <br/>
-    <div style="font-size: 0.875rem; color: #fe6568; padding-left: 0.875rem; box-sizing: border-box; line-height: 1.375rem;"
-         id="tips">
-        欢迎来到激活卡页面!
-    </div>
-    <br/>
-    <button id="save" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
-    margin-right: 5%; background-color: #fe6568; border: none">确 认
-    </button>
-</div>
+<form action="#">
+    <input type="text" id="input1" />
+    <input type="text" onclick="createCode()" readonly="readonly" id="checkCode" class="unchanged" style="width: 80px;background: #660099"/><br />
+</form>
+<script language="javascript" type="text/javascript">
 
-<script>
-    //    var code = getUrlParameter('code')
-    //    ajax('GET', 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx92dec5e98645bd1d&secret=d3b30c3ae79c322bc54c93d0ff75210b&code=' + code + '&grant_type=authorization_code', [], null, function(result) {
-    //        ajax('GET', 'https://api.weixin.qq.com/sns/userinfo?access_token=' + result.access_token + '&openid=' + result.openid + '&lang=zh_CN', [], null, function(r) {
-    //            //
-    //        })
-    //    })
+    var code; //在全局 定义验证码
+    var code2; //在全局 定义验证码
+    function createCode() {
+        code = "";
+        var checkCode = document.getElementById("checkCode");
+        function RndNum(n) {
+            var rnd = "";
+            for (var i = 0; i < n; i++)
+                rnd += Math.floor(Math.random() * 10);
+            return rnd;
+        }
 
-    var activeCodeButton = document.getElementById('activeCode');
-    activeCodeButton.addEventListener('click', activeCode, false);
+        var num = RndNum(2);
+        var num2 = RndNum(2);
 
-    var saveButton = document.getElementById('save');
-    saveButton.addEventListener('click', save, false);
+        code = num + "+" + num2 + "=";
+        code2 = parseInt(num) + parseInt(num2)
 
-    var validCode = document.getElementById('validCode')
+        if (checkCode) {
+            checkCode.className = "code";
+            checkCode.value = code;
+        }
 
-    validCode.addEventListener('change', enableActive, false)
-
-    var phoneNumber = document.getElementById('phoneNumber')
-    phoneNumber.addEventListener('change', enableActive, false)
-
-    var cardNo = document.getElementById('cardNo')
-    cardNo.addEventListener('change', function (e) {
-        o = 0
-    }, false)
-    //$('#activeCode').tap(activeCode)
-
-    //$('#save').tap(save)
+    }
 </script>
+<script type="text/javascript">
+    $(document).ready(function () {
 
+        $("#input1").blur(function () {
+            var inputCode = document.getElementById("input1").value;
+            if (inputCode.length <= 0) {
+                alert("请输入验证码！");
+            }
+            else if (inputCode != code2) {
+                alert("验证码输入错误！");
+                createCode(); //刷新验证码
+            }
+            else {
+                alert("^-^ OK");
+            }
+        });
+    })
+</script>
 </body>
 </html>

@@ -53,6 +53,19 @@
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <div class="regular-td">验证码：</div>
+                        </td>
+                        <td>
+                            <input type="text" id="VCode" placeholder="请输入验证码" class="vertify-input fill-error">
+
+                                <img src="" height="50" width="120" id="myimg"/>
+
+                            <a href="javascript:;" class="change-one" id="changeimg">换一张</a><br>
+                            <i class="error" id="tianerror"><!--验证码填写错误--></i>
+                        </td>
+                    </tr>
                 </table>
 
                 <div class="login-box">
@@ -76,21 +89,48 @@
     cardPosition();//请激活卡号垂直居中对齐
 </script>
 <script type="text/javascript">
+    var str;
+    let ej;
+    biantu();
     function forget() {
-        if ($("#telephone").val() == "" && $("#telephone").val().length != 11) {
-            document.getElementById("errortelephone").innerHTML = "格式不正确，请输入正确的手机号！"
-        } else {
-            g.setCookie("phone", $("#telephone").val(), '/')
-            location.href = "forgetPassword.html";
-        }
+        location.href = "forgetPassword.html";
     }
+    var changeimg = document.getElementById("changeimg");
+    changeimg.addEventListener('click', function (e) {
+        biantu();
+    })
+    let t;
+    let m;
+    let p;
     var submit = document.getElementById("submit");
     submit.addEventListener('click', function (e) {
         var telephone = $("#telephone").val();
         var password = $("#password").val();
-        if ($("#telephone").val() == "" && $("#telephone").val().length != 11) {
+        if ($("#telephone").val() == "" || $("#telephone").val().length != 11) {
             document.getElementById("errortelephone").innerHTML = "格式不正确，请输入正确的手机号！"
+            t = 1;
         } else {
+            document.getElementById("errortelephone").innerHTML = "";
+            t = 0;
+        }
+        if ($("#password").val() != "" && $("#password").val().length >= 6 && $("#password").val().length <= 16) {
+            document.getElementById("errorpassword").innerHTML = "";
+            p = 0
+        } else {
+            document.getElementById("errorpassword").innerHTML = "密码错误，请输入6-16位密码"
+            p = 1;
+        }
+        //$("#VCode").val() != "" && $("#VCode").val().length != 0 &&
+        var vc = $("#VCode").val();
+        if (vc == str) {
+            document.getElementById("tianerror").innerHTML = "";
+            m = 0;
+        } else {
+            document.getElementById("tianerror").innerHTML = "验证码填写错误！"
+            m = 1;
+        }
+        if (t == 0 && p == 0 && m == 0) {
+            //alert("对")
             var data = {
                 telephone: telephone,
                 password: password
@@ -145,8 +185,34 @@
                      })*/
                 }
             })
+        } else {
+            //alert("错")
+
         }
     })
+
+    function biantu() {
+        $.ajax({
+            type: "get",
+            url: "/api/util-img",
+            dataType: "json",
+            success: function (e) {
+                ej = JSON.stringify(e)
+                str = e.substr(0, 4)
+                var bigimg = document.getElementById("myimg");
+                bigimg.src="/medias/vcode.png" + '?rand=' + Math.random();
+                alert(str)
+                // alert(str)
+                // var str = JSON.stringify(e.replace(/^(?:[^/]*\/){1}(.*)$/,"$1"))
+
+            },
+            error: function (e) {
+                alert(JSON.stringify(e))
+            }
+        })
+    }
+
+
 </script>
 </body>
 </html>

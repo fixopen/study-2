@@ -693,7 +693,7 @@ public class PublicAccounts {
     }
 
     public static Session putSession(Date now, Long userId) {
-        String nowString = now.toString();
+        String nowString = now.toString() + Long.toString(now.getTime());
         byte[] sessionIdentity = Securities.digestor.digest(nowString);
         String sessionString = Hex.bytesToHex(sessionIdentity);
 

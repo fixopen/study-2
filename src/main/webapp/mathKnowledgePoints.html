@@ -41,7 +41,21 @@
 <template id="title-template">
     <span class="biti_span">${title}</span>
 </template>
-<template id="knowledge-point-template">
+<template id="knowledge-point-normalNew-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <!--<a class="neir_pzi" href="#">${title}</a>-->
+            <a class="neir_pzi" style="font-weight: bold"
+               href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
+            <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
+        </div>
+        <img src="img/fenjie1.png" alt="">
+    </li>
+</template>
+<template id="knowledge-point-normalOld-template">
     <li class="neir_li">
         <div class="neir_lidiv">
             <!--<a class="neir_pzi" href="#">${title}</a>-->
@@ -54,21 +68,6 @@
         <img src="img/fenjie1.png" alt="">
     </li>
 </template>
-<!--<template id="knowledge-point-template">-->
-<!--<div>-->
-<!--<ul class="cont_sul" >-->
-<!--<li class="neir_li">-->
-<!--<div class="neir_lidiv">-->
-<!--<a class="neir_pzi" href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>-->
-<!--</div>-->
-<!--<div class="neir_ridiv">-->
-<!--<a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>-->
-<!--<a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>-->
-<!--</div>-->
-<!--<img id="fenjie" src="img/fenjie1.png" alt="">-->
-<!--</li>-->
-<!--</ul></div>-->
-<!--</template>-->
 <template id="knowledge-test-template">
     <li class="neir_li_li">
         <div class="neir_lidiv">

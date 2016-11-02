@@ -85,14 +85,14 @@
         <td>直播链接</td>
         <td><input type="text" id="directLink"/></td>
     </tr>
-    <tr>
-        <td>状态</td>
-        <td>
-            <input type="radio" name="state" id="state0" value="0"/>已播出
-            <input type="radio" name="state" id="state1" value="1"/>正直播
-            <input type="radio" name="state" id="state2" value="2"/>未播出
-        </td>
-    </tr>
+    <!-- <tr>
+         <td>状态</td>
+         <td>
+             <input type="radio" name="state" id="state0" value="0"/>已播出
+             <input type="radio" name="state" id="state1" value="1"/>正直播
+             <input type="radio" name="state" id="state2" value="2"/>未播出
+         </td>
+     </tr>-->
     <tr>
         <td>
             <button onclick="submit()">提交</button>
@@ -142,7 +142,7 @@
                 //cover: coverInput.dataset.storePath,
                 $("#cdnLink").attr("value", scheduler.cdnLink);
                 $("#directLink").attr("value", scheduler.directLink);
-                $("#state" + scheduler.state).attr("checked", true);
+                //$("#state" + scheduler.state).attr("checked", true);
             },
             error: function (scheduler) {
                 alert(JSON.stringify(scheduler))
@@ -204,7 +204,7 @@
                 cover: coverInput.dataset.storePath,
                 cdnLink: $("#cdnLink").val(),
                 directLink: $("#directLink").val(),
-                state: $("input[name='state']:checked").val()
+                // state: $("input[name='state']:checked").val()
             }
             alert(JSON.stringify(data));
             if (id != null) {
