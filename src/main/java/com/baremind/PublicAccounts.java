@@ -991,6 +991,28 @@ public class PublicAccounts {
         return result;
     }
 
+    @GET
+    @Path("video")
+    @Produces(MediaType.TEXT_HTML)
+    public Response video(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = wechatUserFromToken(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = insertUserInfoByWechatUser(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/allVideo.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
     //获取微信服务器ID
     //public static
 
