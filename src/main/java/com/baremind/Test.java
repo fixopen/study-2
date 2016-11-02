@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+//import javax.media.jai.JAI;
 
 @Path("util-img")
 public class Test {
@@ -56,23 +57,24 @@ public class Test {
         }
         //System.out.println("=======yzm"+yzm);
         //画随机线
-           /* for(int i=0;i<25;i++){
+            for(int i=0;i<25;i++){
                 g.setColor(new Color(r(50,180),r(50,180),r(50,180)));
                 g.drawLine(r(0,w), r(0,h),r(0,w), r(0,h));
-            }*/
+            }
         //把内存中创建的图像输出到文件中
-        String pyshicalpath = Properties.getPropertyValue("physicalpath");
+        String pyshicalpath = Properties.getPropertyValue("testphysicalpath");
         String uploadedFileLocation = pyshicalpath + "vcode.png";
         File file = new File(uploadedFileLocation);
         // FileOutputStream w = new FileOutputStream(file);
-       /* try{
+       /*try{
             com.sun.jimi.core.Jimi.putImage("image/jpeg", img, file);
         }catch(Exception e){
             e.printStackTrace();
         }*/
         ImageIO.write(img, "png", file);
-       // System.out.println("图片输出完成");
-        String path = Properties.getPropertyValue("virtualpath") + "vcode.png";
+//        JAI.create(img, file, "PNG", null);
+        // System.out.println("图片输出完成");
+        String path = Properties.getPropertyValue("testvirtualpath") + "vcode.png";
 
         result = Response.ok(new Gson().toJson(yzm + "/" + path)).build();
         return result;
