@@ -280,6 +280,8 @@
 <script src="/basic.js"></script>
 <script type="text/javascript">
     curseDetailTap(); //点击“课程详情”
+    var userId = g.getUrlParameter('userid')
+    g.setCookie('userId', userId)
     var course = []
     var refreshChineseState = function () {
         var now = new Date()
