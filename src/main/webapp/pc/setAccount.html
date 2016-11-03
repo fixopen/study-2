@@ -50,8 +50,8 @@
                 </td>
             </tr>
         </table>
-        <div class="btn-box">
-            <a href="perfectInformation.html" id="submit" class="submit-btn">保存并完善资料</a>
+        <div class="btn-box" id="u">
+            <a href="JavaScript:;" id="submit" class="submit-btn">保存并完善资料</a>
         </div>
     </div>
     <div class="perfect-bottom"></div>
@@ -70,30 +70,38 @@
 </script>
 <script>
     $(function () {
-        var phone = null;
-        /*$.ajax({
+        var phone;
+        $.ajax({
          type: "get",
          url: "/api/users/self",
          dataType: "json",
          success: function (e) {
+             document.getElementById("u").value = e.id
          if (e.password) {
-         if (e.name && e.sex && e.telephone && e.birthday && e.receipt_address) {
-         location.href = "signIn.html";
+            /* if (e.name && e.sex && e.telephone && e.birthday && e.location) {
+                 //alert("完善")
+                 location.href = "signIn.html";
+             } else {
+                 //alert("不完善")
+                 location.href = "perfectInformation.html";
+             }
+             alert("存在")*/
          } else {
-         location.href = "perfectInformation.html";
-         }
-         } else {
+             alert("不存在")
 
          }
          let a = e.telephone;
+        /* let b = e.id;*/
          phone = parseInt(a);
+         /*userId = parseInt(b);*/
          document.getElementById("phonecodeId").innerHTML = phone
+         document.getElementById("phonecodeId").value = phone
 
          },
          error: function (e) {
          location.href = "signIn.html";
          }
-         })*/
+         })
 
     })
 
@@ -112,15 +120,20 @@
             telephone: $("#phonecodeId").val(),
             password: $("#pwd2").val()
         }
-        alert(JSON.stringify(data))
+
         $.ajax({
-            type: "post",
-            url: "/api/users/",
+            type: "put",
+            url: "/api/users/"+ $("#u").val(),
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (user) {
-                location.href = "perfectInformation.html.html";
+                if (user.name && user.sex && user.telephone && user.birthday && user.location) {
+                    location.href = "signIn.html";
+                } else {
+                    location.href = "perfectInformation.html";
+
+                }
             },
             error: function (user) {
                 alert(JSON.stringify(user));

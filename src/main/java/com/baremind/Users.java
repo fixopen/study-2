@@ -408,7 +408,12 @@ public class Users {
                                 } else {
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
-                                    result = Response.ok().build();
+                                   /* result = Response.ok().build();*/
+                                    Session s = PublicAccounts.putSession(new Date(), user.getId());
+                                    result = Response.ok()
+                                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                            .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                            .build();
                                 }
                             } else {
                                 result = Response.status(405).build();
