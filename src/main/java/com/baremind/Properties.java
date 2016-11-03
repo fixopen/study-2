@@ -6,8 +6,6 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,9 +19,9 @@ public class Properties {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("scheduler-counter")
     public Response incCount() {
-        Property property = JPAEntry.getObject(Property.class, "id", 5);
-        int long_value = Integer.parseInt(property.getValue()) +1 ;
-        String  value =  String.valueOf(long_value);
+        Property property = JPAEntry.getObject(Property.class, "name", "scheduler-counter");
+        long long_value = Long.parseLong(property.getValue());
+        String value = String.valueOf(long_value + 1);
         property.setValue(value);
         JPAEntry.genericPut(property);
         return Response.ok().build();
