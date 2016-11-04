@@ -57,14 +57,22 @@ public class JPAEntry {
                 } else {
                     jpql += " AND ";
                 }
-                jpql += "a." + item.getKey() + " = :" + item.getKey();
+                String op = "=";
+                if (item.getValue() instanceof Condition) {
+                    op = ((Condition) item.getValue()).getOp();
+                }
+                jpql += "a." + item.getKey() + op + " :" + item.getKey();
             }
         }
         try {
             TypedQuery<T> q = em.createQuery(jpql, type);
             if (conditions != null) {
                 for (Map.Entry<String, Object> item : conditions.entrySet()) {
-                    q.setParameter(item.getKey(), item.getValue());
+                    Object value = item.getValue();
+                    if (item.getValue() instanceof Condition) {
+                        value = ((Condition) item.getValue()).getValue();
+                    }
+                    q.setParameter(item.getKey(), value);
                 }
             }
             result = q.getSingleResult();
@@ -107,7 +115,11 @@ public class JPAEntry {
                 } else {
                     jpql += " AND ";
                 }
-                jpql += "o." + item.getKey() + " = :" + item.getKey();
+                String op = "=";
+                if (item.getValue() instanceof Condition) {
+                    op = ((Condition) item.getValue()).getOp();
+                }
+                jpql += "o." + item.getKey() + op + " :" + item.getKey();
             }
         }
         if (orders != null) {
@@ -124,7 +136,16 @@ public class JPAEntry {
         }
         final TypedQuery<T> q = em.createQuery(jpql, type);
         if (conditions != null) {
-            conditions.forEach(q::setParameter);
+            conditions.forEach((key, value) -> {
+                Object v = value;
+                if (value instanceof Condition) {
+                    v = ((Condition) value).getValue();
+                }
+                q.setParameter(key, v);
+            });
+            //for (Map.Entry<String, Object> item : conditions.entrySet()) {
+            //    q.setParameter(item.getKey(), item.getValue());
+            //}
         }
         return q.getResultList();
     }

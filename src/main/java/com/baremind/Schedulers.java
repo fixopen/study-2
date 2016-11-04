@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
+
 //GET /api/schedulers/this-week
 //GET /api/schedulers/34
 //GET /api/schedulers?filter={"week":34,"year":2014}
@@ -61,54 +62,30 @@ public class Schedulers {
         Response r = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-            //schedulers.remove(0);
-            Collections.sort(schedulers, (left, right) -> {
-                int result = 0;
-                if (left.getYear() > right.getYear()) {
-                    result = -1;
-                } else if (left.getYear() < right.getYear()) {
-                    result = 1;
-                } else {
-                    if (left.getWeek() > right.getWeek()) {
-                        result = -1;
-                    } else if (left.getWeek() < right.getWeek()) {
-                        result = 1;
-                    } else {
-                        if (left.getDay() > right.getDay()) {
-                            result = -1;
-                        } else if (left.getDay() < right.getDay()) {
-                            result = 1;
-                        } else {
-                            if (left.getStartTime().getTime() > right.getStartTime().getTime()) {
-                                result = -1;
-                            } else if (left.getStartTime().getTime() < right.getStartTime().getTime()) {
-                                result = 1;
-                            }
-                        }
-                    }
-                }
-                return result;
-            });
-            ArrayList<Scheduler> a2 = new ArrayList<>();
-            ArrayList<Scheduler> a1 = new ArrayList<>();
-            ArrayList<Scheduler> a = new ArrayList<>();
+            Map<String, String> orders = new HashMap<>();
+            orders.put("startTime", "DESC");
+            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
+            ArrayList<Scheduler> featured = new ArrayList<>();
+            ArrayList<Scheduler> playing = new ArrayList<>();
+            ArrayList<Scheduler> passed = new ArrayList<>();
+            ArrayList<Scheduler> featuredUpsideDown = new ArrayList<>();
+            Date now = new Date();
             for (Scheduler scheduler : schedulers) {
-                if (scheduler.getState() == 2) {
-                    a2.add(scheduler);
-                }
-                if (scheduler.getState() == 1) {
-                    a1.add(scheduler);
-                }
-                if (scheduler.getState() == 0) {
-                    a.add(scheduler);
+                if (now.before(scheduler.getStartTime())) {
+                    featured.add(scheduler);
+                } else {
+                    if (now.before(scheduler.getEndTime())) {
+                        playing.add(scheduler);
+                    } else {
+                        passed.add(scheduler);
+                    }
                 }
             }
             ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
-            result.add(a1);
-            result.add(a2);
-            result.add(a);
-
+            result.add(playing);//正播
+            Collections.reverse(featured); // 倒序排列
+            result.add(featured); //未播
+            result.add(passed);//播过
             //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             r = Response.ok(gson.toJson(result)).build();
@@ -174,10 +151,6 @@ public class Schedulers {
                 Integer duration = scheduler.getDuration();
                 if (duration != null) {
                     existScheduler.setDuration(duration);
-                }
-                Integer state = scheduler.getState();
-                if (state != null) {
-                    existScheduler.setState(state);
                 }
                 Long subjectId = scheduler.getSubjectId();
                 if (subjectId != null) {

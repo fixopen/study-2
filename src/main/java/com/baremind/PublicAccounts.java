@@ -692,7 +692,7 @@ public class PublicAccounts {
     }
 
     public static Session putSession(Date now, Long userId) {
-        String nowString = now.toString();
+        String nowString = now.toString() + Long.toString(now.getTime());
         byte[] sessionIdentity = Securities.digestor.digest(nowString);
         String sessionString = Hex.bytesToHex(sessionIdentity);
 
@@ -996,6 +996,28 @@ public class PublicAccounts {
             Session s = putSession(now, userId);
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/mathVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("video")
+    @Produces(MediaType.TEXT_HTML)
+    public Response video(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/allVideo.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

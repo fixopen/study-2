@@ -420,6 +420,10 @@ public class KnowledgePoints {
                 if (title != null) {
                     existknowledgePoint.setName(title);
                 }
+                Date showTime = knowledgePoint.getShowTime();
+                if (showTime != null) {
+                    existknowledgePoint.setShowTime(showTime);
+                }
                 int order = knowledgePoint.getOrder();
                 if (order != 0) {
                     existknowledgePoint.setOrder(order);

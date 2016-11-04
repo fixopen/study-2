@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>直播视频</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <script src="/jquery/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+</head>
+<body>
+<a href="schedulers.html"><img src="" alt="" /></a>
+<!-- Nav tabs -->
+<ul id="subjects" class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#chinese" role="tab" data-toggle="tab">chinese</a></li>
+    <li role="presentation"><a href="#math" role="tab" data-toggle="tab">math</a></li>
+</ul>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="chinese">
+        <div id="chinesePlaying"></div>
+        <div id="chineseFuture"></div>
+        <div id="chinesePassed"></div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="math">
+        <div id="mathPlaying"></div>
+        <div id="mathFuture"></div>
+        <div id="mathPassed"></div>
+    </div>
+</div>
+<template id="playing-template"></template>
+<template id="future-template"></template>
+<template id="passed-template"></template>
+<script src="/moment/moment.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script>
+    $.ajax({
+        type: 'get',
+        url: '/api/subjects',
+        dataType: 'json',
+        success: function(subjects) {
+            $.ajax({
+                type: 'get',
+                url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                dataType: 'json',
+                success: function (zeroSchedulers) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
+                        dataType: 'json',
+                        success: function (oneSchedulers) {
+                            //
+                        }
+                    })
+                }
+            })
+        },
+        error: function(xhr) {
+            alert('back-end not response, places retry')
+        }
+    })
+    $('#subjects a[href="#math"]').tab('show') // Select tab by name
+    $('#subjects a:first').tab('show') // Select first tab
+    $('#subjects a:last').tab('show') // Select last tab
+    $('#subjects li:eq(2) a').tab('show') // Select third tab (0-indexed)
+</script>
+</body>
+</html>

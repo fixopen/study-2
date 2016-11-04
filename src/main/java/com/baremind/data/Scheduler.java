@@ -26,9 +26,6 @@ public class Scheduler {
     @Column(name = "day")
     private Integer day;
 
-    @Column(name = "state")
-    private Integer state;
-
     @Column(name = "start_time")
     private Date startTime;
 
@@ -95,14 +92,6 @@ public class Scheduler {
 
     public void setDay(Integer day) {
         this.day = day;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
     }
 
     public Date getStartTime() {

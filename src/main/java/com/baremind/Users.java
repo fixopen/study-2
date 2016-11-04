@@ -1,19 +1,18 @@
 package com.baremind;
 
-import com.baremind.data.Card;
-import com.baremind.data.User;
-import com.baremind.data.ValidationCode;
-import com.baremind.data.WechatUser;
+import com.baremind.data.*;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
@@ -215,23 +214,35 @@ public class Users {
     @GET
     @Path("{id}/cards")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCards(@PathParam("id") Long id) {
+    public Response getCards(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(404).build();
-        List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
-        if (!cards.isEmpty()) {
-            result = Response.ok(new Gson().toJson(cards)).build();
+        User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+        if (admin != null && admin.getIsAdministrator()) {
+            List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
+            if (!cards.isEmpty()) {
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
+                // result = Response.ok(gson.toJson(scheduler)).build();
+                result = Response.ok(gson.toJson(cards)).build();
+            }
         }
         return result;
     }
 
-    @POST
-    @Path("{id}/cards")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
+    @Path("self/cards")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
-        //Random rand = new Random();
-        //Long logId = rand.nextLong();
-        //Logs.insert(id, "log", logId, "start");
+    public Response getSelfCards(@CookieParam("userId") String userId) {
+        Response result = Response.status(404).build();
+        List<Card> cards = JPAEntry.getList(Card.class, "userId", Long.parseLong(userId));
+        if (!cards.isEmpty()) {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(cards)).build();
+        }
+        return result;
+    }
+
+    private Response activeCardImpl(Long id, ActiveCard ac) {
         Response result = Response.status(412).build();
         User user = JPAEntry.getObject(User.class, "id", id);
         if (user != null) {
@@ -322,6 +333,28 @@ public class Users {
     }
 
     @POST
+    @Path("{id}/cards")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
+        Random rand = new Random();
+        Long logId = rand.nextLong();
+        //Logs.insert(id, "log", logId, "start");
+        return activeCardImpl(id, ac);
+    }
+
+    @POST
+    @Path("self/cards")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response activeCard(@CookieParam("userId") String userId, ActiveCard ac) {
+        Random rand = new Random();
+        Long logId = rand.nextLong();
+        //Logs.insert(id, "log", logId, "start");
+        return activeCardImpl(Long.parseLong(userId), ac);
+    }
+
+    @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -358,14 +391,27 @@ public class Users {
                                     user.setId(IdGenerator.getNewId());
                                     user.setTelephone(ac.getPhoneNumber());
                                     user.setLoginName(ac.getPhoneNumber());
+                                    user.setCreateTime(now);
+                                    user.setUpdateTime(now);
+                                    user.setName("");
+                                    user.setSex(0);
                                     JPAEntry.genericPost(user);
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
-                                    result = Response.ok().build();
+                                    Session s = PublicAccounts.putSession(new Date(), user.getId());
+                                    result = Response.ok()
+                                        .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .build();
                                 } else {
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
-                                    result = Response.ok().build();
+                                   /* result = Response.ok().build();*/
+                                    Session s = PublicAccounts.putSession(new Date(), user.getId());
+                                    result = Response.ok()
+                                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                            .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                            .build();
                                 }
                             } else {
                                 result = Response.status(405).build();
@@ -518,7 +564,66 @@ public class Users {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<User> users = JPAEntry.getList(User.class, filterObject);
             if (!users.isEmpty()) {
-                result = Response.ok(new Gson().toJson(users)).build();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                result = Response.ok(gson.toJson(users)).build();
+            }
+        }
+        return result;
+    }
+
+    @GET //根据条件查询
+    @Path("no/userId/code")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser(@QueryParam("filter") @DefaultValue("") String filter) {
+        Response result = Response.status(404).build();
+        Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+        List<User> users = JPAEntry.getList(User.class, filterObject);
+        if (!users.isEmpty()) {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(users)).build();
+        }
+        return result;
+    }
+
+    @POST
+    @Path("phone/Verification")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getv(ActiveCard activeCard) {
+        Response result = result = Response.status(404).build();
+        Map<String, Object> validationCodeConditions = new HashMap<>();
+        validationCodeConditions.put("phoneNumber", activeCard.getPhoneNumber());
+        validationCodeConditions.put("validCode", activeCard.getValidCode());
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+        Map<String, Object> validationCode = new HashMap<>();
+        validationCode.put("telephone", activeCard.getPhoneNumber());
+        if (!validationCodes.isEmpty()) {
+            Date now = new Date();
+            Date sendTime = validationCodes.get(0).getTimestamp();
+            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                List<User> users = JPAEntry.getList(User.class, validationCode);
+                if (!users.isEmpty()) {
+                    Session session = PublicAccounts.putSession(now, users.get(0).getId());
+                    result = Response.ok()
+                            .cookie(new NewCookie("userId", users.get(0).getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .build();
+                } else {
+                    User user = new User();
+                    user.setId(IdGenerator.getNewId());
+                    user.setCreateTime(now);
+                    user.setTelephone(activeCard.getPhoneNumber());
+                    user.setUpdateTime(now);
+                    user.setName("");
+                    user.setSex(0);
+                    JPAEntry.genericPost(user);
+                    Session session = PublicAccounts.putSession(now, user.getId());
+                    result = Response.ok()
+                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .build();
+                }
+            } else {
+                result = Response.status(405).build();
             }
         }
         return result;
@@ -537,7 +642,8 @@ public class Users {
                 result = Response.status(404).build();
                 User user = JPAEntry.getObject(User.class, "id", id);
                 if (user != null) {
-                    result = Response.ok(new Gson().toJson(user)).build();
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                    result = Response.ok(gson.toJson(user)).build();
                 }
             }
         }
@@ -553,7 +659,8 @@ public class Users {
             Long id = Long.parseLong(userId);
             User user = JPAEntry.getObject(User.class, "id", id);
             if (user != null) {
-                result = Response.ok(new Gson().toJson(user)).build();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                result = Response.ok(gson.toJson(user)).build();
             }
         }
         return result;
@@ -621,7 +728,7 @@ public class Users {
                     existuser.setSchool(school);
                 }
                 Integer sex = user.getSex();
-                if (sex != 0) {
+                if (sex != null) {
                     existuser.setSex(sex);
                 }
                 String telephone = user.getTelephone();

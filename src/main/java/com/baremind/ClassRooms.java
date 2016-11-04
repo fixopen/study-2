@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+//import javax.websocket.Endpoint;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -23,7 +24,7 @@ import java.util.*;
  * Created by fixopen on 27/9/2016.
  */
 @Path("class-rooms")
-public class ClassRooms {
+public class ClassRooms/* extends Endpoint*/ {
     private static Long classRoomId = 0l;
 
     @GET

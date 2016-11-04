@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.Log;
 import com.baremind.data.Subject;
 import com.baremind.data.Volume;
 import com.baremind.utils.CharacterEncodingFilter;
@@ -25,6 +26,35 @@ public class Subjects {
             subject.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(subject);
             result = Response.ok(subject).build();
+        }
+        return result;
+    }
+
+    @POST
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response subjectPopup(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Log log = Logs.insert(Long.parseLong(userId), "subject", id, "popup");
+            result = Response.ok(new Gson().toJson(log)).build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/popup")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPopup(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Long popCount = Logs.getUserStatsCount(Long.parseLong(userId), "subject", id, "popup");
+            Boolean r = false;
+            if (popCount > 0) {
+                r = true;
+            }
+            result = Response.ok("{\"popup\":" + r + "}").build();
         }
         return result;
     }
@@ -73,7 +103,8 @@ public class Subjects {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
-                result = Response.ok(new Gson().toJson(volumes)).build();
+                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
+                result = Response.ok(new Gson().toJson(r)).build();
             }
         }
         return result;
@@ -93,7 +124,8 @@ public class Subjects {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
-                result = Response.ok(new Gson().toJson(volumes)).build();
+                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
+                result = Response.ok(new Gson().toJson(r)).build();
             }
         }
         return result;

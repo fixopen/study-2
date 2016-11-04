@@ -293,7 +293,6 @@ CREATE TABLE schedulers (
     year integer NOT NULL,
     week integer NOT NULL,
     day integer,
-    state integer DEFAULT 0 NOT NULL,
     start_time timestamp without time zone,
     end_time timestamp without time zone,
     duration bigint,

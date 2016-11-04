@@ -14,6 +14,19 @@ import java.util.Map;
 
 @Path("properties")
 public class Properties {
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("scheduler-counter")
+    public Response incCount() {
+        Property property = JPAEntry.getObject(Property.class, "name", "scheduler-counter");
+        long long_value = Long.parseLong(property.getValue());
+        String value = String.valueOf(long_value + 1);
+        property.setValue(value);
+        JPAEntry.genericPut(property);
+        return Response.ok().build();
+    }
+
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
