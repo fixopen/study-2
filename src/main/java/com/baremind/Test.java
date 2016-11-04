@@ -5,7 +5,6 @@ package com.baremind;
  */
 
 import com.google.gson.Gson;
-import sun.text.resources.iw.JavaTimeSupplementary_iw_IL;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.*;
@@ -60,10 +59,10 @@ public class Test {
         }
         //System.out.println("=======yzm"+yzm);
         //画随机线
-            for(int i=0;i<25;i++){
-                g.setColor(new Color(r(50,180),r(50,180),r(50,180)));
-                g.drawLine(r(0,w), r(0,h),r(0,w), r(0,h));
-            }
+        for (int i = 0; i < 25; i++) {
+            g.setColor(new Color(r(50, 180), r(50, 180), r(50, 180)));
+            g.drawLine(r(0, w), r(0, h), r(0, w), r(0, h));
+        }
         //把内存中创建的图像输出到文件中
         String pyshicalpath = Properties.getPropertyValue("physicalpath");
 //        String pyshicalpath = Properties.getPropertyValue("testphysicalpath");

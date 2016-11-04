@@ -116,7 +116,7 @@
             }, function (err) {
                 console.log("Local stream init failed.", err);
                 //displayInfo("Please check camera or audio devices on your computer, then try again.");
-                //$(".info").append("<div class='back'><a href='index.html'>Back</a></div>");
+                //$(".info").append("<div class='back'><a href='nickName.html'>Back</a></div>");
             });
             return localStream;
         }

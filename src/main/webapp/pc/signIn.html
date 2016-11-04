@@ -60,7 +60,7 @@
                         <td>
                             <input type="text" id="VCode" placeholder="请输入验证码" class="vertify-input fill-error">
 
-                                <img src="" height="50" width="120" id="myimg"/>
+                            <img src="" height="50" width="120" id="myimg"/>
 
                             <a href="javascript:;" class="change-one" id="changeimg">换一张</a><br>
                             <i class="error" id="tianerror"><!--验证码填写错误--></i>
@@ -90,7 +90,7 @@
 </script>
 <script type="text/javascript">
     var str;
-    let ej;
+    var ej;
     biantu();
     function forget() {
         location.href = "forgetPassword.html";
@@ -99,9 +99,9 @@
     changeimg.addEventListener('click', function (e) {
         biantu();
     })
-    let t;
-    let m;
-    let p;
+    var t;
+    var m;
+    var p;
     var submit = document.getElementById("submit");
     submit.addEventListener('click', function (e) {
         var telephone = $("#telephone").val();
@@ -122,13 +122,14 @@
         }
         //$("#VCode").val() != "" && $("#VCode").val().length != 0 &&
         var vc = $("#VCode").val();
-        if (vc == str) {
+        m = 0;
+        /*if (vc == str) {
             document.getElementById("tianerror").innerHTML = "";
             m = 0;
         } else {
             document.getElementById("tianerror").innerHTML = "验证码填写错误！"
             m = 1;
-        }
+        }*/
         if (t == 0 && p == 0 && m == 0) {
             //alert("对")
             var data = {
@@ -200,7 +201,7 @@
                 ej = JSON.stringify(e)
                 str = e.substr(0, 4)
                 var bigimg = document.getElementById("myimg");
-                bigimg.src="/medias/vcode.png" + '?rand=' + Math.random();
+                bigimg.src = "/medias/vcode.png" + '?rand=' + Math.random();
                 alert(str)
                 // alert(str)
                 // var str = JSON.stringify(e.replace(/^(?:[^/]*\/){1}(.*)$/,"$1"))

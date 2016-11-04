@@ -1,0 +1,38 @@
+.mine_zilo{
+    margin: 1.25rem 0 1.875rem;
+}
+.mine_zUl{
+    background-color: #fff;
+    border-top: 1px solid #e5e5e5;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+}
+.mine_zuli{
+    height: 3.71875rem;
+    line-height: 3.71875rem;
+    padding: 0 0.9375rem;
+    border-bottom: 1px solid #e5e5e5;
+    position: relative;
+}
+.mine_leftsp{
+    display: inline-block;
+    width: 4.375rem;
+    text-align: left;
+}
+.mine_rightip{
+    display: inline-block;
+    color: #888;
+    font-size: 1.0rem;
+    height: 1.8125rem;
+    margin-left: 1.5625rem;
+}
+.chahao{
+    display: inline-block;
+    width: 1.09375rem;
+    height: 1.09375rem;
+    background: url('../img/nickNameChahao.png') 0 0 no-repeat;
+    background-size: 1.09375rem 1.09375rem;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+}
