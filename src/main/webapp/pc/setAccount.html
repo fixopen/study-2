@@ -72,36 +72,36 @@
     $(function () {
         var phone;
         $.ajax({
-         type: "get",
-         url: "/api/users/self",
-         dataType: "json",
-         success: function (e) {
-             document.getElementById("u").value = e.id
-         if (e.password) {
-            /* if (e.name && e.sex && e.telephone && e.birthday && e.location) {
-                 //alert("完善")
-                 location.href = "signIn.html";
-             } else {
-                 //alert("不完善")
-                 location.href = "perfectInformation.html";
-             }
-             alert("存在")*/
-         } else {
-             alert("不存在")
+            type: "get",
+            url: "/api/users/self",
+            dataType: "json",
+            success: function (e) {
+                document.getElementById("u").value = e.id
+                if (e.password) {
+                    /* if (e.name && e.sex && e.telephone && e.birthday && e.location) {
+                     //alert("完善")
+                     location.href = "signIn.html";
+                     } else {
+                     //alert("不完善")
+                     location.href = "perfectInformation.html";
+                     }
+                     alert("存在")*/
+                } else {
+                    alert("不存在")
 
-         }
-         let a = e.telephone;
-        /* let b = e.id;*/
-         phone = parseInt(a);
-         /*userId = parseInt(b);*/
-         document.getElementById("phonecodeId").innerHTML = phone
-         document.getElementById("phonecodeId").value = phone
+                }
+                let a = e.telephone;
+                /* let b = e.id;*/
+                phone = parseInt(a);
+                /*userId = parseInt(b);*/
+                document.getElementById("phonecodeId").innerHTML = phone
+                document.getElementById("phonecodeId").value = phone
 
-         },
-         error: function (e) {
-         location.href = "signIn.html";
-         }
-         })
+            },
+            error: function (e) {
+                location.href = "signIn.html";
+            }
+        })
 
     })
 
@@ -123,7 +123,7 @@
 
         $.ajax({
             type: "put",
-            url: "/api/users/"+ $("#u").val(),
+            url: "/api/users/" + $("#u").val(),
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
