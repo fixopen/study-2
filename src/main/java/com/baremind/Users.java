@@ -337,8 +337,8 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
-        Random rand = new Random();
-        Long logId = rand.nextLong();
+        //Random rand = new Random();
+        //Long logId = rand.nextLong();
         //Logs.insert(id, "log", logId, "start");
         return activeCardImpl(id, ac);
     }
@@ -440,79 +440,6 @@ public class Users {
 //        103 查询过快（10秒查询一次）
 //        
     }
-
-//    @POST
-//    @Path("cards")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response queryValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-//        Response result = Response.status(500).build();
-//        //默认有数据库表有多个用户名和密码重复的数据
-//        Map<String, Object> condition = new HashMap<>();
-//        condition.put("no", ac.cardCode);
-//        condition.put("password", ac.password);
-//        List<Card> cs = JPAEntry.getList(Card.class, condition);
-//        switch (cs.size()) {
-//            case 0:
-//                result = Response.status(404).build();
-//                //找不到用户名和密码
-//                break;
-//            case 1:
-//                //step2: query valid table, va   lid valid code
-//                Map<String, Object> ValidationCodecondition = new HashMap<>();
-//                ValidationCodecondition.put("phoneNumber", ac.phonecode);
-//                ValidationCodecondition.put("validCode", ac.validationCode);
-//                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
-//                switch (validationCodes.size()) {
-//                    case 0:
-//                        result = Response.status(401).build();
-//                        //找不到该手机号和验证码
-//                        break;
-//                    case 1:
-//                        Date now = new Date();
-//                        Date sendTime = validationCodes.get(0).getTimestamp();
-//                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
-//                            result = Response.status(410).build();
-//                            //一验证码时间超时
-//                        } else {
-//                            //step3.0: query sessions table, get user.id
-////                            Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
-////                            if (s == null) {
-////                                result = Response.status(412).build();
-////                                //缺少sessionID
-////                            } else {
-//                                //step3: update cards table, state, amount, cards'user_id -> user.id
-//                                Card card = new Card();
-//                                Card c = cs.get(0);
-//                                if (c.getUserId() == null) {
-//                                    c.setActiveTime(now);
-//                                    c.setEndTime(now);
-//                                    c.setAmount(588.0);
-//                                    c.setUserId(ac.getUserId());
-//                                    JPAEntry.genericPut(c);
-//                                    result = Response.ok().build();
-//                                    //代码执行成功
-//                                } else {
-//                                    result = Response.status(405).build();
-//                                }
-////                            }
-//                        }
-//                        break;
-//                    default:
-//                        result = Response.status(520).build();
-//                        //数据库表有多个手机号和验证码重复的数据
-//                        break;
-//                }
-//                EntityManager em = JPAEntry.getEntityManager();
-//                em.getTransaction().begin();
-//                for (ValidationCode validationCode : validationCodes) {
-//                    em.remove(validationCode);
-//                }
-//                em.getTransaction().commit();
-//                break;
-//        }
-//        return result;
-//    }
 
     @GET
     @Path("smsStateNotification")
