@@ -81,6 +81,7 @@ public class WechatUsers {
         return Response.ok("{\"userId\":" + userId.toString() + ", \"sessionId\": \"" + sessionId + "\"}").build();
     }
 
+
     @PUT //根据id修改
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -97,7 +98,7 @@ public class WechatUsers {
                 }
                 String country = wechatUser.getCountry();
                 if (country != null) {
-                    existwechatUser.setCity(city);
+                    existwechatUser.setCity(country);
                 }
                 Date expiry = wechatUser.getExpiry();
                 if (expiry != null) {

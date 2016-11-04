@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的资料 - 修改</title>
+	<!-- 禁止拉伸和全屏设置 -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
+    <meta name="format-detection" content="telphone=no" />
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="../css/global.css">
+	<link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/updateMaterialStyle.css">
+    
+    <!-- 引入js -->
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/touch.js"></script>
+    <script type="text/javascript" src="../../js/selector.js"></script>
+    <script src="../jquery/jquery-3.1.1.min.js"></script>
+
+</head>
+<body>
+    <div class="wrap">
+        <div class="mine_zilo">
+            <ul class="mine_zUl">
+                <li class="mine_zuli" >
+                <!--mine_errli-->
+                    <span class="mine_leftsp">真实姓名</span>
+                    <input class="mine_rightip" type="text" placeholder="请输入真实姓名" id="name">
+                </li>
+                <li class="mine_zuli">
+                    <span class="mine_leftsp">手机号</span>
+                    <input class="mine_rightip" type="tel" id="phonecode">
+                </li>
+                <li class="mine_zuli">
+                    <span class="mine_leftsp">验证码</span>
+                    <input class="mine_rightip" type="number" placeholder="请输入验证码" id="validationCode">
+                    <!--<a class="mine_yanma" href="JavaScript:;"  id="sss"  ></a>-->
+                    <input type="button" id="phone_btn" class="mine_yanma" value="获取手机验证码"/>
+
+                </li>
+                <li class="mine_zuli">
+                    <span class="mine_leftsp">性别</span>
+                    <input class="mine_rightip" type="text" id="sex">
+                </li>
+                <li class="mine_zuli">
+                    <span class="mine_leftsp">出生年月</span>
+                    <input class="mine_rightip" type="date" id="birthday">
+                </li>
+                <li class="mine_zuli ">
+                    <!--mine_errli-->
+                    <span class="mine_leftsp">收货地址</span>
+                    <input class="mine_rightip" type="text" placeholder="请输入收货地址" id="location">
+                </li>
+                <li class="mine_zuli">
+                    <span class="mine_leftsp">就读学校</span>
+                    <input class="mine_rightip" type="text" id="school">
+                </li>
+                <li class="mine_zuli">
+                    <span class="mine_leftsp" id="a">所在班级</span>
+                    <input class="mine_rightip" type="text" id="class">
+                </li>
+            </ul>
+            <!--<input type="button" id="save"value="提交"/>-->
+            <input onclick="save()">
+        </div>
+    </div>
+
+</body>
+<script>
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "/api/users/self",
+            dataType: "json",
+            success: function (e) {
+                alert(JSON.stringify(e))
+                $("#name").val(e.name)
+                $("#phonecode").val(e.telephone)
+                if(e.sex == 1){
+                    e.sex ="男"
+                }
+                if(e.sex == 2){
+                    e.sex ="女"
+                }
+                if(e.sex == 0){
+
+                    e.sex ="未设置"
+                }
+                $("#sex").val(e.sex)
+                var b = e.birthday.substr(0,10)
+                b = b.replace('-','年');
+                b = b.replace('-','月');
+                var a ='日'
+                b = b+a
+                $("#birthday").val(b)
+                $("#location").val(e.location)
+                $("#school").val(e.school)
+                $("#class").val(e.classname)
+                $("#a").val(e.id)
+            },
+            error: function (e) {
+                alert('获取用户信息失败，请刷新以重试')
+            }
+        })
+    })
+
+    let invoke = document.getElementById('phone_btn')
+    if (invoke != null) {
+        let timeoutId
+        let printnr = 60
+        invoke.addEventListener('click', function (e) {
+            if (document.getElementById('phonecode').value == 0 || document.getElementById('phonecode').value == null) {
+                alert("请填写手机号")
+            } else {
+                let proc = function () {
+                    e.target.value = " (" + printnr + ")秒后"//字太多了导致吧input挤下去了\n重新发送
+                    --printnr
+                    if (printnr <= 0) {
+                        e.target.value = " 重新发送 "
+                        //clearInterval(timeoutId)
+                        //proc()
+                    }
+                }
+                var phonecode = document.getElementById('phonecode').value
+                $.ajax({
+                    type: "GET",
+                    url: "/api/users/telephones/" + phonecode + "/code",
+                    dataType: "json",
+                    success: function (r) {
+                        alert("成功")
+                    },
+                    error: function (r) {
+                        alert(JSON.stringify(r))
+                    }
+                })
+                /*ajax('GET', '/api/users/telephones/' + phonecode + '/code', [{name: 'Accept', value: 'application/json'}], function (r) {
+
+                 })*/
+                timeoutId = setInterval(proc, 1000)
+            }
+
+        }, false)
+    }
+
+   /* let save = document.getElementById("save");
+    save.addEventListeners('click', function (e) {
+        let data = {
+            phoneNumber: $("#phonecode").val(),
+            validCode : $("#validationCode").val()
+        }
+        $.ajax({
+            type:"post",
+            url:"/api/users/update/material",
+            data:JSON.stringify(data),
+            dataType:"json",
+            success:function (e) {
+                alert("成功")
+                alert(JSON.stringify(e))
+                let filter = {
+                    userId : e.id
+                }
+                $.ajax({
+                    type:"get",
+                    url:"/api/wechat-users?filter="+ JSON.stringify(filter),
+                    dataType:"json",
+                    success:function (e) {
+                       alert("成功")
+
+                    },
+                    error:function (e) {
+                        alert('修改用户信息失败，请刷新以重试')
+                    }
+                })
+            },
+            error:function (e) {
+                alert(JSON.stringify(e))
+            }
+        })
+    },false)
+*/
+    function save() {
+        let data = {
+            phoneNumber: $("#phonecode").val(),
+            validCode : $("#validationCode").val()
+        }
+        $.ajax({
+            type:"post",
+            url:"/api/users/update/material",
+            data:JSON.stringify(data),
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            error:function (e) {
+                switch (e.status ){
+                    case 405:
+                        alert("验证码过期")
+                        break;
+                    case 401:
+                        alert("验证码不正确，请输入正确的验证码")
+                        break;
+                    case 200:
+                        alert("成功")
+                           var id = $("#a").val()
+                        let sex1 = $("#sex").val()
+                        if(sex1 == "男"){
+                            sex1 = 1
+                        }
+                        if(sex1 == "女"){
+                            sex1 = 2
+                        }
+                        let birthday = $("#birthday").val()
+                        var b1 = birthday.replace('年','-');
+                        var b2 = b1.replace('月','-');
+                        var b3 = b2.substr(0,10);
+                        var wei = "T00:00:00+08:00"
+                        b3=b3+wei
+                        let data = {
+                            name:$("#name").val(),
+                            telephone:$("#phonecode").val(),
+                            location: $("#location").val(),
+                            school:  $("#school").val(),
+                            classname:  $("#class").val()
+                       ,    sex:sex1,
+                            birthday:b3,
+                        }
+                        $.ajax({
+                            type:"put",
+                            url:"/api/users/"+ id,
+                            data:JSON.stringify(data),
+                            dataType:"json",
+                            contentType: "application/json; charset=utf-8",
+                            success:function (e) {
+                                alert("成功")
+
+                            },
+                            error:function (e) {
+                                alert('修改用户信息失败，请刷新以重试')
+                            }
+                        })
+                        break;
+
+                }
+            }
+        })
+    }
+</script>
+</html>

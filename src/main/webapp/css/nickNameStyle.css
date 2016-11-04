@@ -1,10 +1,10 @@
 .mine_zilo{
-    margin-top: 1.25rem;
+    margin: 1.25rem 0 1.875rem;
 }
 .mine_zUl{
     background-color: #fff;
     border-top: 1px solid #e5e5e5;
-    position: relative;
+    margin-bottom: 1.25rem;
     overflow: hidden;
 }
 .mine_zuli{
@@ -12,11 +12,7 @@
     line-height: 3.71875rem;
     padding: 0 0.9375rem;
     border-bottom: 1px solid #e5e5e5;
-}
-.mine_errli{
-    background-color: #fff5f5;
-    border-top: 1px solid #fe6568;
-    border-bottom: 1px solid #fe6568;
+    position: relative;
 }
 .mine_leftsp{
     display: inline-block;
@@ -27,21 +23,16 @@
     display: inline-block;
     color: #888;
     font-size: 1.0rem;
-    width: 9rem;
     height: 1.8125rem;
     margin-left: 1.5625rem;
-    background-color: transparent;
 }
-.mine_yanma{
+.chahao{
     display: inline-block;
-    color: #fff;
-    font-size: 0.9375rem;
-    width: 6rem;
-    height: 3.765rem;
-    text-align: center;
-    line-height: 3.6875rem;
-    background-color: #fe6568;
+    width: 1.09375rem;
+    height: 1.09375rem;
+    background: url('../img/nickNameChahao.png') 0 0 no-repeat;
+    background-size: 1.09375rem 1.09375rem;
     position: absolute;
-    top: 7.585rem;
-    right: 0;
+    top: 1.25rem;
+    right: 1.25rem;
 }

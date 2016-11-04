@@ -357,6 +357,32 @@ public class Users {
     }
 
     @POST
+    @Path("update/material")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response actizzveCard(@CookieParam("userId") String userId,ActiveCard ac) {
+        Response result = Response.status(412).build();
+        Map<String, Object> validationCodeConditions = new HashMap<>();
+        validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
+        validationCodeConditions.put("validCode", ac.getValidCode());
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+        switch (validationCodes.size()) {
+            case 0:
+                     result = Response.status(401).build();
+                break;
+            case 1:
+                Date now = new Date();
+                Date sendTime = validationCodes.get(0).getTimestamp();
+                if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                    result = Response.ok().build();
+                }else{
+                    result = Response.status(405).build();
+                }
+                break;
+        }
+        return result;
+    }
+    @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -408,12 +434,7 @@ public class Users {
                                 } else {
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
-                                   /* result = Response.ok().build();*/
-                                    Session s = PublicAccounts.putSession(new Date(), user.getId());
-                                    result = Response.ok()
-                                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .build();
+                                   result = Response.ok().build();
                                 }
                             } else {
                                 result = Response.status(405).build();
@@ -673,6 +694,18 @@ public class Users {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 result = Response.ok(gson.toJson(user)).build();
             }
+        }
+        return result;
+    }
+
+    @PUT //根据id查询
+    @Path("name/user")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIdentitiesByOpenId(@CookieParam("userId") String userId, User user) {
+        Response result = Response.status(401).build();
+        User wu = JPAEntry.getObject(User.class, "name", user.getName());
+        if(wu == null){
+            result = Response.ok().build();
         }
         return result;
     }

@@ -90,7 +90,7 @@
 </script>
 <script type="text/javascript">
     var str;
-    let ej;
+    var ej;
     biantu();
     function forget() {
         location.href = "forgetPassword.html";
@@ -99,9 +99,9 @@
     changeimg.addEventListener('click', function (e) {
         biantu();
     })
-    let t;
-    let m;
-    let p;
+    var t;
+    var m;
+    var p;
     var submit = document.getElementById("submit");
     submit.addEventListener('click', function (e) {
         var telephone = $("#telephone").val();
@@ -122,13 +122,14 @@
         }
         //$("#VCode").val() != "" && $("#VCode").val().length != 0 &&
         var vc = $("#VCode").val();
-        if (vc == str) {
+        m = 0;
+        /*if (vc == str) {
             document.getElementById("tianerror").innerHTML = "";
             m = 0;
         } else {
             document.getElementById("tianerror").innerHTML = "验证码填写错误！"
             m = 1;
-        }
+        }*/
         if (t == 0 && p == 0 && m == 0) {
             //alert("对")
             var data = {
