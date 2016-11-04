@@ -42,7 +42,6 @@ $(function () {
             //
             //     }
             // }
-
             var now = new Date()
             for (var i = 0; i < knowledgePoints.length; ++i) {
                 var kp = knowledgePoints[i];

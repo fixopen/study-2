@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Z-直播课-课程表</title>
+    <title>课程表</title>
     <!-- 禁止拉伸和全屏设置 -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
@@ -13,81 +13,117 @@
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/curriculumSchedule.css">
-    <script src="basic.js"></script>
-    <script src="jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/schedule.css">
+    <style>
 
-
+    </style>
 </head>
 <body>
+
 <div class="wrap">
-    <!-- main -->
-    <div class="rain-main">
-        <header class="timetable-hd"></header>
-        <!-- 课程表内容 -->
-        <table class="timetable-main">
-            <tr class="tableTitle">
-                <td></td>
-                <td>上午</td>
-                <td>下午</td>
-                <td>晚上</td>
-            </tr>
-            <tbody id="timetable" class="weekRoll">
-
-            <tr class="tableTitle">
-                <td>一</td>
-                <td id="cell21">无</td>
-                <td id="cell22">无</td>
-                <td id="cell23"></td>
-            </tr>
-            <tr class="tableTitle">
-                <td>二</td>
-                <td id="cell31">无</td>
-                <td id="cell32">无</td>
-                <td id="cell33"></td>
-            </tr>
-            <tr class="tableTitle">
-                <td>三</td>
-                <td id="cell41">无</td>
-                <td id="cell42">无</td>
-                <td id="cell43"></td>
-            </tr>
-            <tr class="tableTitle">
-                <td>四</td>
-                <td id="cell51">无</td>
-                <td id="cell52">无</td>
-                <td id="cell53"></td>
-            </tr>
-            <tr class="tableTitle">
-                <td>五</td>
-                <td id="cell61">无</td>
-                <td id="cell62">无</td>
-                <td id="cell63"></td>
-            </tr>
-            <tr class="tableTitle">
-                <td>六</td>
-                <td id="cell71">无</td>
-                <td id="cell72">无</td>
-                <td id="cell73">无</td>
-            </tr>
-            <tr class="tableTitle">
-                <td>日</td>
-                <td id="cell11">无</td>
-                <td id="cell12">无</td>
-                <td id="cell13">无</td>
-            </tr>
-            </tbody>
+    <div class="convenient">
+        <div class="week">(第4周)</div>
+        <table class="schedule-table">
+            <thead style="width: 100%; height: 100%">
+                <tr>
+                    <th style="width: 15%;"></th>
+                    <th style="width: 85%;" class="schedule-table1">
+                        <table style="width: 100%; height: 100%">
+                        <tr style="width: 100%; height: 100%">
+                            <th style="width: 32%; height: 100%"></th>
+                            <th style="width: 35%; height: 100%"></th>
+                            <th style="width: 32%; height: 100%"></th>
+                        </tr>
+                        </table>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="day"></tbody>
         </table>
-
-        <!-- 固定底部 -->
-        <div class="timetable-bd"></div>
     </div>
 </div>
+<template id="day-template">
+    <tr class="color">
+        <td style="width: 15%;">星期${day}<br>(${date})</td>
+        <td style="width: 85%;">
+            <table style="width: 100%; height: 100%">
+                <tbody id="row1" data-ext-point="items"></tbody>
+            </table>
+        </td>
+    </tr>
+</template>
+<template id="item-template">
+    <tr>
+        <td style="width: 33%;" class="line">${time}</td>
+        <td style="width: 33%;" class="line">${grade}</td>
+        <td style="width: 33%;" class="line">${title}</td>
+    </tr>
+</template>
 <script src="/moment/moment.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script src="/jquery/jquery.min.js"></script>
 <script type="text/javascript">
-    var courseTable = [[[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []]]
-    var m = moment(new Date())
+        g.ajaxProcess('PUT', 'api/properties/schedulers', [
+            {name: 'Content-Type', value: 'application/json'},
+            {name: 'Accept', value: 'application/json'}
+        ], {})
+
+    var courseTable = [
+        {day: '一', date: '', items: []},
+        {day: '二', date: '', items: []},
+        {day: '三', date: '', items: []},
+        {day: '四', date: '', items: []},
+        {day: '五', date: '', items: []}]
+
+    var getGrade = function (gradeValue) {
+        var result = ''
+        if (gradeValue == 1) {
+            result = '一年级'
+        } else if (gradeValue == 2) {
+            result = '二年级'
+        } else if (gradeValue == 3) {
+            result = '三年级'
+        } else if (gradeValue == 4) {
+            result = '四年级'
+        } else if (gradeValue == 5) {
+            result = '五年级'
+        } else if (gradeValue == 6) {
+            result = '六年级'
+        } else if (gradeValue == 20) {
+            result = '低年级'
+        } else {
+            result = '高年级'
+        }
+        return result
+    }
+    //    var getWeek = function (week) {
+    //        var result = ''
+    //        switch (week) {
+    //            case 0:
+    //                result = '一'
+    //                break
+    //            case 1:
+    //                result = '二'
+    //                break
+    //            case 2:
+    //                result = '三'
+    //                break
+    //            case 3:
+    //                result = '四'
+    //                break
+    //            case 4:
+    //                result = '五'
+    //                break
+    //            default:
+    //                break
+    //        }
+    //        return result
+    //    }
+    var now = new Date()
+    var m = moment(now)
     var w = m.week()
+    var d = m.day()
     $.ajax({
         type: "get",
         url: '/api/schedulers/weeks/' + w,
@@ -95,144 +131,96 @@
         success: function (result) {
             //alert(JSON.stringify(result))
             course = result
+            var monday = now
+            if (d > 1) {
+                monday = new Date(+now - (d - 1) * 24 * 60 * 60 * 1000)
+                //var nowDate = now.getDate()
+                //monday = now.setDate(nowDate - (d - 1))
+            }
             for (var i = 0; i < course.length; ++i) {
-                var startHour = parseInt(course[i].startTime.substr(11, 2))
-                //一个新的字符串，包含从 stringObject 的 start（包括 start 所指的字符） 处开始的 length 个字符。如果没有指定 length，那么返回的字符串包含从 start 到 stringObject 的结尾的字符。
+                course[i].time = course[i].startTime.substr(11)
+                course[i].grade = getGrade(course[i].grade)
                 switch (course[i].day) {
-                    case 0:
-                        if (startHour < 11) {
-                            courseTable[0][0].push(course[i])
-                        } else if (startHour < 18) {
-                            courseTable[0][1].push(course[i])
-                        } else {
-                            courseTable[0][2].push(course[i])
-                        }
-                        break
                     case 1:
-                        if (startHour < 11) {
-                            courseTable[1][0].push(course[i])
-                        } else if (startHour < 18) {
-                            courseTable[1][1].push(course[i])
-                        } else {
-                            courseTable[1][2].push(course[i])
+                        if (courseTable[0].date == '') {
+                            courseTable[0].date = monday.getFullYear() + '-' + (monday.getMonth() + 1) + '-' + monday.getDate()
                         }
+                        courseTable[0].items.push(course[i])
+
                         break
                     case 2:
-                        if (startHour < 11) {
-                            courseTable[2][0].push(course[i])
-                        } else if (startHour < 18) {
-                            courseTable[2][1].push(course[i])
-                        } else {
-                            courseTable[2][2].push(course[i])
+                        if (courseTable[1].date == '') {
+                            var t = new Date(+monday + 24 * 60 * 60 * 1000)
+                            courseTable[1].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
                         }
+                        courseTable[1].items.push(course[i])
                         break
                     case 3:
-                        if (startHour < 11) {
-                            courseTable[3][0].push(course[i])
-                        } else if (startHour < 18) {
-                            courseTable[3][1].push(course[i])
-                        } else {
-                            courseTable[3][2].push(course[i])
+                        if (courseTable[2].date == '') {
+                            var t = new Date(+monday + 2 * 24 * 60 * 60 * 1000)
+                            courseTable[2].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
                         }
+                        courseTable[2].items.push(course[i])
                         break
                     case 4:
-                        if (startHour < 11) {
-                            courseTable[4][0].push(course[i])
-                        } else if (startHour < 18) {
-                            courseTable[4][1].push(course[i])
-                        } else {
-                            courseTable[4][2].push(course[i])
+                        if (courseTable[3].date == '') {
+                            var t = new Date(+monday + 3 * 24 * 60 * 60 * 1000)
+                            courseTable[3].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
                         }
+                        courseTable[3].items.push(course[i])
                         break
                     case 5:
-                        if (startHour < 11) {
-                            courseTable[5][0].push(course[i])
-                        } else if (startHour < 18) {
-                            courseTable[5][1].push(course[i])
-                        } else {
-                            courseTable[5][2].push(course[i])
+                        if (courseTable[4].date == '') {
+                            var t = new Date(+monday + 4 * 24 * 60 * 60 * 1000)
+                            courseTable[4].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
                         }
-                        break
-                    case 6:
-                        if (startHour < 11) {
-                            courseTable[6][0].push(course[i])
-                        } else if (startHour < 18) {
-                            courseTable[6][1].push(course[i])
-                        } else {
-                            courseTable[6][2].push(course[i])
-                        }
+                        courseTable[4].items.push(course[i])
                         break
                 }
-
             }
-            for (var i = 0; i < courseTable.length; ++i) {
-                for (var j = 0; j < courseTable[i].length; ++j) {
-                    var cell = document.getElementById('cell' + (i + 1) + (j + 1))
-                    for (var k = 0; k < courseTable[i][j].length; ++k) {
-                        var content = document.createElement('span')
-                        var c = document.createTextNode(courseTable[i][j][k].title + '(' + courseTable[i][j][k].startTime + '  到  ' + courseTable[i][j][k].endTime + ')')
-                        var br = document.createElement('br')
-                        content.appendChild(c)
-                        content.appendChild(br)
-                        content.appendChild(c)
-                        cell.appendChild(content)
-                    }
+            proc({
+                containerId: 'day',
+                data: courseTable,
+                templateId: 'day-template',
+                secondBind: {
+                    extPoint: 'items',
+                    dataFieldName: 'items',
+                    templateId: 'item-template'
                 }
-            }
+            })
+//            for (var j = 0; j < courseTable.length; ++j) {
+//
+//                var cell = document.getElementById('cell' + 1 + (j + 1))
+//                var content = document.createElement('span')
+//                var c = document.createTextNode('(' + courseTable[1][j].parseInt(course[j].startTime.substr(0, 10)) + ')')
+//                content.appendChild(c)
+//                cell.appendChild(content)
+//            }
+//            for (var j = 0; j < course.length; ++j) {
+//                var cell = document.getElementById('cell' + 2 + (j + 1))
+//                var content = document.createElement('span')
+//                var c = document.createTextNode(courseTable[2][j].parseInt(course[j].startTime.substr(11, 16)) + '-' + courseTable[2][j].parseInt(course[j].endTime.substr(11, 16)))
+//                content.appendChild(c)
+//                cell.appendChild(content)
+//            }
+//            for (var j = 0; j < course.length; ++j) {
+//                course[i].grade = getGrade(course[i].grade)
+//
+//                var cell = document.getElementById('cell' + 3 + (j + 1))
+//                var content = document.createElement('span')
+//                var c = document.createTextNode(courseTable[3][j].grade)
+//                content.appendChild(c)
+//                cell.appendChild(content)
+//            }
+//            for (var j = 0; j < courseTable[1].length; ++j) {
+//                var cell = document.getElementById('cell' + 4 + (j + 1))
+//                var content = document.createElement('span')
+//                var c = document.createTextNode('(' + courseTable[4][j].title)
+//                content.appendChild(c)
+//                cell.appendChild(content)
+//            }
         }
     })
-    //    $(function () {
-    //        let data =
-    //                [
-    //            {
-    //                week: '一',
-    //                morning: [{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
-    //                afternoon: [{itemClass:'英语(8:00-10:00)'}],
-    //                evening:[{itemClass:'英语(8:00-10:00)'}]
-    //            },
-    //            {
-    //                week: '二',
-    //                morning: [{itemClass:'英语(11:00-10:00)'}],
-    //                afternoon: [{itemClass:'英语(11:00-10:00)'}],
-    //                evening:[{itemClass:'英语(11:00-10:00)'}]
-    //            },
-    //
-    //            {
-    //                week: '三',
-    //                morning: [{itemClass:'英语(11:00-10:00)'}],
-    //                afternoon: [{itemClass:'英语(11:00-10:00)'}],
-    //                evening:[{itemClass:'英语(11:00-10:00)'}]
-    //            },
-    //
-    //            {
-    //                week: '四',
-    //                morning: [{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}],
-    //                afternoon: [{itemClass:'英语(11:00-10:00)'}],
-    //                evening:[{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'},{itemClass:'英语(11:00-10:00)'}]
-    //            },
-    //
-    //            {
-    //                week: '五',
-    //                morning: [{itemClass:'英语(8:00-10:00)'}],
-    //                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
-    //                evening:[{itemClass:'英语(8:00-10:00)'}]
-    //            },
-    //
-    //            {
-    //                week: '六',
-    //                morning: [{itemClass:'英语(8:00-10:00)'}],
-    //                afternoon: [{itemClass:'英语(8:00-10:00)'}],
-    //                evening:[{itemClass:'英语(8:00-10:00)'}]
-    //            },
-    //            {
-    //                week: '七',
-    //                morning:[{itemClass:'英语(8:00-10:00)'}],
-    //                afternoon:[{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'},{itemClass:'英语(8:00-10:00)'}],
-    //                evening:[{itemClass:'英语(8:00-10:00)'}]
-    //
-    //            }
-    //        ]
 </script>
-
 </body>
 </html>

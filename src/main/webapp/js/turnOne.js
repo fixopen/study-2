@@ -4,7 +4,6 @@ $('.table_li').eq(0).children('img').show();
 
 
 $('.table_li').eq(0).click(function () {
-
     $('.table_li').eq(0).children('img').show();
     $('.table_li').eq(1).children('img').hide();
     $(this).css({"box-shadow": "0rem 0rem 1.25rem #fe6569"});
