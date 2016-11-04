@@ -31,20 +31,20 @@
         </header>
         <div class="subject-tab">
             <ul class="subject-tab-box">
-                <li id="ct" class="subject-tab-li zb-cur">
+                <li id="ct" class="subject-tab-li cur zb-cur">
                     语文
-                    <span class="zb-video"></span>
+                    <span class="zb-video">（<i id="Cc"></i>）</span>
                 </li>
-                <li id="mt" class="subject-tab-li cur zb-cur">
+                <li id="mt" class="subject-tab-li zb-cur">
                     数学
-                    <span class="zb-video"></span>
+                    <span class="zb-video">（<i id="Mc"></i>）</span>
                 </li>
             </ul>
             <div class="subject-line"></div>
         </div>
         <!-- video-list -->
         <ul id="live-broadcast">
-            <li class="subject-list ">
+            <li id="ccc" class="subject-list cur">
                 <ul class="video-list" id="chinese-currentVideoList"></ul>
                 <ul class="video-list" id="chinese-futureVideoList"></ul>
                 <ul class="video-list" id="chinese-passedVideoList"></ul>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </li>
-            <li class="subject-list cur">
+            <li id="mcc" class="subject-list">
                 <ul class="video-list" id="math-currentVideoList"></ul>
                 <ul class="video-list" id="math-futureVideoList"></ul>
                 <ul class="video-list" id="math-passedVideoList"></ul>
@@ -83,6 +83,7 @@
                         <img src="../img/zb-live.png" alt="">
                         <!--图片会随着具体情况改变-->
                     </span>
+                    <span class="live-timeZB">2016-11-03  18:30:00</span>
                     <div class="play-btn">
                         <img src="../img/live-play.png" alt="">
                         <!--图片会随着具体情况改变-->
@@ -100,17 +101,19 @@
         </div>
         <div class="course-intro">
             <div class="course-intro-in">
-                <div class="course-time course-speaker">
+                <div class="course-speaker">
                     <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
                     <!--时间需要服务器自己计算-->
-                    <i>${startTime}</i>开讲
-                    <span class="fr">${grade}</span>
-                </div>
-                <div class="tear-course course-speaker">
-                    <div class="fl"><i>${teacher}</i>老师主讲</div>
-                    <div class="course-detail-btn fr">
-                        课程详情<br>
-                        <img src="../img/xiala-btn.png" alt="">
+                    <div class="fl">
+                        <i>${teacher}</i>老师主讲<br>
+                        <i>${startTime}</i>
+                    </div>
+                    <div class="fr">
+                        <div>${grade}</div>
+                        <div class="course-detail-btn fr">
+                            课程详情<br>
+                            <img src="../img/xiala-btn.png" alt="">
+                        </div>
                     </div>
                 </div>
                 <div class="course-detail">
@@ -169,17 +172,19 @@
         </div>
         <div class="course-intro">
             <div class="course-intro-in">
-                <div class="course-time course-speaker">
+                <div class="course-speaker">
                     <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
                     <!--时间需要服务器自己计算-->
-                    <i>${startTime}</i>开讲
-                    <span class="fr">${grade}</span>
-                </div>
-                <div class="tear-course course-speaker">
-                    <div class="fl"><i>${teacher}</i>老师主讲</div>
-                    <div class="course-detail-btn fr">
-                        课程详情<br>
-                        <img src="../img/xiala-btn.png" alt="">
+                    <div class="fl">
+                        <i>${teacher}</i>老师主讲<br>
+                        <i>${startTime}</i>开讲
+                    </div>
+                    <div class="fr">
+                        <div>${grade}</div>
+                        <div class="course-detail-btn fr">
+                            课程详情<br>
+                            <img src="../img/xiala-btn.png" alt="">
+                        </div>
                     </div>
                 </div>
                 <div class="course-detail">
@@ -221,9 +226,7 @@
                             <img src="../img/zb-wait.png" alt="">
                             <!--图片会随着具体情况改变-->
                         </span>
-                    <div class="play-btn">
-                        <img src="../img/wait-play.png" alt="">
-                        <!--图片会随着具体情况改变-->
+                    <div class="waity-play">${startTime}开讲
                     </div>
                     <div class="course-box">
                         <h3 class="live-title">
@@ -238,17 +241,19 @@
         </div>
         <div class="course-intro">
             <div class="course-intro-in">
-                <div class="course-time course-speaker">
+                <div class="course-speaker">
                     <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
                     <!--时间需要服务器自己计算-->
-                    <i>${startTime}</i>开讲
-                    <span class="fr">${grade}</span>
-                </div>
-                <div class="tear-course course-speaker">
-                    <div class="fl"><i>${teacher}</i>老师主讲</div>
-                    <div class="course-detail-btn fr">
-                        课程详情<br>
-                        <img src="../img/xiala-btn.png" alt="">
+                    <div class="fl">
+                        <i>${teacher}</i>老师主讲<br>
+                        <i>${startTime}</i>开讲
+                    </div>
+                    <div class="fr">
+                        <div>${grade}</div>
+                        <div class="course-detail-btn fr">
+                            课程详情<br>
+                            <img src="../img/xiala-btn.png" alt="">
+                        </div>
                     </div>
                 </div>
                 <div class="course-detail">
@@ -282,12 +287,13 @@
     curseDetailTap(); //点击“课程详情”
     var userId = g.getUrlParameter('userid')
     g.setCookie('userId', userId)
-    g.ajaxProcess('POST', 'api/logs', [
-        {"objectType": "video",
+    g.ajaxProcess('POST', 'api/logs', [],{
+        "objectType": "video",
         "objectId":"schedulerId",
-        "action":"review"},
-    ], {})
+        "action":"review"
+    })
     var course = []
+
     var getGrade = function (gradeValue) {
         var result = ''
         if (gradeValue == 1) {
@@ -309,111 +315,101 @@
         }
         return result
     }
-    var refreshChineseState = function () {
-        var now = new Date()
-        for (var i = 0; i < course[0][0].length; ++i) {
-            var endYear = course[0][0][i].endTime.substring(0, 4)
-            var endMonth = course[0][0][i].endTime.substring(5, 7)
-            var endDay = course[0][0][i].endTime.substring(8, 10)
-            var endHour = course[0][0][i].endTime.substring(11, 13)
-            var endMinute = course[0][0][i].endTime.substring(14, 16)
-            var endSecond = course[0][0][i].endTime.substring(17, 19)
-            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
 
-//            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
-//            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
-//            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)n
-            course[0][i].type = 'current'
+    var refreshState = function (subject) {
+        var now = new Date()
+        for (var i = 0; i < course[subject][0].length; ++i) {
+            var endYear = course[subject][0][i].endTime.substring(0, 4)
+            var endMonth = course[subject][0][i].endTime.substring(5, 7)
+            var endDay = course[subject][0][i].endTime.substring(8, 10)
+            var endHour = course[subject][0][i].endTime.substring(11, 13)
+            var endMinute = course[subject][0][i].endTime.substring(14, 16)
+            var endSecond = course[subject][0][i].endTime.substring(17, 19)
+            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
+            course[subject][i].type = 'current'
             if (+ET < +now) {//对于Date类型的变量，前面加+表示转换为其内部数值。
-                course[0][0][i].type = 'passed'
-                //course[0][2].unshift(course[0][0][i])//向数组的开头添加一个或更多元素，并返回新的长度
-                course[0][0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
+                course[subject][0][i].type = 'passed'
+                course[subject][0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
             }
         }
-        for (var i = 0; i < course[0][1].length; ++i) {
-            var startYear = course[0][1][i].startTime.substring(0, 4)
-            var startMonth = course[0][1][i].startTime.substring(5, 7)
-            var startDay = course[0][1][i].startTime.substring(8, 10)
-            var startHour = course[0][1][i].startTime.substring(11, 13)
-            var startMinute = course[0][1][i].startTime.substring(14, 16)
-            var startSecond = course[0][1][i].startTime.substring(17, 19)
+        for (var i = 0; i < course[subject][1].length; ++i) {
+            var startYear = course[subject][1][i].startTime.substring(0, 4)
+            var startMonth = course[subject][1][i].startTime.substring(5, 7)
+            var startDay = course[subject][1][i].startTime.substring(8, 10)
+            var startHour = course[subject][1][i].startTime.substring(11, 13)
+            var startMinute = course[subject][1][i].startTime.substring(14, 16)
+            var startSecond = course[subject][1][i].startTime.substring(17, 19)
             var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay), parseInt(startHour), parseInt(startMinute), parseInt(startSecond))
-            ST = new Date(+ST - 5 * 60 * 1000)
-//            var startHour = parseInt(course[1][i].startTime.substr(0, 2))
-//            var startMinute = parseInt(course[1][i].startTime.substr(3, 2))
-//            var ST = moment().year(course[1][i].year).week(course[1][i].week).day(course[1][i].day).hour(startHour).minute(startMinute).second(0)
-            course[0][1][i].type = 'future'
-//            alert('ST year: ' + ST.year() + ' month: ' + ST.month() + ' day: ' + ST.date())
-//            alert('now year: ' + now.getYear() + ' month: ' + now.getMonth() + ' day: ' + now.getDate())
-//            var nowTime = moment(now)
-//            alert('now year: ' + nowTime.year() + ' month: ' + nowTime.month() + ' day: ' + nowTime.date())
-//            alert('startTime: ' + ST.toDate().getTime() + '\n now: ' + now.getTime() + '\n diff is ' + (ST.toDate().getTime() - now.getTime()) / 1000 / 3600 / 24)
+            ST = new Date(+ST - 15 * 60 * 1000)
+            course[subject][1][i].type = 'future'
             if (+ST < +now) {
-                course[0][1][i].type = 'current'
-                course[0][0].unshift(course[0][1][i])
-                course[0][1].splice(i, 1)
+                course[subject][1][i].type = 'current'
+                course[subject][0].unshift(course[subject][1][i])
+                course[subject][1].splice(i, 1)
             }
         }
     }
+
+    var refreshChineseState = function () {
+        refreshState(0)
+    }
+
     var refreshMathState = function () {
-        var now = new Date()
-        for (var i = 0; i < course[1][0].length; ++i) {
-            var endYear = course[1][0][i].endTime.substring(0, 4)
-            var endMonth = course[1][0][i].endTime.substring(5, 7)
-            var endDay = course[1][0][i].endTime.substring(8, 10)
-            var endHour = course[1][0][i].endTime.substring(11, 13)
-            var endMinute = course[1][0][i].endTime.substring(14, 16)
-            var endSecond = course[1][0][i].endTime.substring(17, 19)
-            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
-//            var endHour = parseInt(course[0][i].endTime.substr(0, 2))
-//            var endMinute = parseInt(course[0][i].endTime.substr(3, 2))
-//            var ET = moment().year(course[0][i].year).week(course[0][i].week).day(course[0][i].day).hour(endHour).minute(endMinute).second(0)n
-            course[1][i].type = 'current'
-            if (+ET < +now) {//对于Date类型的变量，前面加+表示转换为其内部数值。
-                course[1][0][i].type = 'passed'
-                //course[1][2].unshift(course[0][0][i])//向数组的开头添加一个或更多元素，并返回新的长度
-                course[1][0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
-            }
-        }
-        for (var i = 0; i < course[1][1].length; ++i) {
-            var startYear = course[1][1][i].startTime.substring(0, 4)
-            var startMonth = course[1][1][i].startTime.substring(5, 7)
-            var startDay = course[1][1][i].startTime.substring(8, 10)
-            var startHour = course[1][1][i].startTime.substring(11, 13)
-            var startMinute = course[1][1][i].startTime.substring(14, 16)
-            var startSecond = course[1][1][i].startTime.substring(17, 19)
-            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay), parseInt(startHour), parseInt(startMinute), parseInt(startSecond))
-            ST = new Date(+ST - 5 * 60 * 1000)
-            course[1][1][i].type = 'future'
-            if (+ST < +now) {
-                course[1][1][i].type = 'current'
-                course[1][0].unshift(course[1][1][i])
-                course[1][1].splice(i, 1)
-            }
-        }
+        refreshState(1)
     }
 
     g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":1}', [
         {name: 'Accept', value: 'application/json'}
     ], null, function (result) {
-//        alert(JSON.stringify(result))
         course[0] = result.data
+        var Cc = document.getElementById('Cc')
+        Cc.innerHTML =course[0][0].length+course[0][1].length
         g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":2}', [
             {name: 'Accept', value: 'application/json'}
         ], null, function (result) {
-            // alert(JSON.stringify(result))
             course[1] = result.data
+            var Mc = document.getElementById('Mc')
+            Mc.innerHTML =course[1][0].length+course[1][1].length
             refreshChineseState()
-            for (var i = 0; i < course[0][2].length; ++i) {
-                if (!course[0][2][i].cdnLink || course[0][2][i].cdnLink == '') {
-                    course[0][2].splice(i, 1)
-                    --i
+            refreshMathState()
+
+            var removeNullPassed = function(subject) {
+                for (var i = 0; i < course[subject][2].length; ++i) {
+                    if (!course[subject][2][i].cdnLink || course[subject][2][i].cdnLink == '') {
+                        course[subject][2].splice(i, 1)
+                        --i
+                    }
                 }
-//            if (course[0][1][i].type = 'current') {
-//                course[0][0].unshift(course[0][1][i])
-//                course[0][1].splice(i, 1)
-//            }
             }
+            removeNullPassed(0)
+            removeNullPassed(1)
+
+            var adjustData = function(subject) {
+                for (var i = 0; i < course[subject].length; ++i) {
+                    for (var j = 0; j < course[subject][i].length; ++j) {
+                        var m = moment().year(course[subject][i][j].year).week(course[subject][i][j].week).day(course[subject][i][j].day)
+                        course[subject][i][j].month = m.month()
+                        course[subject][i][j].day = m.date()
+                        course[subject][i][j].grade = getGrade(course[subject][i][j].grade)
+                    }
+                }
+            }
+            adjustData(0)
+            adjustData(1)
+
+            function showPassed(subject, state, moreId, tips) {
+                proc({
+                    container: state.passedContainer,
+                    data: course[subject][2],
+                    template: state.passedTemplate
+                })
+                document.getElementById(moreId).style.display = "none";
+                var va = document.getElementById(tips);
+                va.innerHTML = '没有更多视频，敬请期待'
+                //$("#pullUp1").text("没有更多视频，敬请期待");
+                curseDetailTap(); //点击“课程详情”
+            }
+
             var state = {
                 currentContainer: document.getElementById('chinese-currentVideoList'),
                 futureContainer: document.getElementById('chinese-futureVideoList'),
@@ -422,38 +418,11 @@
                 futureTemplate: getTemplate('future-video-template'),
                 passedTemplate: getTemplate('passed-video-template')
             }
-            for (var i = 0; i < course[0].length; ++i) {
-                for (var j = 0; j < course[0][i].length; ++j) {
-                    var m = moment().year(course[0][i][j].year).week(course[0][i][j].week).day(course[0][i][j].day)
-                    course[0][i][j].month = m.month()
-                    course[0][i][j].day = m.date()
-                    course[0][i][j].grade = getGrade(course[0][i][j].grade)
-//                switch (i) {
-//                    case 0:
-//                        course[0][i][j].type = 'current'
-//                        break
-//                    case 1:
-//                        course[0][i][j].type = 'future'
-//                        break
-//                    case 2:
-//                        course[0][i][j].type = 'passed'
-//                        break
-//                }
-                }
-            }
+
             var moreVideo = document.getElementById('btn1');
-            moreVideo.addEventListener('click', showPassed, false);
-            function showPassed() {
-                proc({
-                    container: state.passedContainer,
-                    data: course[0][2],
-                    template: state.passedTemplate
-                })
-                document.getElementById("btn1").style.display = "none";
-                var va = document.getElementById("pullUp1");
-                $("#pullUp1").text("没有更多视频，敬请期待");
-                curseDetailTap(); //点击“课程详情”
-            }
+            moreVideo.addEventListener('click', function(e) {
+                showPassed(0, state, 'btn1', 'pullUp1')
+            }, false);
 
             proc({
                 container: state.currentContainer,
@@ -466,8 +435,33 @@
                 template: state.futureTemplate
             })
 
+            var state2 = {
+                currentContainer: document.getElementById('math-currentVideoList'),
+                futureContainer: document.getElementById('math-futureVideoList'),
+                passedContainer: document.getElementById('math-passedVideoList'),
+                currentTemplate: getTemplate('video-template'),
+                futureTemplate: getTemplate('future-video-template'),
+                passedTemplate: getTemplate('passed-video-template')
+            }
+            var moreMathVideo = document.getElementById('btn');
+            moreMathVideo.addEventListener('click', function(e) {
+                showPassed(1, state2, 'btn', 'pullUp')
+            }, false);
+
+            proc({
+                container: state2.currentContainer,
+                data: course[1][0],
+                template: state2.currentTemplate
+            })
+            proc({
+                container: state2.futureContainer,
+                data: course[1][1],
+                template: state2.futureTemplate
+            })
+
             setInterval(function () {
                 refreshChineseState()
+                refreshMathState()
                 state.currentContainer.innerHTML = ''
                 proc({
                     container: state.currentContainer,
@@ -480,8 +474,23 @@
                     data: course[0][1],
                     template: state.futureTemplate
                 })
+
+                state2.currentContainer.innerHTML = ''
+                proc({
+                    container: state2.currentContainer,
+                    data: course[1][0],
+                    template: state2.currentTemplate
+                })
+                state2.futureContainer.innerHTML = ''
+                proc({
+                    container: state2.futureContainer,
+                    data: course[1][1],
+                    template: state2.futureTemplate
+                })
             }, 60 * 1000)
+
             curseDetailTap(); //点击“课程详情”
+
             var mathFirst = true
             if (course[0][1].length > 0) {
                 if (course[1][1].length > 0) {
@@ -497,118 +506,13 @@
             if (mathFirst) {
                 $("#ct").removeClass("cur")
                 $('#mt').addClass("cur");
+                $("#ccc").removeClass("cur")
+                $('#mcc').addClass("cur");
             }
+
+            subjectTab()
         })
     })
-
-    g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":2}', [
-        {name: 'Accept', value: 'application/json'}
-    ], null, function (result) {
-        // alert(JSON.stringify(result))
-        course[1] = result.data
-        refreshMathState()
-        for (var i = 0; i < course[1][2].length; ++i) {
-            if (!course[1][2][i].cdnLink || course[1][2][i].cdnLink == '') {
-                course[1][2].splice(i, 1)
-                --i
-            }
-//            if (course[1][1][i].type = 'current') {
-//                course[1][0].unshift(course[1][1][i])
-//                course[1][1].splice(i, 1)
-//            }
-        }
-        var state = {
-            currentContainer: document.getElementById('math-currentVideoList'),
-            futureContainer: document.getElementById('math-futureVideoList'),
-            passedContainer: document.getElementById('math-passedVideoList'),
-            currentTemplate: getTemplate('video-template'),
-            futureTemplate: getTemplate('future-video-template'),
-            passedTemplate: getTemplate('passed-video-template')
-        }
-        var moreVideo = document.getElementById('btn');
-        moreVideo.addEventListener('click', showPassed, false);
-        function showPassed() {
-            proc({
-                container: state.passedContainer,
-                data: course[1][2],
-                template: state.passedTemplate
-            })
-            document.getElementById("btn").style.display = "none";
-            var va = document.getElementById("pullUp");
-            $("#pullUp").text("没有更多视频，敬请期待");
-            curseDetailTap(); //点击“课程详情”
-        }
-
-        for (var i = 0; i < course[1].length; ++i) {
-            for (var j = 0; j < course[1][i].length; ++j) {
-                var m = moment().year(course[1][i][j].year).week(course[1][i][j].week).day(course[1][i][j].day)
-                course[1][i][j].month = m.month()
-                course[1][i][j].day = m.date()
-                course[1][i][j].grade = getGrade(course[1][i][j].grade)
-//                if (course[1][i][j].grade == 1) {
-//                    course[1][i][j].grade = '一年级'
-//                } else if (course[1][i][j].grade == 2) {
-//                    course[1][i][j].grade = '二年级'
-//                } else if (course[1][i][j].grade == 3) {
-//                    course[1][i][j].grade = '三年级'
-//                } else if (course[1][i][j].grade == 4) {
-//                    course[1][i][j].grade = '四年级'
-//                } else if (course[1][i][j].grade == 5) {
-//                    course[1][i][j].grade = '五年级'
-//                } else {
-//                    course[1][i][j].grade = '六年级'
-//                }
-//                switch (i) {
-//                    case 0:
-//                        course[1][i][j].type = 'current'
-//                        break
-//                    case 1:
-//                        course[1][i][j].type = 'future'
-//                        break
-//                    case 2:
-//                        course[1][i][j].type = 'passed'
-//                        break
-//                }
-            }
-        }
-        proc({
-            container: state.currentContainer,
-            data: course[1][0],
-            template: state.currentTemplate
-        })
-        proc({
-            container: state.futureContainer,
-            data: course[1][1],
-            template: state.futureTemplate
-        })
-//        var moreVideo=document.getElementById('btn');
-//        moreVideo .addEventListener('click', showPassed, false);
-//        function showPassed(){
-//
-//            document.getElementById("btn").style.display="none";
-//            var va = document.getElementById("pullUp");
-//            $("#pullUp").text("没有更多视频，敬请期待");
-//        }
-        setInterval(function () {
-            refreshMathState()
-            state.currentContainer.innerHTML = ''
-            proc({
-                container: state.currentContainer,
-                data: course[1][0],
-                template: state.currentTemplate
-            })
-            state.futureContainer.innerHTML = ''
-            proc({
-                container: state.futureContainer,
-                data: course[1][1],
-                template: state.futureTemplate
-            })
-        }, 60 * 1000)
-        curseDetailTap(); //点击“课程详情”
-    })
-
-    subjectTab();//课程选项卡
-    //    curseDetailTap(); //点击“课程详情”
 </script>
 </body>
 </html>
