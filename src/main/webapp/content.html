@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小雨知时</title>
+</head>
+<body>
+<article id="volumes">
+    <h1 id="subjectTitle"></h1>
+    <!-- Nav tabs -->
+    <ul id="subjects" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#low" role="tab" data-toggle="tab">chinese</a></li>
+        <li role="presentation"><a href="#high" role="tab" data-toggle="tab">math</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="low"></div>
+        <div role="tabpanel" class="tab-pane" id="high"></div>
+    </div>
+</article>
+<article id="knowledgePoints">
+    <h1 id="volumeTitle"></h1>
+    <ol id="knowledge-point-contents"></ol>
+</article>
+<article id="knowledgePoint">
+    <section id="knowledgePointTitle"></section>
+    <section>
+        <h2>选文赏析</h2>
+        <ul id="origin"></ul>
+    </section>
+    <section id="content"></section>
+    <section id="video"></section>
+    <section>
+        <h2>闯关练习</h2>
+        <dl id="problems"></dl>
+    </section>
+    <section id="interaction"></section>
+    <section>
+        <span>写留言<img src="write.png" alt="写留言"/></span>
+        <textarea id="new-comment" style="display: none"></textarea>
+        <section id="comments"></section>
+    </section>
+</article>
+
+<template id="volume-template">
+    <li>
+        <a href="#">${title}</a>
+    </li>
+</template>
+
+<template id="volume-title-template">
+    <span>${title}</span>
+</template>
+<template id="knowledge-point-template">
+    <li>
+        <a href="#">${name}</a>
+        <div>
+            阅读<span>${readCount}</span>
+            <span>${likeCount}</span>
+        </div>
+        <img src="separator.png" alt=""/>
+    </li>
+</template>
+
+<template id="knowledge-point-title-template">
+    <h1>${title}</h1>
+</template>
+<template id="origin-template">
+    <article>
+        <section>${content}</section>
+        <address>${source}</address>
+    </article>
+</template>
+<template id="content-text-template">
+    <p>${content}</p>
+</template>
+<template id="content-image-template">
+    <span>
+        <img src="${href}" alt="${description}"/>
+    </span>
+</template>
+<template id="content-image-text-template">
+    <p>
+        <img src="${href}" alt="${description}"/>
+        ${content}
+    </p>
+</template>
+<template id="video-template">
+    <span>
+        <a href="${href}"><img src="${storePath}"/></a>
+    </span>
+</template>
+<template id="problem-option-template">
+    <li>
+        <span>${title}</span>
+        <label>${name}</label>
+    </li>
+</template>
+<template id="problem-template">
+    <div>
+        <p><span>${type}</span>${title}</p>
+        <img src="${storePath}" alt=""/>
+        <ol type="A" data-ext-point="options"></ol>
+        <div data-ext-point="explain"></div>
+    </div>
+</template>
+<template id="interaction-template">
+    <div>
+        <span>阅读</span><span>${readCount}</span>
+        <span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>
+        <a href="${previous}">previous</a><a href="${next}">next</a>
+    </div>
+</template>
+<template id="comment-template">
+    <article>
+        <img src="${avatar}" alt=""/>
+        <span>${name}</span>
+        <span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>
+        <section>${content}</section>
+        <time>${time}</time>
+    </article>
+</template>
+
+<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>
+<dialog>您的卡片已过期，请重新购买！</dialog>
+<dialog>您的卡片只可观看***，<br>观看其他内容请购买相应卡片！</dialog>
+<dialog>还剩24雨点不够观看啦，请充值！</dialog>
+<dialog>雨点所剩不多，请尽快充值哦！</dialog>
+
+<script>
+    var subjects = []
+
+    let state = {
+        subject: {
+            index: 0,
+            value: null,
+            getById: function (id) {
+                let result = null
+                for (let i = 0; i < subjects.length; ++i) {
+                    if (subjects[i].id == id) {
+                        result = subjects[i]
+                        break
+                    }
+                }
+                return result
+            }
+        },
+        grade: {
+            index: 0,
+            value: 20,
+            name: 'low',
+            getNameByValue: function (v) {
+                let result = 'low'
+                if (v == 21) {
+                    result = 'high'
+                }
+                return result
+            }
+        },
+        volume: {
+            index: 0,
+            value: null,
+            maxOrder: 1,
+            getById: function (id) {
+                let result = null
+                let finded = false
+                for (let i = 0; i < subjects.length; ++i) {
+                    for (let j = 0; j < subjects[i].low.length; ++j) {
+                        if (subjects[i].low[j].id == id) {
+                            result = subjects[i].low[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                    for (let j = 0; j < subjects[i].high.length; ++j) {
+                        if (subjects[i].high[j].id == id) {
+                            result = subjects[i].high[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                }
+                return result
+            }
+        }
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/subjects',
+        dataType: 'json',
+        success: function (ss) {
+            subjects = ss
+            for (let i = 0; i < subjects.length; ++i) {
+                subjects[i].low = []
+                subjects[i].high = []
+            }
+            $.ajax({
+                type: 'GET',
+                url: '/api/volumes',
+                dataType: 'json',
+                success: function (vs) {
+                    for (let i = 0; i < vs.length; ++i) {
+                        vs[i].knowledgePoints = []
+                        let s = state.subject.getById(vs[i].subjectId)
+                        let gn = state.grade.getNameByValue(vs[i].grade)
+                        s[gn].push(vs[i])
+                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/knowledge-points',
+                        dataType: 'json',
+                        success: function (kps) {
+                            for (let i = 0; i < kps.length; ++i) {
+                                let v = state.volume.getById(kps[i].volumeId)
+                                v.knowledgePoints.push(kps[i])
+                            }
+                        },
+                        error: function(r) {
+                        }
+                    })
+                },
+                error: function(r) {
+                }
+            })
+        },
+        error: function(r) {
+        }
+    })
+
+    $(function (e) {
+        //get knowledge point list of same volume
+        //get api/volumes/volumeId/knowledge-points
+        //get api/knowledge-points/id/contents
+
+        proc({
+            templateId: 'title-template',
+            data: data,
+            containerId: 'title'
+        })
+
+        proc({
+            templateId: 'origin-template',
+            data: data.origins,
+            containerId: 'origin'
+        })
+
+        proc({
+            data: data.contents,
+            containerId: 'content',
+            alterTemplates: [
+                {type: 'text', templateId: 'content-text-template'},
+                {type: 'image', templateId: 'content-image-template'}
+            ]
+        })
+
+        proc({
+            templateId: 'video-template',
+            data: data.video,
+            containerId: 'video'
+        })
+
+        proc({
+            templateId: 'problem-template',
+            data: data.problems,
+            containerId: 'problems',
+            secondBind: {
+                extPoint: 'options',
+                dataFieldName: 'options',
+                templateId: 'problem-option-template'
+            }
+        })
+
+        proc({
+            templateId: 'interaction-template',
+            data: data.interaction,
+            containerId: 'interaction'
+        })
+
+        proc({
+            templateId: 'comment-template',
+            data: data.comments,
+            containerId: 'comments'
+        })
+    })
+</script>
+</body>
+</html>

@@ -897,7 +897,7 @@ public class PublicAccounts {
             Session s = putSession(now, userId);
             try {
                 //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/first-active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -944,7 +944,7 @@ public class PublicAccounts {
             if (activeCards.isEmpty()) {
                 try {
                     //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-                    result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                    result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/first-active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
@@ -973,7 +973,7 @@ public class PublicAccounts {
             Long userId = user.getId();
             Session s = putSession(now, userId);
             try {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/chineseVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/volumes.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=chinese")).build();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -995,7 +995,7 @@ public class PublicAccounts {
             Long userId = user.getId();
             Session s = putSession(now, userId);
             try {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/mathVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/volumes.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=math")).build();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -1017,7 +1017,7 @@ public class PublicAccounts {
             Long userId = user.getId();
             Session s = putSession(now, userId);
             try {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/allVideo.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/videos.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
