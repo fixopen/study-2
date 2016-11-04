@@ -148,13 +148,13 @@ public class Users {
         // Default instance of client
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-                .path("/msg/HttpBatchSendSM")
-                .queryParam("account", username)
-                .queryParam("pswd", password)
-                .queryParam("mobile", phoneNumber)
-                .queryParam("msg", validInfo)
-                .queryParam("needstatus", true)
-                .request("text/plain").get();
+            .path("/msg/HttpBatchSendSM")
+            .queryParam("account", username)
+            .queryParam("pswd", password)
+            .queryParam("mobile", phoneNumber)
+            .queryParam("msg", validInfo)
+            .queryParam("needstatus", true)
+            .request("text/plain").get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("\n")) {
             String[] lines = responseBody.split("\n");
@@ -409,9 +409,9 @@ public class Users {
                                    /* result = Response.ok().build();*/
                                     Session s = PublicAccounts.putSession(new Date(), user.getId());
                                     result = Response.ok()
-                                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .build();
+                                        .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .build();
                                 }
                             } else {
                                 result = Response.status(405).build();
@@ -571,44 +571,24 @@ public class Users {
         return result;
     }
 
-    @GET //根据条件查询
-    @Path("no/userId/code")
+    @PUT
+    @Path("phone")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@QueryParam("filter") @DefaultValue("") String filter) {
+    public Response login(ActiveCard activeCard) {
         Response result = Response.status(404).build();
-        Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-        List<User> users = JPAEntry.getList(User.class, filterObject);
-        if (!users.isEmpty()) {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            result = Response.ok(gson.toJson(users)).build();
-        }
-        return result;
-    }
-
-    @POST
-    @Path("phone/Verification")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getv(ActiveCard activeCard) {
-        Response result = result = Response.status(404).build();
         Map<String, Object> validationCodeConditions = new HashMap<>();
         validationCodeConditions.put("phoneNumber", activeCard.getPhoneNumber());
         validationCodeConditions.put("validCode", activeCard.getValidCode());
         List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
-        Map<String, Object> validationCode = new HashMap<>();
-        validationCode.put("telephone", activeCard.getPhoneNumber());
+
         if (!validationCodes.isEmpty()) {
+            result = Response.status(405).build();
             Date now = new Date();
             Date sendTime = validationCodes.get(0).getTimestamp();
             if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                List<User> users = JPAEntry.getList(User.class, validationCode);
-                if (!users.isEmpty()) {
-                    Session session = PublicAccounts.putSession(now, users.get(0).getId());
-                    result = Response.ok()
-                            .cookie(new NewCookie("userId", users.get(0).getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .build();
-                } else {
-                    User user = new User();
+                User user = JPAEntry.getObject(User.class, "telephone", activeCard.getPhoneNumber());
+                if (user == null) {
+                    user = new User();
                     user.setId(IdGenerator.getNewId());
                     user.setCreateTime(now);
                     user.setTelephone(activeCard.getPhoneNumber());
@@ -616,14 +596,13 @@ public class Users {
                     user.setName("");
                     user.setSex(0);
                     JPAEntry.genericPost(user);
-                    Session session = PublicAccounts.putSession(now, user.getId());
-                    result = Response.ok()
-                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .build();
                 }
-            } else {
-                result = Response.status(405).build();
+                Session session = PublicAccounts.putSession(now, user.getId());
+                result = Response.ok()
+                    .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .build();
+
             }
         }
         return result;

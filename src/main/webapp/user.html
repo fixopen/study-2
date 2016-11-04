@@ -71,5 +71,23 @@
 <article id="login"></article>
 <article id="settings"></article>
 <article id="help"></article>
+
+<template id="user-template"></template>
+<template id="card-template"></template>
+<template id="consume-template"></template>
+<template id="study-template"></template>
+
+<script>
+    var user
+
+    $.ajax({
+        type: 'get',
+        url: '/api/users/self',
+        dataType: 'json',
+        success: function(u) {
+            user = u
+        }
+    })
+</script>
 </body>
 </html>
