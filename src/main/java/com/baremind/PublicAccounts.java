@@ -85,7 +85,7 @@ public class PublicAccounts {
         Response response = client.target(hostname)
                 .path("cgi-bin/ticket/getticket")
                 .queryParam("access_token", accessToken)
-                .queryParam("type","jsapi")
+                .queryParam("type", "jsapi")
                 .request().get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("ticket")) {
@@ -207,27 +207,6 @@ public class PublicAccounts {
                 result = Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
             }
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-    
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response sign(String[] origin) {
-        Response result = Response.status(500).build();
-        Arrays.sort(origin);
-        String v = "";
-        for (int i = 0; i < origin.length; ++i) {
-            v += origin[i];
-        }
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(v.getBytes("utf-8"));
-            String sign = Hex.bytesToHex(digest);
-            result = Response.ok(sign).build();
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return result;
