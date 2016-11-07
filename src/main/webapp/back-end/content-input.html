@@ -517,6 +517,37 @@
             change: function (index) {
                 state.knowledgePoint.index = index
                 state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
+                let rechangeContents = function() {
+                    state.contents.innerHTML = ''
+                    let contents = state.knowledgePoint.value.contents
+                    for (let i = 0; i < contents.quotes.length; ++i) {
+                        //
+                    }
+                    for (let i = 0; i < contents.contents.length; ++i) {
+                        //
+                    }
+                    contents.video
+                    //contents.interaction
+                    for (let i = 0; i < contents.problems.length; ++i) {
+                        //
+                    }
+                    //for (let i = 0; i < contents.comments.length; ++i) {
+                    //    //
+                    //}
+                }
+                if (!state.knowledgePoint.value.contents) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
+                        dataType: 'json',
+                        success: function(cs) {
+                            state.knowledgePoint.value.contents = cs
+                            rechangeContents()
+                        }
+                    })
+                } else {
+                    rechangeContents()
+                }
             },
             edit: function (knowledgePoint) {
                 var titleValue = 'New Knowledge Point'

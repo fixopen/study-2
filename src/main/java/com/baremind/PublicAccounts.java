@@ -1,10 +1,7 @@
 package com.baremind;
 
 import com.baremind.algorithm.Securities;
-import com.baremind.data.Card;
-import com.baremind.data.Session;
-import com.baremind.data.User;
-import com.baremind.data.WechatUser;
+import com.baremind.data.*;
 import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -183,6 +180,29 @@ public class PublicAccounts {
                 result = Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
             }
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //["...", "...", ...]
+    //"..."
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response sign(String[] origin) {
+        Response result = Response.status(500).build();
+        Arrays.sort(origin);
+        String v = "";
+        for (int i = 0; i < origin.length; ++i) {
+            v += origin[i];
+        }
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(v.getBytes("utf-8"));
+            String sign = Hex.bytesToHex(digest);
+            result = Response.ok(sign).build();
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return result;

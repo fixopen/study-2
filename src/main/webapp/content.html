@@ -130,13 +130,13 @@
 <script>
     var subjects = []
 
-    let state = {
+    var state = {
         subject: {
             index: 0,
             value: null,
             getById: function (id) {
-                let result = null
-                for (let i = 0; i < subjects.length; ++i) {
+                var result = null
+                for (var i = 0; i < subjects.length; ++i) {
                     if (subjects[i].id == id) {
                         result = subjects[i]
                         break
@@ -150,7 +150,7 @@
             value: 20,
             name: 'low',
             getNameByValue: function (v) {
-                let result = 'low'
+                var result = 'low'
                 if (v == 21) {
                     result = 'high'
                 }
@@ -162,10 +162,10 @@
             value: null,
             maxOrder: 1,
             getById: function (id) {
-                let result = null
-                let finded = false
-                for (let i = 0; i < subjects.length; ++i) {
-                    for (let j = 0; j < subjects[i].low.length; ++j) {
+                var result = null
+                var finded = false
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].low.length; ++j) {
                         if (subjects[i].low[j].id == id) {
                             result = subjects[i].low[j]
                             finded = true
@@ -175,7 +175,7 @@
                     if (finded) {
                         break
                     }
-                    for (let j = 0; j < subjects[i].high.length; ++j) {
+                    for (var j = 0; j < subjects[i].high.length; ++j) {
                         if (subjects[i].high[j].id == id) {
                             result = subjects[i].high[j]
                             finded = true
@@ -197,7 +197,7 @@
         dataType: 'json',
         success: function (ss) {
             subjects = ss
-            for (let i = 0; i < subjects.length; ++i) {
+            for (var i = 0; i < subjects.length; ++i) {
                 subjects[i].low = []
                 subjects[i].high = []
             }
@@ -206,10 +206,10 @@
                 url: '/api/volumes',
                 dataType: 'json',
                 success: function (vs) {
-                    for (let i = 0; i < vs.length; ++i) {
+                    for (var i = 0; i < vs.length; ++i) {
                         vs[i].knowledgePoints = []
-                        let s = state.subject.getById(vs[i].subjectId)
-                        let gn = state.grade.getNameByValue(vs[i].grade)
+                        var s = state.subject.getById(vs[i].subjectId)
+                        var gn = state.grade.getNameByValue(vs[i].grade)
                         s[gn].push(vs[i])
                     }
                     $.ajax({
@@ -217,8 +217,8 @@
                         url: '/api/knowledge-points',
                         dataType: 'json',
                         success: function (kps) {
-                            for (let i = 0; i < kps.length; ++i) {
-                                let v = state.volume.getById(kps[i].volumeId)
+                            for (var i = 0; i < kps.length; ++i) {
+                                var v = state.volume.getById(kps[i].volumeId)
                                 v.knowledgePoints.push(kps[i])
                             }
                         },

@@ -44,6 +44,4 @@ public class Property {
     public void setValue(String value) {
         this.value = value;
     }
-
-
 }
