@@ -1,10 +1,7 @@
 package com.baremind;
 
 import com.baremind.algorithm.Securities;
-import com.baremind.data.Card;
-import com.baremind.data.Session;
-import com.baremind.data.User;
-import com.baremind.data.WechatUser;
+import com.baremind.data.*;
 import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -70,6 +67,33 @@ public class PublicAccounts {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
             AccessToken t = new Gson().fromJson(responseBody, AccessToken.class);
             accessToken = t.access_token;
+        }
+    }
+
+
+    public static class Ticket {
+        private String ticket;
+    }
+
+    //获取jsapi_ticket
+    @PUT
+    @Path("putticket")
+    public static void getjsapi_ticket() {
+        //http请求方式: GET
+        //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+                .path("cgi-bin/ticket/getticket")
+                .queryParam("access_token", accessToken)
+                .queryParam("type","jsapi")
+                .request().get();
+        String responseBody = response.readEntity(String.class);
+        if (responseBody.contains("ticket")) {
+            //{"access_token":"ACCESS_TOKEN","expires_in":7200}
+            Ticket t = new Gson().fromJson(responseBody, Ticket.class);
+            Property property = JPAEntry.getObject(Property.class, "name", "ticket");
+            property.setValue(t.ticket);
+            JPAEntry.genericPost(property);
         }
     }
 

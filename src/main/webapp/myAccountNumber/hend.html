@@ -64,6 +64,8 @@
     })*/
    $(function () {
        $.ajax({
+           type:"put",
+           url:"/api/public-account/putticket",
            dataType:"json",
            success:function () {
                alert("调用")
