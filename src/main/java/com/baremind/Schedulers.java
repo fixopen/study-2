@@ -20,14 +20,14 @@ import java.util.*;
 @Path("schedulers")
 public class Schedulers {
     @GET //根据周查询课表
-    @Path("weeks/{week}")
+    @Path("years/{year}/weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWeekScheduler(@CookieParam("userId") String userId, @PathParam("week") Integer week) {
+    public Response getWeekScheduler(@CookieParam("userId") String userId, @PathParam("year") Integer year, @PathParam("week") Integer week) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            Calendar cal = Calendar.getInstance();//创建一个日期实例
-            cal.setTime(new Date());//实例化一个日期
-            int year = cal.get(Calendar.YEAR);
+//            Calendar cal = Calendar.getInstance();//创建一个日期实例
+//            cal.setTime(new Date());//实例化一个日期
+//            int year = cal.get(Calendar.YEAR);
             Map<String, Object> filterObject = new HashMap<>(2);
             filterObject.put("year", year);
             filterObject.put("week", week);
