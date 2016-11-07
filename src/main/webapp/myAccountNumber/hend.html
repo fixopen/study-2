@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的账号 - 头像</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telphone=no"/>
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/nickNameStyle.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/touch.js"></script>
+    <script type="text/javascript" src="../../js/selector.js"></script>
+    <script src="../jquery/jquery-3.1.1.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+
+</head>
+<body>
+<img class="mine_touimg" id="myhead" src="${head}" alt="">
+<div id="a">
+    上传头像： <input type="file" id="he"/>
+</div>
+<script type="text/javascript" src="../js/nickName.js"></script>
+</body>
+<script>
+
+    /*$(function () {
+        $.ajax({
+            type: 'get',
+            url: '/api/users/self',
+            dataType: 'json',
+            success: function (user) {
+                $("#a").val(user.id)
+                //alert(JSON.stringify(user))
+                var myhead = document.getElementById("myhead");
+                myhead.src = user.head
+
+            },
+            error: function (r) {
+                alert('获取用户信息失败，请刷新以重试')
+            }
+        })
+    })
+
+    var he = document.getElementById("he");
+    he.addEventListener('click', function () {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+            }
+        });
+//        save();
+    })*/
+   $(function () {
+       $.ajax({
+           dataType:"json",
+           success:function () {
+               alert("调用")
+           },
+           error:function () {
+               alert("没有调用")
+           }
+       })
+   })
+
+//    function save() {
+//        var formData = new FormData();
+//        formData.append("file", document.getElementById("he").files[0]);
+//        var request = new XMLHttpRequest();
+//        request.onreadystatechange = function () {
+//            if (request.readyState === 4) {
+//                if (request.status == 200) {
+//                    returndata = JSON.parse(request.responseText)
+//                    var h = returndata.storePath
+//                    /*var e = "http://xiaoyuzhishi.com"
+//                     var hend = e + h*/
+//                    let storePath = {
+//                        head: h
+//                    }
+//                    // alert(JSON.stringify(storePath))
+//                    var id = $("#a").val()
+//                    $.ajax({
+//                        type: "put",
+//                        url: "/api/users/" + id,
+//                        dataType: "json",
+//                        data: JSON.stringify(storePath),
+//                        contentType: "application/json; charset=utf-8",
+//                        success: function (e) {
+//                            alert("成功")
+//                        },
+//                        error: function (e) {
+//                            alert(JSON.stringify(e))
+//                        }
+//                    })
+//                }
+//            }
+//        }
+//        request.open("POST", "/api/medias");
+//        request.send(formData);
+//    }
+</script>
+</html>
