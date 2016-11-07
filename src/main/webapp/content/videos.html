@@ -8,25 +8,34 @@
     <script src="/bootstrap/bootstrap.min.js"></script>
 </head>
 <body>
-<a href="schedulers.html"><img src="" alt="" /></a>
-<!-- Nav tabs -->
-<ul id="subjects" class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#chinese" role="tab" data-toggle="tab">chinese</a></li>
-    <li role="presentation"><a href="#math" role="tab" data-toggle="tab">math</a></li>
-</ul>
-<!-- Tab panes -->
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="chinese">
-        <div id="chinesePlaying"></div>
-        <div id="chineseFuture"></div>
-        <div id="chinesePassed"></div>
+<article id="main">
+    <img src="" alt=""/>
+    <!-- Nav tabs -->
+    <ul id="subjects" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#chinese" role="tab" data-toggle="tab">chinese</a></li>
+        <li role="presentation"><a href="#math" role="tab" data-toggle="tab">math</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="chinese">
+            <div id="chinesePlaying"></div>
+            <div id="chineseFuture"></div>
+            <div id="chinesePassed"></div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="math">
+            <div id="mathPlaying"></div>
+            <div id="mathFuture"></div>
+            <div id="mathPassed"></div>
+        </div>
     </div>
-    <div role="tabpanel" class="tab-pane" id="math">
-        <div id="mathPlaying"></div>
-        <div id="mathFuture"></div>
-        <div id="mathPassed"></div>
-    </div>
-</div>
+</article>
+<article id="video">
+    <video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>
+</article>
+<article id="scheduler"></article>
+<article id="future-note">
+    <div class="goBack"></div>
+</article>
 <template id="playing-template"></template>
 <template id="future-template"></template>
 <template id="passed-template"></template>
@@ -38,7 +47,7 @@
         type: 'get',
         url: '/api/subjects',
         dataType: 'json',
-        success: function(subjects) {
+        success: function (subjects) {
             $.ajax({
                 type: 'get',
                 url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
@@ -55,7 +64,7 @@
                 }
             })
         },
-        error: function(xhr) {
+        error: function (xhr) {
             alert('back-end not response, places retry')
         }
     })
@@ -63,6 +72,29 @@
     $('#subjects').find('a:first').tab('show') // Select first tab
     $('#subjects').find('a:last').tab('show') // Select last tab
     $('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
+
+    var videoLink = g.getUrlParameter('src');
+    var video = document.getElementById('video')
+    video.setAttribute('src', videoLink)
+    video.play()
+    var elem = video
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    }
+
+    var mediaElement = document.getElementById('mediaElementID');
+    mediaElement.seekable.start(0);  // Returns the starting time (in seconds)
+    mediaElement.seekable.end(0);    // Returns the ending time (in seconds)
+    mediaElement.currentTime = 122; // Seek to 122 seconds
+    mediaElement.played.end(0);      // Returns the number of seconds the browser has played
+
+    //#t=[starttime][,endtime]
 </script>
 </body>
 </html>

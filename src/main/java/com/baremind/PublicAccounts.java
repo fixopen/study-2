@@ -250,9 +250,9 @@ public class PublicAccounts {
             Ticket ticket = new Gson().fromJson(body, Ticket.class);
             Properties.setProperty("ticket", ticket.ticket);
         }
-
         //if (r.errCode == 40012) {
         //refreshTicket();
+        //}
     }
 
     @GET
