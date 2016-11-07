@@ -148,7 +148,7 @@
 <template id="passed-video-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a href="video.html?src=${cdnLink}">
+            <a class="passedVideo" data-id="${id}" href="video.html?src=${cdnLink}">
                 <img src="${cover}" alt="">
                 <div class="video-list-mask">
                         <span class="live-radio">
@@ -287,11 +287,6 @@
     curseDetailTap(); //点击“课程详情”
     var userId = g.getUrlParameter('userid')
     g.setCookie('userId', userId)
-    g.ajaxProcess('POST', 'api/logs', [],{
-        "objectType": "video",
-        "objectId":"schedulerId",
-        "action":"review"
-    })
     var course = []
 
     var getGrade = function (gradeValue) {
@@ -511,6 +506,14 @@
             }
 
             subjectTab()
+        })
+    })
+
+    $(document).on('click', '.passedVideo', function (e) {
+        g.ajaxProcess('POST', '/api/logs', [], {
+            "objectType": "video",
+            "objectId": e.target.dataset.id,
+            "action":"review"
         })
     })
 </script>

@@ -26,13 +26,13 @@
         <table class="schedule-table">
             <thead style="width: 100%; height: 100%">
                 <tr>
-                    <th style="width: 15%;"></th>
+                    <th style="width: 15%;" class="weekDay"></th>
                     <th style="width: 85%;" class="schedule-table1">
-                        <table style="width: 100%; height: 100%">
-                        <tr style="width: 100%; height: 100%">
-                            <th style="width: 30%; height: 100%"></th>
-                            <th style="width: 40%; height: 100%"></th>
-                            <th style="width: 30%; height: 100%"></th>
+                        <table style="width: 100%; height: 100% ">
+                        <tr style="width: 100%; height: 100%;color: #515151;">
+                            <th style="width: 33%; height: 100%;border-left:transparent;">时间</th>
+                            <th style="width: 33%; height: 100%;">授课年级</th>
+                            <th style="width: 33%; height: 100%">授课内容</th>
                         </tr>
                         </table>
                     </th>
@@ -54,7 +54,7 @@
 </template>
 <template id="item-template">
     <tr>
-        <td style="width: 33%;" class="line">${time}</td>
+        <td style="width: 33%;" class="line">${st}-${et}</td>
         <td style="width: 33%;" class="line">${grade}</td>
         <td style="width: 33%;" class="line">${title}</td>
     </tr>
@@ -140,6 +140,8 @@
                 //monday = now.setDate(nowDate - (d - 1))
             }
             for (var i = 0; i < course.length; ++i) {
+                course[i].st=course[i].startTime.substr(11,5)
+                course[i].et=course[i].endTime.substr(11,5)
                 course[i].grade = getGrade(course[i].grade)
                 switch (course[i].day) {
                     case 1:

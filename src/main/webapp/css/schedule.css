@@ -60,7 +60,7 @@
 	border-left: none;
 	font-size: 0.75rem;
 }
-.schedule-table thead th:first-child{
+.schedule-table thead .weekDay{
 	width: 4.1875rem;
 	height: 1.8125rem;
 	background: url('../img/week_date.png') no-repeat center;
@@ -68,23 +68,23 @@
 	background-size: contain;
 	border-left: none;
 }
-.schedule-table1 tr th:first-child{
-	background: url('../img/time.png') no-repeat center;
-	-webkit-background-size: 1.375rem 0.75rem;
-	background-size: 1.375rem 0.75rem;
-}
-.schedule-table tr th:nth-child(2){
-	background: url('../img/nianji.png') no-repeat center;
-	-webkit-background-size: 2.96875rem 0.6875rem;
-	background-size: 2.96875rem 0.6875rem;
-	padding: 0 1.5rem;
-	box-sizing: border-box;
-}
-.schedule-table tr th:nth-child(3){
-	background: url('../img/neirong.png') no-repeat center;
-	-webkit-background-size: 2.96875rem 0.71875rem;
-	background-size: 2.96875rem 0.71875rem;
-}
+/*.schedule-table1 tr th:first-child{*/
+	/*background: url('../img/time.png') no-repeat center;*/
+	/*-webkit-background-size: 1.375rem 0.75rem;*/
+	/*background-size: 1.375rem 0.75rem;*/
+/*}*/
+/*.schedule-table tr th:nth-child(2){*/
+	/*background: url('../img/nianji.png') no-repeat center;*/
+	/*-webkit-background-size: 2.96875rem 0.6875rem;*/
+	/*background-size: 2.96875rem 0.6875rem;*/
+	/*padding: 0 1.5rem;*/
+	/*box-sizing: border-box;*/
+/*}*/
+/*.schedule-table tr th:nth-child(3){*/
+	/*background: url('../img/neirong.png') no-repeat center;*/
+	/*-webkit-background-size: 2.96875rem 0.71875rem;*/
+	/*background-size: 2.96875rem 0.71875rem;*/
+/*}*/
 .schedule-table .week-span{
 	display: block;
 	text-align: center;
