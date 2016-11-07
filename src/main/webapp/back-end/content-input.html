@@ -517,19 +517,39 @@
             change: function (index) {
                 state.knowledgePoint.index = index
                 state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
-                let rechangeContents = function() {
+                let changeContents = function() {
                     state.contents.innerHTML = ''
                     let contents = state.knowledgePoint.value.contents
                     for (let i = 0; i < contents.quotes.length; ++i) {
-                        //
+                        let element = state.quote.create(contents.quotes[i])
+                        state.append(element)
                     }
                     for (let i = 0; i < contents.contents.length; ++i) {
-                        //
+                        switch (contents.contents[i].type) {
+                            case 'text':
+                                let element = state.text.create(contents.contents[i])
+                                state.append(element)
+                                break
+                            case 'image':
+                                let element = state.image.create(contents.contents[i])
+                                state.append(element)
+                                break
+                            case 'imageText':
+                                let element = state.imageText.create(contents.contents[i])
+                                state.append(element)
+                                break
+                            case 'pinyinText':
+                                let element = state.pinyinText.create(contents.contents[i])
+                                state.append(element)
+                                break
+                        }
                     }
-                    contents.video
+                    let element = state.video.create(contents.video)
+                    state.append(element)
                     //contents.interaction
                     for (let i = 0; i < contents.problems.length; ++i) {
-                        //
+                        let element = state.problem.create(contents.problems[i])
+                        state.append(element)
                     }
                     //for (let i = 0; i < contents.comments.length; ++i) {
                     //    //
@@ -542,11 +562,11 @@
                         dataType: 'json',
                         success: function(cs) {
                             state.knowledgePoint.value.contents = cs
-                            rechangeContents()
+                            changeContents()
                         }
                     })
                 } else {
-                    rechangeContents()
+                    changeContents()
                 }
             },
             edit: function (knowledgePoint) {
@@ -605,6 +625,134 @@
                         //alert("添加失败")
                     }
                 })
+            }
+        },
+        append: function(element) {
+            state.contents.appendChild(element)
+            state.currentSelectedElement = element
+        },
+        quote: {
+            create: function(value) {
+                let qt = document.getElementById('quote-template')
+                let q = qt.content.children[0].cloneNode(true)
+                q.setAttribute('data-id', value.id)
+                q.querySelector('[data-type="content"]').value = value.content
+                q.querySelector('[data-type="source"]').value = value.source
+                return q
+            },
+            submit: function() {
+                //
+            }
+        },
+        text: {
+            create: function(value) {
+                let text = document.createElement('textarea')
+                text.setAttribute('data-type', 'text')
+                text.setAttribute('data-id', value.id)
+                text.value = value.content
+                return text
+            },
+            submit: function() {
+                //
+            }
+        },
+        image: {
+            create: function(value) {
+                let image = document.createElement('input')
+                image.setAttribute('data-type', 'image')
+                image.setAttribute('name', 'file')
+                image.setAttribute('type', 'file')
+                image.setAttribute('data-id', value.id)
+                image.addEventListener('change', function (e) {
+                    delete e.target.dataset.id
+                }, false)
+                image.src = value.storePath
+                return image
+            },
+            submit: function() {
+                //
+            }
+        },
+        imageText: {
+            create: function(value) {
+                let itt = document.getElementById('imageText-template')
+                let it = itt.content.children[0].cloneNode(true)
+                let image = it.querySelector('[data-type="image"]')
+                image.addEventListener('change', function (e) {
+                    delete e.target.dataset.id
+                }, false)
+                image.setAttribute('data-id', value.imageId)
+                it.setAttribute('data-id', value.id)
+                it.querySelector('[data-type="content"]').value = value.content
+                return it
+            },
+            submit: function() {
+                //
+            }
+        },
+        pinyinText: {
+            create: function(value) {
+                let ptt = document.getElementById('pinyinText-template')
+                let pt = ptt.content.children[0].cloneNode(true)
+                pt.setAttribute('data-set', value.id)
+                pt.querySelector('[data-type="pinyin"]').value = value.pinyin
+                pt.querySelector('[data-type="content"]').value = value.content
+                return pt
+            },
+            submit: function() {
+                //
+            }
+        },
+        video: {
+            create: function(value) {
+                let vt = document.getElementById('video-template')
+                let v = vt.content.children[0].cloneNode(true)
+                let image = v.querySelector('[data-type="image"]')
+                image.addEventListener('change', function (e) {
+                    delete e.target.dataset.id
+                }, false)
+                image.setAttribute('data-id', value.cover)
+                v.setAttribute('data-id', value.id)
+                v.querySelector('[data-type="storePath"]').value = value.storePath
+                return v
+            },
+            submit: function() {
+                //
+            }
+        },
+        problem: {
+            create: function(value) {
+                let pt = document.getElementById('problem-template')
+                let p = pt.content.children[0].cloneNode(true)
+                let optionOrder = 0
+                let image = p.querySelector('[data-type="image"]')
+                image.addEventListener('change', function (e) {
+                    delete e.target.dataset.id
+                }, false)
+                image.setAttribute('data-id', value.imageId)
+                image.value = value.storePath
+                let options = e.target.parentNode.querySelector('[data-type="options"]')
+                let appendOption = p.querySelector('[data-type="appendOption"]')
+                appendOption.addEventListener('click', function (e) {
+                    let option = document.getElementById('problem-option-template').children[0].cloneNode(true)
+                    option.setAttribute('data-identity', optionOrder)
+                    ++optionOrder
+                    options.appendChild(option)
+                })
+                for (let i = 0; i < value.options.length; ++i) {
+                    let optionValue = value.options[i]
+                    let option = document.getElementById('problem-option-template').children[0].cloneNode(true)
+                    option.setAttribute('data-identity', optionValue.order)
+                    option.setAttribute('data-id', optionValue.id)
+                    option.value = optionValue.name
+                    options.appendChild(option)
+                }
+                p.setAttribute('data-id', value.id)
+                p.querySelector('[data-type="title"]').value = value.name
+                return p
+            },
+            submit: function() {
+                //
             }
         },
         currentSelectedElement: null,
@@ -767,84 +915,70 @@
 
     let appendText = document.getElementById('appendText')
     appendText.addEventListener('click', function (e) {
-        let text = document.createElement('textarea')
-        text.setAttribute("data-type", 'text')
-        state.contents.appendChild(text)
-        state.currentSelectedElement = text
+        let text = state.text.create({
+            id: '',
+            content: ''
+        })
+        state.append(text)
     }, false)
 
     let appendImage = document.getElementById('appendImage')
     appendImage.addEventListener('click', function (e) {
-        let image = document.createElement('input')
-        image.setAttribute("data-type", 'image')
-        image.setAttribute("name", 'file')
-        image.setAttribute("type", 'file')
-        image.addEventListener('change', function (e) {
-            delete image.dataset.id
-        }, false)
-        state.contents.appendChild(image)
-        state.currentSelectedElement = image
+        let image = state.image.create({
+            id: '',
+            storePath: ''
+        })
+        state.append(image)
     }, false)
 
     let appendProblem = document.getElementById('appendProblem')
     appendProblem.addEventListener('click', function (e) {
-        let pt = document.getElementById('problem-template')
-        let p = pt.content.children[0].cloneNode(true)
-        let optionOrder = 0
-        let image = p.querySelector('[data-type="image"]')
-        image.addEventListener('change', function (e) {
-            delete e.target.dataset.id
-        }, false)
-        let appendOption = p.querySelector('[data-type="appendOption"]')
-        appendOption.addEventListener('click', function (e) {
-            let options = e.target.parentNode.querySelector('[data-type="options"]')
-            let option = document.getElementById('problem-option-template').children[0].cloneNode(true)
-            option.setAttribute('data-identity', optionOrder)
-            ++optionOrder
-            options.appendChild(option)
+        let p = state.problem.create({
+            id: '',
+            name: '',
+            options: []
         })
-        state.contents.appendChild(p)
-        state.currentSelectedElement = p
+        state.append(p)
     }, false)
 
     let appendPinyinText = document.getElementById('appendPinyinText')
     appendPinyinText.addEventListener('click', function (e) {
-        let ptt = document.getElementById('pinyinText-template')
-        let pt = ptt.content.children[0].cloneNode(true)
-        state.contents.appendChild(pt)
-        state.currentSelectedElement = pt
+        let pt = state.pinyinText.create({
+            id: '',
+            pinyin: '',
+            content: ''
+        })
+        state.append(pt)
     }, false)
 
     let appendVideo = document.getElementById('appendVideo')
     appendVideo.addEventListener('click', function (e) {
-        let vt = document.getElementById('video-template')
-        let v = vt.content.children[0].cloneNode(true)
-        let image = v.querySelector('[data-type="image"]')
-        image.addEventListener('change', function (e) {
-            delete image.dataset.id
-        }, false)
-        state.contents.appendChild(v)
-        state.currentSelectedElement = v
+        let v = state.video.create({
+            id: '',
+            storePath: '',
+            cover: ''
+        })
+        state.append(v)
     }, false)
 
     let appendImageText = document.getElementById('appendImageText')
     appendImageText.addEventListener('click', function (e) {
-        let itt = document.getElementById('imageText-template')
-        let it = itt.content.children[0].cloneNode(true)
-        let image = it.querySelector('[data-type="image"]')
-        image.addEventListener('change', function (e) {
-            delete image.dataset.id
-        }, false)
-        state.contents.appendChild(it)
-        state.currentSelectedElement = it
+        let it = state.imageText.create({
+            id: '',
+            content: '',
+            imageId: ''
+        })
+        state.append(it)
     }, false)
 
     let appendQuote = document.getElementById('appendQuote')
     appendQuote.addEventListener('click', function (e) {
-        let qt = document.getElementById('quote-template')
-        let q = qt.content.children[0].cloneNode(true)
-        state.contents.appendChild(q)
-        state.currentSelectedElement = q
+        let q = state.quote.create({
+            id: '',
+            content: '',
+            source: ''
+        })
+        state.append(q)
     }, false)
 
     let uploadFile = function (file, postProcess) {

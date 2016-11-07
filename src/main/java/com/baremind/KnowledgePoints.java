@@ -245,8 +245,7 @@ public class KnowledgePoints {
                         case "quote":
                             if (quoteObject != null) {
                                 Quote q = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> qm = Quote.convertToMap(q);
-                                orderedQuotes.add(qm);
+                                orderedQuotes.add(q);
                             }
                             break;
                     }

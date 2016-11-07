@@ -87,7 +87,11 @@ public class ProblemOption {
         pom.put("id", o.getId());
         pom.put("name", o.getName());
         Image image = JPAEntry.getObject(Image.class, "id", o.getImageId());
-        pom.put("image", image);
+        if (image != null) {
+            pom.put("image", image);
+            pom.put("index", o.getIndex());
+        }
+        pom.put("order", o.getOrder());
         return pom;
     }
 }

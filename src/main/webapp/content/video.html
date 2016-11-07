@@ -25,6 +25,14 @@
     } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen();
     }
+
+    var mediaElement = document.getElementById('mediaElementID');
+    mediaElement.seekable.start(0);  // Returns the starting time (in seconds)
+    mediaElement.seekable.end(0);    // Returns the ending time (in seconds)
+    mediaElement.currentTime = 122; // Seek to 122 seconds
+    mediaElement.played.end(0);      // Returns the number of seconds the browser has played
+
+    //#t=[starttime][,endtime]
 </script>
 </body>
 </html>
