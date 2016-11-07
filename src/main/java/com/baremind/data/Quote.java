@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by User on 2016/9/20.
@@ -43,5 +45,13 @@ public class Quote {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public static Map<String, Object> convertToMap(Quote q) {
+        Map<String, Object> qm = new HashMap<>();
+        qm.put("id", q.getId());
+        qm.put("content", q.getContent());
+        qm.put("source", q.getSource());
+        return qm;
     }
 }

@@ -10,12 +10,22 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Path("comments")
 public class Comments {
+    public static List<Map<String, Object>> convertComments(List<Comment> comments) {
+        List<Map<String, Object>> r = new ArrayList<>(comments.size());
+        for (Comment comment : comments) {
+            Map<String, Object> cm = Comment.convertToMap(comment);
+            r.add(cm);
+        }
+        return r;
+    }
+
     @PUT
     @Path("{id}/like")
     @Consumes(MediaType.APPLICATION_JSON)

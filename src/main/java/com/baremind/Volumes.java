@@ -116,6 +116,8 @@ public class Volumes {
             List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions, orders);
             if (!knowledgePoints.isEmpty()) {
                 List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
+                Date now = new Date();
+                Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
                 for (KnowledgePoint kp : knowledgePoints) {
                     String statsContent = "SELECT count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + kp.getId().toString();
                     EntityManager em = JPAEntry.getEntityManager();
@@ -127,47 +129,7 @@ public class Volumes {
                             continue;
                         }
                     }
-
-                    Map<String, Object> kpm = new HashMap<>();
-                    kpm.put("id", kp.getId());
-                    kpm.put("volumeId", kp.getVolumeId());
-                    kpm.put("name", kp.getName());
-                    kpm.put("showTime", kp.getShowTime());
-                    kpm.put("likeCount", 0);
-                    kpm.put("stateType", "old");
-                    Date now = new Date();
-                    Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-
-                    String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.id = :id  AND l.showTime > :yesterday AND l.showTime < :now";
-                    TypedQuery<Long> q = em.createQuery(stats, Long.class);
-                    q.setParameter("volumeId", kp.getVolumeId());
-                    q.setParameter("id", kp.getId());
-                    q.setParameter("yesterday", yesterday);
-                    q.setParameter("now", now);
-                    Long count = (Long) q.getSingleResult();
-                    if (count > 0) {
-                        kpm.put("stateType ", "new");
-                    }
-
-                    Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
-                    if (likeCount != null) {
-                        kpm.put("likeCount", likeCount);
-                    }
-                    kpm.put("readCount", 0);
-                    Long readCount = Logs.getStatsCount("knowledge-point", kp.getId(), "read");
-                    if (readCount != null) {
-                        kpm.put("readCount", readCount);
-                    }
-                    String type = "normal";
-                    String query = "SELECT m.objectType FROM KnowledgePointContentMap m GROUP BY m.objectType";
-                    TypedQuery<String> pq = em.createQuery(query, String.class);
-                    List<String> sl = pq.getResultList();
-                    if (sl.size() == 1) {
-                        if (sl.get(0).equals("problem")) {
-                            type = "pk";
-                        }
-                    }
-                    kpm.put("type", type);
+                    Map<String, Object> kpm = KnowledgePoint.convertToMap(kp, now, yesterday);
                     kpsm.add(kpm);
                 }
                 //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id

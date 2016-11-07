@@ -11,6 +11,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,15 @@ import java.util.Map;
  */
 @Path("problem-options")
 public class ProblemOptions {
+    public static List<Map<String, Object>> convertProblemOptions(List<ProblemOption> problemOptions) {
+        List<Map<String, Object>> r = new ArrayList<>();
+        for (ProblemOption problemOption : problemOptions) {
+            Map<String, Object> pom = ProblemOption.convertToMap(problemOption);
+            r.add(pom);
+        }
+        return r;
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

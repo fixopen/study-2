@@ -1,9 +1,13 @@
 package com.baremind.data;
 
+import com.baremind.utils.JPAEntry;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by User on 2016/9/19.
@@ -76,5 +80,14 @@ public class ProblemOption {
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public static Map<String, Object> convertToMap(ProblemOption o) {
+        Map<String, Object> pom = new HashMap<>();
+        pom.put("id", o.getId());
+        pom.put("name", o.getName());
+        Image image = JPAEntry.getObject(Image.class, "id", o.getImageId());
+        pom.put("image", image);
+        return pom;
     }
 }
