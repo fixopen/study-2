@@ -79,6 +79,20 @@ public class Properties {
         return result;
     }
 
+    public static void setProperty(String name, String value) {
+        Property property = JPAEntry.getObject(Property.class, "name", name);
+        if (property != null) {
+            property.setValue(value);
+            JPAEntry.genericPut(property);
+        } else {
+            property = new Property();
+            property.setId(IdGenerator.getNewId());
+            property.setName(name);
+            property.setValue(value);
+            JPAEntry.genericPost(property);
+        }
+    }
+
     @PUT //根据id修改
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)

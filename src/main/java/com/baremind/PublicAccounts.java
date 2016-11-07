@@ -185,13 +185,8 @@ public class PublicAccounts {
         return result;
     }
 
-    //["...", "...", ...]
-    //"..."
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response sign(String[] origin) {
-        Response result = Response.status(500).build();
+    public String sign(String[] origin) {
+        String sign = "";
         Arrays.sort(origin);
         String v = "";
         for (int i = 0; i < origin.length; ++i) {
@@ -200,12 +195,64 @@ public class PublicAccounts {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             byte[] digest = md.digest(v.getBytes("utf-8"));
-            String sign = Hex.bytesToHex(digest);
-            result = Response.ok(sign).build();
+            sign = Hex.bytesToHex(digest);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return sign;
+    }
+
+    @GET
+    @Path("config/{url}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getConfig(@PathParam("url") String url) {
+        Response result = Response.status(500).build();
+        String ticket = Properties.getPropertyValue("ticket");
+        String timestamp = Long.toString(new Date().getTime());
+        String nonceStr = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            try {
+                byte[] digest = md.digest(new Date().toString().getBytes("utf-8"));
+                nonceStr = Hex.bytesToHex(digest);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        String[] params = {ticket, timestamp, nonceStr, url};
+        String sign = sign(params);
+        //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
+        //result = Response.ok(r).build();
         return result;
+    }
+
+    public static class Ticket {
+        private String ticket;
+    }
+
+    @GET
+    @Path("ticket")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void refreshTicket() {
+        //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+        prepare();
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+            .path("cgi-bin/ticket/getticket")
+            .queryParam("access_token", accessToken)
+            .queryParam("type", "jsapi")
+            .request().get();
+        String body = response.readEntity(String.class);
+        if (body.contains("ticket")) {
+            //{"access_token":"ACCESS_TOKEN","expires_in":7200}
+            Ticket ticket = new Gson().fromJson(body, Ticket.class);
+            Properties.setProperty("ticket", ticket.ticket);
+        }
+
+        //if (r.errCode == 40012) {
+        //refreshTicket();
     }
 
     @GET
