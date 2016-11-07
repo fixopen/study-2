@@ -22,21 +22,21 @@
 
 <div class="wrap">
     <div class="convenient">
-        <div class="week">第<span id="week"></span>周</div>
+        <div class="week">(第4周)</div>
         <table class="schedule-table">
             <thead style="width: 100%; height: 100%">
-                <tr>
-                    <th style="width: 15%;" class="weekDay"></th>
-                    <th style="width: 85%;" class="schedule-table1">
-                        <table style="width: 100%; height: 100% ">
+            <tr>
+                <th style="width: 15%;" class="weekDay"></th>
+                <th style="width: 85%;" class="schedule-table1">
+                    <table style="width: 100%; height: 100% ">
                         <tr style="width: 100%; height: 100%;color: #515151;">
                             <th style="width: 33%; height: 100%;border-left:transparent;">时间</th>
                             <th style="width: 33%; height: 100%;">授课年级</th>
                             <th style="width: 33%; height: 100%">授课内容</th>
                         </tr>
-                        </table>
-                    </th>
-                </tr>
+                    </table>
+                </th>
+            </tr>
             </thead>
             <tbody id="day"></tbody>
         </table>
@@ -64,10 +64,10 @@
 <script src="/basic.js"></script>
 <script src="/jquery/jquery.min.js"></script>
 <script type="text/javascript">
-        g.ajaxProcess('PUT', 'api/properties/schedulers', [
-            {name: 'Content-Type', value: 'application/json'},
-            {name: 'Accept', value: 'application/json'}
-        ], {})
+    g.ajaxProcess('PUT', 'api/properties/schedulers', [
+        {name: 'Content-Type', value: 'application/json'},
+        {name: 'Accept', value: 'application/json'}
+    ], {})
 
     var courseTable = [
         {day: '一', date: '', items: []},
@@ -124,8 +124,6 @@
     var m = moment(now)
     var w = m.week()
     var d = m.day()
-        week=document.getElementById("week")
-        week.innerHTML=w-41
     $.ajax({
         type: "get",
         url: '/api/schedulers/weeks/' + w,
@@ -140,8 +138,14 @@
                 //monday = now.setDate(nowDate - (d - 1))
             }
             for (var i = 0; i < course.length; ++i) {
-                course[i].st=course[i].startTime.substr(11,5)
-                course[i].et=course[i].endTime.substr(11,5)
+            <<<<<<<
+                HEAD
+                course[i].st = course[i].startTime.substr(11, 5)
+                course[i].et = course[i].endTime.substr(11, 5)
+                === === =
+                        course[i].time = course[i].startTime.substr(11)
+                                >>> >>> > 040
+                b57bd625d69c86ed170c26d7e0bc132669979
                 course[i].grade = getGrade(course[i].grade)
                 switch (course[i].day) {
                     case 1:
