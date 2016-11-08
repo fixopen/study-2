@@ -117,6 +117,22 @@ public class Schedulers {
     }
 
     @GET //根据科目查询年级
+    @Path("teacherses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getgradeses(@CookieParam("userId") String userId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.teacher FROM Scheduler l GROUP BY l.teacher";
+            TypedQuery<String> q = em.createQuery(stats, String.class);
+            result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
+
+
+
+    @GET //根据科目查询年级
     @Path("grades")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getgrades(@CookieParam("userId") String userId, @QueryParam("filter") String filter) {
@@ -132,6 +148,19 @@ public class Schedulers {
         return result;
     }
 
+    @GET //根据科目查询年级
+    @Path("gradeses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getgrades(@CookieParam("userId") String userId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.grade FROM Scheduler l GROUP BY l.grade";
+            TypedQuery<Long> q = em.createQuery(stats, Long.class);
+            result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
 
     @GET //根据周查询课表
     @Path("weeks/{week}")
