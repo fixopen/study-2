@@ -23,8 +23,9 @@
 	<div class="wrap noBackg">
 
 		<!-- main -->
-		<input class="souSuo clearfix" type="text" placeholder="请输入科目、老师、年级 关键词搜索">
-		<div class="tiao_jian">
+		<input class="souSuo clearfix" id="mohu" type="text" placeholder="请输入科目、老师、年级 关键词搜索" >
+		<button onclick="mohu()">搜索</button>
+	<!--	<div class="tiao_jian">
 			<div class="tiaoj_TJ01 selectDiv">
 				<div class="tiaoj_1span">
 					<span>科目</span>
@@ -380,14 +381,28 @@
             <div class="bottom_txt">
             	<span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
             </div>
-		</div>
+		</div>-->
 	</div>
 	<script type="text/javascript">
 		allxqTap(); //all课程详情
 		xialaTap(); //下拉
-		$.ajax({
-
-		})
 	</script>
+	<script type="text/javascript">
+		function mohu() {
+			var filter = $("#mohu").val();
+			$.ajax({
+				type:"get",
+				url:"/api/schedulers/keywords/"+ filter,
+				dataType:"json",
+				success:function (e) {
+					alert(JSON.stringify(e))
+				},
+				error:function (e) {
+					alert(JSON.stringify(e))
+				}
+			})
+		}
+	</script>
+
 </body>
 </html>
