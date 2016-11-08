@@ -87,19 +87,21 @@
             for (var i = 0; i < course[subjectIndex].length; ++i) {
                 for (var j = 0; j < course[subjectIndex][i].length; ++j) {
                     course[subjectIndex][i][j].grade = state.getGrade(course[subjectIndex][i][j].grade)
+                    course[subjectIndex][i][j].startTime = Date.parse(course[subjectIndex][i][j].startTime.replace('-', '/'))
+                    course[subjectIndex][i][j].endTime = Date.parse(course[subjectIndex][i][j].endTime.replace('-', '/'))
                 }
             }
         },
         refreshState: function (subjectIndex) {
             var now = new Date()
             for (var i = 0; i < course[subjectIndex][0].length; ++i) {
-                var endTime = Date.parse(course[subjectIndex][0][i].endTime.replace('-', '/'))
+                var endTime = course[subjectIndex][0][i].endTime
                 if (+endTime < +now) {
                     course[subjectIndex][0].splice(i, 1)
                 }
             }
             for (var i = 0; i < course[subjectIndex][1].length; ++i) {
-                var startTime = Date.parse(course[subjectIndex][0][i].startTime.replace('-', '/'))
+                var startTime = course[subjectIndex][0][i].startTime
                 startTime = new Date(+startTime - 15 * 60 * 1000)
                 if (+startTime < +now) {
                     course[subjectIndex][0].unshift(course[subjectIndex][1][i])
