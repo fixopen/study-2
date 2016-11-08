@@ -1,9 +1,13 @@
 package com.baremind.data;
 
+import com.baremind.utils.JPAEntry;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/8/17.
@@ -92,14 +96,6 @@ public class Video {
         this.storePath = storePath;
     }
 
-  /*  public Long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Long duration) {
-        this.duration = duration;
-    }*/
-
     public Double getBitRate() {
         return bitRate;
     }
@@ -108,5 +104,12 @@ public class Video {
         this.bitRate = bitRate;
     }
 
-
+    public static Map<String, Object> convertToMap(Video video) {
+        Map<String, Object> vm = new HashMap<>();
+        Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
+        vm.put("cover", image.getStorePath());
+        vm.put("id", video.getId());
+        vm.put("storePath", video.getStorePath());
+        return vm;
+    }
 }

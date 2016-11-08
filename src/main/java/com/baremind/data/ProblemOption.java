@@ -1,9 +1,13 @@
 package com.baremind.data;
 
+import com.baremind.utils.JPAEntry;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by User on 2016/9/19.
@@ -18,30 +22,17 @@ public class ProblemOption {
     @Column(name = "problem_id")
     private Long problemId;
 
-    @Column(name = "image_id")
-    private Long imageId;
-
-    @Column(name = "\"order\"")
-    private Long order;
-
     @Column(name = "name")
     private String name;
 
-    public Long getOrder() {
-        return order;
-    }
+    @Column(name = "image_id")
+    private Long imageId;
 
-    public void setOrder(Long order) {
-        this.order = order;
-    }
+    @Column(name = "index")
+    private Integer index;
 
-    public Long getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(Long imageId) {
-        this.imageId = imageId;
-    }
+    @Column(name = "\"order\"")
+    private Integer order;
 
     public Long getId() {
         return id;
@@ -65,5 +56,42 @@ public class ProblemOption {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
+    public static Map<String, Object> convertToMap(ProblemOption o) {
+        Map<String, Object> pom = new HashMap<>();
+        pom.put("id", o.getId());
+        pom.put("name", o.getName());
+        Image image = JPAEntry.getObject(Image.class, "id", o.getImageId());
+        if (image != null) {
+            pom.put("image", image);
+            pom.put("index", o.getIndex());
+        }
+        pom.put("order", o.getOrder());
+        return pom;
     }
 }

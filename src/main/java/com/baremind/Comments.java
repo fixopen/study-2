@@ -10,12 +10,22 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Path("comments")
 public class Comments {
+    public static List<Map<String, Object>> convertComments(List<Comment> comments) {
+        List<Map<String, Object>> r = new ArrayList<>(comments.size());
+        for (Comment comment : comments) {
+            Map<String, Object> cm = Comment.convertToMap(comment);
+            r.add(cm);
+        }
+        return r;
+    }
+
     @PUT
     @Path("{id}/like")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -123,19 +133,19 @@ public class Comments {
             result = Response.status(404).build();
             Comment existComment = JPAEntry.getObject(Comment.class, "id", id);
             if (existComment != null) {
-                String clientId = comment.getClientId();
-                if (clientId != null) {
-                    existComment.setClientId(clientId);
-                }
-
-                Long objectId = comment.getObjectId();
-                if (objectId != null) {
-                    existComment.setObjectId(objectId);
+                Long userId = comment.getUserId();
+                if (userId != null) {
+                    existComment.setUserId(userId);
                 }
 
                 String objectType = comment.getObjectType();
                 if (objectType != null) {
                     existComment.setObjectType(objectType);
+                }
+
+                Long objectId = comment.getObjectId();
+                if (objectId != null) {
+                    existComment.setObjectId(objectId);
                 }
 
                 String content = comment.getContent();
@@ -147,11 +157,6 @@ public class Comments {
                 if (updateTime != null) {
                     Date now = new Date();
                     existComment.setUpdateTime(now);
-                }
-
-                Long userId = comment.getUserId();
-                if (userId != null) {
-                    existComment.setUserId(userId);
                 }
 
                 JPAEntry.genericPut(existComment);

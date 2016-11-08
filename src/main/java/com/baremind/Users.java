@@ -148,13 +148,13 @@ public class Users {
         // Default instance of client
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-                .path("/msg/HttpBatchSendSM")
-                .queryParam("account", username)
-                .queryParam("pswd", password)
-                .queryParam("mobile", phoneNumber)
-                .queryParam("msg", validInfo)
-                .queryParam("needstatus", true)
-                .request("text/plain").get();
+            .path("/msg/HttpBatchSendSM")
+            .queryParam("account", username)
+            .queryParam("pswd", password)
+            .queryParam("mobile", phoneNumber)
+            .queryParam("msg", validInfo)
+            .queryParam("needstatus", true)
+            .request("text/plain").get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("\n")) {
             String[] lines = responseBody.split("\n");
@@ -278,27 +278,25 @@ public class Users {
                                 break;
                             case 1:
                                 //Logs.insert(id, "log", logId, "card exists");
-                                User errorUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
-                                if (errorUser != null) {
-                                    if (errorUser.getId().longValue() != user.getId().longValue()) {
-                                        WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
-                                        WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", errorUser.getId());
-                                        if (wechatUser.getOpenId().equals(errorWechatUser.getOpenId())) {
-                                            JPAEntry.genericDelete(WechatUser.class, "userId", errorUser.getId());
-                                            JPAEntry.genericDelete(User.class, "id", errorUser.getId());
-                                            EntityManager em = JPAEntry.getNewEntityManager();
-                                            List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", errorUser.getId());
-                                            for (Card card : bindedCards) {
-                                                card.setUserId(id);
-                                                em.merge(card);
-                                            }
-                                            em.getTransaction().commit();
-                                            em.close();
-                                            Logs.insert(errorUser.getId(), "move-card", errorUser.getId(), phoneNumber);
+                                User telephoneUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
+                                if (telephoneUser != null && telephoneUser.getId().longValue() != id.longValue()) {
+                                    WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
+                                    WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", telephoneUser.getId());
+                                    if (wechatUser.getOpenId().equals(errorWechatUser.getOpenId())) {
+                                        List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", id);
+                                        EntityManager em = JPAEntry.getNewEntityManager();
+                                        em.getTransaction().begin();
+                                        for (Card card : bindedCards) {
+                                            card.setUserId(id);
+                                            em.merge(card);
                                         }
+                                        em.remove(errorWechatUser);
+                                        em.remove(telephoneUser);
+                                        em.getTransaction().commit();
+                                        em.close();
+                                        Logs.insert(telephoneUser.getId(), "move-card", telephoneUser.getId(), phoneNumber);
                                     }
                                 }
-
                                 user.setTelephone(phoneNumber);
                                 JPAEntry.genericPut(user);
                                 Card c = cs.get(0);
@@ -339,8 +337,8 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@PathParam("id") Long id, ActiveCard ac) {
-        Random rand = new Random();
-        Long logId = rand.nextLong();
+        //Random rand = new Random();
+        //Long logId = rand.nextLong();
         //Logs.insert(id, "log", logId, "start");
         return activeCardImpl(id, ac);
     }
@@ -423,20 +421,19 @@ public class Users {
                                     user.setCreateTime(now);
                                     user.setUpdateTime(now);
                                     user.setName("");
-                                    user.setSex(0l);
+                                    user.setSex(0);
                                     JPAEntry.genericPost(user);
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
-                                    Session s = PublicAccounts.putSession(new Date(), user.getId());
-                                    result = Response.ok()
-                                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .build();
                                 } else {
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
-                                    result = Response.ok().build();
                                 }
+                                Session s = PublicAccounts.putSession(new Date(), user.getId());
+                                result = Response.ok()
+                                    .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                    .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                    .build();
                             } else {
                                 result = Response.status(405).build();
                             }
@@ -452,14 +449,6 @@ public class Users {
                 result = Response.status(520).build();
                 break;
         }
-       /* EntityManager em = JPAEntry.getNewEntityManager();
-        em.getTransaction().begin();
-        for (ValidationCode validationCode : validationCodes) {
-            em.remove(validationCode);
-        }
-        em.getTransaction().commit();
-        em.close();*/
-        //Response result = Response.status(500).build();
         return result;
     }
 
@@ -472,79 +461,6 @@ public class Users {
 //        103 查询过快（10秒查询一次）
 //        
     }
-
-//    @POST
-//    @Path("cards")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response queryValidCode(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-//        Response result = Response.status(500).build();
-//        //默认有数据库表有多个用户名和密码重复的数据
-//        Map<String, Object> condition = new HashMap<>();
-//        condition.put("no", ac.cardCode);
-//        condition.put("password", ac.password);
-//        List<Card> cs = JPAEntry.getList(Card.class, condition);
-//        switch (cs.size()) {
-//            case 0:
-//                result = Response.status(404).build();
-//                //找不到用户名和密码
-//                break;
-//            case 1:
-//                //step2: query valid table, va   lid valid code
-//                Map<String, Object> ValidationCodecondition = new HashMap<>();
-//                ValidationCodecondition.put("phoneNumber", ac.phonecode);
-//                ValidationCodecondition.put("validCode", ac.validationCode);
-//                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, ValidationCodecondition);
-//                switch (validationCodes.size()) {
-//                    case 0:
-//                        result = Response.status(401).build();
-//                        //找不到该手机号和验证码
-//                        break;
-//                    case 1:
-//                        Date now = new Date();
-//                        Date sendTime = validationCodes.get(0).getTimestamp();
-//                        if (now.getTime() > 60 * 3 * 1000 + sendTime.getTime()) {
-//                            result = Response.status(410).build();
-//                            //一验证码时间超时
-//                        } else {
-//                            //step3.0: query sessions table, get user.id
-////                            Session s = JPAEntry.getObject(Session.class, "identity", sessionId);
-////                            if (s == null) {
-////                                result = Response.status(412).build();
-////                                //缺少sessionID
-////                            } else {
-//                                //step3: update cards table, state, amount, cards'user_id -> user.id
-//                                Card card = new Card();
-//                                Card c = cs.get(0);
-//                                if (c.getUserId() == null) {
-//                                    c.setActiveTime(now);
-//                                    c.setEndTime(now);
-//                                    c.setAmount(588.0);
-//                                    c.setUserId(ac.getUserId());
-//                                    JPAEntry.genericPut(c);
-//                                    result = Response.ok().build();
-//                                    //代码执行成功
-//                                } else {
-//                                    result = Response.status(405).build();
-//                                }
-////                            }
-//                        }
-//                        break;
-//                    default:
-//                        result = Response.status(520).build();
-//                        //数据库表有多个手机号和验证码重复的数据
-//                        break;
-//                }
-//                EntityManager em = JPAEntry.getEntityManager();
-//                em.getTransaction().begin();
-//                for (ValidationCode validationCode : validationCodes) {
-//                    em.remove(validationCode);
-//                }
-//                em.getTransaction().commit();
-//                break;
-//        }
-//        return result;
-//    }
 
     @GET
     @Path("smsStateNotification")
@@ -603,74 +519,52 @@ public class Users {
         return result;
     }
 
-    @GET //根据条件查询
-    @Path("no/userId/code")
+    @PUT
+    @Path("phone")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@QueryParam("filter") @DefaultValue("") String filter) {
+    public Response login(ActiveCard activeCard) {
         Response result = Response.status(404).build();
-        Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-        List<User> users = JPAEntry.getList(User.class, filterObject);
-        if (!users.isEmpty()) {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            result = Response.ok(gson.toJson(users)).build();
-        }
-        return result;
-    }
-
-    @POST
-    @Path("phone/Verification")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getv(ActiveCard activeCard) {
-        Response result = result = Response.status(404).build();
         Map<String, Object> validationCodeConditions = new HashMap<>();
         validationCodeConditions.put("phoneNumber", activeCard.getPhoneNumber());
         validationCodeConditions.put("validCode", activeCard.getValidCode());
         List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
-        Map<String, Object> validationCode = new HashMap<>();
-        validationCode.put("telephone", activeCard.getPhoneNumber());
+
         if (!validationCodes.isEmpty()) {
+            result = Response.status(405).build();
             Date now = new Date();
             Date sendTime = validationCodes.get(0).getTimestamp();
             if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                List<User> users = JPAEntry.getList(User.class, validationCode);
-                if (!users.isEmpty()) {
-                    Session session = PublicAccounts.putSession(now, users.get(0).getId());
-                    result = Response.ok()
-                            .cookie(new NewCookie("userId", users.get(0).getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .build();
-                } else {
-                    User user = new User();
+                User user = JPAEntry.getObject(User.class, "telephone", activeCard.getPhoneNumber());
+                if (user == null) {
+                    user = new User();
                     user.setId(IdGenerator.getNewId());
                     user.setCreateTime(now);
                     user.setTelephone(activeCard.getPhoneNumber());
                     user.setUpdateTime(now);
                     user.setName("");
-                    user.setSex(0l);
+                    user.setSex(0);
                     JPAEntry.genericPost(user);
-                    Session session = PublicAccounts.putSession(now, user.getId());
-                    result = Response.ok()
-                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .build();
                 }
-            } else {
-                result = Response.status(405).build();
+                Session session = PublicAccounts.putSession(now, user.getId());
+                result = Response.ok()
+                    .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .build();
+
             }
         }
         return result;
     }
 
-    /*  //PublicAccounts.putSession(now,)
-      Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-      result = Response.ok(gson.toJson(validationCodes)).build();*/
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+        if (JPAEntry.isLogining(sessionId)) {
+            //if isAdmin
+            Long userId = 0l;
+            User admin = JPAEntry.getObject(User.class, "id", userId);
             if (admin != null && admin.getIsAdministrator()) {
                 result = Response.status(404).build();
                 User user = JPAEntry.getObject(User.class, "id", id);
@@ -683,7 +577,7 @@ public class Users {
         return result;
     }
 
-    @GET //根据id查询
+    @GET //查询self
     @Path("self")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSelf(@CookieParam("userId") String userId) {
@@ -740,9 +634,9 @@ public class Users {
                 if (isAdministrator != null) {
                     existuser.setIsAdministrator(isAdministrator);
                 }
-                String location = user.getLocation();
+                String location = user.getAddress();
                 if (location != null) {
-                    existuser.setLocation(location);
+                    existuser.setAddress(location);
                 }
                 String loginName = user.getLoginName();
                 if (loginName != null) {
@@ -760,7 +654,7 @@ public class Users {
                 if (school != null) {
                     existuser.setSchool(school);
                 }
-                Long sex = user.getSex();
+                Integer sex = user.getSex();
                 if (sex != null) {
                     existuser.setSex(sex);
                 }

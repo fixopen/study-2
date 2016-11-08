@@ -35,8 +35,8 @@ public class Card {
     @Column(name = "duration")
     private String duration;
 
-    @Column(name = "subject")
-    private Long subject;
+    @Column(name = "subject_id")
+    private Long subjectId;
 
     @Column(name = "amount")
     private Double amount;
@@ -97,12 +97,12 @@ public class Card {
         this.duration = duration;
     }
 
-    public Long getSubject() {
-        return subject;
+    public Long getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubject(Long subject) {
-        this.subject = subject;
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
     }
 
     public Double getAmount() {

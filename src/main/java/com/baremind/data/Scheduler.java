@@ -17,17 +17,14 @@ public class Scheduler {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "day")
-    private int day;
-
     @Column(name = "year")
-    private int year;
+    private Integer year;
 
     @Column(name = "week")
-    private int week;
+    private Integer week;
 
-  /*  @Column(name = "state")
-    private int state;*/
+    @Column(name = "day")
+    private Integer day;
 
     @Column(name = "start_time")
     private Date startTime;
@@ -42,10 +39,10 @@ public class Scheduler {
     private Long subjectId;
 
     @Column(name = "grade")
-    private int grade;
+    private Integer grade;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "cover")
     private String cover;
@@ -65,30 +62,6 @@ public class Scheduler {
     @Column(name = "teacher_description")
     private String teacherDescription;
 
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
-    public String getCdnLink() {
-        return cdnLink;
-    }
-
-    public void setCdnLink(String cdnLink) {
-        this.cdnLink = cdnLink;
-    }
-
-    public String getDirectLink() {
-        return directLink;
-    }
-
-    public void setDirectLink(String directLink) {
-        this.directLink = directLink;
-    }
-
     public Long getId() {
         return id;
     }
@@ -97,30 +70,30 @@ public class Scheduler {
         this.id = id;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getWeek() {
+    public Integer getWeek() {
         return week;
     }
 
-    public void setWeek(int week) {
+    public void setWeek(Integer week) {
         this.week = week;
     }
 
-    /*   public int getState() {
-           return state;
-       }
+    public Integer getDay() {
+        return day;
+    }
 
-       public void setState(int state) {
-           this.state = state;
-       }
-   */
+    public void setDay(Integer day) {
+        this.day = day;
+    }
+
     public Date getStartTime() {
         return startTime;
     }
@@ -153,20 +126,44 @@ public class Scheduler {
         this.subjectId = subjectId;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public String getCdnLink() {
+        return cdnLink;
+    }
+
+    public void setCdnLink(String cdnLink) {
+        this.cdnLink = cdnLink;
+    }
+
+    public String getDirectLink() {
+        return directLink;
+    }
+
+    public void setDirectLink(String directLink) {
+        this.directLink = directLink;
     }
 
     public String getDescription() {
@@ -191,13 +188,5 @@ public class Scheduler {
 
     public void setTeacherDescription(String teacherDescription) {
         this.teacherDescription = teacherDescription;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
     }
 }

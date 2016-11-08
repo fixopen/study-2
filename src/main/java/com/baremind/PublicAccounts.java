@@ -235,7 +235,7 @@ public class PublicAccounts {
     @GET
     @Path("ticket")
     @Produces(MediaType.APPLICATION_JSON)
-    public void refreshTicket() {
+    public Response refreshTicket() {
         //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
         prepare();
         Client client = ClientBuilder.newClient();
@@ -250,9 +250,7 @@ public class PublicAccounts {
             Ticket ticket = new Gson().fromJson(body, Ticket.class);
             Properties.setProperty("ticket", ticket.ticket);
         }
-
-        //if (r.errCode == 40012) {
-        //refreshTicket();
+        return Response.ok().build();
     }
 
     @GET
@@ -700,9 +698,9 @@ public class PublicAccounts {
         }
         //u.setLoginName(us.nickname);
         if (userInfo.sex == null) {
-            user.setSex(0l);
+            user.setSex(0);
         } else {
-            user.setSex(userInfo.sex.longValue());
+            user.setSex(userInfo.sex.intValue());
         }
         user.setCreateTime(now);
         user.setUpdateTime(now);
@@ -730,7 +728,7 @@ public class PublicAccounts {
         //user.setRefId();
         //user.setRefreshToken();
         //user.setSex(p.Infos.get(sex));
-        wechatUser.setSex(userInfo.sex.longValue());
+        wechatUser.setSex(userInfo.sex.intValue());
         wechatUser.setSubscribe(userInfo.subscribe);
         wechatUser.setSubscribeTime(userInfo.subscribe_time);
         wechatUser.setLanguage(userInfo.language);
@@ -1196,7 +1194,7 @@ public class PublicAccounts {
             user.setProvince(us.province);
             //user.setRefId();
             //user.setRefreshToken();
-            user.setSex(us.sex.longValue());
+            user.setSex(us.sex.intValue());
             user.setSubscribeTime(us.subscribe_time);
             user.setSubscribe(us.subscribe);
             user.setLanguage(us.language);
@@ -1210,7 +1208,7 @@ public class PublicAccounts {
             u.setHead(us.headimgurl);
             u.setName(us.nickname);
             //u.setLoginName(us.nickname);
-            u.setSex(us.sex.longValue());
+            u.setSex(us.sex.intValue());
             Date now = new Date();
             u.setCreateTime(now);
             u.setUpdateTime(now);

@@ -21,21 +21,16 @@ public class Volume {
     private Long subjectId;
 
     @Column(name = "grade")
-    private int grade;
+    private Integer grade;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "image_id")
+    private Long imageId;
 
     @Column(name = "\"order\"")
-    private int order;
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
+    private Integer order;
 
     public Long getId() {
         return id;
@@ -53,20 +48,36 @@ public class Volume {
         this.subjectId = subjectId;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String title) {
+        this.name = title;
+    }
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 
     public static Map<String, Object> convertToMap(Volume volume, Date now, Date yesterday) {
@@ -75,7 +86,7 @@ public class Volume {
         vm.put("grade", volume.getGrade());
         vm.put("order", volume.getOrder());
         vm.put("subjectId", volume.getSubjectId());
-        vm.put("title", volume.getTitle());
+        vm.put("name", volume.getName());
         vm.put("type", "old");
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.showTime > :yesterday AND l.showTime < :now";

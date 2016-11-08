@@ -10,7 +10,11 @@ import com.google.gson.reflect.TypeToken;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.*;
@@ -21,28 +25,25 @@ import java.util.Map;
 
 @Path("cards")
 public class Cards {
-    private static final String[] subjects = new String[]{"01", "02", "03"};
-    private static final int MATH = 0;
-    private static final int CHINESE = 1;
-    private static final int ENGLISH = 2;
-    private static final String[] grades = new String[]{"20", "21"};
     private static final String[] serials = new String[]{"1"};
 
     @POST
-    @Path("generate")
+    @Path("generate/{subjectNo}/{grade}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cardsGenerator(@CookieParam("userId") String userId, byte[] contents) {
+    public Response cardsGenerator(@CookieParam("sessionId") String sessionId, @PathParam("subjectNo") String subjectNo, @PathParam("grade") String grade, byte[] contents) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             try {
                 Map<String, Object> q = new Gson().fromJson(new String(contents, StandardCharsets.UTF_8.toString()), new TypeToken<Map<String, Object>>() {
                 }.getType());
                 Long start = (Long) q.get("start");
                 Long count = (Long) q.get("count");
                 for (int i = 0; i < count; ++i) {
+                    String serialNo = start.toString(); //7-char
+                    String no = subjectNo + grade + serials[0] + serialNo;
                     //generate card no
-                    //generate random number
+                    //generate 8-char random number
                     //record to database
                     //write to file
                 }
@@ -50,6 +51,33 @@ public class Cards {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 result = Response.status(400).build();
+            }
+        }
+        return result;
+    }
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                Part p = request.getPart("file");
+                InputStream inputStream = p.getInputStream();
+                long now = new Date().getTime();
+                String postfix = ".csv";
+                String fileName = now + "." + postfix;
+                String uploadedFileLocation = "" + fileName;
+
+                File file = new File(uploadedFileLocation);
+                FileOutputStream w = new FileOutputStream(file);
+                CharacterEncodingFilter.saveFile(w, inputStream);
+
+                parseAndInsert(uploadedFileLocation);
+                result = Response.ok("{\"state\":\"ok\"}").build();
+            } catch (IOException | ServletException e) { /*FileNotFoundException*/
+                e.printStackTrace();
             }
         }
         return result;
@@ -202,9 +230,9 @@ public class Cards {
                     existcard.setPassword(password);
                 }
 
-                Long subject = existcard.getSubject();
+                Long subject = existcard.getSubjectId();
                 if (subject != null) {
-                    existcard.setSubject(subject);
+                    existcard.setSubjectId(subject);
                 }
 
                 Long userId = existcard.getUserId();

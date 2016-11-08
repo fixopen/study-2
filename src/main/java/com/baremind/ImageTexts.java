@@ -1,6 +1,7 @@
 package com.baremind;
 
 
+import com.baremind.data.Image;
 import com.baremind.data.ImageText;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -49,16 +50,20 @@ public class ImageTexts {
                     FileOutputStream w = new FileOutputStream(file);
                     CharacterEncodingFilter.saveFile(w, inputStream);
 
-                    String content = request.getParameter("content");
-                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
+                    Image image = new Image();
+                    image.setId(IdGenerator.getNewId());
+                    image.setExt(postfix);
+                    image.setMimeType(contentType);
+                    image.setName(fileName);
+                    image.setSize(p.getSize());
+                    String virtualPath = Properties.getPropertyValue("testvirtualpath") + fileName;
+                    image.setStorePath(virtualPath);
+
                     ImageText imageText = new ImageText();
                     imageText.setId(IdGenerator.getNewId());
-                    imageText.setExt(postfix);
-                    imageText.setMimeType(contentType);
-                    imageText.setName(fileName);
-                    imageText.setSize(p.getSize());
-                    String virtualPath = Properties.getPropertyValue("virtualpath") + fileName;
-                    imageText.setStorePath(virtualPath);
+                    imageText.setImageId(image.getId());
+                    String content = request.getParameter("content");
+                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
                     imageText.setContent(content);
                     JPAEntry.genericPost(imageText);
 
@@ -130,34 +135,9 @@ public class ImageTexts {
             result = Response.status(404).build();
             ImageText existimage = JPAEntry.getObject(ImageText.class, "id", id);
             if (existimage != null) {
-                String ext = imageText.getExt();
-                if (ext != null) {
-                    existimage.setName(ext);
-                }
-
-                Integer mainColor = imageText.getMainColor();
-                if (mainColor != null) {
-                    existimage.getMainColor();
-                }
-
-                String mimeType = imageText.getMimeType();
-                if (mimeType != null) {
-                    existimage.setMimeType(mimeType);
-                }
-
-                Long size = imageText.getSize();
+                Long size = imageText.getImageId();
                 if (size != null) {
-                    existimage.setSize(size);
-                }
-
-                String storePath = imageText.getStorePath();
-                if (storePath != null) {
-                    existimage.setStorePath(storePath);
-                }
-
-                String name = imageText.getName();
-                if (name != null) {
-                    existimage.setName(name);
+                    existimage.setImageId(size);
                 }
 
                 String content = imageText.getContent();

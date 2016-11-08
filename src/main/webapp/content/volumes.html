@@ -8,7 +8,7 @@
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
-    <link rel="stylesheet" href="../common.css"/>
+    <link rel="stylesheet" href="/common.css"/>
     <link rel="stylesheet" href="volumes.css"/>
 </head>
 <body>
@@ -16,7 +16,7 @@
     <li id="low-title"
         class="common-font common-border-style common-line-height common-margin-padding common-outline-style common-resize">
         <span>低年级</span>
-        <img id="bird" src="../bird.png" alt=""/>
+        <img id="bird" src="bird.png" alt=""/>
     </li>
     <li id="high-title"
         class="common-font common-border-style common-line-height common-margin-padding common-outline-style common-resize">
@@ -30,17 +30,14 @@
         <a href="knowledge-points.html?volumeId=${volumeId}&volume=${volume}">${title}</a>
     </li>
 </template>
+<script src="/util.js"></script>
 <script>
     window.addEventListener('load', function (e) {
-        var subjectId = getUrlParameter('subjectId')
-        var grade = 20
+        var subjectId = g.getUrlParameter('subjectId')
 
         $.ajax({
             type: "get",
-            url: 'api/volumes?filter=' + JSON.stringify({
-                subjectId: parseInt(subjectId),
-                grade: grade
-            }),
+            url: '/api/subjects/' + subjectId + '/low/volumes',
             success: function (volumes) {
                 proc({
                     templateId: 'volume-template',
@@ -52,10 +49,7 @@
 
         $.ajax({
             type: "get",
-            url: 'api/volumes?filter=' + JSON.stringify({
-                subjectId: parseInt(subjectId),
-                grade: grade
-            }),
+            url: '/api/subjects/' + subjectId + '/high/volumes',
             success: function (volumes) {
                 proc({
                     templateId: 'volume-template',

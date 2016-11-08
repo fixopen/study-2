@@ -11,51 +11,240 @@
     <link rel="stylesheet" href="common.css"/>
 </head>
 <body>
-<dl>
-    <dt>name</dt>
-    <dd><input type="text"></dd>
-    <dt>avatar</dt>
-    <dd><input type="text"></dd>
-    <dt>nickname</dt>
-    <dd><input type="text"></dd>
-    <dt>account</dt>
-    <dd><input type="text"></dd>
-    <dt>password</dt>
-    <dd><input type="text"></dd>
-    <dt>real-name</dt>
-    <dd><input type="text"></dd>
-    <dt>phone</dt>
-    <dd><input type="text"></dd>
-    <dt>sex</dt>
-    <dd><input type="text"></dd>
-    <dt>birthday</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>location(address)</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>school</dt>
-    <dd><input type="text"></dd>
-    <dt>grade</dt>
-    <dd><input type="text"></dd>
-    <dt>class</dt>
-    <dd><input type="text"></dd>
-    <dt>sex</dt>
-    <dd><input type="text"></dd>
-    <dt>cards</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>logs</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>study</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>views</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>likes</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>knowledge</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>payment</dt>
-    <dd><input type="button" value="details"></dd>
-    <dt>help</dt>
-    <dd><input type="button" value="details"></dd>
-</dl>
+<article id="user">
+    <dl>
+        <dt>name</dt>
+        <dd><input type="text"></dd>
+        <dt>avatar</dt>
+        <dd><input type="text"></dd>
+        <dt>nickname</dt>
+        <dd><input type="text"></dd>
+        <dt>account</dt>
+        <dd><input type="text"></dd>
+        <dt>password</dt>
+        <dd><input type="text"></dd>
+        <dt>real-name</dt>
+        <dd><input type="text"></dd>
+        <dt>phone</dt>
+        <dd><input type="text"></dd>
+        <dt>sex</dt>
+        <dd><input type="text"></dd>
+        <dt>birthday</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>location(address)</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>school</dt>
+        <dd><input type="text"></dd>
+        <dt>grade</dt>
+        <dd><input type="text"></dd>
+        <dt>class</dt>
+        <dd><input type="text"></dd>
+        <dt>sex</dt>
+        <dd><input type="text"></dd>
+        <dt>cards</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>logs</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>study</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>views</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>likes</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>knowledge</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>payment</dt>
+        <dd><input type="button" value="details"></dd>
+        <dt>help</dt>
+        <dd><input type="button" value="details"></dd>
+    </dl>
+</article>
+<article id="cards">
+    <ul id="actived-cards"></ul>
+    <button id="recharge">充值</button>
+    <button id="append-card">添加卡</button>
+</article>
+<article id="info"></article>
+<article id="logs"></article>
+<article id="consumes"></article>
+<article id="study"></article>
+<article id="score"></article>
+<article id="change-password"></article>
+<article id="activeCard">
+    <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
+        <div>
+            <span class="common-font common-line-height title">卡号</span>
+            <input type="text" id="cardNo" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入卡号" required pattern="\d+"/>
+        </div>
+        <div>
+            <span class="common-font common-line-height title">密码</span>
+            <input type="password" id="password" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入密码" required/>
+        </div>
+    </section>
+    <div id="tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
+    <input type="button" id="save" class="common-font common-line-height common-border-style save" value="确 认"/>
+</article>
+<article id="firstActiveCard">
+    <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
+        <div>
+            <span class="common-font common-line-height title">卡号</span>
+            <input type="text" id="first-cardNo" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入卡号" required pattern="\d+"/>
+        </div>
+        <div>
+            <span class="common-font common-line-height title">密码</span>
+            <input type="password" id="first-password" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入密码" required/>
+        </div>
+        <div>
+            <span class="common-font common-line-height title">手机号</span>
+            <input type="tel" id="phoneNumber" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入手机号" required pattern="\d+"/>
+            <input type="button" id="activeCode" class="common-font common-border-style validButton" value="获取手机验证码"/>
+        </div>
+        <div>
+            <span class="common-font common-line-height title">验证码</span>
+            <input type="text" id="validCode" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入验证码" required pattern="\d{6}"/>
+        </div>
+    </section>
+    <div id="first-tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
+    <input type="button" id="first-save" class="common-font common-line-height common-border-style save" value="确 认"/>
+</article>
+<article id="login">
+    <div>
+        <span class="common-font common-line-height title">手机号</span>
+        <input type="tel" id="login-account" class="common-font common-line-height common-border-style value"
+               placeholder="请输入手机号" required pattern="\d+"/>
+    </div>
+    <div>
+        <span class="common-font common-line-height title">密码</span>
+        <input type="text" id="login-password" class="common-font common-line-height common-border-style value"
+               placeholder="请输入验证码" required pattern="\d{6}"/>
+    </div>
+</article>
+<article id="phone-login">
+    <div>
+        <span class="common-font common-line-height title">手机号</span>
+        <input type="tel" id="login-phoneNumber" class="common-font common-line-height common-border-style value"
+               placeholder="请输入手机号" required pattern="\d+"/>
+        <input type="button" id="login-activeCode" class="common-font common-border-style validButton" value="获取手机验证码"/>
+    </div>
+    <div>
+        <span class="common-font common-line-height title">验证码</span>
+        <input type="text" id="login-validCode" class="common-font common-line-height common-border-style value"
+               placeholder="请输入验证码" required pattern="\d{6}"/>
+    </div>
+</article>
+<article id="settings"></article>
+<article id="help"></article>
+
+<template id="user-template">
+    <section>
+        <span>我的头像</span>
+        <img src="${head}" alt="">
+    </section>
+    <section>
+        <span>昵称</span>
+        <input type="text" value="${name}" readonly>
+    </section>
+    <section>
+        <span>账号</span>
+        <input type="text" value="${telephone}" readonly>
+    </section>
+    <section>
+        <a href="#">我的资料</a>
+    </section>
+    <section>
+        <a href="#">我的学习卡</a>
+    </section>
+    <section>
+        <a href="#">设置</a>
+    </section>
+    <section>
+        <a href="#">帮助</a>
+    </section>
+</template>
+<template id="info-template">
+    <article>
+        <section>
+            <span>真实姓名</span>
+            <input type="text" placeholder="请输入真实姓名" value="${name}">
+        </section>
+        <section>
+            <span>手机号</span>
+            <input type="tel" value="${telephone}">
+        </section>
+        <section>
+            <span>性别</span>
+            <input type="text" value="${sexName}">
+        </section>
+        <section>
+            <span>出生年月</span>
+            <input type="date" value="${birthday}">
+        </section>
+        <section>
+            <span>收货地址</span>
+            <input type="text" placeholder="请输入收货地址" value="${location}">
+        </section>
+        <section >
+            <span class="mine_leftsp">就读学校</span>
+            <input class="mine_rightip" type="text" value="${school}">
+        </section>
+        <section>
+            <span>所在班级</span>
+            <input type="text" value="${grade} ${classname}">
+        </section>
+    </article>
+</template>
+<template id="card-template">
+    <article>
+        <section>
+            <span>卡号</span>
+            <span>${no}</span>
+        </section>
+        <section>
+            <span>学习类型</span>
+            <span>${subjectName}</span>
+        </section>
+        <section>
+            <span>激活时间</span>
+            <span>${activeTime}</span>
+        </section>
+        <section>
+            <span>剩余雨点</span>
+            <span>${amount}</span>
+        </section>
+        <section>
+            <span>有效期</span>
+            <span>${endTime}</span>
+        </section>
+    </article>
+</template>
+<template id="consume-template">
+    <li>
+        <p>${time}</p>
+        <p>${direction}</p>
+        <p><span>${amount}</span>金豆</p>
+    </li>
+</template>
+<template id="study-template"></template>
+
+<dialog>添加成功啦！<br>请到我的学习卡里~</dialog>
+
+<script>
+    var user
+
+    $.ajax({
+        type: 'get',
+        url: '/api/users/self',
+        dataType: 'json',
+        success: function(u) {
+            user = u
+        }
+    })
+</script>
 </body>
 </html>

@@ -70,27 +70,14 @@ public class KnowledgePointContentMaps {
             result = Response.status(404).build();
             KnowledgePointContentMap existproblem = JPAEntry.getObject(KnowledgePointContentMap.class, "id", id);
             if (existproblem != null) {
-                int order = knowledgePointContentMapses.getOrder();
-                if (order != 0) {
-                    existproblem.setOrder(order);
-                }
-
                 Long knowledgePointId = knowledgePointContentMapses.getKnowledgePointId();
                 if (knowledgePointId != null) {
                     existproblem.setKnowledgePointId(knowledgePointId);
                 }
 
-                Long volumeId = knowledgePointContentMapses.getVolumeId();
-                if (volumeId != null) {
-                    existproblem.setVolumeId(volumeId);
-                }
-                Long grade = knowledgePointContentMapses.getGrade();
-                if (grade != null) {
-                    existproblem.setGrade(grade);
-                }
-                Long subjectId = knowledgePointContentMapses.getSubjectId();
-                if (subjectId != null) {
-                    existproblem.setSubjectId(subjectId);
+                String type = knowledgePointContentMapses.getObjectType();
+                if (type != null) {
+                    existproblem.setObjectType(type);
                 }
 
                 Long objectId = knowledgePointContentMapses.getObjectId();
@@ -98,9 +85,9 @@ public class KnowledgePointContentMaps {
                     existproblem.setObjectId(objectId);
                 }
 
-                String type = knowledgePointContentMapses.getType();
-                if (type != null) {
-                    existproblem.setType(type);
+                int order = knowledgePointContentMapses.getOrder();
+                if (order != 0) {
+                    existproblem.setOrder(order);
                 }
 
                 JPAEntry.genericPut(existproblem);

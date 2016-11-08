@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Content Input</title>
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css"/>
+    <style>
+        .active {
+            background-color: yellow;
+        }
+
+        .saved {
+            background-color: #b2b2b2;
+        }
+    </style>
+</head>
+<body>
+<h1>后台录入页面</h1>
+<table border="1">
+    <tr>
+        <th>科目</th>
+        <th>操作</th>
+        <th>年级</th>
+        <th>标题</th>
+        <th>操作</th>
+        <th>知识点</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td>
+            <select id="subjectChoice"></select>
+        </td>
+        <td>
+            <input type="button" id="appendSubject" value="添加"/>
+            <input type="button" id="updateSubject" value="修改"/>
+        </td>
+        <td>
+            <select id="gradeChoice">
+                <option value="20">低年级</option>
+                <option value="21">高年级</option>
+            </select>
+        </td>
+        <td>
+            <select id="volumeChoice"></select>
+        </td>
+        <td>
+            <input type="button" id="appendVolume" value="添加"/>
+            <input type="button" id="updateVolume" value="修改"/>
+        </td>
+        <td>
+            <select id="knowledgePointChoice"></select>
+        </td>
+        <td>
+            <input type="button" id="appendKnowledgePoint" value="添加"/>
+            <input type="button" id="updateKnowledgePoint" value="修改"/>
+        </td>
+    </tr>
+</table>
+<div id="contents"></div>
+<div id="buttons">
+    <button id="appendText" data-type="text">append text</button>
+    <button id="appendImage" data-type="image">append image</button>
+    <button id="appendVideo" data-type="video">append video</button>
+    <button id="appendProblem" data-type="problem">append problem</button>
+    <button id="appendImageText" data-type="imagetext">append image-text</button>
+    <button id="appendPinyinText" data-type="pinyintext">append pinyin-text</button>
+    <button id="appendQuote" data-type="quote">append quote</button>
+    <button id="movePrevious">^</button>
+    <button id="moveNext">V</button>
+    <button id="submit">submit</button>
+    <button id="save">save</button>
+</div>
+<div class="modal fade" data-backdrop="static" id="subjectEditor" tabindex="-1" role="dialog"
+     aria-labelledby="subjectEditorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="subjectEditorLabel">Subject editor</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" class="form-horizontal" role="form">
+                    <div class="form-group hidden">
+                        <label for="subjectID" class="col-sm-2 control-label">id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="subjectID" placeholder="subject id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectNo" class="col-sm-2 control-label">no</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="subjectNo" placeholder="subject no">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectName" class="col-sm-2 control-label">name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="subjectName" placeholder="subject name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="subjectSubmit" type="submit" data-loading-text="Loading..."
+                                    class="btn btn-primary">Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-backdrop="static" id="volumeEditor" tabindex="-1" role="dialog"
+     aria-labelledby="volumeEditorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="volumeEditorLabel">Volume editor</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" class="form-horizontal" role="form">
+                    <div class="form-group hidden">
+                        <label for="volumeID" class="col-sm-2 control-label">id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeID" placeholder="volume id">
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <label for="volumeID" class="col-sm-2 control-label">subject id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeSubjectID"
+                                   placeholder="volume subject id">
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <label for="volumeID" class="col-sm-2 control-label">grade</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeGrade" placeholder="volume grade">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="volumeName" class="col-sm-2 control-label">name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeName" placeholder="volume name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="volumeCover" class="col-sm-2 control-label">cover</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" id="volumeCover" placeholder="volume cover">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="volumeOrder" class="col-sm-2 control-label">order</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="volumeOrder" placeholder="volume order">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="volumeSubmit" type="submit" data-loading-text="Loading..."
+                                    class="btn btn-primary">Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-backdrop="static" id="knowledgePointEditor" tabindex="-1" role="dialog"
+     aria-labelledby="knowledgePointEditorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="knowledgePointEditorLabel">Knowledge point editor</h4>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" class="form-horizontal" role="form">
+                    <div class="form-group hidden">
+                        <label for="knowledgePointID" class="col-sm-2 control-label">id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="knowledgePointID"
+                                   placeholder="knowledge point id">
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <label for="knowledgePointName" class="col-sm-2 control-label">volume id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="knowledgePointVolumeId"
+                                   placeholder="knowledge point volume id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="knowledgePointName" class="col-sm-2 control-label">name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="knowledgePointName"
+                                   placeholder="knowledge point name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="knowledgePointOrder" class="col-sm-2 control-label">order</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="knowledgePointOrder"
+                                   placeholder="knowledge point order">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="knowledgePointSubmit" type="submit" data-loading-text="Loading..."
+                                    class="btn btn-primary">Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<template id="problem-template">
+    <div data-type="problem">
+        问题标题<textarea data-type="title"></textarea>
+        图片<input type="file" data-type="image"/>
+        <input type="text" data-type="index"/>
+        标准答案<input type="text" data-type="standardAnswers"/>
+        <button data-type="appendOption">append option</button>
+        <ol data-type="options"></ol>
+        视频图片<input type="file" data-type="videoCover"/>
+        视频路径(手动输入)<input type="text" data-type="video"/>
+    </div>
+</template>
+<template id="problem-option-template">
+    <li data-type="option">
+        <input type="text" data-type="content"/>
+        <input type="file" data-type="image"/>
+    </li>
+</template>
+<template id="imageText-template">
+    <div data-type="imageText">
+        图片<input type="file" data-type="image"/>
+        文本<textarea data-type="content"></textarea>
+    </div>
+</template>
+<template id="video-template">
+    <div data-type="video">
+        视频图片<input type="file" data-type="cover"/>
+        视频路径<textarea data-type="storePath"></textarea>
+    </div>
+</template>
+<template id="quote-template">
+    <div data-type="quote">
+        段落<textarea data-type="content"></textarea>
+        出处<textarea data-type="source"></textarea>
+    </div>
+</template>
+<template id="pinyinText-template">
+    <div data-type="pinyinText">
+        拼音<textarea data-type="pinyin"></textarea>
+        文字<textarea data-type="content"></textarea>
+    </div>
+</template>
+<script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/bootstrap/bootstrap.min.js"></script>
+<!--
+<script src="/react/react-dom.min.js"></script>
+<script src="/react/react.min.js"></script>
+-->
+<script src="/util.js"></script>
+<script>
+    let subjects = []
+
+    let state = {
+        createOption: function (value, title) {
+            let option = document.createElement('option')
+            option.setAttribute("value", value)
+            option.appendChild(document.createTextNode(title))
+            return option
+        },
+        refillChoice: function (choice, data) {
+            choice.innerHTML = ''
+            if (Array.isArray(data)) {
+                for (let i = 0; i < data.length; ++i) {
+                    choice.appendChild(state.createOption(data[i].id, data[i].name))
+                }
+            }
+            choice.selectedIndex = 0
+        },
+        subject: {
+            index: 0,
+            value: null,
+            getById: function (id) {
+                let result = null
+                for (let i = 0; i < subjects.length; ++i) {
+                    if (subjects[i].id == id) {
+                        result = subjects[i]
+                        break
+                    }
+                }
+                return result
+            },
+            change: function (index) {
+                state.subject.index = index
+                state.subject.value = subjects[state.subject.index]
+
+                state.grade.choice.selectedIndex = 0
+                state.grade.change(state.grade.choice)
+
+                if (subjects[state.subject.index]) {
+                    state.refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+                    state.volume.choice.selectedIndex = 0
+                    state.volume.change(state.volume.choice.selectedIndex)
+                }
+            },
+            edit: function (subject) {
+                var titleValue = 'New Subject'
+                if (subject.id) {
+                    titleValue = 'Edit Subject'
+                }
+                $('#subjectEditorLabel').text(titleValue)
+                state.subject.idControl.value = subject.id
+                state.subject.noControl.value = subject.no
+                state.subject.nameControl.value = subject.name
+                $('#subjectEditor').modal('show')
+            },
+            choice: document.getElementById('subjectChoice'),
+            append: document.getElementById('appendSubject'),
+            update: document.getElementById('updateSubject'),
+            idControl: document.getElementById('subjectID'),
+            noControl: document.getElementById('subjectNo'),
+            nameControl: document.getElementById('subjectName'),
+            submitControl: document.getElementById('subjectSubmit'),
+            submit: function () {
+                let isUpdate = false
+                let method = 'POST'
+                let url = '/api/subjects'
+                if (state.subject.idControl.value != '') {
+                    isUpdate = true
+                    method = 'PUT'
+                    url = '/api/subjects/' + state.subject.value.id
+                }
+                $.ajax({
+                    type: method,
+                    url: url,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        no: state.subject.noControl.value,
+                        name: state.subject.nameControl.value
+                    }),
+                    success: function (subjectResult) {
+                        if (isUpdate) {
+                            subjects[state.subject.index][state.grade.name][state.volume.index] = volume
+
+                            //
+                        } else {
+                            let subject = subjectResult
+                            subject.low = []
+                            subject.high = []
+                            subjects.push(subject)
+
+                            state.refillChoice(state.subject.choice, subjects)
+                            state.subject.choice.selectedIndex = subjects.length - 1
+                            state.subject.change(state.subject.choice.selectedIndex)
+                            state.contents.style.visibility = 'hidden'
+                        }
+                        //alert('添加成功')
+                    },
+                    error: function (r) {
+                        //
+                    }
+                })
+            }
+        },
+        grade: {
+            index: 0,
+            value: 20,
+            name: 'low',
+            getNameByValue: function (v) {
+                let result = 'low'
+                if (v == 21) {
+                    result = 'high'
+                }
+                return result
+            },
+            choice: document.getElementById('gradeChoice'),
+            change: function (gradeChoice) {
+                state.grade.index = gradeChoice.selectedIndex
+                state.grade.value = gradeChoice.value
+                switch (state.grade.value) {
+                    case '20':
+                        state.grade.name = 'low'
+                        break
+                    case '21':
+                        state.grade.name = 'high'
+                        break
+                }
+            }
+        },
+        volume: {
+            index: 0,
+            value: null,
+            maxOrder: 1,
+            getById: function (id) {
+                let result = null
+                let finded = false
+                for (let i = 0; i < subjects.length; ++i) {
+                    for (let j = 0; j < subjects[i].low.length; ++j) {
+                        if (subjects[i].low[j].id == id) {
+                            result = subjects[i].low[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                    for (let j = 0; j < subjects[i].high.length; ++j) {
+                        if (subjects[i].high[j].id == id) {
+                            result = subjects[i].high[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                }
+                return result
+            },
+            change: function (index) {
+                state.volume.index = index
+                state.volume.value = subjects[state.subject.index][state.grade.name][state.volume.index]
+
+                if (subjects[state.subject.index][state.grade.name][state.volume.index]) {
+                    state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                    state.knowledgePoint.choice.selectedIndex = 0
+                    state.knowledgePoint.change(state.knowledgePoint.choice.selectedIndex)
+                } else {
+                    state.refillChoice(state.knowledgePoint.choice, [])
+                    state.knowledgePoint.choice.selectedIndex = 0
+                    state.knowledgePoint.value = null;
+                }
+            },
+            edit: function (volume) {
+                var titleValue = 'New Volume'
+                if (volume.id) {
+                    titleValue = 'Edit Volume'
+                }
+                $('#volumeEditorLabel').text(titleValue)
+                state.volume.idControl.value = volume.id
+                state.volume.nameControl.value = volume.name
+                state.volume.coverControl.src = volume.coverHref
+                state.volume.orderControl.value = volume.order
+                $('#volumeEditor').modal('show')
+            },
+            choice: document.getElementById('volumeChoice'),
+            append: document.getElementById('appendVolume'),
+            update: document.getElementById('updateVolume'),
+            idControl: document.getElementById('volumeID'),
+            //subjectIdControl: document.getElementById('volumeSubjectID'),
+            //gradeControl: document.getElementById('volumeGrade'),
+            nameControl: document.getElementById('volumeName'),
+            coverControl: document.getElementById('volumeCover'),
+            orderControl: document.getElementById('volumeOrder'),
+            submitControl: document.getElementById('volumeSubmit'),
+            submit: function () {
+                let isUpdate = false
+                let method = 'POST'
+                let url = '/api/volumes'
+                if (state.subject.idControl.value != '') {
+                    isUpdate = true
+                    method = 'PUT'
+                    url = '/api/volumes/' + state.volume.value.id
+                }
+                $.ajax({
+                    type: method,
+                    url: url,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        subjectId: state.subject.value.id,
+                        grade: parseInt(state.grade.value),
+                        imageId: parseInt(state.volume.coverControl.dataset.id),
+                        name: state.volume.nameControl.value,
+                        order: state.volume.maxOrder
+                    }),
+                    success: function (volumeResult) {
+                        if (isUpdate) {
+                            let knowledgePoints = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints
+                            let volume = volumeResult
+                            volume.knowledgePoints = knowledgePoints
+                            //
+                        } else {
+                            let volume = volumeResult
+                            volume.knowledgePoints = []
+                            subjects[state.subject.index][state.grade.name].push(volume)
+
+                            state.refillChoice(state.volume.choice, subjects[state.subject.index][state.grade.name])
+                            state.volume.choice.selectedIndex = subjects[state.subject.index][state.grade.name].length - 1
+                            state.volume.change(state.volume.choice.selectedIndex)
+                            ++state.volume.maxOrder
+                        }
+                        //alert('添加成功')
+                    }, error: function (r) {
+                        //alert(volumeResult.data)
+                        //alert('添加失败')
+                    }
+                })
+            }
+        },
+        knowledgePoint: {
+            index: 0,
+            value: null,
+            maxOrder: 1,
+            change: function (index) {
+                state.knowledgePoint.index = index
+                state.knowledgePoint.value = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index]
+                let changeContents = function() {
+                    state.contents.innerHTML = ''
+                    let contents = state.knowledgePoint.value.contents
+                    for (let i = 0; i < contents.quotes.length; ++i) {
+                        let element = state.quote.create(contents.quotes[i])
+                        state.append(element)
+                    }
+                    for (let i = 0; i < contents.contents.length; ++i) {
+                        switch (contents.contents[i].type) {
+                            case 'text':
+                                let element = state.text.create(contents.contents[i])
+                                state.append(element)
+                                break
+                            case 'image':
+                                let element = state.image.create(contents.contents[i])
+                                state.append(element)
+                                break
+                            case 'imageText':
+                                let element = state.imageText.create(contents.contents[i])
+                                state.append(element)
+                                break
+                            case 'pinyinText':
+                                let element = state.pinyinText.create(contents.contents[i])
+                                state.append(element)
+                                break
+                        }
+                    }
+                    let element = state.video.create(contents.video)
+                    state.append(element)
+                    //contents.interaction
+                    for (let i = 0; i < contents.problems.length; ++i) {
+                        let element = state.problem.create(contents.problems[i])
+                        state.append(element)
+                    }
+                    //for (let i = 0; i < contents.comments.length; ++i) {
+                    //    //
+                    //}
+                }
+                if (!state.knowledgePoint.value.contents) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
+                        dataType: 'json',
+                        success: function(cs) {
+                            state.knowledgePoint.value.contents = cs
+                            changeContents()
+                        }
+                    })
+                } else {
+                    changeContents()
+                }
+            },
+            edit: function (knowledgePoint) {
+                var titleValue = 'New Knowledge Point'
+                if (knowledgePoint.id) {
+                    titleValue = 'Edit Knowledge Point'
+                }
+                $('#knowledgePointEditorLabel').text(titleValue)
+                state.knowledgePoint.idControl.value = knowledgePoint.id
+                state.knowledgePoint.nameControl.value = knowledgePoint.name
+                state.knowledgePoint.orderControl.value = knowledgePoint.order
+                $('#knowledgePointEditor').modal('show')
+            },
+            choice: document.getElementById('knowledgePointChoice'),
+            append: document.getElementById('appendKnowledgePoint'),
+            update: document.getElementById('updateKnowledgePoint'),
+            idControl: document.getElementById('knowledgePointID'),
+            //volumeIdControl: document.getElementById('knowledgePointVolumeID'),
+            nameControl: document.getElementById('knowledgePointName'),
+            orderControl: document.getElementById('knowledgePointOrder'),
+            submitControl: document.getElementById('knowledgePointSubmit'),
+            submit: function () {
+                let isUpdate = false
+                let method = 'POST'
+                let url = '/api/knowledge-points'
+                if (state.subject.idControl.value != '') {
+                    isUpdate = true
+                    method = 'PUT'
+                    url = '/api/knowledge-points/' + state.knowledgePoint.value.id
+                }
+                $.ajax({
+                    type: method,
+                    url: url,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        volumeId: state.volume.id,
+                        name: state.knowledgePoint.nameControl.value,
+                        order: state.knowledgePoint.maxOrder
+                    }),
+                    success: function (knowledgePointResult) {
+                        if (isUpdate) {
+                            subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints[state.knowledgePoint.index] = knowledgePointResult
+                        } else {
+                            let knowledgePoint = knowledgePointResult
+                            subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.push(knowledgePoint)
+                            state.refillChoice(state.knowledgePoint.choice, subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints)
+                            state.knowledgePoint.choice.selectedIndex = subjects[state.subject.index][state.grade.name][state.volume.index].knowledgePoints.length - 1
+                            state.knowledgePoint.change(state.knowledgePoint.choice.selectedIndex)
+                            ++state.knowledgePoint.maxOrder
+                            //alert("添加成功")
+                        }
+                    },
+                    error: function (r) {
+                        //alert(knowledgePointResult.data)
+                        //alert("添加失败")
+                    }
+                })
+            }
+        },
+        append: function(element) {
+            state.contents.appendChild(element)
+            state.currentSelectedElement = element
+        },
+        quote: {
+            create: function(value) {
+                let qt = document.getElementById('quote-template')
+                let q = qt.content.children[0].cloneNode(true)
+                q.setAttribute('data-id', value.id)
+                q.querySelector('[data-type="content"]').value = value.content
+                q.querySelector('[data-type="source"]').value = value.source
+                return q
+            },
+            submit: function() {
+                //
+            }
+        },
+        text: {
+            create: function(value) {
+                let text = document.createElement('textarea')
+                text.setAttribute('data-type', 'text')
+                text.setAttribute('data-id', value.id)
+                text.value = value.content
+                return text
+            },
+            submit: function() {
+                //
+            }
+        },
+        image: {
+            create: function(value) {
+                let image = document.createElement('input')
+                image.setAttribute('data-type', 'image')
+                image.setAttribute('name', 'file')
+                image.setAttribute('type', 'file')
+                image.setAttribute('data-id', value.id)
+                image.addEventListener('change', function (e) {
+                    delete e.target.dataset.id
+                }, false)
+                image.src = value.storePath
+                return image
+            },
+            submit: function() {
+                //
+            }
+        },
+        imageText: {
+            create: function(value) {
+                let itt = document.getElementById('imageText-template')
+                let it = itt.content.children[0].cloneNode(true)
+                let image = it.querySelector('[data-type="image"]')
+                image.addEventListener('change', function (e) {
+                    delete e.target.dataset.id
+                }, false)
+                image.setAttribute('data-id', value.imageId)
+                it.setAttribute('data-id', value.id)
+                it.querySelector('[data-type="content"]').value = value.content
+                return it
+            },
+            submit: function() {
+                //
+            }
+        },
+        pinyinText: {
+            create: function(value) {
+                let ptt = document.getElementById('pinyinText-template')
+                let pt = ptt.content.children[0].cloneNode(true)
+                pt.setAttribute('data-set', value.id)
+                pt.querySelector('[data-type="pinyin"]').value = value.pinyin
+                pt.querySelector('[data-type="content"]').value = value.content
+                return pt
+            },
+            submit: function() {
+                //
+            }
+        },
+        video: {
+            create: function(value) {
+                let vt = document.getElementById('video-template')
+                let v = vt.content.children[0].cloneNode(true)
+                let image = v.querySelector('[data-type="image"]')
+                image.addEventListener('change', function (e) {
+                    delete e.target.dataset.id
+                }, false)
+                image.setAttribute('data-id', value.cover)
+                v.setAttribute('data-id', value.id)
+                v.querySelector('[data-type="storePath"]').value = value.storePath
+                return v
+            },
+            submit: function() {
+                //
+            }
+        },
+        problem: {
+            create: function(value) {
+                let pt = document.getElementById('problem-template')
+                let p = pt.content.children[0].cloneNode(true)
+                let optionOrder = 0
+                let image = p.querySelector('[data-type="image"]')
+                image.addEventListener('change', function (e) {
+                    delete e.target.dataset.id
+                }, false)
+                image.setAttribute('data-id', value.imageId)
+                image.value = value.storePath
+                let options = e.target.parentNode.querySelector('[data-type="options"]')
+                let appendOption = p.querySelector('[data-type="appendOption"]')
+                appendOption.addEventListener('click', function (e) {
+                    let option = document.getElementById('problem-option-template').children[0].cloneNode(true)
+                    option.setAttribute('data-identity', optionOrder)
+                    ++optionOrder
+                    options.appendChild(option)
+                })
+                for (let i = 0; i < value.options.length; ++i) {
+                    let optionValue = value.options[i]
+                    let option = document.getElementById('problem-option-template').children[0].cloneNode(true)
+                    option.setAttribute('data-identity', optionValue.order)
+                    option.setAttribute('data-id', optionValue.id)
+                    option.value = optionValue.name
+                    options.appendChild(option)
+                }
+                p.setAttribute('data-id', value.id)
+                p.querySelector('[data-type="title"]').value = value.name
+                return p
+            },
+            submit: function() {
+                //
+            }
+        },
+        currentSelectedElement: null,
+        contents: document.getElementById('contents'),
+        buttons: document.getElementById('buttons')
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/subjects',
+        dataType: 'json',
+        success: function (ss) {
+            subjects = ss
+            for (let i = 0; i < subjects.length; ++i) {
+                subjects[i].low = []
+                subjects[i].high = []
+            }
+            $.ajax({
+                type: 'GET',
+                url: '/api/volumes',
+                dataType: 'json',
+                success: function (vs) {
+                    for (let i = 0; i < vs.length; ++i) {
+                        vs[i].knowledgePoints = []
+                        let s = state.subject.getById(vs[i].subjectId)
+                        let gn = state.grade.getNameByValue(vs[i].grade)
+                        s[gn].push(vs[i])
+                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/knowledge-points',
+                        dataType: 'json',
+                        success: function (kps) {
+                            for (let i = 0; i < kps.length; ++i) {
+                                let v = state.volume.getById(kps[i].volumeId)
+                                v.knowledgePoints.push(kps[i])
+                            }
+
+                            state.refillChoice(state.subject.choice, subjects)
+                            state.subject.change(0)
+                            state.contents.style.visibility = 'hidden'
+                        },
+                        error: function(r) {
+                            state.refillChoice(state.subject.choice, subjects)
+                            state.subject.change(0)
+                            state.contents.style.visibility = 'hidden'
+                        }
+                    })
+                },
+                error: function(r) {
+                    state.refillChoice(state.subject.choice, subjects)
+                    state.subject.change(0)
+                    state.contents.style.visibility = 'hidden'
+                }
+            })
+        },
+        error: function(r) {
+        }
+    })
+
+    state.subject.choice.addEventListener('change', function (e) {
+        state.subject.change(e.target.selectedIndex)
+    }, false)
+
+    state.subject.append.addEventListener('click', function (e) {
+        state.subject.edit({
+            id: '',
+            no: '',
+            name: ''
+        })
+    }, false)
+
+    state.subject.update.addEventListener('click', function (e) {
+        state.subject.edit(state.subject.value)
+    }, false)
+
+    state.subject.submitControl.addEventListener('click', function (e) {
+        state.subject.submit()
+    }, false)
+
+    state.grade.choice.addEventListener('change', function (e) {
+        state.grade.change(e.target)
+        state.volume.change(0)
+    }, false)
+
+    state.volume.choice.addEventListener('change', function (e) {
+        state.volume.change(e.target.selectedIndex)
+    }, false)
+
+    state.volume.append.addEventListener('click', function (e) {
+        state.volume.edit({
+            id: '',
+            subjectId: state.subject.value.id,
+            grade: state.grade.value,
+            name: '',
+            imageId: '',
+            order: state.volume.maxOrder
+        })
+    }, false)
+
+    state.volume.update.addEventListener('click', function (e) {
+        state.volume.edit(state.volume.value)
+    }, false)
+
+    state.volume.submitControl.addEventListener('click', function (e) {
+        state.volume.submit()
+    }, false)
+
+    state.knowledgePoint.choice.addEventListener('change', function (e) {
+        state.knowledgePoint.change(e.target.selectedIndex)
+    }, false)
+
+    state.knowledgePoint.append.addEventListener('click', function (e) {
+        state.knowledgePoint.edit({
+            id: '',
+            volumeId: state.volume.value.id,
+            name: '',
+            order: state.knowledgePoint.maxOrder
+        })
+    }, false)
+
+    state.knowledgePoint.update.addEventListener('click', function (e) {
+        state.knowledgePoint.edit(state.knowledgePoint.value)
+    }, false)
+
+    state.knowledgePoint.submitControl.addEventListener('click', function (e) {
+        state.knowledgePoint.submit()
+    }, false)
+
+    state.contents.addEventListener('click', function (e) {
+        let elm = e.target
+        for (; ;) {
+            if (elm.parentNode == e.currentTarget) {
+                break
+            }
+            elm = elm.parentNode
+        }
+        if (elm != state.currentSelectedElement) {
+            if (state.currentSelectedElement) {
+                state.currentSelectedElement.removeClass('active')
+            }
+            state.currentSelectedElement = elm
+            state.currentSelectedElement.addClass('active')
+        }
+    }, false)
+
+    let movePrevious = document.getElementById('movePrevious')
+    movePrevious.addEventListener('click', function (e) {
+        let previousSibling = state.currentSelectedElement.previousElementSibling
+        state.contents.removeChild(state.currentSelectedElement)
+        state.contents.insertBefore(state.currentSelectedElement, previousSibling)
+    }, false)
+
+    let moveNext = document.getElementById('moveNext')
+    moveNext.addEventListener('click', function (e) {
+        let nextNextSibling = state.currentSelectedElement.nextElementSibling.nextElementSibling
+        state.contents.removeChild(state.currentSelectedElement)
+        state.contents.insertBefore(state.currentSelectedElement, nextNextSibling)
+    }, false)
+
+    let appendText = document.getElementById('appendText')
+    appendText.addEventListener('click', function (e) {
+        let text = state.text.create({
+            id: '',
+            content: ''
+        })
+        state.append(text)
+    }, false)
+
+    let appendImage = document.getElementById('appendImage')
+    appendImage.addEventListener('click', function (e) {
+        let image = state.image.create({
+            id: '',
+            storePath: ''
+        })
+        state.append(image)
+    }, false)
+
+    let appendProblem = document.getElementById('appendProblem')
+    appendProblem.addEventListener('click', function (e) {
+        let p = state.problem.create({
+            id: '',
+            name: '',
+            options: []
+        })
+        state.append(p)
+    }, false)
+
+    let appendPinyinText = document.getElementById('appendPinyinText')
+    appendPinyinText.addEventListener('click', function (e) {
+        let pt = state.pinyinText.create({
+            id: '',
+            pinyin: '',
+            content: ''
+        })
+        state.append(pt)
+    }, false)
+
+    let appendVideo = document.getElementById('appendVideo')
+    appendVideo.addEventListener('click', function (e) {
+        let v = state.video.create({
+            id: '',
+            storePath: '',
+            cover: ''
+        })
+        state.append(v)
+    }, false)
+
+    let appendImageText = document.getElementById('appendImageText')
+    appendImageText.addEventListener('click', function (e) {
+        let it = state.imageText.create({
+            id: '',
+            content: '',
+            imageId: ''
+        })
+        state.append(it)
+    }, false)
+
+    let appendQuote = document.getElementById('appendQuote')
+    appendQuote.addEventListener('click', function (e) {
+        let q = state.quote.create({
+            id: '',
+            content: '',
+            source: ''
+        })
+        state.append(q)
+    }, false)
+
+    let uploadFile = function (file, postProcess) {
+        var formData = new FormData();
+        formData.append("file", file);
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                if (request.status == 200) {
+                    postProcess(JSON.parse(request.responseText))
+                }
+            }
+        }
+        request.open("POST", "/api/medias");
+        request.send(formData);
+    }
+
+    let genericProc = function (entityPath, data) {
+        if (state.currentSelectedElement.dataset.id) {
+            g.ajaxProcess('PUT', '/api/' + entityPath + '/' + state.currentSelectedElement.dataset.id, [
+                {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                {name: 'Accept', value: 'application/json'}
+            ], data, function (result) {
+                if (result.meta.code < 400) {
+                    alert("修改成功")
+                } else {
+                    alert("修改失败")
+                }
+            })
+        } else {
+            g.ajaxProcess('POST', '/api/' + entityPath, [
+                {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                {name: 'Accept', value: 'application/json'}
+            ], data, function (result) {
+                if (result.meta.code < 400) {
+                    state.currentSelectedElement.dataset.id = result.data.id
+                    alert("添加成功")
+                } else {
+                    alert("添加失败")
+                }
+            })
+        }
+    }
+
+    let submitProblem = function (imageId, videoId) {
+        g.ajaxProcess('POST', '/api/problems', [
+            {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+            {name: 'Accept', value: 'application/json'}
+        ], {
+            name: state.currentSelectedElement.querySelector('[data-type="title"]').value,
+            imageId: imageId,
+            videoId: videoId,
+        }, function (result) {
+            if (result.meta.code < 400) {
+                state.currentSelectedElement.dataset.id = result.data.id
+                let standardAnswer = state.currentSelectedElement.querySelector('[data-type="standardAnswers"]').value
+                let sas = standardAnswer.split(',')
+                for (let i = 0; i < sas.length; ++i) {
+                    $.ajax({
+                        type: "post",
+                        url: "/api/problem-standard-answers",
+                        data: JSON.stringify({
+                            problemId: result.data.id,
+                            index: parseInt(sas[i]) - 1
+                        }),
+                        dataType: "json",
+                        async: false,
+                        contentType: "application/json; charset=utf-8"
+                    })
+                }
+
+                let submitOption = function (problemId, name, imageId) {
+                    g.ajaxProcess('POST', '/api/problem-options', [
+                        {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                        {name: 'Accept', value: 'application/json'}
+                    ], {
+                        problemId: problemId,
+                        name: name,
+                        imageId: imageId
+                    }, function (result) {
+                        //do nothing
+                    })
+                }
+                let options = state.currentSelectedElement.querySelectorAll('[data-type="option"]')
+                for (let i = 0; i < options.length; ++i) {
+                    let image = options[i].querySelector('[data-type="image"]')
+                    let content = options[i].querySelector('[data-type="content"]').value
+                    if (image.files.length > 0) {
+                        if (!image.dataset.id) {
+                            uploadFile(image.files[0], function (r) {
+                                image.dataset.id = r.id
+                                submitOption(result.data.id, content, r.id)
+                            })
+                        } else {
+                            submitOption(result.data.id, content)
+                        }
+                    } else {
+                        submitOption(result.data.id, content)
+                    }
+                }
+                alert("添加成功")
+            } else {
+                alert("添加失败")
+            }
+        })
+    }
+
+    let submit = document.getElementById('submit')
+    submit.addEventListener('click', function (e) {
+        switch (state.currentSelectedElement.dataset.type) {
+            case 'text':
+                genericProc('texts', {content: state.currentSelectedElement.value})
+                break
+            case 'image':
+                uploadFile(state.currentSelectedElement.files[0], function (result) {
+                    state.currentSelectedElement.dataset.id = result.id
+                })
+                break
+            case 'problem':
+                if (!state.currentSelectedElement.dataset.id) {
+                    if (confirm("请检查问题内容是否有误，问题不提供修改功能！")) {
+                        if (state.currentSelectedElement.querySelector('[data-type="image"]').files.length > 0) {
+                            uploadFile(state.currentSelectedElement.querySelector('[data-type="image"]').files[0], function (imageResult) {
+                                if (state.currentSelectedElement.querySelector('[data-type="videoImg"]').files.length > 0) {
+                                    uploadFile(state.currentSelectedElement.querySelector('[data-type="videoImg"]').files[0], function (videoResult) {
+                                        submitProblem(imageResult.id, videoResult.id)
+                                    })
+                                } else {
+                                    submitProblem(imageResult.id)
+                                }
+                            })
+                        }
+                        if (state.currentSelectedElement.querySelector('[data-type="videoImg"]').files.length > 0) {
+                            uploadFile(state.currentSelectedElement.querySelector('[data-type="videoImg"]').files[0], function (result) {
+                                submitProblem(null, result.id)
+                            })
+                        } else {
+                            submitProblem()
+                        }
+                    }
+                } else {
+                    alert("问题不提供修改功能")
+                }
+                break
+            case 'imageText':
+                let imageControl = state.currentSelectedElement.querySelector('[data-type="image"]')
+                if (!imageControl.dataset.id) {
+                    if (imageControl.files.length > 0) {
+                        uploadFile(imageControl.files[0], function (result) {
+                            imageControl.dataset.id = result.id
+                            genericProc('image-texts', {
+                                imageId: imageControl.dataset.id,
+                                content: state.currentSelectedElement.value
+                            })
+                        })
+                    } else {
+                        alert('must choose image')
+                    }
+                }
+                break
+            case 'video':
+                let videoCoverControl = state.currentSelectedElement.querySelector('[data-type="image"]')
+                if (!videoCoverControl.dataset.id) {
+                    if (videoCoverControl.files.length > 0) {
+                        uploadFile(videoCoverControl.files[0], function (result) {
+                            videoCoverControl.dataset.id = result.id
+                            genericProc('videos', {
+                                imageId: videoCoverControl.dataset.id,
+                                storePath: state.currentSelectedElement.value
+                            })
+                        })
+                    } else {
+                        alert('must choose image')
+                    }
+                }
+                break
+            case 'quote':
+                genericProc('quotes', {
+                    source: state.currentSelectedElement.querySelector('[data-type="source"]').value,
+                    content: state.currentSelectedElement.querySelector('[data-type="content"]').value
+                })
+                break
+            case 'pinyinText':
+                genericProc('quotes', {
+                    source: state.currentSelectedElement.querySelector('[data-type="pinyin"]').value,
+                    content: state.currentSelectedElement.querySelector('[data-type="content"]').value
+                })
+                break
+        }
+        state.currentSelectedElement.removeClass('active')
+        state.currentSelectedElement.addClass('saved')
+    }, false)
+
+    let save = document.getElementById('save')
+    save.addEventListener('click', function (e) {
+        let children = state.contents.children
+        for (let i = 0; i < children.length; ++i) {
+            g.ajaxProcess('POST', '/api/knowledge-point-content-maps', [
+                {name: 'Content-Type', value: 'application/json; charset=utf-8'},
+                {name: 'Accept', value: 'application/json'}
+            ], {
+                knowledgePointId: state.knowledgePoint.id,
+                type: children[i].dataset.type,
+                order: i + 1,
+                objectId: children[i].dataset.id
+            }, function (result) {
+                //
+            })
+        }
+        state.buttons.style.visibility = 'hidden'
+        state.contents.innerHTML = ''
+        alert("添加成功")
+    }, false)
+</script>
+</body>
+</html>

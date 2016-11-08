@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>followers</title>
+</head>
+<body>
+<button id="get">get followers to fill DB</button>
+<script src="/jquery/jquery.min.js"></script>
+<script>
+    let getButton = document.getElementById('get')
+    getButton.addEventListener('click', function(e) {
+        $.ajax({
+            type: 'post',
+            url: '/api/public-account/followers',
+            data: {},
+            contentType: 'application/json',
+            dateType: 'json',
+            success: function(data){
+                alert('success')
+            },
+            error: function(result){
+                alert('error')
+            }
+        })
+    })
+</script>
+</body>
+</html>

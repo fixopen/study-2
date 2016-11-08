@@ -5,6 +5,7 @@ import com.baremind.data.Session;
 import com.baremind.data.User;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,31 +42,11 @@ public class JPAEntry {
         HashMap<String, Object> condition = new HashMap<>(1);
         condition.put(fieldName, fieldValue);
         return getObject(type, condition);
-//        T result = null;
-//        EntityManager em = getEntityManager();
-//        String jpql = "SELECT a FROM " + type.getSimpleName() + " a WHERE a." + fieldName + " = :variable";
-//        try {
-//            result = em.createQuery(jpql, type)
-//                .setParameter("variable", fieldValue)
-//                .getSingleResult();
-//        } catch (NoResultException e) {
-//            //do noting
-//        } catch (NonUniqueResultException e) {
-//            List<T> t = em.createQuery(jpql, type)
-//                .setParameter("variable", fieldValue)
-//                .getResultList();
-//            result = t.get(0);
-//        }
-//        return result;
     }
 
-    //SELECT a FROM KnowledgePoint a WHERE a.volumeId = :volumeId AND a.showTime < :showTime
-    //setParameter("showTime", v)
     public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
         T result = null;
-//        Logs.insert(8l, "perf", 32l, new Date().toString());
         EntityManager em = getEntityManager();
-//        Logs.insert(8l, "perf", 32l, new Date().toString());
         String jpql = "SELECT a FROM " + type.getSimpleName() + " a ";
         boolean isFirst = true;
         if (conditions != null) {
@@ -94,17 +75,13 @@ public class JPAEntry {
                     q.setParameter(item.getKey(), value);
                 }
             }
-//            Logs.insert(8l, "perf", 32l, new Date().toString());
             result = q.getSingleResult();
-//            Logs.insert(8l, "perf", 32l, new Date().toString());
         } catch (NoResultException e) {
             //do noting
         } catch (NonUniqueResultException e) {
-            TypedQuery<T> q = em.createQuery(jpql, type);
+            final TypedQuery<T> q = em.createQuery(jpql, type);
             if (conditions != null) {
-                for (Map.Entry<String, Object> item : conditions.entrySet()) {
-                    q.setParameter(item.getKey(), item.getValue());
-                }
+                conditions.forEach(q::setParameter);
             }
             List<T> t = q.getResultList();
             result = t.get(0);
@@ -181,12 +158,22 @@ public class JPAEntry {
         em.close();
     }
 
+    public static void genericPost(EntityManager em, Object o) {
+        em.persist(o);
+    }
+
     public static void genericPut(Object o) {
         EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         em.merge(o);
         em.getTransaction().commit();
         em.close();
+    }
+
+    public static long genericDelete(Class type, String name, Object value) {
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put(name, value);
+        return genericDelete(type, conditions);
     }
 
     public static long genericDelete(Class type, Map<String, Object> conditions) {
@@ -202,31 +189,46 @@ public class JPAEntry {
         return result;
     }
 
-    public static long genericDelete(Class type, String name, Object value) {
-        Map<String, Object> conditions = new HashMap<>();
-        conditions.put(name, value);
-        return genericDelete(type, conditions);
+    public static Session getSession(String sessionId) {
+        return getObject(Session.class, "identity", sessionId);
     }
 
-    public static boolean isLogining(String userId) {
+    public static boolean isLogining(Long userId) {
         final Map<String, Boolean> r = new HashMap<>();
         r.put("value", false);
         isLogining(userId, a -> {
-            //a.setLastOperationTime(new Date());
-            //genericPut(a);
+            a.setLastOperationTime(new Date());
+            genericPut(a);
             r.put("value", true);
         });
         return r.get("value");
     }
 
-    public static void isLogining(String userId, Consumer<User> touchFunction) {
-        Long id = Long.parseLong(userId);
-        User u = getObject(User.class, "id", id);
+    public static void isLogining(Long userId, Consumer<Session> touchFunction) {
+        User u = getObject(User.class, "id", userId);
         if (u != null) {
-            Session s = getObject(Session.class, "userId", id);
+            Session s = getObject(Session.class, "userId", userId);
             if (s != null) {
-                touchFunction.accept(u);
+                touchFunction.accept(s);
             }
+        }
+    }
+
+    public static boolean isLogining(String sessionId) {
+        final Map<String, Boolean> r = new HashMap<>();
+        r.put("value", false);
+        isLogining(sessionId, a -> {
+            a.setLastOperationTime(new Date());
+            genericPut(a);
+            r.put("value", true);
+        });
+        return r.get("value");
+    }
+
+    public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
+        Session s = getSession(sessionId);
+        if (s != null) {
+            touchFunction.accept(s);
         }
     }
 
@@ -234,22 +236,14 @@ public class JPAEntry {
         final Map<String, Long> r = new HashMap<>();
         r.put("value", 0l);
         isLogining(sessionId, a -> {
-            //a.setLastOperationTime(new Date());
-            //genericPut(a);
-            r.put("value", a.getId());
+            a.setLastOperationTime(new Date());
+            genericPut(a);
+            r.put("value", a.getUserId());
         });
         return r.get("value");
     }
 
     public static void log(Long userId, String action, String objectType, Long objectId) {
         Logs.insert(userId, objectType, objectId, action);
-//        Log log = new Log();
-//        log.setId(IdGenerator.getNewId());
-//        log.setUserId(userId);
-//        log.setAction(action);
-//        log.setObjectType(objectType);
-//        log.setObjectId(objectId);
-//        log.setCreateTime(new Date());
-//        genericPost(log);
     }
 }

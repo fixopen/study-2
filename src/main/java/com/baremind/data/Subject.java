@@ -15,6 +15,9 @@ public class Subject {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "no")
+    private String no;
+
     @Column(name = "name")
     private String name;
 
@@ -26,6 +29,14 @@ public class Subject {
         this.id = id;
     }
 
+    public String getNo() {
+        return no;
+    }
+
+    public void setNo(String no) {
+        this.no = no;
+    }
+
     public String getName() {
         return name;
     }
@@ -33,6 +44,4 @@ public class Subject {
     public void setName(String name) {
         this.name = name;
     }
-
-
 }

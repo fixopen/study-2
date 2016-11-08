@@ -141,6 +141,10 @@ public class Subjects {
             result = Response.status(404).build();
             Subject existsubject = JPAEntry.getObject(Subject.class, "id", id);
             if (existsubject != null) {
+                String no = subject.getNo();
+                if (no != null) {
+                    existsubject.setNo(no);
+                }
                 String name = subject.getName();
                 if (name != null) {
                     existsubject.setName(name);

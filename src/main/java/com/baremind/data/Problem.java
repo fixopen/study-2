@@ -1,9 +1,16 @@
 package com.baremind.data;
 
+import com.baremind.ProblemOptions;
+import com.baremind.utils.JPAEntry;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -16,47 +23,18 @@ public class Problem {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "subject_id")
-    private Long subjectId;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "volume_id")
-    private Long volumeId;
-
-    @Column(name = "knowledge_point_id")
-    private Long knowledgePointId;
-
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "store_path")
-    private String storePath;
-
-    @Column(name = "video_url")
-    private String videoUrl;
-
-    @Column(name = "video_image")
-    private Long videoImage;
+    @Column(name = "image_id")
+    private Long imageId;
 
     @Column(name = "index")
-    private Long index;
+    private Integer index;
 
-    public Long getIndex() {
-        return index;
-    }
+    @Column(name = "video_id")
+    private Long videoId;
 
-    public void setIndex(Long index) {
-        this.index = index;
-    }
-
-    public Long getVideoImage() {
-        return videoImage;
-    }
-
-    public void setVideoImage(Long videoImage) {
-        this.videoImage = videoImage;
-    }
-
-    //{"videoUrl":"/data","storePath":"d:/1474270688455.jpeg","standardAnswers":[0,1],"options":["das","asdf","afds","adf"],"title":"dfas","knowledgePointId":5,"volumeId":1,"subjectId":1}
     public Long getId() {
         return id;
     }
@@ -65,52 +43,62 @@ public class Problem {
         this.id = id;
     }
 
-    public Long getSubjectId() {
-        return subjectId;
+    public String getName() {
+        return name;
     }
 
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Long getVolumeId() {
-        return volumeId;
+    public Long getImageId() {
+        return imageId;
     }
 
-    public void setVolumeId(Long volumeId) {
-        this.volumeId = volumeId;
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 
-    public Long getKnowledgePointId() {
-        return knowledgePointId;
+    public Integer getIndex() {
+        return index;
     }
 
-    public void setKnowledgePointId(Long knowledgePointId) {
-        this.knowledgePointId = knowledgePointId;
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
-    public String getTitle() {
-        return title;
+    public Long getVideoId() {
+        return videoId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setVideoId(Long videoId) {
+        this.videoId = videoId;
     }
 
-    public String getStorePath() {
-        return storePath;
+    public static Map<String, Object> convertToMap(Problem problemItem, List<ProblemOption> problemOptions, List<ProblemStandardAnswer> problemStandardAnswers) {
+        Map<String, Object> pm = new HashMap<>();
+        pm.put("id", problemItem.getId());
+        if (problemStandardAnswers.size() > 1) {
+            pm.put("type", "多选题");
+        } else {
+            pm.put("type", "单选题");
+        }
+        List<Map<String, Object>> poms = ProblemOptions.convertProblemOptions(problemOptions);
+        pm.put("options", poms);
+        pm.put("standardAnswers", problemStandardAnswers);
+        pm.put("name", problemItem.getName());
+        Image image = JPAEntry.getObject(Image.class, "id", problemItem.getImageId());
+        if (image != null) {
+            pm.put("storePath", image.getStorePath());
+        }
+        Video video = JPAEntry.getObject(Video.class, "id", problemItem.getVideoId());
+        if (video != null) {
+            pm.put("videoUrl", video.getStorePath());
+            Image cover = JPAEntry.getObject(Image.class, "id", video.getCover());
+            if (cover != null) {
+                pm.put("videoImage", cover.getStorePath());
+            }
+        }
+        return pm;
     }
-
-    public void setStorePath(String storePath) {
-        this.storePath = storePath;
-    }
-
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
-
 }

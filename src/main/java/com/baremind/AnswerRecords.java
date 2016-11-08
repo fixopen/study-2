@@ -75,13 +75,13 @@ public class AnswerRecords {
             result = Response.status(404).build();
             AnswerRecord existAnswerRecord = JPAEntry.getObject(AnswerRecord.class, "id", id);
             if (existAnswerRecord != null) {
-                Long answer = answerRecord.getAnswer();
+                Integer answer = answerRecord.getIndex();
                 if (answer != null) {
-                    existAnswerRecord.setAnswer(answer);
+                    existAnswerRecord.setIndex(answer);
                 }
-                Date commitTime = answerRecord.getCommitTime();
+                Date commitTime = answerRecord.getCreateTime();
                 if (commitTime != null) {
-                    existAnswerRecord.setCommitTime(commitTime);
+                    existAnswerRecord.setCreateTime(commitTime);
                 }
                 Long problemId = answerRecord.getProblemId();
                 if (problemId != null) {

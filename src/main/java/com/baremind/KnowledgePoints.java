@@ -11,7 +11,6 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -135,13 +134,12 @@ public class KnowledgePoints {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKnowledgePointsByVolumeId(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        Long selfId = Long.parseLong(userId);
+        if (JPAEntry.isLogining(selfId)) {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
-
-                JPAEntry.log(Long.parseLong(userId), "read", "knowledge-point", id);
-
+                JPAEntry.log(selfId, "read", "knowledge-point", id);
                 Map<String, Object> conditions = new HashMap<>();
                 conditions.put("knowledgePointId", id);
 
@@ -158,7 +156,7 @@ public class KnowledgePoints {
                 List<String> pinyinIds = new ArrayList<>();
 
                 for (KnowledgePointContentMap item : maps) {
-                    switch (item.getType()) {
+                    switch (item.getObjectType()) {
                         case "text":
                             textIds.add(item.getObjectId().toString());
                             break;
@@ -204,49 +202,34 @@ public class KnowledgePoints {
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
                 List<Object> orderedQuotes = new ArrayList<>();
-                List<Object> orderedPinyins = new ArrayList<>();
+
                 for (final KnowledgePointContentMap item : maps) {
-                    switch (item.getType()) {
+                    switch (item.getObjectType()) {
                         case "text":
                             if (textObjects != null) {
                                 Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> tm = new HashMap<>();
-                                tm.put("id", t.getId());
-                                tm.put("content", t.getContent());
-                                tm.put("type", "text");
+                                Map<String, Object> tm = Text.convertToMap(t);
                                 orderedContents.add(tm);
                             }
                             break;
                         case "image":
                             if (imageObjects != null) {
                                 Image i = findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> im = new HashMap<>();
-                                im.put("id", i.getId());
-                                im.put("type", "image");
-                                im.put("description", "");
-                                im.put("href", i.getStorePath());
+                                Map<String, Object> im = Image.convertToMap(i);
                                 orderedContents.add(im);
                             }
                             break;
                         case "imageText":
                             if (imageTextObject != null) {
                                 ImageText it = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> itm = new HashMap<>();
-                                itm.put("id", it.getId());
-                                itm.put("type", "imageText");
-                                itm.put("content", it.getContent());
-                                itm.put("href", it.getStorePath());
+                                Map<String, Object> itm = ImageText.convertToMap(it);
                                 orderedContents.add(itm);
                             }
                             break;
                         case "pinyinText":
                             if (pinyinTextObject != null) {
-                                PinyinText q = findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> qm = new HashMap<>();
-                                qm.put("id", q.getId());
-                                qm.put("type", "pinyinText");
-                                qm.put("pinyin", q.getPinyin());
-                                qm.put("content", q.getContent());
+                                PinyinText pt = findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> qm = PinyinText.convertToMap(pt);
                                 orderedContents.add(qm);
                             }
                             break;
@@ -255,70 +238,27 @@ public class KnowledgePoints {
                                 Problem problemItem = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
                                 List<ProblemOption> problemOptions = findItems(problemOptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
                                 List<ProblemStandardAnswer> problemStandardAnswers = findItems(problemStandardAnswerObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
-
-                                Map<String, Object> pm = new HashMap<>();
-                                pm.put("id", problemItem.getId());
-                                if (problemStandardAnswers.size() > 1) {
-                                    pm.put("type", "多选题");
-                                } else {
-                                    pm.put("type", "单选题");
-                                }
-
-                                //获取每一个选项 option
-                                Collections.sort(problemOptions, (left, right) -> left.getOrder().intValue() - right.getOrder().intValue());
-                                ArrayList<Map<String, Object>> apm = new ArrayList();
-                                for (ProblemOption option : problemOptions) {
-                                    Map<String, Object> opm = new HashMap<>();
-                                    opm.put("optionId", option.getId());
-                                    opm.put("name", option.getName());
-                                    if (option.getImageId() != null) {
-                                        Image storePath = JPAEntry.getObject(Image.class, "id", option.getImageId());
-                                        opm.put("optionImagePath", storePath.getStorePath());
-                                    }
-                                    apm.add(opm);
-                                }
-                                pm.put("options", apm);
-                                pm.put("standardAnswers", problemStandardAnswers);
-                                pm.put("title", problemItem.getTitle());
-                                pm.put("storePath", problemItem.getStorePath());
-                                pm.put("videoUrl", problemItem.getVideoUrl());
-                                if (problemItem.getVideoImage() != null) {
-                                    Image im = JPAEntry.getObject(Image.class, "id", problemItem.getVideoImage());
-                                    pm.put("videoImage", im.getStorePath());
-                                }
-
+                                Map<String, Object> pm = Problem.convertToMap(problemItem, problemOptions, problemStandardAnswers);
                                 orderedProblems.add(pm);
                             }
                             break;
                         case "quote":
                             if (quoteObject != null) {
                                 Quote q = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> qm = new HashMap<>();
-                                qm.put("id", q.getId());
-                                qm.put("content", q.getContent());
-                                qm.put("source", q.getSource());
-                                orderedQuotes.add(qm);
+                                orderedQuotes.add(q);
                             }
                             break;
                     }
                 }
 
                 Map<String, Object> totalResult = new HashMap<>();
-                totalResult.put("title", p.getTitle());
-//                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-//                String now = gson.toJson(p.getShowTime());
-//                totalResult.put("showTime", now);
+                totalResult.put("title", p.getName());
                 totalResult.put("quotes", orderedQuotes);
                 totalResult.put("contents", orderedContents);
 
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     Video video = videoObjects.get(0);
-                    Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
-                    Map<String, Object> vm = new HashMap<>();
-
-                    vm.put("cover", image.getStorePath());
-                    vm.put("id", video.getId());
-                    vm.put("storePath", video.getStorePath());
+                    Map<String, Object> vm = Video.convertToMap(video);
                     totalResult.put("video", vm);
                 }
 
@@ -328,32 +268,12 @@ public class KnowledgePoints {
                 totalResult.put("interaction", interaction);
 
                 totalResult.put("problems", orderedProblems);
-                /*totalResult.put("pinyins", orderedPinyins);*/
 
                 conditions = new HashMap<>();
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                List<Map<String, Object>> commentMaps = new ArrayList<>(comments.size());
-                for (Comment comment : comments) {
-                    Map<String, Object> commentMap = new HashMap<>();
-                    commentMap.put("id", comment.getId());
-                    commentMap.put("content", comment.getContent());
-                    commentMap.put("clientId", comment.getClientId());
-                    SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    commentMap.put("createTime", time.format(comment.getCreateTime()));
-                    commentMap.put("objectId", comment.getObjectId());
-                    commentMap.put("objectType", comment.getObjectType());
-                    commentMap.put("updateTime", comment.getUpdateTime());
-                    commentMap.put("userId", comment.getUserId());
-                    User user = JPAEntry.getObject(User.class, "id", comment.getUserId());
-                    if (user != null) {
-                        commentMap.put("userName", user.getName());
-                        commentMap.put("userAvatar", user.getHead());
-                    }
-                    commentMap.put("likeCount", Logs.getStatsCount("comment", comment.getId(), "like"));
-                    commentMaps.add(commentMap);
-                }
+                List<Map<String, Object>> commentMaps = Comments.convertComments(comments);
                 totalResult.put("comments", commentMaps);
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
@@ -417,37 +337,25 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             KnowledgePoint existknowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (existknowledgePoint != null) {
-                int grade = knowledgePoint.getGrade();
-                if (grade != 0) {
-                    existknowledgePoint.getGrade();
+                Long volumeId = knowledgePoint.getVolumeId();
+                if (volumeId != null) {
+                    existknowledgePoint.setVolumeId(volumeId);
+                }
+                String title = knowledgePoint.getName();
+                if (title != null) {
+                    existknowledgePoint.setName(title);
                 }
                 Date showTime = knowledgePoint.getShowTime();
                 if (showTime != null) {
                     existknowledgePoint.setShowTime(showTime);
                 }
-                String storePath = knowledgePoint.getStorePath();
-                if (storePath != null) {
-                    existknowledgePoint.setStorePath(storePath);
-                }
                 int order = knowledgePoint.getOrder();
                 if (order != 0) {
                     existknowledgePoint.setOrder(order);
                 }
-                Long subjectId = knowledgePoint.getSubjectId();
-                if (subjectId != null) {
-                    existknowledgePoint.setSubjectId(subjectId);
-                }
-                String title = knowledgePoint.getTitle();
-                if (title != null) {
-                    existknowledgePoint.setTitle(title);
-                }
-                String videoUrl = knowledgePoint.getVideoUrl();
-                if (videoUrl != null) {
-                    existknowledgePoint.setVideoUrl(videoUrl);
-                }
-                Long volumeId = knowledgePoint.getVolumeId();
-                if (volumeId != null) {
-                    existknowledgePoint.setVolumeId(volumeId);
+                Date show = knowledgePoint.getShowTime();
+                if (show != null) {
+                    existknowledgePoint.setShowTime(show);
                 }
                 JPAEntry.genericPut(existknowledgePoint);
                 result = Response.ok(existknowledgePoint).build();
