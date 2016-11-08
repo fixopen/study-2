@@ -59,18 +59,18 @@
         <dd><input type="button" value="details"></dd>
     </dl>
 </article>
-<article id="cards">
+<article id="cards" style="display: none;">
     <ul id="actived-cards"></ul>
     <button id="recharge">充值</button>
     <button id="append-card">添加卡</button>
 </article>
-<article id="info"></article>
-<article id="logs"></article>
-<article id="consumes"></article>
-<article id="study"></article>
-<article id="score"></article>
-<article id="change-password"></article>
-<article id="activeCard">
+<article id="info" style="display: none;"></article>
+<article id="logs" style="display: none;"></article>
+<article id="consumes" style="display: none;"></article>
+<article id="study" style="display: none;"></article>
+<article id="score" style="display: none;"></article>
+<article id="change-password" style="display: none;"></article>
+<article id="activeCard" style="display: none;">
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div>
             <span class="common-font common-line-height title">卡号</span>
@@ -86,7 +86,7 @@
     <div id="tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
     <input type="button" id="save" class="common-font common-line-height common-border-style save" value="确 认"/>
 </article>
-<article id="firstActiveCard">
+<article id="firstActiveCard" style="display: none;">
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
         <div>
             <span class="common-font common-line-height title">卡号</span>
@@ -113,7 +113,7 @@
     <div id="first-tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
     <input type="button" id="first-save" class="common-font common-line-height common-border-style save" value="确 认"/>
 </article>
-<article id="login">
+<article id="login" style="display: none;">
     <div>
         <span class="common-font common-line-height title">手机号</span>
         <input type="tel" id="login-account" class="common-font common-line-height common-border-style value"
@@ -125,7 +125,7 @@
                placeholder="请输入验证码" required pattern="\d{6}"/>
     </div>
 </article>
-<article id="phone-login">
+<article id="phone-login" style="display: none;">
     <div>
         <span class="common-font common-line-height title">手机号</span>
         <input type="tel" id="login-phoneNumber" class="common-font common-line-height common-border-style value"
@@ -138,8 +138,8 @@
                placeholder="请输入验证码" required pattern="\d{6}"/>
     </div>
 </article>
-<article id="settings"></article>
-<article id="help"></article>
+<article id="settings" style="display: none;"></article>
+<article id="help" style="display: none;"></article>
 
 <template id="user-template">
     <section>
@@ -237,14 +237,47 @@
 <script>
     var user
 
-    $.ajax({
-        type: 'get',
-        url: '/api/users/self',
-        dataType: 'json',
-        success: function(u) {
-            user = u
-        }
-    })
+    var state = {
+        currentArticle: document.getElementById('volumes'),
+        init: function () {
+            var userId = g.getUrlParameter('userid')
+            g.setCookie('userId', userId)
+
+            $.ajax({
+                type: 'get',
+                url: '/api/users/self',
+                dataType: 'json',
+                success: function(u) {
+                    user = u
+                }
+            })
+
+            $('[data-article]').on('click', function (e) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(e.target.dataset.article)
+                state.currentArticle.style.display = 'block'
+                state[state.currentArticle.id].init()
+            }, false)
+
+            state['user'].init()
+        },
+        user: {},
+        cards: {},
+        info: {},
+        logs: {},
+        consumes: {},
+        study: {},
+        score: {},
+        changePassword: {},
+        activeCard: {},
+        firstActiveCard: {},
+        login: {},
+        phoneLogin: {},
+        settings: {},
+        help: {}
+    }
+
+    state.init()
 </script>
 </body>
 </html>
