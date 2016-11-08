@@ -225,9 +225,9 @@
                             }
                             if (oneFirst) {
                                 $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
-                                $('#subjects').find('a:first').tab('show') // Select first tab
-                                $('#subjects').find('a:last').tab('show') // Select last tab
-                                $('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
+                                //$('#subjects').find('a:first').tab('show') // Select first tab
+                                //$('#subjects').find('a:last').tab('show') // Select last tab
+                                //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
                             }
 
                             setInterval(function () {
@@ -243,29 +243,6 @@
             alert('back-end not response, places retry')
         }
     })
-
-    var videoLink = g.getUrlParameter('src');
-    var video = document.getElementById('video')
-    video.setAttribute('src', videoLink)
-    video.play()
-    var elem = video
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-    }
-
-    var mediaElement = document.getElementById('mediaElementID');
-    mediaElement.seekable.start(0);  // Returns the starting time (in seconds)
-    mediaElement.seekable.end(0);    // Returns the ending time (in seconds)
-    mediaElement.currentTime = 122; // Seek to 122 seconds
-    mediaElement.played.end(0);      // Returns the number of seconds the browser has played
-
-    //#t=[starttime][,endtime]
 </script>
 </body>
 </html>
