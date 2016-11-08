@@ -12,20 +12,28 @@
     <img src="" alt=""/>
     <!-- Nav tabs -->
     <ul id="subjects" class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#chinese" role="tab" data-toggle="tab">chinese</a></li>
-        <li role="presentation"><a href="#math" role="tab" data-toggle="tab">math</a></li>
+        <li role="presentation" class="active"><a href="#zero" role="tab" data-toggle="tab">chinese</a></li>
+        <li role="presentation"><a href="#one" role="tab" data-toggle="tab">math</a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="chinese">
-            <div id="chinesePlaying"></div>
-            <div id="chineseFuture"></div>
-            <div id="chinesePassed"></div>
+        <div role="tabpanel" class="tab-pane active" id="zero">
+            <div id="zeroPlaying"></div>
+            <div id="zeroFuture"></div>
+            <div>
+                <div id="zeroPassed"></div>
+                <div id="zeroTips"></div>
+                <button id="zeroMore">More</button>
+            </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="math">
-            <div id="mathPlaying"></div>
-            <div id="mathFuture"></div>
-            <div id="mathPassed"></div>
+        <div role="tabpanel" class="tab-pane" id="one">
+            <div id="onePlaying"></div>
+            <div id="oneFuture"></div>
+            <div>
+                <div id="onePassed"></div>
+                <div id="oneTips"></div>
+                <button id="oneMore">More</button>
+            </div>
         </div>
     </div>
 </article>
@@ -43,6 +51,129 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
+    var course = []
+
+    var state = {
+        removeNullPassed: function (subjectIndex) {
+            for (var i = 0; i < course[subjectIndex][2].length; ++i) {
+                if (!course[subjectIndex][2][i].cdnLink || course[subjectIndex][2][i].cdnLink == '') {
+                    course[subjectIndex][2].splice(i, 1)
+                    --i
+                }
+            }
+        },
+        getGrade: function (gradeValue) {
+            var result = ''
+            if (gradeValue == 1) {
+                result = '一年级'
+            } else if (gradeValue == 2) {
+                result = '二年级'
+            } else if (gradeValue == 3) {
+                result = '三年级'
+            } else if (gradeValue == 4) {
+                result = '四年级'
+            } else if (gradeValue == 5) {
+                result = '五年级'
+            } else if (gradeValue == 6) {
+                result = '六年级'
+            } else if (gradeValue == 20) {
+                result = '低年级'
+            } else {
+                result = '高年级'
+            }
+            return result
+        },
+        adjustData: function (subjectIndex) {
+            for (var i = 0; i < course[subjectIndex].length; ++i) {
+                for (var j = 0; j < course[subjectIndex][i].length; ++j) {
+                    course[subjectIndex][i][j].grade = state.getGrade(course[subjectIndex][i][j].grade)
+                }
+            }
+        },
+        refreshState: function (subjectIndex) {
+            var now = new Date()
+            for (var i = 0; i < course[subjectIndex][0].length; ++i) {
+                var endTime = Date.parse(course[subjectIndex][0][i].endTime.replace('-', '/'))
+                if (+endTime < +now) {
+                    course[subjectIndex][0].splice(i, 1)
+                }
+            }
+            for (var i = 0; i < course[subjectIndex][1].length; ++i) {
+                var startTime = Date.parse(course[subjectIndex][0][i].startTime.replace('-', '/'))
+                startTime = new Date(+startTime - 15 * 60 * 1000)
+                if (+startTime < +now) {
+                    course[subjectIndex][0].unshift(course[subjectIndex][1][i])
+                    course[subjectIndex][1].splice(i, 1)
+                }
+            }
+            switch (subjectIndex) {
+                case 0:
+                    state.zeroFuture.container.innerHTML = ''
+                    proc(state.zeroFuture)
+                    state.zeroPlaying.container.innerHTML = ''
+                    proc(state.zeroPlaying)
+                    break
+                case 1:
+                    state.oneFuture.container.innerHTML = ''
+                    proc(state.oneFuture)
+                    state.onePlaying.container.innerHTML = ''
+                    proc(state.onePlaying)
+                    break
+                default:
+                    break
+            }
+        },
+        showPassed: function(state, moreId, tips) {
+            proc(state)
+            document.getElementById(moreId).style.display = 'none'
+            var tips = document.getElementById(tips)
+            tips.innerHTML = '没有更多视频，敬请期待'
+        },
+        zeroPassed: {
+            container: document.getElementById(''),
+            template: document.getElementById(''),
+            data: null,
+            show: function() {
+                state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')
+            }
+        },
+        zeroFuture: {
+            container: document.getElementById(''),
+            template: document.getElementById(''),
+            data: null
+        },
+        zeroPlaying: {
+            container: document.getElementById(''),
+            template: document.getElementById(''),
+            data: null
+        },
+        onePassed: {
+            container: document.getElementById(''),
+            template: document.getElementById(''),
+            data: null,
+            show: function() {
+                state.showPassed(state.onePassed, 'oneMore', 'oneTips')
+            }
+        },
+        oneFuture: {
+            container: document.getElementById(''),
+            template: document.getElementById(''),
+            data: null
+        },
+        onePlaying: {
+            container: document.getElementById(''),
+            template: document.getElementById(''),
+            data: null
+        }
+    }
+
+    $(document).on('click', '@@', function () {
+        //
+    })
+
+    var userId = g.getUrlParameter('userid')
+    g.setCookie('userId', userId)
+
     $.ajax({
         type: 'get',
         url: '/api/subjects',
@@ -53,12 +184,56 @@
                 url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
                 dataType: 'json',
                 success: function (zeroSchedulers) {
+                    course[0] = zeroSchedulers
+                    state.removeNullPassed(0)
+                    state.adjustData(0)
+                    state.zeroPassed.data = course[0][2]
+                    state.zeroFuture.data = course[0][1]
+                    state.zeroPlaying.data = course[0][0]
+                    state.refreshState(0)
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
                         dataType: 'json',
                         success: function (oneSchedulers) {
-                            //
+                            course[1] = oneSchedulers
+                            state.removeNullPassed(1)
+                            state.adjustData(1)
+                            state.onePassed.data = course[1][2]
+                            state.oneFuture.data = course[1][1]
+                            state.onePlaying.data = course[1][0]
+                            state.refreshState(1)
+                            var oneFirst = true
+                            if (course[0][0].length > 0) {
+                                if (course[1][0].length > 0) {
+                                    if (+course[0][0][0].startTime < +course[1][0][0].startTime) {
+                                        oneFirst = false
+                                    }
+                                } else {
+                                    oneFirst = false
+                                }
+                            } else if (course[0][1].length > 0) {
+                                if (course[1][1].length > 0) {
+                                    if (+course[0][1][0].startTime < +course[1][1][0].startTime) {
+                                        oneFirst = false
+                                    }
+                                } else {
+                                    oneFirst = false
+                                }
+                            } else {
+                                oneFirst = false
+                            }
+                            if (oneFirst) {
+                                $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                                $('#subjects').find('a:first').tab('show') // Select first tab
+                                $('#subjects').find('a:last').tab('show') // Select last tab
+                                $('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
+                            }
+
+                            setInterval(function () {
+                                state.refreshState(0)
+                                state.refreshState(1)
+                            }, 60 * 1000)
                         }
                     })
                 }
@@ -68,10 +243,6 @@
             alert('back-end not response, places retry')
         }
     })
-    $('#subjects').find('a[href="#math"]').tab('show') // Select tab by name
-    $('#subjects').find('a:first').tab('show') // Select first tab
-    $('#subjects').find('a:last').tab('show') // Select last tab
-    $('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
 
     var videoLink = g.getUrlParameter('src');
     var video = document.getElementById('video')
