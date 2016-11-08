@@ -236,22 +236,13 @@
 
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script>
-    var user
+    var user = null
 
     var state = {
         currentArticle: document.getElementById('volumes'),
         init: function () {
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
-
-            $.ajax({
-                type: 'get',
-                url: '/api/users/self',
-                dataType: 'json',
-                success: function(u) {
-                    user = u
-                }
-            })
 
             $('[data-article]').on('click', function (e) {
                 state.currentArticle.style.display = 'none'
@@ -262,20 +253,74 @@
 
             state['user'].init()
         },
-        user: {},
-        cards: {},
-        info: {},
-        logs: {},
-        consumes: {},
-        study: {},
-        score: {},
-        changePassword: {},
-        activeCard: {},
-        firstActiveCard: {},
-        login: {},
-        phoneLogin: {},
-        settings: {},
-        help: {}
+        user: {
+            init: function() {
+                if (user == null) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/users/self',
+                        dataType: 'json',
+                        success: function (u) {
+                            user = u
+                        }
+                    })
+                }
+            }
+        },
+        cards: {
+            init: function() {
+                if (!user.cards) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/users/self/cards',
+                        dataType: 'json',
+                        success: function (cs) {
+                            user.cards = cs
+                        }
+                    })
+                } else {
+                    proc({
+                        templateId: 'card-template',
+                    })
+                }
+            }
+        },
+        info: {
+            init: function() {}
+        },
+        logs: {
+            init: function() {}
+        },
+        consumes: {
+            init: function() {}
+        },
+        study: {
+            init: function() {}
+        },
+        score: {
+            init: function() {}
+        },
+        changePassword: {
+            init: function() {}
+        },
+        activeCard: {
+            init: function() {}
+        },
+        firstActiveCard: {
+            init: function() {}
+        },
+        login: {
+            init: function() {}
+        },
+        phoneLogin: {
+            init: function() {}
+        },
+        settings: {
+            init: function() {}
+        },
+        help: {
+            init: function() {}
+        }
     }
 
     state.init()

@@ -7,6 +7,8 @@ import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -19,15 +21,124 @@ import java.util.*;
 
 @Path("schedulers")
 public class Schedulers {
+    Long findSubjectIdByName(String k) {
+        Long result = null;
+        switch (k) {
+            case "语文":
+                result = 1l;
+                break;
+            case "数学":
+                result = 2l;
+                break;
+        }
+        return result;
+    }
+
+    Long findGradeByName(String k) {
+        Long result = null;
+        switch (k) {
+            case "低年级":
+                result = 20l;
+                break;
+            case "高年级":
+                result = 21l;
+                break;
+            case "一年级":
+                result = 1l;
+                break;
+            case "二年级":
+                result = 2l;
+                break;
+            case "三年级":
+                result = 3l;
+                break;
+            case "四年级":
+                result = 4l;
+                break;
+            case "五年级":
+                result = 5l;
+                break;
+            case "六年级":
+                result = 6l;
+                break;
+        }
+        return result;
+    }
+
+    @GET //根据周查询课表
+    @Path("keywords/{keywords}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getByKeywords(@CookieParam("userId") String userId, @PathParam("keywords") String keywords) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            String[] keywordArray = keywords.split(" ");
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT s FROM Scheduler s";
+            boolean isFirst = true;
+            for (int i = 0; i < keywordArray.length; ++i) {
+                if (isFirst) {
+                    stats += " WHERE ";
+                    isFirst = false;
+                } else {
+                    stats += " AND ";
+                }
+                String k = keywordArray[i];
+                stats += "((s.teacher = '" + k + "')";
+                Long subjectId = findSubjectIdByName(k);
+                if (subjectId != null) {
+                    stats += " OR (s.subjectId = " + subjectId.toString() + ")";
+                }
+                Long grade = findGradeByName(k);
+                if (grade != null) {
+                    stats += " OR (s.grade = " + grade.toString() + ")";
+                }
+                stats += ")";
+            }
+            TypedQuery<Scheduler> q = em.createQuery(stats, Scheduler.class);
+            List<Scheduler> schedulers = q.getResultList();
+            result = Response.ok(new Gson().toJson(schedulers)).build();
+        }
+        return result;
+    }
+
+    @GET //根据科目查询老师
+    @Path("teachers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTeacher(@CookieParam("userId") String userId, @QueryParam("filter") String filter) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.teacher FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.teacher";
+            TypedQuery<String> q = em.createQuery(stats, String.class);
+            q.setParameter("subjectId", filterObject.get("subjectId"));
+            result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
+
+    @GET //根据科目查询年级
+    @Path("grades")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getGrades(@CookieParam("userId") String userId, @QueryParam("filter") String filter) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.grade FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.grade";
+            TypedQuery<Long> q = em.createQuery(stats, Long.class);
+            q.setParameter("subjectId", filterObject.get("subjectId"));
+            result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
+
     @GET //根据周查询课表
     @Path("years/{year}/weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWeekScheduler(@CookieParam("userId") String userId, @PathParam("year") Integer year, @PathParam("week") Integer week) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-//            Calendar cal = Calendar.getInstance();//创建一个日期实例
-//            cal.setTime(new Date());//实例化一个日期
-//            int year = cal.get(Calendar.YEAR);
             Map<String, Object> filterObject = new HashMap<>(2);
             filterObject.put("year", year);
             filterObject.put("week", week);
