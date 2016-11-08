@@ -392,8 +392,10 @@
                 state.currentArticle.style.display = 'none'
                 state.currentArticle = document.getElementById(e.target.dataset.article)
                 state.currentArticle.style.display = 'block'
-                state.currentArticle.init()
+                state[state.currentArticle.id].init()
             }, false)
+
+            state['main'].init()
         }
     }
 
