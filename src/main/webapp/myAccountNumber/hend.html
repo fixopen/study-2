@@ -62,20 +62,75 @@
      });
      //        save();
      })*/
+    var hui = 0
     $(function () {
+        $.ajax({
+            type:"get",
+            url:"/api/properties/6",
+            success:function (e) {
+               var ticket = JSON.stringify(e.value)
+                var jschars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                function generateMixed(n) {
+                    var res = "";
+                    for(var i = 0; i < n ; i ++) {
+                        var id = Math.ceil(Math.random()*35);
+                        res += jschars[id];
+                    }
+                    return res;
+                }
+                var noncestr=generateMixed(16)
+                var jsapi_ticket=ticket
+                var timestamp=new Date().getTime();
+                var url="http://localhost:8080/myAccountNumber/hend.html"
+                let data = {
+                   noncestr,
+                    jsapi_ticket,
+                    timestamp,
+                   url
+                }
+                var data
+                $.ajax({
+                    type:"get",
+                    url:"/api/public-account/getsign/"+ data,
+                    dataType:"json",
+                    success:function (e) {
+                        alert(JSON.stringify(e))
+                       /* wx.config({
+                            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: 'wx92dec5e98645bd1d', // 必填，公众号的唯一标识
+                            timestamp:timestamp , // 必填，生成签名的时间戳
+                            nonceStr: noncestr, // 必填，生成签名的随机串
+                            signature: e,// 必填，签名，见附录1
+                            jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        });*/
+                    },
+                    error:function (e) {
+                        alert(JSON.stringify(e))
+                    }
+                })
+            },
+            error:function (e) {
+                alert(JSON.stringify(e))
+            }
+        })
+
+    })
+
+
+
+    function getticket() {
         $.ajax({
             type: "put",
             url: "/api/public-account/putticket",
             dataType: "json",
             success: function () {
-                alert("调用")
+                hui = 1
             },
             error: function () {
-                alert("没有调用")
+
             }
         })
-    })
-
+    }
     //    function save() {
     //        var formData = new FormData();
     //        formData.append("file", document.getElementById("he").files[0]);
