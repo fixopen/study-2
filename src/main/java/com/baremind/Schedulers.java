@@ -6,7 +6,8 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -39,6 +40,54 @@ public class Schedulers {
         }
         return result;
     }
+
+    @GET //根据科目查询老师
+    @Path("teachers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTeacher(@CookieParam("userId") String userId, @QueryParam("filter") String filter) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+
+            //SELECT s.teacher FROM Scheduler s WHERE s.subjectId = :subjectId GROUP BY s.teacher
+            //result = Response.ok(new Gson().toJson(teachers)).build();
+            int i=0;
+            String[] a = filter.split(":");
+            String s =  a[1].toString();
+            s = s.replace("}","");
+            i=Integer.parseInt(s);
+
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.teacher FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.teacher";
+            Query q = em.createQuery(stats, Long.class);
+            q.setParameter("subjectId",i);
+            return result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
+
+    @GET //根据科目查询年级
+    @Path("grades")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getgrades(@CookieParam("userId") String userId, @QueryParam("filter") String filter) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            //SELECT s.grade FROM Scheduler s WHERE s.subjectId = :subjectId GROUP BY s.grade
+            // result = Response.ok(new Gson().toJson(grades)).build();
+            int i=0;
+            String[] a = filter.split(":");
+            String s =  a[1].toString();
+            s = s.replace("}","");
+            i=Integer.parseInt(s);
+
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.grade FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.grade";
+            Query q = em.createQuery(stats, Long.class);
+            q.setParameter("subjectId",i);
+            return result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
+
 
     @GET //根据周查询课表
     @Path("{id}")
