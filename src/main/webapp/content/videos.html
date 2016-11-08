@@ -89,6 +89,9 @@
                     course[subjectIndex][i][j].grade = state.getGrade(course[subjectIndex][i][j].grade)
                     course[subjectIndex][i][j].startTime = Date.parse(course[subjectIndex][i][j].startTime.replace('-', '/'))
                     course[subjectIndex][i][j].endTime = Date.parse(course[subjectIndex][i][j].endTime.replace('-', '/'))
+                    course[subjectIndex][i][j].year = course[subjectIndex][i][j].startTime.getFullYear()
+                    course[subjectIndex][i][j].month = course[subjectIndex][i][j].startTime.getMonth() + 1
+                    course[subjectIndex][i][j].day = course[subjectIndex][i][j].startTime.getDate()
                 }
             }
         },
