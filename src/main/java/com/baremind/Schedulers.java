@@ -13,6 +13,8 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -168,6 +170,19 @@ public class Schedulers {
         return result;
     }
 
+    final String[] ops = {"< ", "<= ", "> ", ">= ", "!= "};
+
+    private String[] split(String v) {
+        String[] result = {"", ""};
+        for (String op: ops) {
+            if (v.startsWith(op)) {
+                result[0] = op.trim();
+                result[1] = v.substring(op.length());
+                break;
+            }
+        }
+        return result;
+    }
     @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSchedulers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
@@ -175,30 +190,40 @@ public class Schedulers {
         if (JPAEntry.isLogining(userId)) {
             final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             //把每一个前台传过来的数据当成key，value处理
-            filterObject.forEach((key, value) -> {
-                //判断value是字符串不
-                if (value instanceof String) {
-                    //这个字符串是不是有<、>、!= 开头
-                    if (((String) value).startsWith("<") || ((String) value).startsWith(">") || ((String) value).startsWith("!=")) {
-                        String op = ((String) value).substring(0,1);
-                        String[] names = ((String) value).split(op);
-                        Object val = "";
-                        for (int i = 0; i < names.length; i++) {
-                             val = names[i];
+            if(filterObject == null){
+
+            }else{
+                filterObject.forEach((key, value) -> {
+                    //判断value是字符串不
+                    if (value instanceof String) {
+                        //这个字符串是不是有<、>、!= 开头
+                        String[] opAndValue = split((String) value);
+                        if (!opAndValue[0].equals("")) {
+                            Object val = null;
+                            if (!opAndValue[1].equals("NULL")) {
+                                switch (key) {
+                                    case "endTime":
+                                        String str = opAndValue[1];
+                                        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        try {
+                                            Date date = format.parse(str);
+                                            val = date;
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    default:
+                                        val = opAndValue[1];
+                                }
+                            }
+                            Condition c = new Condition(opAndValue[0], val);
+                            filterObject.put(key, c);
                         }
-                       //"value remove op";
-                        switch (key) {
-                            case "endTime":
-                                val = Date.parse((String) val);
-                                break;
-                           /* case "cdnLink":
-                                val = S*/
-                        }
-                        Condition c = new Condition(op, val);
-                        filterObject.put(key, c);
                     }
-                }
-            });
+                });
+            }
+
+
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
