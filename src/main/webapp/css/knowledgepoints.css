@@ -1,0 +1,87 @@
+a {
+    color: #444;
+}
+
+.volume-title {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: 0.3125rem;
+    z-index: 2;
+}
+.vtitle {
+    color: #fff;
+    font-size: 1.0625rem;
+    font-family: "苹方";
+    font-weight: bold;
+    display: inline-block;
+    width: 19.6875rem;
+    height: 4.40625rem;
+    line-height: 5.8rem;
+    text-align: center;
+    margin: 0 auto;
+}
+.vtitle-c {
+    background: url('../img/biao_hua.png') 0 0 no-repeat;
+    background-size: 19.6875rem 4.40625rem;
+}
+.vtitle-m {
+    background: url('../img/biao_hua1.png') 0 0 no-repeat;
+    background-size: 19.6875rem 4.40625rem;
+}
+.knowledgepoints-bg {
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid #ffc500;
+    box-shadow: inset 0rem 0rem 0.5rem #f2e5ba;
+    border-radius: 0.3125rem;
+    position: relative;
+    top: -1.25rem;
+    /*margin-bottom: 0.625rem;*/
+    background-color: #fffcf2;
+}
+
+.knowledgepoints-list {
+    margin-top: 3.4rem;
+    margin-bottom: 0.9375rem;
+    padding: 0 0.9375rem;
+}
+
+.knowledgepoint {
+    margin-bottom: 0.625rem;
+}
+
+.knowledgepoint img {
+    width: 100%;
+    height: 0.96875rem;
+    margin-top: 0.3125rem;
+}
+
+.knowledgepoint-name {
+    font-size: 1.0rem;
+    font-family: "苹方";
+}
+
+.knowledgepoint-right {
+    float: right;
+    margin-right: 1.5625rem;
+}
+
+.knowledgepoint-read {
+    color: #aaa;
+    font-size: 0.9375rem;
+}
+
+.knowledgepoint-like {
+    color: #aaa;
+    font-size: 0.9375rem;
+    margin-left: 0.9375rem;
+    padding-left: 0.9375rem;
+    background: url('../img/zan.png') 0 0 no-repeat;
+    background-size: 0.9375rem 0.9375rem;
+}
+
+.read-count {
+    margin-left: 0.46875rem;
+}
