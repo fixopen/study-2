@@ -1,0 +1,160 @@
+.bao_dul {
+    width: 100%;
+    height: 7.8125rem;
+    background: url('../img/tree.png') center bottom no-repeat;
+    background-size: 19.375rem;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.625rem;
+}
+
+.grade {
+    width: 15.375rem;
+    margin: 0 auto;
+    position: relative;
+    top: 1.5625rem;
+}
+
+.grade-main {
+    font-family: "苹方";
+    color: #fff;
+    float: left;
+    font-size: 1.0625rem;
+    width: 7.1875rem;
+    height: 2.8125rem;
+    line-height: 2.8125rem;
+    text-align: center;
+    background-color: #23cbd1;
+    border-radius: 0px 15px 0px 15px;
+}
+
+.grade-low {
+    margin-right: 1rem;
+    background-color: #fe6569;
+}
+
+.grade-font {
+    color: #fff;
+    letter-spacing: 0.3225rem;
+}
+
+.grade-bird {
+    display: none;
+    width: 2.125rem;
+    height: 1.9375rem;
+    position: relative;
+    top: -4.0625rem;
+    left: -3.1875rem;
+}
+
+.volumes-bg {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: -0.7rem;
+    border: 1px solid #ffc500;
+    box-shadow: inset 0rem 0rem 0.5rem #f2e5ba;
+    border-radius: 0.3125rem;
+    box-sizing: border-box;
+    position: relative;
+    top: -0.625rem;
+    left: 0rem;
+    padding: 1.5625rem 0.625rem;
+    box-sizing: border-box;
+    background-color: #fffcf2;
+}
+
+.div0_one {
+    display: block;
+}
+
+.div0_two {
+    display: none;
+}
+
+/*.neir0_UL {*/
+/**/
+/*}*/
+
+.volume {
+    padding: 0.15625rem;
+    margin: 0.625rem;
+    background-color: #ebfffb;
+    border-radius: 1.25rem;
+    position: relative;
+}
+
+.volume-center {
+    text-align: center;
+}
+
+/*math-bg*/
+.volume-m-bg {
+    width: 100%;
+    height: 3.125rem;
+    border: 1.5px dashed #ffc500;
+    border-radius: 1.25rem;
+    background: url(../img/flower1.png) no-repeat 5% center, url(../img/flower2.png) no-repeat 95% center;
+    background-size: 0.875rem 1.25rem;
+}
+
+.volume-m-font {
+    color: #444;
+    display: inline-block;
+    width: 72%;
+    line-height: 3.125rem;
+    font-size: 1.0625rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*chinese-bg*/
+.volume-c-bg {
+    border: 1.5px dashed #ffc500;
+    border-radius: 1.25rem;
+    background: url('../img/flower.png') 0 0.15625rem no-repeat;
+    background-size: 1.1875rem 1.125rem;
+}
+
+.volume-c-font {
+    color: #444;
+    display: inline-block;
+    max-width: 14.0625rem;
+    padding-left: 2.1875rem;
+    font-size: 1.0625rem;
+    margin: 0.625rem 1.09375rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*.li2Tu{*/
+/*background-color: #fff7eb;*/
+/*}*/
+/*.li3Tu{*/
+/*background-color: #eaffe3;*/
+/*}*/
+/*.li4Tu{*/
+/*background-color: #feeded;*/
+/*}*/
+/*变色*/
+.neir_li:nth-child(2), .neir_li:nth-child(6) {
+    background-color: #fff7eb;
+}
+
+.neir_li:nth-child(3), .neir_li:nth-child(7) {
+    background-color: #eaffe3;
+}
+
+.neir_li:nth-child(4), .neir_li:nth-child(8) {
+    background-color: #feeded;
+}
+
+.rotateX {
+    -webkit-transform: perspective(800px) rotateX(60deg);
+    -moz-transform: perspective(800px) rotateX(60deg);
+    position: absolute;
+    left: 30px;
+    top: -10px;
+    opacity: 0.5;
+}
