@@ -304,19 +304,33 @@
                 if (!state.passed.isInit) {
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers/teachers',
+                        url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
                         success: function(ts) {
-                            teachers = ts
-                            //fill to teachers choice
+                            subjects[0].teachers = ts
+                            $.ajax({
+                                type: 'get',
+                                url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
+                                success: function(ts) {
+                                    subjects[1].teachers = ts
+                                    //fill to teachers choice
+                                }
+                            })
                         }
                     })
 
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers/grades',
+                        url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
                         success: function(gs) {
-                            grades = gs
-                            //fill to grades choice
+                            subjects[0].grades = gs
+                            $.ajax({
+                                type: 'get',
+                                url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[1].id}),
+                                success: function(gs) {
+                                    subjects[1].grades = gs
+                                    //fill to grades choice
+                                }
+                            })
                         }
                     })
 
@@ -325,13 +339,14 @@
                         type: 'get',
                         url: '/api/schedulers?filter=' + JSON.stringify({
                             cdnLink: 'IS NOT NULL',
-                            endTime: '< ' + now
+                            endTime: '< ' + +now
                         }),
                         dataType: 'json',
                         success: function (schedulers) {
                             passed = schedulers[2]
                         }
                     })
+
                     state.passed.isInit = true
                 }
             },
