@@ -1,9 +1,13 @@
 package com.baremind.data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.baremind.Logs;
+import com.baremind.utils.JPAEntry;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -15,26 +19,17 @@ public class KnowledgePoint {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "subject_id")
-    private Long subjectId;
-
     @Column(name = "volume_id")
     private Long volumeId;
 
-    @Column(name = "grade")
-    private int grade;
-
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "\"order\"")
     private int order;
 
-    @Column(name = "store_path")
-    private String storePath;
-
-    @Column(name = "video_url")
-    private String videoUrl;
+    @Column(name = "show_time")
+    private Date showTime;
 
     public Long getId() {
         return id;
@@ -42,14 +37,6 @@ public class KnowledgePoint {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
     }
 
     public Long getVolumeId() {
@@ -60,20 +47,12 @@ public class KnowledgePoint {
         this.volumeId = volumeId;
     }
 
-    public int getGrade() {
-        return grade;
+    public String getName() {
+        return name;
     }
 
-    public void setGrade(int grade) {
-        this.grade = grade;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getOrder() {
@@ -84,21 +63,54 @@ public class KnowledgePoint {
         this.order = order;
     }
 
-    public String getStorePath() {
-        return storePath;
+    public Date getShowTime() {
+        return showTime;
     }
 
-    public void setStorePath(String storePath) {
-        this.storePath = storePath;
+    public void setShowTime(Date show) {
+        showTime = show;
     }
 
-    public String getVideoUrl() {
-        return videoUrl;
+    public static Map<String, Object> convertToMap(KnowledgePoint kp, Date now, Date yesterday) {
+        Map<String, Object> kpm = new HashMap<>();
+        kpm.put("id", kp.getId());
+        kpm.put("volumeId", kp.getVolumeId());
+        kpm.put("name", kp.getName());
+        kpm.put("showTime", kp.getShowTime());
+        kpm.put("likeCount", 0);
+        kpm.put("stateType", "old");
+
+        EntityManager em = JPAEntry.getEntityManager();
+        String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.id = :id  AND l.showTime > :yesterday AND l.showTime < :now";
+        TypedQuery<Long> q = em.createQuery(stats, Long.class);
+        q.setParameter("volumeId", kp.getVolumeId());
+        q.setParameter("id", kp.getId());
+        q.setParameter("yesterday", yesterday);
+        q.setParameter("now", now);
+        Long count = (Long) q.getSingleResult();
+        if (count > 0) {
+            kpm.put("stateType ", "new");
+        }
+
+        Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
+        if (likeCount != null) {
+            kpm.put("likeCount", likeCount);
+        }
+        kpm.put("readCount", 0);
+        Long readCount = Logs.getStatsCount("knowledge-point", kp.getId(), "read");
+        if (readCount != null) {
+            kpm.put("readCount", readCount);
+        }
+        String type = "normal";
+        String query = "SELECT m.objectType FROM KnowledgePointContentMap m GROUP BY m.objectType";
+        TypedQuery<String> pq = em.createQuery(query, String.class);
+        List<String> sl = pq.getResultList();
+        if (sl.size() == 1) {
+            if (sl.get(0).equals("problem")) {
+                type = "pk";
+            }
+        }
+        kpm.put("type", type);
+        return kpm;
     }
-
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
-
-
 }

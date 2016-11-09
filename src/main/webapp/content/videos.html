@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>直播视频</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+</head>
+<body>
+<article id="main">
+    <img src="" alt="" id="schedulerEntry" data-article="scheduler"/>
+    <!-- Nav tabs -->
+    <ul id="subjects" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#zero" role="tab" data-toggle="tab">chinese</a></li>
+        <li role="presentation"><a href="#one" role="tab" data-toggle="tab">math</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="zero">
+            <div id="zeroPlaying"></div>
+            <div id="zeroFuture"></div>
+            <div>
+                <div id="zeroPassed"></div>
+                <div id="zeroTips"></div>
+                <button id="zeroMore">More</button>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="one">
+            <div id="onePlaying"></div>
+            <div id="oneFuture"></div>
+            <div>
+                <div id="onePassed"></div>
+                <div id="oneTips"></div>
+                <button id="oneMore">More</button>
+            </div>
+        </div>
+    </div>
+</article>
+<article id="video" style="display: none;">
+    <video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>
+</article>
+<article id="scheduler" style="display: none;">
+    <div class="week">第<sapn id="week"></sapn>周</div>
+    <table class="schedule-table">
+        <thead style="width: 100%; height: 100%">
+        <tr>
+            <th style="width: 15%;" class="weekDay"></th>
+            <th style="width: 85%;" class="schedule-table1">
+                <table style="width: 100%; height: 100% ">
+                    <tr style="width: 100%; height: 100%; color: #515151;">
+                        <th style="width: 33%; height: 100%; border-left:transparent;">时间</th>
+                        <th style="width: 33%; height: 100%;">授课年级</th>
+                        <th style="width: 33%; height: 100%;">授课内容</th>
+                    </tr>
+                </table>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="day"></tbody>
+    </table>
+</article>
+<article id="future-note" style="display: none;">
+    <div class="goBack"></div>
+</article>
+
+<template id="playing-template"></template>
+<template id="future-template"></template>
+<template id="passed-template"></template>
+
+<template id="day-template">
+    <tr class="color">
+        <td style="width: 15%;">星期${day}<br>(${date})</td>
+        <td style="width: 85%;">
+            <table style="width: 100%; height: 100%">
+                <tbody data-ext-point="items"></tbody>
+            </table>
+        </td>
+    </tr>
+</template>
+<template id="item-template">
+    <tr>
+        <td style="width: 33%;" class="line">${st}-${et}</td>
+        <td style="width: 33%;" class="line">${grade}</td>
+        <td style="width: 33%;" class="line">${title}</td>
+    </tr>
+</template>
+
+<script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/bootstrap/bootstrap.min.js"></script>
+<script src="/moment/moment.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script>
+    var teachers = []
+    var grades = []
+    var course = []
+
+    var courseTable = [
+        {day: '一', date: '', items: []},
+        {day: '二', date: '', items: []},
+        {day: '三', date: '', items: []},
+        {day: '四', date: '', items: []},
+        {day: '五', date: '', items: []}
+    ]
+
+    var state = {
+        currentArticle: document.getElementById('main'),
+        main: {
+            isInit: false,
+            init: function() {
+                if (!state.main.isInit) {
+                    $(document).on('click', '@@', function () {
+                        //
+                    })
+
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers/teachers',
+                        success: function(ts) {
+                            teachers = ts
+                            //fill to teachers choice
+                        }
+                    })
+
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers/grades',
+                        success: function(gs) {
+                            grades = gs
+                            //fill to grades choice
+                        }
+                    })
+
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/subjects',
+                        dataType: 'json',
+                        success: function (subjects) {
+                            $.ajax({
+                                type: 'get',
+                                url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                                dataType: 'json',
+                                success: function (zeroSchedulers) {
+                                    course[0] = zeroSchedulers
+                                    state.removeNullPassed(0)
+                                    state.adjustData(0)
+                                    state.zeroPassed.data = course[0][2]
+                                    state.zeroFuture.data = course[0][1]
+                                    state.zeroPlaying.data = course[0][0]
+                                    state.refreshState(0)
+                                    $.ajax({
+                                        type: 'get',
+                                        url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
+                                        dataType: 'json',
+                                        success: function (oneSchedulers) {
+                                            course[1] = oneSchedulers
+                                            state.removeNullPassed(1)
+                                            state.adjustData(1)
+                                            state.onePassed.data = course[1][2]
+                                            state.oneFuture.data = course[1][1]
+                                            state.onePlaying.data = course[1][0]
+                                            state.refreshState(1)
+                                            var oneFirst = true
+                                            if (course[0][0].length > 0) {
+                                                if (course[1][0].length > 0) {
+                                                    if (+course[0][0][0].startTime < +course[1][0][0].startTime) {
+                                                        oneFirst = false
+                                                    }
+                                                } else {
+                                                    oneFirst = false
+                                                }
+                                            } else if (course[0][1].length > 0) {
+                                                if (course[1][1].length > 0) {
+                                                    if (+course[0][1][0].startTime < +course[1][1][0].startTime) {
+                                                        oneFirst = false
+                                                    }
+                                                } else {
+                                                    oneFirst = false
+                                                }
+                                            } else {
+                                                oneFirst = false
+                                            }
+                                            if (oneFirst) {
+                                                $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                                                //$('#subjects').find('a:first').tab('show') // Select first tab
+                                                //$('#subjects').find('a:last').tab('show') // Select last tab
+                                                //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
+                                            }
+
+                                            setInterval(function () {
+                                                state.refreshState(0)
+                                                state.refreshState(1)
+                                            }, 60 * 1000)
+                                        }
+                                    })
+                                }
+                            })
+                        },
+                        error: function (xhr) {
+                            alert('back-end not response, places retry')
+                        }
+                    })
+
+                    state.main.isInit = true
+                }
+            },
+            removeNullPassed: function (subjectIndex) {
+                for (var i = 0; i < course[subjectIndex][2].length; ++i) {
+                    if (!course[subjectIndex][2][i].cdnLink || course[subjectIndex][2][i].cdnLink == '') {
+                        course[subjectIndex][2].splice(i, 1)
+                        --i
+                    }
+                }
+            },
+            getGrade: function (gradeValue) {
+                var result = ''
+                if (gradeValue == 1) {
+                    result = '一年级'
+                } else if (gradeValue == 2) {
+                    result = '二年级'
+                } else if (gradeValue == 3) {
+                    result = '三年级'
+                } else if (gradeValue == 4) {
+                    result = '四年级'
+                } else if (gradeValue == 5) {
+                    result = '五年级'
+                } else if (gradeValue == 6) {
+                    result = '六年级'
+                } else if (gradeValue == 20) {
+                    result = '低年级'
+                } else {
+                    result = '高年级'
+                }
+                return result
+            },
+            adjustData: function (subjectIndex) {
+                for (var i = 0; i < course[subjectIndex].length; ++i) {
+                    for (var j = 0; j < course[subjectIndex][i].length; ++j) {
+                        course[subjectIndex][i][j].grade = state.getGrade(course[subjectIndex][i][j].grade)
+                        course[subjectIndex][i][j].startTime = Date.parse(course[subjectIndex][i][j].startTime.replace('-', '/'))
+                        course[subjectIndex][i][j].endTime = Date.parse(course[subjectIndex][i][j].endTime.replace('-', '/'))
+                        course[subjectIndex][i][j].year = course[subjectIndex][i][j].startTime.getFullYear()
+                        course[subjectIndex][i][j].month = course[subjectIndex][i][j].startTime.getMonth() + 1
+                        course[subjectIndex][i][j].day = course[subjectIndex][i][j].startTime.getDate()
+                    }
+                }
+            },
+            refreshState: function (subjectIndex) {
+                var now = new Date()
+                for (var i = 0; i < course[subjectIndex][0].length; ++i) {
+                    var endTime = course[subjectIndex][0][i].endTime
+                    if (+endTime < +now) {
+                        course[subjectIndex][0].splice(i, 1)
+                    }
+                }
+                for (var i = 0; i < course[subjectIndex][1].length; ++i) {
+                    var startTime = course[subjectIndex][0][i].startTime
+                    startTime = new Date(+startTime - 15 * 60 * 1000)
+                    if (+startTime < +now) {
+                        course[subjectIndex][0].unshift(course[subjectIndex][1][i])
+                        course[subjectIndex][1].splice(i, 1)
+                    }
+                }
+                switch (subjectIndex) {
+                    case 0:
+                        state.zeroFuture.container.innerHTML = ''
+                        proc(state.zeroFuture)
+                        state.zeroPlaying.container.innerHTML = ''
+                        proc(state.zeroPlaying)
+                        break
+                    case 1:
+                        state.oneFuture.container.innerHTML = ''
+                        proc(state.oneFuture)
+                        state.onePlaying.container.innerHTML = ''
+                        proc(state.onePlaying)
+                        break
+                    default:
+                        break
+                }
+            },
+            showPassed: function (state, moreId, tips) {
+                proc(state)
+                document.getElementById(moreId).style.display = 'none'
+                var tips = document.getElementById(tips)
+                tips.innerHTML = '没有更多视频，敬请期待'
+            },
+            zeroPassed: {
+                container: document.getElementById(''),
+                template: document.getElementById(''),
+                data: null,
+                show: function () {
+                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')
+                }
+            },
+            zeroFuture: {
+                container: document.getElementById(''),
+                template: document.getElementById(''),
+                data: null
+            },
+            zeroPlaying: {
+                container: document.getElementById(''),
+                template: document.getElementById(''),
+                data: null
+            },
+            onePassed: {
+                container: document.getElementById(''),
+                template: document.getElementById(''),
+                data: null,
+                show: function () {
+                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')
+                }
+            },
+            oneFuture: {
+                container: document.getElementById(''),
+                template: document.getElementById(''),
+                data: null
+            },
+            onePlaying: {
+                container: document.getElementById(''),
+                template: document.getElementById(''),
+                data: null
+            },
+            schedulerEntry: document.getElementById('schedulerEntry'),
+            teacherChoice: document.getElementById('teacherChoice'),
+            gradeChoice: document.getElementById('gradeChoice'),
+            keywords: document.getElementById('keywords'),
+            search: function() {
+                //
+            }
+        },
+        scheduler: {
+            isInit: false,
+            init: function() {
+                if (!state.scheduler.isInit) {
+                    state.scheduler.year = state.scheduler.now.getFullYear()
+                    var m = moment(state.scheduler.now)
+                    state.scheduler.week = m.week()
+                    state.scheduler.weekDay = m.day()
+                    state.scheduler.weekElement.innerHTML = state.scheduler.week - 41
+
+                    $.ajax({
+                        type: "get",
+                        url: '/api/schedulers/years/' + state.scheduler.year + '/weeks/' + state.scheduler.week,
+                        dataType: "json",
+                        success: function (result) {
+                            var course = result
+                            var monday = state.scheduler.now
+                            if (state.scheduler.weekDay > 1) {
+                                monday = new Date(+state.scheduler.now - (state.scheduler.weekDay - 1) * 24 * 60 * 60 * 1000)
+                            }
+                            for (var i = 0; i < course.length; ++i) {
+                                course[i].st = course[i].startTime.substr(11, 5)
+                                course[i].et = course[i].endTime.substr(11, 5)
+                                course[i].grade = state.getGrade(course[i].grade)
+                                switch (course[i].day) {
+                                    case 1:
+                                        if (courseTable[0].date == '') {
+                                            courseTable[0].date = monday.getFullYear() + '-' + (monday.getMonth() + 1) + '-' + monday.getDate()
+                                        }
+                                        courseTable[0].items.push(course[i])
+                                        break
+                                    case 2:
+                                        if (courseTable[1].date == '') {
+                                            var t = new Date(+monday + 24 * 60 * 60 * 1000)
+                                            courseTable[1].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
+                                        }
+                                        courseTable[1].items.push(course[i])
+                                        break
+                                    case 3:
+                                        if (courseTable[2].date == '') {
+                                            var t = new Date(+monday + 2 * 24 * 60 * 60 * 1000)
+                                            courseTable[2].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
+                                        }
+                                        courseTable[2].items.push(course[i])
+                                        break
+                                    case 4:
+                                        if (courseTable[3].date == '') {
+                                            var t = new Date(+monday + 3 * 24 * 60 * 60 * 1000)
+                                            courseTable[3].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
+                                        }
+                                        courseTable[3].items.push(course[i])
+                                        break
+                                    case 5:
+                                        if (courseTable[4].date == '') {
+                                            var t = new Date(+monday + 4 * 24 * 60 * 60 * 1000)
+                                            courseTable[4].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
+                                        }
+                                        courseTable[4].items.push(course[i])
+                                        break
+                                }
+                            }
+                            proc({
+                                containerId: 'day',
+                                data: courseTable,
+                                templateId: 'day-template',
+                                secondBind: {
+                                    extPoint: 'items',
+                                    dataFieldName: 'items',
+                                    templateId: 'item-template'
+                                }
+                            })
+                        }
+                    })
+
+                    state.scheduler.isInit = true
+                }
+            },
+            now: Date.now(),
+            year: null,
+            week: null,
+            weekDay: null,
+            weekElement: document.getElementById("week")
+        },
+        init: function() {
+            var userId = g.getUrlParameter('userid')
+            g.setCookie('userId', userId)
+
+            $('[data-article]').on('click', function(e) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(e.target.dataset.article)
+                state.currentArticle.style.display = 'block'
+                state[state.currentArticle.id].init()
+            }, false)
+
+            state['main'].init()
+        }
+    }
+
+    state.init()
+</script>
+</body>
+</html>

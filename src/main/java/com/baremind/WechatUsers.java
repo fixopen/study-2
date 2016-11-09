@@ -20,9 +20,9 @@ public class WechatUsers {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createWechatUser(@CookieParam("sessionId") String sessionId, WechatUser wechatUser) {
+    public Response createWechatUser(@CookieParam("userId") String userId, WechatUser wechatUser) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             wechatUser.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(wechatUser);
             result = Response.ok(wechatUser).build();
@@ -32,9 +32,9 @@ public class WechatUsers {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWechatUsers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getWechatUsers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<WechatUser> wechatUsers = JPAEntry.getList(WechatUser.class, filterObject);
@@ -48,9 +48,9 @@ public class WechatUsers {
     @GET//根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWechatUserById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getWechatUserById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", id);
             if (wechatUser != null) {
@@ -69,7 +69,7 @@ public class WechatUsers {
         Long userId;
         String sessionId;
         if (wechatUser == null) {
-            User user = PublicAccounts.insertUserInfoByOpenId(now, openId);
+            User user = PublicAccounts.insertUserByOpenId(now, openId);
             userId = user.getId();
             Session s = PublicAccounts.putSession(now, user.getId());
             sessionId = s.getIdentity();
@@ -85,9 +85,9 @@ public class WechatUsers {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateWechatUser(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, WechatUser wechatUser) {
+    public Response updateWechatUser(@CookieParam("userId") String userId, @PathParam("id") Long id, WechatUser wechatUser) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             WechatUser existwechatUser = JPAEntry.getObject(WechatUser.class, "id", id);
             if (existwechatUser != null) {
@@ -147,9 +147,9 @@ public class WechatUsers {
                 if (unionId != null) {
                     existwechatUser.setUnionId(unionId);
                 }
-                Long userId = wechatUser.getUserId();
-                if (userId != null) {
-                    existwechatUser.setUnionId(unionId);
+                Long userIds = wechatUser.getUserId();
+                if (userIds != null) {
+                    existwechatUser.setUserId(userIds);
                 }
                 JPAEntry.genericPut(existwechatUser);
                 result = Response.ok(existwechatUser).build();
@@ -157,90 +157,4 @@ public class WechatUsers {
         }
         return result;
     }
-
-//    @PUT
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response insertOrUpdateWechatUser(byte[] contents) {
-//        Response result = Response.status(401).build();
-//        try {
-//            String c = new String(contents, "UTF-8");
-//            Map<String, Object> wu = new Gson().fromJson(c, new TypeToken<Map<String, Object>>() {
-//            }.getType());
-//            WechatUser wechatUser = new WechatUser();
-//            for (String key : wu.keySet()) {
-//                switch (key) {
-//                    case "access_token":
-//                        wechatUser.setToken((String) wu.get(key));
-//                        break;
-//                    case "expires_in":
-//                        Date expiry = new Date(new Date().getTime() + ((Double) wu.get(key)).longValue());
-//                        wechatUser.setExpiry(expiry);
-//                        break;
-//                    case "refresh_token":
-//                        wechatUser.setRefreshToken((String) wu.get(key));
-//                        break;
-//                    case "scope":
-//                        break;
-//                    case "openid":
-//                        wechatUser.setOpenId((String) wu.get(key));
-//                        break;
-//                    case "unionid":
-//                        wechatUser.setUnionId((String) wu.get(key));
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//            System.out.println(wechatUser.getOpenId());
-//            WechatUser u = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
-//            String strUserId = "";
-//            if (u == null) {
-//                long userId = IdGenerator.getNewId();
-//                strUserId = Long.toString(userId);
-//
-//                User user = new User();
-//                user.setId(userId);
-//                user.setHead("");
-//                user.setName("");
-//                //user.setLoginName(us.nickname);
-//                user.setSex(2l);
-//                Date now = new Date();
-//                user.setCreateTime(now);
-//                user.setUpdateTime(now);
-//                user.setIsAdministrator(false);
-//                user.setSite("http://www.xiaoyuzhishi.com");
-//                user.setAmount(0.0f);
-//                JPAEntry.genericPost(user);
-//
-//                wechatUser.setId(IdGenerator.getNewId());
-//                wechatUser.setUserId(user.getId());
-//                JPAEntry.genericPost(wechatUser);
-//            } else {
-//                WechatUser existwechatUser = u;
-//                Date expiry = wechatUser.getExpiry();
-//                if (expiry != null) {
-//                    existwechatUser.setExpiry(expiry);
-//                }
-//                String head = wechatUser.getRefreshToken();
-//                if (head != null) {
-//                    existwechatUser.setRefreshToken(head);
-//                }
-//                String token = wechatUser.getTokenFromWechatPlatform();
-//                if (token != null) {
-//                    existwechatUser.setToken(token);
-//                }
-//                String unionId = wechatUser.getUnionId();
-//                if (unionId != null) {
-//                    existwechatUser.setUnionId(unionId);
-//                }
-//                JPAEntry.genericPut(existwechatUser);
-//                strUserId = existwechatUser.getUserId().toString();
-//            }
-//            result = Response.ok("{\"userId\":\"" + strUserId + "\"}").build();
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
 }

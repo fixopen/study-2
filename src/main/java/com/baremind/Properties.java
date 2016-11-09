@@ -14,12 +14,25 @@ import java.util.Map;
 
 @Path("properties")
 public class Properties {
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("scheduler-counter")
+    public Response incCount() {
+        Property property = JPAEntry.getObject(Property.class, "name", "scheduler-counter");
+        long long_value = Long.parseLong(property.getValue());
+        String value = String.valueOf(long_value + 1);
+        property.setValue(value);
+        JPAEntry.genericPut(property);
+        return Response.ok().build();
+    }
+
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProperty(@CookieParam("sessionId") String sessionId, Property property) {
+    public Response createProperty(@CookieParam("userId") String userId, Property property) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             property.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(property);
             result = Response.ok(property).build();
@@ -29,9 +42,9 @@ public class Properties {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProperties(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getProperties(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Property> properties = JPAEntry.getList(Property.class, filterObject);
@@ -45,9 +58,9 @@ public class Properties {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPropertyById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getPropertyById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Property property = JPAEntry.getObject(Property.class, "id", id);
             if (property != null) {
@@ -66,13 +79,27 @@ public class Properties {
         return result;
     }
 
+    public static void setProperty(String name, String value) {
+        Property property = JPAEntry.getObject(Property.class, "name", name);
+        if (property != null) {
+            property.setValue(value);
+            JPAEntry.genericPut(property);
+        } else {
+            property = new Property();
+            property.setId(IdGenerator.getNewId());
+            property.setName(name);
+            property.setValue(value);
+            JPAEntry.genericPost(property);
+        }
+    }
+
     @PUT //根据id修改
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProperty(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Property property) {
+    public Response updateProperty(@CookieParam("userId") String userId, @PathParam("id") Long id, Property property) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Property existproperty = JPAEntry.getObject(Property.class, "id", id);
             if (existproperty != null) {

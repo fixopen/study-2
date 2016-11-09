@@ -1,9 +1,7 @@
 package com.baremind;
 
 import com.baremind.algorithm.Securities;
-import com.baremind.data.Session;
-import com.baremind.data.User;
-import com.baremind.data.WechatUser;
+import com.baremind.data.*;
 import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -27,7 +25,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
@@ -56,11 +57,11 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/token")
-            .queryParam("grant_type", "client_credential")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .request().get();
+                .path("/cgi-bin/token")
+                .queryParam("grant_type", "client_credential")
+                .queryParam("appid", appID)
+                .queryParam("secret", secret)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("access_token")) {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}
@@ -169,9 +170,9 @@ public class PublicAccounts {
             Client client = ClientBuilder.newClient();
             Entity<CustomMenu> em = Entity.json(t);
             Response response = client.target(hostname)
-                .path("/cgi-bin/menu/create")
-                .queryParam("access_token", accessToken)
-                .request(MediaType.APPLICATION_JSON).post(em);
+                    .path("/cgi-bin/menu/create")
+                    .queryParam("access_token", accessToken)
+                    .request(MediaType.APPLICATION_JSON).post(em);
             GenericResult r = response.readEntity(GenericResult.class);
             if (r.errcode == 0) {
                 result = Response.ok(r).build();
@@ -182,6 +183,77 @@ public class PublicAccounts {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public String sign(String[] origin) {
+        String sign = "";
+        Arrays.sort(origin);
+        String v = "";
+        for (int i = 0; i < origin.length; ++i) {
+            v += origin[i];
+        }
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(v.getBytes("utf-8"));
+            sign = Hex.bytesToHex(digest);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return sign;
+    }
+
+    @GET
+    @Path("config/{url}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getConfig(@PathParam("url") String url) {
+        Response result = Response.status(500).build();
+        String ticket = Properties.getPropertyValue("ticket");
+        String timestamp = Long.toString(new Date().getTime());
+        String nonceStr = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            try {
+                byte[] digest = md.digest(new Date().toString().getBytes("utf-8"));
+                nonceStr = Hex.bytesToHex(digest);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        String[] params = {ticket, timestamp, nonceStr, url};
+        String sign = sign(params);
+        //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
+        //result = Response.ok(r).build();
+        return result;
+    }
+
+    public static class Ticket {
+        private String ticket;
+    }
+
+    @GET
+    @Path("ticket")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response refreshTicket() {
+        //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+        prepare();
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+            .path("cgi-bin/ticket/getticket")
+            .queryParam("access_token", accessToken)
+            .queryParam("type", "jsapi")
+            .request().get();
+        String body = response.readEntity(String.class);
+        if (body.contains("ticket")) {
+            //{"access_token":"ACCESS_TOKEN","expires_in":7200}
+            Ticket ticket = new Gson().fromJson(body, Ticket.class);
+            Properties.setProperty("ticket", ticket.ticket);
+        }
+        return Response.ok().build();
+        //if (r.errCode == 40012) {
+        //refreshTicket();
+        //}
     }
 
     @GET
@@ -422,7 +494,7 @@ public class PublicAccounts {
         private int subscribe;
         private String openid;
         private String nickname;
-        private Long sex;
+        private Integer sex;
         private String language;
         private String city;
         private String province;
@@ -432,6 +504,7 @@ public class PublicAccounts {
         private String unionid;
         private String remark;
         private int groupid;
+        private String info;
 
         public int getSubscribe() {
             return subscribe;
@@ -457,11 +530,11 @@ public class PublicAccounts {
             this.nickname = nickname;
         }
 
-        public Long getSex() {
+        public Integer getSex() {
             return sex;
         }
 
-        public void setSex(Long sex) {
+        public void setSex(Integer sex) {
             this.sex = sex;
         }
 
@@ -536,6 +609,14 @@ public class PublicAccounts {
         public void setGroupid(int groupid) {
             this.groupid = groupid;
         }
+
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
     }
 
     public static WechatUserInfo getUserInfo(String openId) {
@@ -543,30 +624,68 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
         prepare();
         WechatUserInfo result = null;
-        while (true) {
+        boolean isContinue = true;
+        int repeatCount = 0;
+        while (isContinue) {
+            ++repeatCount;
+            if (repeatCount > 5) {
+                break;
+            }
             Client client = ClientBuilder.newClient();
             Response response = client.target(hostname)
-                .path("/cgi-bin/user/info")
-                .queryParam("access_token", accessToken)
-                .queryParam("openid", openId)
-                .queryParam("lang", "zh_CN")
-                .request().get();
+                    .path("/cgi-bin/user/info")
+                    .queryParam("access_token", accessToken)
+                    .queryParam("openid", openId)
+                    .queryParam("lang", "zh_CN")
+                    .request().get();
             String responseBody = response.readEntity(String.class);
             if (responseBody.contains("openid")) {
                 //{"access_token":"ACCESS_TOKEN","expires_in":7200}
                 result = new Gson().fromJson(responseBody, WechatUserInfo.class);
-                break;
+                result.setInfo(responseBody);
+                isContinue = false;
             } else {
-                int r = errorProc(responseBody);
-                if (r == 0) {
-                    continue;
+                if (responseBody.contains("errcode")) {
+                    GenericResult rc = new Gson().fromJson(responseBody, GenericResult.class);
+                    switch (rc.errcode) {
+                        case 40014:
+                            getTokenFromWechatPlatform();
+                            isContinue = true;
+                            break;
+                        default:
+                            Logs.insert(0l, "wechatError", 100l, responseBody);
+                            isContinue = false;
+                            break;
+                    }
                 }
             }
         }
         return result;
     }
 
-    public static User fillUserByWechatUserInfo(Date now, WechatUserInfo userInfo) {
+    public static WechatUserInfo getUserInfo(String token, String openId) {
+        // http请求方式: GET（请使用https协议）
+        //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+        WechatUserInfo result = null;
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+                .path("/sns/userinfo")
+                .queryParam("access_token", token)
+                .queryParam("openid", openId)
+                .queryParam("lang", "zh_CN")
+                .request().get();
+        String responseBody = response.readEntity(String.class);
+        if (responseBody.contains("openid")) {
+            //{"access_token":"ACCESS_TOKEN","expires_in":7200}
+            result = new Gson().fromJson(responseBody, WechatUserInfo.class);
+            result.setInfo(responseBody);
+        } else {
+            Logs.insert(144l, "log", 144l, "errorInfo = " + responseBody);
+        }
+        return result;
+    }
+
+    public static User fillUserByUserInfo(Date now, WechatUserInfo userInfo) {
         long userId = IdGenerator.getNewId();
         User user = new User();
         user.setId(userId);
@@ -582,7 +701,7 @@ public class PublicAccounts {
         }
         //u.setLoginName(us.nickname);
         if (userInfo.sex == null) {
-            user.setSex(0l);
+            user.setSex(0);
         } else {
             user.setSex(userInfo.sex);
         }
@@ -594,7 +713,7 @@ public class PublicAccounts {
         return user;
     }
 
-    public static WechatUser fillWechatUserByWechatUserInfo(Long userId, WechatUserInfo userInfo) {
+    public static WechatUser fillWechatUserByUserInfo(Long userId, WechatUserInfo userInfo) {
         WechatUser wechatUser = new WechatUser();
         wechatUser.setId(IdGenerator.getNewId());
         //Logs.insert(0l, "debug", 12l, wechatUser.getId().toString());
@@ -605,7 +724,7 @@ public class PublicAccounts {
         wechatUser.setCountry(userInfo.country);
         //user.setExpiry();
         wechatUser.setHead(userInfo.headimgurl);
-        wechatUser.setInfo(userInfo.toString());
+        wechatUser.setInfo(userInfo.getInfo());
         wechatUser.setNickname(userInfo.nickname);
         //user.setPrivilege();
         wechatUser.setProvince(userInfo.province);
@@ -623,22 +742,25 @@ public class PublicAccounts {
         return wechatUser;
     }
 
-    public static User insertUserInfoByOpenId(Date now, String openId) {
+    public static User insertUserByOpenId(Date now, String openId) {
         WechatUserInfo userInfo = getUserInfo(openId);
-        User user = fillUserByWechatUserInfo(now, userInfo);
-        WechatUser wechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
+        User user = null;
+        if (userInfo != null) {
+            user = fillUserByUserInfo(now, userInfo);
+            WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
 
-        EntityManager em = JPAEntry.getEntityManager();
-        em.getTransaction().begin();
-        em.persist(wechatUser);
-        em.persist(user);
-        em.getTransaction().commit();
-
+            EntityManager em = JPAEntry.getNewEntityManager();
+            em.getTransaction().begin();
+            em.persist(wechatUser);
+            em.persist(user);
+            em.getTransaction().commit();
+            em.close();
+        }
         return user;
     }
 
     public static Session putSession(Date now, Long userId) {
-        String nowString = now.toString();
+        String nowString = now.toString() + Long.toString(now.getTime());
         byte[] sessionIdentity = Securities.digestor.digest(nowString);
         String sessionString = Hex.bytesToHex(sessionIdentity);
 
@@ -664,12 +786,12 @@ public class PublicAccounts {
         long secondCount = new Date().getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
         String result = "<xml>\n" +
-            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-            "   <MsgType><![CDATA[text]]></MsgType>\n" +
-            "   <Content><![CDATA[" + content + "]]></Content>\n" +
-            "</xml>";
+                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+                "   <MsgType><![CDATA[text]]></MsgType>\n" +
+                "   <Content><![CDATA[" + content + "]]></Content>\n" +
+                "</xml>";
         return result;
     }
 
@@ -679,7 +801,7 @@ public class PublicAccounts {
         Date now = new Date();
         Long userId;
         if (dbWechatUser == null) {
-            User user = insertUserInfoByOpenId(now, openId);
+            User user = insertUserByOpenId(now, openId);
             userId = user.getId();
         } else {
             userId = dbWechatUser.getUserId();
@@ -690,19 +812,19 @@ public class PublicAccounts {
         String currentEpochTime = Long.toString(secondCount);
 
         String result = "<xml>\n" +
-            "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-            "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-            "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-            "   <MsgType><![CDATA[news]]></MsgType>\n" +
-            "   <ArticleCount>1</ArticleCount>\n" +
-            "   <Articles>\n" +
-            "       <item>\n" +
-            "           <Title><![CDATA[" + title + "]]></Title> \n" +
-            "           <Description><![CDATA[" + content + "]]></Description>\n" +
-            "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
-            "       </item>\n" +
-            "   </Articles>\n" +
-            "</xml>";
+                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+                "   <MsgType><![CDATA[news]]></MsgType>\n" +
+                "   <ArticleCount>1</ArticleCount>\n" +
+                "   <Articles>\n" +
+                "       <item>\n" +
+                "           <Title><![CDATA[" + title + "]]></Title> \n" +
+                "           <Description><![CDATA[" + content + "]]></Description>\n" +
+                "           <Url><![CDATA[" + baseUrl + "?openid=" + openId + "]]></Url>\n" +
+                "       </item>\n" +
+                "   </Articles>\n" +
+                "</xml>";
         return result;
     }
 
@@ -723,47 +845,51 @@ public class PublicAccounts {
         return Response.ok(result).build();
     }
 
-    public static void fillWechatUserTokenInfo(WechatUser dbWechatUser, WechatUser wechatUser) {
-        Date expiry = wechatUser.getExpiry();
+    public static void appendTokenInfo(WechatUser dbWechatUser, WechatUser tokenInfo) {
+        Date expiry = tokenInfo.getExpiry();
         if (expiry != null) {
             dbWechatUser.setExpiry(expiry);
         }
-        String head = wechatUser.getRefreshToken();
+        String head = tokenInfo.getRefreshToken();
         if (head != null) {
             dbWechatUser.setRefreshToken(head);
         }
-        String token = wechatUser.getToken();
+        String token = tokenInfo.getToken();
         if (token != null) {
             dbWechatUser.setToken(token);
         }
-        String unionId = wechatUser.getUnionId();
+        String unionId = tokenInfo.getUnionId();
         if (unionId != null) {
             dbWechatUser.setUnionId(unionId);
         }
     }
 
-    public static User insertUserInfoByWechatUser(Date now, WechatUser wechatUser) {
+    public static User getOrInsertUserByTokenInfo(Date now, WechatUser tokenInfo) {
         User user = null;
-        WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", wechatUser.getOpenId());
+        WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", tokenInfo.getOpenId());
         if (dbWechatUser == null) {
-            WechatUserInfo userInfo = getUserInfo(wechatUser.getOpenId());
-            user = fillUserByWechatUserInfo(now, userInfo);
-            dbWechatUser = fillWechatUserByWechatUserInfo(user.getId(), userInfo);
-            fillWechatUserTokenInfo(dbWechatUser, wechatUser);
+            WechatUserInfo userInfo = getUserInfo(tokenInfo.getToken(), tokenInfo.getOpenId());
+            if (userInfo != null) {
+                user = fillUserByUserInfo(now, userInfo);
+                dbWechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
+                appendTokenInfo(dbWechatUser, tokenInfo);
 
-            EntityManager em = JPAEntry.getEntityManager();
-            em.getTransaction().begin();
-            em.persist(dbWechatUser);
-            em.persist(user);
-            em.getTransaction().commit();
+                EntityManager em = JPAEntry.getNewEntityManager();
+                em.getTransaction().begin();
+                em.persist(dbWechatUser);
+                em.persist(user);
+                em.getTransaction().commit();
+                em.close();
+            }
         } else {
-            fillWechatUserTokenInfo(dbWechatUser, wechatUser);
+            appendTokenInfo(dbWechatUser, tokenInfo);
             JPAEntry.genericPut(dbWechatUser);
+            user = JPAEntry.getObject(User.class, "id", dbWechatUser.getUserId());
         }
         return user;
     }
 
-    private static WechatUser wechatUserFromToken(Map<String, Object> wu) {
+    private static WechatUser convertTokenInfo(Map<String, Object> wu) {
         WechatUser wechatUser = new WechatUser();
         for (String key : wu.keySet()) {
             switch (key) {
@@ -792,33 +918,57 @@ public class PublicAccounts {
         return wechatUser;
     }
 
+    private static Map<String, Object> getTokenByCode(String code) {
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+                .path("/sns/oauth2/access_token")
+                .queryParam("appid", appID)
+                .queryParam("secret", secret)
+                .queryParam("code", code)
+                .queryParam("grant_type", "authorization_code")
+                .request().get();
+        String responseBody = response.readEntity(String.class);
+        return new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
+        }.getType());
+    }
+
+    Response follow(WechatPush p) {
+        String openId = p.getFromUserName();
+        WechatUser wu = JPAEntry.getObject(WechatUser.class, "openId", openId);
+        if (wu == null) {
+            WechatUserInfo userInfo = getUserInfo(openId);
+            Date now = new Date();
+            User user = fillUserByUserInfo(now, userInfo);
+            WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
+            EntityManager em = JPAEntry.getNewEntityManager();
+            em.getTransaction().begin();
+            em.persist(user);
+            em.persist(wechatUser);
+            em.getTransaction().commit();
+            em.close();
+        }
+        return Response.ok().build();
+    }
+
     @GET
     @Path("card")
     @Produces(MediaType.TEXT_HTML)
     public Response card(@Context HttpServletRequest request, @QueryParam("code") String code) {
-        Client client = ClientBuilder.newClient();
-        Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
-        String responseBody = response.readEntity(String.class);
-        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
-        }.getType());
-        WechatUser wechatUser = wechatUserFromToken(wu);
-        Date now = new Date();
-        User user = insertUserInfoByWechatUser(now, wechatUser);
-        Long userId = user.getId();
-        Session s = putSession(now, userId);
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
 
         Response result = null;
-        try {
-            //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/validationCode.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/first-active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -827,28 +977,118 @@ public class PublicAccounts {
     @Path("account")
     @Produces(MediaType.TEXT_HTML)
     public Response account(@Context HttpServletRequest request, @QueryParam("code") String code) {
-        Client client = ClientBuilder.newClient();
-        Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
-        String responseBody = response.readEntity(String.class);
-        Map<String, Object> wu = new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
-        }.getType());
-        WechatUser wechatUser = wechatUserFromToken(wu);
-        Date now = new Date();
-        User user = insertUserInfoByWechatUser(now, wechatUser);
-        Long userId = user.getId();
-        Session s = putSession(now, userId);
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
 
         Response result = null;
-        try {
-            result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/basic-info.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/basic-info.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("user")
+    @Produces(MediaType.TEXT_HTML)
+    public Response user(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            List<Card> activeCards = JPAEntry.getList(Card.class, "userId", userId);
+            if (activeCards.isEmpty()) {
+                try {
+                    //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                    result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/first-active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("chinese")
+    @Produces(MediaType.TEXT_HTML)
+    public Response chinese(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=chinese")).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("math")
+    @Produces(MediaType.TEXT_HTML)
+    public Response math(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=math")).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("video")
+    @Produces(MediaType.TEXT_HTML)
+    public Response video(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = convertTokenInfo(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = getOrInsertUserByTokenInfo(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/videos.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -878,15 +1118,17 @@ public class PublicAccounts {
 
     //获取接口调用凭证
     public static String[] getUserList(String nextOpenid) {
+        prepare();
         // http请求方式: GET（请使用https协议）
         // https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
+        prepare();
         ArrayList<String> result = new ArrayList<>();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/user/get")
-            .queryParam("access_token", accessToken)
-            .queryParam("next_openid", nextOpenid)
-            .request().get();
+                .path("/cgi-bin/user/get")
+                .queryParam("access_token", accessToken)
+                .queryParam("next_openid", nextOpenid)
+                .request().get();
         //{"total":2,"count":2,"data":{"openid":["","OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("data")) {
@@ -896,27 +1138,47 @@ public class PublicAccounts {
             if (us.count < 10000) {
                 result.set(0, null);
             }
-            //EntityManager em = JPAEntry.getEntityManager();
-            //em.getTransaction().begin();
             for (String openId : us.data.openid) {
-                //WechatUser user = new WechatUser();
-                //user.setId(IdGenerator.getNewId());
-                //user.setOpenId(openId);
                 result.add(openId);
-                //System.out.println("openid"+openId);
-                //em.persist(user);
             }
-            //em.getTransaction().commit();
         }
         String[] a = new String[result.size()];
         return result.toArray(a);
     }
 
     @POST
+    @Path("followers")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFollowers() {
+        String maxOpenid = "";
+        Date now = new Date();
+        while (true) {
+            String[] openids = getUserList(maxOpenid);
+            boolean isFirst = true;
+            for (String openId : openids) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
+                    if (dbWechatUser == null) {
+                        insertUserByOpenId(now, openId);
+                    }
+                }
+            }
+            maxOpenid = openids[0];
+            if (maxOpenid == null) {
+                break;
+            }
+        }
+        return Response.ok().build();
+    }
+
+    @POST
     @Path("follow")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response follow(@CookieParam("sessionId") String sessionId, JAXBElement<Follow> follow) {
+    public Response follow(@CookieParam("userId") String aUserId, JAXBElement<Follow> follow) {
         Follow f = follow.getValue();
         if (f.Event.equals("subscribe")) {
             WechatUserInfo us = getUserInfo(f.FromUserName);
@@ -958,11 +1220,12 @@ public class PublicAccounts {
             u.setAmount(0.0f);
             user.setUserId(userId);
 
-            EntityManager em = JPAEntry.getEntityManager();
+            EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
             em.persist(user);
             em.persist(u);
             em.getTransaction().commit();
+            em.close();
         }
         return Response.ok().build();
     }
@@ -994,61 +1257,6 @@ public class PublicAccounts {
         //return Response.ok(new File("/data/program/swtomcat/webapps/ROOT/validationCode.html"), "text/html").cookie(new NewCookie("sessionId", sessionString, "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false)).build();
     }
 
-    Response follow(WechatPush p) {
-        //666
-        //System.out.println(us);
-        String openId = p.Infos.get("openid");
-        WechatUser wu = JPAEntry.getObject(WechatUser.class, "openId", openId);
-        if (wu == null) {
-            WechatUser user = new WechatUser();
-            user.setId(IdGenerator.getNewId());
-            user.setOpenId(p.Infos.get("openid"));
-            user.setRefId(p.Infos.get("unionid"));
-            user.setCity(p.Infos.get("city"));
-            user.setCountry(p.Infos.get("country"));
-            //user.setExpiry();
-            user.setHead(p.Infos.get("headimgurl"));
-            user.setInfo("");
-            user.setNickname(p.Infos.get("nickname"));
-            //user.setPrivilege();
-            user.setProvince(p.Infos.get("province"));
-            //user.setRefId();
-            //user.setRefreshToken();
-            //user.setSex(p.Infos.get(sex));
-            user.setSex(Long.parseLong(p.Infos.get("sex")));
-            user.setSubscribe(Integer.parseInt(p.Infos.get("subscribe")));
-            user.setSubscribeTime(Integer.parseInt(p.Infos.get("subscribe_time")));
-
-            user.setLanguage(p.Infos.get("language"));
-            user.setRemark(p.Infos.get("remark"));
-            //user.setHeadimgurl(p.Infos.get("headimgurl"));
-            user.setGroupId(Integer.parseInt(p.Infos.get("groupid")));
-            //user.setToken();
-            user.setUnionId(p.Infos.get("unionid"));
-            long userId = IdGenerator.getNewId();
-            User u = new User();
-            u.setId(userId);
-            u.setHead(p.Infos.get("headimgurl"));
-            u.setName(p.Infos.get("nickname"));
-            //u.setLoginName(us.nickname);
-            u.setSex(Long.parseLong(p.Infos.get("sex")));
-            Date now = new Date();
-            u.setCreateTime(now);
-            u.setUpdateTime(now);
-            u.setIsAdministrator(false);
-            u.setSite("http://www.xiaoyuzhishi.com");
-            u.setAmount(0.0f);
-            user.setUserId(userId);
-
-            EntityManager em = JPAEntry.getEntityManager();
-            em.getTransaction().begin();
-            em.persist(user);
-            em.persist(u);
-            em.getTransaction().commit();
-        }
-        return Response.ok().build();
-    }
-
     //自定义菜单查询接口
     private GenericResult getWechatServerIpList() {
         //https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN
@@ -1056,9 +1264,9 @@ public class PublicAccounts {
         GenericResult result = new GenericResult();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/get")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/get")
+                .queryParam("access_token", accessToken)
+                .request().get();
         IPList ipList = response.readEntity(IPList.class);
         return result;
     }
@@ -1070,9 +1278,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/create")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/create")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1085,9 +1293,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/delete")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/menu/delete")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1101,9 +1309,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/addconditional")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/addconditional")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1116,9 +1324,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/delconditional")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/delconditional")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1128,7 +1336,7 @@ public class PublicAccounts {
     @Path("click-link-menu")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response clickLinkMenu(@CookieParam("sessionId") String sessionId, ClickLink clickLink) {
+    public Response clickLinkMenu(@CookieParam("userId") String userId, ClickLink clickLink) {
         //没有处理，记得要做处理
         //step1: get user.id from openid
         //step2: record to sessions table
@@ -1140,7 +1348,7 @@ public class PublicAccounts {
     @Path("scan-code-push")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response scancodePush(@CookieParam("sessionId") String sessionId, ScancodePush scancodePush) {
+    public Response scancodePush(@CookieParam("userId") String userId, ScancodePush scancodePush) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1150,7 +1358,7 @@ public class PublicAccounts {
     @Path("scan-code-wait-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response scancode_waitmsg(@CookieParam("sessionId") String sessionId, ScancodePush scancodePush) {
+    public Response scancode_waitmsg(@CookieParam("userId") String userId, ScancodePush scancodePush) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1159,7 +1367,7 @@ public class PublicAccounts {
     @Path("picture-system-photo")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_sysphoto(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_sysphoto(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1169,7 +1377,7 @@ public class PublicAccounts {
     @Path("picture-photo-or-album")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_photo_or_album(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_photo_or_album(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1179,7 +1387,7 @@ public class PublicAccounts {
     @Path("pictures")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pic_weixin(@CookieParam("sessionId") String sessionId, PicSysphoto picSysphoto) {
+    public Response pic_weixin(@CookieParam("userId") String userId, PicSysphoto picSysphoto) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1188,7 +1396,7 @@ public class PublicAccounts {
     @Path("locations")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response location_select(@CookieParam("sessionId") String sessionId, LocationSelect locationSelect) {
+    public Response location_select(@CookieParam("userId") String userId, LocationSelect locationSelect) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1200,9 +1408,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/menu/trymatch")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/cgi-bin/menu/trymatch")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1214,9 +1422,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/get_current_selfmenu_info")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/cgi-bin/get_current_selfmenu_info")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1226,7 +1434,7 @@ public class PublicAccounts {
     @Path("text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response textmessage(@CookieParam("sessionId") String sessionId, TextMessage textMessage) {
+    public Response textmessage(@CookieParam("userId") String userId, TextMessage textMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1235,7 +1443,7 @@ public class PublicAccounts {
     @Path("picture-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response prcturemessage(@CookieParam("sessionId") String sessionId, PictureMessage pictureMessage) {
+    public Response prcturemessage(@CookieParam("userId") String userId, PictureMessage pictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1244,7 +1452,7 @@ public class PublicAccounts {
     @Path("voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response voiceMeessage(@CookieParam("sessionId") String sessionId, VoiceMeessage voiceMeessage) {
+    public Response voiceMeessage(@CookieParam("userId") String userId, VoiceMeessage voiceMeessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1255,7 +1463,7 @@ public class PublicAccounts {
     @Path("video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response videoMessage(@CookieParam("sessionId") String sessionId, VideoMessage videoMessage) {
+    public Response videoMessage(@CookieParam("userId") String userId, VideoMessage videoMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1265,7 +1473,7 @@ public class PublicAccounts {
     @Path("small-video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoideMeessage(@CookieParam("sessionId") String sessionId, VideoMessage videoMessage) {
+    public Response smallvoideMeessage(@CookieParam("userId") String userId, VideoMessage videoMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1274,7 +1482,7 @@ public class PublicAccounts {
     @Path("small-voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoiceMeessage(@CookieParam("sessionId") String sessionId, LocationInformation locationInformation) {
+    public Response smallvoiceMeessage(@CookieParam("userId") String userId, LocationInformation locationInformation) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1285,7 +1493,7 @@ public class PublicAccounts {
     @Path("link-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response smallvoiceMeessage(@CookieParam("sessionId") String sessionId, LinkMessage linkMessage) {
+    public Response smallvoiceMeessage(@CookieParam("userId") String userId, LinkMessage linkMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1294,7 +1502,7 @@ public class PublicAccounts {
     @Path("scan-code-claim")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response notconcerned(@CookieParam("sessionId") String sessionId, Scanning scanning) {
+    public Response notconcerned(@CookieParam("userId") String userId, Scanning scanning) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1305,7 +1513,7 @@ public class PublicAccounts {
     @Path("scan-code")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response concerned(@CookieParam("sessionId") String sessionId, Scanning scanning) {
+    public Response concerned(@CookieParam("userId") String userId, Scanning scanning) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1314,7 +1522,7 @@ public class PublicAccounts {
     @Path("position")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response position(@CookieParam("sessionId") String sessionId, Position position) {
+    public Response position(@CookieParam("userId") String userId, Position position) {
         //没有处理，记得要做处理
         //conflict to Jumplink
         return null;
@@ -1326,7 +1534,7 @@ public class PublicAccounts {
     @Path("menu")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response menu(@CookieParam("sessionId") String sessionId, Menu menu) {
+    public Response menu(@CookieParam("userId") String userId, Menu menu) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1336,7 +1544,7 @@ public class PublicAccounts {
     @Path("jump-link")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response Jumplink(@CookieParam("sessionId") String sessionId, Menu menu) {
+    public Response Jumplink(@CookieParam("userId") String userId, Menu menu) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1345,7 +1553,7 @@ public class PublicAccounts {
     @Path("return-text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replytextmessage(@CookieParam("sessionId") String sessionId, ReplyTextMessage replyTextMessage) {
+    public Response replytextmessage(@CookieParam("userId") String userId, ReplyTextMessage replyTextMessage) {
 
         return null;
     }
@@ -1354,7 +1562,7 @@ public class PublicAccounts {
     @Path("return-picture-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replypicturemessage(@CookieParam("sessionId") String sessionId, ReplyPictureMessage replyPictureMessage) {
+    public Response replypicturemessage(@CookieParam("userId") String userId, ReplyPictureMessage replyPictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1364,7 +1572,7 @@ public class PublicAccounts {
     @Path("return-voice-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyvoicemessage(@CookieParam("sessionId") String sessionId, ReplyPictureMessage replyPictureMessage) {
+    public Response replyvoicemessage(@CookieParam("userId") String userId, ReplyPictureMessage replyPictureMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1373,7 +1581,7 @@ public class PublicAccounts {
     @Path("return-video-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyvoidemessage(@CookieParam("sessionId") String sessionId, ReplyVoideMessage replyVoideMessage) {
+    public Response replyvoidemessage(@CookieParam("userId") String userId, ReplyVoideMessage replyVoideMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1382,7 +1590,7 @@ public class PublicAccounts {
     @Path("return-music-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replymusicmessage(@CookieParam("sessionId") String sessionId, ReplyMusicMessage replyMusicMessage) {
+    public Response replymusicmessage(@CookieParam("userId") String userId, ReplyMusicMessage replyMusicMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1391,7 +1599,7 @@ public class PublicAccounts {
     @Path("return-image-text-message")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response replyimagetextmessage(@CookieParam("sessionId") String sessionId, ReplyImageTextMessage replyImageTextMessage) {
+    public Response replyimagetextmessage(@CookieParam("userId") String userId, ReplyImageTextMessage replyImageTextMessage) {
         //没有处理，记得要做处理
         return null;
     }
@@ -1402,9 +1610,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/add")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/add")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1416,9 +1624,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/update")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/update")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1430,9 +1638,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/del")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/del")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1445,9 +1653,9 @@ public class PublicAccounts {
         //{"errcode":40018,"errmsg":"invalid button name size"}
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/uploadheadimg")
-            .queryParam("access_token", accessToken)
-            .request().post(menu);
+                .path("/customservice/kfaccount/uploadheadimg")
+                .queryParam("access_token", accessToken)
+                .request().post(menu);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1458,9 +1666,9 @@ public class PublicAccounts {
         // https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/getkflist")
-            .queryParam("access_token", accessToken)
-            .request().get();
+                .path("/customservice/kfaccount/getkflist")
+                .queryParam("access_token", accessToken)
+                .request().get();
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1473,9 +1681,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/customservice/kfaccount/send")
-            .queryParam("access_token", accessToken)
-            .request().post(message);
+                .path("/customservice/kfaccount/send")
+                .queryParam("access_token", accessToken)
+                .request().post(message);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1489,9 +1697,9 @@ public class PublicAccounts {
         // curl -F media=@test.jpg "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=ACCESS_TOKEN"
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/media/uploadimg")
-            .queryParam("access_token", accessToken)
-            .request().post(message);
+                .path("/cgi-bin/media/uploadimg")
+                .queryParam("access_token", accessToken)
+                .request().post(message);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1504,9 +1712,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/media/uploadnews")
-            .queryParam("access_token", accessToken)
-            .request().post(articles);
+                .path("/cgi-bin/media/uploadnews")
+                .queryParam("access_token", accessToken)
+                .request().post(articles);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;
@@ -1517,9 +1725,9 @@ public class PublicAccounts {
         //https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=ACCESS_TOKEN
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/cgi-bin/message/custom/sendall")
-            .queryParam("access_token", accessToken)
-            .request().post(articles);
+                .path("/cgi-bin/message/custom/sendall")
+                .queryParam("access_token", accessToken)
+                .request().post(articles);
         String responseBody = response.readEntity(String.class);
         GenericResult r = null;
         return null;

@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+//import javax.websocket.Endpoint;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -23,7 +24,7 @@ import java.util.*;
  * Created by fixopen on 27/9/2016.
  */
 @Path("class-rooms")
-public class ClassRooms {
+public class ClassRooms/* extends Endpoint*/ {
     private static Long classRoomId = 0l;
 
     @GET
@@ -77,11 +78,11 @@ public class ClassRooms {
     @Path("messages")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postMessage(@CookieParam("sessionId") String sessionId, Comment comment) {
+    public Response postMessage(@CookieParam("userId") String userId, Comment comment) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             comment.setId(IdGenerator.getNewId());
-            comment.setUserId(JPAEntry.getLoginId(sessionId));
+            comment.setUserId(JPAEntry.getLoginId(userId));
             comment.setObjectType("class-room");
             comment.setObjectId(classRoomId);
             Date now = new Date();
@@ -96,9 +97,9 @@ public class ClassRooms {
     @GET
     @Path("messages") ///since/{timestamp}
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postMessage(@CookieParam("sessionId") String sessionId) { //, @PathParam("timestamp") Date timestamp
+    public Response postMessage(@CookieParam("userId") String userId) { //, @PathParam("timestamp") Date timestamp
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>();
             filterObject.put("objectType", "class-room");

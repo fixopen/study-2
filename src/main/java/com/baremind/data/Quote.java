@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by User on 2016/9/20.

@@ -21,9 +21,9 @@ public class Additionals {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAdditionals(@CookieParam("sessionId") String sessionId, Additional additional) {
+    public Response createAdditional(@CookieParam("userId") String userId, Additional additional) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             additional.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(additional);
             result = Response.ok(additional).build();
@@ -33,9 +33,9 @@ public class Additionals {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAdditionals(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getAdditionals(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Additional> additionals = JPAEntry.getList(Additional.class, filterObject);
@@ -49,9 +49,9 @@ public class Additionals {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAdditionalById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getAdditionalById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Additional additional = JPAEntry.getObject(Additional.class, "id", id);
             if (additional != null) {
@@ -65,9 +65,9 @@ public class Additionals {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateAdditionals(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Additional additional) {
+    public Response updateAdditional(@CookieParam("userId") String userId, @PathParam("id") Long id, Additional additional) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Additional existadditional = JPAEntry.getObject(Additional.class, "id", id);
             if (existadditional != null) {
@@ -96,5 +96,4 @@ public class Additionals {
         }
         return result;
     }
-
 }

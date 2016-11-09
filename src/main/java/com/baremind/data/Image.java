@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/8/17.
@@ -89,5 +91,12 @@ public class Image {
         this.mainColor = mainColor;
     }
 
-
+    public static Map<String, Object> convertToMap(Image i) {
+        Map<String, Object> im = new HashMap<>();
+        im.put("id", i.getId());
+        im.put("type", "image");
+        im.put("description", "");
+        im.put("href", i.getStorePath());
+        return im;
+    }
 }

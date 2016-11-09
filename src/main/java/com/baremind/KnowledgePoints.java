@@ -11,11 +11,7 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Path("knowledge-points")
@@ -75,10 +71,10 @@ public class KnowledgePoints {
     @Path("{id}/like")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response like(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Log log = Logs.insert(sessionId, "knowledge-point", id, "like");
+        if (JPAEntry.isLogining(userId)) {
+            Log log = Logs.insert(Long.parseLong(userId), "knowledge-point", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;
@@ -88,10 +84,10 @@ public class KnowledgePoints {
     @Path("{id}/unlike")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response unlike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Long count = Logs.deleteLike(sessionId, "knowledge-point", id);
+        if (JPAEntry.isLogining(userId)) {
+            Long count = Logs.deleteLike(Long.parseLong(userId), "knowledge-point", id);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
@@ -100,9 +96,9 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/like-count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getLikeCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             Long likeCount = Logs.getStatsCount("knowledge-point", id, "like");
             result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
         }
@@ -112,10 +108,10 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/is-self-like")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getSelfLike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Boolean has = Logs.has(JPAEntry.getLoginId(sessionId), "knowledge-point", id, "like");
+        if (JPAEntry.isLogining(userId)) {
+            Boolean has = Logs.has(Long.parseLong(userId), "knowledge-point", id, "like");
             result = Response.ok("{\"like\":" + has.toString() + "}").build();
         }
         return result;
@@ -124,9 +120,9 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/read-count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getReadCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getReadCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             Long readCount = Logs.getStatsCount("knowledge-point", id, "read");
             result = Response.ok("{\"count\":" + readCount.toString() + "}").build();
         }
@@ -136,17 +132,16 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/contents")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getKnowledgePointsByVolumeId(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Long selfId = Long.parseLong(userId);
+        if (JPAEntry.isLogining(selfId)) {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
-
-                JPAEntry.log(JPAEntry.getLoginId(sessionId), "read", "knowledge-point", id);
-
+                JPAEntry.log(selfId, "read", "knowledge-point", id);
                 Map<String, Object> conditions = new HashMap<>();
-                conditions.put("KnowledgePointId", id);
+                conditions.put("knowledgePointId", id);
 
                 Map<String, String> orders = new HashMap<>();
                 orders.put("order", "ASC");
@@ -160,9 +155,8 @@ public class KnowledgePoints {
                 List<String> quoteIds = new ArrayList<>();
                 List<String> pinyinIds = new ArrayList<>();
 
-
                 for (KnowledgePointContentMap item : maps) {
-                    switch (item.getType()) {
+                    switch (item.getObjectType()) {
                         case "text":
                             textIds.add(item.getObjectId().toString());
                             break;
@@ -204,52 +198,38 @@ public class KnowledgePoints {
                 List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
 
                 List<PinyinText> pinyinTextObject = getList(em, pinyinIds, PinyinText.class);
+
                 List<Object> orderedContents = new ArrayList<>();
                 List<Object> orderedProblems = new ArrayList<>();
                 List<Object> orderedQuotes = new ArrayList<>();
-                List<Object> orderedPinyins = new ArrayList<>();
+
                 for (final KnowledgePointContentMap item : maps) {
-                    switch (item.getType()) {
+                    switch (item.getObjectType()) {
                         case "text":
                             if (textObjects != null) {
                                 Text t = findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> tm = new HashMap<>();
-                                tm.put("id", t.getId());
-                                tm.put("content", t.getContent());
-                                tm.put("type", "text");
+                                Map<String, Object> tm = Text.convertToMap(t);
                                 orderedContents.add(tm);
                             }
                             break;
                         case "image":
                             if (imageObjects != null) {
                                 Image i = findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> im = new HashMap<>();
-                                im.put("id", i.getId());
-                                im.put("type", "image");
-                                im.put("description", "");
-                                im.put("href", i.getStorePath());
+                                Map<String, Object> im = Image.convertToMap(i);
                                 orderedContents.add(im);
                             }
                             break;
                         case "imageText":
                             if (imageTextObject != null) {
                                 ImageText it = findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> itm = new HashMap<>();
-                                itm.put("id", it.getId());
-                                itm.put("type", "imageText");
-                                itm.put("content", it.getContent());
-                                itm.put("href", it.getStorePath());
+                                Map<String, Object> itm = ImageText.convertToMap(it);
                                 orderedContents.add(itm);
                             }
                             break;
                         case "pinyinText":
                             if (pinyinTextObject != null) {
-                                PinyinText q = findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> qm = new HashMap<>();
-                                qm.put("id", q.getId());
-                                qm.put("type", "pinyinText");
-                                qm.put("pinyin", q.getPinyin());
-                                qm.put("content", q.getContent());
+                                PinyinText pt = findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
+                                Map<String, Object> qm = PinyinText.convertToMap(pt);
                                 orderedContents.add(qm);
                             }
                             break;
@@ -258,61 +238,27 @@ public class KnowledgePoints {
                                 Problem problemItem = findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
                                 List<ProblemOption> problemOptions = findItems(problemOptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
                                 List<ProblemStandardAnswer> problemStandardAnswers = findItems(problemStandardAnswerObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
-
-                                Map<String, Object> pm = new HashMap<>();
-                                pm.put("id", problemItem.getId());
-                                if (problemStandardAnswers.size() > 1) {
-                                    pm.put("type", "多选题");
-                                } else {
-                                    pm.put("type", "单选题");
-                                }
-                                Map<String, Object> opm = new HashMap<>();
-                                //获取每一个选项 option
-                                for(ProblemOption option : problemOptions) {
-                                    System.out.println(option);
-                                    opm.put("optionId",option.getId());
-                                    opm.put("name",option.getName());
-                                    List<String> optionIds = new ArrayList<>();
-                                   if(option.getImageId() != null){
-                                        Image storePath = JPAEntry.getObject(Image.class, "id", option.getImageId());
-                                            opm.put("optionImagePath", storePath.getStorePath());
-                                    }
-                                }
-                                /*opm.put("id",optionImage)*/
-                                pm.put("options", opm);
-                                pm.put("standardAnswers", problemStandardAnswers);
-                                pm.put("title", problemItem.getTitle());
-                                pm.put("storePath", problemItem.getStorePath());
-                                pm.put("videoUrl", problemItem.getVideoUrl());
-                                pm.put("videoImage", problemItem.getVideoImage());
+                                Map<String, Object> pm = Problem.convertToMap(problemItem, problemOptions, problemStandardAnswers);
                                 orderedProblems.add(pm);
                             }
                             break;
                         case "quote":
                             if (quoteObject != null) {
                                 Quote q = findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
-                                Map<String, Object> qm = new HashMap<>();
-                                qm.put("id", q.getId());
-                                qm.put("content", q.getContent());
-                                qm.put("source", q.getSource());
-                                orderedQuotes.add(qm);
+                                orderedQuotes.add(q);
                             }
                             break;
                     }
                 }
 
                 Map<String, Object> totalResult = new HashMap<>();
-                totalResult.put("title", p.getTitle());
+                totalResult.put("title", p.getName());
                 totalResult.put("quotes", orderedQuotes);
                 totalResult.put("contents", orderedContents);
 
                 if ((videoObjects != null) && !videoObjects.isEmpty()) {
                     Video video = videoObjects.get(0);
-                    Image image = JPAEntry.getObject(Image.class, "id", video.getCover());
-                    Map<String, Object> vm = new HashMap<>();
-                    vm.put("cover", image.getStorePath());
-                    vm.put("id", video.getId());
-                    vm.put("storePath", video.getStorePath());
+                    Map<String, Object> vm = Video.convertToMap(video);
                     totalResult.put("video", vm);
                 }
 
@@ -327,21 +273,7 @@ public class KnowledgePoints {
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                List<Map<String, Object>> commentMaps = new ArrayList<>(comments.size());
-                for (Comment comment : comments) {
-                    Map<String, Object> commentMap = new HashMap<>();
-                    commentMap.put("id", comment.getId());
-                    commentMap.put("content", comment.getContent());
-                    commentMap.put("clientId", comment.getClientId());
-                    SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    commentMap.put("createTime", time.format(comment.getCreateTime()));
-                    commentMap.put("objectId", comment.getObjectId());
-                    commentMap.put("objectType", comment.getObjectType());
-                    commentMap.put("updateTime", comment.getUpdateTime());
-                    commentMap.put("userId", comment.getUserId());
-                    commentMap.put("likeCount", Logs.getStatsCount("comment", comment.getId(), "like"));
-                    commentMaps.add(commentMap);
-                }
+                List<Map<String, Object>> commentMaps = Comments.convertComments(comments);
                 totalResult.put("comments", commentMaps);
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
@@ -353,9 +285,9 @@ public class KnowledgePoints {
     @POST//添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createKnowledgePoint(@CookieParam("sessionId") String sessionId, KnowledgePoint knowledgePoint) {
+    public Response createKnowledgePoint(@CookieParam("userId") String userId, KnowledgePoint knowledgePoint) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             knowledgePoint.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(knowledgePoint);
             result = Response.ok(knowledgePoint).build();
@@ -365,9 +297,9 @@ public class KnowledgePoints {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePoints(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getKnowledgePoints(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
@@ -383,9 +315,9 @@ public class KnowledgePoints {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePointById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getKnowledgePointById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (knowledgePoint != null) {
@@ -399,39 +331,31 @@ public class KnowledgePoints {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateKnowledgePoint(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, KnowledgePoint knowledgePoint) {
+    public Response updateKnowledgePoint(@CookieParam("userId") String userId, @PathParam("id") Long id, KnowledgePoint knowledgePoint) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             KnowledgePoint existknowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (existknowledgePoint != null) {
-                int grade = knowledgePoint.getGrade();
-                if (grade != 0) {
-                    existknowledgePoint.getGrade();
+                Long volumeId = knowledgePoint.getVolumeId();
+                if (volumeId != null) {
+                    existknowledgePoint.setVolumeId(volumeId);
                 }
-                String storePath = knowledgePoint.getStorePath();
-                if (storePath != null) {
-                    existknowledgePoint.setStorePath(storePath);
+                String title = knowledgePoint.getName();
+                if (title != null) {
+                    existknowledgePoint.setName(title);
+                }
+                Date showTime = knowledgePoint.getShowTime();
+                if (showTime != null) {
+                    existknowledgePoint.setShowTime(showTime);
                 }
                 int order = knowledgePoint.getOrder();
                 if (order != 0) {
                     existknowledgePoint.setOrder(order);
                 }
-                Long subjectId = knowledgePoint.getSubjectId();
-                if (sessionId != null) {
-                    existknowledgePoint.setSubjectId(subjectId);
-                }
-                String title = knowledgePoint.getTitle();
-                if (title != null) {
-                    existknowledgePoint.setTitle(title);
-                }
-                String videoUrl = knowledgePoint.getVideoUrl();
-                if (videoUrl != null) {
-                    existknowledgePoint.setVideoUrl(videoUrl);
-                }
-                Long volumeId = knowledgePoint.getVolumeId();
-                if (volumeId != null) {
-                    existknowledgePoint.setVolumeId(volumeId);
+                Date show = knowledgePoint.getShowTime();
+                if (show != null) {
+                    existknowledgePoint.setShowTime(show);
                 }
                 JPAEntry.genericPut(existknowledgePoint);
                 result = Response.ok(existknowledgePoint).build();
