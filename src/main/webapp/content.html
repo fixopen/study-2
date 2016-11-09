@@ -135,6 +135,8 @@
 
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/bootstrap/bootstrap.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
 <script>
     var subjects = []
 
@@ -174,6 +176,8 @@
                                         var v = state.volume.getById(kps[i].volumeId)
                                         v.knowledgePoints.push(kps[i])
                                     }
+
+                                    state['volumes'].init()
                                 },
                                 error: function (r) {
                                 }
@@ -189,12 +193,11 @@
 
             $('[data-article]').on('click', function (e) {
                 state.currentArticle.style.display = 'none'
-                state.currentArticle = document.getElementById(e.target.dataset.article)
+                var id = e.target.dataset.article
+                state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
-                state[state.currentArticle.id].init()
+                state[id].init()
             }, false)
-
-            state['volumes'].init()
         },
         volumes: {
             isInit: false,

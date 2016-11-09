@@ -421,9 +421,10 @@
 
             $('[data-article]').on('click', function(e) {
                 state.currentArticle.style.display = 'none'
-                state.currentArticle = document.getElementById(e.target.dataset.article)
+                var id = e.target.dataset.article
+                state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
-                state[state.currentArticle.id].init()
+                state[id].init()
             }, false)
 
             state['main'].init()
