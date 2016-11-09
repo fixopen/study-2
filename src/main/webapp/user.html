@@ -265,10 +265,23 @@
                         dataType: 'json',
                         success: function (u) {
                             user = u
+                            proc({
+                                templateId: state.user.template,
+                                data: user,
+                                container: state.user.container
+                            })
                         }
                     })
+                } else {
+                    proc({
+                        templateId: state.user.template,
+                        data: user,
+                        container: state.user.container
+                    })
                 }
-            }
+            },
+            container: document.getElementById(''),
+            template: getTemplate('')
         },
         cards: {
             init: function() {

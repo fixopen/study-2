@@ -23,21 +23,28 @@
         <div role="tabpanel" class="tab-pane active" id="zero">
             <div id="zeroPlaying"></div>
             <div id="zeroFuture"></div>
-            <div>
-                <div id="zeroPassed"></div>
-                <div id="zeroTips"></div>
-                <button id="zeroMore">More</button>
-            </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="one">
             <div id="onePlaying"></div>
             <div id="oneFuture"></div>
-            <div>
-                <div id="onePassed"></div>
-                <div id="oneTips"></div>
-                <button id="oneMore">More</button>
-            </div>
         </div>
+    </div>
+</article>
+<article id="passed" style="display: none;">
+    <div>
+        <select id="subject"></select>
+        <select id="teacher"></select>
+        <select id="grade"></select>
+    </div>
+    <div>
+        <div id="zeroPassed"></div>
+        <div id="zeroTips"></div>
+        <button id="zeroMore">More</button>
+    </div>
+    <div>
+        <div id="onePassed"></div>
+        <div id="oneTips"></div>
+        <button id="oneMore">More</button>
     </div>
 </article>
 <article id="video" style="display: none;">
@@ -63,12 +70,13 @@
         <tbody id="day"></tbody>
     </table>
 </article>
-<article id="future-note" style="display: none;">
+<article id="futureNote" style="display: none;">
     <div class="goBack"></div>
 </article>
 
 <template id="playing-template"></template>
 <template id="future-template"></template>
+
 <template id="passed-template"></template>
 
 <template id="day-template">
@@ -97,7 +105,10 @@
 <script>
     var teachers = []
     var grades = []
+    var subjects = []
+
     var course = []
+    var passed = []
 
     var courseTable = [
         {day: '一', date: '', items: []},
@@ -117,91 +128,71 @@
                         //
                     })
 
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers/teachers',
-                        success: function(ts) {
-                            teachers = ts
-                            //fill to teachers choice
-                        }
-                    })
+                    var now = Date.now()
 
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers/grades',
-                        success: function(gs) {
-                            grades = gs
-                            //fill to grades choice
-                        }
-                    })
-
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/subjects',
+                        url: '/api/schedulers?filter=' + JSON.stringify({
+                            subjectId: subjects[0].id,
+                            endTime: '> ' + now
+                        }),
                         dataType: 'json',
-                        success: function (subjects) {
+                        success: function (zeroSchedulers) {
+                            course[0] = zeroSchedulers
+                            state.removeNullPassed(0)
+                            state.adjustData(0)
+                            state.zeroPassed.data = course[0][2]
+                            state.zeroFuture.data = course[0][1]
+                            state.zeroPlaying.data = course[0][0]
+                            state.refreshState(0)
                             $.ajax({
                                 type: 'get',
-                                url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                                url: '/api/schedulers?filter=' + JSON.stringify({
+                                    subjectId: subjects[1].id,
+                                    endTime: '> ' + now
+                                }),
                                 dataType: 'json',
-                                success: function (zeroSchedulers) {
-                                    course[0] = zeroSchedulers
-                                    state.removeNullPassed(0)
-                                    state.adjustData(0)
-                                    state.zeroPassed.data = course[0][2]
-                                    state.zeroFuture.data = course[0][1]
-                                    state.zeroPlaying.data = course[0][0]
-                                    state.refreshState(0)
-                                    $.ajax({
-                                        type: 'get',
-                                        url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                        dataType: 'json',
-                                        success: function (oneSchedulers) {
-                                            course[1] = oneSchedulers
-                                            state.removeNullPassed(1)
-                                            state.adjustData(1)
-                                            state.onePassed.data = course[1][2]
-                                            state.oneFuture.data = course[1][1]
-                                            state.onePlaying.data = course[1][0]
-                                            state.refreshState(1)
-                                            var oneFirst = true
-                                            if (course[0][0].length > 0) {
-                                                if (course[1][0].length > 0) {
-                                                    if (+course[0][0][0].startTime < +course[1][0][0].startTime) {
-                                                        oneFirst = false
-                                                    }
-                                                } else {
-                                                    oneFirst = false
-                                                }
-                                            } else if (course[0][1].length > 0) {
-                                                if (course[1][1].length > 0) {
-                                                    if (+course[0][1][0].startTime < +course[1][1][0].startTime) {
-                                                        oneFirst = false
-                                                    }
-                                                } else {
-                                                    oneFirst = false
-                                                }
-                                            } else {
+                                success: function (oneSchedulers) {
+                                    course[1] = oneSchedulers
+                                    state.removeNullPassed(1)
+                                    state.adjustData(1)
+                                    state.onePassed.data = course[1][2]
+                                    state.oneFuture.data = course[1][1]
+                                    state.onePlaying.data = course[1][0]
+                                    state.refreshState(1)
+                                    var oneFirst = true
+                                    if (course[0][0].length > 0) {
+                                        if (course[1][0].length > 0) {
+                                            if (+course[0][0][0].startTime < +course[1][0][0].startTime) {
                                                 oneFirst = false
                                             }
-                                            if (oneFirst) {
-                                                $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
-                                                //$('#subjects').find('a:first').tab('show') // Select first tab
-                                                //$('#subjects').find('a:last').tab('show') // Select last tab
-                                                //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
-                                            }
-
-                                            setInterval(function () {
-                                                state.refreshState(0)
-                                                state.refreshState(1)
-                                            }, 60 * 1000)
+                                        } else {
+                                            oneFirst = false
                                         }
-                                    })
+                                    } else if (course[0][1].length > 0) {
+                                        if (course[1][1].length > 0) {
+                                            if (+course[0][1][0].startTime < +course[1][1][0].startTime) {
+                                                oneFirst = false
+                                            }
+                                        } else {
+                                            oneFirst = false
+                                        }
+                                    } else {
+                                        oneFirst = false
+                                    }
+                                    if (oneFirst) {
+                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                                        //$('#subjects').find('a:first').tab('show') // Select first tab
+                                        //$('#subjects').find('a:last').tab('show') // Select last tab
+                                        //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
+                                    }
+
+                                    setInterval(function () {
+                                        state.refreshState(0)
+                                        state.refreshState(1)
+                                    }, 60 * 1000)
                                 }
                             })
-                        },
-                        error: function (xhr) {
-                            alert('back-end not response, places retry')
                         }
                     })
 
@@ -332,6 +323,29 @@
                 //
             }
         },
+        passed: {
+            isInit: false,
+            init: function() {
+                if (!state.passed.isInit) {
+                    var now = Date.now()
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers?filter=' + JSON.stringify({
+                            cdnLink: 'IS NOT NULL',
+                            endTime: '< ' + now
+                        }),
+                        dataType: 'json',
+                        success: function (schedulers) {
+                            passed = schedulers[2]
+                        }
+                    })
+                    state.passed.isInit = true
+                }
+            },
+            filter: function() {
+                //filter the passed data via the filter element state
+            }
+        },
         scheduler: {
             isInit: false,
             init: function() {
@@ -418,6 +432,36 @@
         init: function() {
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
+
+            $.ajax({
+                type: 'get',
+                url: '/api/schedulers/teachers',
+                success: function(ts) {
+                    teachers = ts
+                    //fill to teachers choice
+                }
+            })
+
+            $.ajax({
+                type: 'get',
+                url: '/api/schedulers/grades',
+                success: function(gs) {
+                    grades = gs
+                    //fill to grades choice
+                }
+            })
+
+            $.ajax({
+                type: 'get',
+                url: '/api/subjects',
+                dataType: 'json',
+                success: function (ss) {
+                    subjects = ss
+                },
+                error: function (xhr) {
+                    alert('back-end not response, places retry')
+                }
+            })
 
             $(document).on('click', '[data-article]', function(e) {
                 state.currentArticle.style.display = 'none'
