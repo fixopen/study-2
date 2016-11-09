@@ -23,21 +23,28 @@
         <div role="tabpanel" class="tab-pane active" id="zero">
             <div id="zeroPlaying"></div>
             <div id="zeroFuture"></div>
-            <div>
-                <div id="zeroPassed"></div>
-                <div id="zeroTips"></div>
-                <button id="zeroMore">More</button>
-            </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="one">
             <div id="onePlaying"></div>
             <div id="oneFuture"></div>
-            <div>
-                <div id="onePassed"></div>
-                <div id="oneTips"></div>
-                <button id="oneMore">More</button>
-            </div>
         </div>
+    </div>
+</article>
+<article id="passed" style="display: none;">
+    <div>
+        <select id="subject"></select>
+        <select id="teacher"></select>
+        <select id="grade"></select>
+    </div>
+    <div>
+        <div id="zeroPassed"></div>
+        <div id="zeroTips"></div>
+        <button id="zeroMore">More</button>
+    </div>
+    <div>
+        <div id="onePassed"></div>
+        <div id="oneTips"></div>
+        <button id="oneMore">More</button>
     </div>
 </article>
 <article id="video" style="display: none;">
@@ -63,12 +70,13 @@
         <tbody id="day"></tbody>
     </table>
 </article>
-<article id="future-note" style="display: none;">
+<article id="futureNote" style="display: none;">
     <div class="goBack"></div>
 </article>
 
 <template id="playing-template"></template>
 <template id="future-template"></template>
+
 <template id="passed-template"></template>
 
 <template id="day-template">
@@ -95,9 +103,10 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    var teachers = []
-    var grades = []
-    var course = []
+    //{..., teachers: [], grades: [], playings: [], futures: [], ...}
+    var subjects = []
+
+    var passed = []
 
     var courseTable = [
         {day: '一', date: '', items: []},
@@ -117,103 +126,74 @@
                         //
                     })
 
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers/teachers',
-                        success: function(ts) {
-                            teachers = ts
-                            //fill to teachers choice
-                        }
-                    })
+                    var now = Date.now()
 
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers/grades',
-                        success: function(gs) {
-                            grades = gs
-                            //fill to grades choice
-                        }
-                    })
-
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/subjects',
+                        url: '/api/schedulers?filter=' + JSON.stringify({
+                            subjectId: subjects[0].id,
+                            endTime: '> ' + now
+                        }),
                         dataType: 'json',
-                        success: function (subjects) {
+                        success: function (zeroSchedulers) {
+                            subjects[0].playing = zeroSchedulers[0]
+                            subjects[0].futures = zeroSchedulers[1]
+                            state.adjustData(0)
+                            state.oneFuture.data = subjects[0].futures
+                            state.onePlaying.data = subjects[0].playing
+                            state.refreshState(0)
                             $.ajax({
                                 type: 'get',
-                                url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                                url: '/api/schedulers?filter=' + JSON.stringify({
+                                    subjectId: subjects[1].id,
+                                    endTime: '> ' + now
+                                }),
                                 dataType: 'json',
-                                success: function (zeroSchedulers) {
-                                    course[0] = zeroSchedulers
-                                    state.removeNullPassed(0)
-                                    state.adjustData(0)
-                                    state.zeroPassed.data = course[0][2]
-                                    state.zeroFuture.data = course[0][1]
-                                    state.zeroPlaying.data = course[0][0]
-                                    state.refreshState(0)
-                                    $.ajax({
-                                        type: 'get',
-                                        url: '/api/schedulers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                        dataType: 'json',
-                                        success: function (oneSchedulers) {
-                                            course[1] = oneSchedulers
-                                            state.removeNullPassed(1)
-                                            state.adjustData(1)
-                                            state.onePassed.data = course[1][2]
-                                            state.oneFuture.data = course[1][1]
-                                            state.onePlaying.data = course[1][0]
-                                            state.refreshState(1)
-                                            var oneFirst = true
-                                            if (course[0][0].length > 0) {
-                                                if (course[1][0].length > 0) {
-                                                    if (+course[0][0][0].startTime < +course[1][0][0].startTime) {
-                                                        oneFirst = false
-                                                    }
-                                                } else {
-                                                    oneFirst = false
-                                                }
-                                            } else if (course[0][1].length > 0) {
-                                                if (course[1][1].length > 0) {
-                                                    if (+course[0][1][0].startTime < +course[1][1][0].startTime) {
-                                                        oneFirst = false
-                                                    }
-                                                } else {
-                                                    oneFirst = false
-                                                }
-                                            } else {
+                                success: function (oneSchedulers) {
+                                    subjects[1].playing = oneSchedulers[0]
+                                    subjects[1].futures = oneSchedulers[1]
+                                    state.adjustData(1)
+                                    state.oneFuture.data = subjects[1].futures
+                                    state.onePlaying.data = subjects[1].playing
+                                    state.refreshState(1)
+
+                                    var oneFirst = true
+                                    if (subjects[0].playing.length > 0) {
+                                        if (subjects[1].playing.length > 0) {
+                                            if (+subjects[0].playing[0].startTime < +subjects[1].playing[0].startTime) {
                                                 oneFirst = false
                                             }
-                                            if (oneFirst) {
-                                                $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
-                                                //$('#subjects').find('a:first').tab('show') // Select first tab
-                                                //$('#subjects').find('a:last').tab('show') // Select last tab
-                                                //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
-                                            }
-
-                                            setInterval(function () {
-                                                state.refreshState(0)
-                                                state.refreshState(1)
-                                            }, 60 * 1000)
+                                        } else {
+                                            oneFirst = false
                                         }
-                                    })
+                                    } else if (subjects[0].futures.length > 0) {
+                                        if (subjects[1].futures.length > 0) {
+                                            if (+subjects[0].futures[0].startTime < +subjects[1].futures[0].startTime) {
+                                                oneFirst = false
+                                            }
+                                        } else {
+                                            oneFirst = false
+                                        }
+                                    } else {
+                                        oneFirst = false
+                                    }
+                                    if (oneFirst) {
+                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                                        //$('#subjects').find('a:first').tab('show') // Select first tab
+                                        //$('#subjects').find('a:last').tab('show') // Select last tab
+                                        //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
+                                    }
+
+                                    setInterval(function () {
+                                        state.refreshState(0)
+                                        state.refreshState(1)
+                                    }, 60 * 1000)
                                 }
                             })
-                        },
-                        error: function (xhr) {
-                            alert('back-end not response, places retry')
                         }
                     })
 
                     state.main.isInit = true
-                }
-            },
-            removeNullPassed: function (subjectIndex) {
-                for (var i = 0; i < course[subjectIndex][2].length; ++i) {
-                    if (!course[subjectIndex][2][i].cdnLink || course[subjectIndex][2][i].cdnLink == '') {
-                        course[subjectIndex][2].splice(i, 1)
-                        --i
-                    }
                 }
             },
             getGrade: function (gradeValue) {
@@ -238,31 +218,39 @@
                 return result
             },
             adjustData: function (subjectIndex) {
-                for (var i = 0; i < course[subjectIndex].length; ++i) {
-                    for (var j = 0; j < course[subjectIndex][i].length; ++j) {
-                        course[subjectIndex][i][j].grade = state.getGrade(course[subjectIndex][i][j].grade)
-                        course[subjectIndex][i][j].startTime = Date.parse(course[subjectIndex][i][j].startTime.replace('-', '/'))
-                        course[subjectIndex][i][j].endTime = Date.parse(course[subjectIndex][i][j].endTime.replace('-', '/'))
-                        course[subjectIndex][i][j].year = course[subjectIndex][i][j].startTime.getFullYear()
-                        course[subjectIndex][i][j].month = course[subjectIndex][i][j].startTime.getMonth() + 1
-                        course[subjectIndex][i][j].day = course[subjectIndex][i][j].startTime.getDate()
-                    }
+                for (var i = 0; i < subjects[subjectIndex].playing.length; ++i) {
+                    var item = subjects[subjectIndex].playing[i]
+                    item.grade = state.getGrade(item.grade)
+                    item.startTime = Date.parse(item.startTime.replace('-', '/'))
+                    item.endTime = Date.parse(item.endTime.replace('-', '/'))
+                    item.year = item.startTime.getFullYear()
+                    item.month = item.startTime.getMonth() + 1
+                    item.date = item.startTime.getDate()
+                }
+                for (var i = 0; i < subjects[subjectIndex].futures.length; ++i) {
+                    var item = subjects[subjectIndex].playing[i]
+                    item.grade = state.getGrade(item.grade)
+                    item.startTime = Date.parse(item.startTime.replace('-', '/'))
+                    item.endTime = Date.parse(item.endTime.replace('-', '/'))
+                    item.year = item.startTime.getFullYear()
+                    item.month = item.startTime.getMonth() + 1
+                    item.date = item.startTime.getDate()
                 }
             },
             refreshState: function (subjectIndex) {
                 var now = new Date()
-                for (var i = 0; i < course[subjectIndex][0].length; ++i) {
-                    var endTime = course[subjectIndex][0][i].endTime
+                for (var i = 0; i < subjects[subjectIndex].playing.length; ++i) {
+                    var endTime = subjects[subjectIndex].playing[i].endTime
                     if (+endTime < +now) {
-                        course[subjectIndex][0].splice(i, 1)
+                        subjects[subjectIndex].playing.splice(i, 1)
                     }
                 }
-                for (var i = 0; i < course[subjectIndex][1].length; ++i) {
-                    var startTime = course[subjectIndex][0][i].startTime
+                for (var i = 0; i < subjects[subjectIndex].futures.length; ++i) {
+                    var startTime = subjects[subjectIndex].futures[i].startTime
                     startTime = new Date(+startTime - 15 * 60 * 1000)
                     if (+startTime < +now) {
-                        course[subjectIndex][0].unshift(course[subjectIndex][1][i])
-                        course[subjectIndex][1].splice(i, 1)
+                        subjects[subjectIndex].playing.unshift(subjects[subjectIndex].futures[i])
+                        subjects[subjectIndex].futures.splice(i, 1)
                     }
                 }
                 switch (subjectIndex) {
@@ -282,20 +270,6 @@
                         break
                 }
             },
-            showPassed: function (state, moreId, tips) {
-                proc(state)
-                document.getElementById(moreId).style.display = 'none'
-                var tips = document.getElementById(tips)
-                tips.innerHTML = '没有更多视频，敬请期待'
-            },
-            zeroPassed: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null,
-                show: function () {
-                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')
-                }
-            },
             zeroFuture: {
                 container: document.getElementById(''),
                 template: document.getElementById(''),
@@ -305,14 +279,6 @@
                 container: document.getElementById(''),
                 template: document.getElementById(''),
                 data: null
-            },
-            onePassed: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null,
-                show: function () {
-                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')
-                }
             },
             oneFuture: {
                 container: document.getElementById(''),
@@ -329,7 +295,85 @@
             gradeChoice: document.getElementById('gradeChoice'),
             keywords: document.getElementById('keywords'),
             search: function() {
-                //
+                //filter the playing and future data via the filter element state
+            }
+        },
+        passed: {
+            isInit: false,
+            init: function() {
+                if (!state.passed.isInit) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                        success: function(ts) {
+                            subjects[0].teachers = ts
+                            $.ajax({
+                                type: 'get',
+                                url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
+                                success: function(ts) {
+                                    subjects[1].teachers = ts
+                                    //fill to teachers choice
+                                }
+                            })
+                        }
+                    })
+
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                        success: function(gs) {
+                            subjects[0].grades = gs
+                            $.ajax({
+                                type: 'get',
+                                url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[1].id}),
+                                success: function(gs) {
+                                    subjects[1].grades = gs
+                                    //fill to grades choice
+                                }
+                            })
+                        }
+                    })
+
+                    var now = Date.now()
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers?filter=' + JSON.stringify({
+                            cdnLink: 'IS NOT NULL',
+                            endTime: '< ' + +now
+                        }),
+                        dataType: 'json',
+                        success: function (schedulers) {
+                            passed = schedulers[2]
+                        }
+                    })
+
+                    state.passed.isInit = true
+                }
+            },
+            search: function() {
+                //filter the passed data via the filter element state
+            },
+            showPassed: function (state, moreId, tips) {
+                proc(state)
+                document.getElementById(moreId).style.display = 'none'
+                var tips = document.getElementById(tips)
+                tips.innerHTML = '没有更多视频，敬请期待'
+            },
+            zeroPassed: {
+                container: document.getElementById(''),
+                template: document.getElementById(''),
+                data: null,
+                show: function () {
+                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')
+                }
+            },
+            onePassed: {
+                container: document.getElementById(''),
+                template: document.getElementById(''),
+                data: null,
+                show: function () {
+                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')
+                }
             }
         },
         scheduler: {
@@ -419,15 +463,27 @@
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
 
-            $('[data-article]').on('click', function(e) {
+            $.ajax({
+                type: 'get',
+                url: '/api/subjects',
+                dataType: 'json',
+                success: function (ss) {
+                    subjects = ss
+
+                    state['main'].init()
+                },
+                error: function (xhr) {
+                    alert('back-end not response, places retry')
+                }
+            })
+
+            $(document).on('click', '[data-article]', function(e) {
                 state.currentArticle.style.display = 'none'
                 var id = e.target.dataset.article
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
                 state[id].init()
-            }, false)
-
-            state['main'].init()
+            })
         }
     }
 

@@ -146,6 +146,8 @@
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
 
+            var subjectId = g.getUrlParameter('subjectId')
+
             $.ajax({
                 type: 'GET',
                 url: '/api/subjects',
@@ -191,24 +193,56 @@
                 }
             })
 
-            $('[data-article]').on('click', function (e) {
+            $(document).on('click', '[data-article]', function (e) {
                 state.currentArticle.style.display = 'none'
                 var id = e.target.dataset.article
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
                 state[id].init()
-            }, false)
+            })
+
+            state.volumes.subjectId = subjectId
+            state['volumes'].init()
         },
         volumes: {
-            isInit: false,
+            parentId: 1,
             init: function () {
-                state.volumes.isInit = true
+                state.volumes.value = state.subject.getById(state.volumes.parentId)
+                state.volumes.show()
+            },
+            changeId: function(subjectId) {
+                if (state.volumes.parentId != subjectId) {
+                    state.volumes.parentId = subjectId
+                    state.volumes.value = state.subject.getById(state.volumes.parentId)
+                    state.volumes.show()
+                }
+            },
+            value: null,
+            show: function() {
+                //bind subject's volume to this article
+
+                //step1: clear the article
+
+                //step2: rebind the article
             }
         },
         knowledgePoints: {
-            isInit: false,
-            init: function () {
-                state.knowledgePoints.isInit = true
+            parentId: null,
+            init: function () {},
+            changeId: function(volumeId) {
+                if (state.volumes.parentId != volumeId) {
+                    state.volumes.parentId = volumeId
+                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId)
+                    state.knowledgePoints.show()
+                }
+            },
+            value: null,
+            show: function() {
+                //bind volume's knowledgePoints to this article
+
+                //step1: clear the article
+
+                //step2: rebind the article
             }
         },
         knowledgePoint: {
@@ -221,13 +255,40 @@
                         dataType: 'json',
                         success: function (data) {
                             state.knowledgePoint.value.contents = data
+                            state.knowledgePoint.show()
                         }
                     })
+                } else {
+                    state.knowledgePoint.show()
                 }
             },
-            id: 0,
+            parentId: 0,
+            changeId: function(knowledgePointId) {
+                if (state.knowledgePoint.parentId != knowledgePointId) {
+                    state.knowledgePoint.parentId = knowledgePointId
+                    state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.parentId)
+                    if (!state.knowledgePoint.value.contents) {
+                        $.ajax({
+                            type: 'get',
+                            url: 'api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
+                            dataType: 'json',
+                            success: function (data) {
+                                state.knowledgePoint.value.contents = data
+                                state.knowledgePoint.show()
+                            }
+                        })
+                    } else {
+                        state.knowledgePoint.show()
+                    }
+                }
+            },
             value: null,
             show: function() {
+                //bind knowledgePoint's contents to this article
+
+                //step1: clear the article
+
+                //step2: rebind the article
                 var value = state.knowledgePoint.value
                 proc({
                     templateId: 'title-template',

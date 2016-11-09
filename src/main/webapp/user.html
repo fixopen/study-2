@@ -241,18 +241,18 @@
     var user = null
 
     var state = {
-        currentArticle: document.getElementById('volumes'),
+        currentArticle: document.getElementById('user'),
         init: function () {
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
 
-            $('[data-article]').on('click', function (e) {
+            $(document).on('click', '[data-article]', function (e) {
                 state.currentArticle.style.display = 'none'
                 var id = e.target.dataset.article
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
                 state[id].init()
-            }, false)
+            })
 
             state['user'].init()
         },
@@ -265,10 +265,23 @@
                         dataType: 'json',
                         success: function (u) {
                             user = u
+                            proc({
+                                templateId: state.user.template,
+                                data: user,
+                                container: state.user.container
+                            })
                         }
                     })
+                } else {
+                    proc({
+                        templateId: state.user.template,
+                        data: user,
+                        container: state.user.container
+                    })
                 }
-            }
+            },
+            container: document.getElementById(''),
+            template: getTemplate('')
         },
         cards: {
             init: function() {
