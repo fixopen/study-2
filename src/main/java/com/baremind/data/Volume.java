@@ -21,10 +21,10 @@ public class Volume {
     private Long subjectId;
 
     @Column(name = "grade")
-    private int grade;
+    private Integer grade;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "image_id")
     private Long imageId;
@@ -56,12 +56,12 @@ public class Volume {
         this.grade = grade;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String title) {
+        this.name = title;
     }
 
     public Long getImageId() {
