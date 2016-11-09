@@ -1,10 +1,7 @@
 package com.baremind;
 
 import com.baremind.algorithm.Securities;
-import com.baremind.data.Card;
-import com.baremind.data.Session;
-import com.baremind.data.User;
-import com.baremind.data.WechatUser;
+import com.baremind.data.*;
 import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -71,6 +68,128 @@ public class PublicAccounts {
             AccessToken t = new Gson().fromJson(responseBody, AccessToken.class);
             accessToken = t.access_token;
         }
+    }
+
+
+    public static class Ticket {
+        private String ticket;
+        private int expires_in;
+    }
+
+    public String sign(String[] origin) {
+        String sign = "";
+        Arrays.sort(origin);
+        String v = "";
+        for (int i = 0; i < origin.length; ++i) {
+            v += origin[i];
+        }
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(v.getBytes("utf-8"));
+            sign = Hex.bytesToHex(digest);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return sign;
+    }
+
+    public static class Config {
+        private String appId;
+        private String timestamp;
+        private String nonceStr;
+        private String signature;
+
+        public String getAppId() {
+            return appId;
+        }
+
+        public void setAppId(String appId) {
+            this.appId = appId;
+        }
+
+        public String getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(String timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public String getNonceStr() {
+            return nonceStr;
+        }
+
+        public void setNonceStr(String nonceStr) {
+            this.nonceStr = nonceStr;
+        }
+
+        public String getSignature() {
+            return signature;
+        }
+
+        public void setSignature(String signature) {
+            this.signature = signature;
+        }
+    }
+
+    @GET
+    @Path("config/{url}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getConfig(@PathParam("url") String url) {
+        Response result = Response.status(500).build();
+        url = url.replace(",","/");
+
+        String ticket = Properties.getPropertyValue("ticket");
+        String timestamp = Long.toString(new Date().getTime());
+        String nonceStr = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            try {
+                byte[] digest = md.digest(new Date().toString().getBytes("utf-8"));
+                nonceStr = Hex.bytesToHex(digest);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        String[] params = {ticket, timestamp, nonceStr, url};
+        String sign = sign(params);
+        Config config = new Config();
+        config.setAppId(appID);
+        config.setTimestamp(timestamp);
+        config.setNonceStr(nonceStr);
+        config.setSignature(sign);
+         //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
+        result = Response.ok(config).build();
+        return result;
+    }
+
+
+
+
+    @GET
+    @Path("ticket")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void refreshTicket() {
+        //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+
+        prepare();
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+                .path("cgi-bin/ticket/getticket")
+                .queryParam("access_token", accessToken)
+                .queryParam("type", "jsapi")
+                .request().get();
+        String body = response.readEntity(String.class);
+        if (body.contains("ticket")) {
+            //{"access_token":"ACCESS_TOKEN","expires_in":7200}
+            Ticket ticket = new Gson().fromJson(body, Ticket.class);
+            Properties.setProperty("ticket", ticket.ticket);
+        }
+        //if (r.errCode == 40012) {
+        //refreshTicket();
+        //}
     }
 
     private static void prepare() {

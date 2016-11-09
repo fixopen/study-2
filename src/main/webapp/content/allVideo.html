@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>直播课 </title>
-    <!-- 禁止拉伸和全屏设置 -->
+    <title>直播课</title>
+    <!-- 禁止拉伸和全屏设置-->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait">
 
-    <!-- 引入样式表 -->
+    <!-- 引入样式表-->
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="allVideo.css">
@@ -33,11 +33,11 @@
             <ul class="subject-tab-box">
                 <li id="ct" class="subject-tab-li cur zb-cur">
                     语文
-                    <span class="zb-video">（<i id="Cc"></i>）</span>
+                    <span class="zb-video">(<span id="Cc"></span>)</span>
                 </li>
                 <li id="mt" class="subject-tab-li zb-cur">
                     数学
-                    <span class="zb-video">（<i id="Mc"></i>）</span>
+                    <span class="zb-video">(<span id="Mc"></span>)</span>
                 </li>
             </ul>
             <div class="subject-line"></div>
@@ -48,29 +48,29 @@
                 <ul class="video-list" id="chinese-currentVideoList"></ul>
                 <ul class="video-list" id="chinese-futureVideoList"></ul>
                 <ul class="video-list" id="chinese-passedVideoList"></ul>
-                <div class="more">
-                    <div class="pullUp">
-                        <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>
-                    </div>
-                    <div class="video-all" id="btn1">
-                        查看往期录播视频
-                    </div>
-                </div>
+                <!--<div class="more">-->
+                    <!--<div class="pullUp">-->
+                        <!--<span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>-->
+                    <!--</div>-->
+                    <!--<div class="video-all" id="btn1">-->
+                        <!--查看往期录播视频-->
+                    <!--</div>-->
+                <!--</div>-->
             </li>
             <li id="mcc" class="subject-list">
                 <ul class="video-list" id="math-currentVideoList"></ul>
                 <ul class="video-list" id="math-futureVideoList"></ul>
                 <ul class="video-list" id="math-passedVideoList"></ul>
-                <div class="more">
-                    <div class="pullUp">
-                        <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp">没有更多直播，点击查看往期录播视频</span>
-                    </div>
-                    <div class="video-all" id="btn">
-                        查看往期录播视频
-                    </div>
-                </div>
             </li>
         </ul>
+        <div class="before_video">
+            <a class="bevid_btn" href="allVideo0.html">往期回放</a>
+            <div class="pullUp">
+                <span class="pullUpIcon"></span>
+                <span class="pullUpLabel">除了直播，还有精彩回放等着您哦！</span>
+                <span class="pullUpLabel" style="display: none;">没有更多了，看看往期回放吧！</span>
+            </div>
+        </div>
     </div>
 </div>
 <template id="video-template">
@@ -83,80 +83,9 @@
                         <img src="../img/zb-live.png" alt="">
                         <!--图片会随着具体情况改变-->
                     </span>
-                    <span class="live-timeZB">2016-11-03  18:30:00</span>
+                    <span class="live-timeZB">${startTime}</span>
                     <div class="play-btn">
                         <img src="../img/live-play.png" alt="">
-                        <!--图片会随着具体情况改变-->
-                    </div>
-                    <div class="course-box">
-                        <h3 class="live-title">
-                            <span>${title}</span>
-                        </h3>
-                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>${description}
-                        </marquee>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="course-intro">
-            <div class="course-intro-in">
-                <div class="course-speaker">
-                    <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
-                    <!--时间需要服务器自己计算-->
-                    <div class="fl">
-                        <i>${teacher}</i>老师主讲<br>
-                        <i>${startTime}</i>
-                    </div>
-                    <div class="fr">
-                        <div>${grade}</div>
-                        <div class="course-detail-btn fr">
-                            课程详情<br>
-                            <img src="../img/xiala-btn.png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="course-detail">
-                    <h3 class="sml-tit brief1">
-                        <img src="../img/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p class="tim2">${description}</p>
-
-                    <h3 class="sml-tit brief2">
-                        <img src="../img/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2">${teacherDescription}</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="../img/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>${startTime}</p>
-
-                    <!--<h3 class="sml-tit brief4">-->
-                    <!--<img src="../img/cksc_btn.png" alt="">-->
-                    <!--课程时长-->
-                    <!--</h3>-->
-                    <!--<p>${courseDuration}</p>-->
-                </div>
-            </div>
-        </div>
-    </li>
-</template>
-<template id="passed-video-template">
-    <li class="video-list-li">
-        <div class="video-list-play">
-            <a href="video.html?src=${cdnLink}">
-                <img src="${cover}" alt="">
-                <div class="video-list-mask">
-                        <span class="live-radio">
-                            <img src="../img/zb-lu.png" alt="">
-                            <!--图片会随着具体情况改变-->
-                        </span>
-                    <div class="play-btn">
-                        <img src="../img/lu-play.png" alt="">
                         <!--图片会随着具体情况改变-->
                     </div>
                     <div class="course-box">
@@ -205,12 +134,67 @@
                         上线时间
                     </h3>
                     <p>${startTime}</p>
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
+<template id="passed-video-template">
+    <li class="video-list-li">
+        <div class="video-list-play">
+            <a class="passedVideo" href="video.html?src=${cdnLink}">
+                <img src="${cover}" alt="">
+                <div class="video-list-mask">
+                        <span class="live-radio">
+                            <img src="../img/zb-lu.png" alt="">
+                        </span>
+                    <div class="play-btn">
+                        <img src="../img/lu-play.png" alt="">
+                    </div>
+                    <div class="course-box">
+                        <h3 class="live-title">
+                            <span>${title}</span>
+                        </h3>
+                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
+                                 onmouseout=this.start()>${description}
+                        </marquee>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course-intro-in">
+                <div class="course-speaker">
+                    <div class="fl">
+                        <i>${teacher}</i>老师主讲<br>
+                        <i>${startTime}</i>开讲
+                    </div>
+                    <div class="fr">
+                        <div>${grade}</div>
+                        <div class="course-detail-btn fr">
+                            课程详情<br>
+                            <img src="../img/xiala-btn.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="course-detail">
+                    <h3 class="sml-tit brief1">
+                        <img src="../img/abc.png" alt="">
+                        课程简介
+                    </h3>
+                    <p class="tim2">${description}</p>
 
-                    <!--<h3 class="sml-tit brief4">-->
-                    <!--<img src="../img/cksc_btn.png" alt="">-->
-                    <!--课程时长-->
-                    <!--</h3>-->
-                    <!--<p>${courseDuration}</p>-->
+                    <h3 class="sml-tit brief2">
+                        <img src="../img/zjr_btn.png" alt="">
+                        主讲人简介
+                    </h3>
+                    <p class="tim2">${teacherDescription}</p>
+
+                    <h3 class="sml-tit brief3">
+                        <img src="../img/sxsj_btn.png" alt="">
+                        上线时间
+                    </h3>
+                    <p>${startTime}</p>
                 </div>
             </div>
         </div>
@@ -224,7 +208,7 @@
                 <div class="video-list-mask">
                         <span class="live-radio">
                             <img src="../img/zb-wait.png" alt="">
-                            <!--图片会随着具体情况改变-->
+                            <!--鍥剧墖浼氶殢鐫€鍏蜂綋鎯呭喌鏀瑰彉-->
                         </span>
                     <div class="waity-play">${startTime}开讲
                     </div>
@@ -242,8 +226,6 @@
         <div class="course-intro">
             <div class="course-intro-in">
                 <div class="course-speaker">
-                    <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
-                    <!--时间需要服务器自己计算-->
                     <div class="fl">
                         <i>${teacher}</i>老师主讲<br>
                         <i>${startTime}</i>开讲
@@ -284,14 +266,9 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script type="text/javascript">
-    curseDetailTap(); //点击“课程详情”
+    curseDetailTap();
     var userId = g.getUrlParameter('userid')
     g.setCookie('userId', userId)
-    g.ajaxProcess('POST', 'api/logs', [],{
-        "objectType": "video",
-        "objectId":"schedulerId",
-        "action":"review"
-    })
     var course = []
 
     var getGrade = function (gradeValue) {
@@ -309,9 +286,9 @@
         } else if (gradeValue == 6) {
             result = '六年级'
         } else if (gradeValue == 20) {
-            result = '低年级'
+            result = '1-2年级'
         } else {
-            result = '高年级'
+            result = '3-6年级'
         }
         return result
     }
@@ -327,9 +304,9 @@
             var endSecond = course[subject][0][i].endTime.substring(17, 19)
             var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
             course[subject][i].type = 'current'
-            if (+ET < +now) {//对于Date类型的变量，前面加+表示转换为其内部数值。
+            if (+ET < +now) {
                 course[subject][0][i].type = 'passed'
-                course[subject][0].splice(i, 1)//方法可删除从 index 处开始的零个或多个元素，并且用参数列表中声明的一个或多个值来替换那些被删除的元素。
+                course[subject][0].splice(i, 1)
             }
         }
         for (var i = 0; i < course[subject][1].length; ++i) {
@@ -363,17 +340,17 @@
     ], null, function (result) {
         course[0] = result.data
         var Cc = document.getElementById('Cc')
-        Cc.innerHTML =course[0][0].length+course[0][1].length
+        Cc.innerHTML = course[0][0].length + course[0][1].length
         g.ajaxProcess('GET', '/api/schedulers?filter={"subjectId":2}', [
             {name: 'Accept', value: 'application/json'}
         ], null, function (result) {
             course[1] = result.data
             var Mc = document.getElementById('Mc')
-            Mc.innerHTML =course[1][0].length+course[1][1].length
+            Mc.innerHTML = course[1][0].length + course[1][1].length
             refreshChineseState()
             refreshMathState()
 
-            var removeNullPassed = function(subject) {
+            var removeNullPassed = function (subject) {
                 for (var i = 0; i < course[subject][2].length; ++i) {
                     if (!course[subject][2][i].cdnLink || course[subject][2][i].cdnLink == '') {
                         course[subject][2].splice(i, 1)
@@ -384,7 +361,7 @@
             removeNullPassed(0)
             removeNullPassed(1)
 
-            var adjustData = function(subject) {
+            var adjustData = function (subject) {
                 for (var i = 0; i < course[subject].length; ++i) {
                     for (var j = 0; j < course[subject][i].length; ++j) {
                         var m = moment().year(course[subject][i][j].year).week(course[subject][i][j].week).day(course[subject][i][j].day)
@@ -397,18 +374,17 @@
             adjustData(0)
             adjustData(1)
 
-            function showPassed(subject, state, moreId, tips) {
-                proc({
-                    container: state.passedContainer,
-                    data: course[subject][2],
-                    template: state.passedTemplate
-                })
-                document.getElementById(moreId).style.display = "none";
-                var va = document.getElementById(tips);
-                va.innerHTML = '没有更多视频，敬请期待'
-                //$("#pullUp1").text("没有更多视频，敬请期待");
-                curseDetailTap(); //点击“课程详情”
-            }
+//            function showPassed(subject, state, moreId, tips) {
+//                proc({
+//                    container: state.passedContainer,
+//                    data: course[subject][2],
+//                    template: state.passedTemplate
+//                })
+//                document.getElementById(moreId).style.display = "none";
+//                var va = document.getElementById(tips);
+//                va.innerHTML = '没有更多视频，敬请期待'
+//                curseDetailTap();
+//            }
 
             var state = {
                 currentContainer: document.getElementById('chinese-currentVideoList'),
@@ -419,10 +395,10 @@
                 passedTemplate: getTemplate('passed-video-template')
             }
 
-            var moreVideo = document.getElementById('btn1');
-            moreVideo.addEventListener('click', function(e) {
-                showPassed(0, state, 'btn1', 'pullUp1')
-            }, false);
+//            var moreVideo = document.getElementById('btn1');
+//            moreVideo.addEventListener('click', function (e) {
+//                showPassed(0, state, 'btn1', 'pullUp1')
+//            }, false);
 
             proc({
                 container: state.currentContainer,
@@ -443,10 +419,10 @@
                 futureTemplate: getTemplate('future-video-template'),
                 passedTemplate: getTemplate('passed-video-template')
             }
-            var moreMathVideo = document.getElementById('btn');
-            moreMathVideo.addEventListener('click', function(e) {
-                showPassed(1, state2, 'btn', 'pullUp')
-            }, false);
+//            var moreMathVideo = document.getElementById('btn');
+//            moreMathVideo.addEventListener('click', function (e) {
+//                showPassed(1, state2, 'btn', 'pullUp')
+//            }, false);
 
             proc({
                 container: state2.currentContainer,
@@ -489,9 +465,9 @@
                 })
             }, 60 * 1000)
 
-            curseDetailTap(); //点击“课程详情”
+            curseDetailTap();
 
-            var mathFirst = true
+            var mathFirst = false
             if (course[0][1].length > 0) {
                 if (course[1][1].length > 0) {
                     var chineseStartTime = course[0][1][0].startTime
@@ -511,7 +487,16 @@
             }
 
             subjectTab()
+            $(document).on('click', '.passedVideo', function (e) {
+                g.ajaxProcess('POST', '/api/logs', [], {
+                    "objectType": "video",
+                    "objectId": e.target.dataset.id,
+                    "action": "review"
+                })
+            })
+            curseDetailTap();
         })
+        curseDetailTap();
     })
 </script>
 </body>

@@ -4,113 +4,129 @@
 * @Last Modified by:   User
 * @Last Modified time: 2016-11-02 14:16:03
 */
-.convenient{
-	position: absolute;
-	top: 2.7%;
-	left: 50%;
-	-webkit-transform: translateX(-50%);
-	-ms-transform: translateX(-50%);
-	-o-transform: translateX(-50%);
-	transform: translateX(-50%);
-	display: block;
-	width: 92%;
-	background: url('../img/schedule.png') no-repeat center top;
-	-webkit-background-size: 100% 100%;
-	background-size: 100% 100%;
-	padding: 14.5% 5.3% 6.5%;
-	box-sizing: border-box;
-	overflow: hidden;
-	text-align: center;
+.convenient {
+    position: absolute;
+    top: 2.7%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+    display: block;
+    width: 92%;
+    background: url('../img/schedule.png') no-repeat center top;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    padding: 10.5% 4.3% 4.5%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: center;
 }
-.week{
-	position: absolute;
-	top: 5%;
-	left: 28.3%;
-	font-size: 1rem;
-	color: #000;
-	font-family: "Microsoft YaHei";
+
+.week {
+    position: absolute;
+    top: 3%;
+    left: 28.3%;
+    font-size: 1rem;
+    color: #000;
+    font-family: "Microsoft YaHei";
 }
-.schedule-table{
-	width: 100%;
-	height: 100%;
+
+.schedule-table {
+    width: 100%;
+    height: 100%;
 }
-.schedule-table thead tr{
-	font-size: 0.75rem;
-	border-bottom: 0.125rem solid #ea875f;
-	background-color: #fff;
+
+.schedule-table thead tr {
+    font-size: 0.75rem;
+    border-bottom: 0.125rem solid #ea875f;
+    background-color: #fff;
 }
-.schedule-table thead th,.schedule-table td{
-	border-left: 0.09375rem solid #ea875f;
+
+.schedule-table thead th, .schedule-table td {
+    border-left: 0.09375rem solid #ea875f;
 }
-.schedule-table thead{
-	height: 1.8125rem;
+
+.schedule-table thead {
+    height: 1.8125rem;
 }
-.schedule-table tr{
-	height: 1.25rem;
+
+.schedule-table tr {
+    height: 1.25rem;
 }
-.line{
-	border-bottom: 0.1rem solid #ea875f;
+
+.line {
+    border-bottom: 0.1rem solid #ea875f;
 }
-.schedule-table td{
-	font-size: 0.6875rem;
-	color: #371f1f;
-	text-align: center;
+
+.schedule-table td {
+    font-size: 0.6875rem;
+    color: #371f1f;
+    text-align: center;
 }
-.schedule-table td:first-child{
-	border-left: none;
-	font-size: 0.75rem;
+
+.schedule-table td:first-child {
+    border-left: none;
+    font-size: 0.75rem;
 }
-.schedule-table thead th:first-child{
-	width: 4.1875rem;
-	height: 1.8125rem;
-	background: url('../img/week_date.png') no-repeat center;
-	-webkit-background-size: contain;
-	background-size: contain;
-	border-left: none;
+
+.schedule-table thead .weekDay{
+    width: 4.1875rem;
+    height: 1.8125rem;
+    background: url('../img/week_date.png') no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+    border-left: none;
 }
-.schedule-table1 tr th:first-child{
-	background: url('../img/time.png') no-repeat center;
-	-webkit-background-size: 1.375rem 0.75rem;
-	background-size: 1.375rem 0.75rem;
-}
-.schedule-table tr th:nth-child(2){
-	background: url('../img/nianji.png') no-repeat center;
-	-webkit-background-size: 2.96875rem 0.6875rem;
-	background-size: 2.96875rem 0.6875rem;
-	padding: 0 1.5rem;
-	box-sizing: border-box;
-}
-.schedule-table tr th:nth-child(3){
-	background: url('../img/neirong.png') no-repeat center;
-	-webkit-background-size: 2.96875rem 0.71875rem;
-	background-size: 2.96875rem 0.71875rem;
-}
-.schedule-table .week-span{
-	display: block;
-	text-align: center;
-	font-size: 0.625rem;
-}
-/*.tr-pink{*/
-	/*background-color: #ffd5ce;*/
-/*}*/
-/*.tr-white{*/
-	/*background-color: #fff;*/
-/*}*/
-/*.border-thin{*/
-	/*border-bottom: 0.0625rem solid #ea875f;*/
-/*}*/
-/*.border-thick{*/
-	/*border-bottom: 0.09375rem solid #ea875f;*/
-/*}*/
-/*.borderLeft{*/
-	/*border-left: 0.09375rem solid #ea875f!important;*/
+
+/*.schedule-table1 tr th:first-child {*/
+    /*background: url('../img/time.png') no-repeat center;*/
+    /*-webkit-background-size: 1.375rem 0.75rem;*/
+    /*background-size: 1.375rem 0.75rem;*/
 /*}*/
 
-.color:nth-child(1), .color:nth-child(3),.color:nth-child(5) {
-	background-color: #ffd5ce;
-	border-bottom: 0.0625rem solid #ea875f;
+/*.schedule-table tr th:nth-child(2) {*/
+    /*background: url('../img/nianji.png') no-repeat center;*/
+    /*-webkit-background-size: 2.96875rem 0.6875rem;*/
+    /*background-size: 2.96875rem 0.6875rem;*/
+    /*padding: 0 1.5rem;*/
+    /*box-sizing: border-box;*/
+/*}*/
+
+/*.schedule-table tr th:nth-child(3) {*/
+    /*background: url('../img/neirong.png') no-repeat center;*/
+    /*-webkit-background-size: 2.96875rem 0.71875rem;*/
+    /*background-size: 2.96875rem 0.71875rem;*/
+/*}*/
+
+.schedule-table .week-span {
+    display: block;
+    text-align: center;
+    font-size: 0.625rem;
 }
+
+/*.tr-pink{*/
+/*background-color: #ffd5ce;*/
+/*}*/
+/*.tr-white{*/
+/*background-color: #fff;*/
+/*}*/
+/*.border-thin{*/
+/*border-bottom: 0.0625rem solid #ea875f;*/
+/*}*/
+/*.border-thick{*/
+/*border-bottom: 0.09375rem solid #ea875f;*/
+/*}*/
+/*.borderLeft{*/
+/*border-left: 0.09375rem solid #ea875f!important;*/
+/*}*/
+
+.color:nth-child(1), .color:nth-child(3), .color:nth-child(5) {
+    background-color: #ffd5ce;
+    border-bottom: 0.0625rem solid #ea875f;
+}
+
 .color:nth-child(2), .color:nth-child(4) {
-	background-color: #fff;
-	border-bottom: 0.09375rem solid #ea875f;
+    background-color: #fff;
+    border-bottom: 0.09375rem solid #ea875f;
 }
