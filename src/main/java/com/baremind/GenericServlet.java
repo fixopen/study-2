@@ -1,6 +1,8 @@
 package com.baremind;
+
 import com.baremind.data.Entity;
 import com.baremind.utils.CharacterEncodingFilter;
+import com.baremind.utils.Condition;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
@@ -8,6 +10,7 @@ import com.google.gson.Gson;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -15,15 +18,64 @@ import java.util.function.BiConsumer;
 /**
  * Created by fixopen on 9/11/2016.
  */
-@Path("/")
-public class BaseServlet {
+public class GenericServlet {
+    private String[] ops = {"IS NOT ", "IS ", "< ", "<= ", "> ", ">= ", "!= ", "BETWEEN ", "IN "};
+    private String[] split(String value) {
+        String[] result = {"", "", ""};
+        for (String op: ops) {
+            if (value.startsWith(op)) {
+                result[0] = op.trim();
+                int pos = value.indexOf("::");
+                if (pos != -1) {
+                    result[1] = value.substring(op.length(), pos);
+                    result[2] = value.substring(pos + 2);
+                } else {
+                    result[1] = value.substring(op.length());
+                }
+                break;
+            }
+        }
+        return result;
+    }
+
     @GET
     @Produces("application/json")
     public <T> Response get(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter, Class<T> type) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            filterObject.forEach((key, value) -> {
+                if (value instanceof String) {
+                    String[] opAndValue = split((String)value);
+                    if (!opAndValue[0].equals("")) {
+                        Object val = null;
+                        if (!opAndValue[1].equals("NULL")) {
+                            String typeName = opAndValue[2];
+                            switch (typeName) {
+                                case "timestamp":
+                                    val = new Date(Long.parseLong(opAndValue[1]));
+                                    break;
+                                case "integer":
+                                case "int":
+                                    val = Integer.parseInt(opAndValue[1]);
+                                    break;
+                                case "long":
+                                    val = Long.parseLong(opAndValue[1]);
+                                    break;
+                                case "bool":
+                                    val = Boolean.parseBoolean(opAndValue[1]);
+                                    break;
+                                default:
+                                    val = opAndValue[1];
+                                    break;
+                            }
+                        }
+                        Condition c = new Condition(opAndValue[0], val);
+                        filterObject.put(key, c);
+                    }
+                }
+            });
             List<T> entities = JPAEntry.getList(type, filterObject);
             if (!entities.isEmpty()) {
                 result = Response.ok(new Gson().toJson(entities)).build();
@@ -50,7 +102,7 @@ public class BaseServlet {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public <T extends Entity> Response createLog(@CookieParam("userId") String userId, T entity) {
+    public <T extends Entity> Response create(@CookieParam("userId") String userId, T entity) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             entity.setId(IdGenerator.getNewId());
@@ -80,7 +132,7 @@ public class BaseServlet {
 
     @DELETE
     @Path("{id}")
-    public <T> Response deleteLog(@CookieParam("userId") String userId, @PathParam("id") Long id, Class<T> type) {
+    public <T> Response deleteById(@CookieParam("userId") String userId, @PathParam("id") Long id, Class<T> type) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -91,17 +143,4 @@ public class BaseServlet {
         }
         return result;
     }
-
-//    public static void main(String[] args) throws IOException {
-//        HttpServer server = HttpServerFactory.create("http://localhost:9998/");
-//        server.start();
-//
-//        System.out.println("Server running");
-//        System.out.println("Visit: http://localhost:9998/helloworld");
-//        System.out.println("Hit return to stop...");
-//        System.in.read();
-//        System.out.println("Stopping server");
-//        server.stop(0);
-//        System.out.println("Server stopped");
-//    }
 }
