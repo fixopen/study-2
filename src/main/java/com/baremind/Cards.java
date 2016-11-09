@@ -59,7 +59,7 @@ public class Cards {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postCSV(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+    public Response uploadCards(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             try {

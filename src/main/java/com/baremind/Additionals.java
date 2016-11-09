@@ -21,7 +21,7 @@ public class Additionals {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAdditionals(@CookieParam("userId") String userId, Additional additional) {
+    public Response createAdditional(@CookieParam("userId") String userId, Additional additional) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             additional.setId(IdGenerator.getNewId());
@@ -65,7 +65,7 @@ public class Additionals {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateAdditionals(@CookieParam("userId") String userId, @PathParam("id") Long id, Additional additional) {
+    public Response updateAdditional(@CookieParam("userId") String userId, @PathParam("id") Long id, Additional additional) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -93,5 +93,4 @@ public class Additionals {
         }
         return result;
     }
-
 }

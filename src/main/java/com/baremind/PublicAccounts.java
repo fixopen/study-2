@@ -235,7 +235,7 @@ public class PublicAccounts {
     @GET
     @Path("ticket")
     @Produces(MediaType.APPLICATION_JSON)
-    public void refreshTicket() {
+    public Response refreshTicket() {
         //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
         prepare();
         Client client = ClientBuilder.newClient();
@@ -250,6 +250,7 @@ public class PublicAccounts {
             Ticket ticket = new Gson().fromJson(body, Ticket.class);
             Properties.setProperty("ticket", ticket.ticket);
         }
+        return Response.ok().build();
         //if (r.errCode == 40012) {
         //refreshTicket();
         //}

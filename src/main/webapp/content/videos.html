@@ -95,6 +95,8 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
+    var teachers = []
+    var grades = []
     var course = []
 
     var courseTable = [
@@ -113,6 +115,24 @@
                 if (!state.main.isInit) {
                     $(document).on('click', '@@', function () {
                         //
+                    })
+
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers/teachers',
+                        success: function(ts) {
+                            teachers = ts
+                            //fill to teachers choice
+                        }
+                    })
+
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers/grades',
+                        success: function(gs) {
+                            grades = gs
+                            //fill to grades choice
+                        }
                     })
 
                     $.ajax({
@@ -305,6 +325,12 @@
                 data: null
             },
             schedulerEntry: document.getElementById('schedulerEntry'),
+            teacherChoice: document.getElementById('teacherChoice'),
+            gradeChoice: document.getElementById('gradeChoice'),
+            keywords: document.getElementById('keywords'),
+            search: function() {
+                //
+            }
         },
         scheduler: {
             isInit: false,

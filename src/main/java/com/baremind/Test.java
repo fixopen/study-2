@@ -31,7 +31,7 @@ public class Test {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getVolumes(@QueryParam("filter") @DefaultValue("") String filter) throws IOException {
+    public Response getTests(@QueryParam("filter") @DefaultValue("") String filter) throws IOException {
         //public static String main(String[] args)  {
         Response result = Response.status(401).build();
         // TODO Auto-generated method stub

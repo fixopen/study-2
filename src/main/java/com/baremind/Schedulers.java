@@ -21,7 +21,7 @@ import java.util.*;
 
 @Path("schedulers")
 public class Schedulers {
-    Long findSubjectIdByName(String k) {
+    private Long findSubjectIdByName(String k) {
         Long result = null;
         switch (k) {
             case "语文":
@@ -34,7 +34,7 @@ public class Schedulers {
         return result;
     }
 
-    Long findGradeByName(String k) {
+    private Long findGradeByName(String k) {
         Long result = null;
         switch (k) {
             case "低年级":
@@ -153,7 +153,7 @@ public class Schedulers {
     @GET //根据周查询课表
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWeekScheduler(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getSchedulerById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();

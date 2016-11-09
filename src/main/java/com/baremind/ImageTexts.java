@@ -29,11 +29,10 @@ import java.util.Objects;
  */
 @Path("image-texts")
 public class ImageTexts {
-
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postCSV(@Context HttpServletRequest request, @CookieParam("userId") String userId) {
+    public Response uploadImageText(@Context HttpServletRequest request, @CookieParam("userId") String userId) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             try {
@@ -85,7 +84,7 @@ public class ImageTexts {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createImage(@CookieParam("userId") String userId, ImageText imageText) {
+    public Response createImageText(@CookieParam("userId") String userId, ImageText imageText) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             imageText.setId(IdGenerator.getNewId());
@@ -97,7 +96,7 @@ public class ImageTexts {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImages(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getImageTexts(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -113,7 +112,7 @@ public class ImageTexts {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImageById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getImageTextById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -129,7 +128,7 @@ public class ImageTexts {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateImage(@CookieParam("userId") String userId, @PathParam("id") Long id, ImageText imageText) {
+    public Response updateImageText(@CookieParam("userId") String userId, @PathParam("id") Long id, ImageText imageText) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
