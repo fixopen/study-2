@@ -477,12 +477,26 @@
                 }
             })
 
-            $(document).on('click', '[data-article]', function(e) {
+            var switchTo = function(id) {
                 state.currentArticle.style.display = 'none'
-                var id = e.target.dataset.article
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/user.html#' + id)
                 state[id].init()
+            }
+
+            $(document).on('click', '[data-article]', function(e) {
+                var id = e.target.dataset.article
+                switchTo(id)
+            })
+
+            state['main'].init()
+            history.pushState(null, null, '/videos.html#main')
+
+            window.addEventListener('hashchange', function(e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
             })
         }
     }
