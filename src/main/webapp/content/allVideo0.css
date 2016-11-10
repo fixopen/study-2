@@ -290,7 +290,7 @@
 .tiao_jian{
 	width: 100%;
 	height: 3.40625rem;
-	margin-top: 3.75rem;
+	margin-top: 2.75rem;
 	background: url('../img/huabian.png') 0 center no-repeat;
 	background-size: 100% 100%;
 }
@@ -342,6 +342,7 @@
 	background-color: #fff;
 	padding: 0.9375rem;
 	margin-bottom: 1.25rem;
+	margin-top: -1rem;
 	border-top: 1px solid #e5e5e5;
 	border-bottom: 1px solid #e5e5e5;
 	box-sizing: border-box;
@@ -402,11 +403,13 @@
 	font-size: 2.625rem;
 	font-weight: bold;
 	margin-left: 7.0rem;
+	margin-top: 0rem;
 }
 .yuwen_p{
 	color: #010101;
 	font-size: 0.9375rem;
 	margin-left: 7.0rem;
+	margin-top: -2.625rem;
 	padding-left: 0.625rem;
 }
 .yuwen_a{
@@ -449,7 +452,7 @@
 	color: #13a9ff;
 }
 .shuxue_div2{
-	background: url('../img/shuxue.png') 1.375rem 1.375rem no-repeat;
+	background: url('..//img/shuxue.png') 1.375rem 1.375rem no-repeat;
 	background-size: 4.59375rem 4.59375rem;
 }
 .shuxue_p{

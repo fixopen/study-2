@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <title>课程表</title>
     <!-- 禁止拉伸和全屏设置 -->
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
-          id="viewport"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait">
 
@@ -22,12 +20,12 @@
 <div class="wrap">
     <div class="convenient">
         <div class="week">第<sapn id="week"></sapn>周</div>
-        <table class="schedule-table">
+        <table class="class-table">
             <thead style="width: 100%; height: 100%">
                 <tr>
                     <th style="width: 15%;" class="weekDay"></th>
                     <th style="width: 85%;" class="schedule-table1">
-                        <table style="width: 100%; height: 100% ">
+                        <table style="width: 100%; height: 100% "  class="th-table">>
                             <tr style="width: 100%; height: 100%;color: #515151;">
                                 <th style="width: 33%; height: 100%;border-left:transparent;">时间</th>
                                 <th style="width: 33%; height: 100%;">授课年级</th>
@@ -43,8 +41,8 @@
 </div>
 <template id="day-template">
     <tr class="color">
-        <td style="width: 15%;">星期${day}<br>(${date})</td>
-        <td style="width: 85%;">
+        <td style="width: 15%;">星期${day}<br><span class="week-span">(${date})</span></td>
+        <td style="width: 85%;"  class="th-table">
             <table style="width: 100%; height: 100%">
                 <tbody id="row1" data-ext-point="items" class="line"></tbody>
             </table>
