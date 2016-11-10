@@ -96,18 +96,6 @@ CREATE TABLE comments (
     update_time timestamp without time zone DEFAULT now() NOT NULL
 );
 
-CREATE TABLE englishs (
-    id bigint NOT NULL,
-    subject_no character(2) DEFAULT '04' NOT NULL,
-    grade_no character(2) DEFAULT '20' NOT NULL,
-    book_no character(2) DEFAULT '' NOT NULL,
-    page_no name DEFAULT ''::name NOT NULL,
-    unit_no character(2) DEFAULT '' NOT NULL,
-    start_time integer,
-    end_time integer
-);
-
-
 ALTER TABLE comments OWNER TO postgres;
 
 --
@@ -124,6 +112,24 @@ CREATE TABLE devices (
 
 
 ALTER TABLE devices OWNER TO postgres;
+
+--
+-- Name: englishs; Type: TABLE; Schema: public; Owner: fixopen
+--
+
+CREATE TABLE englishs (
+    id bigint NOT NULL,
+    subject_no character(2) DEFAULT '04'::bpchar NOT NULL,
+    grade_no character(2) DEFAULT '20'::bpchar NOT NULL,
+    book_no character(2) DEFAULT ''::bpchar NOT NULL,
+    page_no name DEFAULT ''::bpchar NOT NULL,
+    unit_no character(2) DEFAULT ''::bpchar NOT NULL,
+    start_time integer,
+    end_time integer
+);
+
+
+ALTER TABLE englishs OWNER TO fixopen;
 
 --
 -- Name: image_texts; Type: TABLE; Schema: public; Owner: postgres
@@ -306,7 +312,6 @@ CREATE TABLE schedulers (
     day integer,
     start_time timestamp without time zone,
     end_time timestamp without time zone,
-    duration bigint,
     subject_id bigint,
     grade integer,
     name character varying(64),
@@ -438,7 +443,7 @@ CREATE TABLE volumes (
     subject_id bigint,
     grade integer,
     name character varying(64),
-    image_id bigint,
+    cover_id bigint,
     "order" integer
 );
 
@@ -745,6 +750,9 @@ ALTER TABLE ONLY validation_codes
 ALTER TABLE ONLY videos
     ADD CONSTRAINT video__pk PRIMARY KEY (id);
 
+
+ALTER TABLE ONLY englishs
+    ADD CONSTRAINT english__pk PRIMARY KEY (id);
 
 --
 -- Name: volume__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
