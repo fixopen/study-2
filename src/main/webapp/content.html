@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/volume.css">
     <link rel="stylesheet" href="css/knowledgepoints.css">
+    <link rel="stylesheet" href="css/knowledgepoints-content.css">
 
     <!-- 引入js -->
     <script type="text/javascript" src="zepto/zepto.min.js"></script>
@@ -23,7 +24,136 @@
 
 </head>
 <body>
-<article id="volumes" class="wrap" style="display: none;">
+<article id="volumes" class="wrap"></article>
+<article id="knowledgePoints" style="display: none;">
+    <!--<h1 id="volumeTitle"></h1>-->
+    <!--<ol id="knowledge-point-contents"></ol>-->
+    <div class="wrap">
+        <div class="rain-main">
+
+            <div class="volume-title" id="volumeTitle">
+                <!--<span class="vtitle vtitle-c">${title}</span>-->
+            </div>
+
+            <div class="knowledgepoints-bg" id="whole_width">
+                <ul class="knowledgepoints-list" id="knowledge-point">
+                    <!--<li class="knowledgepoint">-->
+                        <!--<div class="knowledgepoint-left">-->
+                            <!--<a class="knowledgepoint-name"-->
+                               <!--href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">放纵不羁的竹林七贤</a>-->
+                        <!--</div>-->
+                        <!--<div class="knowledgepoint-right">-->
+                            <!--<a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>-->
+                            <!--<a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>-->
+                        <!--</div>-->
+                        <!--<img class="knowledgepoint-c-img" src="img/fenjie.png" alt="">-->
+                    <!--</li>-->
+                    <!--<li class="knowledgepoint">-->
+                        <!--<div class="knowledgepoint-left">-->
+                            <!--<a class="knowledgepoint-name" style="font-weight: bold"-->
+                               <!--href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">需要换位思考的位置关系</a>-->
+                        <!--</div>-->
+                        <!--<div class="knowledgepoint-right">-->
+                            <!--<a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>-->
+                            <!--<a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>-->
+                        <!--</div>-->
+                        <!--<img  class="knowledgepoint-m-img" src="img/fenjie1.png" alt="">-->
+                    <!--</li>-->
+                    <!--<li class="knowledgepoint-test">-->
+                        <!--<div class="knowledgepoint-left">-->
+                            <!--&lt;!&ndash;<a class="neir_pzi daTi" href="#">${title}</a>&ndash;&gt;-->
+                            <!--<a class="knowledgepoint-name test" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${volumeId}">${name}</a>-->
+                        <!--</div>-->
+                        <!--<div class="knowledgepoint-right">-->
+                            <!--<a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>-->
+                            <!--<a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>-->
+                        <!--</div>-->
+                        <!--<div class="connect">-->
+                            <!--<span class="connect-bg connect-one"></span>-->
+                            <!--<div class="split_line"></div>-->
+                            <!--<span class="connect-bg connect-two"></span>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li class="knowledgepoint">-->
+                        <!--<div class="knowledgepoint-left">-->
+                            <!--<a class="knowledgepoint-name" style="font-weight: bold"-->
+                               <!--href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">需要换位思考的位置关系</a>-->
+                        <!--</div>-->
+                        <!--<div class="knowledgepoint-right">-->
+                            <!--<a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>-->
+                            <!--<a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>-->
+                        <!--</div>-->
+                        <!--<img  class="knowledgepoint-m-img" src="img/fenjie1.png" alt="">-->
+                    <!--</li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</article>
+<article id="knowledgePoint" style="display: none;">
+    <div class="wrap" id="chinese">
+        <!--<section class="head-title" id="knowledgePointTitle">-->
+            <!--&lt;!&ndash;<span>狂睡懒觉的深林隐士孟浩然</span>&ndash;&gt;-->
+        <!--</section>-->
+        <!--<div class="rain-main">-->
+            <!--<section >-->
+                <!--<span class="origin-title">选文赏析</span>-->
+                <!--<div class="origin-bg content-bg" id="origin">-->
+                    <!--&lt;!&ndash;<p class="content-font">${content}<span>${source}</span></p>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<p class="content-font">春眠不觉晓， 处处闻啼鸟。 夜来风雨声， 花落知多少。<span>——春晓 【唐】孟浩然</span></p>&ndash;&gt;-->
+                <!--</div>-->
+            <!--</section>-->
+            <!--<section class="content-bg" id="content">-->
+                <!--&lt;!&ndash;<p class="content-font">${content}</p>&ndash;&gt;-->
+                <!--&lt;!&ndash;<p class="content-font">在唐朝，长安城遍地全是早起族。凌晨四点钟，报晓的鼓声就&ndash;&gt;-->
+                    <!--&lt;!&ndash;响彻 长安城，随着鼓声的蔓延，全城的百姓们便纷纷从梦中惊醒，在一片灰蒙蒙中，早餐店已经生火点灯做生意了&ndash;&gt;-->
+                    <!--&lt;!&ndash;；农民也提起精神，扛着锄头出门了；甚至连官员都要快马加鞭，赶在五点半前抵达皇宫大门。大家都在为了生活而忙碌&ndash;&gt;-->
+                    <!--&lt;!&ndash;，然而也有人正在呼呼大睡！这位任性的贪睡鬼，正是——孟浩然！咳，谁让人家早早就隐居山林，没有杂务缠身，自然可以高枕而卧啦。</p>&ndash;&gt;-->
+            <!--</section>-->
+            <!--<section class="content-bg" id="video"></section>-->
+            <!--<section>-->
+                <!--<span class="cg-title">闯关练习</span>-->
+            <!--</section>-->
+            <!--<section class="content-bg cg-bg">-->
+                <!--<ul id="problem" class="ul-style">-->
+                <!--</ul>-->
+            <!--</section>-->
+            <!--<section class="content-bg" id="interaction"></section>-->
+        <!--</div>-->
+        <!--<section class="mulu_bottom">-->
+            <!--<div class="muluBn_top" id="message">-->
+                <!--<button id="createComment" type="button" class="mulu_botBtn">写留言</button>-->
+                <!--<div id="commentWriter" style="display: none">-->
+                    <!--<textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>-->
+                    <!--<button type="submit" class="sub-btn" id="btn">提交</button>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<section id="comments"></section>-->
+        <!--</section>-->
+    </div>
+    <div class="wrap" id="math"></div>
+    <div class="wrap" id="math-test"></div>
+    <!--<section id="knowledgePointTitle"></section>-->
+    <!--<section>-->
+        <!--<h2>选文赏析</h2>-->
+        <!--<ul id="origin"></ul>-->
+    <!--</section>-->
+    <!--<section id="content"></section>-->
+    <!--<section id="video"></section>-->
+    <!--<section>-->
+        <!--<h2>闯关练习</h2>-->
+        <!--<dl id="problems"></dl>-->
+    <!--</section>-->
+    <!--<section id="interaction"></section>-->
+    <!--<section>-->
+        <!--<span>写留言<img src="write.png" alt="写留言"/></span>-->
+        <!--<textarea id="new-comment" style="display: none"></textarea>-->
+        <!--<section id="comments"></section>-->
+    <!--</section>-->
+</article>
+<!--------------------------volumes--------------------------->
+<template id="chinese-structure">
     <div class="rain-main">
         <!--<h1 id="subjectTitle"></h1>-->
         <!-- Nav tabs -->
@@ -41,62 +171,72 @@
         </div>
         <!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active volumes-bg" id="low">低年级内容</div>
-            <div role="tabpanel" class="tab-pane volumes-bg" id="high">高年级内容</div>
+            <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
+                <!--低年级内容-->
+                <!--<li class="volume">-->
+                <!--<img class="new-label" src="img/new-label.png" alt="">-->
+                <!--<div class="volume-c-bg">-->
+                <!--<a class="volume-c-font" data-id="${id}" data-type="volume"-->
+                <!--href="chineseKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
+                <!--</div>-->
+                <!--</li>-->
+            </ol>
+            <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
+                <!--高年级内容-->
+                <!--<li class="volume volume-center">-->
+                <!--<img class="new-label" src="img/new-label.png" alt="">-->
+                <!--<div class="volume-m-bg">-->
+                <!--<a class="volume-m-font" data-id="${id}" data-type="volume"-->
+                <!--href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
+                <!--</div>-->
+                <!--</li>-->
+            </ol>
         </div>
     </div>
-</article>
-<article id="knowledgePoints" >
-    <!--<h1 id="volumeTitle"></h1>-->
-    <!--<ol id="knowledge-point-contents"></ol>-->
-    <div class="wrap">
-        <div class="rain-main">
-
-            <div class="volume-title" id="volumeTitle">
-                <!--<span class="vtitle vtitle-c">${title}</span>-->
-            </div>
-
-            <div class="knowledgepoints-bg">
-                <ul class="knowledgepoints-list" id="knowledge-point">
-                    <!--<li class="knowledgepoint">-->
-                        <!--<div class="knowledgepoint-left">-->
-                            <!--<a class="knowledgepoint-name"-->
-                               <!--href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">放纵不羁的竹林七贤</a>-->
-                        <!--</div>-->
-                        <!--<div class="knowledgepoint-right">-->
-                            <!--<a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>-->
-                            <!--<a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>-->
-                        <!--</div>-->
-                        <!--<img src="img/fenjie.png" alt="">-->
-                    <!--</li>-->
-                </ul>
-            </div>
+</template>
+<template id="math-structure">
+    <div class="rain-main">
+        <!--<h1 id="subjectTitle"></h1>-->
+        <!-- Nav tabs -->
+        <div class="bao_dul">
+            <ul id="subjects2" class="nav nav-tabs grade" role="tablist">
+                <li role="presentation" class="active grade-main grade-low">
+                    <a class="grade-font" href="#low2" role="tab" data-toggle="tab">1-3年级</a>
+                    <img class="grade-bird" src="img/bird.png" alt="">
+                </li>
+                <li role="presentation" class="grade-main">
+                    <a class="grade-font" href="#high2" role="tab" data-toggle="tab">4-6年级</a>
+                    <img class="grade-bird" src="img/bird.png" alt="">
+                </li>
+            </ul>
+        </div>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <ol role="tabpanel" class="tab-pane active volumes-bg" id="low2">
+                <!--低年级内容-->
+                <!--<li class="volume">-->
+                <!--<img class="new-label" src="img/new-label.png" alt="">-->
+                <!--<div class="volume-c-bg">-->
+                <!--<a class="volume-c-font" data-id="${id}" data-type="volume"-->
+                <!--href="chineseKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
+                <!--</div>-->
+                <!--</li>-->
+            </ol>
+            <ol role="tabpanel" class="tab-pane volumes-bg" id="high2">
+                <!--高年级内容-->
+                <!--<li class="volume volume-center">-->
+                <!--<img class="new-label" src="img/new-label.png" alt="">-->
+                <!--<div class="volume-m-bg">-->
+                <!--<a class="volume-m-font" data-id="${id}" data-type="volume"-->
+                <!--href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
+                <!--</div>-->
+                <!--</li>-->
+            </ol>
         </div>
     </div>
-
-</article>
-<article id="knowledgePoint" style="display: none;">
-    <section id="knowledgePointTitle"></section>
-    <section>
-        <h2>选文赏析</h2>
-        <ul id="origin"></ul>
-    </section>
-    <section id="content"></section>
-    <section id="video"></section>
-    <section>
-        <h2>闯关练习</h2>
-        <dl id="problems"></dl>
-    </section>
-    <section id="interaction"></section>
-    <section>
-        <span>写留言<img src="write.png" alt="写留言"/></span>
-        <textarea id="new-comment" style="display: none"></textarea>
-        <section id="comments"></section>
-    </section>
-</article>
-<!--------------------------volumes--------------------------->
+</template>
 <template id="volumes-chinese-new-template">
-    <li class="volume">
+    <li class="volume" data-article="knowledgePoints">
         <img class="new-label" src="img/new-label.png" alt="">
         <div class="volume-c-bg">
             <a class="volume-c-font" data-id="${id}" data-type="volume"
@@ -105,7 +245,7 @@
     </li>
 </template>
 <template id="volumes-chinese-old-template">
-    <li class="volume">
+    <li class="volume" data-article="knowledgePoints">
         <div class="volume-c-bg">
             <a class="volume-c-font" data-id="${id}" data-type="volume"
                href="chineseKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
@@ -113,7 +253,7 @@
     </li>
 </template>
 <template id="volumes-math-new-template">
-    <li class="volume volume-center">
+    <li class="volume volume-center" data-article="knowledgePoints">
         <img class="new-label" src="img/new-label.png" alt="">
         <div class="volume-m-bg">
             <a class="volume-m-font" data-id="${id}" data-type="volume"
@@ -122,7 +262,7 @@
     </li>
 </template>
 <template id="volumes-math-old-template">
-    <li class="volume volume-center">
+    <li class="volume volume-center" data-article="knowledgePoints">
         <div class="volume-m-bg">
             <a class="volume-m-font" data-id="${id}" data-type="volume"
                href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
@@ -153,7 +293,7 @@
     <!--</li>-->
 <!--</template>-->
 <template id="knowledge-chinese-new-template">
-    <li class="knowledgepoint">
+    <li class="knowledgepoint" data-article="knowledgePoint">
         <div class="knowledgepoint-left">
             <a class="knowledgepoint-name" style="font-weight:bold"
                href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
@@ -166,7 +306,7 @@
     </li>
 </template>
 <template id="knowledge-chinese-old-template">
-    <li class="knowledgepoint">
+    <li class="knowledgepoint" data-article="knowledgePoint">
         <div class="knowledgepoint-left">
             <a class="knowledgepoint-name"
                href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
@@ -179,7 +319,7 @@
     </li>
 </template>
 <template id="knowledge-math-normalNew-template">
-    <li class="knowledgepoint">
+    <li class="knowledgepoint" data-article="knowledgePoint">
         <div class="knowledgepoint-left">
             <a class="knowledgepoint-name" style="font-weight: bold"
                href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
@@ -192,7 +332,7 @@
     </li>
 </template>
 <template id="knowledge-math-normalOld-template">
-    <li class="knowledgepoint">
+    <li class="knowledgepoint" data-article="knowledgePoint">
         <div class="knowledgepoint-left">
             <a class="knowledgepoint-name" href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
         </div>
@@ -203,64 +343,274 @@
         <img src="img/fenjie1.png" alt="">
     </li>
 </template>
+<template id="knowledge-math-test-template">
+    <li class="knowledgepoint-test" data-article="knowledgePoint">
+        <div class="knowledgepoint-left">
+            <a class="knowledgepoint-name test" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${volumeId}">${name}</a>
+        </div>
+        <div class="knowledgepoint-right">
+            <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
+            <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
+        </div>
+        <div class="connect">
+            <span class="connect-bg connect-one"></span>
+            <div class="split_line"></div>
+            <span class="connect-bg connect-two"></span>
+        </div>
+    </li>
+</template>
+<!----------------------------------detail-structure----------------------------->
+<template id="chinese-template">
+    <section class="head-title" id="knowledgePointTitle">
+    </section>
+    <div class="rain-main">
+        <section >
+            <span class="origin-title">选文赏析</span>
+            <div class="origin-bg content-bg" id="origin">
+            </div>
+        </section>
+        <section class="content-bg" id="content">
+        </section>
+        <section class="content-bg" id="video"></section>
+        <section>
+            <span class="cg-title">闯关练习</span>
+        </section>
+        <section class="content-bg cg-bg">
+            <ul id="problem" class="ul-style">
+            </ul>
+        </section>
+        <section class="content-bg" id="interaction"></section>
+    </div>
+    <section class="mulu_bottom">
+        <div class="muluBn_top" id="message">
+            <button id="createComment" type="button" class="mulu_botBtn">写留言</button>
+            <div id="commentWriter" style="display: none">
+                <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                <button type="submit" class="sub-btn" id="btn">提交</button>
+            </div>
+        </div>
+        <section id="comments"></section>
+    </section>
+</template>
+<template id="math-template">
+    <section class="head_h3">
+        <span class="head_himg"> 挑战<span id="title1"></span></span>
+    </section>
+    <h3 class="head_h3_s" id="title2"></h3>
+    <!--section-->
+    <div class="rain-main">
+        <!--lead-->
+        <section class="daoyu_div">
+            <img class="daoyu_dquan" src="img/math2.png" alt="">
+            <div class="daoyu_xxku" id="challenge">
+                <!--欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。赶紧开始吧！-->
+            </div>
+        </section>
+        <section class="biaoti_div">
+            <span class="biti_span">最强讲解</span>
+        </section>
+        <!--最强讲解-->
+        <section class="content-bg origin-bg">
+            <div id="content1" class="content"></div>
+            <div id="video1"></div>
+            <!--<img class="muld_images" src="img/math5.png" alt="">-->
+        </section>
+        <section class="biaoti_div">
+            <span class="biti_chuagun">最强大脑</span>
+        </section>
+        <!--最强大脑-->
+        <section class="content-bg lixiKu">
+            <ul class="mld_xiaoUl" id="strongest-brain"></ul>
+        </section>
+        <div class="lian_jie">
+            <span class="lianjie lianjie01"></span>
+            <span class="lianjie lianjie02"></span>
+        </div>
+        <!--脑力大PK-->
+        <section class="content-bg lixiKu lixi_martop">
+            <div class="bdiv_Pk">
+                <img class="naoli_pk" src="img/math8.png" alt="">
+            </div>
+            <ul class="mld_xiaoUl" id="pk">
+            </ul>
+            <p class="zongjie_p">将你的智慧结晶写在这里吧。</p>
+            <textarea class="zongjie_txt" name="" id="" cols="" rows=""></textarea>
+        </section>
+        <!--readlike-->
+        <section class="content-bg lixi_Nomar" id="interaction1"></section>
+    </div>
+    <!--message-->
+    <section class="mulu_bottom">
+        <div class="muluBn_top" id="message1">
+            <button id="createComment1" type="button" class="mulu_botBtn">写留言</button>
+            <div id="commentWriter1" style="display: none">
+                <textarea name="message" id="textarea1" cols="30" rows="5" class="textarea"></textarea>
+                <button type="submit" class="sub-btn" id="btn1">提交</button>
+            </div>
+        </div>
+        <section id="comments1"></section>
+    </section>
+</template>
+<template id="mathtest-template">
+</template>
 <!-----------------------------knowledgepoint-content---------------------------->
+       <!--chinese-->
 <template id="knowledge-point-title-template">
     <h1>${title}</h1>
 </template>
 <template id="origin-template">
-    <article>
-        <section>${content}</section>
-        <address>${source}</address>
-    </article>
+    <!--<article>-->
+        <!--<section>${content}</section>-->
+        <!--<address>${source}</address>-->
+    <!--</article>-->
+    <p class="content-font">${content}<span>${source}</span></p>
 </template>
 <template id="content-text-template">
-    <p>${content}</p>
+    <p class="content-font">${content}</p>
 </template>
-<template id="content-image-template">
+
+<template id="content-c-image-template">
     <span>
-        <img src="${href}" alt="${description}"/>
+        <img class="content-img" src="${href}" alt="${description}">
     </span>
 </template>
+
 <template id="content-image-text-template">
-    <p>
-        <img src="${href}" alt="${description}"/>
-        ${content}
+    <p class="content-font">${content}
+        <img src="${href}" style="width:40px;height: 40px;vertical-align:middle">
     </p>
 </template>
 <template id="video-template">
     <span>
-        <a href="${href}"><img src="${storePath}"/></a>
+           <a href="${storePath}">
+               <img src="${cover}"/>
+           </a>
     </span>
 </template>
 <template id="problem-option-template">
-    <li>
-        <span>${title}</span>
-        <label>${name}</label>
+    <!--<li>-->
+        <!--<span>${title}</span>-->
+        <!--<label>${name}</label>-->
+    <!--</li>-->
+    <li class="mld_daanLi">
+        <span class="daan_quan">${title}</span>
+        <input class="daana" name="daan3" type="radio">${name}
     </li>
 </template>
 <template id="problem-template">
-    <div>
-        <p><span>${type}</span>${title}</p>
-        <img src="${storePath}" alt=""/>
-        <ol type="A" data-ext-point="options"></ol>
-        <div data-ext-point="explain"></div>
-    </div>
+    <!--<div>-->
+        <!--<p><span>${type}</span>${title}</p>-->
+        <!--<img src="${storePath}" alt=""/>-->
+        <!--<ol type="A" data-ext-point="options"></ol>-->
+        <!--<div data-ext-point="explain"></div>-->
+    <!--</div>-->
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span>${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <a class="btnTrue" href="#">查看答案</a>
+        </div>
+    </li>
 </template>
 <template id="interaction-template">
+    <!--<div>-->
+        <!--<span>阅读</span><span>${readCount}</span>-->
+        <!--<span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>-->
+        <!--<a href="${previous}">previous</a><a href="${next}">next</a>-->
+    <!--</div>-->
     <div>
-        <span>阅读</span><span>${readCount}</span>
-        <span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>
-        <a href="${previous}">previous</a><a href="${next}">next</a>
+        <ul class="ul01_flet">
+            <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+            <li>
+                <img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">
+                <span class="ul01_count" id="total">${likeCount}</span>
+            </li>
+        </ul>
+        <ul class="ul01_riht">
+            <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
+            <li><a class="ul01_aBtn" href="${next}">下一节课</a></li>
+        </ul>
     </div>
 </template>
 <template id="comment-template">
-    <article>
-        <img src="${avatar}" alt=""/>
-        <span>${name}</span>
-        <span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>
-        <section>${content}</section>
-        <time>${time}</time>
-    </article>
+    <!--<article>-->
+        <!--<img src="${avatar}" alt=""/>-->
+        <!--<span>${name}</span>-->
+        <!--<span><img src="like.jpg" alt="like"/></span><span>${likeCount}</span>-->
+        <!--<section>${content}</section>-->
+        <!--<time>${time}</time>-->
+    <!--</article>-->
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${userAvatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${userName}</div>
+                    <div class="litop_friht" data-id="${id}">
+                        <img class="ul01_imgzan_" src="img/zan.png" alt="">
+                        <span class="ul01_count">${likeCount}</span>
+                    </div>
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${createTime}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</template>
+     <!--math-->
+<template id="title1-template">
+    <span>${title1}</span>
+</template>
+<template id="title2-template">
+    <span>${title}</span>
+</template>
+<template id="challenge-template">
+    <p>${content}</p>
+</template>
+<template id="content-m-image-template">
+    <div>
+        <img class="math_01" src="${href}" alt="">
+        <p class="content-font math_color">
+            ${content}
+        </p>
+    </div>
+</template>
+<template id="strongest-brain-option-template">
+    <!--<li>${option}</li>-->
+    <li class="mld_daanLi">
+        <span class="daan_quan">${title}</span>
+        <input type="radio" class="daana" name="daan3">${name}
+        <!--<input type="radio" id="daan_s3A" class="daana" name="daan1">-->
+        <img src="${optionImagePath}" class="option" alt="">
+        <!--<label for="daan_s3A">${name}</label>-->
+    </li>
+</template>
+<template id="strongest-brain-template">
+    <li class="mld_Ulli">
+        <div class="addimg">${title}</div>
+        <img src="${storePath}" alt="">
+        <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+        <div class="baoBtn" data-id="${id}">
+            <a class="btnTrue" href="#">查看答案</a>
+        </div>
+        <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
+    </li>
+</template>
+<template id="pk-template">
+    <li class="mld_Ulli">
+        <div>${title}</div>
+        <img class="ceshi_ti1" src="${storePath}" alt="">
+        <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+    </li>
 </template>
 
 <dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>
@@ -283,6 +633,7 @@
             g.setCookie('userId', userId)
 
             var subjectId = g.getUrlParameter('subjectId')
+            state.volumes.changeId(subjectId)
 
             $.ajax({
                 type: 'GET',
@@ -310,10 +661,10 @@
                                 url: '/api/knowledge-points',
                                 dataType: 'json',
                                 success: function (kps) {
-                                    for (var i = 0; i < kps.length; ++i) {
-                                        var v = state.volume.getById(kps[i].volumeId)
-                                        v.knowledgePoints.push(kps[i])
-                                    }
+//                                    for (var i = 0; i < kps.length; ++i) {
+//                                        var v = state.volume.getById(kps[i].volumeId)
+//                                        v.knowledgePoints.push(kps[i])
+//                                    }
 
                                     state['volumes'].init()
                                 },
@@ -358,6 +709,17 @@
                 //bind subject's volume to this article
 
                 //step1: clear the article
+               $('#volumes').html("");
+                var tid = 'chinese-structure'
+                var subjectId = g.getUrlParameter('subjectId')
+                if ( subjectId == 2 ) {
+                    tid = 'math-structure'
+                }
+                proc({
+                    containerId: 'volumes',
+                    data: {},
+                    templateId: tid
+                })
 
                 //step2: rebind the article
                 var value=state.volumes.value
@@ -375,6 +737,22 @@
                     alterTemplates: [
                         {type: 'old', templateId: 'volumes-chinese-old-template'},
                         {type: 'new', templateId: 'volumes-chinese-new-template'},
+                    ]
+                })
+                proc({
+                    data: value,
+                    containerId: 'low2',
+                    alterTemplates: [
+                        {type: 'old', templateId: 'volumes-math-old-template'},
+                        {type: 'new', templateId: 'volumes-math-new-template'},
+                    ]
+                })
+                proc({
+                    data: value,
+                    containerId: 'high2',
+                    alterTemplates: [
+                        {type: 'old', templateId: 'volumes-math-old-template'},
+                        {type: 'new', templateId: 'volumes-math-new-template'},
                     ]
                 })
             }
@@ -444,9 +822,9 @@
                 //step2: rebind the article
                 var value = state.knowledgePoint.value
                 proc({
-                    templateId: 'title-template',
+                    templateId: 'knowledge-point-title-template',
                     data: value,
-                    containerId: 'title'
+                    containerId: 'knowledgePointTitle'
                 })
 
                 proc({
@@ -589,9 +967,9 @@
 </script>
 <script>
 
+   //年级上面的小鸟
     $('.grade-main').eq(0).css({"box-shadow": "0rem 0rem 1.25rem #fe6569"});
     $('.grade-main').eq(0).children('img').show();
-
 
     $('.grade-main').eq(0).click(function () {
         $('.grade-main').eq(0).children('img').show();
@@ -600,7 +978,6 @@
         $('.grade-main').eq(1).css({"box-shadow": "0rem 0rem 0rem #fff"});
     });
 
-
     $('.grade-main').eq(1).click(function () {
         $('.grade-main').eq(0).children('img').hide();
         $('.grade-main').eq(1).children('img').show();
@@ -608,6 +985,13 @@
         $('.grade-main').eq(0).css({"box-shadow": "0rem 0rem 0rem #fff"});
     });
 
+    //    挑战百分百的分割线
+    $(window).resize(function () {
+        $(".split_line").css("width", $("#whole_width").width())
+    })
+    window.onpageshow = function () {
+        $(".split_line").css("width", $("#whole_width").width())
+    }
 </script>
 </body>
 </html>

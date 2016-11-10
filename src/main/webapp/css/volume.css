@@ -112,8 +112,6 @@
 .volume-c-bg {
     border: 1.5px dashed #ffc500;
     border-radius: 1.25rem;
-    background: url('../img/flower.png') 0 0.15625rem no-repeat;
-    background-size: 1.1875rem 1.125rem;
 }
 
 .volume-c-font {
@@ -126,6 +124,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    background: url('../img/flower.png') 0 0.15625rem no-repeat;
+    background-size: 1.1875rem 1.125rem;
 }
 
 /*.li2Tu{*/
@@ -138,15 +138,15 @@
 /*background-color: #feeded;*/
 /*}*/
 /*变色*/
-.neir_li:nth-child(2), .neir_li:nth-child(6) {
+.volume:nth-child(2), .volume:nth-child(6) {
     background-color: #fff7eb;
 }
 
-.neir_li:nth-child(3), .neir_li:nth-child(7) {
+.volume:nth-child(3), .volume:nth-child(7) {
     background-color: #eaffe3;
 }
 
-.neir_li:nth-child(4), .neir_li:nth-child(8) {
+.volume:nth-child(4), .volume:nth-child(8) {
     background-color: #feeded;
 }
 
