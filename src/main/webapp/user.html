@@ -46,6 +46,7 @@
             <div class="bottom_bdiv">
                 <a class="bottom_btn Btn01" click="curseDetailTap();" href="#">充值</a>
                 <a class="bottom_btn Btn02" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
+                <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
             </div>
         </div>
     </div>
@@ -180,9 +181,9 @@
     margin-right: 5%; background-color: #fe6568; border: none">确 认
         </button>
         <br/>
-        <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+      <!--  <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
     margin-right: 5%; background-color: #fe6568; border: none">返回上一页
-        </button>
+        </button>-->
     </div>
 </article>
 <article id="login" style="display: none;">
@@ -224,10 +225,10 @@
                 <li class="set-li">
                     <a href="javascript:void(0)" data-article="firstActiveCard">添加新卡 <span class="next-btn"></span></a>
                 </li>
-                <li class="set-li">
+                <!--<li class="set-li">
                     <a href="javascript:void(0)" onclick="back()">返回上一页 <span class="next-btn"></span></a>
 
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
@@ -235,9 +236,9 @@
 <article id="help" style="display: none;">
 
     <span class="mine_leftsp"></span>
-    <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+   <!-- <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
     margin-right: 5%; background-color: #fe6568; border: none">回到上一页
-    </button>
+    </button>-->
 
     <h1>帮助</h1>
 </article>
@@ -339,12 +340,12 @@
     margin-right: 5%; background-color: #fe6568; border: none">确 认
             </button>
         </li>
-        <li>
+       <!-- <li>
             <span class="mine_leftsp"></span>
             <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
     margin-right: 5%; background-color: #fe6568; border: none">回到上一页
             </button>
-        </li>
+        </li>-->
     </ul>
 
 </template>
@@ -493,6 +494,7 @@
                         contentType: "application/json; charset=utf-8",
                         success: function (a) {
                             alert("修改密码成功")
+                            back();
                         },
                         error: function (a) {
                             alert(JSON.stringify(a))
@@ -828,6 +830,7 @@
                     {name: 'Accept', value: 'application/json'}
                 ], data, function (r) {
                     if (r.meta.code < 400) {
+
                         // location.href = 'Gold.html';
                         /* alert("激活成功")
                          state.init()
@@ -922,7 +925,7 @@
                 //, sex: sex1,
                 //birthday: b3,
             }
-            alert(b)
+           // alert(b)
             $.ajax({
                 type: "put",
                 url: "/api/users/" + userId,
@@ -930,8 +933,8 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (e) {
-                    alert("成功")
-
+                    //alert("成功")
+                    back();
                 },
                 error: function (e) {
                     alert('修改用户信息失败，请刷新以重试')
