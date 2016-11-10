@@ -315,6 +315,9 @@ CREATE TABLE schedulers (
     subject_id bigint,
     grade integer,
     name character varying(64),
+    cover_id bigint,
+    content_link character varying(256),
+    direct_link character varying(256),
     description text,
     teacher character varying(64),
     teacher_description text

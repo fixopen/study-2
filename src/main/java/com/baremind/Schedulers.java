@@ -259,10 +259,6 @@ public class Schedulers {
                 if (endTime != null) {
                     existScheduler.setEndTime(endTime);
                 }
-                Integer duration = scheduler.getDuration();
-                if (duration != null) {
-                    existScheduler.setDuration(duration);
-                }
                 Long subjectId = scheduler.getSubjectId();
                 if (subjectId != null) {
                     existScheduler.setSubjectId(subjectId);
@@ -275,13 +271,13 @@ public class Schedulers {
                 if (title != null) {
                     existScheduler.setName(title);
                 }
-                String cover = scheduler.getCover();
+                Long cover = scheduler.getCoverId();
                 if (cover != null) {
-                    existScheduler.setCover(cover);
+                    existScheduler.setCoverId(cover);
                 }
-                String cdnLink = scheduler.getCdnLink();
+                String cdnLink = scheduler.getContentLink();
                 if (cdnLink != null) {
-                    existScheduler.setCdnLink(cdnLink);
+                    existScheduler.setContentLink(cdnLink);
                 }
                 String directLink = scheduler.getDirectLink();
                 if (directLink != null) {
