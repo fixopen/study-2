@@ -168,16 +168,38 @@ public class Schedulers {
             if (a == 1 && b == 2 && c == 3) {
                 filter = k + subject + d + teacherfilter + d + gradefilter + g;
             }
-            if (a == 1 && b == 2) {
+            if(a != 1 && b!=2 && c!=3){
+                filter = "{subjectId:0}";
+            }
+            if(a == 1 && b!=2 && c!=3){
+                filter = k+subject+g;
+            }
+            if(a == 1 && b==2 && c!=3){
                 filter = k + subject + d + teacherfilter + g;
             }
-            if (b == 2 && c == 3) {
+            if(a != 1 && b==2 && c==3){
                 filter = k + teacherfilter + d + gradefilter + g;
             }
-            if (a == 1 && c == 3) {
-                filter = k + subject + d + gradefilter + g;
+            if(a != 1 && b!=2 && c==3){
+                filter = k+gradefilter+g;
             }
-            if(a==1){
+           /* if (a == 1 && b == 2) {
+                filter = k + subject + d + teacherfilter + g;
+            }*/
+            /*if (b == 2 && c == 3) {
+                filter = k + teacherfilter + d + gradefilter + g;
+            }*/
+            /*if (a == 1 && c == 3) {
+                filter = k + subject + d + gradefilter + g;
+            }*/
+
+
+
+
+
+
+
+            /*if(a==1){
                 filter = k+subject+g;
             }
             if(b==2){
@@ -185,7 +207,7 @@ public class Schedulers {
             }
             if(c==3){
                 filter = k+gradefilter+g;
-            }
+            }*/
 
 
 
