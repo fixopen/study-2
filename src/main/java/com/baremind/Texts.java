@@ -21,7 +21,7 @@ public class Texts {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createComment(@CookieParam("userId") String userId, Text text) {
+    public Response createText(@CookieParam("userId") String userId, Text text) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             text.setId(IdGenerator.getNewId());
@@ -33,7 +33,7 @@ public class Texts {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSubjects(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getTexts(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -50,7 +50,7 @@ public class Texts {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getVolumeById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getTextById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -66,7 +66,7 @@ public class Texts {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateVolume(@CookieParam("userId") String userId, @PathParam("id") Long id, Text text) {
+    public Response updateText(@CookieParam("userId") String userId, @PathParam("id") Long id, Text text) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();

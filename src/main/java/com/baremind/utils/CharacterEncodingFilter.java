@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -44,6 +41,17 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
         }
         servletInputStream.close();
         w.close();
+    }
+
+    public static void writeToFile(byte[] data, String uploadedFileLocation) {
+        try {
+            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+            out.write(data);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

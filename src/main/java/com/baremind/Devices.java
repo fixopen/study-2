@@ -14,7 +14,6 @@ import java.util.Map;
 
 @Path("devices")
 public class Devices {
-
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

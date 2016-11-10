@@ -25,7 +25,7 @@ public class Medias {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postCSV(@Context HttpServletRequest request, @CookieParam("userId") String userId) {
+    public Response uploadMedia(@Context HttpServletRequest request, @CookieParam("userId") String userId) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             try {

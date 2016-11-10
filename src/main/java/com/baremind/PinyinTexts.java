@@ -19,11 +19,10 @@ import java.util.Map;
  */
 @Path("pinyin-texts")
 public class PinyinTexts {
-
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createImage(@CookieParam("userId") String userId, PinyinText pinyinText) {
+    public Response createPinyinText(@CookieParam("userId") String userId, PinyinText pinyinText) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             pinyinText.setId(IdGenerator.getNewId());
@@ -35,7 +34,7 @@ public class PinyinTexts {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImages(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getPinyinTexts(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -51,7 +50,7 @@ public class PinyinTexts {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImageById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getPinyinTextById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -67,7 +66,7 @@ public class PinyinTexts {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateImage(@CookieParam("userId") String userId, @PathParam("id") Long id, PinyinText pinyinText) {
+    public Response updatePinyinText(@CookieParam("userId") String userId, @PathParam("id") Long id, PinyinText pinyinText) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();

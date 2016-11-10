@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>小雨知时</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
 </head>
 <body>
 <article id="volumes">
@@ -18,11 +24,11 @@
         <div role="tabpanel" class="tab-pane" id="high"></div>
     </div>
 </article>
-<article id="knowledgePoints">
+<article id="knowledgePoints" style="display: none;">
     <h1 id="volumeTitle"></h1>
     <ol id="knowledge-point-contents"></ol>
 </article>
-<article id="knowledgePoint">
+<article id="knowledgePoint" style="display: none;">
     <section id="knowledgePointTitle"></section>
     <section>
         <h2>选文赏析</h2>
@@ -127,10 +133,257 @@
 <dialog>还剩24雨点不够观看啦，请充值！</dialog>
 <dialog>雨点所剩不多，请尽快充值哦！</dialog>
 
+<script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/bootstrap/bootstrap.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
 <script>
     var subjects = []
 
     var state = {
+        currentArticle: document.getElementById('volumes'),
+        init: function () {
+            var userId = g.getUrlParameter('userid')
+            g.setCookie('userId', userId)
+
+            var subjectId = g.getUrlParameter('subjectId')
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/subjects',
+                dataType: 'json',
+                success: function (ss) {
+                    subjects = ss
+                    for (var i = 0; i < subjects.length; ++i) {
+                        subjects[i].low = []
+                        subjects[i].high = []
+                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/volumes',
+                        dataType: 'json',
+                        success: function (vs) {
+                            for (var i = 0; i < vs.length; ++i) {
+                                vs[i].knowledgePoints = []
+                                var s = state.subject.getById(vs[i].subjectId)
+                                var gn = state.grade.getNameByValue(vs[i].grade)
+                                s[gn].push(vs[i])
+                            }
+                            $.ajax({
+                                type: 'GET',
+                                url: '/api/knowledge-points',
+                                dataType: 'json',
+                                success: function (kps) {
+                                    for (var i = 0; i < kps.length; ++i) {
+                                        var v = state.volume.getById(kps[i].volumeId)
+                                        v.knowledgePoints.push(kps[i])
+                                    }
+
+                                    state['volumes'].init()
+                                },
+                                error: function (r) {
+                                }
+                            })
+                        },
+                        error: function (r) {
+                        }
+                    })
+                },
+                error: function (r) {
+                }
+            })
+
+            var switchTo = function(id) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/user.html#' + id)
+                state[id].init()
+            }
+
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article
+                switchTo(id)
+            })
+
+            state.volumes.subjectId = subjectId
+            state['volumes'].init()
+            history.pushState(null, null, '/content.html#volumes')
+
+            window.addEventListener('hashchange', function(e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            })
+        },
+        volumes: {
+            parentId: 1,
+            init: function () {
+                state.volumes.value = state.subject.getById(state.volumes.parentId)
+                state.volumes.show()
+            },
+            changeId: function(subjectId) {
+                if (state.volumes.parentId != subjectId) {
+                    state.volumes.parentId = subjectId
+                    state.volumes.value = state.subject.getById(state.volumes.parentId)
+                    state.volumes.show()
+                }
+            },
+            value: null,
+            show: function() {
+                //bind subject's volume to this article
+
+                //step1: clear the article
+
+                //step2: rebind the article
+            }
+        },
+        knowledgePoints: {
+            parentId: null,
+            init: function () {},
+            changeId: function(volumeId) {
+                if (state.volumes.parentId != volumeId) {
+                    state.volumes.parentId = volumeId
+                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId)
+                    state.knowledgePoints.show()
+                }
+            },
+            value: null,
+            show: function() {
+                //bind volume's knowledgePoints to this article
+
+                //step1: clear the article
+
+                //step2: rebind the article
+            }
+        },
+        knowledgePoint: {
+            init: function () {
+                state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.id)
+                if (!state.knowledgePoint.value.contents) {
+                    $.ajax({
+                        type: 'get',
+                        url: 'api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
+                        dataType: 'json',
+                        success: function (data) {
+                            state.knowledgePoint.value.contents = data
+                            state.knowledgePoint.show()
+                        }
+                    })
+                } else {
+                    state.knowledgePoint.show()
+                }
+            },
+            parentId: 0,
+            changeId: function(knowledgePointId) {
+                if (state.knowledgePoint.parentId != knowledgePointId) {
+                    state.knowledgePoint.parentId = knowledgePointId
+                    state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.parentId)
+                    if (!state.knowledgePoint.value.contents) {
+                        $.ajax({
+                            type: 'get',
+                            url: 'api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
+                            dataType: 'json',
+                            success: function (data) {
+                                state.knowledgePoint.value.contents = data
+                                state.knowledgePoint.show()
+                            }
+                        })
+                    } else {
+                        state.knowledgePoint.show()
+                    }
+                }
+            },
+            value: null,
+            show: function() {
+                //bind knowledgePoint's contents to this article
+
+                //step1: clear the article
+
+                //step2: rebind the article
+                var value = state.knowledgePoint.value
+                proc({
+                    templateId: 'title-template',
+                    data: value,
+                    containerId: 'title'
+                })
+
+                proc({
+                    templateId: 'origin-template',
+                    data: value.quotes,
+                    containerId: 'origin'
+                })
+
+                proc({
+                    data: value.contents,
+                    containerId: 'content',
+                    alterTemplates: [
+                        {type: 'text', templateId: 'content-text-template'},
+                        {type: 'image', templateId: 'content-image-template'}
+                    ]
+                })
+
+                proc({
+                    templateId: 'video-template',
+                    data: value.video,
+                    containerId: 'video'
+                })
+
+                proc({
+                    templateId: 'problem-template',
+                    data: value.problems,
+                    containerId: 'problems',
+                    secondBind: {
+                        extPoint: 'options',
+                        dataFieldName: 'options',
+                        templateId: 'problem-option-template'
+                    }
+                })
+
+                proc({
+                    templateId: 'interaction-template',
+                    data: value.interaction,
+                    containerId: 'interaction'
+                })
+
+                proc({
+                    templateId: 'comment-template',
+                    data: value.comments,
+                    containerId: 'comments'
+                })
+            },
+            getById: function(id) {
+                var result = null
+                var isFind = false
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].low.length; ++j) {
+                        for (var k = 0; k < subjects[i].low[j].knowledgePoints.length; ++k) {
+                            if (subjects[i].low[j].knowledgePoints[k].id == id) {
+                                result = subjects[i].low[j].knowledgePoints[k]
+                                isFind = true
+                                break
+                            }
+                        }
+                    }
+                    if (isFind) {
+                        break
+                    }
+                    for (var j = 0; j < subjects[i].high.length; ++j) {
+                        for (var k = 0; k < subjects[i].high[j].knowledgePoints.length; ++k) {
+                            if (subjects[i].high[j].knowledgePoints[k].id == id) {
+                                result = subjects[i].high[j].knowledgePoints[k]
+                                isFind = true
+                                break
+                            }
+                        }
+                    }
+                    if (isFind) {
+                        break
+                    }
+                }
+                return result
+            }
+        },
         subject: {
             index: 0,
             value: null,
@@ -191,104 +444,7 @@
         }
     }
 
-    $.ajax({
-        type: 'GET',
-        url: '/api/subjects',
-        dataType: 'json',
-        success: function (ss) {
-            subjects = ss
-            for (var i = 0; i < subjects.length; ++i) {
-                subjects[i].low = []
-                subjects[i].high = []
-            }
-            $.ajax({
-                type: 'GET',
-                url: '/api/volumes',
-                dataType: 'json',
-                success: function (vs) {
-                    for (var i = 0; i < vs.length; ++i) {
-                        vs[i].knowledgePoints = []
-                        var s = state.subject.getById(vs[i].subjectId)
-                        var gn = state.grade.getNameByValue(vs[i].grade)
-                        s[gn].push(vs[i])
-                    }
-                    $.ajax({
-                        type: 'GET',
-                        url: '/api/knowledge-points',
-                        dataType: 'json',
-                        success: function (kps) {
-                            for (var i = 0; i < kps.length; ++i) {
-                                var v = state.volume.getById(kps[i].volumeId)
-                                v.knowledgePoints.push(kps[i])
-                            }
-                        },
-                        error: function(r) {
-                        }
-                    })
-                },
-                error: function(r) {
-                }
-            })
-        },
-        error: function(r) {
-        }
-    })
-
-    $(function (e) {
-        //get knowledge point list of same volume
-        //get api/volumes/volumeId/knowledge-points
-        //get api/knowledge-points/id/contents
-
-        proc({
-            templateId: 'title-template',
-            data: data,
-            containerId: 'title'
-        })
-
-        proc({
-            templateId: 'origin-template',
-            data: data.origins,
-            containerId: 'origin'
-        })
-
-        proc({
-            data: data.contents,
-            containerId: 'content',
-            alterTemplates: [
-                {type: 'text', templateId: 'content-text-template'},
-                {type: 'image', templateId: 'content-image-template'}
-            ]
-        })
-
-        proc({
-            templateId: 'video-template',
-            data: data.video,
-            containerId: 'video'
-        })
-
-        proc({
-            templateId: 'problem-template',
-            data: data.problems,
-            containerId: 'problems',
-            secondBind: {
-                extPoint: 'options',
-                dataFieldName: 'options',
-                templateId: 'problem-option-template'
-            }
-        })
-
-        proc({
-            templateId: 'interaction-template',
-            data: data.interaction,
-            containerId: 'interaction'
-        })
-
-        proc({
-            templateId: 'comment-template',
-            data: data.comments,
-            containerId: 'comments'
-        })
-    })
+    state.init()
 </script>
 </body>
 </html>

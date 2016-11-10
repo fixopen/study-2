@@ -21,7 +21,7 @@ public class Logs {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLike(@CookieParam("userId") String userId, Log log) {
+    public Response createLog(@CookieParam("userId") String userId, Log log) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             log.setId(IdGenerator.getNewId());
@@ -100,7 +100,7 @@ public class Logs {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikes(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getLogs(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -116,7 +116,7 @@ public class Logs {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikeById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getLogById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -132,7 +132,7 @@ public class Logs {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateLike(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Log log) {
+    public Response updateLog(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Log log) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(aUserId)) {
             result = Response.status(404).build();

@@ -6,9 +6,7 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -30,23 +28,10 @@ public class ProblemOptions {
         return r;
     }
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response postCSV(@Context HttpServletRequest request, @CookieParam("userId") String userId, ProblemOption problemOption) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            problemOption.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(problemOption);
-            result = Response.ok(new Gson().toJson(problemOption)).build();
-        }
-        return result;
-    }
-
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMedia(@CookieParam("userId") String userId, ProblemOption problemsOption) {
+    public Response createProblemOption(@CookieParam("userId") String userId, ProblemOption problemsOption) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             problemsOption.setId(IdGenerator.getNewId());
@@ -58,7 +43,7 @@ public class ProblemOptions {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMedias(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getProblemOptions(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -74,7 +59,7 @@ public class ProblemOptions {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMediaById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getProblemOptionById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -90,7 +75,7 @@ public class ProblemOptions {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMedia(@CookieParam("userId") String userId, @PathParam("id") Long id, ProblemOption problemsOption) {
+    public Response updateProblemOption(@CookieParam("userId") String userId, @PathParam("id") Long id, ProblemOption problemsOption) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
@@ -132,7 +117,7 @@ public class ProblemOptions {
 
     @DELETE
     @Path("{id}")
-    public Response deleteOption(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response deleteProblemOption(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
