@@ -64,23 +64,172 @@ public class Schedulers {
         return result;
     }
 
+    String GradeByName(int k) {
+        String result = null;
+        switch (k) {
+            case 20:
+                result = "低年级";
+                break;
+            case 21:
+                result = "高年级";
+                break;
+            case 1:
+                result = "一年级";
+                break;
+            case 2:
+                result = "二年级";
+                break;
+            case 3:
+                result = "三年级";
+                break;
+            case 4:
+                result = "四年级";
+                break;
+            case 5:
+                result = "五年级";
+                break;
+            case 6:
+                result = "六年级";
+                break;
+        }
+        return result;
+    }
     @GET //根据条件查询课表
     @Path("keywords/{keywords}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getkeywords(@CookieParam("userId") String userId, @PathParam("keywords") String keywords) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            String[] keywordArray = keywords.split(" ");
-            EntityManager em = JPAEntry.getEntityManager();
-            String stats = "SELECT s FROM Scheduler s";
-            boolean isFirst = true;
-            for (int i = 0; i < keywordArray.length; ++i) {
-                if (isFirst) {
-                    stats += " WHERE ";
-                    isFirst = false;
-                } else {
-                    stats += " AND ";
+            int a = 0;
+            int b = 0;
+            int c = 0;
+            int yu = keywords.indexOf("语文");
+            int shu = keywords.indexOf("数学");
+            String filter = "";
+            String k = "{";
+            String g = "}";
+            String d = ",";
+
+            String subject = null;
+            String teacherfilter = null;
+            String gradefilter = null;
+
+            if(yu != -1 && shu != -1){
+                if(yu < shu){
+                    subject = "subjectId:1";
+                    a =1;
+                }else{
+                    subject = "subjectId:2";
+                    a =1;
                 }
+            }else{
+                if(yu != -1){
+                    subject = "subjectId:1";
+                    a =1;
+                }
+                if(shu != -1){
+                    subject = "subjectId:2";
+                    a =1;
+                }
+            }
+
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.teacher FROM Scheduler l GROUP BY l.teacher";
+            TypedQuery<String> q = em.createQuery(stats, String.class);
+            List list  = q.getResultList();
+            for (int i = 0; i < list.size(); i++)
+            {
+                String tea = (String) list.get(i);
+                int teacher = keywords.indexOf(tea);
+               if(teacher != -1){
+                   teacherfilter = "teacher:"+tea+"";
+                   b =2;
+                   break;
+               }
+            }
+
+            String stats2 = "SELECT l.grade FROM Scheduler l GROUP BY l.grade";
+            TypedQuery<Long> gardes = em.createQuery(stats2, Long.class);
+            List list2  = gardes.getResultList();
+            for (int j = 0; j < list2.size(); j++)
+            {
+                int gra = (int) list2.get(j);
+                String pegra = GradeByName(gra);
+                int grade = keywords.indexOf(pegra);
+                if(grade != -1){
+                   long  gradel = findGradeByName(pegra);
+                     gradefilter = "grade:"+gradel+"";
+                    c=3;
+                    break;
+                }
+            }
+
+
+            if (a == 1 && b == 2 && c == 3) {
+                filter = k + subject + d + teacherfilter + d + gradefilter + g;
+            }
+            if(a != 1 && b!=2 && c!=3){
+                filter = "{subjectId:0}";
+            }
+            if(a == 1 && b!=2 && c!=3){
+                filter = k+subject+g;
+            }
+            if(a == 1 && b==2 && c!=3){
+                filter = k + subject + d + teacherfilter + g;
+            }
+            if(a != 1 && b==2 && c==3){
+                filter = k + teacherfilter + d + gradefilter + g;
+            }
+            if(a != 1 && b!=2 && c==3){
+                filter = k+gradefilter+g;
+            }
+           /* if (a == 1 && b == 2) {
+                filter = k + subject + d + teacherfilter + g;
+            }*/
+            /*if (b == 2 && c == 3) {
+                filter = k + teacherfilter + d + gradefilter + g;
+            }*/
+            /*if (a == 1 && c == 3) {
+                filter = k + subject + d + gradefilter + g;
+            }*/
+
+
+
+
+
+
+
+            /*if(a==1){
+                filter = k+subject+g;
+            }
+            if(b==2){
+                filter = k+teacherfilter+g;
+            }
+            if(c==3){
+                filter = k+gradefilter+g;
+            }*/
+
+
+
+            final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+//            System.out.println(filterObject);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("startTime", "DESC");
+            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
+            result = Response.ok(new Gson().toJson(schedulers)).build();
+        }
+
+           /* String[] keywordArray = keywords.split(" ");
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT s FROM Scheduler s WHERE (s.cdnLink IS NOT NULL AND s.cdnLink != '')";
+            //boolean isFirst = true;
+            for (int i = 0; i < keywordArray.length; ++i) {
+                //if (isFirst) {
+                //    stats += " WHERE ";
+                //    isFirst = false;
+                //} else {
+                    stats += " AND ";
+                //}
                 String k = keywordArray[i];
                 stats += "((s.teacher = '" + k + "')";
                 Long subjectId = findSubjectIdByName(k);
@@ -95,8 +244,8 @@ public class Schedulers {
             }
             TypedQuery<Scheduler> q = em.createQuery(stats, Scheduler.class);
             List<Scheduler> schedulers = q.getResultList();
-            result = Response.ok(new Gson().toJson(schedulers)).build();
-        }
+            result = Response.ok(new Gson().toJson(schedulers)).build();*/
+
         return result;
     }
 
@@ -106,7 +255,9 @@ public class Schedulers {
     public Response getTeacher(@CookieParam("userId") String userId, @QueryParam("filter") String filter) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
+            System.out.println(filter);
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            System.out.println(filterObject);
             EntityManager em = JPAEntry.getEntityManager();
             String stats = "SELECT l.teacher FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.teacher";
             TypedQuery<String> q = em.createQuery(stats, String.class);
@@ -129,8 +280,6 @@ public class Schedulers {
         }
         return result;
     }
-
-
 
     @GET //根据科目查询年级
     @Path("grades")
@@ -199,7 +348,7 @@ public class Schedulers {
         return result;
     }
 
-    final String[] ops = {"< ", "<= ", "> ", ">= ", "!= "};
+    final String[] ops = {"IS NOT ", "IS ", "< ", "<= ", "> ", ">= ", "!= "};
 
     private String[] split(String v) {
         String[] result = {"", ""};
@@ -219,9 +368,7 @@ public class Schedulers {
         if (JPAEntry.isLogining(userId)) {
             final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             //把每一个前台传过来的数据当成key，value处理
-            if(filterObject == null){
-
-            }else{
+            if(filterObject != null){
                 filterObject.forEach((key, value) -> {
                     //判断value是字符串不
                     if (value instanceof String) {

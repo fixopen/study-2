@@ -413,6 +413,15 @@ public class Users {
                             Card c = cs.get(0);
                             if (c.getActiveTime() == null) {
                                 c.setActiveTime(now);
+
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(now);
+                                int year = cal.get(Calendar.YEAR);
+                                ++year;
+                                cal.set(Calendar.YEAR, year);
+                                Date oneYearAfter = cal.getTime();
+
+                                c.setEndTime(oneYearAfter);
                                 c.setAmount(588.0);
                                 User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                                 if (user == null) {
