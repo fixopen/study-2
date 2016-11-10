@@ -96,6 +96,17 @@ CREATE TABLE comments (
     update_time timestamp without time zone DEFAULT now() NOT NULL
 );
 
+CREATE TABLE englishs (
+    id bigint NOT NULL,
+    subject_no character(2) DEFAULT '04' NOT NULL,
+    grade_no character(2) DEFAULT '20' NOT NULL,
+    book_no character(2) DEFAULT '' NOT NULL,
+    page_no name DEFAULT ''::name NOT NULL,
+    unit_no character(2) DEFAULT '' NOT NULL,
+    start_time integer,
+    end_time integer
+);
+
 
 ALTER TABLE comments OWNER TO postgres;
 

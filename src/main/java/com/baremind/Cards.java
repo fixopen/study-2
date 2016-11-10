@@ -89,23 +89,11 @@ public class Cards {
         String uploadedFileLocation = "tempFilename.csv";
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
-            writeToFile(contents, uploadedFileLocation);
+            CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
             parseAndInsert(uploadedFileLocation);
             result = Response.ok("{\"state\":\"ok\"}").build();
         }
         return result;
-    }
-
-    // save uploaded file to new location
-    private void writeToFile(byte[] data, String uploadedFileLocation) {
-        try {
-            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-            out.write(data);
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void parseAndInsert(String csvFilename) {
