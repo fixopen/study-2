@@ -142,7 +142,7 @@ public class JPAEntry {
                 if (item.getValue() instanceof Condition) {
                     op = ((Condition) item.getValue()).getOp();
                 }
-                jpql += "o." + item.getKey() + op + " :" + item.getKey();
+                jpql += "o." + item.getKey() + " " + op + " :" + item.getKey();
             }
         }
         if (orders != null) {
