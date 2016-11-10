@@ -212,7 +212,7 @@ public class Schedulers {
 
 
             final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            System.out.println(filterObject);
+//            System.out.println(filterObject);
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
