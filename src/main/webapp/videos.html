@@ -103,7 +103,7 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    //{..., teachers: [], grades: [], playings: [], futures: [], ...}
+    //[{..., teachers: [], grades: [], playings: [], futures: [], ...}, ...]
     var subjects = []
 
     var passed = []
@@ -139,8 +139,8 @@
                             subjects[0].playing = zeroSchedulers[0]
                             subjects[0].futures = zeroSchedulers[1]
                             state.adjustData(0)
-                            state.oneFuture.data = subjects[0].futures
-                            state.onePlaying.data = subjects[0].playing
+                            state.zeroFuture.data = subjects[0].futures
+                            state.zeroPlaying.data = subjects[0].playing
                             state.refreshState(0)
                             $.ajax({
                                 type: 'get',
@@ -348,10 +348,75 @@
                     })
 
                     state.passed.isInit = true
+
+                    subject.addEventListener('change', function(e){
+                        var subjectIndex = 0
+
+                        teacher.innerHTML = ''
+                        proc({
+                            container: teacher,
+                            data: subjects[subjectIndex].teachers,
+                            templateId: ''
+                        })
+
+                        grade.innerHTML = ''
+                        proc({
+                            container: grade,
+                            data: subjects[subjectIndex].grades + subjects[1].grades,
+                            templateId: ''
+                        })
+
+                        content.innerHTML = ''
+                        proc({
+                            container: content,
+                            data: r,
+                            templateId: ''
+                        })
+                    }, false)
+
+                    $(subject).on('change', function(e){
+                        //
+                    })
+
+                    grade.addEventListener('change', function(e){
+                        var gradeIndex = 0
+                        var r = state.passed.search()
+
+                        content.innerHTML = ''
+                        proc({
+                            container: content,
+                            data: r,
+                            templateId: ''
+                        })
+                    }, false)
+
+                    teacher.addEventListener('change', function(e){
+                        var teacher = 0
+                        var r = state.passed.search()
+
+                        content.innerHTML = ''
+                        proc({
+                            container: content,
+                            data: r,
+                            templateId: ''
+                        })
+                    }, false)
                 }
             },
             search: function() {
+                var result = []
                 //filter the passed data via the filter element state
+                var keywords, subject, teacher, grade
+                for (var i = 0; i < passed.length; ++i) {
+                    if (passed[i].subjectId == subject) {
+                        if (teacher != 'renyi' && passed[i].teacher == teacher) {
+                            if (passed[i].grade == grade) {
+                                result.push(passed[i])
+                            }
+                        }
+                    }
+                }
+                return result
             },
             showPassed: function (state, moreId, tips) {
                 proc(state)
