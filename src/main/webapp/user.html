@@ -626,27 +626,32 @@
                 }
             },
             cards: {
+                isCards:false,
                 init: function () {
-                    if (!user.cards) {
-                        $.ajax({
-                            type: 'get',
-                            url: '/api/users/self/cards',
-                            dataType: 'json',
-                            success: function (cs) {
-                                for (var i = 0; i < cs.length; ++i) {
-                                    var a = getSubjectNameById(cs[i].subject)
-                                    cs[i].subject = a
+                    if (!state.cards.isCards) {
+                        if (!user.cards) {
+                            $.ajax({
+                                type: 'get',
+                                url: '/api/users/self/cards',
+                                dataType: 'json',
+                                success: function (cs) {
+                                    for (var i = 0; i < cs.length; ++i) {
+                                        var a = getSubjectNameById(cs[i].subject)
+                                        cs[i].subject = a
+                                    }
+                                    alert(JSON.stringify(cs))
+                                    user.cards = cs
+                                    proc({
+                                        containerId: 'card',
+                                        data: user.cards,
+                                        templateId: 'card-template'
+                                    })
                                 }
-                                user.cards = cs
-                                proc({
-                                    containerId: 'card',
-                                    data: user.cards,
-                                    templateId: 'card-template'
-                                })
-                            }
-                        })
+                            })
+                        }
+                        state.cards.isCards = true
                     }
-                },
+                }/*,
                 changed: function () {
                     //step1: clear the element content
 
@@ -657,7 +662,7 @@
                         templateId: 'card-template'
                     })
 
-                }
+                }*/
             },
             info: {
                 isInit: false,
@@ -830,11 +835,21 @@
                     {name: 'Accept', value: 'application/json'}
                 ], data, function (r) {
                     if (r.meta.code < 400) {
-
-                        // location.href = 'Gold.html';
-                        /* alert("激活成功")
-                         state.init()
-                         goldshow()*/
+                        $.ajax({
+                            type:"get",
+                            url:"/api/users/cards/"+ data.cardNo,
+                            dataType:"json",
+                            success:function (e) {
+                                alert("激活成功")
+                                back();
+                                user.cards.push(e);
+                                alert(user.cards)
+                                state.cards.isCards = false
+                            },
+                            error:function (e) {
+                                alert(JSON.stringify(e));
+                            }
+                        })
                     } else {
                         //alert('save error');
                         var tips = document.getElementById("tips");
@@ -863,9 +878,21 @@
                                 tips.innerHTML = "验证码超时";
                                 break;
                             case 200:
-                                alert("激活成功")
-                                /*state.init()
-                                 goldshow()*/
+                                $.ajax({
+                                    type:"get",
+                                    url:"/api/users/cards/"+ data.cardNo,
+                                    dataType:"json",
+                                    success:function (e) {
+                                        alert("激活成功")
+                                        back();
+                                        user.cards.push(e);
+                                        alert(user.cards)
+                                        state.cards.isCards = false
+                                    },
+                                    error:function (e) {
+                                        alert(JSON.stringify(e));
+                                    }
+                                })
                                 break;
                         }
                     }
@@ -873,7 +900,8 @@
             }
         }
 
-        var enableActive = function (e) {
+
+    var enableActive = function (e) {
             clearInterval(timeoutId);
             var activeCodeButton = document.getElementById('activeCode');
             activeCodeButton.disabled = false

@@ -693,6 +693,23 @@ public class Users {
     }
 
     @GET //根据id查询
+    @Path("cards/{no}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getByNo(@CookieParam("userId") String userId, @PathParam("no") String no) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Card card = JPAEntry.getObject(Card.class, "no", no);
+            if (card != null) {
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                    result = Response.ok(gson.toJson(card)).build();
+                }
+            }
+             return result;
+        }
+
+
+
+    @GET //根据id查询
     @Path("self")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSelf(@CookieParam("userId") String userId) {
