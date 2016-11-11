@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>english</title>
+</head>
+<body>
+<article id="content"></article>
+<template id="audio-template">
+    <div>
+        <audio src="p-zhibo-0520_${bookNo}.mp3#t=${startSecond},${endSecond}" autoplay></audio>
+        <img src="p-zhibo-0520/${bookNo}/${pageNo}.jpg" alt="">
+    </div>
+</template>
+<template id="video-template">
+    <div>
+        <video src="p-zhibo-0520_${bookNo}.mp4" controls autoplay style="width: 100%; height: 100%;"></video>
+    </div>
+</template>
+<script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script>
+    var bookNo = g.getUrlParameter('book')
+    var pageNo = g.getUrlParameter('page')
+    var unitNo = g.getUrlParameter('unit')
+    if (pageNo == null && unitNo == null) {
+        proc({
+            templateId: 'video-template',
+            data: {bookNo: bookNo},
+            containerId: 'content'
+        })
+    } else {
+        $.ajax({
+            type: 'get',
+            url: '/api/englishs/05/20/' + bookNo + '/' + pageNo + '/' + unitNo,
+            success: function(record) {
+                record.startSecond = record.startTime / 1000
+                record.endSecond = record.endTime / 1000
+                proc({
+                    templateId: 'audio-template',
+                    data: record,
+                    containerId: 'content'
+                })
+            }
+        })
+    }
+</script>
+</body>
+</html>
