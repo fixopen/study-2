@@ -303,10 +303,15 @@ public class Users {
                                 if (c.getActiveTime() == null) {
                                     //Logs.insert(id, "log", logId, "card success");
                                     c.setActiveTime(now);
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTime(now);
+                                    cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+                                    Date oneYearAfter = cal.getTime();
+                                    c.setEndTime(oneYearAfter);
                                     c.setAmount(588.0);
                                     c.setUserId(id);
                                     JPAEntry.genericPut(c);
-                                    result = Response.ok().build();
+                                    result = Response.ok(c).build();
                                 } else {
                                     //Logs.insert(id, "log", logId, "card already active");
                                     result = Response.status(405).build();
@@ -411,6 +416,11 @@ public class Users {
                             Card c = cs.get(0);
                             if (c.getActiveTime() == null) {
                                 c.setActiveTime(now);
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(now);
+                                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+                                Date oneYearAfter = cal.getTime();
+                                c.setEndTime(oneYearAfter);
                                 c.setAmount(588.0);
                                 User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                                 if (user == null) {
@@ -430,7 +440,7 @@ public class Users {
                                     JPAEntry.genericPut(c);
                                 }
                                 Session s = PublicAccounts.putSession(new Date(), user.getId());
-                                result = Response.ok()
+                                result = Response.ok(c)
                                     .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                                     .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                                     .build();
