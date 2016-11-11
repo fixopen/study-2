@@ -33,15 +33,15 @@
 <body>
 <article id="content"></article>
 <template id="audio-template">
-    <div class="wrap">
-        <audio id="player" src="p-zhibo-0420/${bookNo}.mp3#t=${startSecond},${endSecond}" autoplay></audio>
-        <img src="p-zhibo-0420/${bookNo}/${pageNo}.jpg" alt="">
+    <div>
+        <audio src="p-zhibo-0520/${bookNo}.mp3#t=${startSecond},${endSecond}" autoplay></audio>
+        <img src="p-zhibo-0520/${bookNo}/${pageNo}.jpg" alt="">
         <div id="play" class="amplifier"></div>
     </div>
 </template>
 <template id="video-template">
     <div>
-        <video src="p-zhibo-0420/${bookNo}.mp4" controls autoplay style="width: 100%; height: 100%;"></video>
+        <video src="p-zhibo-0520/${bookNo}.mp4" controls autoplay style="width: 100%; height: 100%;"></video>
     </div>
 </template>
 <script src="/jquery/jquery-3.1.1.min.js"></script>
@@ -60,7 +60,7 @@
     } else {
         $.ajax({
             type: 'get',
-            url: '/api/englishs/04/20/' + bookNo + '/' + pageNo + '/' + unitNo,
+            url: '/api/englishs/05/20/' + bookNo + '/' + pageNo + '/' + unitNo,
             success: function(record) {
                 record.startSecond = record.startTime / 1000
                 record.endSecond = record.endTime / 1000
