@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="css/knowledgepoints.css">
     <link rel="stylesheet" href="css/knowledgepoints-content.css">
 
-    <!-- 引入js -->
-    <script type="text/javascript" src="zepto/zepto.min.js"></script>
-    <script type="text/javascript" src="zepto/touch.js"></script>
-    <script type="text/javascript" src="zepto/selector.js"></script>
+    <!--&lt;!&ndash; 引入js &ndash;&gt;-->
+    <!--<script type="text/javascript" src="zepto/zepto.min.js"></script>-->
+    <!--<script type="text/javascript" src="zepto/touch.js"></script>-->
+    <!--<script type="text/javascript" src="zepto/selector.js"></script>-->
 
 </head>
 <body>
@@ -163,7 +163,7 @@
                     <a class="grade-font" href="#low" role="tab" data-toggle="tab">1-2年级</a>
                     <img class="grade-bird" src="img/bird.png" alt="">
                 </li>
-                <li role="presentation" class="grade-main">
+                <li role="presentation" class="grade-main grade-high">
                     <a class="grade-font" href="#high" role="tab" data-toggle="tab">3-6年级</a>
                     <img class="grade-bird" src="img/bird.png" alt="">
                 </li>
@@ -172,24 +172,8 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
-                <!--低年级内容-->
-                <!--<li class="volume">-->
-                <!--<img class="new-label" src="img/new-label.png" alt="">-->
-                <!--<div class="volume-c-bg">-->
-                <!--<a class="volume-c-font" data-id="${id}" data-type="volume"-->
-                <!--href="chineseKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
-                <!--</div>-->
-                <!--</li>-->
             </ol>
             <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
-                <!--高年级内容-->
-                <!--<li class="volume volume-center">-->
-                <!--<img class="new-label" src="img/new-label.png" alt="">-->
-                <!--<div class="volume-m-bg">-->
-                <!--<a class="volume-m-font" data-id="${id}" data-type="volume"-->
-                <!--href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
-                <!--</div>-->
-                <!--</li>-->
             </ol>
         </div>
     </div>
@@ -204,7 +188,7 @@
                     <a class="grade-font" href="#low2" role="tab" data-toggle="tab">1-3年级</a>
                     <img class="grade-bird" src="img/bird.png" alt="">
                 </li>
-                <li role="presentation" class="grade-main">
+                <li role="presentation" class="grade-main grade-high">
                     <a class="grade-font" href="#high2" role="tab" data-toggle="tab">4-6年级</a>
                     <img class="grade-bird" src="img/bird.png" alt="">
                 </li>
@@ -236,36 +220,34 @@
     </div>
 </template>
 <template id="volumes-chinese-new-template">
-    <li class="volume" data-article="knowledgePoints">
+    <li class="volume">
         <img class="new-label" src="img/new-label.png" alt="">
         <div class="volume-c-bg">
-            <a class="volume-c-font" data-id="${id}" data-type="volume"
-               href="chineseKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
+            <span class="volume-c-font" data-id="${id}" data-type="volume" data-article="knowledgePoints">${title}</span>
         </div>
     </li>
 </template>
 <template id="volumes-chinese-old-template">
-    <li class="volume" data-article="knowledgePoints">
+    <li class="volume">
         <div class="volume-c-bg">
-            <a class="volume-c-font" data-id="${id}" data-type="volume"
-               href="chineseKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
+            <span class="volume-c-font" data-id="${id}" data-type="volume" data-article="knowledgePoints">${title}</span>
         </div>
     </li>
 </template>
 <template id="volumes-math-new-template">
-    <li class="volume volume-center" data-article="knowledgePoints">
+    <li class="volume volume-center">
         <img class="new-label" src="img/new-label.png" alt="">
         <div class="volume-m-bg">
-            <a class="volume-m-font" data-id="${id}" data-type="volume"
-               href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
+            <span class="volume-m-font" data-id="${id}" data-type="volume" data-article="knowledgePoints">${title}</span>
         </div>
     </li>
 </template>
 <template id="volumes-math-old-template">
-    <li class="volume volume-center" data-article="knowledgePoints">
+    <li class="volume volume-center">
         <div class="volume-m-bg">
-            <a class="volume-m-font" data-id="${id}" data-type="volume"
-               href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>
+            <span class="volume-m-font" data-id="${id}" data-type="volume" data-article="knowledgePoints">${title}</span>
+            <!--<a class="volume-m-font" data-id="${id}" data-type="volume"-->
+               <!--href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
         </div>
     </li>
 </template>
@@ -295,8 +277,9 @@
 <template id="knowledge-chinese-new-template">
     <li class="knowledgepoint" data-article="knowledgePoint">
         <div class="knowledgepoint-left">
-            <a class="knowledgepoint-name" style="font-weight:bold"
-               href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
+            <span class="knowledgepoint-name" style="font-weight:bold" data-article="knowledgePoint">${name}</span>
+            <!--<a class="knowledgepoint-name" style="font-weight:bold"-->
+               <!--href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>-->
         </div>
         <div class="knowledgepoint-right">
             <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
@@ -308,8 +291,9 @@
 <template id="knowledge-chinese-old-template">
     <li class="knowledgepoint" data-article="knowledgePoint">
         <div class="knowledgepoint-left">
-            <a class="knowledgepoint-name"
-               href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
+            <span class="knowledgepoint-name" data-article="knowledgePoint">${name}</span>
+            <!--<a class="knowledgepoint-name"-->
+               <!--href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>-->
         </div>
         <div class="knowledgepoint-right">
             <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
@@ -321,8 +305,9 @@
 <template id="knowledge-math-normalNew-template">
     <li class="knowledgepoint" data-article="knowledgePoint">
         <div class="knowledgepoint-left">
-            <a class="knowledgepoint-name" style="font-weight: bold"
-               href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
+            <span class="knowledgepoint-name" style="font-weight:bold" data-article="knowledgePoint">${name}</span>
+            <!--<a class="knowledgepoint-name" style="font-weight: bold"-->
+               <!--href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>-->
         </div>
         <div class="knowledgepoint-right">
             <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
@@ -334,7 +319,8 @@
 <template id="knowledge-math-normalOld-template">
     <li class="knowledgepoint" data-article="knowledgePoint">
         <div class="knowledgepoint-left">
-            <a class="knowledgepoint-name" href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
+            <span class="knowledgepoint-name" data-article="knowledgePoint">${name}</span>
+            <!--<a class="knowledgepoint-name" href="mathKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>-->
         </div>
         <div class="knowledgepoint-right">
             <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
@@ -632,9 +618,6 @@
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
 
-            var subjectId = g.getUrlParameter('subjectId')
-            state.volumes.changeId(subjectId)
-
             $.ajax({
                 type: 'GET',
                 url: '/api/subjects',
@@ -653,20 +636,35 @@
                             for (var i = 0; i < vs.length; ++i) {
                                 vs[i].knowledgePoints = []
                                 var s = state.subject.getById(vs[i].subjectId)
-                                var gn = state.grade.getNameByValue(vs[i].grade)
-                                s[gn].push(vs[i])
+                                if (s) {
+                                    var gn = state.grade.getNameByValue(vs[i].grade)
+                                    s[gn].push(vs[i])
+                                } else {
+                                    //console.log(vs[i])
+                                }
                             }
                             $.ajax({
                                 type: 'GET',
                                 url: '/api/knowledge-points',
                                 dataType: 'json',
                                 success: function (kps) {
-//                                    for (var i = 0; i < kps.length; ++i) {
-//                                        var v = state.volume.getById(kps[i].volumeId)
-//                                        v.knowledgePoints.push(kps[i])
-//                                    }
+                                    for (var i = 0; i < kps.length; ++i) {
+                                        var v = state.volume.getById(kps[i].volumeId)
+                                        if (v) {
+                                            v.knowledgePoints.push(kps[i])
+                                        } else {
+                                          //  console.log(kps[i])
+                                        }
+                                    }
 
-                                    state['volumes'].init()
+                                    var subjectId = g.getUrlParameter('subjectId')
+
+                                    history.pushState(null, null, '/content.html#volumes')
+
+                                    state.volumes.changeId(subjectId)
+
+                                    //state.volumes.subjectId = subjectId
+                                    //state['volumes'].init()
                                 },
                                 error: function (r) {
                                 }
@@ -680,19 +678,28 @@
                 }
             })
 
-            $(document).on('click', '[data-article]', function (e) {
+            var switchTo = function(id) {
                 state.currentArticle.style.display = 'none'
-                var id = e.target.dataset.article
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/content.html#' + id)
                 state[id].init()
+            }
+
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article
+                switchTo(id)
+                state[id].changeId(e.target.dataset.id)
             })
 
-            state.volumes.subjectId = subjectId
-            state['volumes'].init()
+            window.addEventListener('hashchange', function(e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            }, false)
         },
         volumes: {
-            parentId: 1,
+            parentId: 0,
             init: function () {
                 state.volumes.value = state.subject.getById(state.volumes.parentId)
                 state.volumes.show()
@@ -706,55 +713,59 @@
             },
             value: null,
             show: function() {
-                //bind subject's volume to this article
-
-                //step1: clear the article
-               $('#volumes').html("");
-                var tid = 'chinese-structure'
-                var subjectId = g.getUrlParameter('subjectId')
-                if ( subjectId == 2 ) {
-                    tid = 'math-structure'
+                $('#volumes').html("");
+                switch (state.volumes.parentId) {
+                    case 1:
+                    case "1":
+                        proc({
+                            containerId: 'volumes',
+                            data: {},
+                            templateId: 'chinese-structure'
+                        })
+                        var value=state.volumes.value
+                        proc({
+                            data: value.low,
+                            containerId: 'low',
+                            alterTemplates: [
+                                {type: 'old', templateId: 'volumes-chinese-old-template'},
+                                {type: 'new', templateId: 'volumes-chinese-new-template'},
+                            ]
+                        })
+                        proc({
+                            data: value.high,
+                            containerId: 'high',
+                            alterTemplates: [
+                                {type: 'old', templateId: 'volumes-chinese-old-template'},
+                                {type: 'new', templateId: 'volumes-chinese-new-template'},
+                            ]
+                        })
+                        break
+                    case 2:
+                    case '2':
+                        proc({
+                            containerId: 'volumes',
+                            data: {},
+                            templateId: 'math-structure'
+                        })
+                        var value=state.volumes.value
+                        proc({
+                            data: value.low,
+                            containerId: 'low2',
+                            alterTemplates: [
+                                {type: 'old', templateId: 'volumes-math-old-template'},
+                                {type: 'new', templateId: 'volumes-math-new-template'},
+                            ]
+                        })
+                        proc({
+                            data: value.high,
+                            containerId: 'high2',
+                            alterTemplates: [
+                                {type: 'old', templateId: 'volumes-math-old-template'},
+                                {type: 'new', templateId: 'volumes-math-new-template'},
+                            ]
+                        })
+                        break
                 }
-                proc({
-                    containerId: 'volumes',
-                    data: {},
-                    templateId: tid
-                })
-
-                //step2: rebind the article
-                var value=state.volumes.value
-                proc({
-                    data: value,
-                    containerId: 'low',
-                    alterTemplates: [
-                        {type: 'old', templateId: 'volumes-chinese-old-template'},
-                        {type: 'new', templateId: 'volumes-chinese-new-template'},
-                    ]
-                })
-                proc({
-                    data: value,
-                    containerId: 'high',
-                    alterTemplates: [
-                        {type: 'old', templateId: 'volumes-chinese-old-template'},
-                        {type: 'new', templateId: 'volumes-chinese-new-template'},
-                    ]
-                })
-                proc({
-                    data: value,
-                    containerId: 'low2',
-                    alterTemplates: [
-                        {type: 'old', templateId: 'volumes-math-old-template'},
-                        {type: 'new', templateId: 'volumes-math-new-template'},
-                    ]
-                })
-                proc({
-                    data: value,
-                    containerId: 'high2',
-                    alterTemplates: [
-                        {type: 'old', templateId: 'volumes-math-old-template'},
-                        {type: 'new', templateId: 'volumes-math-new-template'},
-                    ]
-                })
             }
         },
         knowledgePoints: {
@@ -772,8 +783,46 @@
                 //bind volume's knowledgePoints to this article
 
                 //step1: clear the article
-
+                $('#knowledgePoints').html("");
                 //step2: rebind the article
+                switch (state.volumes.parentId) {
+                    case 1:
+                    case "1":
+                        var value=state.knowledgePoints.value
+                        proc({
+                            templateId: 'volume-c-title-template',
+                            data: {title: g.getUrlParameter('volume')},
+                            containerId: 'volumeTitle'
+                        })
+                        proc({
+                            data: value,
+                            containerId: 'knowledge-point',
+                            alterTemplates: [
+                                {type: 'old', templateId: 'knowledge-chinese-old-template'},
+                                {type: 'new', templateId: 'knowledge-chinese-new-template'},
+                            ]
+                        })
+                        break
+                    case 2:
+                    case '2':
+                        var value=state.knowledgePoints.value
+                        proc({
+                            templateId: 'volume-m-title-template',
+                            data: {title: g.getUrlParameter('volume')},
+                            containerId: 'volumeTitle'
+                        })
+                        proc({
+                            data: value,
+                            containerId: 'knowledge-point',
+                            alterTemplates: [
+                                {type: 'old', templateId: 'knowledge-math-normalOld-template'},
+                                {type: 'new', templateId: 'knowledge-math-normalNew-template'},
+                            ]
+                        })
+                        break
+                }
+
+
             }
         },
         knowledgePoint: {
@@ -966,25 +1015,6 @@
     state.init()
 </script>
 <script>
-
-   //年级上面的小鸟
-    $('.grade-main').eq(0).css({"box-shadow": "0rem 0rem 1.25rem #fe6569"});
-    $('.grade-main').eq(0).children('img').show();
-
-    $('.grade-main').eq(0).click(function () {
-        $('.grade-main').eq(0).children('img').show();
-        $('.grade-main').eq(1).children('img').hide();
-        $(this).css({"box-shadow": "0rem 0rem 1.25rem #fe6569"});
-        $('.grade-main').eq(1).css({"box-shadow": "0rem 0rem 0rem #fff"});
-    });
-
-    $('.grade-main').eq(1).click(function () {
-        $('.grade-main').eq(0).children('img').hide();
-        $('.grade-main').eq(1).children('img').show();
-        $(this).css({"box-shadow": "0rem 0rem 1.25rem #23cbd1"});
-        $('.grade-main').eq(0).css({"box-shadow": "0rem 0rem 0rem #fff"});
-    });
-
     //    挑战百分百的分割线
     $(window).resize(function () {
         $(".split_line").css("width", $("#whole_width").width())

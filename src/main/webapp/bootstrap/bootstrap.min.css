@@ -4,9 +4,9 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  *//*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 /*html {*/
-    /*font-family: sans-serif;*/
-    /*-webkit-text-size-adjust: 100%;*/
-    /*-ms-text-size-adjust: 100%*/
+/*font-family: sans-serif;*/
+/*-webkit-text-size-adjust: 100%;*/
+/*-ms-text-size-adjust: 100%*/
 /*}*/
 
 body {
@@ -1106,11 +1106,11 @@ html {
 }
 
 /*body {*/
-    /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-    /*font-size: 16px;*/
-    /*line-height: 1.42857143;*/
-    /*color: #333;*/
-    /*background-color: #fff*/
+/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+/*font-size: 16px;*/
+/*line-height: 1.42857143;*/
+/*color: #333;*/
+/*background-color: #fff*/
 /*}*/
 
 input, button, select, textarea {
@@ -1256,7 +1256,7 @@ h6, .h6 {
 }
 
 /*p {*/
-    /*margin: 0 0 10px*/
+/*margin: 0 0 10px*/
 /*}*/
 
 .lead {
@@ -3911,6 +3911,19 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 /*border: 1px solid #ddd;*/
 /*border-bottom-color: transparent*/
 /*}*/
+
+/*小鸟 阴影*/
+.nav-tabs > li:nth-child(1).active {
+    box-shadow: 0rem 0rem 1.25rem #fe6569;
+}
+
+.nav-tabs > li:nth-child(1).active > .grade-bird, .nav-tabs > li:nth-child(2).active > .grade-bird {
+    display: block;
+}
+
+.nav-tabs > li:nth-child(2).active {
+    box-shadow: 0rem 0rem 1.25rem #23cbd1;
+}
 
 .nav-tabs.nav-justified {
     width: 100%;
