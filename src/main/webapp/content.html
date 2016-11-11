@@ -146,8 +146,6 @@
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
 
-            var subjectId = g.getUrlParameter('subjectId')
-
             $.ajax({
                 type: 'GET',
                 url: '/api/subjects',
@@ -166,8 +164,12 @@
                             for (var i = 0; i < vs.length; ++i) {
                                 vs[i].knowledgePoints = []
                                 var s = state.subject.getById(vs[i].subjectId)
-                                var gn = state.grade.getNameByValue(vs[i].grade)
-                                s[gn].push(vs[i])
+                                if (s) {
+                                    var gn = state.grade.getNameByValue(vs[i].grade)
+                                    s[gn].push(vs[i])
+                                } else {
+                                    console.log(vs[i])
+                                }
                             }
                             $.ajax({
                                 type: 'GET',
@@ -176,10 +178,19 @@
                                 success: function (kps) {
                                     for (var i = 0; i < kps.length; ++i) {
                                         var v = state.volume.getById(kps[i].volumeId)
-                                        v.knowledgePoints.push(kps[i])
+                                        if (v) {
+                                            v.knowledgePoints.push(kps[i])
+                                        } else {
+                                            console.log(kps[i])
+                                        }
                                     }
 
-                                    state['volumes'].init()
+                                    var subjectId = g.getUrlParameter('subjectId')
+                                    //state.volumes.subjectId = subjectId
+                                    //state['volumes'].init()
+                                    history.pushState(null, null, '/content.html#volumes')
+
+                                    state['volumes'].changeId(subjectId)
                                 },
                                 error: function (r) {
                                 }
@@ -197,7 +208,7 @@
                 state.currentArticle.style.display = 'none'
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/user.html#' + id)
+                history.pushState(null, null, '/content.html#' + id)
                 state[id].init()
             }
 
@@ -205,10 +216,6 @@
                 var id = e.target.dataset.article
                 switchTo(id)
             })
-
-            state.volumes.subjectId = subjectId
-            state['volumes'].init()
-            history.pushState(null, null, '/content.html#volumes')
 
             window.addEventListener('hashchange', function(e) {
                 var hashPos = e.newURL.indexOf('#')

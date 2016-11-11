@@ -471,6 +471,7 @@
                     subjects = ss
 
                     state['main'].init()
+                    history.pushState(null, null, '/videos.html#main')
                 },
                 error: function (xhr) {
                     alert('back-end not response, places retry')
@@ -481,7 +482,7 @@
                 state.currentArticle.style.display = 'none'
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/user.html#' + id)
+                history.pushState(null, null, '/video.html#' + id)
                 state[id].init()
             }
 
@@ -489,9 +490,6 @@
                 var id = e.target.dataset.article
                 switchTo(id)
             })
-
-            state['main'].init()
-            history.pushState(null, null, '/videos.html#main')
 
             window.addEventListener('hashchange', function(e) {
                 var hashPos = e.newURL.indexOf('#')
