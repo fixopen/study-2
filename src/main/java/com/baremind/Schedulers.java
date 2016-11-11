@@ -180,7 +180,6 @@ public class Schedulers {
             ArrayList<Scheduler> featured = new ArrayList<>();
             ArrayList<Scheduler> playing = new ArrayList<>();
             ArrayList<Scheduler> passed = new ArrayList<>();
-            ArrayList<Scheduler> featuredUpsideDown = new ArrayList<>();
             Date now = new Date();
             for (Scheduler scheduler : schedulers) {
                 if (now.before(scheduler.getStartTime())) {
