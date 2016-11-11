@@ -4,6 +4,7 @@ import com.baremind.Logs;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
