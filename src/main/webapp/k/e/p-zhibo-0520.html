@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>english</title>
     <style>
-        .wrap{
+        .wrap {
             position: absolute;
             top: 0;
             left: 0;
@@ -14,26 +14,28 @@
             height: 100%;
             overflow: hidden;
         }
-        .wrap img{
+
+        .wrap img {
             width: 100%;
             height: 100%;
         }
-        .amplifier{
+
+        .amplifier {
             position: absolute;
             bottom: 2.5%;
             left: 2.5%;
             width: 12%;
             height: 7.3%;
             background: url('amplifier.png') no-repeat center;
-            -webkit-background-size: cover;
-            background-size: cover;
+            -webkit-background-size: contain;
+            background-size: contain;
         }
     </style>
 </head>
 <body>
 <article id="content"></article>
 <template id="audio-template">
-    <div>
+    <div class="wrap">
         <audio src="p-zhibo-0520/${bookNo}.mp3#t=${startSecond},${endSecond}" autoplay></audio>
         <img src="p-zhibo-0520/${bookNo}/${pageNo}.jpg" alt="">
         <div id="play" class="amplifier"></div>
@@ -61,7 +63,7 @@
         $.ajax({
             type: 'get',
             url: '/api/englishs/05/20/' + bookNo + '/' + pageNo + '/' + unitNo,
-            success: function(record) {
+            success: function (record) {
                 record.startSecond = record.startTime / 1000
                 record.endSecond = record.endTime / 1000
                 proc({
@@ -73,12 +75,12 @@
                 var player = document.getElementById('player')
                 var play = document.getElementById('play')
 
-                play.addEventListener('click', function(e) {
+                play.addEventListener('click', function (e) {
                     player.currentTime = record.startSecond
                     player.play()
                 }, false)
 
-                player.addEventListener('timeupdate', function(e) {
+                player.addEventListener('timeupdate', function (e) {
                     var ct = player.currentTime
                     if (ct >= record.endSecond) {
                         player.pause()
