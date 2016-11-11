@@ -251,9 +251,6 @@ public class PublicAccounts {
             Properties.setProperty("ticket", ticket.ticket);
         }
         return Response.ok().build();
-        //if (r.errCode == 40012) {
-        //refreshTicket();
-        //}
     }
 
     @GET
@@ -703,7 +700,7 @@ public class PublicAccounts {
         if (userInfo.sex == null) {
             user.setSex(0);
         } else {
-            user.setSex(userInfo.sex);
+            user.setSex(userInfo.sex.intValue());
         }
         user.setCreateTime(now);
         user.setUpdateTime(now);
@@ -731,7 +728,7 @@ public class PublicAccounts {
         //user.setRefId();
         //user.setRefreshToken();
         //user.setSex(p.Infos.get(sex));
-        wechatUser.setSex(userInfo.sex);
+        wechatUser.setSex(userInfo.sex.intValue());
         wechatUser.setSubscribe(userInfo.subscribe);
         wechatUser.setSubscribeTime(userInfo.subscribe_time);
         wechatUser.setLanguage(userInfo.language);
@@ -1197,7 +1194,7 @@ public class PublicAccounts {
             user.setProvince(us.province);
             //user.setRefId();
             //user.setRefreshToken();
-            user.setSex(us.sex);
+            user.setSex(us.sex.intValue());
             user.setSubscribeTime(us.subscribe_time);
             user.setSubscribe(us.subscribe);
             user.setLanguage(us.language);
@@ -1211,7 +1208,7 @@ public class PublicAccounts {
             u.setHead(us.headimgurl);
             u.setName(us.nickname);
             //u.setLoginName(us.nickname);
-            u.setSex(us.sex);
+            u.setSex(us.sex.intValue());
             Date now = new Date();
             u.setCreateTime(now);
             u.setUpdateTime(now);

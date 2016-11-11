@@ -355,6 +355,33 @@ public class Users {
     }
 
     @POST
+    @Path("update/material")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response actizzveCard(@CookieParam("userId") String userId, ActiveCard ac) {
+        Response result = Response.status(412).build();
+        Map<String, Object> validationCodeConditions = new HashMap<>();
+        validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
+        validationCodeConditions.put("validCode", ac.getValidCode());
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+        switch (validationCodes.size()) {
+            case 0:
+                result = Response.status(401).build();
+                break;
+            case 1:
+                Date now = new Date();
+                Date sendTime = validationCodes.get(0).getTimestamp();
+                if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                    result = Response.ok().build();
+                } else {
+                    result = Response.status(405).build();
+                }
+                break;
+        }
+        return result;
+    }
+
+    @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
