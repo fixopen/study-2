@@ -7,6 +7,7 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -14,14 +15,56 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.List;
 
 @Path("medias")
 public class Medias {
+    private static Random random = new Random();
+
+    private static int rand(int min, int max) {
+        return random.nextInt(max - min) + min;
+    }
+
+    @GET //根据条件查询
+    @Path("validation-picture")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getValidationPicture() throws IOException {
+        int w = 120;
+        int h = 50;
+        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics g = img.getGraphics();
+        g.setColor(new Color(rand(50, 250), rand(50, 250), rand(50, 250)));
+        g.fillRect(0, 0, w, h);
+
+        String s = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
+        String validationCode = "";
+        for (int i = 0; i < 4; i++) {
+            g.setColor(new Color(rand(50, 180), rand(50, 180), rand(50, 180)));
+            g.setFont(new Font("黑体", Font.PLAIN, 40));
+            char c = s.charAt(random.nextInt(s.length()));
+            g.drawString(String.valueOf(c), 10 + i * 30, rand(h - 30, h));
+            validationCode += c;
+        }
+        for (int i = 0; i < 25; i++) {
+            g.setColor(new Color(rand(50, 180), rand(50, 180), rand(50, 180)));
+            g.drawLine(rand(0, w), rand(0, h), rand(0, w), rand(0, h));
+        }
+        String physicalPath = "/Users/fixopen/IdeaProjects/study/target/study/images/";
+        String fileName = physicalPath + validationCode + ".png";
+        File file = new File(fileName);
+        ImageIO.write(img, "png", file);
+        String virtualPath = "/images/";
+        String path = virtualPath + validationCode + ".png";
+        return Response.ok(new Gson().toJson(path)).build();
+    }
+
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
