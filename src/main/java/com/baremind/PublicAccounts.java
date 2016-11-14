@@ -1,7 +1,10 @@
 package com.baremind;
 
 import com.baremind.algorithm.Securities;
-import com.baremind.data.*;
+import com.baremind.data.Card;
+import com.baremind.data.Session;
+import com.baremind.data.User;
+import com.baremind.data.WechatUser;
 import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -25,12 +28,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -137,7 +139,7 @@ public class PublicAccounts {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getConfig(@PathParam("url") String url) {
         Response result = Response.status(500).build();
-        url = url.replace(",","/");
+        url = url.replace(",", "/");
 
         String ticket = Properties.getPropertyValue("ticket");
         String timestamp = Long.toString(new Date().getTime());
@@ -160,12 +162,10 @@ public class PublicAccounts {
         config.setTimestamp(timestamp);
         config.setNonceStr(nonceStr);
         config.setSignature(sign);
-         //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
+        //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
         result = Response.ok(config).build();
         return result;
     }
-
-
 
 
     @GET
@@ -192,17 +192,13 @@ public class PublicAccounts {
         //}
     }
 
-    /*@GET
-    @Path("weChatHead")
-    @Produces(MediaType.APPLICATION_JSON)
-
     @GET
     @Path("weChatHead/{mediaId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProperty(@PathParam("mediaId") Long mediaId) {
+    public Response updateProperty(@PathParam("mediaId") Long mediaId){
 //      http请求方式: GET
-//        http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+//      http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
         Response result = Response.status(500).build();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
@@ -210,12 +206,31 @@ public class PublicAccounts {
                 .queryParam("access_token", accessToken)
                 .queryParam("media_id", mediaId)
                 .request().get();
-        String responseBody = response.readEntity(String.class);
-        AccessToken t = new Gson().fromJson(responseBody, AccessToken.class);
-         result = Response.ok(t).build();
-    }*/
+        byte[] responseBody = response.readEntity(byte[].class);
+        long now = new Date().getTime();
+        String path = Properties.getPropertyValue("physicalpath");
+        String uploadedFileLocation = path + now +".jpg";
+        File file = new File(uploadedFileLocation);
+        //String content = responseBody;
 
+        try (FileOutputStream fop = new FileOutputStream(file)) {
 
+            // if file doesn't exists, then create it
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            // get the content in bytes
+            byte[] contentInBytes = responseBody;
+            fop.write(contentInBytes);
+            fop.flush();
+            fop.close();
+            System.out.println("Done");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        result = Response.ok(path).build();
+        return result;
+    }
 
     private static void prepare() {
         if (accessToken.equals("")) {
