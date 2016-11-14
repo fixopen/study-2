@@ -1,42 +1,42 @@
-.mine_zilo {
+.codemine_zilo {
     margin: 1.25rem 0 1.875rem;
 }
 
-.mine_zUl {
+.codemine_zUl {
     background-color: #fff;
     border-top: 1px solid #e5e5e5;
     margin-bottom: 1.25rem;
     overflow: hidden;
 }
 
-.mine_zuli {
+.codemine_zuli {
     height: 3.71875rem;
     line-height: 3.71875rem;
     padding: 0 0.9375rem;
     border-bottom: 1px solid #e5e5e5;
 }
 
-.mine_leftsp {
+.codemine_leftsp {
     display: inline-block;
     width: 4.375rem;
     text-align: left;
 }
 
-.mine_rightip {
+.codemine_rightip {
     display: inline-block;
     color: #888;
     font-size: 1.0rem;
     margin-left: 1.5625rem;
 }
 
-.bottom_bdiv {
+.codebottom_bdiv {
     width: 100%;
     text-align: center;
     padding: 0 0.625rem;
     box-sizing: border-box;
 }
 
-.bottom_btn {
+.codebottom_btn {
     display: inline-block;
     color: #fff;
     width: 100%;
@@ -49,6 +49,6 @@
     margin-top: 0.625rem;
 }
 
-.Btn02 {
+.codeBtn02 {
     background-color: #24cbd1;
 }

@@ -323,6 +323,25 @@
             }
         }
     </script>
+    <script>
+        //var readyFunc = function onBridgeReady() {
+        //    document.querySelector('#closeWindow').addEventListener('click', function (e) {
+        //        WeixinJSBridge.invoke('closeWindow', {}, function (res) {});
+        //    }, false);
+        //}
+
+        //if (typeof WeixinJSBridge === "undefined") {
+        //    document.addEventListener('WeixinJSBridgeReady', readyFunc, false);
+        //} else {
+        //    readyFunc();
+        //}
+
+        var closeWindow = document.getElementById('closeWindow')
+        closeWindow.addEventListener('click', function (e) {
+            WeixinJSBridge.invoke('closeWindow', {}, function (res) {
+            })
+        }, false)
+    </script>
 </head>
 <body>
 <div class="wrap"></div>
