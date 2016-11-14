@@ -196,7 +196,7 @@ public class PublicAccounts {
     @Path("weChatHead/{mediaId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProperty(@PathParam("mediaId") Long mediaId){
+    public Response updateProperty(@PathParam("mediaId") String mediaId){
 //      http请求方式: GET
 //      http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
         Response result = Response.status(500).build();
@@ -206,29 +206,31 @@ public class PublicAccounts {
                 .queryParam("access_token", accessToken)
                 .queryParam("media_id", mediaId)
                 .request().get();
-        byte[] responseBody = response.readEntity(byte[].class);
-        long now = new Date().getTime();
-        String path = Properties.getPropertyValue("physicalpath");
+        String responseBody = response.readEntity(String.class);
+
+        System.out.println("互相伤害"+responseBody);
+       /* long now = new Date().getTime();
+        String path = Properties.getPropertyValue("testphysicalpath");
         String uploadedFileLocation = path + now +".jpg";
-        File file = new File(uploadedFileLocation);
+        File file = new File(uploadedFileLocation);*/
         //String content = responseBody;
 
-        try (FileOutputStream fop = new FileOutputStream(file)) {
+       /* try (FileOutputStream fop = new FileOutputStream(file)) {
 
             // if file doesn't exists, then create it
             if (!file.exists()) {
                 file.createNewFile();
             }
             // get the content in bytes
-            byte[] contentInBytes = responseBody;
-            fop.write(contentInBytes);
+            //byte[] contentInBytes = responseBody;
+            fop.write(responseBody);
             fop.flush();
             fop.close();
-            System.out.println("Done");
+
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        result = Response.ok(path).build();
+        }*/
+        result = Response.ok(responseBody).build();
         return result;
     }
 
