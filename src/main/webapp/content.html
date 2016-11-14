@@ -183,14 +183,16 @@
                                         }
                                         return result
                                     }
-
+                                    var now = Date.now()
                                     for (var i = 0; i < kps.length; ++i) {
                                         var v = state.volume.getById(kps[i].volumeId)
                                         if (v) {
                                             kps[i].showTime = Date.parse(kps[i].showTime.replace('-', '/'))
-                                            if (isNew(kps[i])) {
+                                            if (isNew(now, kps[i])) {
+                                                kps[i].type = 'normalNew'
                                                 v.knowledgePoints.unshift(kps[i])
                                             } else {
+                                                kps[i].type = 'normalOld'
                                                 v.knowledgePoints.push(kps[i])
                                             }
                                         } else {
@@ -237,11 +239,8 @@
             })
         },
         volumes: {
-            parentId: 1,
-            init: function () {
-                state.volumes.value = state.subject.getById(state.volumes.parentId)
-                state.volumes.show()
-            },
+            parentId: 0,
+            init: function () {},
             changeId: function(subjectId) {
                 if (state.volumes.parentId != subjectId) {
                     state.volumes.parentId = subjectId
@@ -278,22 +277,7 @@
             }
         },
         knowledgePoint: {
-            init: function () {
-                state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.id)
-                if (!state.knowledgePoint.value.contents) {
-                    $.ajax({
-                        type: 'get',
-                        url: 'api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
-                        dataType: 'json',
-                        success: function (data) {
-                            state.knowledgePoint.value.contents = data
-                            state.knowledgePoint.show()
-                        }
-                    })
-                } else {
-                    state.knowledgePoint.show()
-                }
-            },
+            init: function () {},
             parentId: 0,
             changeId: function(knowledgePointId) {
                 if (state.knowledgePoint.parentId != knowledgePointId) {
@@ -330,12 +314,12 @@
 
                 proc({
                     templateId: 'origin-template',
-                    data: value.quotes,
+                    data: value.contents.quotes,
                     containerId: 'origin'
                 })
 
                 proc({
-                    data: value.contents,
+                    data: value.contents.contents,
                     containerId: 'content',
                     alterTemplates: [
                         {type: 'text', templateId: 'content-text-template'},
@@ -345,13 +329,13 @@
 
                 proc({
                     templateId: 'video-template',
-                    data: value.video,
+                    data: value.contents.video,
                     containerId: 'video'
                 })
 
                 proc({
                     templateId: 'problem-template',
-                    data: value.problems,
+                    data: value.contents.problems,
                     containerId: 'problems',
                     secondBind: {
                         extPoint: 'options',
@@ -362,13 +346,13 @@
 
                 proc({
                     templateId: 'interaction-template',
-                    data: value.interaction,
+                    data: value.contents.interaction,
                     containerId: 'interaction'
                 })
 
                 proc({
                     templateId: 'comment-template',
-                    data: value.comments,
+                    data: value.contents.comments,
                     containerId: 'comments'
                 })
             },
@@ -436,26 +420,26 @@
             maxOrder: 1,
             getById: function (id) {
                 var result = null
-                var finded = false
+                var isFind = false
                 for (var i = 0; i < subjects.length; ++i) {
                     for (var j = 0; j < subjects[i].low.length; ++j) {
                         if (subjects[i].low[j].id == id) {
                             result = subjects[i].low[j]
-                            finded = true
+                            isFind = true
                             break
                         }
                     }
-                    if (finded) {
+                    if (isFind) {
                         break
                     }
                     for (var j = 0; j < subjects[i].high.length; ++j) {
                         if (subjects[i].high[j].id == id) {
                             result = subjects[i].high[j]
-                            finded = true
+                            isFind = true
                             break
                         }
                     }
-                    if (finded) {
+                    if (isFind) {
                         break
                     }
                 }

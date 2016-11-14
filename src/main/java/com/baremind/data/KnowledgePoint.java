@@ -79,7 +79,7 @@ public class KnowledgePoint {
         kpm.put("name", kp.getName());
         kpm.put("showTime", kp.getShowTime());
         kpm.put("likeCount", 0);
-        kpm.put("stateType", "old");
+        String stateType = "old";
 
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.id = :id  AND l.showTime > :yesterday AND l.showTime < :now";
@@ -88,9 +88,9 @@ public class KnowledgePoint {
         q.setParameter("id", kp.getId());
         q.setParameter("yesterday", yesterday);
         q.setParameter("now", now);
-        Long count = (Long) q.getSingleResult();
+        Long count = q.getSingleResult();
         if (count > 0) {
-            kpm.put("stateType ", "new");
+            stateType = "new";
         }
 
         Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
@@ -111,7 +111,28 @@ public class KnowledgePoint {
                 type = "pk";
             }
         }
-        kpm.put("type", type);
+        switch (stateType) {
+            case "old":
+                switch (type) {
+                    case "normal":
+                        kpm.put("type", "normalOld");
+                        break;
+                    case "pk":
+                        kpm.put("type", "pkOld");
+                        break;
+                }
+                break;
+            case "new":
+                switch (type) {
+                    case "normal":
+                        kpm.put("type", "normalNew");
+                        break;
+                    case "pk":
+                        kpm.put("type", "pkNew");
+                        break;
+                }
+                break;
+        }
         return kpm;
     }
 }

@@ -103,7 +103,7 @@ public class Subjects {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
-                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
+                List<Map<String, Object>> r = Volumes.toMaps(volumes);
                 result = Response.ok(new Gson().toJson(r)).build();
             }
         }
@@ -124,7 +124,7 @@ public class Subjects {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, conditions, orders);
             if (!volumes.isEmpty()) {
-                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
+                List<Map<String, Object>> r = Volumes.toMaps(volumes);
                 result = Response.ok(new Gson().toJson(r)).build();
             }
         }

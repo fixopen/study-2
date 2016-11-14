@@ -16,6 +16,27 @@ import java.util.function.Predicate;
 
 @Path("knowledge-points")
 public class KnowledgePoints {
+    public static List<Map<String, Object>> toMaps(List<KnowledgePoint> knowledgePoints) {
+        List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
+        Date now = new Date();
+        Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        for (KnowledgePoint kp : knowledgePoints) {
+            String statsContent = "SELECT count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + kp.getId().toString();
+            EntityManager em = JPAEntry.getEntityManager();
+            TypedQuery<Long> cq = em.createQuery(statsContent, Long.class);
+            List<Long> qc = cq.getResultList();
+            if (qc.size() == 1) {
+                Long c = qc.get(0);
+                if (c == 0) {
+                    continue;
+                }
+            }
+            Map<String, Object> kpm = KnowledgePoint.convertToMap(kp, now, yesterday);
+            kpsm.add(kpm);
+        }
+        return kpsm;
+    }
+
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
         for (T textItem : container) {
@@ -132,7 +153,7 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/contents")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePointsByVolumeId(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getContentsById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         Long selfId = Long.parseLong(userId);
         if (JPAEntry.isLogining(selfId)) {
@@ -273,7 +294,7 @@ public class KnowledgePoints {
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                List<Map<String, Object>> commentMaps = Comments.convertComments(comments);
+                List<Map<String, Object>> commentMaps = Comments.toMaps(comments);
                 totalResult.put("comments", commentMaps);
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();

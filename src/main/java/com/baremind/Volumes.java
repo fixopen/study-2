@@ -8,8 +8,6 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,7 +15,7 @@ import java.util.*;
 
 @Path("volumes")
 public class Volumes {
-    public static List<Map<String, Object>> convertVolumes(List<Volume> volumes) {
+    public static List<Map<String, Object>> toMaps(List<Volume> volumes) {
         List<Map<String, Object>> r = new ArrayList<>();
         Date now = new Date();
         Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
@@ -52,7 +50,7 @@ public class Volumes {
             orders.put("order", "ASC");
             List<Volume> volumes = JPAEntry.getList(Volume.class, filterObject, orders);
             if (!volumes.isEmpty()) {
-                List<Map<String, Object>> r = Volumes.convertVolumes(volumes);
+                List<Map<String, Object>> r = Volumes.toMaps(volumes);
                 result = Response.ok(new Gson().toJson(r)).build();
             }
         }
@@ -74,32 +72,6 @@ public class Volumes {
         return result;
     }
 
-    public static class StatsInfo {
-        private Long count;
-        private String objectType;
-
-        public StatsInfo(Long count, String objectType) {
-            this.count = count;
-            this.objectType = objectType;
-        }
-
-        public Long getCount() {
-            return count;
-        }
-
-        public void setCount(Long count) {
-            this.count = count;
-        }
-
-        public String getObjectType() {
-            return objectType;
-        }
-
-        public void setObjectType(String objectType) {
-            this.objectType = objectType;
-        }
-    }
-
     @GET
     @Path("{id}/knowledge-points")
     @Produces(MediaType.APPLICATION_JSON)
@@ -115,23 +87,7 @@ public class Volumes {
             orders.put("order", "ASC");
             List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions, orders);
             if (!knowledgePoints.isEmpty()) {
-                List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
-                Date now = new Date();
-                Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-                for (KnowledgePoint kp : knowledgePoints) {
-                    String statsContent = "SELECT count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + kp.getId().toString();
-                    EntityManager em = JPAEntry.getEntityManager();
-                    TypedQuery<Long> cq = em.createQuery(statsContent, Long.class);
-                    List<Long> qc = cq.getResultList();
-                    if (qc.size() == 1) {
-                        Long c = qc.get(0);
-                        if (c == 0) {
-                            continue;
-                        }
-                    }
-                    Map<String, Object> kpm = KnowledgePoint.convertToMap(kp, now, yesterday);
-                    kpsm.add(kpm);
-                }
+                List<Map<String, Object>> kpsm = KnowledgePoints.toMaps(knowledgePoints);
                 //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id
                 result = Response.ok(new Gson().toJson(kpsm)).build();
             }
