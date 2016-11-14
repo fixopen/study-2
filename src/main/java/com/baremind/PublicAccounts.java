@@ -146,7 +146,7 @@ public class PublicAccounts {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             try {
                 byte[] digest = md.digest(new Date().toString().getBytes("utf-8"));
-                nonceStr = Hex.bytesToHex(digest);
+//                nonceStr = Hex.bytesToHex(digest);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -191,6 +191,31 @@ public class PublicAccounts {
         //refreshTicket();
         //}
     }
+
+    /*@GET
+    @Path("weChatHead")
+    @Produces(MediaType.APPLICATION_JSON)
+
+    @GET
+    @Path("weChatHead/{mediaId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateProperty(@PathParam("mediaId") Long mediaId) {
+//      http请求方式: GET
+//        http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+        Response result = Response.status(500).build();
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+                .path("cgi-bin/media/get")
+                .queryParam("access_token", accessToken)
+                .queryParam("media_id", mediaId)
+                .request().get();
+        String responseBody = response.readEntity(String.class);
+        AccessToken t = new Gson().fromJson(responseBody, AccessToken.class);
+         result = Response.ok(t).build();
+    }*/
+
+
 
     private static void prepare() {
         if (accessToken.equals("")) {
