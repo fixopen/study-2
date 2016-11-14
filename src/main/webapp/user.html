@@ -18,34 +18,22 @@
     <link rel="stylesheet" href="user/cards.css">
     <link rel="stylesheet" href="validationCode.css">
     <link rel="stylesheet" href="css/chagePassword.css">
-    <!--<link rel="stylesheet" href="css/Cold.css">-->
-    <!--<style>
-        input[type="date"]:before{
-            color:#A9A9A9;
-            content:attr(placeholder);
-        }
-
-
-        input[type="date"].full:before {
-            color:black;
-            content:""!important;
-        }
-    </style>
-      -->
-
-
+    <link rel="stylesheet" href="css/infostyle.css">
+    <link rel="stylesheet" href="css/helpstyle.css">
+    <link rel="stylesheet" href="css/Gold.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 </head>
 <body>
 <article id="user">
 
 </article>
 <article id="cards" style="display: none;">
-    <div class="wrap">
-        <div class="mine_zilo">
+    <div class="codewrap">
+        <div class="codemine_zilo">
             <div id="card"></div>
-            <div class="bottom_bdiv">
-                <a class="bottom_btn Btn01" click="curseDetailTap();" href="#">充值</a>
-                <a class="bottom_btn Btn02" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
+            <div class="codebottom_bdiv">
+                <a class="codebottom_btn codeBtn01" click="curseDetailTap();" href="#">充值</a>
+                <a class="codebottom_btn codeBtn02" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
                 <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
             </div>
         </div>
@@ -70,6 +58,26 @@
     </div>
 </article>-->
 <article id="logs" style="display: none;"></article>
+<article id="head" style="display: none;">
+    <!--<img src="" alt="" id="myimg">-->
+</article>
+<!--<article id="gold" style="display: none;">
+    <div class="goldwrap"></div>
+    <div class="goldbgImg">
+        <div class="goldcloud1"></div>
+        <div class="goldblue-bg"></div>
+        <div class="goldbtm-img">
+            <a href="javascript:void(0)" id="closeWindow">返回首页学习</a>
+        </div>
+    </div>
+    <div class="goldcloud2"></div>
+    <div class="goldwords">
+        <div class="goldtac">
+            <img src="images/gx.png" alt=""><br>
+            <img src="images/cg.png" alt="">
+        </div>
+    </div>
+</article>-->
 <article id="consumes" style="display: none;"></article>
 <article id="study" style="display: none;"></article>
 <article id="score" style="display: none;"></article>
@@ -118,31 +126,6 @@
     <input type="button" id="save" class="common-font common-line-height common-border-style save" value="确 认"/>
 </article>-->
 <article id="firstActiveCard" style="display: none;">
-    <!--<section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
-        <div>
-            <span class="common-font common-line-height title">卡号</span>
-            <input type="text" id="first-cardNo" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入卡号" required pattern="\d+"/>
-        </div>
-        <div>
-            <span class="common-font common-line-height title">密码</span>
-            <input type="password" id="first-password" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入密码" required/>
-        </div>
-        <div>
-            <span class="common-font common-line-height title">手机号</span>
-            <input type="tel" id="phoneNumber" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入手机号" required pattern="\d+"/>
-            <input type="button" id="activeCode" class="common-font common-border-style validButton" value="获取手机验证码"/>
-        </div>
-        <div>
-            <span class="common-font common-line-height title">验证码</span>
-            <input type="text" id="validCode" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入验证码" required pattern="\d{6}"/>
-        </div>
-    </section>
-    <div id="first-tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
-    <input type="button" id="first-save" class="common-font common-line-height common-border-style save" value="确 认"/>-->
     <div style="padding-top: 0.625rem;" class="wrap">
         <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
             <div class="set-li">
@@ -234,21 +217,42 @@
     </div>
 </article>
 <article id="help" style="display: none;">
-
-    <span class="mine_leftsp"></span>
-   <!-- <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
-    margin-right: 5%; background-color: #fe6568; border: none">回到上一页
-    </button>-->
-
-    <h1>帮助</h1>
+    <div class="wrap">
+        <div class="userTou">
+            三味学堂用户操作流程
+        </div>
+        <div class="rain-main">
+            <ul>
+                <li class="daEr_li">
+                    <div class="daYi">1.新书扫一扫</div>
+                    <ul class="daEr">
+                        <li class="daEr_li">①您购买了三味学堂的图书，可以扫一扫图书的二维码，进入“三味学堂”。</li>
+                        <li class="daEr_li">②在页面下方“活动公告”栏中选“账号管理”，进入页面，点击“注册”，注册成为我们的会员。</li>
+                        <li class="daEr_li">③注册完成后，点击“登录”，登录自己的账号，进行学习。</li>
+                        <li class="daEr_li">④之后可以选择“我的账号信息”，完善自己的资料。</li>
+                        <li class="daEr_li">注意：每本新书只可以扫描一次哦。您若购买了多本图书，可以多次扫描，但只需注册一次就可以了。</li>
+                    </ul>
+                </li>
+                <li class="daEr_li">
+                    <div class="daYi">2.新用户注册</div>
+                    <ul class="daEr">
+                        <li class="daEr_li">①您若是扫描了“三味学堂”的二维码或是加微信关注了“三味学堂”，可以进入“三味学堂”进行体验。</li>
+                        <li class="daEr_li">②若想观看更多精彩内容，可以在首页下方“活动公告”栏中选“账号管理”，进入页面，点击“注册”，注册成为我们的会员。</li>
+                        <li class="daEr_li">③注册完成后，点击“登录”，登录自己的账号，点击“我的充值”进行充值。</li>
+                        <li class="daEr_li">④之后可以选择“我的账号信息”，完善自己的资料。</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 </article>
 
 <template id="user-template">
     <div class="mine_zilo">
         <ul class="mine_zUl">
-            <li class="mine_zuli">
+            <li class="mine_zuli" data-article="head">
                 <span class="mine_leftsp">我的头像</span>
-                <img class="mine_touimg" src="${head}" alt="">
+                <img class="mine_touimg" src="${head}" alt="" >
             </li>
             <li class="mine_zuli">
                 <span class="mine_leftsp">昵称</span>
@@ -274,68 +278,39 @@
     </div>
 </template>
 <template id="info-template">
-    <!-- <article>
-         <section>
-             <span>真实姓名</span>
-             <input type="text" placeholder="请输入真实姓名" value="${name}">
-         </section>
-         <section>
-             <span>手机号</span>
-             <input type="tel" value="${telephone}">
-         </section>
-         <section>
-             <span>性别</span>
-             <input type="text" value="${sex}">
-         </section>
-         <section>
-             <span>出生年月</span>
-             <input type="date" value="${birthday}">
-         </section>
-         <section>
-             <span>收货地址</span>
-             <input type="text" placeholder="请输入收货地址" value="${location}">
-         </section>
-         <section >
-             <span class="mine_leftsp">就读学校</span>
-             <input class="mine_rightip" type="text" value="${school}">
-         </section>
-         <section>
-             <span>所在班级</span>
-             <input type="text" value="${grade} ${classname}">
-         </section>
-     </article>-->
-    <ul class="mine_zUl">
-        <li class="mine_zuli">
-            <span class="mine_leftsp">真实姓名</span>
-            <input class="mine_rightip" type="text" placeholder="请输入真实姓名" value="${name}" id="info_name">
+    <ul class="infomine_zUl">
+        <li class="infomine_zuli">
+            <span class="infomine_leftsp">真实姓名</span>
+            <input class="infomine_rightip" type="text" placeholder="请输入真实姓名" value="${name}" id="info_name">
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">手机号</span>
-            <input class="mine_rightip" type="tel" value="${telephone}" id="info_telephone">
+        <li class="infomine_zuli">
+            <span class="infomine_leftsp">手机号</span>
+            <input class="infomine_rightip" type="tel" value="${telephone}" id="info_telephone">
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">性别</span>
-            <input class="mine_rightip" type="text" value="${sex}" id="info_sex">
+        <li class="infomine_zuli">
+            <span class="infomine_leftsp">性别</span>
+            <input class="infomine_rightip" type="text" value="${sex}" id="info_sex">
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">出生年月</span>
-            <!--<input id="date" class="weui_input" type="date" placeholder="请选择出生日期" style="height:41px;overflow: hidden;"> value="${birthday}"  placeholder="请选择出生日期" style="height:41px;overflow: hidden;"-->
-            <input class="mine_rightip" type="date" value="${birthday}" id="info_birthday">
+        <li class="infomine_zuli">
+            <span class="infomine_leftsp">出生年月</span>
+            <input id="date" class="weui_input" type="date" value="${birthday}" placeholder="请选择出生日期" style="height:41px;overflow: hidden;">
+            <!--value="${birthday}"  placeholder="请选择出生日期" style="height:41px;overflow: hidden;"-->
+            <!--<input class="infomine_rightip" type="date" value="${birthday}" placeholder="请选择出生日期" style="height:41px;overflow: hidden;" id="info_birthday">-->
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">收货地址</span>
-            <input class="mine_rightip" type="text" placeholder="请输入收货地址" value="${location}" id="info_location">
+        <li class="infomine_zuli">
+            <span class="infomine_leftsp">收货地址</span>
+            <input class="infomine_rightip" type="text" placeholder="请输入收货地址" value="${location}" id="info_location">
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">就读学校</span>
-            <input class="mine_rightip" type="text" value="${school}" id="info_school">
+        <li class="infomine_zuli">
+            <span class="infomine_leftsp">就读学校</span>
+            <input class="infomine_rightip" type="text" value="${school}" id="info_school">
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">所在班级</span>
-            <input class="mine_rightip" type="text" value="${grade} ${classname}" id="info_class">
+        <li class="infomine_zuli">
+            <span class="infomine_leftsp">所在班级</span>
+            <input class="infomine_rightip" type="text" value="${classname}" id="info_class">
         </li>
         <li>
-            <span class="mine_leftsp"></span>
+            <span class="infomine_leftsp"></span>
             <button id="save_info" onclick="saveInfo()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
     margin-right: 5%; background-color: #fe6568; border: none">确 认
             </button>
@@ -350,48 +325,26 @@
 
 </template>
 <template id="card-template">
-    <!--<article>
-        <section>
-            <span>卡号</span>
-            <span>${no}</span>
-        </section>
-        <section>
-            <span>学习类型</span>
-            <span>${subjectName}</span>
-        </section>
-        <section>
-            <span>激活时间</span>
-            <span>${activeTime}</span>
-        </section>
-        <section>
-            <span>剩余雨点</span>
-            <span>${amount}</span>
-        </section>
-        <section>
-            <span>有效期</span>
-            <span>${endTime}</span>
-        </section>
-    </article>-->
-    <ul class="mine_zUl">
-        <li class="mine_zuli">
-            <span class="mine_leftsp">卡号</span>
-            <span class="mine_rightip">${no}</span>
+    <ul class="codemine_zUl">
+        <li class="codemine_zuli">
+            <span class="codemine_leftsp">卡号</span>
+            <span class="codemine_rightip">${no}</span>
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">学习类型</span>
-            <span class="mine_rightip">${subject}</span>
+        <li class="codemine_zuli">
+            <span class="codemine_leftsp">学习类型</span>
+            <span class="codemine_rightip">${subject}</span>
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">激活时间</span>
-            <span class="mine_rightip">${activeTime}</span>
+        <li class="codemine_zuli">
+            <span class="codemine_leftsp">激活时间</span>
+            <span class="codemine_rightip">${activeTime}</span>
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">剩余雨点</span>
-            <span class="mine_rightip">${amount}</span>
+        <li class="codemine_zuli">
+            <span class="codemine_leftsp">剩余雨点</span>
+            <span class="codemine_rightip">${amount}</span>
         </li>
-        <li class="mine_zuli">
-            <span class="mine_leftsp">有效期</span>
-            <span class="mine_rightip">${endTime}</span>
+        <li class="codemine_zuli">
+            <span class="codemine_leftsp">有效期</span>
+            <span class="codemine_rightip">${endTime}</span>
         </li>
     </ul>
 </template>
@@ -403,6 +356,7 @@
     </li>
 </template>
 <template id="study-template"></template>
+
 
 <template id="settings-template">
 
@@ -639,7 +593,6 @@
                                         var a = getSubjectNameById(cs[i].subject)
                                         cs[i].subject = a
                                     }
-                                    alert(JSON.stringify(cs))
                                     user.cards = cs
                                     proc({
                                         containerId: 'card',
@@ -648,21 +601,17 @@
                                     })
                                 }
                             })
+                        } else {
+                            document.getElementById("card").innerHTML="";
+                            proc({
+                                containerId: 'card',
+                                data: user.cards,
+                                templateId: 'card-template'
+                            })
                         }
                         state.cards.isCards = true
                     }
-                }/*,
-                changed: function () {
-                    //step1: clear the element content
-
-                    //step2: rebind
-                    proc({
-                        containerId: 'card',
-                        data: user.cards,
-                        templateId: 'card-template'
-                    })
-
-                }*/
+                }
             },
             info: {
                 isInit: false,
@@ -682,11 +631,95 @@
                 init: function () {
                 }
             },
-            /*gold: {
+         /*   gold: {
              init: function () {}
              },*/
             consumes: {
                 init: function () {
+                }
+            },
+            head: {
+                init: function () {
+
+                    wx.config({
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: "wx92dec5e98645bd1d", // 必填，公众号的唯一标识
+                        timestamp: "1479085147", // 必填，生成签名的时间戳
+                        nonceStr: "1qauihewukdsfa", // 必填，生成签名的随机串
+                        signature: "f18d6a4a248efdcff07ef7b7551ecee6e0b60309",// 必填，签名，见附录1
+                        jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    });
+                    wx.error(function (res) {
+                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                        // alert("权限验证失败"+res)
+                        alert("权限验证失败" + JSON.stringify(res))
+                        //getticket();
+                    });
+                    wx.ready(function () {
+                         wx.chooseImage({
+                            count: 1,
+                            needResult: 1,
+                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                            success: function (data) {
+                                alert("调用选图接口成功")
+                                localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                if (rh.tostr(localIds)) {
+                                    wxuploadImage(localIds);
+                                }
+                            },
+                            fail: function (res) {
+                                alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+                            }
+
+                        });
+                        alert("成功")
+                    });
+                  /*  var src = user.head;
+                    $("#myimg").attr("src",src);*/
+
+                    /*    var url = window.location.href;
+                        url = url.replace(/[/]/g, ',')
+                        // alert(url)
+                        $.ajax({
+                            type: "get",
+                            url: "/api/public-account/config/" + url,
+                            dataType: "json",
+                            success: function (e) {
+
+                            },
+                            error: function (e) {
+                                alert("签名失败" + JSON.stringify(e))
+                                getticket();
+                            }
+                        })*/
+
+                    /*wx.ready(function () {
+                       /!* wx.chooseImage({
+                            count: 1,
+                            needResult: 1,
+                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                            success: function (data) {
+                                alert("调用选图接口成功")
+                                localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                if (rh.tostr(localIds)) {
+                                    wxuploadImage(localIds);
+                                }
+                            },
+                            fail: function (res) {
+                                alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+                            }
+
+                        });*!/
+                       alert("成功")
+                    });
+                    wx.error(function (res) {
+                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                        // alert("权限验证失败"+res)
+                        alert("权限验证失败" + JSON.stringify(res))
+                        //getticket();
+                    });*/
                 }
             },
             study: {
@@ -841,10 +874,11 @@
                             dataType:"json",
                             success:function (e) {
                                 alert("激活成功")
-                                back();
+                                e.subject = getSubjectNameById(e.subject)
                                 user.cards.push(e);
                                 alert(user.cards)
                                 state.cards.isCards = false
+                                back();
                             },
                             error:function (e) {
                                 alert(JSON.stringify(e));
@@ -884,10 +918,11 @@
                                     dataType:"json",
                                     success:function (e) {
                                         alert("激活成功")
-                                        back();
+                                        e.subject = getSubjectNameById(e.subject)
                                         user.cards.push(e);
                                         alert(user.cards)
                                         state.cards.isCards = false
+                                        back();
                                     },
                                     error:function (e) {
                                         alert(JSON.stringify(e));
@@ -936,24 +971,15 @@
             var b = $("#info_birthday").val();
             b += "T00:00:00+08:00";
             var data = {
-
-                // ,
-
                 name: $("#info_name").val(),
                 sex: sex,
                 telephone: $("#info_telephone").val(),
                 location: $("#info_location").val(),
-
-
                 birthday: b,
-
                 school: $("#info_school").val(),
-
                 classname: $("#info_class").val(),
-                //, sex: sex1,
-                //birthday: b3,
             }
-           // alert(b)
+
             $.ajax({
                 type: "put",
                 url: "/api/users/" + userId,
@@ -961,7 +987,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (e) {
-                    //alert("成功")
+                    alert("成功")
                     back();
                 },
                 error: function (e) {
@@ -969,332 +995,6 @@
                 }
             })
         }
-    //$('#activeCode').tap(activeCode)
-
-    //$('#save').tap(save)
-</script>
-<script>
-    /* function Coin(opts) {
-     //默认参数
-     this.defaults = {
-     coinSrc: "images/corn1.png",     //金币图片地址
-     audioSrc: "images/shake.mp3",	//金币音频地址
-     coinWidth: 30,           //金币宽度
-     coinHeight: 30,          //金币高度、密度
-     density: 30
-     };
-     this.settings = this._extendDeep(this.defaults, opts);   //深拷贝
-     this.density = this.settings.density;                   //密度，即金币个数
-     this.timeLag = 800;                                    //金币散落的事件间隔，数字越大表示间隔越大
-     this.coinWidth = this.settings.coinWidth;               //金币宽度
-     this.coinHeight = this.settings.coinHeight;             //金币高度
-     this.wrapWidth = 0;
-     this.wrapHeight = 0;
-     this._init();
-     }
-
-     Coin.prototype = {
-     constructor: Coin,
-     /!**
-     * 动画初始化方法
-     * @method _init
-     **!/
-     _init: function () {
-     //初始化包括尺寸大小
-     this.wrapWidth = document.documentElement.clientWidth;
-     this.wrapHeight = document.documentElement.clientHeight;
-     this._requestAnimationFrame();
-     this._createCanvas();
-     this._createAudio();
-     },
-     /!**
-     * 对象深拷贝方法
-     * @method _extendDeep
-     * @param  {object} parent 父对象
-     {object} child  子对象
-     @return {object} child  父对象继承给子对象
-     **!/
-     _extendDeep: function (child, parent) {
-     var i,
-     toStr = Object.prototype.toString,
-     astr = "[object Array]";
-     child = child || {};
-     for (i in parent) {
-     if (parent.hasOwnProperty(i)) {
-     if (typeof parent[i] === "object") {
-     child[i] = (toStr.call(parent[i]) === astr) ? [] : {};
-     extendDeep(parent[i], child[i]);
-     } else {
-     child[i] = parent[i];
-     }
-     }
-     }
-     return child;
-     },
-     /!**
-     * requestAnimationFrame做兼容
-     * @method _requestAnimationFrame
-     **!/
-     _requestAnimationFrame: function () {
-     var lastTime = 0;
-     var vendors = ['webkit', 'moz'];
-     for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-     window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-     window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||    // name has changed in Webkit
-     window[vendors[x] + 'CancelRequestAnimationFrame'];
-     }
-     if (!window.requestAnimationFrame) {
-     window.requestAnimationFrame = function (callback, element) {
-     var currTime = new Date().getTime();
-     var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
-     var id = window.setTimeout(function () {
-     callback(currTime + timeToCall);
-     }, timeToCall);
-     lastTime = currTime + timeToCall;
-     return id;
-     };
-     }
-     if (!window.cancelAnimationFrame) {
-     window.cancelAnimationFrame = function (id) {
-     clearTimeout(id);
-     };
-     }
-     },
-     /!**
-     * 创建canvas画布
-     * @method _createCanvas
-     **!/
-     _createCanvas: function () {
-     var _self = this;
-     this.canvas = document.createElement('canvas');
-     this.canvas.setAttribute("data-id", Date.now());
-     if (!this.canvas.getContext) {
-     alert("您的浏览器不支持canvas");
-     return;
-     }
-     this.context = this.canvas.getContext('2d');
-     this.canvas.width = this.wrapWidth;
-     this.canvas.height = this.wrapHeight;
-     var oBody = document.getElementsByTagName('body')[0];
-     oBody.appendChild(this.canvas);
-     this._createCacheCanvas();
-     },
-     _createCacheCanvas: function () {
-     var _self = this;
-     this.cacheCanvas = document.createElement('canvas');
-     this.cacheContext = this.cacheCanvas.getContext('2d');
-     this.cacheCanvas.width = this.wrapWidth;
-     this.cacheCanvas.height = this.wrapHeight;
-     this.coinImg = new Image();
-     this.coinImg.src = this.settings.coinSrc;
-     this.coinImg.onload = function () {
-     _self._startCacheCanvasAnim();
-     }
-     },
-     /!**
-     * 执行金币绘制动画
-     * @method _startCanvasAnim
-     **!/
-     _startCacheCanvasAnim: function () {
-     var _self = this;
-     var availWidth = this.cacheCanvas.width - this.coinWidth;
-     var availHeight = this.cacheCanvas.height - this.coinHeight;
-     //var disX=availWidth/this.density;  //每个硬币X轴的间距
-     var coinRange = availWidth * this.density / (this.density + 10);
-     var rangeStart = (availWidth - coinRange) / 2;
-     var g = 9.8 * 280;   //重力加速度
-     var bPlayAudio = false;
-     var coinAttrArr = [];  //存储金币下落过程中的一些属性参数
-     for (var i = 0; i < _self.density; i++) {
-     coinAttrArr[i] = {
-     rndX: Math.random(),                                    //存储金币开始降落x轴随机值
-     rndOrder: Math.round(Math.random() * _self.timeLag / 17),   //存储金币撒落顺序的一个数组
-     time: 0,									               //存储金币绘制的具体时间
-     top: 0,                                                 //存储金币绘制距离顶部的距离
-     left: 0,                                                //存储金币弹起后距离左边的距离
-     endSpeed: 0,                                            //存储金币第一次接触地面的速度
-     bEnd: false,								               //存储金币是否触碰到地面
-     reDownSpeed: 0,                                         //存储金币弹起后重新降落的速度
-     reDownHDelta: Math.random() * 100 + 250,                    //存储金币弹起的高度参数，随机值250~350之间
-     rndOffsetX: Math.random() * 0.06 + 0.97                     //存储金币x轴的偏移量，随机值0.97~1.03之间
-     }
-     }
-     var startTime = Date.now();  //开始绘制前的时间
-     function draw() {
-     var drawStart = Date.now();  //记录重绘的结束事件
-     var diff = (drawStart - startTime) / 1000;  //计算每次重绘所需要的事件，单位为秒
-     startTime = drawStart;   //结束事件传给开始事件
-     _self.context.clearRect(0, 0, _self.canvas.width, _self.canvas.height);  //清除画布，方便重绘
-     _self.cacheContext.clearRect(0, 0, _self.cacheCanvas.width, _self.cacheCanvas.height);  //清除画布，方便重绘
-     _self.cacheContext.save();
-     //根据金币个数循环绘制金币
-     for (var i = 0; i < _self.density; i++) {
-     if ((coinAttrArr[i].rndOrder == 0 && coinAttrArr[i].time == 0)) {   //如果顺序为0，表示开始下落，同时下落的初始时间为0时，赋值初始时间
-     coinAttrArr[i].time = diff;
-     }
-     if (coinAttrArr[i].time > 0) {     //如果初始事件大于0，表示已经在下落过程中,则每次的初始时间递增
-     coinAttrArr[i].time = coinAttrArr[i].time + diff;
-     }
-     if (coinAttrArr[i].rndOrder == 0) {  //如果顺序为0，开始下落，则开始绘制金币
-     if (!coinAttrArr[i].bEnd) {   //金币下落（过程一），自由落体运动
-     coinAttrArr[i].top = g * Math.pow(coinAttrArr[i].time, 2) / 2 - _self.coinHeight;   //自由落体加速度运动，求下落的高度
-     //coinAttrArr[i].left=disX*coinAttrArr[i].rndX+i*disX;
-     coinAttrArr[i].left = coinRange * coinAttrArr[i].rndX + rangeStart;
-     } else if (coinAttrArr[i].endSpeed == 0) {   //金币弹起后在空中重新下落（过程三）
-     coinAttrArr[i].reDownSpeed = coinAttrArr[i].reDownSpeed * 1.1;
-     coinAttrArr[i].top = coinAttrArr[i].top + coinAttrArr[i].reDownSpeed;
-     coinAttrArr[i].left = coinAttrArr[i].left * coinAttrArr[i].rndOffsetX;
-     } else {   //金币弹起（过程二）
-     coinAttrArr[i].endSpeed = -Math.abs(coinAttrArr[i].endSpeed * 0.96);
-     if (Math.abs(coinAttrArr[i].endSpeed) < 1) coinAttrArr[i].endSpeed = 0;
-     coinAttrArr[i].top = coinAttrArr[i].top + coinAttrArr[i].endSpeed;
-     coinAttrArr[i].left = coinAttrArr[i].left * coinAttrArr[i].rndOffsetX;
-     }
-     //金币第一次降落超过地面时，将其高度设置和地面齐平
-     if (coinAttrArr[i].top > _self.cacheCanvas.height - _self.coinHeight && !coinAttrArr[i].bEnd) {
-     coinAttrArr[i].top = _self.cacheCanvas.height - _self.coinHeight;
-     }
-     //金币落地时，计算落地的速度
-     if (coinAttrArr[i].top == _self.cacheCanvas.height - _self.coinHeight) {
-     coinAttrArr[i].endSpeed = g * coinAttrArr[i].time / coinAttrArr[i].reDownHDelta;
-     coinAttrArr[i].reDownSpeed = coinAttrArr[i].endSpeed / 10;
-     coinAttrArr[i].bEnd = true;
-     }
-     //绘制金币
-     _self.cacheContext.drawImage(_self.coinImg, coinAttrArr[i].left, coinAttrArr[i].top, _self.coinWidth, _self.coinHeight);
-     }
-     coinAttrArr[i].rndOrder = coinAttrArr[i].rndOrder == 0 ? 0 : coinAttrArr[i].rndOrder - 1;//顺序每一次重绘则递减一次，直到为0时，代表开始下落
-     }
-     _self.cacheContext.restore();
-     _self.context.drawImage(_self.cacheCanvas, 0, 0, _self.canvas.width, _self.canvas.height);
-     var firstH = _self._maxNum(coinAttrArr, "top");//求降落过程中高度最大的金币高度
-     if (firstH >= _self.cacheCanvas.height - _self.coinHeight && !bPlayAudio) {
-     _self._playAudio();
-     bPlayAudio = true;
-     }
-     var lastH = _self._minNum(coinAttrArr, "top");//求降落过程中高度最小的金币高度
-     if (lastH <= _self.cacheCanvas.height + _self.coinHeight) { //最后一个金币高度超出canvas的高度停止重绘
-     window.requestAnimationFrame(draw);  //重绘，递回调用绘制方法
-     } else {
-     console.log("金币都撒完了");
-     _self._destory();
-     }
-     }
-
-     window.requestAnimationFrame(draw);  //第一次绘制
-     },
-     /!**
-     * 求最小值
-     * @method _minNum
-     * @param   {arr}    arr  属性数组
-     {string} attr 数组下的属性名称
-     * @return  {number}      返回数组下属性值最小的值
-     **!/
-     _minNum: function (arr, attr) {
-     var tempArr = [];
-     for (var i = 0; i < arr.length; i++) {
-     tempArr.push(arr[i][attr]);
-     }
-     return tempArr.sort(function (a, b) {
-     return a - b
-     })[0];
-     },
-     /!**
-     * 求最大值
-     * @method _minNum
-     * @param   {arr}    arr  属性数组
-     {string} attr 数组下的属性名称
-     * @return  {number}      返回数组下属性值最大的值
-     **!/
-     _maxNum: function (arr, attr) {
-     var tempArr = [];
-     for (var i = 0; i < arr.length; i++) {
-     tempArr.push(arr[i][attr]);
-     }
-     return tempArr.sort(function (a, b) {
-     return b - a
-     })[0];
-     },
-     /!**
-     * 创建音频对象
-     * @method _createAudio
-     **!/
-     _createAudio: function () {
-     this.audio = document.createElement('audio');
-     this.audio.setAttribute("preload", "load");
-     var oSource = document.createElement('source');
-     oSource.setAttribute("src", this.settings.audioSrc);
-     oSource.setAttribute("type", "audio/mp3");
-     this.audio.appendChild(oSource);
-     var oBody = document.getElementsByTagName('body')[0];
-     oBody.appendChild(this.audio);
-     },
-     /!**
-     * 播放音频
-     * @method _playAudio
-     **!/
-     _playAudio: function () {
-     this.audio.play();
-     },
-     /!**
-     * 销毁canvas和audio
-     * @method _destory
-     **!/
-     _destory: function () {
-     var oBody = document.getElementsByTagName('body')[0];
-     oBody.removeChild(this.canvas);
-     oBody.removeChild(this.audio);
-     }
-     }
-
-     function goldshow () {
-     var oBtn = document.getElementById('btn1');
-     init();
-     var coin = new Coin();
-     var SHAKE_THRESHOLD = 400;
-     var last_update = 0;
-     var index = 0;
-     var x = y = z = last_x = last_y = last_z = 0;
-     var w_curTime = 0;
-
-     function init() {
-     if (window.DeviceMotionEvent) {
-     window.addEventListener('devicemotion', deviceMotionHandler, false);
-     } else {
-     alert('not support mobile event');
-     }
-     }
-
-     function deviceMotionHandler(eventData) {
-     var acceleration = eventData.accelerationIncludingGravity;
-     var curTime = new Date().getTime();
-     if ((curTime - last_update) > 100) {
-     var diffTime = curTime - last_update;
-     last_update = curTime;
-     x = acceleration.x;
-     y = acceleration.y;
-     z = acceleration.z;
-     var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-     var delta = Math.abs(x + y + z - last_x - last_y - last_z);
-     if (speed > SHAKE_THRESHOLD) {
-     if ((curTime - w_curTime) > 2000) {
-     w_curTime != 0 && new Coin({density: Math.round(delta)});
-     w_curTime = curTime;
-     }
-     }
-     last_x = x;
-     last_y = y;
-     last_z = z;
-     }
-     }
-     }
-
-
-     var closeWindow = document.getElementById('closeWindow')
-     closeWindow.addEventListener('click', function (e) {
-     WeixinJSBridge.invoke('closeWindow', {}, function (res) {
-     })
-     }, false)*/
 </script>
 </body>
 </html>
