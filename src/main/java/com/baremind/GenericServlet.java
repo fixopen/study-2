@@ -91,8 +91,26 @@ public class GenericServlet {
     public <T> Response getById(@CookieParam("userId") String userId, @PathParam("id") Long id, Class<T> type) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
+            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+            if (admin.getIsAdministrator()) {
+                result = Response.status(404).build();
+                T entity = JPAEntry.getObject(type, "id", id);
+                if (entity != null) {
+                    result = Response.ok(new Gson().toJson(entity)).build();
+                }
+            }
+        }
+        return result;
+    }
+
+    @GET //根据id查询
+    @Path("self")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSelf(@CookieParam("userId") String userId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
-            T entity = JPAEntry.getObject(type, "id", id);
+            User entity = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
             if (entity != null) {
                 result = Response.ok(new Gson().toJson(entity)).build();
             }
@@ -138,7 +156,7 @@ public class GenericServlet {
     @Path("self")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateById(@CookieParam("userId") String loginUserId, User newData, BiConsumer<User, User> update) {
+    public Response updateSelf(@CookieParam("userId") String loginUserId, User newData, BiConsumer<User, User> update) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(loginUserId)) {
             result = Response.status(404).build();
@@ -171,7 +189,7 @@ public class GenericServlet {
 
     @DELETE
     @Path("self")
-    public Response deleteById(@CookieParam("userId") String userId) {
+    public Response deleteSelf(@CookieParam("userId") String userId) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
