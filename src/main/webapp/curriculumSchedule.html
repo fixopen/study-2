@@ -86,13 +86,13 @@
         <table class="schedule-table">
             <thead>
             <tr style="background-color: #fff;">
-                <th style="width: 15%;"></th>
-                <th style="width: 85%; font-size: small">
+                <th style="width: 20%;"></th>
+                <th style="width: 80%; font-size: smaller">
                     <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
                         <tr style="width: 100%; height: 100%;">
                             <th style="width: 28%; height: 100%;">时间</th>
-                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
-                            <th style="width: 48%; height: 100%;">授课内容</th>
+                            <th style="width: 22%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 50%; height: 100%;">授课内容</th>
                         </tr>
                     </table>
                 </th>
@@ -104,8 +104,8 @@
 </div>
 <template id="day-template">
     <tr class="color">
-        <td style="width: 15%;">星期${day}<br>(${date})</td>
-        <td style="width: 85%;">
+        <td style="width: 20%;">星期${day}<br>(${date})</td>
+        <td style="width: 80%;">
             <table style="width: 100%; height: 100%; border: none; border-spacing: 0; border-collapse: collapse;">
                 <tbody data-ext-point="items" class="data"></tbody>
             </table>
@@ -115,8 +115,8 @@
 <template id="item-template">
     <tr>
         <td style="width: 28%;">${st}-${et}</td>
-        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
-        <td style="width: 48%;">${title}</td>
+        <td style="width: 22%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 50%;">${title}</td>
     </tr>
 </template>
 <script src="/moment/moment.min.js"></script>
