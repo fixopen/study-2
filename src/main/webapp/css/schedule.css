@@ -29,7 +29,7 @@
     left: 28.3%;
     font-size: 1rem;
     color: #000;
-    font-family: "Microsoft YaHei";
+    font-family: "Microsoft YaHei", serif;
 }
 
 .schedule-table {
@@ -37,22 +37,50 @@
     height: 100%;
 }
 
+/*
+style="width: 100%; height: 100%"
+ class="schedule-table1"
+  style="border: 1px solid red;"
+   class="line"
+*/
+
+.schedule-table thead {
+    height: 1.8125rem;
+}
+/*
 .schedule-table thead tr {
     font-size: 0.75rem;
     border-bottom: 0.125rem solid #ea875f;
     background-color: #fff;
 }
 
-.schedule-table thead th, .schedule-table td {
-    border-left: 0.09375rem solid #ea875f;
+.schedule-table .weekDay {
+    font-size: 0.75rem;
+    background-color: #fff;
 }
-
-.schedule-table thead {
-    height: 1.8125rem;
+*/
+.schedule-table thead th, .schedule-table td {
+    /*border-left: 0.09375rem solid #ea875f;*/
 }
 
 .schedule-table tr {
     height: 1.25rem;
+}
+
+.schedule-table .week-span {
+    display: block;
+    text-align: center;
+    font-size: 0.625rem;
+}
+
+.schedule-table .color:nth-child(1), .schedule-table .color:nth-child(3), .schedule-table .color:nth-child(5) {
+    background-color: #ffd5ce;
+    border-bottom: 0.0625rem solid #ea875f;
+}
+
+.schedule-table .color:nth-child(2), .schedule-table .color:nth-child(4) {
+    background-color: #fff;
+    border-bottom: 0.09375rem solid #ea875f;
 }
 
 .line {
@@ -68,6 +96,24 @@
 .schedule-table td:first-child {
     border-left: none;
     font-size: 0.75rem;
+}
+/*
+.data tr {
+    border-top: 1px solid #ea875f;
+    border-bottom: 1px solid #ea875f;
+}
+
+.data :first-child {
+    border-bottom: 1px solid #ea875f;
+}
+
+.data :last-child {
+    border-top: 1px solid #ea875f;
+}
+*/
+
+.data :nth-child(even) {
+    border-top: 1px solid #ea875f;
 }
 
 .schedule-table thead .weekDay{
@@ -99,34 +145,3 @@
     /*background-size: 2.96875rem 0.71875rem;*/
 /*}*/
 
-.schedule-table .week-span {
-    display: block;
-    text-align: center;
-    font-size: 0.625rem;
-}
-
-/*.tr-pink{*/
-/*background-color: #ffd5ce;*/
-/*}*/
-/*.tr-white{*/
-/*background-color: #fff;*/
-/*}*/
-/*.border-thin{*/
-/*border-bottom: 0.0625rem solid #ea875f;*/
-/*}*/
-/*.border-thick{*/
-/*border-bottom: 0.09375rem solid #ea875f;*/
-/*}*/
-/*.borderLeft{*/
-/*border-left: 0.09375rem solid #ea875f!important;*/
-/*}*/
-
-.color:nth-child(1), .color:nth-child(3), .color:nth-child(5) {
-    background-color: #ffd5ce;
-    border-bottom: 0.0625rem solid #ea875f;
-}
-
-.color:nth-child(2), .color:nth-child(4) {
-    background-color: #fff;
-    border-bottom: 0.09375rem solid #ea875f;
-}

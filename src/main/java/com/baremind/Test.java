@@ -64,8 +64,9 @@ public class Test {
             g.drawLine(r(0, w), r(0, h), r(0, w), r(0, h));
         }
         //把内存中创建的图像输出到文件中
-        String pyshicalpath = Properties.getPropertyValue("physicalpath");
-//        String pyshicalpath = Properties.getPropertyValue("testphysicalpath");
+        //String pyshicalpath = Properties.getPropertyValue("physicalpath");
+        //String pyshicalpath = Properties.getPropertyValue("testphysicalpath");
+        String pyshicalpath = "/Users/fixopen/Downloads/";
         String uploadedFileLocation = pyshicalpath + "vcode.png";
         File file = new File(uploadedFileLocation);
         // FileOutputStream w = new FileOutputStream(file);
