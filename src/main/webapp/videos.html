@@ -9,6 +9,68 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
     <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+    <style>
+        .convenient {
+            position: absolute;
+            top: 2.7%;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+            display: block;
+            width: 92%;
+            background: url('img/schedule.png') no-repeat center top;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 10.5% 4.3% 4.5%;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .week {
+            position: absolute;
+            top: 3%;
+            left: 28.3%;
+            font-size: 1rem;
+            color: #000;
+            font-family: "Microsoft YaHei", serif;
+        }
+
+        .schedule-table {
+            width: 100%;
+            height: 100%;
+        }
+
+        .schedule-table thead {
+            height: 1.8125rem;
+        }
+
+        .schedule-table tr {
+            height: 1.25rem;
+        }
+
+        .color:nth-child(even) {
+            background-color: #ffd5ce;
+            border-bottom: 0.0625rem solid #ea875f;
+        }
+
+        .color:nth-child(odd) {
+            background-color: #fff;
+            border-bottom: 0.09375rem solid #ea875f;
+        }
+
+        .schedule-table td {
+            font-size: 0.6875rem;
+            color: #371f1f;
+            text-align: center;
+        }
+
+        .data :nth-child(even) {
+            border-top: 1px solid #ea875f;
+        }
+    </style>
 </head>
 <body>
 <article id="main">
