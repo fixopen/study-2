@@ -47,7 +47,7 @@ public class User {
     private String site;
 
     @Column(name = "amount")
-    private float amount;
+    private Float amount;
 
     @Column(name = "school")
     private String school;
@@ -209,11 +209,11 @@ public class User {
         this.sex = sex;
     }
 
-    public float getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 

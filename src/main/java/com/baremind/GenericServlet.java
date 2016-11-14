@@ -1,6 +1,7 @@
 package com.baremind;
 
 import com.baremind.data.Entity;
+import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.Condition;
 import com.baremind.utils.IdGenerator;
@@ -116,11 +117,32 @@ public class GenericServlet {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public <T> Response updateById(@CookieParam("userId") String aUserId, @PathParam("id") Long id, T newData, Class<T> type, BiConsumer<T, T> update) {
+    public <T> Response updateById(@CookieParam("userId") String loginUserId, @PathParam("id") Long id, T newData, Class<T> type, BiConsumer<T, T> update) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(aUserId)) {
+        if (JPAEntry.isLogining(loginUserId)) {
+            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(loginUserId));
+            if (admin.getIsAdministrator()) {
+                result = Response.status(404).build();
+                T existData = JPAEntry.getObject(type, "id", id);
+                if (existData != null) {
+                    update.accept(existData, newData);
+                    JPAEntry.genericPut(existData);
+                    result = Response.ok(existData).build();
+                }
+            }
+        }
+        return result;
+    }
+
+    @PUT //根据token修改
+    @Path("self")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateById(@CookieParam("userId") String loginUserId, User newData, BiConsumer<User, User> update) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(loginUserId)) {
             result = Response.status(404).build();
-            T existData = JPAEntry.getObject(type, "id", id);
+            User existData = JPAEntry.getObject(User.class, "id", Long.parseLong(loginUserId));
             if (existData != null) {
                 update.accept(existData, newData);
                 JPAEntry.genericPut(existData);
@@ -135,8 +157,25 @@ public class GenericServlet {
     public <T> Response deleteById(@CookieParam("userId") String userId, @PathParam("id") Long id, Class<T> type) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
+            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+            if (admin.getIsAdministrator()) {
+                result = Response.status(404).build();
+                long count = JPAEntry.genericDelete(type, "id", id);
+                if (count > 0) {
+                    result = Response.ok().build();
+                }
+            }
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("self")
+    public Response deleteById(@CookieParam("userId") String userId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
-            long count = JPAEntry.genericDelete(type, "id", id);
+            long count = JPAEntry.genericDelete(User.class, "id", Long.parseLong(userId));
             if (count > 0) {
                 result = Response.ok().build();
             }

@@ -438,11 +438,12 @@
 <dialog>添加成功啦！<br>请到我的学习卡里~</dialog>
 
 <script src="/jquery/jquery-3.1.1.min.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="/weui/jweixin-1.0.0.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
     var user = null
+    var subjects = []
 
     var state = {
         currentArticle: document.getElementById('user'),
@@ -465,8 +466,15 @@
                 switchTo(id)
             })
 
-            state['user'].init()
-            history.pushState(null, null, '/user.html#user')
+            $.ajax({
+                type: 'get',
+                url: '/api/subjects',
+                success: function(ss) {
+                    subjects = ss
+                    state['user'].init()
+                    history.pushState(null, null, '/user.html#user')
+                }
+            })
 
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
@@ -581,6 +589,36 @@
         info: {
             isInit: false,
             init: function () {
+                var saveInfo = function () {
+                    var se = $('#info_sex').val();
+                    var sex = state.user.getSexIdByName(se);
+                    var b = $('#info_birthday').val();
+                    b += 'T00:00:00+08:00';
+                    var data = {
+                        name: $('#info_name').val(),
+                        sex: sex,
+                        telephone: $('#info_telephone').val(),
+                        location: $('#info_location').val(),
+                        birthday: b,
+                        school: $('#info_school').val(),
+                        classname: $('#info_class').val(),
+                    }
+
+                    $.ajax({
+                        type: 'put',
+                        url: '/api/users/self',
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (e) {
+                            alert('成功')
+                            history.back();
+                        },
+                        error: function (e) {
+                            alert('修改用户信息失败，请刷新以重试')
+                        }
+                    })
+                }
                 if (!state.info.isInit) {
                     state.info.container.innerHTML = ''
                     proc({
@@ -594,37 +632,6 @@
         },
         logs: {
             init: function () {
-                var saveInfo = function () {
-                    var se = $("#info_sex").val();
-                    var sex = getSexNameById(se);
-                    //alert($("#info_birthday").val())
-                    var b = $("#info_birthday").val();
-                    b += "T00:00:00+08:00";
-                    var data = {
-                        name: $("#info_name").val(),
-                        sex: sex,
-                        telephone: $("#info_telephone").val(),
-                        location: $("#info_location").val(),
-                        birthday: b,
-                        school: $("#info_school").val(),
-                        classname: $("#info_class").val(),
-                    }
-
-                    $.ajax({
-                        type: "put",
-                        url: "/api/users/" + userId,
-                        data: JSON.stringify(data),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (e) {
-                            alert("成功")
-                            back();
-                        },
-                        error: function (e) {
-                            alert('修改用户信息失败，请刷新以重试')
-                        }
-                    })
-                }
             }
         },
         consumes: {
@@ -786,15 +793,14 @@
                         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                         success: function (data) {
                             alert("调用选图接口成功")
-                            localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                            var localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                             if (rh.tostr(localIds)) {
-                                wxuploadImage(localIds);
+                                wxUploadImage(localIds);
                             }
                         },
                         fail: function (res) {
                             alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
                         }
-
                     });
                     alert("成功")
                 });
@@ -809,7 +815,6 @@
                     url: "/api/public-account/config/" + url,
                     dataType: "json",
                     success: function (e) {
-
                     },
                     error: function (e) {
                         alert("签名失败" + JSON.stringify(e))
@@ -825,7 +830,7 @@
                         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                         success: function (data) {
                             alert("调用选图接口成功")
-                            localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                            var localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                             if (rh.tostr(localIds)) {
                                 wxuploadImage(localIds);
                             }
@@ -851,22 +856,25 @@
                 if (!state.activeCard.isInit) {
                     var cardNo = document.getElementById("cardNo")
                     cardNo.addEventListener('keyup', function (e) {
-                        e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
-                    }, false);
-
-                    var card = {
-                        id: ...,
-                        no: ...,
-                        password: ...,
-                        active_time: ...,
-                        end_time: ...,
-                        subject: no,
-                    }
-                    user.cards.push(card)
-                    state.cards.isInit = false
-                    state.activeCard.isInit = true
+                        e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ")
+                    }, false)
+                    state.activeCard.submitButton.addEventListener('click', function(e) {
+                        state.activeCard.submit()
+                    }, false)
                 }
-            }
+            },
+            submit: function() {
+                $.ajax({
+                    type: 'post',
+                    url: '/api/users/self/cards',
+                    success: function(card) {
+                        user.cards.push(card)
+                        state.cards.isInit = false
+                        state.activeCard.isInit = true
+                    }
+                })
+            },
+            submitButton: document.getElementById('submit')
         },
         firstActiveCard: {
             init: function () {

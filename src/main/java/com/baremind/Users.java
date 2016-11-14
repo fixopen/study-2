@@ -353,17 +353,18 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@CookieParam("userId") String userId, ActiveCard ac) {
-        Random rand = new Random();
-        Long logId = rand.nextLong();
+        //Random rand = new Random();
+        //Long logId = rand.nextLong();
         //Logs.insert(id, "log", logId, "start");
         return activeCardImpl(Long.parseLong(userId), ac);
     }
 
+    //@@security weak
     @POST
     @Path("update/material")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response actizzveCard(@CookieParam("userId") String userId, ActiveCard ac) {
+    public Response queryValidationStats(ActiveCard ac) {
         Response result = Response.status(412).build();
         Map<String, Object> validationCodeConditions = new HashMap<>();
         validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
@@ -603,87 +604,114 @@ public class Users {
         return result;
     }
 
+    private void updateUser(User existUser, User userData) {
+        Float amount = userData.getAmount();
+        if (amount != null) {
+            existUser.setAmount(amount);
+        }
+
+        Date birthday = userData.getBirthday();
+        if (birthday != null) {
+            existUser.setBirthday(birthday);
+        }
+        String classname = userData.getClassname();
+        if (classname != null) {
+            existUser.setClassname(classname);
+        }
+        String description = userData.getDescription();
+        if (description != null) {
+            existUser.setDescription(description);
+        }
+        String email = userData.getEmail();
+        if (email != null) {
+            existUser.setEmail(email);
+        }
+        String grade = userData.getGrade();
+        if (grade != null) {
+            existUser.setGrade(grade);
+        }
+        String head = userData.getHead();
+        if (head != null) {
+            existUser.setHead(head);
+        }
+        Boolean isAdministrator = userData.getIsAdministrator();
+        if (isAdministrator != null) {
+            existUser.setIsAdministrator(isAdministrator);
+        }
+        String location = userData.getAddress();
+        if (location != null) {
+            existUser.setAddress(location);
+        }
+        String loginName = userData.getLoginName();
+        if (loginName != null) {
+            existUser.setLoginName(loginName);
+        }
+        String name = userData.getName();
+        if (name != null) {
+            existUser.setName(name);
+        }
+        String password = userData.getPassword();
+        if (password != null) {
+            existUser.setPassword(password);
+        }
+        String school = userData.getSchool();
+        if (school != null) {
+            existUser.setSchool(school);
+        }
+        Integer sex = userData.getSex();
+        if (sex != null) {
+            existUser.setSex(sex);
+        }
+        String telephone = userData.getTelephone();
+        if (telephone != null) {
+            existUser.setTelephone(telephone);
+        }
+        String timezone = userData.getTimezone();
+        if (timezone != null) {
+            existUser.setTimezone(timezone);
+        }
+        Date now = new Date();
+        existUser.setUpdateTime(now);
+        String site = userData.getSite();
+        if (site != null) {
+            existUser.getSite();
+        }
+    }
+
     @PUT //根据id修改
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@CookieParam("userId") String userId, @PathParam("id") Long id, /*byte[] userInfo*/User user) {
+    public Response updateUser(@CookieParam("userId") String userId, @PathParam("id") Long id, User user) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+            if (admin.getIsAdministrator()) {
+                result = Response.status(404).build();
+                User existUser = JPAEntry.getObject(User.class, "id", id);
+                if (existUser != null) {
+                    updateUser(existUser, user);
+                    JPAEntry.genericPut(existUser);
+                    result = Response.ok(existUser).build();
+                }
+            }
+        }
+        return result;
+    }
+
+    @PUT //根据id修改
+    @Path("self")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateSelf(@CookieParam("userId") String userId, User user) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
-            User existuser = JPAEntry.getObject(User.class, "id", id);
-            if (existuser != null) {
-                float amount = user.getAmount();
-                existuser.setAmount(amount);
-
-                Date birthday = user.getBirthday();
-                if (birthday != null) {
-                    existuser.setBirthday(birthday);
-                }
-                String classname = user.getClassname();
-                if (classname != null) {
-                    existuser.setClassname(classname);
-                }
-                String description = user.getDescription();
-                if (description != null) {
-                    existuser.setDescription(description);
-                }
-                String email = user.getEmail();
-                if (email != null) {
-                    existuser.setEmail(email);
-                }
-                String grade = user.getGrade();
-                if (grade != null) {
-                    existuser.setGrade(grade);
-                }
-                String head = user.getHead();
-                if (head != null) {
-                    existuser.setHead(head);
-                }
-                Boolean isAdministrator = user.getIsAdministrator();
-                if (isAdministrator != null) {
-                    existuser.setIsAdministrator(isAdministrator);
-                }
-                String location = user.getAddress();
-                if (location != null) {
-                    existuser.setAddress(location);
-                }
-                String loginName = user.getLoginName();
-                if (loginName != null) {
-                    existuser.setLoginName(loginName);
-                }
-                String name = user.getName();
-                if (name != null) {
-                    existuser.setName(name);
-                }
-                String password = user.getPassword();
-                if (password != null) {
-                    existuser.setPassword(password);
-                }
-                String school = user.getSchool();
-                if (school != null) {
-                    existuser.setSchool(school);
-                }
-                Integer sex = user.getSex();
-                if (sex != null) {
-                    existuser.setSex(sex);
-                }
-                String telephone = user.getTelephone();
-                if (telephone != null) {
-                    existuser.setTelephone(telephone);
-                }
-                String timezone = user.getTimezone();
-                if (timezone != null) {
-                    existuser.setTimezone(timezone);
-                }
-                Date now = new Date();
-                existuser.setUpdateTime(now);
-                String site = user.getSite();
-                if (site != null) {
-                    existuser.getSite();
-                }
-                JPAEntry.genericPut(existuser);
-                result = Response.ok(existuser).build();
+            User existUser = JPAEntry.getObject(User.class, "id", userId);
+            if (existUser != null) {
+                updateUser(existUser, user);
+                JPAEntry.genericPut(existUser);
+                result = Response.ok(existUser).build();
             }
         }
         return result;
