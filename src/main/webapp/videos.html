@@ -113,24 +113,28 @@
     <video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>
 </article>
 <article id="scheduler" style="display: none;">
-    <div class="week">第<sapn id="week"></sapn>周</div>
-    <table class="schedule-table">
-        <thead style="width: 100%; height: 100%">
-        <tr>
-            <th style="width: 15%;" class="weekDay"></th>
-            <th style="width: 85%;" class="schedule-table1">
-                <table style="width: 100%; height: 100% ">
-                    <tr style="width: 100%; height: 100%; color: #515151;">
-                        <th style="width: 33%; height: 100%; border-left:transparent;">时间</th>
-                        <th style="width: 33%; height: 100%;">授课年级</th>
-                        <th style="width: 33%; height: 100%;">授课内容</th>
-                    </tr>
-                </table>
-            </th>
-        </tr>
-        </thead>
-        <tbody id="day"></tbody>
-    </table>
+    <div class="convenient">
+        <div class="week">
+            第<span id="week"></span>周
+        </div>
+        <table class="schedule-table">
+            <thead>
+            <tr style="background-color: #fff;">
+                <th style="width: 15%;"></th>
+                <th style="width: 85%; font-size: small">
+                    <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
+                        <tr style="width: 100%; height: 100%;">
+                            <th style="width: 28%; height: 100%;">时间</th>
+                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 48%; height: 100%;">授课内容</th>
+                        </tr>
+                    </table>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="day"></tbody>
+        </table>
+    </div>
 </article>
 <article id="futureNote" style="display: none;">
     <div class="goBack"></div>
