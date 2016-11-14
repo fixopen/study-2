@@ -10,7 +10,7 @@
     <meta name="screen-orientation" content="portrait"/>
     <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
 </head>
-<body>
+<body class="wrap">
 <article id="volumes">
     <h1 id="subjectTitle"></h1>
     <!-- Nav tabs -->
@@ -176,10 +176,23 @@
                                 url: '/api/knowledge-points',
                                 dataType: 'json',
                                 success: function (kps) {
+                                    var isNew = function(now, kp) {
+                                        var result = false
+                                        if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+                                            result = true
+                                        }
+                                        return result
+                                    }
+
                                     for (var i = 0; i < kps.length; ++i) {
                                         var v = state.volume.getById(kps[i].volumeId)
                                         if (v) {
-                                            v.knowledgePoints.push(kps[i])
+                                            kps[i].showTime = Date.parse(kps[i].showTime.replace('-', '/'))
+                                            if (isNew(kps[i])) {
+                                                v.knowledgePoints.unshift(kps[i])
+                                            } else {
+                                                v.knowledgePoints.push(kps[i])
+                                            }
                                         } else {
                                             console.log(kps[i])
                                         }
