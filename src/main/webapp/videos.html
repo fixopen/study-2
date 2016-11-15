@@ -408,26 +408,40 @@
                                     state.onePlaying.data = subjects[1].playing
                                     state.refreshState(1)
 
-                                    var oneFirst = true
-                                    if (subjects[0].playing.length > 0) {
-                                        if (subjects[1].playing.length > 0) {
-                                            if (+subjects[0].playing[0].startTime < +subjects[1].playing[0].startTime) {
-                                                oneFirst = false
+                                    var whoFirst = function() {
+                                        var comparePlaying = function() {
+                                            var result = false
+                                            if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
+                                                if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
+                                                    result = true
+                                                }
+                                            } else if (subjects[1].playing.length > 0) {
+                                                result = true
                                             }
-                                        } else {
-                                            oneFirst = false
+                                            return result
                                         }
-                                    } else if (subjects[0].futures.length > 0) {
-                                        if (subjects[1].futures.length > 0) {
-                                            if (+subjects[0].futures[0].startTime < +subjects[1].futures[0].startTime) {
-                                                oneFirst = false
+
+                                        var compareFuture = function() {
+                                            var result = false
+                                            if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
+                                                if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
+                                                    result = true
+                                                }
+                                            } else if (subjects[1].futures.length > 0) {
+                                                result = true
                                             }
-                                        } else {
-                                            oneFirst = false
+                                            return result
                                         }
-                                    } else {
-                                        oneFirst = false
+
+                                        var result = comparePlaying()
+                                        if (!result) {
+                                            result = compareFuture()
+                                        }
+
+                                        return result
                                     }
+                                    
+                                    var oneFirst = whoFirst()
                                     if (oneFirst) {
                                         $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
                                         //$('#subjects').find('a:first').tab('show') // Select first tab
