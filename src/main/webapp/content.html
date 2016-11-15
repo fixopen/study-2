@@ -28,25 +28,7 @@
     <h1 id="volumeTitle"></h1>
     <ol id="knowledge-point-contents"></ol>
 </article>
-<article id="knowledgePoint" style="display: none;">
-    <section id="knowledgePointTitle"></section>
-    <section>
-        <h2>选文赏析</h2>
-        <ul id="origin"></ul>
-    </section>
-    <section id="content"></section>
-    <section id="video"></section>
-    <section>
-        <h2>闯关练习</h2>
-        <dl id="problems"></dl>
-    </section>
-    <section id="interaction"></section>
-    <section>
-        <span>写留言<img src="write.png" alt="写留言"/></span>
-        <textarea id="new-comment" style="display: none"></textarea>
-        <section id="comments"></section>
-    </section>
-</article>
+<article id="knowledgePoint" style="display: none;"></article>
 
 <template id="volume-template">
     <li>
@@ -68,6 +50,57 @@
     </li>
 </template>
 
+<template id="chinese-structure-template">
+    <div>
+        <section id="knowledgePointTitle"></section>
+        <section>
+            <h2>选文赏析</h2>
+            <ul id="origin"></ul>
+        </section>
+        <section id="chineseContent"></section>
+        <section id="chineseVideo"></section>
+        <section>
+            <h2>闯关练习</h2>
+            <dl id="problems"></dl>
+        </section>
+        <section id="chineseInteraction"></section>
+        <section>
+            <span>写留言<img src="write.png" alt="写留言"/></span>
+            <textarea id="new-comment" style="display: none"></textarea>
+            <section id="chineseComments"></section>
+        </section>
+    </div>
+</template>
+<template id="math-structure-template">
+    <div>
+        <section>
+            <h1 id="title1"></h1>
+            <h2 id="title2"></h2>
+        </section>
+        <section>
+            <h2>非常挑战</h2>
+            <ul id="challenge"></ul>
+        </section>
+        <section>
+            <h2>最强讲解</h2>
+            <section id="mathContent"></section>
+        </section>
+        <section id="mathVideo"></section>
+        <section>
+            <h2>最强大脑</h2>
+            <dl id="strongest-brain"></dl>
+        </section>
+        <section>
+            <h2>脑力大PK</h2>
+            <dl id="pk"></dl>
+        </section>
+        <section id="mathInteraction"></section>
+        <section>
+            <span>写留言<img src="pen.jpg" alt="写留言"/></span>
+            <section id="mathComments"></section>
+        </section>
+    </div>
+</template>
 <template id="knowledge-point-title-template">
     <h1>${title}</h1>
 </template>
@@ -81,9 +114,10 @@
     <p>${content}</p>
 </template>
 <template id="content-image-template">
-    <span>
+    <p>
         <img src="${href}" alt="${description}"/>
-    </span>
+        ${content}
+    </p>
 </template>
 <template id="content-image-text-template">
     <p>
@@ -92,6 +126,11 @@
     </p>
 </template>
 <template id="video-template">
+    <span>
+        <video src="${href}">
+            <img src="${coverHref}" alt="${coverDescription}"/>
+        </video>
+    </span>
     <span>
         <a href="${href}"><img src="${storePath}"/></a>
     </span>
@@ -125,6 +164,38 @@
         <section>${content}</section>
         <time>${time}</time>
     </article>
+</template>
+<template id="title1-template">
+    <span>${title1}</span>
+</template>
+<template id="title2-template">
+    <span>${title2}</span>
+</template>
+<template id="challenge-template">
+    <section>${content}</section>
+</template>
+<template id="strongest-brain-option-template">
+    <li>${option}</li>
+</template>
+<template id="strongest-brain-template">
+    <div>
+        <dt><span>${type}</span>${title}</dt>
+        <dd>
+            <ol type="A" data-ext-point="options"></ol>
+            <div data-ext-point="explain"></div>
+        </dd>
+    </div>
+    <!-- ... -->
+</template>
+<template id="pk-template">
+    <div>
+        <dt><span>${type}</span>${title}</dt>
+        <dd>
+            <ol type="A" data-ext-point="options"></ol>
+            <span>将你得智慧结晶写在这里吧:</span><br/>
+            <textarea></textarea>
+        </dd>
+    </div>
 </template>
 
 <dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>
