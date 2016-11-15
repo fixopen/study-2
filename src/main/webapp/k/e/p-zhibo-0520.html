@@ -54,38 +54,52 @@
     var pageNo = g.getUrlParameter('page')
     var unitNo = g.getUrlParameter('unit')
     if (pageNo == null && unitNo == null) {
-        proc({
-            templateId: 'video-template',
-            data: {bookNo: bookNo},
-            containerId: 'content'
+        $.ajax({
+            type: 'get',
+            url: '/api/audio-records/05/20/' + bookNo + '/name',
+            success: function(n) {
+                document.title = n.name
+                proc({
+                    templateId: 'video-template',
+                    data: {bookNo: bookNo},
+                    containerId: 'content'
+                })
+            }
         })
     } else {
         $.ajax({
             type: 'get',
-            url: '/api/englishs/05/20/' + bookNo + '/' + pageNo + '/' + unitNo,
-            success: function (record) {
-                record.startSecond = record.startTime / 1000
-                record.endSecond = record.endTime / 1000
-                proc({
-                    templateId: 'audio-template',
-                    data: record,
-                    containerId: 'content'
-                })
+            url: '/api/audio-records/05/20/' + bookNo + '/name',
+            success: function(n) {
+                document.title = n.name
+                $.ajax({
+                    type: 'get',
+                    url: '/api/englishs/05/20/' + bookNo + '/' + pageNo + '/' + unitNo,
+                    success: function (record) {
+                        record.startSecond = record.startTime / 1000
+                        record.endSecond = record.endTime / 1000
+                        proc({
+                            templateId: 'audio-template',
+                            data: record,
+                            containerId: 'content'
+                        })
 
-                var player = document.getElementById('player')
-                var play = document.getElementById('play')
+                        var player = document.getElementById('player')
+                        var play = document.getElementById('play')
 
-                play.addEventListener('click', function (e) {
-                    player.currentTime = record.startSecond
-                    player.play()
-                }, false)
+                        play.addEventListener('click', function (e) {
+                            player.currentTime = record.startSecond
+                            player.play()
+                        }, false)
 
-                player.addEventListener('timeupdate', function (e) {
-                    var ct = player.currentTime
-                    if (ct >= record.endSecond) {
-                        player.pause()
+                        player.addEventListener('timeupdate', function (e) {
+                            var ct = player.currentTime
+                            if (ct >= record.endSecond) {
+                                player.pause()
+                            }
+                        }, false)
                     }
-                }, false)
+                })
             }
         })
     }
