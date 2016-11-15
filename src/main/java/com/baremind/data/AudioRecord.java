@@ -9,8 +9,8 @@ import javax.persistence.Table;
  * Created by fixopen on 10/11/2016.
  */
 @Entity
-@Table(name = "englishs")
-public class English {
+@Table(name = "audio_records")
+public class AudioRecord {
     @Id
     @Column(name = "id")
     private Long id;

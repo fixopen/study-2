@@ -64,6 +64,24 @@ CREATE TABLE answer_records (
 ALTER TABLE answer_records OWNER TO postgres;
 
 --
+-- Name: audio_records; Type: TABLE; Schema: public; Owner: fixopen
+--
+
+CREATE TABLE audio_records (
+  id bigint NOT NULL,
+  subject_no character(2) DEFAULT '04'::bpchar NOT NULL,
+  grade_no character(2) DEFAULT '20'::bpchar NOT NULL,
+  book_no character(2) DEFAULT ''::bpchar NOT NULL,
+  page_no name DEFAULT ''::bpchar NOT NULL,
+  unit_no character(2) DEFAULT ''::bpchar NOT NULL,
+  start_time integer,
+  end_time integer
+);
+
+
+ALTER TABLE audio_records OWNER TO fixopen;
+
+--
 -- Name: book_names; Type: TABLE; Schema: public; Owner: fixopen
 --
 
@@ -127,24 +145,6 @@ CREATE TABLE devices (
 
 
 ALTER TABLE devices OWNER TO postgres;
-
---
--- Name: englishs; Type: TABLE; Schema: public; Owner: fixopen
---
-
-CREATE TABLE englishs (
-    id bigint NOT NULL,
-    subject_no character(2) DEFAULT '04'::bpchar NOT NULL,
-    grade_no character(2) DEFAULT '20'::bpchar NOT NULL,
-    book_no character(2) DEFAULT ''::bpchar NOT NULL,
-    page_no name DEFAULT ''::bpchar NOT NULL,
-    unit_no character(2) DEFAULT ''::bpchar NOT NULL,
-    start_time integer,
-    end_time integer
-);
-
-
-ALTER TABLE englishs OWNER TO fixopen;
 
 --
 -- Name: image_texts; Type: TABLE; Schema: public; Owner: postgres
@@ -586,6 +586,21 @@ ALTER TABLE ONLY answer_records
 
 
 --
+-- Name: audio_record__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY audio_records
+  ADD CONSTRAINT audio_record__pk PRIMARY KEY (id);
+
+--
+-- Name: book_name__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY book_names
+  ADD CONSTRAINT book_name__pk PRIMARY KEY (id);
+
+
+--
 -- Name: card__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -602,27 +617,12 @@ ALTER TABLE ONLY comments
 
 
 --
--- Name: book_name__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY book_names
-  ADD CONSTRAINT book_name__pk PRIMARY KEY (id);
-
-
---
 -- Name: device__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY devices
     ADD CONSTRAINT device__pk PRIMARY KEY (id);
 
-
---
--- Name: english__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY englishs
-  ADD CONSTRAINT english__pk PRIMARY KEY (id);
 
 --
 -- Name: image__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -804,7 +804,7 @@ ALTER TABLE ONLY wechat_users
 -- Name: comment_content__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX comment_content__idx ON comments USING gin (to_tsvector('english'::regconfig, content));
+CREATE INDEX comment_content__idx ON comments USING gin (to_tsvector('audioRecord'::regconfig, content));
 
 
 --
