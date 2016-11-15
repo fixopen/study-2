@@ -1,10 +1,7 @@
 package com.baremind;
 
 import com.baremind.algorithm.Securities;
-import com.baremind.data.Card;
-import com.baremind.data.Session;
-import com.baremind.data.User;
-import com.baremind.data.WechatUser;
+import com.baremind.data.*;
 import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -100,6 +97,15 @@ public class PublicAccounts {
         private String timestamp;
         private String nonceStr;
         private String signature;
+        private String ceshi;
+
+        public String getCeshi() {
+            return ceshi;
+        }
+
+        public void setCeshi(String ceshi) {
+            this.ceshi = ceshi;
+        }
 
         public String getAppId() {
             return appId;
@@ -143,30 +149,56 @@ public class PublicAccounts {
 
         String ticket = Properties.getPropertyValue("ticket");
         String timestamp = Long.toString(new Date().getTime());
-        String nonceStr = "";
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            try {
-                byte[] digest = md.digest(new Date().toString().getBytes("utf-8"));
-//                nonceStr = Hex.bytesToHex(digest);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        String[] params = {ticket, timestamp, nonceStr, url};
-        String sign = sign(params);
+        timestamp = timestamp.substring(0,10);
+        String nonceStr = "sdfjkljraehfldfsjak";
+        String string1 = "jsapi_ticket="+ticket+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url+"";
+        String signature = getSha1(string1);
         Config config = new Config();
         config.setAppId(appID);
         config.setTimestamp(timestamp);
         config.setNonceStr(nonceStr);
-        config.setSignature(sign);
-        //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
-        result = Response.ok(config).build();
+        config.setSignature(signature);
+        config.setCeshi(string1);
+
+        Property propertys = JPAEntry.getObject(Property.class, "id", 7);
+        if (propertys !=null){
+            //Property property = new Property();
+            propertys.setValue(string1);
+            System.out.println("string1================================================"+string1);
+            JPAEntry.genericPut(propertys);
+           // result = Response.ok(property).build();
+            //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
+            result = Response.ok(config).build();
+
+        }
         return result;
     }
 
+    public static String getSha1(String str){
+        if(str==null||str.length()==0){
+            return null;
+        }
+        char hexDigits[] = {'0','1','2','3','4','5','6','7','8','9',
+                'a','b','c','d','e','f'};
+        try {
+            MessageDigest mdTemp = MessageDigest.getInstance("SHA1");
+            mdTemp.update(str.getBytes("UTF-8"));
+
+            byte[] md = mdTemp.digest();
+            int j = md.length;
+            char buf[] = new char[j*2];
+            int k = 0;
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                buf[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                buf[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(buf);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return null;
+        }
+    }
 
     @GET
     @Path("ticket")
@@ -194,11 +226,12 @@ public class PublicAccounts {
 
     @GET
     @Path("weChatHead/{mediaId}")
-    @Consumes(MediaType.APPLICATION_JSON)
+   // @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateProperty(@PathParam("mediaId") String mediaId){
 //      http请求方式: GET
 //      http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+        prepare();
         Response result = Response.status(500).build();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
@@ -206,31 +239,35 @@ public class PublicAccounts {
                 .queryParam("access_token", accessToken)
                 .queryParam("media_id", mediaId)
                 .request().get();
-        String responseBody = response.readEntity(String.class);
 
-        System.out.println("互相伤害"+responseBody);
-       /* long now = new Date().getTime();
-        String path = Properties.getPropertyValue("testphysicalpath");
-        String uploadedFileLocation = path + now +".jpg";
-        File file = new File(uploadedFileLocation);*/
-        //String content = responseBody;
+        if(response.getStatus() == 200){
+            byte[] responseBody = response.readEntity(byte[].class);
+            //  System.out.println("互相伤害"+responseBody);
+            long now = new Date().getTime();
+            String path = Properties.getPropertyValue("testphysicalpath");
+            String uploadedFileLocation = path + now +".jpg";
+            File file = new File(uploadedFileLocation);
+            //String content = responseBody;
 
-       /* try (FileOutputStream fop = new FileOutputStream(file)) {
+            try (FileOutputStream fop = new FileOutputStream(file)) {
 
-            // if file doesn't exists, then create it
-            if (!file.exists()) {
-                file.createNewFile();
+                // if file doesn't exists, then create it
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                // get the content in bytes
+                //byte[] contentInBytes = responseBody;
+                fop.write(responseBody);
+                fop.flush();
+                fop.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            // get the content in bytes
-            //byte[] contentInBytes = responseBody;
-            fop.write(responseBody);
-            fop.flush();
-            fop.close();
+            result = Response.ok(uploadedFileLocation).build();
+        }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        result = Response.ok(responseBody).build();
+
         return result;
     }
 

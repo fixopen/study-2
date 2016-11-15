@@ -34,20 +34,20 @@
 <script>
 
     $(function () {
-        wx.config({
+     /*   wx.config({
             debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: "wx92dec5e98645bd1d", // 必填，公众号的唯一标识
-            timestamp: "1479104332", // 必填，生成签名的时间戳
-            nonceStr: "1ewrhhfasdkjhfjads45", // 必填，生成签名的随机串
-            signature: "d31fa328c2de31e29dfcec98e4295a2a4dde4ce0",// 必填，签名，见附录1
+            timestamp: "1479114846", // 必填，生成签名的时间戳
+            nonceStr: "hjfhgjhgjhfgjgf", // 必填，生成签名的随机串
+            signature: "18eda97aba61c6dce9406d7f3447f841ae79eaaa",// 必填，签名，见附录1
             jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
-        /*wx.error(function (res) {
+        /!*wx.error(function (res) {
             // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
             // alert("权限验证失败"+res)
             alert("权限验证失败" + JSON.stringify(res))
             //getticket();
-        });*/
+        });*!/
         var localIds;
         var index;
         wx.ready(function () {
@@ -65,29 +65,10 @@
                         localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
                         isShowProgressTips: 1, // 默认为1，显示进度提示
                         success: function (res) {
-                            var serverId = res.serverId; // 返回图片的服务器端ID
-                            alert("返回图片的服务器端ID"+serverId)
-                            /*wx.downloadImage({
-                                serverId: serverId.toString(), // 需要下载的图片的服务器端ID，由uploadImage接口获得
-                                isShowProgressTips: 1, // 默认为1，显示进度提示
-                                success: function (res) {
-                                    var localId = res.localId; // 返回图片下载后的本地ID
-                                    alert("返回图片下载后的本地ID"+localId)
-                                }
-                            });*/
-                            $.ajax({
-                                type:"post",
-                                url:"/api/public-account/weChatHead/"+ serverId,
-                                dataType:"json",
-                                success:function (e) {
-                                    //user.head = e
-                                    alert(e)
-                                    alert(JSON.stringify(e))
-                                },
-                                error:function (e) {
-                                    alert(JSON.stringify(e))
-                                }
-                            })
+                            var mediaId = res.serverId; // 返回图片的服务器端ID
+                            //alert("返回图片的服务器端ID=="+mediaId)
+                           libai(mediaId)
+
                         }
                     });
                 },
@@ -97,9 +78,103 @@
 
             });
            // alert("成功")
-        });
+        });*/
+        var localIds;
+        var index;
+        var url = window.location.href;
+        url = url.replace(/[/]/g, ',')
+        $.ajax({
+            type:"get",
+            url:"/api/public-account/config/"+ url,
+            dataType: "json",
+            success: function (e) {
+               /* alert(e.appId.toString())
+                alert(e.timestamp.toString())
+                alert(e.nonceStr.toString())
+                alert(e.signature.toString())*/
+                alert(JSON.stringify(e));
+               
+                wechat(e.appId,e.timestamp,e.nonceStr,e.signature)
+            }
+        })
     });
 
+    function wechat(appId,timestamp,nonceStr,signature) {
+    /*    alert("来了")
+        alert("appId="+appId)
+        alert("timestamp="+timestamp)
+        alert("nonceStr="+nonceStr)
+        alert("signature="+signature)*/
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: appId, // 必填，公众号的唯一标识
+            timestamp: timestamp, // 必填，生成签名的时间戳
+            nonceStr: nonceStr, // 必填，生成签名的随机串
+            signature: signature,// 必填，签名，见附录1
+            jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.error(function (res) {
+            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+            // alert("权限验证失败"+res)
+            //alert("权限验证失败" + JSON.stringify(res))
+            gettick();
+            alert("服务器繁忙，请刷新！")
+        });
+        wx.ready(function () {
+            wx.chooseImage({
+                count: 1,
+                needResult: 1,
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    // document.getElementById("myimg").src="localIds";
+                    //$('#imgTarget').attr('src',localIds[0]);
+                    //上传图片接口
+                    wx.uploadImage({
+                        localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var mediaId = res.serverId; // 返回图片的服务器端ID
+                            //alert("返回图片的服务器端ID=="+mediaId)
+                            libai(mediaId)
+
+                        }
+                    });
+                }
+            });
+        })
+    }
+    function gettick() {
+        $.ajax({
+            type:"get",
+            url:"/api/public-account/ticket/",
+            dataType: "json",
+            success: function (e) {
+                //alert(JSON.stringify(e))
+            },
+            error:function (e) {
+                //alert(JSON.stringify(e))
+            }
+        })
+    }
+
+    function libai(mediaId) {
+        alert("李白来了"+mediaId)
+        $.ajax({
+            type:"GET",
+            url:"/api/public-account/weChatHead/"+ mediaId,
+            dataType:"json",
+            success:function (e) {
+                //user.head = e
+                alert(e)
+                alert(JSON.stringify(e))
+            },
+            error:function (e) {
+                alert(JSON.stringify(e))
+            }
+        })
+    }
 
     /* $.ajax({
          type: 'get',
