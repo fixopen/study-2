@@ -64,6 +64,21 @@ CREATE TABLE answer_records (
 ALTER TABLE answer_records OWNER TO postgres;
 
 --
+-- Name: book_names; Type: TABLE; Schema: public; Owner: fixopen
+--
+
+CREATE TABLE book_names (
+  id bigint NOT NULL,
+  subject_no character(2) DEFAULT '04'::bpchar NOT NULL,
+  grade_no character(2) DEFAULT '20'::bpchar NOT NULL,
+  book_no character(2) DEFAULT ''::bpchar NOT NULL,
+  name name DEFAULT ''::name
+);
+
+
+ALTER TABLE book_names OWNER TO fixopen;
+
+--
 -- Name: cards; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -587,11 +602,11 @@ ALTER TABLE ONLY comments
 
 
 --
--- Name: content__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: book_name__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY texts
-    ADD CONSTRAINT content__pk PRIMARY KEY (id);
+ALTER TABLE ONLY book_names
+  ADD CONSTRAINT book_name__pk PRIMARY KEY (id);
 
 
 --
@@ -601,6 +616,13 @@ ALTER TABLE ONLY texts
 ALTER TABLE ONLY devices
     ADD CONSTRAINT device__pk PRIMARY KEY (id);
 
+
+--
+-- Name: english__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY englishs
+  ADD CONSTRAINT english__pk PRIMARY KEY (id);
 
 --
 -- Name: image__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -731,6 +753,14 @@ ALTER TABLE ONLY tags
 
 
 --
+-- Name: text__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY texts
+  ADD CONSTRAINT text__pk PRIMARY KEY (id);
+
+
+--
 -- Name: user__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -753,9 +783,6 @@ ALTER TABLE ONLY validation_codes
 ALTER TABLE ONLY videos
     ADD CONSTRAINT video__pk PRIMARY KEY (id);
 
-
-ALTER TABLE ONLY englishs
-    ADD CONSTRAINT english__pk PRIMARY KEY (id);
 
 --
 -- Name: volume__pk; Type: CONSTRAINT; Schema: public; Owner: postgres

@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.BookName;
 import com.baremind.data.English;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -25,6 +26,22 @@ import java.util.Map;
  */
 @Path("englishs")
 public class Englishs {
+    @GET
+    @Path("/{subjectNo}/{gradeNo}/{bookNo}/name")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response queryBookName(@PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
+        Response result = Response.status(404).build();
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("subjectNo", subjectNo);
+        conditions.put("gradeNo", gradeNo);
+        conditions.put("bookNo", bookNo);
+        BookName english = JPAEntry.getObject(BookName.class, conditions);
+        if (english != null) {
+            result = Response.ok(new Gson().toJson(english)).build();
+        }
+        return result;
+    }
+
     @GET
     @Path("/{subjectNo}/{gradeNo}/{bookNo}/{pageNo}/{unitNo}")
     @Produces(MediaType.APPLICATION_JSON)
