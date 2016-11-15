@@ -30,7 +30,7 @@
         <class>com.baremind.data.Log</class>
         <class>com.baremind.data.AnswerRecord</class>
         <class>com.baremind.data.PinyinText</class>
-        <class>com.baremind.data.English</class>
+        <class>com.baremind.data.AudioRecord</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://139.129.214.229:5432/study"/>

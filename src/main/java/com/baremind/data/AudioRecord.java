@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "englishs")
-public class English {
+public class AudioRecord {
     @Id
     @Column(name = "id")
     private Long id;

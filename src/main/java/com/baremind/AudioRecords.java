@@ -1,6 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.English;
+import com.baremind.data.AudioRecord;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -23,8 +23,8 @@ import java.util.Map;
 /**
  * Created by fixopen on 10/11/2016.
  */
-@Path("englishs")
-public class Englishs {
+@Path("audio-records")
+public class AudioRecords {
     @GET
     @Path("/{subjectNo}/{gradeNo}/{bookNo}/{pageNo}/{unitNo}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,9 +36,9 @@ public class Englishs {
         conditions.put("bookNo", bookNo);
         conditions.put("pageNo", pageNo);
         conditions.put("unitNo", unitNo);
-        English english = JPAEntry.getObject(English.class, conditions);
-        if (english != null) {
-            result = Response.ok(new Gson().toJson(english)).build();
+        AudioRecord audioRecord = JPAEntry.getObject(AudioRecord.class, conditions);
+        if (audioRecord != null) {
+            result = Response.ok(new Gson().toJson(audioRecord)).build();
         }
         return result;
     }
