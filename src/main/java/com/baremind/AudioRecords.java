@@ -1,6 +1,7 @@
 package com.baremind;
 
-import com.baremind.data.English;
+import com.baremind.data.AudioRecord;
+import com.baremind.data.BookName;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -23,8 +24,24 @@ import java.util.Map;
 /**
  * Created by fixopen on 10/11/2016.
  */
-@Path("englishs")
-public class Englishs {
+@Path("audio-records")
+public class AudioRecords {
+    @GET
+    @Path("/{subjectNo}/{gradeNo}/{bookNo}/name")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response queryBookName(@PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
+        Response result = Response.status(404).build();
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("subjectNo", subjectNo);
+        conditions.put("gradeNo", gradeNo);
+        conditions.put("bookNo", bookNo);
+        BookName english = JPAEntry.getObject(BookName.class, conditions);
+        if (english != null) {
+            result = Response.ok(new Gson().toJson(english)).build();
+        }
+        return result;
+    }
+
     @GET
     @Path("/{subjectNo}/{gradeNo}/{bookNo}/{pageNo}/{unitNo}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,22 +53,22 @@ public class Englishs {
         conditions.put("bookNo", bookNo);
         conditions.put("pageNo", pageNo);
         conditions.put("unitNo", unitNo);
-        English english = JPAEntry.getObject(English.class, conditions);
-        if (english != null) {
-            result = Response.ok(new Gson().toJson(english)).build();
+        AudioRecord audioRecord = JPAEntry.getObject(AudioRecord.class, conditions);
+        if (audioRecord != null) {
+            result = Response.ok(new Gson().toJson(audioRecord)).build();
         }
         return result;
     }
 
     @POST //import
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
-    public Response importCardsViaBareContent(/*@CookieParam("userId") String userId, */byte[] contents) {
+    public Response importRecordsViaBareContent(/*@CookieParam("userId") String userId, */byte[] contents) {
         String uploadedFileLocation = "tempFilename.csv";
         //Response result = Response.status(401).build();
         //if (JPAEntry.isLogining(userId)) {
-            CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
-            parseAndInsert(uploadedFileLocation);
-            Response result = Response.ok("{\"state\":\"ok\"}").build();
+        CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
+        parseAndInsert(uploadedFileLocation);
+        Response result = Response.ok("{\"state\":\"ok\"}").build();
         //}
         return result;
     }
@@ -121,6 +138,78 @@ public class Englishs {
         15,http://www.xiaoyuzhishi.com/k/e/p-zhibo-0420.html?book=01&page=130&unit=10,70100,72350
         16,http://www.xiaoyuzhishi.com/k/e/p-zhibo-0420.html?book=01&page=140&unit=10,74500,76060
         17,http://www.xiaoyuzhishi.com/k/e/p-zhibo-0420.html?book=01&page=150&unit=10,79800,82000
+        */
+    }
+
+    @POST //import
+    @Path("names")
+    @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
+    public Response importNamesViaBareContent(/*@CookieParam("userId") String userId, */byte[] contents) {
+        String uploadedFileLocation = "tempFilename.csv";
+        //Response result = Response.status(401).build();
+        //if (JPAEntry.isLogining(userId)) {
+        CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
+        parseAndInsertForName(uploadedFileLocation);
+        Response result = Response.ok("{\"state\":\"ok\"}").build();
+        //}
+        return result;
+    }
+
+    private void parseAndInsertForName(String csvFilename) {
+        try {
+            EntityManager em = JPAEntry.getNewEntityManager();
+            em.getTransaction().begin();
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csvFilename)));
+            String record;
+            while ((record = br.readLine()) != null) {
+                String nos = record.substring(0, 6);
+                String name = record.substring(7);
+                Long id = IdGenerator.getNewId();
+                String subjectNo = nos.substring(0, 2);
+                String gradeNo = nos.substring(2, 4);
+                String bookNo = nos.substring(4);
+                String command = "INSERT INTO book_names (id, subject_no, grade_no, book_no, name) VALUES (" + id.toString() + ", '" + subjectNo + "', '" + gradeNo + "', '" + bookNo + "', '" + name + "')";
+                Query q = em.createNativeQuery(command);
+                q.executeUpdate();
+            }
+            em.getTransaction().commit();
+            em.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*
+        042001,My family
+        042002,A polite child
+        042003,Winter clothes
+        042004,Bear is body
+        042005,What fruit can you find?
+        042006,Can you see some colors?
+        042007,A magic pencil case
+        042008,Different shapes
+        042009,How many balloons?
+        042010,What can they be?
+        042011,Go on a picnic
+        042012,What is the dog doing?
+        042013,Jack, Jack, what do you see
+        042014,A day of Amy
+        042015,Which one is your face today?
+        042016,We are having fun
+        052001,My First Phonics Book 1
+        052002,My First Phonics Book 2
+        052003,My First Phonics Book 3
+        052004,My First Phonics Book 4
+        052005,My First Phonics Book 5
+        052006,My First Phonics Book 6
+        052007,My First Phonics Book 7
+        052008,My First Phonics Book 8
+        052009,My First Phonics Book 9
+        052010,My First Phonics Book 10
+        052011,My First Phonics Book 11
+        052012,My First Phonics Book 12
+        052013,My First Phonics Book 13
+        052014,My First Phonics Book 14
+        052015,My First Phonics Book 15
+        052016,My First Phonics Book 16
         */
     }
 }

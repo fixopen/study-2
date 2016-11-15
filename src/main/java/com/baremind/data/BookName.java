@@ -6,11 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Created by fixopen on 10/11/2016.
+ * Created by fixopen on 15/11/2016.
  */
 @Entity
 @Table(name = "englishs")
-public class English {
+public class BookName {
     @Id
     @Column(name = "id")
     private Long id;
@@ -24,17 +24,8 @@ public class English {
     @Column(name = "book_no")
     private String bookNo;
 
-    @Column(name = "page_no")
-    private String pageNo;
-
-    @Column(name = "unit_no")
-    private String unitNo;
-
-    @Column(name = "start_time")
-    private Integer startTime;
-
-    @Column(name = "end_time")
-    private Integer endTime;
+    @Column(name = "name")
+    private String name;
 
     public Long getId() {
         return id;
@@ -68,35 +59,11 @@ public class English {
         this.bookNo = bookNo;
     }
 
-    public String getPageNo() {
-        return pageNo;
+    public String getName() {
+        return name;
     }
 
-    public void setPageNo(String pageNo) {
-        this.pageNo = pageNo;
-    }
-
-    public String getUnitNo() {
-        return unitNo;
-    }
-
-    public void setUnitNo(String unitNo) {
-        this.unitNo = unitNo;
-    }
-
-    public Integer getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Integer startTime) {
-        this.startTime = startTime;
-    }
-
-    public Integer getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Integer endTime) {
-        this.endTime = endTime;
+    public void setName(String name) {
+        this.name = name;
     }
 }

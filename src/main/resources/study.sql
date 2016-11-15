@@ -657,7 +657,7 @@ ALTER TABLE ONLY wechat_users
 -- Name: comment_content__idx; Type: INDEX; Schema: public; Owner: fixopen
 --
 
-CREATE INDEX comment_content__idx ON comments USING gin (to_tsvector('english'::regconfig, content));
+CREATE INDEX comment_content__idx ON comments USING gin (to_tsvector('audioRecord'::regconfig, content));
 
 
 --
