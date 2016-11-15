@@ -32,7 +32,7 @@
         <div class="codemine_zilo">
             <div id="card"></div>
             <div class="codebottom_bdiv">
-                <a class="codebottom_btn codeBtn01" click="curseDetailTap();" href="#">充值</a>
+                <a class="codebottom_btn codeBtn01"  href="JavaScript:;">充值</a>
                 <a class="codebottom_btn codeBtn02" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
                 <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
             </div>
@@ -372,162 +372,10 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    function back() {
-        history.back();
-    }
 
-
-    var i;
-    var j;
-    var x;
-    var p1 = document.getElementById("newpwd1");
-    p1.addEventListener('blur', function () {
-        validatePWD1();
-    })
-    var p2 = document.getElementById("newpwd2");
-    p2.addEventListener('blur', function () {
-        validatePWD2();
-    })
-    var p3 = document.getElementById("oldpwd");
-    p3.addEventListener('blur', function () {
-        validatePWD3();
-    })
-
-    function validatePWD1() {
-        var pwd1 = $("#newpwd1").val();
-        if (pwd1.length >= 6 && pwd1.length <= 16) {
-            document.getElementById("error").innerHTML = ""
-            j = 1;
-        } else {
-            document.getElementById("error").innerHTML = "请输入6-16位密码"
-            j = 0;
-        }
-    }
-    function validatePWD3() {
-        var pwd3 = $("#oldpwd").val();
-        if (pwd3.length >= 6 && pwd3.length <= 16) {
-            document.getElementById("error").innerHTML = ""
-            x = 1;
-        } else {
-            document.getElementById("error").innerHTML = "请输入6-16位密码"
-            x = 0;
-        }
-    }
-    function validatePWD2() {
-        var pwd1 = $("#newpwd1").val();
-        var pwd2 = $("#newpwd2").val();
-        if (pwd1 != pwd2) {
-            document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
-            i = 0;
-        } else {
-            document.getElementById("error").innerHTML = ""
-            i = 1;
-        }
-    }
-
-    var pwdSave = document.getElementById("pwd_save");
-    pwdSave.addEventListener('click', function(){
-        if (i == 1 && j == 1 && x == 1) {
-            var filter = {
-                password: $("#oldpwd").val()
-            }
-            $.ajax({
-                type: 'get',
-                url: "/api/users?filter=" + JSON.stringify(filter),
-                dataType: "json",
-                success: function (e) {
-                    //alert("原密码正确")
-                    var data = {
-                        password: $("#newpwd2").val()
-                    }
-                    $.ajax({
-                        type: "put",
-                        url: "/api/users/" + userId,
-                        data: JSON.stringify(data),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (a) {
-                            alert("修改密码成功")
-                            back();
-                        },
-                        error: function (a) {
-                            alert(JSON.stringify(a))
-                        }
-                    })
-                },
-                error: function (e) {
-                document.getElementById("error").innerHTML = "原密码错误，请重新输入"
-                 }
-            })
-        }
-    }, false);
-    /*var yanz = function () {
-        alert("调用了"
-        if (i == 1 && j == 1 && x == 1) {
-            var filter = {
-                password: $("#oldpwd").val()
-            }
-            $.ajax({
-                type: 'get',
-                url: "/api/users?filter=" + JSON.stringify(filter),
-                dataType: "json",
-                success: function (e) {
-                    alert("原密码正确")
-                   /!* var data = {
-                        password: $("#newpwd2").val()
-                    }
-                    $.ajax({
-                        type: "put",
-                        url: "/api/users/" + userId,
-                        data: JSON.stringify(data),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (a) {
-                            alert("成功")
-                        },
-                        error: function (a) {
-                            alert(JSON.stringify(a))
-                        }
-                    })*!/
-                },
-                error: function (e) {
-                    document.getElementById("error").innerHTML = "原密码错误，请重新输入"
-                }
-            })
-        }
-}*/
-        var user = null
+        var user = null;
         var userId;
-        var getSubjectNameById = function (subjects) {
-            var result = ''
-            if (subjects == 1) {
-                result = "语文"
-            }
-            if (subjects == 2) {
-                result = "数学"
-            }
-            if (subjects == 3) {
-                result = "英语"
-            }
-            return result
-        }
-        var getSexNameById = function (sex) {
-            var result = 0
-            if (sex == 1) {
-                result = "男"
-            }
-            if (sex == 2) {
-                result = "女"
-            }
-            if (sex == "男") {
-                result = 1
-            }
-            if (sex == "女") {
-                result = 2
-            }
 
-            return result
-        }
         var state = {
             currentArticle: document.getElementById('user'),
             init: function () {
@@ -577,6 +425,36 @@
                             }
                         })
                     }
+                },
+                 getSubjectNameById : function (subjects) {
+                    var result = ''
+                    if (subjects == 1) {
+                        result = "语文"
+                    }
+                    if (subjects == 2) {
+                        result = "数学"
+                    }
+                    if (subjects == 3) {
+                        result = "英语"
+                    }
+                    return result
+                },
+                 getSexNameById : function (sex) {
+                    var result = 0
+                    if (sex == 1) {
+                        result = "男"
+                    }
+                    if (sex == 2) {
+                        result = "女"
+                    }
+                    if (sex == "男") {
+                        result = 1
+                    }
+                    if (sex == "女") {
+                        result = 2
+                    }
+
+                    return result
                 }
             },
             cards: {
@@ -625,6 +503,40 @@
                         })
                         state.info.isInit = true
                     }
+                    var save_info = document.getElementById('save_info')
+                    save_info.addEventListener('click', saveInfo, false)
+
+                    function saveInfo() {
+                        var se = $("#info_sex").val();
+                        var sex = getSexNameById(se);
+                        //alert($("#info_birthday").val())
+                        var b = $("#info_birthday").val();
+                        b += "T00:00:00+08:00";
+                        var data = {
+                            name: $("#info_name").val(),
+                            sex: sex,
+                            telephone: $("#info_telephone").val(),
+                            location: $("#info_location").val(),
+                            birthday: b,
+                            school: $("#info_school").val(),
+                            classname: $("#info_class").val(),
+                        }
+
+                        $.ajax({
+                            type: "put",
+                            url: "/api/users/" + userId,
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (e) {
+                                //alert("成功")
+                                history.back();
+                            },
+                            error: function (e) {
+                                alert('修改用户信息失败，请刷新以重试')
+                            }
+                        })
+                    }
                 }
             },
             logs: {
@@ -640,86 +552,90 @@
             },
             head: {
                 init: function () {
-
-                    wx.config({
-                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                        appId: "wx92dec5e98645bd1d", // 必填，公众号的唯一标识
-                        timestamp: "1479085147", // 必填，生成签名的时间戳
-                        nonceStr: "1qauihewukdsfa", // 必填，生成签名的随机串
-                        signature: "f18d6a4a248efdcff07ef7b7551ecee6e0b60309",// 必填，签名，见附录1
-                        jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                    });
-                    wx.error(function (res) {
-                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                        // alert("权限验证失败"+res)
-                        alert("权限验证失败" + JSON.stringify(res))
-                        //getticket();
-                    });
-                    wx.ready(function () {
-                         wx.chooseImage({
-                            count: 1,
-                            needResult: 1,
-                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                            success: function (data) {
-                                alert("调用选图接口成功")
-                                localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                                if (rh.tostr(localIds)) {
-                                    wxuploadImage(localIds);
-                                }
-                            },
-                            fail: function (res) {
-                                alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
-                            }
-
-                        });
-                        alert("成功")
-                    });
-                  /*  var src = user.head;
-                    $("#myimg").attr("src",src);*/
-
-                    /*    var url = window.location.href;
-                        url = url.replace(/[/]/g, ',')
-                        // alert(url)
-                        $.ajax({
-                            type: "get",
-                            url: "/api/public-account/config/" + url,
+                    var url = window.location.href;
+                    url = url.replace(/[/]/g, ',')
+                    $.ajax({
+                            type:"get",
+                            url:"/api/public-account/config/"+ url,
                             dataType: "json",
                             success: function (e) {
-
-                            },
-                            error: function (e) {
-                                alert("签名失败" + JSON.stringify(e))
-                                getticket();
+                                alert(JSON.stringify(e));
+                                wechat(e.appId,e.timestamp,e.nonceStr,e.signature)
                             }
-                        })*/
-
-                    /*wx.ready(function () {
-                       /!* wx.chooseImage({
-                            count: 1,
-                            needResult: 1,
-                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                            success: function (data) {
-                                alert("调用选图接口成功")
-                                localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                                if (rh.tostr(localIds)) {
-                                    wxuploadImage(localIds);
+                        })
+                    function wechat(appId,timestamp,nonceStr,signature) {
+                        /*    alert("来了")
+                         alert("appId="+appId)
+                         alert("timestamp="+timestamp)
+                         alert("nonceStr="+nonceStr)
+                         alert("signature="+signature)*/
+                        wx.config({
+                            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: appId, // 必填，公众号的唯一标识
+                            timestamp: timestamp, // 必填，生成签名的时间戳
+                            nonceStr: nonceStr, // 必填，生成签名的随机串
+                            signature: signature,// 必填，签名，见附录1
+                            jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        });
+                        wx.error(function (res) {
+                            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                            // alert("权限验证失败"+res)
+                            //alert("权限验证失败" + JSON.stringify(res))
+                            gettick();
+                            alert("服务器繁忙，请刷新！")
+                        });
+                        wx.ready(function () {
+                            wx.chooseImage({
+                                count: 1,
+                                needResult: 1,
+                                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                                success: function (res) {
+                                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                    // document.getElementById("myimg").src="localIds";
+                                    //$('#imgTarget').attr('src',localIds[0]);
+                                    //上传图片接口
+                                    wx.uploadImage({
+                                        localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                                        success: function (res) {
+                                            var mediaId = res.serverId; // 返回图片的服务器端ID
+                                            //alert("返回图片的服务器端ID=="+mediaId)
+                                            libai(mediaId)
+                                        }
+                                    });
                                 }
+                            });
+                        })
+                    }
+                    function gettick() {
+                        $.ajax({
+                            type:"get",
+                            url:"/api/public-account/ticket/",
+                            dataType: "json",
+                            success: function (e) {
+                                //alert(JSON.stringify(e))
                             },
-                            fail: function (res) {
-                                alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+                            error:function (e) {
+                                //alert(JSON.stringify(e))
                             }
-
-                        });*!/
-                       alert("成功")
-                    });
-                    wx.error(function (res) {
-                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                        // alert("权限验证失败"+res)
-                        alert("权限验证失败" + JSON.stringify(res))
-                        //getticket();
-                    });*/
+                        })
+                    }
+                    function libai(mediaId) {
+                        alert("李白来了"+mediaId)
+                        $.ajax({
+                            type:"GET",
+                            url:"/api/public-account/weChatHead/"+ mediaId,
+                            dataType:"json",
+                            success:function (e) {
+                                alert("成功"+JSON.stringify(e))
+                                user
+                            },
+                            error:function (e) {
+                                alert(JSON.stringify(e))
+                            }
+                        })
+                    }
                 }
             },
             study: {
@@ -740,6 +656,202 @@
             },
             firstActiveCard: {
                 init: function () {
+                    window.addEventListener('load', function (e) {
+                        var cardNo = document.getElementById("cardNo")
+                        cardNo.addEventListener('keyup', function (e) {
+                            e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
+                        }, false);
+                    }, false);
+
+                    var ajax = function (method, url, headers, data, postProcess) {
+                        //alert('enter');
+                        var xhr = new XMLHttpRequest();
+                        //alert('new xhr');
+                        xhr.onreadystatechange = function () {
+                            //alert('enter callback');
+                            if (xhr.readyState === 4) {
+                                //alert('xhr state is 4');
+                                var result = {meta: {code: xhr.status, text: xhr.statusText}, data: null};
+                                if (xhr.responseText[0] == '{' || xhr.responseText[0] == '[') {
+                                    //alert('xhr success');
+                                    result.data = JSON.parse(xhr.responseText);
+                                } else {
+                                    //alert('xhr failure');
+                                    result.data = xhr.responseText;
+                                }
+                                postProcess(result);
+                            }
+                        }
+                        //alert('set callback');
+                        xhr.open(method, url, false);
+                        //alert('open');
+                        for (var i = 0, c = headers.length; i < c; ++i) {
+                            xhr.setRequestHeader(headers[i].name, headers[i].value);
+                        }
+                        //alert('set headers');
+                        var sendContent = null;
+                        if (data != null) {
+                            sendContent = JSON.stringify(data);
+                        }
+                        xhr.send(sendContent);
+                        //alert('send content');
+                    }
+
+                    //userId = g.getUrlParameter('userid');
+                    if (userId) {
+                        g.setCookie("userId", userId)
+                    }
+                    var timeoutId;
+                    var activeCode = function (e) {
+                        //alert('active code')
+                        var phoneNumber = document.getElementById('phoneNumber').value
+                        if (phoneNumber != "") {
+                            ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
+                                {name: 'Accept', value: 'application/json'}
+                            ], null, function (r) {
+                                var tips = document.getElementById("tips")
+                                if (r.meta.code < 400) {
+                                    tips.innerHTML = '发送成功，请注意查收'
+                                } else {
+                                    tips.innerHTML = '发送失败，请重新获取验证码'
+                                }
+                            })
+
+                            var timeoutCount = 180;
+                            var proc = function () {
+                                e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
+                                --timeoutCount;
+                                e.target.disabled = true
+                                if (timeoutCount <= 0) {
+                                    e.target.value = ' 重新发送 ';
+                                    clearInterval(timeoutId);
+                                    e.target.disabled = false
+                                }
+                            }
+                            timeoutId = setInterval(proc, 1000);
+                        } else {
+                            alert('手机号不能为空')
+                        }
+                    }
+
+                    var o = 0
+
+                    var save = function (e) {
+                        if (o == 1) {
+                            var tips = document.getElementById("tips");
+                            tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                            return
+                        }
+                        if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
+                            alert("输入框不能为空")
+                        } else {
+
+                            var data = {};
+                            var code = document.getElementById('cardNo').value
+                            data.cardNo = code.replace(/\s/ig, '');
+                            data.password = document.getElementById('password').value;
+                            data.phoneNumber = document.getElementById('phoneNumber').value;
+                            data.validCode = document.getElementById('validCode').value;
+                            var url = 'api/users/self/cards'
+                            if (userId) {
+                                url = 'api/users/' + userId + '/cards'
+                            }
+                            ajax('POST', url, [
+                                {name: 'Content-Type', value: 'application/json'},
+                                {name: 'Accept', value: 'application/json'}
+                            ], data, function (r) {
+                                if (r.meta.code < 400) {
+                                    $.ajax({
+                                        type:"get",
+                                        url:"/api/users/cards/"+ data.cardNo,
+                                        dataType:"json",
+                                        success:function (e) {
+                                            alert("激活成功")
+                                            e.subject = getSubjectNameById(e.subject)
+                                            user.cards.push(e);
+                                            alert(user.cards)
+                                            state.cards.isCards = false
+                                            back();
+                                        },
+                                        error:function (e) {
+                                            alert(JSON.stringify(e));
+                                        }
+                                    })
+                                } else {
+                                    //alert('save error');
+                                    var tips = document.getElementById("tips");
+                                    //alert('get tips');
+                                    switch (r.meta.code) {
+                                        case 500:
+                                            tips.innerHTML = "你的手机号跟别人重复啦";
+                                            break;
+                                        case 412:
+                                            tips.innerHTML = "请返回的我的首页";
+                                            break;
+                                        case 520:
+                                            tips.innerHTML = "后台错误520";
+                                            break;
+                                        case 404:
+                                            tips.innerHTML = "卡号或密码错误";
+                                            break;
+                                        case 405:
+                                            tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                                            o = 1;
+                                            break;
+                                        case 401:
+                                            tips.innerHTML = "手机号或验证码错误";
+                                            break;
+                                        case 410:
+                                            tips.innerHTML = "验证码超时";
+                                            break;
+                                        case 200:
+                                            $.ajax({
+                                                type:"get",
+                                                url:"/api/users/cards/"+ data.cardNo,
+                                                dataType:"json",
+                                                success:function (e) {
+                                                    alert("激活成功")
+                                                    e.subject = getSubjectNameById(e.subject)
+                                                    user.cards.push(e);
+                                                    alert(user.cards)
+                                                    state.cards.isCards = false
+                                                    back();
+                                                },
+                                                error:function (e) {
+                                                    alert(JSON.stringify(e));
+                                                }
+                                            })
+                                            break;
+                                    }
+                                }
+                            })
+                        }
+                    }
+
+                    var enableActive = function (e) {
+                        clearInterval(timeoutId);
+                        var activeCodeButton = document.getElementById('activeCode');
+                        activeCodeButton.disabled = false
+                        activeCodeButton.value = '发送验证码'
+                    }
+
+                    var activeCodeButton = document.getElementById('activeCode');
+                    activeCodeButton.addEventListener('click', activeCode, false);
+
+                    var saveButton = document.getElementById('save');
+                    saveButton.addEventListener('click', save, false);
+
+                    var validCode = document.getElementById('validCode')
+
+                    validCode.addEventListener('change', enableActive, false)
+
+                    var phoneNumber = document.getElementById('phoneNumber')
+                    phoneNumber.addEventListener('change', enableActive, false)
+
+                    var cardNo = document.getElementById('cardNo')
+                    cardNo.addEventListener('change', function (e) {
+                        o = 0
+                    }, false)
                 }
             },
             login: {
@@ -752,6 +864,93 @@
             },
             settings: {
                 init: function () {
+                    var i;
+                    var j;
+                    var x;
+                    var p1 = document.getElementById("newpwd1");
+                    p1.addEventListener('blur', function () {
+                        validatePWD1();
+                    })
+                    var p2 = document.getElementById("newpwd2");
+                    p2.addEventListener('blur', function () {
+                        validatePWD2();
+                    })
+                    var p3 = document.getElementById("oldpwd");
+                    p3.addEventListener('blur', function () {
+                        validatePWD3();
+                    })
+
+                    function validatePWD1() {
+                        var pwd1 = $("#newpwd1").val();
+                        if (pwd1.length >= 6 && pwd1.length <= 16) {
+                            document.getElementById("error").innerHTML = ""
+                            j = 1;
+                        } else {
+                            document.getElementById("error").innerHTML = "请输入6-16位密码"
+                            j = 0;
+                        }
+                    }
+                    function validatePWD3() {
+                        var pwd3 = $("#oldpwd").val();
+                        if (pwd3.length >= 6 && pwd3.length <= 16) {
+                            document.getElementById("error").innerHTML = ""
+                            x = 1;
+                        } else {
+                            document.getElementById("error").innerHTML = "请输入6-16位密码"
+                            x = 0;
+                        }
+                    }
+                    function validatePWD2() {
+                        var pwd1 = $("#newpwd1").val();
+                        var pwd2 = $("#newpwd2").val();
+                        if (pwd1 != pwd2) {
+                            document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
+                            i = 0;
+                        } else {
+                            document.getElementById("error").innerHTML = ""
+                            i = 1;
+                        }
+                    }
+
+                    var pwdSave = document.getElementById("pwd_save");
+                    pwdSave.addEventListener('click', function(){
+                        if (i == 1 && j == 1 && x == 1) {
+                            var filter = {
+                                password: $("#oldpwd").val()
+                            }
+                            $.ajax({
+                                type: 'get',
+                                url: "/api/users?filter=" + JSON.stringify(filter),
+                                dataType: "json",
+                                success: function (e) {
+                                    //alert("原密码正确")
+                                    var data = {
+                                        password: $("#newpwd2").val()
+                                    }
+                                    $.ajax({
+                                        type: "put",
+                                        url: "/api/users/" + userId,
+                                        data: JSON.stringify(data),
+                                        dataType: "json",
+                                        contentType: "application/json; charset=utf-8",
+                                        success: function (a) {
+                                            alert("修改密码成功")
+                                            back();
+                                        },
+                                        error: function (a) {
+                                            alert(JSON.stringify(a))
+                                        }
+                                    })
+                                },
+                                error: function (e) {
+                                    document.getElementById("error").innerHTML = "原密码错误，请重新输入"
+                                }
+                            })
+                        }
+                    }, false);
+                    function back() {
+                        history.back();
+                    }
                 }
             },
             help: {
@@ -762,239 +961,6 @@
 
         state.init()
 
-        window.addEventListener('load', function (e) {
-            var cardNo = document.getElementById("cardNo")
-            cardNo.addEventListener('keyup', function (e) {
-                e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
-            }, false);
-        }, false);
-
-
-        var ajax = function (method, url, headers, data, postProcess) {
-            //alert('enter');
-            var xhr = new XMLHttpRequest();
-            //alert('new xhr');
-            xhr.onreadystatechange = function () {
-                //alert('enter callback');
-                if (xhr.readyState === 4) {
-                    //alert('xhr state is 4');
-                    var result = {meta: {code: xhr.status, text: xhr.statusText}, data: null};
-                    if (xhr.responseText[0] == '{' || xhr.responseText[0] == '[') {
-                        //alert('xhr success');
-                        result.data = JSON.parse(xhr.responseText);
-                    } else {
-                        //alert('xhr failure');
-                        result.data = xhr.responseText;
-                    }
-                    postProcess(result);
-                }
-            }
-            //alert('set callback');
-            xhr.open(method, url, false);
-            //alert('open');
-            for (var i = 0, c = headers.length; i < c; ++i) {
-                xhr.setRequestHeader(headers[i].name, headers[i].value);
-            }
-            //alert('set headers');
-            var sendContent = null;
-            if (data != null) {
-                sendContent = JSON.stringify(data);
-            }
-            xhr.send(sendContent);
-            //alert('send content');
-        }
-
-        //userId = g.getUrlParameter('userid');
-        if (userId) {
-            g.setCookie("userId", userId)
-        }
-        var timeoutId;
-        var activeCode = function (e) {
-            //alert('active code')
-            var phoneNumber = document.getElementById('phoneNumber').value
-            if (phoneNumber != "") {
-                ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
-                    {name: 'Accept', value: 'application/json'}
-                ], null, function (r) {
-                    var tips = document.getElementById("tips")
-                    if (r.meta.code < 400) {
-                        tips.innerHTML = '发送成功，请注意查收'
-                    } else {
-                        tips.innerHTML = '发送失败，请重新获取验证码'
-                    }
-                })
-
-                var timeoutCount = 180;
-                var proc = function () {
-                    e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
-                    --timeoutCount;
-                    e.target.disabled = true
-                    if (timeoutCount <= 0) {
-                        e.target.value = ' 重新发送 ';
-                        clearInterval(timeoutId);
-                        e.target.disabled = false
-                    }
-                }
-                timeoutId = setInterval(proc, 1000);
-            } else {
-                alert('手机号不能为空')
-            }
-        }
-
-        var o = 0
-
-        var save = function (e) {
-            if (o == 1) {
-                var tips = document.getElementById("tips");
-                tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                return
-            }
-            if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
-                alert("输入框不能为空")
-            } else {
-
-                var data = {};
-                var code = document.getElementById('cardNo').value
-                data.cardNo = code.replace(/\s/ig, '');
-                data.password = document.getElementById('password').value;
-                data.phoneNumber = document.getElementById('phoneNumber').value;
-                data.validCode = document.getElementById('validCode').value;
-                var url = 'api/users/self/cards'
-                if (userId) {
-                    url = 'api/users/' + userId + '/cards'
-                }
-                ajax('POST', url, [
-                    {name: 'Content-Type', value: 'application/json'},
-                    {name: 'Accept', value: 'application/json'}
-                ], data, function (r) {
-                    if (r.meta.code < 400) {
-                        $.ajax({
-                            type:"get",
-                            url:"/api/users/cards/"+ data.cardNo,
-                            dataType:"json",
-                            success:function (e) {
-                                alert("激活成功")
-                                e.subject = getSubjectNameById(e.subject)
-                                user.cards.push(e);
-                                alert(user.cards)
-                                state.cards.isCards = false
-                                back();
-                            },
-                            error:function (e) {
-                                alert(JSON.stringify(e));
-                            }
-                        })
-                    } else {
-                        //alert('save error');
-                        var tips = document.getElementById("tips");
-                        //alert('get tips');
-                        switch (r.meta.code) {
-                            case 500:
-                                tips.innerHTML = "你的手机号跟别人重复啦";
-                                break;
-                            case 412:
-                                tips.innerHTML = "请返回的我的首页";
-                                break;
-                            case 520:
-                                tips.innerHTML = "后台错误520";
-                                break;
-                            case 404:
-                                tips.innerHTML = "卡号或密码错误";
-                                break;
-                            case 405:
-                                tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                                o = 1;
-                                break;
-                            case 401:
-                                tips.innerHTML = "手机号或验证码错误";
-                                break;
-                            case 410:
-                                tips.innerHTML = "验证码超时";
-                                break;
-                            case 200:
-                                $.ajax({
-                                    type:"get",
-                                    url:"/api/users/cards/"+ data.cardNo,
-                                    dataType:"json",
-                                    success:function (e) {
-                                        alert("激活成功")
-                                        e.subject = getSubjectNameById(e.subject)
-                                        user.cards.push(e);
-                                        alert(user.cards)
-                                        state.cards.isCards = false
-                                        back();
-                                    },
-                                    error:function (e) {
-                                        alert(JSON.stringify(e));
-                                    }
-                                })
-                                break;
-                        }
-                    }
-                })
-            }
-        }
-
-
-    var enableActive = function (e) {
-            clearInterval(timeoutId);
-            var activeCodeButton = document.getElementById('activeCode');
-            activeCodeButton.disabled = false
-            activeCodeButton.value = '发送验证码'
-        }
-
-        var activeCodeButton = document.getElementById('activeCode');
-        activeCodeButton.addEventListener('click', activeCode, false);
-
-        var saveButton = document.getElementById('save');
-        saveButton.addEventListener('click', save, false);
-
-        var validCode = document.getElementById('validCode')
-
-        validCode.addEventListener('change', enableActive, false)
-
-        var phoneNumber = document.getElementById('phoneNumber')
-        phoneNumber.addEventListener('change', enableActive, false)
-
-        var save_info = document.getElementById('save_info')
-        save_info.addEventListener('click', saveInfo, false)
-
-        var cardNo = document.getElementById('cardNo')
-        cardNo.addEventListener('change', function (e) {
-            o = 0
-        }, false)
-
-        function saveInfo() {
-            var se = $("#info_sex").val();
-            var sex = getSexNameById(se);
-            //alert($("#info_birthday").val())
-            var b = $("#info_birthday").val();
-            b += "T00:00:00+08:00";
-            var data = {
-                name: $("#info_name").val(),
-                sex: sex,
-                telephone: $("#info_telephone").val(),
-                location: $("#info_location").val(),
-                birthday: b,
-                school: $("#info_school").val(),
-                classname: $("#info_class").val(),
-            }
-
-            $.ajax({
-                type: "put",
-                url: "/api/users/" + userId,
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (e) {
-                    alert("成功")
-                    back();
-                },
-                error: function (e) {
-                    alert('修改用户信息失败，请刷新以重试')
-                }
-            })
-        }
 </script>
 </body>
 </html>

@@ -228,7 +228,7 @@ public class PublicAccounts {
     @Path("weChatHead/{mediaId}")
    // @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProperty(@PathParam("mediaId") String mediaId){
+    public Response updateProperty(@CookieParam("userId") String userId,@PathParam("mediaId") String mediaId){
 //      http请求方式: GET
 //      http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
         prepare();
@@ -244,10 +244,14 @@ public class PublicAccounts {
             byte[] responseBody = response.readEntity(byte[].class);
             //  System.out.println("互相伤害"+responseBody);
             long now = new Date().getTime();
-            String path = Properties.getPropertyValue("testphysicalpath");
-            String uploadedFileLocation = path + now +".jpg";
+            String path = Properties.getPropertyValue("physicalpath");
+            String filename = now + ".jpg";
+            String uploadedFileLocation = path + filename;
             File file = new File(uploadedFileLocation);
             //String content = responseBody;
+            User existuser = JPAEntry.getObject(User.class, "id", userId);
+            existuser.setHead(Properties.getPropertyValue("virtualpath")+filename);
+            JPAEntry.genericPut(existuser);
 
             try (FileOutputStream fop = new FileOutputStream(file)) {
 
@@ -264,11 +268,9 @@ public class PublicAccounts {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            result = Response.ok(uploadedFileLocation).build();
+            result = Response.ok(existuser).build();
         }
-
-
-        return result;
+         return result;
     }
 
     private static void prepare() {
