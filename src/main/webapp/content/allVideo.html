@@ -49,12 +49,12 @@
                 <ul class="video-list" id="chinese-futureVideoList"></ul>
                 <ul class="video-list" id="chinese-passedVideoList"></ul>
                 <!--<div class="more">-->
-                    <!--<div class="pullUp">-->
-                        <!--<span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>-->
-                    <!--</div>-->
-                    <!--<div class="video-all" id="btn1">-->
-                        <!--查看往期录播视频-->
-                    <!--</div>-->
+                <!--<div class="pullUp">-->
+                <!--<span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>-->
+                <!--</div>-->
+                <!--<div class="video-all" id="btn1">-->
+                <!--查看往期录播视频-->
+                <!--</div>-->
                 <!--</div>-->
             </li>
             <li id="mcc" class="subject-list">
@@ -467,19 +467,37 @@
 
             curseDetailTap();
 
-            var mathFirst = false
-            if (course[0][1].length > 0) {
-                if (course[1][1].length > 0) {
-                    var chineseStartTime = course[0][1][0].startTime
-                    var mathStartTime = course[1][1][0].startTime
-                    if (+chineseStartTime < +mathStartTime) {
-                        mathFirst = false
+            var whoFirst = function () {
+                var comparePlaying = function () {
+                    var result = false
+                    if ((course[0][0].length > 0) && (course[1][0].length > 0)) {
+                        if (+course[0][0][0].startTime > +course[1][0][0].startTime) {
+                            result = true
+                        }
+                    } else if (course[1][0].length > 0) {
+                        result = true
                     }
-                } else {
-                    mathFirst = false
+                    return result
                 }
+                var compareFuture = function () {
+                    var result = false
+                    if ((course[0][1].length > 0) && (course[1][1].length > 0)) {
+                        if (+course[0][1][0].startTime > +course[1][1][0].startTime) {
+                            result = true
+                        }
+                    } else if (course[1][1].length > 0) {
+                        result = true
+                    }
+                    return result
+                }
+                var result = comparePlaying()
+                if (!result) {
+                    result = compareFuture()
+                }
+                return result
             }
-            if (mathFirst) {
+
+            if (whoFirst) {
                 $("#ct").removeClass("cur")
                 $('#mt').addClass("cur");
                 $("#ccc").removeClass("cur")
