@@ -9,12 +9,14 @@ a {
     padding: 1.5rem 0 0.8rem;
     margin: 1.0625rem 0;
 }
+
 .head-title1 {
     text-align: center;
     font-size: 1.0625rem;
     font-weight: bold;
     padding-top: 1.5rem;
 }
+
 .head-title1-bg {
     display: inline-block;
     width: 6.03125rem;
@@ -26,12 +28,14 @@ a {
     background: url('../img/math1.png') 0 0 no-repeat;
     background-size: 6.03125rem 2.125rem;
 }
-.head-title2{
+
+.head-title2 {
     text-align: center;
     font-size: 1.0625rem;
     font-weight: bold;
     padding-bottom: 0.8rem;
 }
+
 .origin-title {
     display: inline-block;
     font-size: 1.0rem;
@@ -65,6 +69,7 @@ a {
     background-color: #fffcf2;
     box-sizing: border-box;
 }
+
 .content-font {
     text-indent: 2em;
     margin-bottom: 1rem;
@@ -88,8 +93,7 @@ a {
     z-index: 2;
 }
 
-
-.challenge-bg{
+.challenge-bg {
     padding: 0.625rem;
     text-indent: 2em;
     border: 1.5px dashed #fae1e1;
@@ -115,6 +119,7 @@ a {
 .content-img {
     width: 100%;
 }
+
 .math_01 {
     width: 17.78125rem;
     height: 10.8125rem;
@@ -129,6 +134,7 @@ a {
     position: relative;
     top: -1.25rem;
 }
+
 /* 闯关练习 */
 .cg-title {
     display: inline-block;
@@ -153,6 +159,7 @@ a {
     margin-top: 0.625rem;
     box-sizing: border-box;
 }
+
 .lixi_martop {
     padding-top: 0;
     margin-top: 0;
@@ -163,7 +170,6 @@ a {
 .lixi_Nomar {
     padding-top: 0;
 }
-
 
 ul.ul-style {
     list-style-type: demical;
@@ -233,6 +239,7 @@ li.mld_Ulli {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
 /*.mld_liImg {*/
 /*width: 2.1875rem;*/
 /*height: 0.9375rem;*/
