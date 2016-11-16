@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>直播视频</title>
@@ -8,72 +9,191 @@
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
+
     <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <!--<link rel="stylesheet" href="allVideo0.css">-->
+    <link rel="stylesheet" href="videos.css">
+    <!--<link rel="stylesheet" href="allVideo0.css">-->
+    <style>
+        .convenient {
+            position: absolute;
+            top: 2.7%;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+            display: block;
+            width: 92%;
+            background: url('/content/schedule.png') no-repeat center top;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 10.5% 4.3% 4.5%;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-align: center;
+        }
+        .week {
+            position: absolute;
+            top: 3%;
+            left: 28.3%;
+            font-size: 1rem;
+            color: #000;
+            font-family: "Microsoft YaHei", serif;
+        }
+        .schedule-table {
+            width: 100%;
+            height: 100%;
+        }
+        .schedule-table thead {
+            height: 1.8125rem;
+        }
+        .schedule-table tr {
+            height: 1.25rem;
+        }
+        .color:nth-child(even) {
+            background-color: #ffd5ce;
+            border-bottom: 0.0625rem solid #ea875f;
+        }
+        .color:nth-child(odd) {
+            background-color: #fff;
+            border-bottom: 0.09375rem solid #ea875f;
+        }
+        .schedule-table td {
+            font-size: 0.6875rem;
+            color: #371f1f;
+            text-align: center;
+        }
+        .data :nth-child(even) {
+            border-top: 1px solid #ea875f;
+        }
+    </style>
 </head>
+
+
 <body>
-<article id="main">
-    <img src="" alt="" id="schedulerEntry" data-article="scheduler"/>
-    <!-- Nav tabs -->
-    <ul id="subjects" class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#zero" role="tab" data-toggle="tab">chinese</a></li>
-        <li role="presentation"><a href="#one" role="tab" data-toggle="tab">math</a></li>
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="zero">
-            <div id="zeroPlaying"></div>
-            <div id="zeroFuture"></div>
+<article id="main" class="wrap">
+    <div class="rain-main">
+        <div class="rain-header">
+            <img src="../img/kb_btn.png" alt="" class="rain-header-a" id="schedulerEntry" data-article="scheduler"/>
         </div>
-        <div role="tabpanel" class="tab-pane" id="one">
-            <div id="onePlaying"></div>
-            <div id="oneFuture"></div>
+        <!-- Nav tabs -->
+        <div class="subject-tab">
+            <ul id="subjects" class="nav nav-tabs subject-tab-box" role="tablist">
+                <li role="presentation" class="active subject-tab-li zb-cur cur">
+                    <a href="#zero" role="tab" data-toggle="tab">语文</a>
+                    <span class="zb-video">(<span id="Cc"></span>)</span>
+                </li>
+                <li role="presentation" class="subject-tab-li zb-cur">
+                    <a href="#one" role="tab" data-toggle="tab">数学</a>
+                    <span class="zb-video">(<span id="Mc"></span>)</span>
+                </li>
+            </ul>
+            <div class="subject-line"></div>
+        </div>
+        <!-- Tab panes -->
+        <ul class="tab-content" id="live-broadcast">
+            <li role="tabpanel" class="tab-pane active subject-list" id="zero">
+                <ul id="zeroPlaying" class="video-list"></ul>
+                <ul id="zeroFuture" class="video-list"></ul>
+            </li>
+            <li role="tabpanel" class="tab-pane subject-list" id="one">
+                <ul id="onePlaying" class="video-list"></ul>
+                <ul id="oneFuture" class="video-list"></ul>
+            </li>
+        </ul>
+        <div class="before_video">
+            <div class="bevid_btn" id="passedEntry" data-article="passed">往期回放</div>
+            <div class="pullUp">
+                <span class="pullUpIcon"></span>
+                <span class="pullUpLabel">除了直播，还有精彩回放等着您哦！</span>
+                <span class="pullUpLabel" style="display: none;">没有更多了，看看往期回放吧！</span>
+            </div>
         </div>
     </div>
 </article>
-<article id="passed" style="display: none;">
-    <div>
-        <select id="subject"></select>
-        <select id="teacher"></select>
-        <select id="grade"></select>
+<article id="passed" style="display: none;" class="wrap noBackg">
+    <input class="souSuo clearfix" type="text" id="text"  name="keyword"  onkeydown="entersearch()" placeholder="请输入科目、老师、年级 关键词搜索">
+    <div class="tiao_jian" id="st">
+        <div class="tiaoj_TJ01 selectDiv" id="subject">
+            <div class="tiaoj_1span">
+                <span>科目</span>
+                <img src="../img/xiala.png" alt="">
+            </div>
+            <ul class="xiala_ul">
+                <li class="xiala_li">${subject}</li>
+            </ul>
+        </div>
+        <div class="tiaoj_TJ02 selectDiv">
+            <div class="tiaoj_2span">
+                <span>老师</span>
+                <!--<input value="老师" onclick="tap2()" id="t">-->
+                <img src="../img/xiala.png" alt="">
+            </div>
+            <ul class="xiala_ul" id="teacher">
+                <li class="xiala_li">${teacher}</li>
+            </ul>
+        </div>
+        <div class="tiaoj_TJ03 selectDiv">
+            <div class="tiaoj_3span">
+                <span id="g">年级</span>
+                <img src="../img/xiala.png" alt="">
+            </div>
+            <ul class="xiala_ul" id="grade">
+                <li class="xiala_li">${grade}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="rain-main noPadd">
+        <ul id="more"></ul>
+        <div class="bottom_txt">
+            <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
+        </div>
     </div>
     <div>
         <div id="zeroPassed"></div>
         <div id="zeroTips"></div>
-        <button id="zeroMore">More</button>
     </div>
     <div>
         <div id="onePassed"></div>
         <div id="oneTips"></div>
-        <button id="oneMore">More</button>
     </div>
 </article>
 <article id="video" style="display: none;">
     <video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>
 </article>
 <article id="scheduler" style="display: none;">
-    <div class="week">第<sapn id="week"></sapn>周</div>
-    <table class="schedule-table">
-        <thead style="width: 100%; height: 100%">
-        <tr>
-            <th style="width: 15%;" class="weekDay"></th>
-            <th style="width: 85%;" class="schedule-table1">
-                <table style="width: 100%; height: 100% ">
-                    <tr style="width: 100%; height: 100%; color: #515151;">
-                        <th style="width: 33%; height: 100%; border-left:transparent;">时间</th>
-                        <th style="width: 33%; height: 100%;">授课年级</th>
-                        <th style="width: 33%; height: 100%;">授课内容</th>
-                    </tr>
-                </table>
-            </th>
-        </tr>
-        </thead>
-        <tbody id="day"></tbody>
-    </table>
+    <div class="convenient">
+        <div class="week">
+            第<span id="week"></span>周
+        </div>
+        <table class="schedule-table">
+            <thead>
+            <tr style="background-color: #fff;">
+                <th style="width: 15%;"></th>
+                <th style="width: 85%; font-size: small">
+                    <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
+                        <tr style="width: 100%; height: 100%;">
+                            <th style="width: 28%; height: 100%;">时间</th>
+                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 48%; height: 100%;">授课内容</th>
+                        </tr>
+                    </table>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="day"></tbody>
+        </table>
+    </div>
 </article>
 <article id="futureNote" style="display: none;">
     <div class="goBack"></div>
 </article>
 
+
+<!--********************************main***********************-->
 <template id="playing-template">
     <li class="video-list-li">
         <div class="video-list-play">
@@ -201,6 +321,8 @@
         </div>
     </li>
 </template>
+
+<!--***********************************passed*****************************************-->
 <template id="passed-template">
     <li class="video-list-li">
         <div class="video-list-play">
@@ -263,21 +385,22 @@
     </li>
 </template>
 
+<!--**********************************scheduler********************************-->
 <template id="day-template">
     <tr class="color">
         <td style="width: 15%;">星期${day}<br>(${date})</td>
         <td style="width: 85%;">
-            <table style="width: 100%; height: 100%">
-                <tbody data-ext-point="items"></tbody>
+            <table style="width: 100%; height: 100%; border: none; border-spacing: 0; border-collapse: collapse;">
+                <tbody data-ext-point="items" class="data"></tbody>
             </table>
         </td>
     </tr>
 </template>
 <template id="item-template">
     <tr>
-        <td style="width: 33%;" class="line">${st}-${et}</td>
-        <td style="width: 33%;" class="line">${grade}</td>
-        <td style="width: 33%;" class="line">${title}</td>
+        <td style="width: 28%;">${st}-${et}</td>
+        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 48%;">${title}</td>
     </tr>
 </template>
 
@@ -304,7 +427,7 @@
         currentArticle: document.getElementById('main'),
         main: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.main.isInit) {
                     $(document).on('click', '@@', function () {
                         //
@@ -341,33 +464,42 @@
                                     state.onePlaying.data = subjects[1].playing
                                     state.refreshState(1)
 
-                                    var oneFirst = true
-                                    if (subjects[0].playing.length > 0) {
-                                        if (subjects[1].playing.length > 0) {
-                                            if (+subjects[0].playing[0].startTime < +subjects[1].playing[0].startTime) {
-                                                oneFirst = false
+                                    var whoFirst = function() {
+                                        var comparePlaying = function() {
+                                            var result = false
+                                            if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
+                                                if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
+                                                    result = true
+                                                }
+                                            } else if (subjects[1].playing.length > 0) {
+                                                result = true
                                             }
-                                        } else {
-                                            oneFirst = false
+                                            return result
                                         }
-                                    } else if (subjects[0].futures.length > 0) {
-                                        if (subjects[1].futures.length > 0) {
-                                            if (+subjects[0].futures[0].startTime < +subjects[1].futures[0].startTime) {
-                                                oneFirst = false
+                                        var compareFuture = function() {
+                                            var result = false
+                                            if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
+                                                if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
+                                                    result = true
+                                                }
+                                            } else if (subjects[1].futures.length > 0) {
+                                                result = true
                                             }
-                                        } else {
-                                            oneFirst = false
+                                            return result
                                         }
-                                    } else {
-                                        oneFirst = false
+                                        var result = comparePlaying()
+                                        if (!result) {
+                                            result = compareFuture()
+                                        }
+                                        return result
                                     }
+                                    var oneFirst = whoFirst()
                                     if (oneFirst) {
                                         $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
                                         //$('#subjects').find('a:first').tab('show') // Select first tab
                                         //$('#subjects').find('a:last').tab('show') // Select last tab
                                         //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
                                     }
-
                                     setInterval(function () {
                                         state.refreshState(0)
                                         state.refreshState(1)
@@ -478,23 +610,23 @@
             teacherChoice: document.getElementById('teacherChoice'),
             gradeChoice: document.getElementById('gradeChoice'),
             keywords: document.getElementById('keywords'),
-            search: function() {
+            search: function () {
                 //filter the playing and future data via the filter element state
             }
         },
         passed: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.passed.isInit) {
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
-                        success: function(ts) {
+                        success: function (ts) {
                             subjects[0].teachers = ts
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function(ts) {
+                                success: function (ts) {
                                     subjects[1].teachers = ts
                                     //fill to teachers choice
                                 }
@@ -505,12 +637,12 @@
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
-                        success: function(gs) {
+                        success: function (gs) {
                             subjects[0].grades = gs
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function(gs) {
+                                success: function (gs) {
                                     subjects[1].grades = gs
                                     //fill to grades choice
                                 }
@@ -533,7 +665,7 @@
 
                     state.passed.isInit = true
 
-                    subject.addEventListener('change', function(e){
+                    subject.addEventListener('change', function (e) {
                         var subjectIndex = 0
                         var r = state.passed.search()
                         teacher.innerHTML = ''
@@ -558,11 +690,11 @@
                         })
                     }, false)
 
-                    $(subject).on('change', function(e){
+                    $(subject).on('change', function (e) {
                         //
                     })
 
-                    grade.addEventListener('change', function(e){
+                    grade.addEventListener('change', function (e) {
                         var gradeIndex = 0
                         var r = state.passed.search()
 
@@ -574,7 +706,7 @@
                         })
                     }, false)
 
-                    teacher.addEventListener('change', function(e){
+                    teacher.addEventListener('change', function (e) {
                         var teacher = 0
                         var r = state.passed.search()
 
@@ -587,7 +719,7 @@
                     }, false)
                 }
             },
-            search: function() {
+            search: function () {
                 var result = []
                 //filter the passed data via the filter element state
                 var keywords, subject, teacher, grade
@@ -613,7 +745,7 @@
                 template: document.getElementById(''),
                 data: null,
                 show: function () {
-                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')
+                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')//????????????
                 }
             },
             onePassed: {
@@ -621,13 +753,13 @@
                 template: document.getElementById(''),
                 data: null,
                 show: function () {
-                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')
+                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
                 }
             }
         },
         scheduler: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.scheduler.isInit) {
                     state.scheduler.year = state.scheduler.now.getFullYear()
                     var m = moment(state.scheduler.now)
@@ -708,7 +840,7 @@
             weekDay: null,
             weekElement: document.getElementById("week")
         },
-        init: function() {
+        init: function () {
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
 
@@ -726,7 +858,7 @@
                 }
             })
 
-            var switchTo = function(id) {
+            var switchTo = function (id) {
                 state.currentArticle.style.display = 'none'
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
@@ -734,7 +866,7 @@
                 state[id].init()
             }
 
-            $(document).on('click', '[data-article]', function(e) {
+            $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 switchTo(id)
             })
@@ -742,7 +874,7 @@
             state['main'].init()
             history.pushState(null, null, '/videos.html#main')
 
-            window.addEventListener('hashchange', function(e) {
+            window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
