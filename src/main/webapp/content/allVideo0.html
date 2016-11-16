@@ -268,6 +268,7 @@
         url: "/api/schedulers",
         dataType: "json",
         success: function (result) {
+//            alert(JSON.stringify(result))
             for (var i = 0; i < result[2].length; ++i) {
                 result[2][i].grade = getGrade(result[2][i].grade)
                 result[2][i].type = 'chinese'

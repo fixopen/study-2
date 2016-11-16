@@ -73,6 +73,8 @@
         </div>
     </div>
 </div>
+
+
 <template id="video-template">
     <li class="video-list-li">
         <div class="video-list-play">
@@ -427,7 +429,7 @@
             proc({
                 container: state2.currentContainer,
                 data: course[1][0],
-                template: state2.currentTemplate
+                template: state2.currentTemplat
             })
             proc({
                 container: state2.futureContainer,
@@ -467,24 +469,55 @@
 
             curseDetailTap();
 
-            var mathFirst = false
-            if (course[0][1].length > 0) {
-                if (course[1][1].length > 0) {
-                    var chineseStartTime = course[0][1][0].startTime
-                    var mathStartTime = course[1][1][0].startTime
-                    if (+chineseStartTime < +mathStartTime) {
-                        mathFirst = false
+//            var mathFirst = false
+//            if (course[0][1].length > 0) {
+//                if (course[1][1].length > 0) {
+//                    var chineseStartTime = course[0][1][0].startTime
+//                    var mathStartTime = course[1][1][0].startTime
+//                    if (+chineseStartTime < +mathStartTime) {
+//                        mathFirst = false
+//                    }
+//                } else {
+//                    mathFirst = false
+//                }
+//            }
+            var whoFirst = function() {
+                var comparePlaying = function() {
+                    var result = false
+                    if ((course[0][0].length > 0) && (course[1][0].length > 0)) {
+                        if (+course[0][0][0].startTime > +course[1][0][0].startTime) {
+                            result = true
+                        }
+                    } else if (course[1][0].length > 0) {
+                        result = true
                     }
-                } else {
-                    mathFirst = false
+                    return result
+                }
+
+                var compareFuture = function() {
+                    var result = false
+                    if ((course[0][1].length > 0) && (course[1][1].length > 0)) {
+                        if (+course[0][1][0].startTime > +course[1][1][0].startTime) {
+                            result = true
+                        }
+                    } else if (course[1][1].length > 0) {
+                        result = true
+                    }
+                    return result
+                }
+                var result = comparePlaying()
+                if (!result) {
+                    result = compareFuture()
+                }
+                return result
+                if (result) {
+                    $("#ct").removeClass("cur")
+                    $('#mt').addClass("cur");
+                    $("#ccc").removeClass("cur")
+                    $('#mcc').addClass("cur");
                 }
             }
-            if (mathFirst) {
-                $("#ct").removeClass("cur")
-                $('#mt').addClass("cur");
-                $("#ccc").removeClass("cur")
-                $('#mcc').addClass("cur");
-            }
+            whoFirst()
 
             subjectTab()
             $(document).on('click', '.passedVideo', function (e) {

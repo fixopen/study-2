@@ -4,36 +4,99 @@
     <meta charset="UTF-8">
     <title>课程表</title>
     <!-- 禁止拉伸和全屏设置 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait">
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/schedule.css">
+    <!--<link rel="stylesheet" href="css/schedule.css">-->
     <style>
+        .convenient {
+            position: absolute;
+            top: 2.7%;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+            display: block;
+            width: 92%;
+            background: url('img/schedule.png') no-repeat center top;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 10.5% 4.3% 4.5%;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-align: center;
+        }
 
+        .week {
+            position: absolute;
+            top: 3%;
+            left: 28.3%;
+            font-size: 1rem;
+            color: #000;
+            font-family: "Microsoft YaHei", serif;
+        }
+
+        .schedule-table {
+            width: 100%;
+            height: 100%;
+        }
+
+        .schedule-table thead {
+            height: 1.8125rem;
+        }
+
+        .schedule-table tr {
+            height: 1.25rem;
+        }
+
+        .color:nth-child(odd) {
+            background-color: #ffd5ce;
+            border-bottom: 0.0625rem solid #ea875f;
+        }
+
+        .color:nth-child(even) {
+            background-color: #fff;
+            border-bottom: 0.09375rem solid #ea875f;
+        }
+
+        .schedule-table td {
+            font-size: 0.6875rem;
+            color: #371f1f;
+            text-align: center;
+        }
+
+        .data :nth-child(even) {
+            border-top: 1px solid #ea875f;
+        }
     </style>
 </head>
 <body>
 <div class="wrap">
     <div class="convenient">
-        <div class="week">第<sapn id="week"></sapn>周</div>
-        <table class="class-table">
-            <thead style="width: 100%; height: 100%">
-                <tr>
-                    <th style="width: 15%;" class="weekDay"></th>
-                    <th style="width: 85%;" class="schedule-table1">
-                        <table style="width: 100%; height: 100% "  class="th-table">>
-                            <tr style="width: 100%; height: 100%;color: #515151;">
-                                <th style="width: 33%; height: 100%;border-left:transparent;">时间</th>
-                                <th style="width: 33%; height: 100%;">授课年级</th>
-                                <th style="width: 33%; height: 100%">授课内容</th>
-                            </tr>
-                        </table>
-                    </th>
-                </tr>
+        <div class="week">
+            第<span id="week"></span>周
+        </div>
+        <table class="schedule-table">
+            <thead>
+            <tr style="background-color: #fff;">
+                <th style="width: 20%;"></th>
+                <th style="width: 80%; font-size: smaller">
+                    <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
+                        <tr style="width: 100%; height: 100%;">
+                            <th style="width: 28%; height: 100%;">时间</th>
+                            <th style="width: 22%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 50%; height: 100%;">授课内容</th>
+                        </tr>
+                    </table>
+                </th>
+            </tr>
             </thead>
             <tbody id="day"></tbody>
         </table>
@@ -41,19 +104,19 @@
 </div>
 <template id="day-template">
     <tr class="color">
-        <td style="width: 15%;">星期${day}<br><span class="week-span">(${date})</span></td>
-        <td style="width: 85%;"  class="th-table">
-            <table style="width: 100%; height: 100%">
-                <tbody id="row1" data-ext-point="items" class="line"></tbody>
+        <td style="width: 20%;">星期${day}<br>(${date})</td>
+        <td style="width: 80%;">
+            <table style="width: 100%; height: 100%; border: none; border-spacing: 0; border-collapse: collapse;">
+                <tbody data-ext-point="items" class="data"></tbody>
             </table>
         </td>
     </tr>
 </template>
 <template id="item-template">
     <tr>
-        <td style="width: 33%;">${st}-${et}</td>
-        <td style="width: 33%;">${grade}</td>
-        <td style="width: 33%;">${title}</td>
+        <td style="width: 28%;">${st}-${et}</td>
+        <td style="width: 22%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 50%;">${title}</td>
     </tr>
 </template>
 <script src="/moment/moment.min.js"></script>
@@ -94,35 +157,12 @@
         }
         return result
     }
-    //    var getWeek = function (week) {
-    //        var result = ''
-    //        switch (week) {
-    //            case 0:
-    //                result = '一'
-    //                break
-    //            case 1:
-    //                result = '二'
-    //                break
-    //            case 2:
-    //                result = '三'
-    //                break
-    //            case 3:
-    //                result = '四'
-    //                break
-    //            case 4:
-    //                result = '五'
-    //                break
-    //            default:
-    //                break
-    //        }
-    //        return result
-    //    }
     var now = new Date()
     var m = moment(now)
     var w = m.week()
     var d = m.day()
-    week=document.getElementById("week")
-    week.innerHTML=w-41
+    week = document.getElementById("week")
+    week.innerHTML = w - 41
     $.ajax({
         type: "get",
         url: '/api/schedulers/weeks/' + w,
@@ -133,12 +173,10 @@
             var monday = now
             if (d > 1) {
                 monday = new Date(+now - (d - 1) * 24 * 60 * 60 * 1000)
-                //var nowDate = now.getDate()
-                //monday = now.setDate(nowDate - (d - 1))
             }
             for (var i = 0; i < course.length; ++i) {
-                course[i].st=course[i].startTime.substr(11,5)
-                course[i].et=course[i].endTime.substr(11,5)
+                course[i].st = course[i].startTime.substr(11, 5)
+                course[i].et = course[i].endTime.substr(11, 5)
                 course[i].grade = getGrade(course[i].grade)
                 switch (course[i].day) {
                     case 1:

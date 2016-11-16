@@ -2,62 +2,143 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>直播视频</title>
+    <title>直播课</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
+
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <!--<link rel="stylesheet" href="allVideo.css">-->
+    <!--<link rel="stylesheet" href="allVideo0.css">-->
+    <link rel="stylesheet" href="allVideo-details.css">
     <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
 </head>
 <body>
-<article id="main">
-    <img src="" alt="" id="schedulerEntry" data-article="scheduler"/>
-    <!-- Nav tabs -->
-    <ul id="subjects" class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#zero" role="tab" data-toggle="tab">chinese</a></li>
-        <li role="presentation"><a href="#one" role="tab" data-toggle="tab">math</a></li>
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="zero">
-            <div id="zeroPlaying"></div>
-            <div id="zeroFuture"></div>
+<article id="main" class="wrap">
+    <div class="rain-main">
+        <header class="rain-header">
+            <a href="" class="rain-header-a" id="schedulerEntry" data-article="scheduler"></a>
+        </header>
+        <!-- Nav tabs -->
+        <div class="subject-tab">
+            <ul class="subject-tab-box nav nav-tabs" id="subjects" role="tablist">
+                <li class="subject-tab-li cur zb-cur active" role="presentation">
+                    语文
+                    <span class="zb-video">(<span id="Cc"></span>)</span>
+                </li>
+                <li role="presentation" class="subject-tab-li zb-cur">
+                    数学
+                    <span class="zb-video">(<span id="Mc"></span>)</span>
+                </li>
+            </ul>
+            <div class="subject-line"></div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="one">
-            <div id="onePlaying"></div>
-            <div id="oneFuture"></div>
+        <!-- Tab panes -->
+        <ul class="tab-content" id="live-broadcast">
+            <li role="tabpanel" class="tab-pane active subject-list cur" id="zero">
+                <ul id="zeroPlaying" class="video-list"></ul>
+                <ul id="zeroFuture" class="video-list"></ul>
+            </li>
+            <li role="tabpanel" class="tab-pane subject-list" id="one">
+                <ul id="onePlaying" class="video-list"></ul>
+                <ul id="oneFuture" class="video-list"></ul>
+            </li>
+        </ul>
+        <div class="before_video">
+            <a class="bevid_btn" href="">往期回放</a>
+            <div class="pullUp">
+                <span class="pullUpIcon"></span>
+                <span class="pullUpLabel">除了直播，还有精彩回放等着您哦！</span>
+                <span class="pullUpLabel" style="display: none;">没有更多了，看看往期回放吧！</span>
+            </div>
         </div>
     </div>
 </article>
-<article id="passed" style="display: none;">
-    <div>
-        <select id="subject"></select>
-        <select id="teacher"></select>
-        <select id="grade"></select>
+<article id="passed" style="display: none;" class="wrap noBackg">
+    <input class="souSuo clearfix" type="text" id="text" name="keyword" onkeydown="entersearch()"
+           placeholder="请输入科目、老师、年级 关键词搜索">
+    <input type="button" onclick="text()"/>
+    <div class="tiao_jian">
+        <div class="tiaoj_TJ01 selectDiv" id="sg">
+            <div class="tiaoj_1span">
+                <span>科目</span>
+                <img src="../img/xiala.png" alt="">
+            </div>
+            <ul class="xiala_ul" id="subject">
+                <li class="xiala_li"></li>
+            </ul>
+        </div>
+        <div class="tiaoj_TJ02 selectDiv">
+            <div class="tiaoj_2span">
+                <span>老师</span>
+                <img src="../img/xiala.png" alt="">
+            </div>
+            <ul class="xiala_ul" id="teacher">
+                <li class="xiala_li"></li>
+            </ul>
+        </div>
+        <div class="tiaoj_TJ03 selectDiv">
+            <div class="tiaoj_3span">
+                <span id="g">年级</span>
+                <img src="../img/xiala.png" alt="">
+            </div>
+            <ul class="xiala_ul" id="grade">
+                <li class="xiala_li"></li>
+            </ul>
+        </div>
+        <div>
+            <div id="zeroPassed"></div>
+            <div id="zeroTips"></div>
+            <button id="zeroMore">More</button>
+        </div>
+        <div>
+            <div id="onePassed"></div>
+            <div id="oneTips"></div>
+            <button id="oneMore">More</button>
+        </div>
     </div>
-    <div>
-        <div id="zeroPassed"></div>
-        <div id="zeroTips"></div>
-        <button id="zeroMore">More</button>
-    </div>
-    <div>
-        <div id="onePassed"></div>
-        <div id="oneTips"></div>
-        <button id="oneMore">More</button>
+    <div class="rain-main noPadd">
+        <ul id="video-list"></ul>
+        <div class="bottom_txt">
+            <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
+        </div>
     </div>
 </article>
 <article id="video" style="display: none;">
     <video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>
+    <div class="course-intro">
+        <div class="course_xiaqing">
+            <div>
+                <p class="course_xqpsee"><span>${watchCount}</span>人观看过</p>
+                <a href="javascript:void(0)" class="course_xqpzan">
+                    <img class="dianzanImg" src="/img/dianzan.png" alt="">
+                    <img class="dianzanImg cur" src="/img/zanover.png" alt="">
+                    赞
+                    <span class="xqpZan">${likeCount}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="zz_comment" id="videoComment"></div>
+    <div class="leave_message">
+        <input class="message_text" type="text" placeholder="留言">
+        <a class="message_btn" href="javascript:void(0)">发送</a>
+    </div>
 </article>
-<article id="scheduler" style="display: none;">
-    <div class="week">第<sapn id="week"></sapn>周</div>
+<article id="scheduler" style="display: none;" class="convenient wrap">
+    <div class="week">第
+        <sapn id="week"></sapn>
+        周
+    </div>
     <table class="schedule-table">
         <thead style="width: 100%; height: 100%">
         <tr>
             <th style="width: 15%;" class="weekDay"></th>
             <th style="width: 85%;" class="schedule-table1">
-                <table style="width: 100%; height: 100% ">
+                <table style="width: 100%; height: 100% " class="th-table">
                     <tr style="width: 100%; height: 100%; color: #515151;">
                         <th style="width: 33%; height: 100%; border-left:transparent;">时间</th>
                         <th style="width: 33%; height: 100%;">授课年级</th>
@@ -70,10 +151,12 @@
         <tbody id="day"></tbody>
     </table>
 </article>
-<article id="futureNote" style="display: none;">
-    <div class="goBack"></div>
+<article id="futureNote" style="display: none;" class="wrap">
+    <div class="waiting">
+        <a class="goBack" href=""></a>
+    </div>
 </article>
-
+<!--******************main*********************-->
 <template id="playing-template">
     <li class="video-list-li">
         <div class="video-list-play">
@@ -135,6 +218,11 @@
                         上线时间
                     </h3>
                     <p>${startTime}</p>
+                    <h3 class="sml-tit brief4">
+                        <img src="../img/cksc_btn.png" alt="">
+                        课程时长
+                    </h3>
+                    <p>30分钟</p>
                 </div>
             </div>
         </div>
@@ -148,7 +236,6 @@
                 <div class="video-list-mask">
                         <span class="live-radio">
                             <img src="../img/zb-wait.png" alt="">
-                            <!--鍥剧墖浼氶殢鐫€鍏蜂綋鎯呭喌鏀瑰彉-->
                         </span>
                     <div class="waity-play">${startTime}开讲
                     </div>
@@ -196,73 +283,134 @@
                         上线时间
                     </h3>
                     <p>${startTime}</p>
+                    <h3 class="sml-tit brief4">
+                        <img src="../img/cksc_btn.png" alt="">
+                        课程时长
+                    </h3>
+                    <p>30分钟</p>
                 </div>
             </div>
         </div>
     </li>
 </template>
-<template id="passed-template">
-    <li class="video-list-li">
-        <div class="video-list-play">
-            <a class="passedVideo" href="video.html?src=${cdnLink}">
-                <img src="${cover}" alt="">
-                <div class="video-list-mask">
-                        <span class="live-radio">
-                            <img src="../img/zb-lu.png" alt="">
-                        </span>
-                    <div class="play-btn">
-                        <img src="../img/lu-play.png" alt="">
-                    </div>
-                    <div class="course-box">
-                        <h3 class="live-title">
-                            <span>${title}</span>
-                        </h3>
-                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
-                                 onmouseout=this.start()>${description}
-                        </marquee>
-                    </div>
+
+<!--*******************************passed*******************************-->
+<template id="chinese-passed-template">
+    <li class="all_uli">
+        <div class="all_liplay">
+            <a class="all_aBtn" href="video.html?src=${cdnLink}">
+                <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
+                <div class="yuwen_div1">语文</div>
+                <div class="yuwen_div2">
+                    <h3 class="yuwen_h3">${title}</h3>
+                    <p class="yuwen_p">${description}</p>
                 </div>
+                <span class="yuwen_a"></span>
+                <span class="yuwen_span">—${teacher}老师</span>
             </a>
         </div>
         <div class="course-intro">
-            <div class="course-intro-in">
-                <div class="course-speaker">
-                    <div class="fl">
-                        <i>${teacher}</i>老师主讲<br>
-                        <i>${startTime}</i>开讲
-                    </div>
-                    <div class="fr">
-                        <div>${grade}</div>
-                        <div class="course-detail-btn fr">
-                            课程详情<br>
-                            <img src="../img/xiala-btn.png" alt="">
-                        </div>
-                    </div>
+            <div class="course_xiaqing">
+                <div class="xiaq_div">${title}</div>
+                <div>
+                    <span>${grade}</span>
+                    <div class="course_detail">课程详情</div>
                 </div>
-                <div class="course-detail">
-                    <h3 class="sml-tit brief1">
-                        <img src="../img/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p class="tim2">${description}</p>
+            </div>
+            <div class="course-detail">
+                <h3 class="sml-tit brief1">
+                    <img src="../img/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p>${description}</p>
+                <h3 class="sml-tit brief2">
+                    <img src="../img/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2"> ${teacherDescription}</p>
 
-                    <h3 class="sml-tit brief2">
-                        <img src="../img/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2">${teacherDescription}</p>
+                <h3 class="sml-tit brief3">
+                    <img src="../img/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${startTime}</p>
 
-                    <h3 class="sml-tit brief3">
-                        <img src="../img/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>${startTime}</p>
+                <h3 class="sml-tit brief4">
+                    <img src="../img/cksc_btn.png" alt="">
+                    课程时长
+                </h3>
+                <p id="duration">30分钟</p>
+            </div>
+        </div>
+    </li>
+</template>
+<template id="math-passed-template">
+    <li class="all_uli">
+        <div class="all_liplay shuxue_play">
+            <a class="all_aBtn" href="video.html?src=${cdnLink}">
+                <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
+                <div class="yuwen_div1 shuxue_div1">数学</div>
+                <div class="yuwen_div2 shuxue_div2" id="subjectImg">
+                    <h3 class="yuwen_h3">${title}</h3>
+                    <p class="yuwen_p">${description}</p>
                 </div>
+                <span class="yuwen_a"></span>
+                <span class="yuwen_span">—${teacher}老师</span>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="xiaq_div">${title}</div>
+                <div>
+                    <span>${grade}</span>
+                    <div class="course_detail shuxue_Btn">课程详情</div>
+                </div>
+            </div>
+            <div class="course-detail">
+                <h3 class="sml-tit brief1">
+                    <img src="../img/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p>${description}</p>
+                <h3 class="sml-tit brief2">
+                    <img src="../img/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2"> ${teacherDescription}</p>
+
+                <h3 class="sml-tit brief3">
+                    <img src="../img/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${startTime}</p>
+
+                <h3 class="sml-tit brief4">
+                    <img src="../img/cksc_btn.png" alt="">
+                    课程时长
+                </h3>
+                <p>30分钟</p>
             </div>
         </div>
     </li>
 </template>
 
+
+<!--************************video**********************************-->
+<template id="videoComment-template">
+    <div class="zz_center">
+        <h3 class="zz_plh3">评论</h3>
+        <ul class="zz_plul">
+            <li class="zz_plli">
+                <span class="zz_lispan1">${userName}</span>
+                <span class="zz_lispan2">${userTime}</span>
+                <p class="zz_pllip">${comment}</p>
+            </li>
+        </ul>
+    </div>
+</template>
+
+
+<!--********************scheduler**********************************-->
 <template id="day-template">
     <tr class="color">
         <td style="width: 15%;">星期${day}<br>(${date})</td>
@@ -288,6 +436,9 @@
 <script src="/basic.js"></script>
 <script>
     //[{..., teachers: [], grades: [], playings: [], futures: [], ...}, ...]
+//    var teachers = ['刘志超', '曹文雯', '范炜炜', '朱东博', '范炜炜', '孟凡丽']
+//    var grades = ['一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '1-2年级', '3-6年级']
+
     var subjects = []
 
     var passed = []
@@ -304,15 +455,19 @@
         currentArticle: document.getElementById('main'),
         main: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.main.isInit) {
-                    $(document).on('click', '@@', function () {
-                        //
-                    })
-
+//                    $(document).on('click', '[data-article]', function (e) {
+//                        var id = e.target.dataset.article
+//                        switchTo(id)
+//                        state[id].changeId(e.target.dataset.id)
+//                    })
+//                    $(document).on('click', '@@', function () {
+//                        //
+//                    })
                     var now = Date.now()
-
                     $.ajax({
+                        //chinese
                         type: 'get',
                         url: '/api/schedulers?filter=' + JSON.stringify({
                             subjectId: subjects[0].id,
@@ -320,6 +475,8 @@
                         }),
                         dataType: 'json',
                         success: function (zeroSchedulers) {
+                            var Cc = document.getElementById('Cc')
+                            Cc.innerHTML = zeroSchedulers[0].length + zeroSchedulers[1].length
                             subjects[0].playing = zeroSchedulers[0]
                             subjects[0].futures = zeroSchedulers[1]
                             state.adjustData(0)
@@ -327,6 +484,7 @@
                             state.zeroPlaying.data = subjects[0].playing
                             state.refreshState(0)
                             $.ajax({
+                                //math
                                 type: 'get',
                                 url: '/api/schedulers?filter=' + JSON.stringify({
                                     subjectId: subjects[1].id,
@@ -334,6 +492,8 @@
                                 }),
                                 dataType: 'json',
                                 success: function (oneSchedulers) {
+                                    var Mc = document.getElementById('Mc')
+                                    Mc.innerHTML = oneSchedulers[0].length + oneSchedulers[1].length
                                     subjects[1].playing = oneSchedulers[0]
                                     subjects[1].futures = oneSchedulers[1]
                                     state.adjustData(1)
@@ -362,7 +522,7 @@
                                         oneFirst = false
                                     }
                                     if (oneFirst) {
-                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                                        $('#subjects').find('a[href="#one"]').click('show') // Select tab by name
                                         //$('#subjects').find('a:first').tab('show') // Select first tab
                                         //$('#subjects').find('a:last').tab('show') // Select last tab
                                         //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
@@ -455,46 +615,46 @@
                 }
             },
             zeroFuture: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
+                container: document.getElementById('zeroFuture'),
+                template: document.getElementById('future-template'),
                 data: null
             },
             zeroPlaying: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
+                container: document.getElementById('zeroPlaying'),
+                template: document.getElementById('playing-template'),
                 data: null
             },
             oneFuture: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
+                container: document.getElementById('oneFuture'),
+                template: document.getElementById('future-template'),
                 data: null
             },
             onePlaying: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
+                container: document.getElementById('onePlaying'),
+                template: document.getElementById('playing-template'),
                 data: null
             },
             schedulerEntry: document.getElementById('schedulerEntry'),
             teacherChoice: document.getElementById('teacherChoice'),
             gradeChoice: document.getElementById('gradeChoice'),
             keywords: document.getElementById('keywords'),
-            search: function() {
+            search: function () {
                 //filter the playing and future data via the filter element state
             }
         },
         passed: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.passed.isInit) {
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
-                        success: function(ts) {
+                        success: function (ts) {
                             subjects[0].teachers = ts
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function(ts) {
+                                success: function (ts) {
                                     subjects[1].teachers = ts
                                     //fill to teachers choice
                                 }
@@ -505,12 +665,12 @@
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
-                        success: function(gs) {
+                        success: function (gs) {
                             subjects[0].grades = gs
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function(gs) {
+                                success: function (gs) {
                                     subjects[1].grades = gs
                                     //fill to grades choice
                                 }
@@ -533,7 +693,7 @@
 
                     state.passed.isInit = true
 
-                    subject.addEventListener('change', function(e){
+                    subject.addEventListener('change', function (e) {
                         var subjectIndex = 0
                         var r = state.passed.search()
                         teacher.innerHTML = ''
@@ -558,11 +718,11 @@
                         })
                     }, false)
 
-                    $(subject).on('change', function(e){
+                    $(subject).on('change', function (e) {
                         //
                     })
 
-                    grade.addEventListener('change', function(e){
+                    grade.addEventListener('change', function (e) {
                         var gradeIndex = 0
                         var r = state.passed.search()
 
@@ -574,7 +734,7 @@
                         })
                     }, false)
 
-                    teacher.addEventListener('change', function(e){
+                    teacher.addEventListener('change', function (e) {
                         var teacher = 0
                         var r = state.passed.search()
 
@@ -587,7 +747,7 @@
                     }, false)
                 }
             },
-            search: function() {
+            search: function () {
                 var result = []
                 //filter the passed data via the filter element state
                 var keywords, subject, teacher, grade
@@ -602,12 +762,12 @@
                 }
                 return result
             },
-            showPassed: function (state, moreId, tips) {
-                proc(state)
-                document.getElementById(moreId).style.display = 'none'
-                var tips = document.getElementById(tips)
-                tips.innerHTML = '没有更多视频，敬请期待'
-            },
+//            showPassed: function (state, moreId, tips) {
+//                proc(state)
+//                document.getElementById(moreId).style.display = 'none'
+//                var tips = document.getElementById(tips)
+//                tips.innerHTML = '没有更多视频，敬请期待'
+//            },
             zeroPassed: {
                 container: document.getElementById(''),
                 template: document.getElementById(''),
@@ -627,7 +787,7 @@
         },
         scheduler: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.scheduler.isInit) {
                     state.scheduler.year = state.scheduler.now.getFullYear()
                     var m = moment(state.scheduler.now)
@@ -708,7 +868,7 @@
             weekDay: null,
             weekElement: document.getElementById("week")
         },
-        init: function() {
+        init: function () {
             var userId = g.getUrlParameter('userid')
             g.setCookie('userId', userId)
 
@@ -726,7 +886,7 @@
                 }
             })
 
-            var switchTo = function(id) {
+            var switchTo = function (id) {
                 state.currentArticle.style.display = 'none'
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
@@ -734,15 +894,15 @@
                 state[id].init()
             }
 
-            $(document).on('click', '[data-article]', function(e) {
+            $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 switchTo(id)
             })
 
             state['main'].init()
-            history.pushState(null, null, '/videos.html#main')
+            history.pushState(null, null, '/content/videos.html#main')
 
-            window.addEventListener('hashchange', function(e) {
+            window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
