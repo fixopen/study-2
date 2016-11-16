@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的账号 - 头像</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telphone=no"/>
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/nickNameStyle.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/touch.js"></script>
+    <script type="text/javascript" src="../../js/selector.js"></script>
+    <script src="../jquery/jquery-3.1.1.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+
+</head>
+<body>
+<!--<img class="mine_touimg" id="myhead" src="${head}" alt="">
+&lt;!&ndash;<div id="a">
+    上传头像： <input type="file" id="he"/>
+</div>&ndash;&gt;
+<script type="text/javascript" src="../js/nickName.js"></script>-->
+<img src="" id="imgTarget">
+</body>
+<script>
+
+    $(function () {
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: "wx92dec5e98645bd1d", // 必填，公众号的唯一标识
+            timestamp: "1479085147", // 必填，生成签名的时间戳
+            nonceStr: "1qauihewukdsfa", // 必填，生成签名的随机串
+            signature: "e1560eefdfdf29596dd85c200279db7929ca1db0",// 必填，签名，见附录1
+            jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        /*wx.error(function (res) {
+            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+            // alert("权限验证失败"+res)
+            alert("权限验证失败" + JSON.stringify(res))
+            //getticket();
+        });*/
+        var localIds;
+        var index;
+        wx.ready(function () {
+            wx.chooseImage({
+                count: 1,
+                needResult: 1,
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                   // document.getElementById("myimg").src="localIds";
+                    $('#imgTarget').attr('src',localIds[0]);
+                    //上传图片接口
+                    wx.uploadImage({
+                        localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var serverId = res.serverId; // 返回图片的服务器端ID
+                            alert("返回图片的服务器端ID"+serverId)
+                            wx.downloadImage({
+                                serverId: serverId.toString(), // 需要下载的图片的服务器端ID，由uploadImage接口获得
+                                isShowProgressTips: 1, // 默认为1，显示进度提示
+                                success: function (res) {
+                                    var localId = res.localId; // 返回图片下载后的本地ID
+                                    alert("返回图片下载后的本地ID"+localId)
+                                }
+                            });
+                           /* $.ajax({
+                                type:"post",
+                                url:"/api/"
+                            })*/
+                        }
+                    });
+                },
+                fail: function (res) {
+                    alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+                }
+
+            });
+           // alert("成功")
+        });
+    });
+
+
+    /* $.ajax({
+         type: 'get',
+         url: '/api/users/self',
+         dataType: 'json',
+         success: function (user) {
+             $("#a").val(user.id)
+             //alert(JSON.stringify(user))
+             var myhead = document.getElementById("myhead");
+             myhead.src = user.head
+         },
+         error: function (r) {
+             alert('获取用户信息失败，请刷新以重试')
+         }
+     })
+ })
+
+ function getticket() {
+     $.ajax({
+         type: "GET",
+         url: "/api/public-account/ticket",
+         dataType: "json",
+         success: function () {
+            /!* $.ajax({
+                 type:"get",
+                 url:""
+             })*!/
+         },
+         error: function () {
+
+         }
+     })*/
+
+   /* wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+        }
+    });
+*/
+   /* $(function () {
+        var url = window.location.href;
+        url = url.replace(/[/]/g, ',')
+        // alert(url)
+        $.ajax({
+            type: "get",
+            url: "/api/public-account/config/" + url,
+            dataType: "json",
+            success: function (e) {
+                wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: e.appId, // 必填，公众号的唯一标识
+                    timestamp: e.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: e.nonceStr, // 必填，生成签名的随机串
+                    signature: e.signature,// 必填，签名，见附录1
+                    jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                });
+            },
+            error: function (e) {
+                alert("签名失败" + JSON.stringify(e))
+                getticket();
+            }
+        })
+    })
+
+    wx.ready(function () {
+        wx.chooseImage({
+            count: 1,
+            needResult: 1,
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (data) {
+                alert("调用选图接口成功")
+                localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                if (rh.tostr(localIds)) {
+                    wxuploadImage(localIds);
+                }
+            },
+            fail: function (res) {
+                alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+            }
+
+        });
+    });
+    wx.error(function (res) {
+        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+        // alert("权限验证失败"+res)
+        alert("权限验证失败" + JSON.stringify(res))
+        getticket();
+    });
+
+*/
+   /* $('#he').on('click', function (e) {
+        if (loginUserId == receiverid) {
+            wx.chooseImage({
+                count: 5, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    uploadImage(localIds);
+                    function uploadImage(localIds) {
+                        var realLocalIds = localIds.toString().split(',');
+                        var mediaIdArray = '';
+                        for (var i = 0; i < realLocalIds.length; i++) {
+                            wx.uploadImage({
+                                localId: realLocalIds[i], // 需要上传的图片的本地ID，由chooseImage接口获得
+                                isShowProgressTips: 1, // 默认为1，显示进度提示
+                                success: function (res) {
+                                    media_id = res.serverId;// 返回图片的服务器端ID
+                                    mediaIdArray += media_id + ',';
+                                }
+                            });
+                        }
+                        getDealImageArrayFromWechat(mediaIdArray, 'reset');
+                    }
+                }
+            });
+        }
+        else {
+            alert('非创建人不可修改该条数据');
+        }
+    });
+    //拍照或从手机相册中选图接口
+    function wxChooseImage() {
+
+    }
+
+    //上传图片接口
+    function wxuploadImage(e) {
+
+        wx.uploadImage({
+            localId: e, // 需要上传的图片的本地ID，由chooseImage接口获得
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                alert("调用上传选图接口成功")
+                mediaId = res.serverId; // 返回图片的服务器端ID
+                if (rh.tostr(mediaId)) {
+                    $(".myhead").attr("src", localIds);
+                }
+
+            },
+            fail: function (error) {
+                picPath = '';
+                localIds = '';
+                alert("调用上传选图接口失败" + Json.stringify(error));
+
+            }
+
+        });
+    }*/
+
+    //    function save() {
+    //        var formData = new FormData();
+    //        formData.append("file", document.getElementById("he").files[0]);
+    //        var request = new XMLHttpRequest();
+    //        request.onreadystatechange = function () {
+    //            if (request.readyState === 4) {
+    //                if (request.status == 200) {
+    //                    returndata = JSON.parse(request.responseText)
+    //                    var h = returndata.storePath
+    //                    /*var e = "http://xiaoyuzhishi.com"
+    //                     var hend = e + h*/
+    //                    let storePath = {
+    //                        head: h
+    //                    }
+    //                    // alert(JSON.stringify(storePath))
+    //                    var id = $("#a").val()
+    //                    $.ajax({
+    //                        type: "put",
+    //                        url: "/api/users/" + id,
+    //                        dataType: "json",
+    //                        data: JSON.stringify(storePath),
+    //                        contentType: "application/json; charset=utf-8",
+    //                        success: function (e) {
+    //                            alert("成功")
+    //                        },
+    //                        error: function (e) {
+    //                            alert(JSON.stringify(e))
+    //                        }
+    //                    })
+    //                }
+    //            }
+    //        }
+    //        request.open("POST", "/api/medias");
+    //        request.send(formData);
+    //    }
+</script>
+</html>
+

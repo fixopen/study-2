@@ -86,12 +86,12 @@
 <!--<li class="xiala_li">${grade}</li>-->
 <!--</template>-->
 
-<template id="chinese-template">
+<template id="video-template">
     <li class="all_uli">
         <div class="all_liplay">
-            <a class="all_aBtn" href="video.html?src=${cdnLink}">
+            <a class="all_aBtn" href="javascript:void(0)">
                 <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
-                <div class="yuwen_div1">语文</div>
+                <div class="yuwen_div1">${subject}</div>
                 <div class="yuwen_div2">
                     <h3 class="yuwen_h3">${title}</h3>
                     <p class="yuwen_p">${description}</p>
@@ -102,7 +102,7 @@
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
-                <div class="xiaq_div">${title}</div>
+                <div class="xiaq_div">${description}</div>
                 <div>
                     <span>${grade}</span>
                     <div class="course_detail">课程详情</div>
@@ -131,10 +131,12 @@
                     课程时长
                 </h3>
                 <p id="duration">30分钟</p>
+
             </div>
         </div>
     </li>
 </template>
+
 <template id="math-template">
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
@@ -184,24 +186,15 @@
         </div>
     </li>
 </template>
-
 <script type="text/javascript">
+    allxqTap(); //all课程详情
     xialaTap(); //下拉
 </script>
 <script type="text/javascript">
-    //  function changStyle(data) {
-    //      var sub = document.getElementById("sub")
-    //      for (var i = 0; i < data.length; i++) {
-    //          if (data[i].subjectId == 1) {
-    //              sub.innerHTML = '语文'
-    //          } else {
-    //              sub.innerHTML = '数学'
-    //              $('#sub').addClass("shuxue_div1");
-    //              $('#subjectImg').addClass("shuxue_div2");
-    //          }
-    //      }
-    //  }
-
+    curseDetailTap();
+    var userId = g.getUrlParameter('userid')
+    g.setCookie('userId', userId)
+    var course = []
     var getGrade = function (gradeValue) {
         var result = ''
         if (gradeValue == 1) {
@@ -223,6 +216,7 @@
         }
         return result
     }
+
 //    function text(){
 //        $keyword = $("#text").val();
 //        window.location.href = "/list-0-0-0-0-"+$keyword+"-0-0-1.html";
@@ -584,6 +578,7 @@
 
     var userId = g.getUrlParameter('userid')
     g.setCookie('userId', userId)
+
 </script>
 </body>
 </html>

@@ -49,12 +49,12 @@
                 <ul class="video-list" id="chinese-futureVideoList"></ul>
                 <ul class="video-list" id="chinese-passedVideoList"></ul>
                 <!--<div class="more">-->
-                    <!--<div class="pullUp">-->
-                        <!--<span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>-->
-                    <!--</div>-->
-                    <!--<div class="video-all" id="btn1">-->
-                        <!--查看往期录播视频-->
-                    <!--</div>-->
+                <!--<div class="pullUp">-->
+                <!--<span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>-->
+                <!--</div>-->
+                <!--<div class="video-all" id="btn1">-->
+                <!--查看往期录播视频-->
+                <!--</div>-->
                 <!--</div>-->
             </li>
             <li id="mcc" class="subject-list">
@@ -73,7 +73,6 @@
         </div>
     </div>
 </div>
-
 
 <template id="video-template">
     <li class="video-list-li">
@@ -429,7 +428,7 @@
             proc({
                 container: state2.currentContainer,
                 data: course[1][0],
-                template: state2.currentTemplat
+                template: state2.currentTemplate
             })
             proc({
                 container: state2.futureContainer,
@@ -481,8 +480,8 @@
 //                    mathFirst = false
 //                }
 //            }
-            var whoFirst = function() {
-                var comparePlaying = function() {
+            var whoFirst = function () {
+                var comparePlaying = function () {
                     var result = false
                     if ((course[0][0].length > 0) && (course[1][0].length > 0)) {
                         if (+course[0][0][0].startTime > +course[1][0][0].startTime) {
@@ -494,7 +493,7 @@
                     return result
                 }
 
-                var compareFuture = function() {
+                var compareFuture = function () {
                     var result = false
                     if ((course[0][1].length > 0) && (course[1][1].length > 0)) {
                         if (+course[0][1][0].startTime > +course[1][1][0].startTime) {
@@ -533,4 +532,8 @@
     })
 </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 934e6a011ebdb9b463c78b016dfd51559b62e926

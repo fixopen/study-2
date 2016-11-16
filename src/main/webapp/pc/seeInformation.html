@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看信息</title>
+
+    <!-- 引入css -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/fill.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script src="../basic.js"></script>
+    <script src="../util.js"></script>
+</head>
+<body>
+<div class="logo-section">
+    <div class="inner">
+        <h1 class="logo">
+            <a href="javascript:;" class="logo-a" title="小雨知时">小雨知时</a>
+        </h1>
+        <div class="page-name">我的信息</div>
+        <div class="tip">网站、微信正在建设中，敬请期待！</div>
+    </div>
+</div>
+
+<!-- info-content -->
+<div id="card"></div>
+<div id="information"></div>
+<template id="card-template">
+    <div class="inner">
+        <div class="info-content">
+            <table class="myinfo-table">
+                <tr>
+                    <td>卡号：</td>
+                    <td>${no}</td>
+                </tr>
+                <tr>
+                    <td>学习类型：</td>
+                    <td>${subject}</td>
+                </tr>
+                <tr>
+                    <td>激活时间：</td>
+                    <td>${activeTime}</td>
+                </tr>
+                <tr>
+                    <td>剩余雨点：</td>
+                    <td>${amount}</td>
+                </tr>
+                <tr>
+                    <td>有效期：</td>
+                    <td>${endTime}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</template>
+<!--<div id="information"></div>
+<template id="card-template">
+    <table class="myinfo-table">
+        <tr>
+            <td>卡号：</td>
+            <td>${no}</td>
+        </tr>
+        <tr>
+            <td>卡片余额：</td>
+            <td>${amount}</td>
+        </tr>
+        <tr>
+            <td>卡片类型：</td>
+            <td>${subjectName}</td>
+        </tr>
+    </table>
+</template>-->
+<template id="information-template">
+    <div class="inner">
+        <div class="info-content">
+            <table class="myinfo-table">
+                <tr>
+                    <td>真实姓名：</td>
+                    <td>${name}</td>
+                </tr>
+                <tr>
+                    <td>手机号：</td>
+                    <td>${telephone}</td>
+                </tr>
+                <tr>
+                    <td>性别：</td>
+                    <td>${sex}</td>
+                </tr>
+                <tr>
+                    <td>出生年月：</td>
+                    <td>${birthday}</td>
+                </tr>
+                <tr>
+                    <td>收货地址：</td>
+                    <td>${location}</td>
+                </tr>
+                <tr>
+                    <td>就读学校：</td>
+                    <td>${school}</td>
+                </tr>
+                <tr>
+                    <td>所在班级：</td>
+                    <td>${classname}</td>
+                </tr>
+                <tr>
+                    <td>微信账号：</td>
+                    <td>${info}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="perfect-bottom"></div>
+    </div>
+</template>
+<!-- copyright -->
+<div class="copyright">
+    Copyright 北京小雨知时教育科技有限公司 京ICP备16047890号-1
+    <img src="images/gongan.png" alt="">京公安网备1101082020142号
+    京ICP证160421号 All Rights Reserved <img src="images/tongji.gif" alt=""><br>
+    地址：北京市海淀区上地信息路1号2号楼5层505 电话：010-12345678
+</div>
+
+<script type="text/javascript">
+    //simulateSelect();//下拉菜单
+    let userId
+    $.ajax({
+        type: "get",
+        url: "/api/users/self",
+        dataType: "json",
+        success: function (e) {
+            let u = e.id
+            userId = parseInt(u);
+            let filter = {
+                userId: userId
+            }
+            $.ajax({
+                type: 'get',
+                url: '/api/wechat-users/?filter=' + JSON.stringify(filter),
+                dataType: 'json',
+                success: function (wechat) {
+                    e.info = wechat[0].info
+                    switch (wechat[0].sex) {
+                        case 1:
+                            e.sex = "男";
+                            break;
+                        case 1:
+                            e.sex = "女";
+                            break;
+                        case 1:
+                            e.sex = "未设置";
+                            break;
+                    }
+                    // alert(JSON.stringify(wechat))
+                    proc({
+                        containerId: 'information',
+                        data: e,
+                        templateId: 'information-template'
+                    })
+                },
+                error: function (wechat) {
+                    location.href = "perfectInformation.html";
+                }
+            })
+            $.ajax({
+                type: 'get',
+                url: '/api/users/self/cards',
+                dataType: 'json',
+                success: function (cards) {
+                    for (var i = 0; i < cards.length; ++i) {
+                        //alert(cards[i].subject)
+                        let subject = cards[i].subject;
+                        if (subject == 1) {
+                            cards[i].subject = "语文"
+                        }
+                        if (subject == undefined) {
+                            cards[i].subject = "暂时没有设置！"
+                        }
+                        if (cards[i].subject == 2) {
+                            cards[i].subject = "数学"
+                        }
+                        if (cards[i].subject == 3) {
+                            cards[i].subject = "英语"
+                        }
+                    }
+                    proc({
+                        containerId: 'card',
+                        data: cards,
+                        templateId: 'card-template'
+                    })
+                },
+                error: function (r) {
+                    if (r.status == 404) {
+                        //window.location.href = '/validationCode.html?userid=' + userId
+                    } else {
+                        alert('获取用户信息失败，请刷新以重试')
+                    }
+                }
+            })
+            /*$.ajax({
+             type:"get",
+             url:"/api/wechat-users/?filter="+ JSON.stringify(filter),
+             dataType:"json",
+             success:function(i){
+             alert(JSON.stringify(i.info))
+             proc({
+             containerId: 'information',
+             data: i,
+             templateId: 'information-template'
+             })
+             },
+             error:function (i) {
+             location.href = "perfectInformation.html";
+             alert(JSON.stringify(i))
+             }
+             })*/
+
+        },
+        error: function (e) {
+            location.href = "signIn.html";
+        }
+    })
+
+
+</script>
+</body>
+</html>

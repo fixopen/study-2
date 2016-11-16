@@ -1,0 +1,368 @@
+a {
+    color: #444;
+}
+
+.head-title {
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: bold;
+    padding: 1.5rem 0 0.8rem;
+    margin: 1.0625rem 0;
+}
+
+.origin-title {
+    display: inline-block;
+    font-size: 1.0rem;
+    width: 8.96875rem;
+    height: 2.9375rem;
+    line-height: 2.5rem;
+    padding-left: 3.4375rem;
+    background: url('../img/been.png') 0 0 no-repeat;
+    background-size: 8.96875rem 2.9375rem;
+    position: relative;
+    top: 0.3125rem;
+    z-index: 2;
+}
+
+.content-bg {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    top: -1.25rem;
+    line-height: 1.875rem;
+    padding-top: 1.25rem;
+    overflow: hidden;
+}
+
+.origin-bg {
+    color: #064c42;
+    padding: 1.5625rem 0.625rem 0.625rem 0.625rem;
+    border: 1px solid #ffc500;
+    box-shadow: inset 0rem 0rem 0.5rem #f2e5ba;
+    border-radius: 0.3125rem;
+    background-color: #fffcf2;
+    box-sizing: border-box;
+}
+.content-font {
+    text-indent: 2em;
+    margin-bottom: 1rem;
+}
+
+/*拼音*/
+.rt {
+    font-size: 0.75rem;
+    /*text-indent: 2em;*/
+    /*word-spacing:-2px;*/
+    /*letter-spacing: 1px;*/
+    word-spacing: -9em;
+}
+
+.content-font span {
+    display: block;
+    text-align: right;
+}
+
+.content-img {
+    width: 100%;
+}
+
+/* 闯关练习 */
+.cg-title {
+    display: inline-block;
+    font-size: 1.0rem;
+    width: 8.96875rem;
+    height: 2.9375rem;
+    line-height: 2.85rem;
+    padding-left: 3.4375rem;
+    background: url('../img/sunshine.png') 0 0 no-repeat;
+    background-size: 8.96875rem 2.9375rem;
+    position: relative;
+    top: 0.3125rem;
+    z-index: 2;
+}
+
+.cg-bg {
+    padding: 1.5625rem 0.625rem 0.625rem 0.625rem;
+    border: 1px solid #36c4ff;
+    box-shadow: inset 0rem 0rem 0.5rem #bae3f2;
+    border-radius: 0.3125rem;
+    background-color: #f2fdff;
+    box-sizing: border-box;
+}
+
+ul.ul-style {
+    list-style-type: demical;
+}
+
+li.mld_Ulli {
+    list-style-position: outside;
+    line-height: 2.5rem;
+    position: relative;
+}
+
+/*.mld_liImg {*/
+/*width: 2.1875rem;*/
+/*height: 0.9375rem;*/
+/*margin-right: 0.46875rem;*/
+/*position: relative;*/
+/*top: 0.15625rem;*/
+/*}*/
+
+.mld_liImg {
+    width: 2.1875rem;
+    height: 0.9375rem;
+    margin-right: 0.46875rem;
+    padding: 0 0.0625rem;
+    border: 1px solid #24cbd1;
+    color: #24cbd1;
+    font-size: 0.625rem;
+    position: relative;
+    top: -0.09375rem;
+}
+
+.mld_liImg_ {
+    width: 2.1875rem;
+    height: 0.9375rem;
+    margin-right: 0.46875rem;
+    padding: 0 0.0625rem;
+    border: 1px solid #fe6568;
+    color: #fe6568;
+    font-size: 0.625rem;
+    position: relative;
+    top: -0.09375rem;
+}
+
+.daan_quan {
+    display: inline-block;
+    width: 1.5625rem;
+    height: 1.5625rem;
+    line-height: 1.5625rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    margin-right: 0.25rem;
+    z-index: 11;
+}
+
+.daan_error {
+    float: left;
+    position: relative;
+    /*top: -1.625rem;*/
+    top: 0;
+    left: 0;
+    width: 1.625rem;
+    height: 1.625rem;
+}
+
+.daan_true {
+    float: left;
+    position: relative;
+    top: -1.625rem;
+    left: 0;
+    width: 1.625rem;
+    height: 1.625rem;
+}
+
+.daanLi_now {
+    color: orange;
+}
+
+.daanLi_nowBai {
+    color: #fff;
+    background-color: orange;
+}
+
+.daanLi_error {
+    color: #fe6568;
+}
+
+.daanLi_true {
+    color: #24cbd1;
+}
+
+.mld_daanUl {
+    overflow: hidden;
+}
+
+.mld_daanLi {
+    float: left;
+    margin-right: 3.75rem;
+    position: relative;
+    width: 100%;
+}
+
+.baoBtn {
+    font-size: 0.785rem;
+    width: 100%;
+    height: 0.75rem;
+    line-height: 0.75rem;
+    text-align: right;
+}
+
+.btnTrue {
+    color: #24cbd1;
+    text-decoration: underline;
+}
+
+.ul01_flet {
+    color: #aaa;
+    float: left;
+}
+
+.ul01_flet li {
+    float: left;
+}
+
+.ul01_fli {
+    margin-right: 0.9375rem;
+}
+
+.ul01_count {
+    margin-left: 0.3125rem;
+}
+
+.ul01_imgzan {
+    width: 1.0625rem;
+    height: 1.0625rem;
+    position: relative;
+    top: 0.09375rem;
+}
+
+.ul01_imgzan_ {
+    width: 1.0625rem;
+    height: 1.0625rem;
+}
+
+.click-like {
+    width: 1.0625rem;
+    height: 1.0625rem;
+    background: url('../img/zan.png') 0 0 no-repeat;
+    background-size: 1.0625rem 1.0625rem;
+    position: relative;
+    top: -0.4375rem;
+}
+
+.ul01_riht {
+    float: right;
+}
+
+.ul01_riht li {
+    float: left;
+}
+
+.ul01_aBtn {
+    color: #24cbd1;
+}
+
+/*写留言*/
+.textarea {
+    width: 100%;
+    padding: 0.9375rem;
+    margin-top: 0.9375rem;
+    border-radius: 0.3125rem;
+}
+
+.sub-btn {
+    width: 100%;
+    height: 2rem;
+    line-height: 2rem;
+    background-color: #0BB20C;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 0.9375rem;
+    border-radius: 0.3125rem;
+}
+
+/* 留言 */
+.mulu_bottom {
+    width: 100%;
+    padding: 0.9375rem;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.muluBn_top {
+    /*height: 2.5rem;*/
+    overflow: hidden;
+}
+
+.mulu_botBtn {
+    color: #24cbd1;
+    font-size: 0.9375rem;
+    float: right;
+    padding-right: 1.25rem;
+    background: url('../img/write.png') right center no-repeat;
+    background-size: 0.84375rem 0.84375rem;
+}
+
+.muluBn_center {
+    margin: 1.5625rem 0 0.9375rem;
+    overflow: hidden;
+}
+
+.liuyan_li {
+    float: left;
+    margin-left: 0.625rem;
+}
+
+.lion_01 {
+    width: 16%;
+}
+
+.lion_01 img {
+    width: 100%;
+    text-align: center;
+}
+
+.lion_02 {
+    width: 77%;
+}
+
+.topUl {
+    overflow: hidden;
+}
+
+.topUl_top {
+    width: 100%;
+    overflow: hidden;
+}
+
+.litop_fleft {
+    color: #aaa;
+    float: left;
+}
+
+.litop_friht {
+    color: #aaa;
+    float: right;
+}
+
+.center {
+    font-size: 0.9375rem;
+}
+
+.tcmar_top {
+    margin-top: 0.3125rem;
+}
+
+/* 答案 */
+/*.daana {*/
+/*width: 100%;*/
+/*min-height: 1.5625rem;*/
+/*position: absolute;*/
+/*top: 0.46875rem;*/
+/*left: 0;*/
+/*z-index: -1;*/
+/*}*/
+.daana {
+    width: 100%;
+    min-height: 2.5625rem;
+    position: absolute;
+    left: 0;
+    z-index: 10;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}

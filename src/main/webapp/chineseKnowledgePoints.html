@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>语文</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telphone=no"/>
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/chineseKnowledge.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="zepto/zepto.min.js"></script>
+    <script type="text/javascript" src="zepto/touch.js"></script>
+    <script type="text/javascript" src="zepto/selector.js"></script>
+    <script src="basic.js"></script>
+    <!--<script type="text/javascript" src="js/1.js"></script>-->
+
+</head>
+<body>
+<div class="wrap">
+    <div class="biaoti_div" id="title"></div>
+
+    <div class="rain-main">
+        <div class="mulu_div">
+            <ul class="cont_sul" id="knowledge-point"></ul>
+        </div>
+    </div>
+</div>
+
+<template id="title-template">
+    <span class="biti_span">${title}</span>
+</template>
+<template id="knowledge-point-new-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" style="font-weight:bold"
+               href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
+            <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
+        </div>
+        <img src="img/fenjie.png" alt="">
+    </li>
+</template>
+<template id="knowledge-point-old-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi"
+               href="chineseKnowledgePointsDetail.html?volumeId=${volumeId}&id=${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <a class="neir_read" href="#">阅读<span class="read_shul">${readCount}</span></a>
+            <a class="neir_dianz" href="#"><span class="read_shul">${likeCount}</span></a>
+        </div>
+        <img src="img/fenjie.png" alt="">
+    </li>
+</template>
+
+<script type="text/javascript" src="basic.js"></script>
+<script type="text/javascript" src="util.js"></script>
+<script type="text/javascript" src="js/chineseKnolwedge.js"></script>
+</body>
+</html>
