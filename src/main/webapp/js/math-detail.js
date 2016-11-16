@@ -132,7 +132,7 @@ $(function () {
                                         contentType: "application/json; charset=utf-8",
                                         success: function (unlike) {
                                             icon.setAttribute('src', 'img/zan.png');
-                                            --data.interaction.likeCount
+                                            data.interaction.likeCount
                                             e.target.nextElementSibling.textContent = data.interaction.likeCount
                                             liked = false;
                                         }

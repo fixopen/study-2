@@ -365,36 +365,6 @@
 
     var user = null;
     var userId;
-    var getSubjectNameById = function (subjects) {
-        var result = ''
-        if (subjects == 1) {
-            result = "语文"
-        }
-        if (subjects == 2) {
-            result = "数学"
-        }
-        if (subjects == 3) {
-            result = "英语"
-        }
-        return result
-    };
-    var getSexNameById = function (sex) {
-        var result = 0
-        if (sex == 1) {
-            result = "男"
-        }
-        if (sex == 2) {
-            result = "女"
-        }
-        if (sex == "男") {
-            result = 1
-        }
-        if (sex == "女") {
-            result = 2
-        }
-
-        return result
-    };
     var state = {
         currentArticle: document.getElementById('user'),
         init: function () {
@@ -422,6 +392,36 @@
                 switchTo(hash)
             })
         },
+        getSubjectNameById: function (subjects) {
+            var result = ''
+            if (subjects == 1) {
+                result = "语文"
+            }
+            if (subjects == 2) {
+                result = "数学"
+            }
+            if (subjects == 3) {
+                result = "英语"
+            }
+            return result
+        },
+        getSexNameById:function (sex) {
+            var result = 0
+            if (sex == 1) {
+                result = "男"
+            }
+            if (sex == 2) {
+                result = "女"
+            }
+            if (sex == "男") {
+                result = 1
+            }
+            if (sex == "女") {
+                result = 2
+            }
+
+            return result
+        },
         user: {
             init: function () {
                 if (user == null) {
@@ -431,8 +431,8 @@
                         dataType: 'json',
                         success: function (u) {
                             u.birthday = u.birthday.substr(0, 10)
-                            u.sex = getSexNameById(u.sex)
-                            user = u
+                            u.sex = state.getSexNameById(u.sex);
+                            user = u;
                             proc({
                                 containerId: 'user',
                                 data: user,
@@ -458,8 +458,10 @@
                             dataType: 'json',
                             success: function (cs) {
                                 for (var i = 0; i < cs.length; ++i) {
-                                    var a = getSubjectNameById(cs[i].subject)
-                                    cs[i].subject = a
+
+                                    var a = state.getSubjectNameById(cs[i].subject);
+
+                                    cs[i].subject = a;
                                 }
                                 user.cards = cs
                                 proc({
@@ -498,8 +500,7 @@
 
                 function saveInfo() {
                     var se = $("#info_sex").val();
-                    var sex = getSexNameById(se);
-                    //alert($("#info_birthday").val())
+                    var sex = state.getSexNameById(se);
                     var b = $("#info_birthday").val();
                     b += "T00:00:00+08:00";
                     var data = {
@@ -554,11 +555,6 @@
                     }
                 })
                 function wechat(appId, timestamp, nonceStr, signature) {
-                    /*    alert("来了")
-                     alert("appId="+appId)
-                     alert("timestamp="+timestamp)
-                     alert("nonceStr="+nonceStr)
-                     alert("signature="+signature)*/
                     wx.config({
                         debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                         appId: appId, // 必填，公众号的唯一标识
@@ -569,8 +565,6 @@
                     });
                     wx.error(function (res) {
                         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                        // alert("权限验证失败"+res)
-                        //alert("权限验证失败" + JSON.stringify(res))
                         gettick();
                         alert("服务器繁忙，请刷新！")
                     });
@@ -582,8 +576,6 @@
                             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                             success: function (res) {
                                 var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                                // document.getElementById("myimg").src="localIds";
-                                //$('#imgTarget').attr('src',localIds[0]);
                                 //上传图片接口
                                 wx.uploadImage({
                                     localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
@@ -621,7 +613,9 @@
                         dataType: "json",
                         success: function (e) {
                             alert("成功" + JSON.stringify(e))
-                            user
+                            user.head=e.head;
+                            state.user.isCards = false
+                            history.back();
                         },
                         error: function (e) {
                             alert(JSON.stringify(e))
@@ -757,7 +751,8 @@
                                     dataType: "json",
                                     success: function (e) {
                                         alert("激活成功")
-                                        e.subject = getSubjectNameById(e.subject)
+                                        e.subject =state.getSubjectNameById(e.subject)
+                                                // getSubjectNameById(e.subject)
                                         user.cards.push(e);
                                         alert(user.cards)
                                         state.cards.isCards = false
@@ -801,11 +796,12 @@
                                             dataType: "json",
                                             success: function (e) {
                                                 alert("激活成功")
-                                                e.subject = getSubjectNameById(e.subject)
+                                                e.subject =state.getSubjectNameById(e.subject)
+                                                        // getSubjectNameById(e.subject)
                                                 user.cards.push(e);
-                                                alert(user.cards)
+                                                //alert(user.cards)
                                                 state.cards.isCards = false
-                                                back();
+                                                history.back();
                                             },
                                             error: function (e) {
                                                 alert(JSON.stringify(e));

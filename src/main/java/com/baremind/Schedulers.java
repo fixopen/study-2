@@ -183,6 +183,9 @@ public class Schedulers {
             if(a != 1 && b!=2 && c==3){
                 filter = k+gradefilter+g;
             }
+            if(a != 1 && b==2 && c!=3){
+                filter = k+teacherfilter+g;
+            }
            /* if (a == 1 && b == 2) {
                 filter = k + subject + d + teacherfilter + g;
             }*/
