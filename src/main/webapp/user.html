@@ -11,33 +11,32 @@
     <link rel="stylesheet" href="common.css"/>
 
     <!-- 引入样式表 -->
-    <link rel="stylesheet" href="/css/global.css">
+   <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="user/basic-info.css">
-    <link rel="stylesheet" href="css/setting1.css">
-    <link rel="stylesheet" href="user/cards.css">
-    <link rel="stylesheet" href="validationCode.css">
-    <link rel="stylesheet" href="css/chagePassword.css">
-    <link rel="stylesheet" href="css/infostyle.css">
-    <link rel="stylesheet" href="css/helpstyle.css">
-    <link rel="stylesheet" href="css/Gold.css">
+       <!--<link rel="stylesheet" href="user/basic-info.css">-->
+      <!--<link rel="stylesheet" href="css/setting1.css">
+      <link rel="stylesheet" href="user/cards.css">
+      <link rel="stylesheet" href="validationCode.css">
+      <link rel="stylesheet" href="css/chagePassword.css">
+      <link rel="stylesheet" href="css/infostyle.css">
+      <link rel="stylesheet" href="css/helpstyle.css">
+      <link rel="stylesheet" href="css/Gold.css">-->
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <link rel="stylesheet" href="css/sunuser.css">
 </head>
 <body>
 <article id="user">
 
 </article>
 <article id="cards" style="display: none;">
-    <div class="codewrap">
-        <div class="codemine_zilo">
+        <div class="user_div_css">
             <div id="card"></div>
-            <div class="codebottom_bdiv">
-                <a class="codebottom_btn codeBtn01" click="curseDetailTap();" href="#">充值</a>
-                <a class="codebottom_btn codeBtn02" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
+            <div class="card_button_div_css">
+                <a class="card_button_css " href="JavaScript:;">充值</a>
+                <a class="card_button_css card_button_background_css" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
                 <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
             </div>
         </div>
-    </div>
 </article>
 <article id="info" style="display: none;"></article>
 <!--<article id="gold" style="display: none;">
@@ -84,30 +83,27 @@
 <article id="change-password" style="display: none;">
     <div class="wrap">
         <!-- main -->
-        <div class="cpset-main">
-            <ul class="cpset-ul">
-                <li class="cpset-li">
-                    <span class="cpset-span">原密码</span>
-                    <input class="cpset-input" type="password" id="oldpwd" placeholder="请输入原密码">
+            <ul class="changePassword_ul_css">
+                <li class="changePassword_li_css">
+                    <span class="changePassword_span_css">原密码</span>
+                    <input class="changePassword_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
                 </li>
-                <li class="cpset-li">
-                    <span class="cpset-span">新密码</span>
-                    <input class="cpset-input" type="password" id="newpwd1" placeholder="请输入新密码">
+                <li class="changePassword_li_css">
+                    <span class="changePassword_span_css">新密码</span>
+                    <input class="changePassword_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
                 </li>
-                <li class="cpset-li">
-                    <span class="cpset-span">确认新密码</span>
-                    <input class="cpset-input" type="password" id="newpwd2" placeholder="请确认新密码">
+                <li class="changePassword_li_css">
+                    <span class="changePassword_span_css">确认新密码</span>
+                    <input class="changePassword_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
                 </li>
                 <div id="error"></div>
             </ul>
 
-            <div class="cpbtn-box">
-                <a href="javascript:void(0)" class="cpsave-btn" id="pwd_save">保 存</a>
-                <a href="javascript:void(0)" onclick="back()" class="cancel-btn">取 消</a>
+            <div class="changePassword_box_css">
+                <a href="javascript:void(0)" class="changePassword_button_css" id="pwd_save">保 存</a>
+                <a href="javascript:void(0)" id="quxiao" class="changePassword_save_css">取 消</a>
             </div>
         </div>
-
-    </div>
 </article>
 <!--<article id="activeCard" style="display: none;">
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
@@ -126,30 +122,30 @@
     <input type="button" id="save" class="common-font common-line-height common-border-style save" value="确 认"/>
 </article>-->
 <article id="firstActiveCard" style="display: none;">
-    <div style="padding-top: 0.625rem;" class="wrap">
+    <div class="wrap">
         <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
-            <div class="set-li">
-                <span class="set-span">卡号</span>
-                <input class="set-input" type="text" placeholder="请输入卡号" id="cardNo"
+            <div class="firstActiveCard_li_css">
+                <span class="firstActiveCard_span_css">卡号</span>
+                <input class="firstActiveCard_input_css" type="text" placeholder="请输入卡号" id="cardNo"
                        style="height:20px; font-size:18px;"
-                       onkeyup="test()"
                        required pattern="\d+">
+                <!--onkeyup="test()"-->
             </div>
-            <div class="set-li">
-                <span class="set-span">密码</span>
-                <input class="set-input" type="password" placeholder="请输入密码" id="password"
+            <div class="firstActiveCard_li_css">
+                <span class="firstActiveCard_span_css">密码</span>
+                <input class="firstActiveCard_input_css" type="password" placeholder="请输入密码" id="password"
                        style="height:20px; font-size:18px;" required>
             </div>
-            <div class="set-li">
-                <span class="set-span">手机号</span>
-                <input class="set-input" type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+"
+            <div class="firstActiveCard_li_css">
+                <span class="firstActiveCard_span_css">手机号</span>
+                <input class="firstActiveCard_input_css" type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+"
                        style="height:20px; width: 115px; font-size:16px;">
                 <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"
                        class="send-btn cur">
             </div>
-            <div class="set-li">
-                <span class="set-span">验证码</span>
-                <input class="set-input" type="text" placeholder="请输入验证码" id="validCode"
+            <div class="firstActiveCard_li_css">
+                <span class="firstActiveCard_span_css">验证码</span>
+                <input class="firstActiveCard_input_css" type="text" placeholder="请输入验证码" id="validCode"
                        style="height:20px; font-size:18px;" required
                        pattern="\d{6}">
             </div>
@@ -164,9 +160,9 @@
     margin-right: 5%; background-color: #fe6568; border: none">确 认
         </button>
         <br/>
-      <!--  <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
-    margin-right: 5%; background-color: #fe6568; border: none">返回上一页
-        </button>-->
+        <!--  <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+      margin-right: 5%; background-color: #fe6568; border: none">返回上一页
+          </button>-->
     </div>
 </article>
 <article id="login" style="display: none;">
@@ -197,15 +193,16 @@
 <article id="settings" style="display: none;">
     <div class="wrap">
         <!-- main -->
-        <div class="set-main">
-            <ul class="set-ul">
-                <li class="set-li">
+
+        <div class="changePassword_div_css">
+            <ul class="changePassword_ul_css">
+                <li class="firstActiveCard_li_css">
                     <a href="javascript:void(0)" data-article="change-password">修改密码 <span class="next-btn"></span></a>
                 </li>
-                <li class="set-li">
+                <li class="firstActiveCard_li_css">
                     <a href="javascript:void(0)" data-article="info">修改个人信息 <span class="next-btn"></span></a>
                 </li>
-                <li class="set-li">
+                <li class="firstActiveCard_li_css">
                     <a href="javascript:void(0)" data-article="firstActiveCard">添加新卡 <span class="next-btn"></span></a>
                 </li>
                 <!--<li class="set-li">
@@ -214,6 +211,7 @@
                 </li>-->
             </ul>
         </div>
+
     </div>
 </article>
 <article id="help" style="display: none;">
@@ -248,103 +246,95 @@
 </article>
 
 <template id="user-template">
-    <div class="mine_zilo">
-        <ul class="mine_zUl">
-            <li class="mine_zuli" data-article="head">
-                <span class="mine_leftsp">我的头像</span>
-                <img class="mine_touimg" src="${head}" alt="" >
+    <div class="user_div_css">
+        <ul class="user_ul_css">
+            <li class="user_li_css" data-article="head">
+                <span class="user_span_css">我的头像</span>
+                <img class="user_head_css" src="${head}" alt="">
             </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">昵称</span>
-                <input class="mine_rightip" type="text" value="${name}" readonly>
+            <li class="user_li_css">
+                <span class="user_span_css">昵称</span>
+                <input class="user_input_css" type="text" value="${name}" readonly>
             </li>
-            <li class="mine_zuli">
-                <span class="mine_leftsp">账号</span>
-                <input class="mine_rightip" type="text" value="${telephone}" readonly>
+            <li class="user_li_css">
+                <span class="user_span_css">账号</span>
+                <input class="user_input_css" type="text" value="${telephone}" readonly>
             </li>
             <li>
-                <ul class="mine_zuli" data-article="info">我的资料</ul>
+                <ul class="user_li_css" data-article="info">我的资料</ul>
             </li>
-        </ul>
-        <ul class="mine_zUl">
+
+
             <li>
-                <ul class="mine_zuli" data-article="cards">我的学习卡</ul>
+                <ul class="user_li_css" data-article="cards">我的学习卡</ul>
             </li>
-        </ul>
-        <ul class="mine_zUl">
-            <li class="mine_zuli" data-article="settings">设置</li>
-            <li class="mine_zuli" data-article="help">帮助</li>
+
+            <li class="user_li_css" data-article="settings">设置</li>
+            <li class="user_li_css" data-article="help">帮助</li>
         </ul>
     </div>
 </template>
 <template id="info-template">
-    <ul class="infomine_zUl">
-        <li class="infomine_zuli">
-            <span class="infomine_leftsp">真实姓名</span>
-            <input class="infomine_rightip" type="text" placeholder="请输入真实姓名" value="${name}" id="info_name">
+    <ul class="info_ul_css">
+        <li class="info_li_css">
+            <span class="info_span_css">真实姓名</span>
+            <input class="info_input_css" type="text" placeholder="请输入真实姓名" value="${name}" id="info_name">
         </li>
-        <li class="infomine_zuli">
-            <span class="infomine_leftsp">手机号</span>
-            <input class="infomine_rightip" type="tel" value="${telephone}" id="info_telephone">
+        <li class="info_li_css">
+            <span class="info_span_css">手机号</span>
+            <input class="info_input_css" type="tel" value="${telephone}" id="info_telephone">
         </li>
-        <li class="infomine_zuli">
-            <span class="infomine_leftsp">性别</span>
-            <input class="infomine_rightip" type="text" value="${sex}" id="info_sex">
+        <li class="info_li_css">
+            <span class="info_span_css">性别</span>
+            <input class="info_input_css" type="text" value="${sex}" id="info_sex">
         </li>
-        <li class="infomine_zuli">
-            <span class="infomine_leftsp">出生年月</span>
-            <input id="date" class="weui_input" type="date" value="${birthday}" placeholder="请选择出生日期" style="height:41px;overflow: hidden;">
-            <!--value="${birthday}"  placeholder="请选择出生日期" style="height:41px;overflow: hidden;"-->
+        <li class="info_li_css">
+            <span class="info_span_css">出生年月</span>
+            <input id="date" class="info_input_css" type="date" value="${birthday}" >
+            <!--value="${birthday}"  placeholder="请选择出生日期" style="height:41px;overflow: hidden;"  style="height:41px;overflow: hidden;"-->
             <!--<input class="infomine_rightip" type="date" value="${birthday}" placeholder="请选择出生日期" style="height:41px;overflow: hidden;" id="info_birthday">-->
         </li>
-        <li class="infomine_zuli">
-            <span class="infomine_leftsp">收货地址</span>
-            <input class="infomine_rightip" type="text" placeholder="请输入收货地址" value="${location}" id="info_location">
+        <li class="info_li_css">
+            <span class="info_span_css">收货地址</span>
+            <input class="info_input_css" type="text" placeholder="请输入收货地址" value="${location}" id="info_location">
         </li>
-        <li class="infomine_zuli">
-            <span class="infomine_leftsp">就读学校</span>
-            <input class="infomine_rightip" type="text" value="${school}" id="info_school">
+        <li class="info_li_css">
+            <span class="info_span_css">就读学校</span>
+            <input class="info_input_css" type="text" value="${school}" id="info_school">
         </li>
-        <li class="infomine_zuli">
-            <span class="infomine_leftsp">所在班级</span>
-            <input class="infomine_rightip" type="text" value="${classname}" id="info_class">
+        <li class="info_li_css">
+            <span class="info_span_css">所在班级</span>
+            <input class="info_input_css" type="text" value="${classname}" id="info_class">
         </li>
         <li>
-            <span class="infomine_leftsp"></span>
-            <button id="save_info" onclick="saveInfo()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+            <span class="info_span_css"></span>
+            <button id="save_info"  style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
     margin-right: 5%; background-color: #fe6568; border: none">确 认
             </button>
         </li>
-       <!-- <li>
-            <span class="mine_leftsp"></span>
-            <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
-    margin-right: 5%; background-color: #fe6568; border: none">回到上一页
-            </button>
-        </li>-->
     </ul>
-
 </template>
 <template id="card-template">
-    <ul class="codemine_zUl">
-        <li class="codemine_zuli">
-            <span class="codemine_leftsp">卡号</span>
-            <span class="codemine_rightip">${no}</span>
+    <ul class="card_ul_css">
+        <li class="card_li_css">
+            <span class="card_span_css">卡号</span>
+            <span class="card_input_css">${no}</span>
         </li>
-        <li class="codemine_zuli">
-            <span class="codemine_leftsp">学习类型</span>
-            <span class="codemine_rightip">${subject}</span>
+        <li class="card_li_css">
+            <span class="card_span_css">学习类型</span>
+            <span class="card_input_css">${subject}</span>
         </li>
-        <li class="codemine_zuli">
-            <span class="codemine_leftsp">激活时间</span>
-            <span class="codemine_rightip">${activeTime}</span>
+        <li class="card_li_css">
+            <span class="card_span_css">激活时间</span>
+            <span class="card_input_css">${activeTime}</span>
         </li>
-        <li class="codemine_zuli">
-            <span class="codemine_leftsp">剩余雨点</span>
-            <span class="codemine_rightip">${amount}</span>
+        <li class="card_li_css">
+            <span class="card_span_css">剩余雨点</span>
+            <span class="card_input_css">${amount}</span>
         </li>
-        <li class="codemine_zuli">
-            <span class="codemine_leftsp">有效期</span>
-            <span class="codemine_rightip">${endTime}</span>
+        <li class="card_li_css">
+            <span class="card_span_css">有效期</span>
+            <span class="card_input_css">${endTime}</span>
         </li>
     </ul>
 </template>
@@ -372,133 +362,37 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    function back() {
-        history.back();
-    }
 
+    var user = null;
+    var userId;
+    var state = {
+        currentArticle: document.getElementById('user'),
+        init: function () {
+            userId = g.getUrlParameter('userid')
+            g.setCookie('userId', userId)
 
-    var i;
-    var j;
-    var x;
-    var p1 = document.getElementById("newpwd1");
-    p1.addEventListener('blur', function () {
-        validatePWD1();
-    })
-    var p2 = document.getElementById("newpwd2");
-    p2.addEventListener('blur', function () {
-        validatePWD2();
-    })
-    var p3 = document.getElementById("oldpwd");
-    p3.addEventListener('blur', function () {
-        validatePWD3();
-    })
-
-    function validatePWD1() {
-        var pwd1 = $("#newpwd1").val();
-        if (pwd1.length >= 6 && pwd1.length <= 16) {
-            document.getElementById("error").innerHTML = ""
-            j = 1;
-        } else {
-            document.getElementById("error").innerHTML = "请输入6-16位密码"
-            j = 0;
-        }
-    }
-    function validatePWD3() {
-        var pwd3 = $("#oldpwd").val();
-        if (pwd3.length >= 6 && pwd3.length <= 16) {
-            document.getElementById("error").innerHTML = ""
-            x = 1;
-        } else {
-            document.getElementById("error").innerHTML = "请输入6-16位密码"
-            x = 0;
-        }
-    }
-    function validatePWD2() {
-        var pwd1 = $("#newpwd1").val();
-        var pwd2 = $("#newpwd2").val();
-        if (pwd1 != pwd2) {
-            document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
-            i = 0;
-        } else {
-            document.getElementById("error").innerHTML = ""
-            i = 1;
-        }
-    }
-
-    var pwdSave = document.getElementById("pwd_save");
-    pwdSave.addEventListener('click', function(){
-        if (i == 1 && j == 1 && x == 1) {
-            var filter = {
-                password: $("#oldpwd").val()
+            var switchTo = function (id) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(id)
+                history.pushState(null, null, '/user.html#' + id)
+                state.currentArticle.style.display = 'block'
+                state[id].init()
             }
-            $.ajax({
-                type: 'get',
-                url: "/api/users?filter=" + JSON.stringify(filter),
-                dataType: "json",
-                success: function (e) {
-                    //alert("原密码正确")
-                    var data = {
-                        password: $("#newpwd2").val()
-                    }
-                    $.ajax({
-                        type: "put",
-                        url: "/api/users/" + userId,
-                        data: JSON.stringify(data),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (a) {
-                            alert("修改密码成功")
-                            back();
-                        },
-                        error: function (a) {
-                            alert(JSON.stringify(a))
-                        }
-                    })
-                },
-                error: function (e) {
-                document.getElementById("error").innerHTML = "原密码错误，请重新输入"
-                 }
+
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article
+                switchTo(id)
             })
-        }
-    }, false);
-    /*var yanz = function () {
-        alert("调用了"
-        if (i == 1 && j == 1 && x == 1) {
-            var filter = {
-                password: $("#oldpwd").val()
-            }
-            $.ajax({
-                type: 'get',
-                url: "/api/users?filter=" + JSON.stringify(filter),
-                dataType: "json",
-                success: function (e) {
-                    alert("原密码正确")
-                   /!* var data = {
-                        password: $("#newpwd2").val()
-                    }
-                    $.ajax({
-                        type: "put",
-                        url: "/api/users/" + userId,
-                        data: JSON.stringify(data),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (a) {
-                            alert("成功")
-                        },
-                        error: function (a) {
-                            alert(JSON.stringify(a))
-                        }
-                    })*!/
-                },
-                error: function (e) {
-                    document.getElementById("error").innerHTML = "原密码错误，请重新输入"
-                }
+
+            state['user'].init()
+            history.pushState(null, null, '/user.html#user')
+            window.addEventListener('hashchange', function (e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
             })
-        }
-}*/
-        var user = null
-        var userId;
-        var getSubjectNameById = function (subjects) {
+        },
+        getSubjectNameById: function (subjects) {
             var result = ''
             if (subjects == 1) {
                 result = "语文"
@@ -510,8 +404,8 @@
                 result = "英语"
             }
             return result
-        }
-        var getSexNameById = function (sex) {
+        },
+        getSexNameById:function (sex) {
             var result = 0
             if (sex == 1) {
                 result = "男"
@@ -527,474 +421,542 @@
             }
 
             return result
-        }
-        var state = {
-            currentArticle: document.getElementById('user'),
+        },
+        user: {
             init: function () {
-                userId = g.getUrlParameter('userid')
-                g.setCookie('userId', userId)
-
-                var switchTo = function (id) {
-                    state.currentArticle.style.display = 'none'
-                    state.currentArticle = document.getElementById(id)
-                    history.pushState(null, null, '/user.html#' + id)
-                    state.currentArticle.style.display = 'block'
-                    state[id].init()
+                if (user == null) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/users/self',
+                        dataType: 'json',
+                        success: function (u) {
+                            u.birthday = u.birthday.substr(0, 10)
+                            u.sex = state.getSexNameById(u.sex);
+                            user = u;
+                            proc({
+                                containerId: 'user',
+                                data: user,
+                                templateId: 'user-template'
+                            })
+                        },
+                        error: function (u) {
+                            alert(JSON.stringify(u))
+                        }
+                    })
                 }
-
-                $(document).on('click', '[data-article]', function (e) {
-                    var id = e.target.dataset.article
-                    switchTo(id)
-                })
-
-                state['user'].init()
-                history.pushState(null, null, '/user.html#user')
-                window.addEventListener('hashchange', function (e) {
-                    var hashPos = e.newURL.indexOf('#')
-                    var hash = e.newURL.substring(hashPos + 1)
-                    switchTo(hash)
-                })
             },
-            user: {
-                init: function () {
-                    if (user == null) {
+
+        },
+        cards: {
+            isCards: false,
+            init: function () {
+                if (!state.cards.isCards) {
+                    if (!user.cards) {
                         $.ajax({
                             type: 'get',
-                            url: '/api/users/self',
+                            url: '/api/users/self/cards',
                             dataType: 'json',
-                            success: function (u) {
-                                u.birthday = u.birthday.substr(0, 10)
-                                u.sex = getSexNameById(u.sex)
-                                user = u
+                            success: function (cs) {
+                                for (var i = 0; i < cs.length; ++i) {
+
+                                    var a = state.getSubjectNameById(cs[i].subject);
+
+                                    cs[i].subject = a;
+                                }
+                                user.cards = cs
                                 proc({
-                                    containerId: 'user',
-                                    data: user,
-                                    templateId: 'user-template'
+                                    containerId: 'card',
+                                    data: user.cards,
+                                    templateId: 'card-template'
                                 })
-                            },
-                            error: function (u) {
-                                alert(JSON.stringify(u))
                             }
                         })
-                    }
-                }
-            },
-            cards: {
-                isCards:false,
-                init: function () {
-                    if (!state.cards.isCards) {
-                        if (!user.cards) {
-                            $.ajax({
-                                type: 'get',
-                                url: '/api/users/self/cards',
-                                dataType: 'json',
-                                success: function (cs) {
-                                    for (var i = 0; i < cs.length; ++i) {
-                                        var a = getSubjectNameById(cs[i].subject)
-                                        cs[i].subject = a
-                                    }
-                                    user.cards = cs
-                                    proc({
-                                        containerId: 'card',
-                                        data: user.cards,
-                                        templateId: 'card-template'
-                                    })
-                                }
-                            })
-                        } else {
-                            document.getElementById("card").innerHTML="";
-                            proc({
-                                containerId: 'card',
-                                data: user.cards,
-                                templateId: 'card-template'
-                            })
-                        }
-                        state.cards.isCards = true
-                    }
-                }
-            },
-            info: {
-                isInit: false,
-                init: function () {
-                    if (!state.info.isInit) {
-                        //document.getElementById("info").innerHTML=""
+                    } else {
+                        document.getElementById("card").innerHTML = "";
                         proc({
-                            containerId: 'info',
-                            data: user,
-                            templateId: 'info-template'
+                            containerId: 'card',
+                            data: user.cards,
+                            templateId: 'card-template'
                         })
-                        state.info.isInit = true
                     }
+                    state.cards.isCards = true
                 }
-            },
-            logs: {
-                init: function () {
+            }
+        },
+        info: {
+            isInit: false,
+            init: function () {
+                if (!state.info.isInit) {
+                    //document.getElementById("info").innerHTML=""
+                    proc({
+                        containerId: 'info',
+                        data: user,
+                        templateId: 'info-template'
+                    })
+                    state.info.isInit = true
                 }
-            },
-         /*   gold: {
-             init: function () {}
-             },*/
-            consumes: {
-                init: function () {
-                }
-            },
-            head: {
-                init: function () {
+                var save_info = document.getElementById('save_info')
+                save_info.addEventListener('click', saveInfo, false)
 
+                function saveInfo() {
+                    var se = $("#info_sex").val();
+                    var sex = state.getSexNameById(se);
+                    var b = $("#info_birthday").val();
+                    b += "T00:00:00+08:00";
+                    var data = {
+                        name: $("#info_name").val(),
+                        sex: sex,
+                        telephone: $("#info_telephone").val(),
+                        location: $("#info_location").val(),
+                        birthday: b,
+                        school: $("#info_school").val(),
+                        classname: $("#info_class").val(),
+                    }
+
+                    $.ajax({
+                        type: "put",
+                        url: "/api/users/" + userId,
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (e) {
+                            //alert("成功")
+                            history.back();
+                        },
+                        error: function (e) {
+                            alert('修改用户信息失败，请刷新以重试')
+                        }
+                    })
+                }
+            }
+        },
+        logs: {
+            init: function () {
+            }
+        },
+        /*   gold: {
+         init: function () {}
+         },*/
+        consumes: {
+            init: function () {
+            }
+        },
+        head: {
+            init: function () {
+                var url = window.location.href;
+                url = url.replace(/[/]/g, ',')
+                $.ajax({
+                    type: "get",
+                    url: "/api/public-account/config/" + url,
+                    dataType: "json",
+                    success: function (e) {
+                        alert(JSON.stringify(e));
+                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                    }
+                })
+                function wechat(appId, timestamp, nonceStr, signature) {
                     wx.config({
                         debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                        appId: "wx92dec5e98645bd1d", // 必填，公众号的唯一标识
-                        timestamp: "1479085147", // 必填，生成签名的时间戳
-                        nonceStr: "1qauihewukdsfa", // 必填，生成签名的随机串
-                        signature: "f18d6a4a248efdcff07ef7b7551ecee6e0b60309",// 必填，签名，见附录1
+                        appId: appId, // 必填，公众号的唯一标识
+                        timestamp: timestamp, // 必填，生成签名的时间戳
+                        nonceStr: nonceStr, // 必填，生成签名的随机串
+                        signature: signature,// 必填，签名，见附录1
                         jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
                     });
                     wx.error(function (res) {
                         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                        // alert("权限验证失败"+res)
-                        alert("权限验证失败" + JSON.stringify(res))
-                        //getticket();
+                        gettick();
+                        alert("服务器繁忙，请刷新！")
                     });
                     wx.ready(function () {
-                         wx.chooseImage({
+                        wx.chooseImage({
                             count: 1,
                             needResult: 1,
                             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                            success: function (data) {
-                                alert("调用选图接口成功")
-                                localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                                if (rh.tostr(localIds)) {
-                                    wxuploadImage(localIds);
-                                }
-                            },
-                            fail: function (res) {
-                                alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+                            success: function (res) {
+                                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                //上传图片接口
+                                wx.uploadImage({
+                                    localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                                    success: function (res) {
+                                        var mediaId = res.serverId; // 返回图片的服务器端ID
+                                        //alert("返回图片的服务器端ID=="+mediaId)
+                                        libai(mediaId)
+                                    }
+                                });
                             }
-
                         });
-                        alert("成功")
-                    });
-                  /*  var src = user.head;
-                    $("#myimg").attr("src",src);*/
+                    })
+                }
 
-                    /*    var url = window.location.href;
-                        url = url.replace(/[/]/g, ',')
-                        // alert(url)
-                        $.ajax({
-                            type: "get",
-                            url: "/api/public-account/config/" + url,
-                            dataType: "json",
-                            success: function (e) {
+                function gettick() {
+                    $.ajax({
+                        type: "get",
+                        url: "/api/public-account/ticket/",
+                        dataType: "json",
+                        success: function (e) {
+                            //alert(JSON.stringify(e))
+                        },
+                        error: function (e) {
+                            //alert(JSON.stringify(e))
+                        }
+                    })
+                }
 
-                            },
-                            error: function (e) {
-                                alert("签名失败" + JSON.stringify(e))
-                                getticket();
+                function libai(mediaId) {
+                    alert("李白来了" + mediaId)
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/public-account/weChatHead/" + mediaId,
+                        dataType: "json",
+                        success: function (e) {
+                            alert("成功" + JSON.stringify(e))
+                            user.head=e.head;
+                            state.user.isCards = false
+                            history.back();
+                        },
+                        error: function (e) {
+                            alert(JSON.stringify(e))
+                        }
+                    })
+                }
+            }
+        },
+        study: {
+            init: function () {
+            }
+        },
+        score: {
+            init: function () {
+            }
+        },
+        changePassword: {
+            init: function () {
+            }
+        },
+        activeCard: {
+            init: function () {
+            }
+        },
+        firstActiveCard: {
+            init: function () {
+
+                var cardNo = document.getElementById("cardNo");
+                cardNo.addEventListener('keyup', function (e) {
+                    e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
+                }, false);
+                var ajax = function (method, url, headers, data, postProcess) {
+                    //alert('enter');
+                    var xhr = new XMLHttpRequest();
+                    //alert('new xhr');
+                    xhr.onreadystatechange = function () {
+                        //alert('enter callback');
+                        if (xhr.readyState === 4) {
+                            //alert('xhr state is 4');
+                            var result = {meta: {code: xhr.status, text: xhr.statusText}, data: null};
+                            if (xhr.responseText[0] == '{' || xhr.responseText[0] == '[') {
+                                //alert('xhr success');
+                                result.data = JSON.parse(xhr.responseText);
+                            } else {
+                                //alert('xhr failure');
+                                result.data = xhr.responseText;
                             }
-                        })*/
-
-                    /*wx.ready(function () {
-                       /!* wx.chooseImage({
-                            count: 1,
-                            needResult: 1,
-                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                            success: function (data) {
-                                alert("调用选图接口成功")
-                                localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                                if (rh.tostr(localIds)) {
-                                    wxuploadImage(localIds);
-                                }
-                            },
-                            fail: function (res) {
-                                alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
-                            }
-
-                        });*!/
-                       alert("成功")
-                    });
-                    wx.error(function (res) {
-                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                        // alert("权限验证失败"+res)
-                        alert("权限验证失败" + JSON.stringify(res))
-                        //getticket();
-                    });*/
-                }
-            },
-            study: {
-                init: function () {
-                }
-            },
-            score: {
-                init: function () {
-                }
-            },
-            changePassword: {
-                init: function () {
-                }
-            },
-            activeCard: {
-                init: function () {
-                }
-            },
-            firstActiveCard: {
-                init: function () {
-                }
-            },
-            login: {
-                init: function () {
-                }
-            },
-            phoneLogin: {
-                init: function () {
-                }
-            },
-            settings: {
-                init: function () {
-                }
-            },
-            help: {
-                init: function () {
-                }
-            }
-        }
-
-        state.init()
-
-        window.addEventListener('load', function (e) {
-            var cardNo = document.getElementById("cardNo")
-            cardNo.addEventListener('keyup', function (e) {
-                e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
-            }, false);
-        }, false);
-
-
-        var ajax = function (method, url, headers, data, postProcess) {
-            //alert('enter');
-            var xhr = new XMLHttpRequest();
-            //alert('new xhr');
-            xhr.onreadystatechange = function () {
-                //alert('enter callback');
-                if (xhr.readyState === 4) {
-                    //alert('xhr state is 4');
-                    var result = {meta: {code: xhr.status, text: xhr.statusText}, data: null};
-                    if (xhr.responseText[0] == '{' || xhr.responseText[0] == '[') {
-                        //alert('xhr success');
-                        result.data = JSON.parse(xhr.responseText);
-                    } else {
-                        //alert('xhr failure');
-                        result.data = xhr.responseText;
+                            postProcess(result);
+                        }
                     }
-                    postProcess(result);
-                }
-            }
-            //alert('set callback');
-            xhr.open(method, url, false);
-            //alert('open');
-            for (var i = 0, c = headers.length; i < c; ++i) {
-                xhr.setRequestHeader(headers[i].name, headers[i].value);
-            }
-            //alert('set headers');
-            var sendContent = null;
-            if (data != null) {
-                sendContent = JSON.stringify(data);
-            }
-            xhr.send(sendContent);
-            //alert('send content');
-        }
-
-        //userId = g.getUrlParameter('userid');
-        if (userId) {
-            g.setCookie("userId", userId)
-        }
-        var timeoutId;
-        var activeCode = function (e) {
-            //alert('active code')
-            var phoneNumber = document.getElementById('phoneNumber').value
-            if (phoneNumber != "") {
-                ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
-                    {name: 'Accept', value: 'application/json'}
-                ], null, function (r) {
-                    var tips = document.getElementById("tips")
-                    if (r.meta.code < 400) {
-                        tips.innerHTML = '发送成功，请注意查收'
-                    } else {
-                        tips.innerHTML = '发送失败，请重新获取验证码'
+                    //alert('set callback');
+                    xhr.open(method, url, false);
+                    //alert('open');
+                    for (var i = 0, c = headers.length; i < c; ++i) {
+                        xhr.setRequestHeader(headers[i].name, headers[i].value);
                     }
-                })
-
-                var timeoutCount = 180;
-                var proc = function () {
-                    e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
-                    --timeoutCount;
-                    e.target.disabled = true
-                    if (timeoutCount <= 0) {
-                        e.target.value = ' 重新发送 ';
-                        clearInterval(timeoutId);
-                        e.target.disabled = false
+                    //alert('set headers');
+                    var sendContent = null;
+                    if (data != null) {
+                        sendContent = JSON.stringify(data);
                     }
+                    xhr.send(sendContent);
+                    //alert('send content');
                 }
-                timeoutId = setInterval(proc, 1000);
-            } else {
-                alert('手机号不能为空')
-            }
-        }
 
-        var o = 0
-
-        var save = function (e) {
-            if (o == 1) {
-                var tips = document.getElementById("tips");
-                tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                return
-            }
-            if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
-                alert("输入框不能为空")
-            } else {
-
-                var data = {};
-                var code = document.getElementById('cardNo').value
-                data.cardNo = code.replace(/\s/ig, '');
-                data.password = document.getElementById('password').value;
-                data.phoneNumber = document.getElementById('phoneNumber').value;
-                data.validCode = document.getElementById('validCode').value;
-                var url = 'api/users/self/cards'
+                //userId = g.getUrlParameter('userid');
                 if (userId) {
-                    url = 'api/users/' + userId + '/cards'
+                    g.setCookie("userId", userId)
                 }
-                ajax('POST', url, [
-                    {name: 'Content-Type', value: 'application/json'},
-                    {name: 'Accept', value: 'application/json'}
-                ], data, function (r) {
-                    if (r.meta.code < 400) {
-                        $.ajax({
-                            type:"get",
-                            url:"/api/users/cards/"+ data.cardNo,
-                            dataType:"json",
-                            success:function (e) {
-                                alert("激活成功")
-                                e.subject = getSubjectNameById(e.subject)
-                                user.cards.push(e);
-                                alert(user.cards)
-                                state.cards.isCards = false
-                                back();
-                            },
-                            error:function (e) {
-                                alert(JSON.stringify(e));
+                var timeoutId;
+                var activeCode = function (e) {
+                    //alert('active code')
+                    var phoneNumber = document.getElementById('phoneNumber').value
+                    if (phoneNumber != "") {
+                        ajax('GET', 'api/users/telephones/' + phoneNumber + '/code', [
+                            {name: 'Accept', value: 'application/json'}
+                        ], null, function (r) {
+                            var tips = document.getElementById("tips")
+                            if (r.meta.code < 400) {
+                                tips.innerHTML = '发送成功，请注意查收'
+                            } else {
+                                tips.innerHTML = '发送失败，请重新获取验证码'
                             }
                         })
+
+                        var timeoutCount = 180;
+                        var proc = function () {
+                            e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
+                            --timeoutCount;
+                            e.target.disabled = true
+                            if (timeoutCount <= 0) {
+                                e.target.value = ' 重新发送 ';
+                                clearInterval(timeoutId);
+                                e.target.disabled = false
+                            }
+                        }
+                        timeoutId = setInterval(proc, 1000);
                     } else {
-                        //alert('save error');
+                        alert('手机号不能为空')
+                    }
+                }
+
+                var o = 0
+
+                var save = function (e) {
+                    if (o == 1) {
                         var tips = document.getElementById("tips");
-                        //alert('get tips');
-                        switch (r.meta.code) {
-                            case 500:
-                                tips.innerHTML = "你的手机号跟别人重复啦";
-                                break;
-                            case 412:
-                                tips.innerHTML = "请返回的我的首页";
-                                break;
-                            case 520:
-                                tips.innerHTML = "后台错误520";
-                                break;
-                            case 404:
-                                tips.innerHTML = "卡号或密码错误";
-                                break;
-                            case 405:
-                                tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                                o = 1;
-                                break;
-                            case 401:
-                                tips.innerHTML = "手机号或验证码错误";
-                                break;
-                            case 410:
-                                tips.innerHTML = "验证码超时";
-                                break;
-                            case 200:
+                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                        return
+                    }
+                    if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
+                        alert("输入框不能为空")
+                    } else {
+
+                        var data = {};
+                        var code = document.getElementById('cardNo').value
+                        data.cardNo = code.replace(/\s/ig, '');
+                        data.password = document.getElementById('password').value;
+                        data.phoneNumber = document.getElementById('phoneNumber').value;
+                        data.validCode = document.getElementById('validCode').value;
+                        var url = 'api/users/self/cards'
+                        if (userId) {
+                            url = 'api/users/' + userId + '/cards'
+                        }
+                        ajax('POST', url, [
+                            {name: 'Content-Type', value: 'application/json'},
+                            {name: 'Accept', value: 'application/json'}
+                        ], data, function (r) {
+                            if (r.meta.code < 400) {
                                 $.ajax({
-                                    type:"get",
-                                    url:"/api/users/cards/"+ data.cardNo,
-                                    dataType:"json",
-                                    success:function (e) {
+                                    type: "get",
+                                    url: "/api/users/cards/" + data.cardNo,
+                                    dataType: "json",
+                                    success: function (e) {
                                         alert("激活成功")
-                                        e.subject = getSubjectNameById(e.subject)
+                                        e.subject =state.getSubjectNameById(e.subject)
+                                                // getSubjectNameById(e.subject)
                                         user.cards.push(e);
                                         alert(user.cards)
                                         state.cards.isCards = false
                                         back();
                                     },
-                                    error:function (e) {
+                                    error: function (e) {
                                         alert(JSON.stringify(e));
                                     }
                                 })
-                                break;
-                        }
+                            } else {
+                                //alert('save error');
+                                var tips = document.getElementById("tips");
+                                //alert('get tips');
+                                switch (r.meta.code) {
+                                    case 500:
+                                        tips.innerHTML = "你的手机号跟别人重复啦";
+                                        break;
+                                    case 412:
+                                        tips.innerHTML = "请返回的我的首页";
+                                        break;
+                                    case 520:
+                                        tips.innerHTML = "后台错误520";
+                                        break;
+                                    case 404:
+                                        tips.innerHTML = "卡号或密码错误";
+                                        break;
+                                    case 405:
+                                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                                        o = 1;
+                                        break;
+                                    case 401:
+                                        tips.innerHTML = "手机号或验证码错误";
+                                        break;
+                                    case 410:
+                                        tips.innerHTML = "验证码超时";
+                                        break;
+                                    case 200:
+                                        $.ajax({
+                                            type: "get",
+                                            url: "/api/users/cards/" + data.cardNo,
+                                            dataType: "json",
+                                            success: function (e) {
+                                                alert("激活成功")
+                                                e.subject =state.getSubjectNameById(e.subject)
+                                                        // getSubjectNameById(e.subject)
+                                                user.cards.push(e);
+                                                //alert(user.cards)
+                                                state.cards.isCards = false
+                                                history.back();
+                                            },
+                                            error: function (e) {
+                                                alert(JSON.stringify(e));
+                                            }
+                                        })
+                                        break;
+                                }
+                            }
+                        })
                     }
-                })
-            }
-        }
-
-
-    var enableActive = function (e) {
-            clearInterval(timeoutId);
-            var activeCodeButton = document.getElementById('activeCode');
-            activeCodeButton.disabled = false
-            activeCodeButton.value = '发送验证码'
-        }
-
-        var activeCodeButton = document.getElementById('activeCode');
-        activeCodeButton.addEventListener('click', activeCode, false);
-
-        var saveButton = document.getElementById('save');
-        saveButton.addEventListener('click', save, false);
-
-        var validCode = document.getElementById('validCode')
-
-        validCode.addEventListener('change', enableActive, false)
-
-        var phoneNumber = document.getElementById('phoneNumber')
-        phoneNumber.addEventListener('change', enableActive, false)
-
-        var save_info = document.getElementById('save_info')
-        save_info.addEventListener('click', saveInfo, false)
-
-        var cardNo = document.getElementById('cardNo')
-        cardNo.addEventListener('change', function (e) {
-            o = 0
-        }, false)
-
-        function saveInfo() {
-            var se = $("#info_sex").val();
-            var sex = getSexNameById(se);
-            //alert($("#info_birthday").val())
-            var b = $("#info_birthday").val();
-            b += "T00:00:00+08:00";
-            var data = {
-                name: $("#info_name").val(),
-                sex: sex,
-                telephone: $("#info_telephone").val(),
-                location: $("#info_location").val(),
-                birthday: b,
-                school: $("#info_school").val(),
-                classname: $("#info_class").val(),
-            }
-
-            $.ajax({
-                type: "put",
-                url: "/api/users/" + userId,
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (e) {
-                    alert("成功")
-                    back();
-                },
-                error: function (e) {
-                    alert('修改用户信息失败，请刷新以重试')
                 }
-            })
+
+                var enableActive = function (e) {
+                    clearInterval(timeoutId);
+                    var activeCodeButton = document.getElementById('activeCode');
+                    activeCodeButton.disabled = false
+                    activeCodeButton.value = '发送验证码'
+                }
+
+                var activeCodeButton = document.getElementById('activeCode');
+                activeCodeButton.addEventListener('click', activeCode, false);
+
+                var saveButton = document.getElementById('save');
+                saveButton.addEventListener('click', save, false);
+
+                var validCode = document.getElementById('validCode')
+
+                validCode.addEventListener('change', enableActive, false)
+
+                var phoneNumber = document.getElementById('phoneNumber')
+                phoneNumber.addEventListener('change', enableActive, false)
+
+                var cardNo = document.getElementById('cardNo')
+                cardNo.addEventListener('change', function (e) {
+                    o = 0
+                }, false)
+            },
+          //  window.addEventListener('load', function (e) {
+
+       // }, false);
+
+        },
+        login: {
+            init: function () {
+            }
+        },
+        phoneLogin: {
+            init: function () {
+            }
+        },
+        settings: {
+            init: function () {
+                var i;
+                var j;
+                var x;
+                var p1 = document.getElementById("newpwd1");
+                p1.addEventListener('blur', function () {
+                    validatePWD1();
+                })
+                var p2 = document.getElementById("newpwd2");
+                p2.addEventListener('blur', function () {
+                    validatePWD2();
+                })
+                var p3 = document.getElementById("oldpwd");
+                p3.addEventListener('blur', function () {
+                    validatePWD3();
+                })
+
+                function validatePWD1() {
+                    var pwd1 = $("#newpwd1").val();
+                    if (pwd1.length >= 6 && pwd1.length <= 16) {
+                        document.getElementById("error").innerHTML = ""
+                        j = 1;
+                    } else {
+                        document.getElementById("error").innerHTML = "请输入6-16位密码"
+                        j = 0;
+                    }
+                }
+
+                function validatePWD3() {
+                    var pwd3 = $("#oldpwd").val();
+                    if (pwd3.length >= 6 && pwd3.length <= 16) {
+                        document.getElementById("error").innerHTML = ""
+                        x = 1;
+                    } else {
+                        document.getElementById("error").innerHTML = "请输入6-16位密码"
+                        x = 0;
+                    }
+                }
+
+                function validatePWD2() {
+                    var pwd1 = $("#newpwd1").val();
+                    var pwd2 = $("#newpwd2").val();
+                    if (pwd1 != pwd2) {
+                        document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
+                        i = 0;
+                    } else {
+                        document.getElementById("error").innerHTML = ""
+                        i = 1;
+                    }
+                }
+
+                var pwdSave = document.getElementById("pwd_save");
+                var quxiao = document.getElementById("quxiao");
+                quxiao.addEventListener('click',function () {
+                    history.back();
+                })
+                pwdSave.addEventListener('click', function () {
+                    if (i == 1 && j == 1 && x == 1) {
+                        var filter = {
+                            password: $("#oldpwd").val()
+                        }
+                        $.ajax({
+                            type: 'get',
+                            url: "/api/users?filter=" + JSON.stringify(filter),
+                            dataType: "json",
+                            success: function (e) {
+                                //alert("原密码正确")
+                                var data = {
+                                    password: $("#newpwd2").val()
+                                }
+                                $.ajax({
+                                    type: "put",
+                                    url: "/api/users/" + userId,
+                                    data: JSON.stringify(data),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (a) {
+                                        alert("修改密码成功")
+                                        history.back();
+                                    },
+                                    error: function (a) {
+                                        alert(JSON.stringify(a))
+                                    }
+                                })
+                            },
+                            error: function (e) {
+                                document.getElementById("error").innerHTML = "原密码错误，请重新输入"
+                            }
+                        })
+                    }
+                }, false);
+               /* function back() {
+                    history.back();
+                }*/
+            }
+        },
+        help: {
+            init: function () {
+            }
         }
+    }
+
+    state.init()
+
 </script>
 </body>
 </html>
