@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的学习卡</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="cards.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="/zepto/zepto.min.js"></script>
+    <script type="text/javascript" src="/zepto/touch.js"></script>
+    <script type="text/javascript" src="/zepto/selector.js"></script>
+
+</head>
+<body>
+<!-- 弹窗开始 -->
+<div class="tan"></div>
+<div class="window1"><!-- 弹窗 -->
+    <a class="windowClose" href="#"></a>
+    <div class="win_neir">
+        <p class="neir_ptxt">添加成功啦！<br>请到我的学习卡里~</p>
+        <p class="neir_pBtn">
+            <a class="p_btn btn01" href="#">知道了</a>
+        </p>
+    </div>
+</div>
+<!-- 弹窗结束 -->
+
+<div class="wrap">
+    <div class="mine_zilo">
+        <div id="card"></div>
+        <div class="bottom_bdiv">
+            <a class="bottom_btn Btn01" click="curseDetailTap();" href="#">充值</a>
+            <a id="appendCard" class="bottom_btn Btn02" href="/validationCode.html">添加卡号</a>
+        </div>
+    </div>
+</div>
+<template id="card-template">
+    <ul class="mine_zUl">
+        <li class="mine_zuli">
+            <span class="mine_leftsp">卡号</span>
+            <span class="mine_rightip">${no}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">学习类型</span>
+            <span class="mine_rightip">${subjectName}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">激活时间</span>
+            <span class="mine_rightip">${activeTime}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">剩余雨点</span>
+            <span class="mine_rightip">${amount}</span>
+        </li>
+        <li class="mine_zuli">
+            <span class="mine_leftsp">有效期</span>
+            <span class="mine_rightip">${endTime}</span>
+        </li>
+    </ul>
+</template>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script type="text/javascript">
+    var getSubjectNameById = function (subjects, id) {
+        var result = ''
+        for (var i = 0; i < subjects.length; ++i) {
+            if (subjects[i].id == id) {
+                result = subjects[i].name
+                break
+            }
+        }
+        return result
+    }
+
+    $.ajax({
+        type: 'get',
+        url: '/api/users/self/cards',
+        dataType: 'json',
+        success: function (cards) {
+            $.ajax({
+                type: 'get',
+                url: '/api/subjects',
+                dataType: 'json',
+                success: function (subjects) {
+                    for (var i = 0; i < cards.length; ++i) {
+                        cards[i].subjectName = getSubjectNameById(subjects, cards[i].subject)
+                    }
+                    proc({
+                        containerId: 'card',
+                        data: cards,
+                        templateId: 'card-template'
+                    })
+                },
+                error: function (r) {
+                    alert('I am sorry, not get subjects')
+                }
+            })
+        },
+        error: function (r) {
+            if (r.status == 404) {
+                //window.location.href = '/validationCode.html?userid=' + userId
+            } else {
+                alert('获取用户信息失败，请刷新以重试')
+            }
+        }
+    })
+
+    /* $(".Btn02").each(function (index, el) {
+     $(this).tap(function () {
+     $('.tan').show();
+     $('.window1').eq(0).show();
+     });
+     });*/
+    $(".p_btn.btn01").each(function (index, el) {
+        $(this).tap(function () {
+            $('.tan').hide();
+            $('.window1').eq(0).hide();
+        });
+    });
+    // 弹窗关闭按钮
+    $(".windowClose").each(function (index, el) {
+        $(this).tap(function () {
+            $('.tan').hide();
+            $('.window1').eq(0).hide();
+        });
+    });
+</script>
+</body>
+</html>

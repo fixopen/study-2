@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设置账户</title>
+
+    <!-- 引入css -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/fill.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script src="../util.js"></script>
+
+</head>
+<body>
+<div class="logo-section">
+    <div class="inner">
+        <h1 class="logo">
+            <a href="javascript:;" class="logo-a" title="小雨知时">小雨知时</a>
+        </h1>
+        <div class="page-name">设置账户</div>
+    </div>
+</div>
+
+<!-- info-content -->
+<div class="inner">
+    <div class="info-content set-account">
+        <table class="info-table">
+            <tr>
+                <td>账号：</td>
+                <td>
+                    <div id="phonecodeId"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td>
+                    <input type="password" placeholder="请输入6-16位登录密码" class="info-input" id="pwd1">
+                    <i class="error-hou" id="errorpwd1"><!--请输入6-16位登录密码--></i>
+                </td>
+            </tr>
+            <tr>
+                <td>确认密码：</td>
+                <td>
+                    <input type="password" placeholder="请再输入一次" class="info-input" id="pwd2">
+                    <i class="error-hou" id="errorpwd2"><!--请重新输入密码--></i>
+                </td>
+            </tr>
+        </table>
+        <div class="btn-box" id="u">
+            <a href="JavaScript:;" id="submit" class="submit-btn">保存并完善资料</a>
+        </div>
+    </div>
+    <div class="perfect-bottom"></div>
+</div>
+
+<!-- copyright -->
+<div class="copyright">
+    Copyright 北京小雨知时教育科技有限公司 京ICP备16047890号-1
+    <img src="images/gongan.png" alt="">京公安网备1101082020142号
+    京ICP证160421号 All Rights Reserved <img src="images/tongji.gif" alt=""><br>
+    地址：北京市海淀区上地信息路1号2号楼5层505 电话：010-12345678
+</div>
+
+<script type="text/javascript">
+    simulateSelect();//下拉菜单
+</script>
+<script>
+    $(function () {
+        var phone;
+        $.ajax({
+            type: "get",
+            url: "/api/users/self",
+            dataType: "json",
+            success: function (e) {
+                document.getElementById("u").value = e.id
+                if (e.password) {
+                    /* if (e.name && e.sex && e.telephone && e.birthday && e.location) {
+                     //alert("完善")
+                     location.href = "signIn.html";
+                     } else {
+                     //alert("不完善")
+                     location.href = "perfectInformation.html";
+                     }
+                     alert("存在")*/
+                } else {
+                    alert("不存在")
+
+                }
+                let a = e.telephone;
+                /* let b = e.id;*/
+                phone = parseInt(a);
+                /*userId = parseInt(b);*/
+                document.getElementById("phonecodeId").innerHTML = phone
+                document.getElementById("phonecodeId").value = phone
+
+            },
+            error: function (e) {
+                location.href = "signIn.html";
+            }
+        })
+
+    })
+
+    let p1 = document.getElementById("pwd1");
+    p1.addEventListener('blur', function () {
+        validatePWD1();
+    })
+    let p2 = document.getElementById("pwd2");
+    p2.addEventListener('blur', function () {
+        validatePWD2();
+    })
+
+    let submit = document.getElementById("submit")
+    submit.addEventListener('click', function (e) {
+        let data = {
+            telephone: $("#phonecodeId").val(),
+            password: $("#pwd2").val()
+        }
+
+        $.ajax({
+            type: "put",
+            url: "/api/users/" + $("#u").val(),
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (user) {
+                if (user.name && user.sex && user.telephone && user.birthday && user.location) {
+                    location.href = "signIn.html";
+                } else {
+                    location.href = "perfectInformation.html";
+
+                }
+            },
+            error: function (user) {
+                alert(JSON.stringify(user));
+            }
+        })
+    })
+    function validatePWD1() {
+        var pwd1 = $("#pwd1").val();
+        if (pwd1.length >= 6 && pwd1.length <= 16) {
+            document.getElementById("errorpwd1").innerHTML = ""
+        } else {
+            document.getElementById("errorpwd1").innerHTML = "请输入6-16位登录密码"
+        }
+    }
+    function validatePWD2() {
+        var pwd1 = $("#pwd1").val();
+        var pwd2 = $("#pwd2").val();
+        if (pwd1 != pwd2) {
+            document.getElementById("errorpwd2").innerHTML = "密码输入不一致，请重新输入密码"
+        } else {
+            document.getElementById("errorpwd2").innerHTML = ""
+        }
+    }
+</script>
+</body>
+</html>

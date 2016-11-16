@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>激活卡</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <link rel="stylesheet" href="../common.css"/>
+    <link rel="stylesheet" href="active-card.css"/>
+    <script>
+        var getUrlParameter = function (name) {
+            var result = null;
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                result = decodeURI(r[2]);
+            }
+            return result;
+        }
+
+        var ajax = function (method, url, headers, data, postProcess) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    var result = {meta: {code: xhr.status, text: xhr.statusText}, data: null};
+                    if (xhr.responseText[0] == '{' || xhr.responseText[0] == '[') {
+                        result.data = JSON.parse(xhr.responseText);
+                    } else {
+                        result.data = xhr.responseText;
+                    }
+                    postProcess(result);
+                }
+            }
+            xhr.open(method, url, false);
+            for (var i = 0, c = headers.length; i < c; ++i) {
+                xhr.setRequestHeader(headers[i].name, headers[i].value);
+            }
+            var sendContent = null;
+            if (data != null) {
+                sendContent = JSON.stringify(data);
+            }
+            xhr.send(sendContent);
+        }
+    </script>
+</head>
+<body>
+<div class="common-margin-padding"
+     style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; background: url(../img/zb_bg.jpg) no-repeat center top; background-size: cover; overflow: scroll;">
+    <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
+        <div>
+            <span class="common-font common-line-height title">卡号</span>
+            <input type="text" id="cardNo" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入卡号" required pattern="\d+"/>
+        </div>
+        <div>
+            <span class="common-font common-line-height title">密码</span>
+            <input type="password" id="password" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入密码" required/>
+        </div>
+        <div>
+            <span class="common-font common-line-height title">手机号</span>
+            <input type="tel" id="phoneNumber" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入手机号" required pattern="\d+"/>
+            <input type="button" id="activeCode" class="common-font common-border-style validButton" value="获取手机验证码"/>
+        </div>
+        <div>
+            <span class="common-font common-line-height title">验证码</span>
+            <input type="text" id="validCode" class="common-font common-line-height common-border-style value"
+                   placeholder="请输入验证码" required pattern="\d{6}"/>
+        </div>
+    </section>
+    <div id="tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
+    <input type="button" id="save" class="common-font common-line-height common-border-style save" value="确 认"/>
+</div>
+<script>
+    var userId = getUrlParameter('userid');
+    var sessionId = getUrlParameter('sessionid');
+    var timeoutId;
+    var timeoutCount = 180;
+
+    var enableActive = function (activeCodeButton, title) {
+        clearInterval(timeoutId);
+        //activeCodeButton.style.lineHeight = 59
+        activeCodeButton.disabled = false
+        activeCodeButton.value = title
+    }
+
+    var activeCode = function (e) {
+        var phoneNumber = document.getElementById('phoneNumber').value;
+        ajax('GET', '/api/users/telephones/' + phoneNumber + '/code', [
+            {name: 'Accept', value: 'application/json'}
+        ], null, function (r) {
+            var tips = document.getElementById("tips");
+            if (r.meta.code < 400) {
+                tips.innerHTML = "发送成功，请注意查收";
+                var proc = function () {
+                    //e.target.style.lineHeight = 4
+                    e.target.value = " (" + timeoutCount + ") 秒后\n重新发送";
+                    --timeoutCount;
+                    if (timeoutCount <= 0) {
+                        enableActive(e.target, ' 重新发送 ')
+                    }
+                }
+
+                e.target.disabled = true;
+                timeoutId = setInterval(proc, 1000);
+            } else {
+                tips.innerHTML = "发送失败，请重新获取验证码";
+            }
+        })
+    }
+
+    var save = function (e) {
+        if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
+            alert("输入框不能为空")
+        } else {
+            var data = {};
+            data.cardNo = document.getElementById('cardNo').value.replace(/\s/ig, '');
+            data.password = document.getElementById('password').value;
+            data.phoneNumber = document.getElementById('phoneNumber').value;
+            data.validCode = document.getElementById('validCode').value;
+            ajax('POST', '/api/users/' + userId + '/cards', [
+                {name: 'Content-Type', value: 'application/json'},
+                {name: 'Accept', value: 'application/json'}
+            ], data, function (r) {
+                if (r.meta.code < 400) {
+                    location.href = '../Gold.html';
+                } else {
+                    var activeCodeButton = document.getElementById('activeCode');
+                    enableActive(activeCodeButton, ' 重新发送 ')
+
+                    var tips = document.getElementById("tips");
+                    switch (r.meta.code) {
+                        case 500:
+                            tips.innerHTML = "你的手机号跟别人重复啦";
+                            break;
+                        case 412:
+                            tips.innerHTML = "请返回的我的首页";
+                            break;
+                        case 520:
+                            tips.innerHTML = "后台错误520";
+                            break;
+                        case 404:
+                            tips.innerHTML = "卡号或密码错误";
+                            break;
+                        case 405:
+                            tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                            break;
+                        case 401:
+                            tips.innerHTML = "手机号或验证码错误";
+                            break;
+                        case 410:
+                            tips.innerHTML = "验证码超时";
+                            break;
+                        case 200:
+                            window.location.href = 'Gold.html';
+                            break;
+                        default:
+                            tips.innerHTML = '发生了未预期的错误，请把错误码《' + r.meta.code + '》发给服务提供者[]寻求帮助'
+                            break
+                    }
+                }
+            })
+        }
+    }
+
+    var cardNo = document.getElementById("cardNo")
+    cardNo.addEventListener('keyup', function (e) {
+        e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
+    }, false);
+
+    var activeCodeButton = document.getElementById('activeCode');
+    activeCodeButton.addEventListener('click', activeCode, false);
+
+    var saveButton = document.getElementById('save');
+    saveButton.addEventListener('click', save, false);
+
+    var validCode = document.getElementById('validCode')
+    validCode.addEventListener('change', function (e) {
+        enableActive(activeCodeButton, ' 发送验证码 ')
+    }, false)
+
+    var phoneNumber = document.getElementById('phoneNumber')
+    phoneNumber.addEventListener('change', function (e) {
+        enableActive(activeCodeButton, ' 发送验证码 ')
+    }, false)
+</script>
+</body>
+</html>

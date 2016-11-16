@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>英语-课程详情</title>
+    <!-- 禁止拉伸和全屏设置 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telphone=no"/>
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/audioRecord-details.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="zepto/zepto.min.js"></script>
+    <script type="text/javascript" src="zepto/touch.js"></script>
+    <script type="text/javascript" src="zepto/selector.js"></script>
+    <script type="text/javascript" src="js/audioRecord-detail.js"></script>
+    <script type="text/javascript" src="basic.js"></script>
+</head>
+<body>
+<div class="wrap">
+    <div class="rain-main">
+        <h3 class="head_h3">
+            <div id="title"></div>
+            <a class="h3_aBtn" href="#"><img src="img/laba.png" alt=""></a>
+        </h3>
+        <ul id="contents" style="padding-top: 0.625rem;">
+        </ul>
+        <div class="mulu_div" id="interaction">
+        </div>
+    </div>
+    <!--message-->
+    <div class="mulu_bottom">
+        <div class="muluBn_top">
+            <a class="mulu_botBtn" href="#">写留言</a>
+        </div>
+        <div id="comments"></div>
+    </div>
+</div>
+
+<!--templates-->
+<template id="title-template">
+    <span>${title}</span>
+</template>
+<template id="content-image-template">
+    <li class="mulu_div">
+        <img class="muld_images" src="${href}" alt="">
+    </li>
+</template>
+<template id="interaction-template">
+    <div>
+        <ul class="ul01_flet">
+            <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+            <li><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span></li>
+        </ul>
+        <ul class="ul01_riht">
+            <li class="ul01_fli"><a class="ul01_aBtn" href="${previous}">上一节课</a></li>
+            <li><a class="ul01_aBtn" href="${next}">下一节课</a></li>
+        </ul>
+    </div>
+</template>
+<template id="comment-template">
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${avatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${name}</div>
+                    <div class="litop_friht"><img class="ul01_imgzan" src="img/zan.png" alt=""><span class="ul01_count">${likeCount}</span>
+                    </div>
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${time}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</template>
+</body>
+</html>

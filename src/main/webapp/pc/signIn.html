@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+
+    <!-- 引入css -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+
+    <!-- 引入js -->
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script src="../util.js"></script>
+
+</head>
+<body>
+<div class="logo-section">
+    <div class="inner">
+        <h1 class="logo">
+            <a href="javascript:;" class="logo-a" title="小雨知时">小雨知时</a>
+        </h1>
+        <div class="welcomes">欢迎来到小雨知时</div>
+    </div>
+</div>
+
+<!-- content -->
+<div class="login-content">
+    <div class="inner">
+        <div class="activate">
+            <div class="login-title">请登录</div>
+            <div class="fill-info">
+                <table class="login-table">
+                    <tr>
+                        <td>
+                            <div class="regular-td">手机号：</div>
+                        </td>
+                        <td>
+                            <input type="text" id="telephone" placeholder="请填写激活卡号的手机号" class="login-input"><br>
+                            <i class="error" id="errortelephone"><!-- 此号码尚未绑卡激活，请重新输入 --></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="first-td">密码：</div>
+                        </td>
+                        <td>
+                            <input type="password" id="password" placeholder="请输入密码" class="login-input"><br>
+                            <i class="error" id="errorpassword"><!-- 密码错误，请输入6-16位密码 --></i>
+                            <div class="forget-psw">
+                                <a href="javascript:;" class="forget-btn" onclick="forget()">忘记密码？</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="regular-td">验证码：</div>
+                        </td>
+                        <td>
+                            <input type="text" id="VCode" placeholder="请输入验证码" class="vertify-input fill-error">
+
+                            <img src="" height="50" width="120" id="myimg"/>
+
+                            <a href="javascript:;" class="change-one" id="changeimg">换一张</a><br>
+                            <i class="error" id="tianerror"><!--验证码填写错误--></i>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="login-box">
+                    <a href="javascript:;" class="login-btn" id="submit">登录</a><br>
+                    <a href="validationCode.html" class="activate-login">尚未激活，去激活卡号</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- copyright -->
+<div class="copyright">
+    Copyright 北京小雨知时教育科技有限公司 京ICP备16047890号-1
+    <img src="images/gongan.png" alt="">京公安网备1101082020142号
+    京ICP证160421号 All Rights Reserved <img src="images/tongji.gif" alt=""><br>
+    地址：北京市海淀区上地信息路1号2号楼5层505 电话：010-12345678
+</div>
+
+<script type="text/javascript">
+    cardPosition();//请激活卡号垂直居中对齐
+</script>
+<script type="text/javascript">
+    var str;
+    var ej;
+    biantu();
+    function forget() {
+        location.href = "forgetPassword.html";
+    }
+    var changeimg = document.getElementById("changeimg");
+    changeimg.addEventListener('click', function (e) {
+        biantu();
+    })
+    var t;
+    var m;
+    var p;
+    var submit = document.getElementById("submit");
+    submit.addEventListener('click', function (e) {
+        var telephone = $("#telephone").val();
+        var password = $("#password").val();
+        if ($("#telephone").val() == "" || $("#telephone").val().length != 11) {
+            document.getElementById("errortelephone").innerHTML = "格式不正确，请输入正确的手机号！"
+            t = 1;
+        } else {
+            document.getElementById("errortelephone").innerHTML = "";
+            t = 0;
+        }
+        if ($("#password").val() != "" && $("#password").val().length >= 6 && $("#password").val().length <= 16) {
+            document.getElementById("errorpassword").innerHTML = "";
+            p = 0
+        } else {
+            document.getElementById("errorpassword").innerHTML = "密码错误，请输入6-16位密码"
+            p = 1;
+        }
+        //$("#VCode").val() != "" && $("#VCode").val().length != 0 &&
+        var vc = $("#VCode").val();
+        m = 0;
+        /*if (vc == str) {
+         document.getElementById("tianerror").innerHTML = "";
+         m = 0;
+         } else {
+         document.getElementById("tianerror").innerHTML = "验证码填写错误！"
+         m = 1;
+         }*/
+        if (t == 0 && p == 0 && m == 0) {
+            //alert("对")
+            var data = {
+                telephone: telephone,
+                password: password
+            }
+            $.ajax({
+                type: "put",
+                url: "/api/sessions",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (user) {
+                    if (user.status == 404) {
+                        alert("用户名或密码错误")
+                    } else {
+                        alert("成功")
+                        location.href = "signInSuccess.html";
+                    }
+                },
+                error: function (user) {
+                    if (user.status == 404) {
+                        alert("用户名或密码错误")
+                    } else {
+                        alert("成功")
+                        location.href = "signInSuccess.html";
+                    }
+                    /*$.ajax({
+                     type:"get",
+                     url:"/api/users?filter="+ JSON.stringify(tele),
+                     success:function(users){
+                     /!*var user = JSON.stringify(users.id);*!/
+                     for(var i=0;i<users.length;++i){
+                     userId = users[i].id
+
+                     $.ajax({
+                     type:"get",
+                     url:"/api/cards/userId/"+ userId,
+                     dataType:"json",
+                     success:function(cards){
+
+                     },
+                     error:function(cards){
+                     tips.innerHTML = "此号码尚未绑卡激活，请重新输入"
+                     }
+                     })
+                     }
+                     //alert(users.id)
+                     tip.innerHTML = "密码错误，请输入6-16位密码"
+                     },
+                     error:function(users){
+                     tips.innerHTML = "此号码尚未绑卡激活，请重新输入"
+                     }
+                     })*/
+                }
+            })
+        } else {
+            //alert("错")
+
+        }
+    })
+
+    function biantu() {
+        $.ajax({
+            type: "get",
+            url: "/api/util-img",
+            dataType: "json",
+            success: function (e) {
+                ej = JSON.stringify(e)
+                str = e.substr(0, 4)
+                var bigimg = document.getElementById("myimg");
+                bigimg.src = "/medias/vcode.png" + '?rand=' + Math.random();
+                alert(str)
+                // alert(str)
+                // var str = JSON.stringify(e.replace(/^(?:[^/]*\/){1}(.*)$/,"$1"))
+
+            },
+            error: function (e) {
+                alert(JSON.stringify(e))
+            }
+        })
+    }
+
+
+</script>
+</body>
+</html>
