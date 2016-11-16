@@ -440,6 +440,14 @@
 <script src="/weui/jweixin-1.0.0.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
+<!-- Load Babel -->
+<script src="/babel.min.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<!-- Your custom script here -->
+<script type="text/babel">
+    const getMessage = () => "Hello World";
+    document.getElementById('output').innerHTML = getMessage();
+</script>
 <script>
     var user = null
     var subjects = []
