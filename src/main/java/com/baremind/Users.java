@@ -303,12 +303,40 @@ public class Users {
                                 JPAEntry.genericPut(user);
                                 Card c = cs.get(0);
                                 if (c.getActiveTime() == null) {
-                                    //Logs.insert(id, "log", logId, "card success");
                                     c.setActiveTime(now);
+
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTime(now);
+                                    int year = cal.get(Calendar.YEAR);
+                                    ++year;
+                                    cal.set(Calendar.YEAR, year);
+                                    Date oneYearAfter = cal.getTime();
+
+                                    c.setEndTime(oneYearAfter);
                                     c.setAmount(588.0);
-                                    c.setUserId(id);
-                                    JPAEntry.genericPut(c);
-                                    result = Response.ok().build();
+                                    User users = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
+                                    if (users == null) {
+                                        user = new User();
+                                        user.setId(IdGenerator.getNewId());
+                                        user.setTelephone(ac.getPhoneNumber());
+                                        user.setLoginName(ac.getPhoneNumber());
+                                        user.setCreateTime(now);
+                                        user.setUpdateTime(now);
+                                        user.setName("");
+                                        user.setSex(0l);
+                                        JPAEntry.genericPost(user);
+                                        c.setUserId(user.getId());
+                                        JPAEntry.genericPut(c);
+                                        Session s = PublicAccounts.putSession(new Date(), user.getId());
+                                        result = Response.ok()
+                                                .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                                .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                                .build();
+                                    } else {
+                                        c.setUserId(user.getId());
+                                        JPAEntry.genericPut(c);
+                                        result = Response.ok().build();
+                                    }
                                 } else {
                                     //Logs.insert(id, "log", logId, "card already active");
                                     result = Response.status(405).build();
@@ -383,7 +411,7 @@ public class Users {
         return result;
     }
 
-    @POST
+  /*  @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -461,16 +489,16 @@ public class Users {
                 result = Response.status(520).build();
                 break;
         }
-       /* EntityManager em = JPAEntry.getNewEntityManager();
+       *//* EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
         for (ValidationCode validationCode : validationCodes) {
             em.remove(validationCode);
         }
         em.getTransaction().commit();
-        em.close();*/
+        em.close();*//*
         //Response result = Response.status(500).build();
         return result;
-    }
+    }*/
 
     static void queryBalance() {
         //http://IP:PORT/msg/QueryBalance?account=a&pswd=p
@@ -691,6 +719,23 @@ public class Users {
         }
         return result;
     }
+
+    @GET //根据id查询
+    @Path("cards/{no}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getByNo(@CookieParam("userId") String userId, @PathParam("no") String no) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Card card = JPAEntry.getObject(Card.class, "no", no);
+            if (card != null) {
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                    result = Response.ok(gson.toJson(card)).build();
+                }
+            }
+             return result;
+        }
+
+
 
     @GET //根据id查询
     @Path("self")
