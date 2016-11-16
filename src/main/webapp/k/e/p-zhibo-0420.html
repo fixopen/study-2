@@ -51,27 +51,20 @@
 <script src="/basic.js"></script>
 <script>
     var bookNo = g.getUrlParameter('book')
-    var pageNo = g.getUrlParameter('page')
-    var unitNo = g.getUrlParameter('unit')
-    if (pageNo == null && unitNo == null) {
-        $.ajax({
-            type: 'get',
-            url: '/api/audio-records/04/20/' + bookNo + '/name',
-            success: function(n) {
-                document.title = n.name
+    $.ajax({
+        type: 'get',
+        url: '/api/audio-records/04/20/' + bookNo + '/name',
+        success: function(n) {
+            document.title = n.name
+            var pageNo = g.getUrlParameter('page')
+            var unitNo = g.getUrlParameter('unit')
+            if (pageNo == null && unitNo == null) {
                 proc({
                     templateId: 'video-template',
                     data: {bookNo: bookNo},
                     containerId: 'content'
                 })
-            }
-        })
-    } else {
-        $.ajax({
-            type: 'get',
-            url: '/api/audio-records/04/20/' + bookNo + '/name',
-            success: function(n) {
-                document.title = n.name
+            } else {
                 $.ajax({
                     type: 'get',
                     url: '/api/audio-records/04/20/' + bookNo + '/' + pageNo + '/' + unitNo,
@@ -101,8 +94,8 @@
                     }
                 })
             }
-        })
-    }
+        }
+    })
 </script>
 </body>
 </html>
