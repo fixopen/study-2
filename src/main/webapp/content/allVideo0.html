@@ -19,24 +19,22 @@
     <script type="text/javascript" src="../js/touch.js"></script>
     <script type="text/javascript" src="../js/selector.js"></script>
     <script type="text/javascript" src="allVideo0.js"></script>
+    <script src="../basic.js"></script>
 
 </head>
 <body>
-<div class="wrap noBackg">
-
+<div class="wrap noBackg" id="sa">
     <!-- main -->
-    <input class="souSuo clearfix" type="text" placeholder="请输入科目、老师、年级 关键词搜索">
-    <div class="tiao_jian">
-        <!--<select id="subjectChoice" class="tiaoj_TJ01 selectDiv tiaoj_1span">-->
-        <!--<option value="1" class="xiala_ul xiala_li">语文</option>-->
-        <!--<option value="2" class="xiala_ul xiala_li">数学</option>-->
-        <!--</select>-->
-        <div class="tiaoj_TJ01 selectDiv">
+    <input class="souSuo clearfix" type="text" id="text"  name="keyword"  onkeydown="entersearch()" placeholder="请输入科目、老师、年级 关键词搜索">
+    <input type="button" onclick="text()"/>
+    <!--<button onclick="text()">点击</button>-->
+    <div class="tiao_jian" id="st">
+        <div class="tiaoj_TJ01 selectDiv" id="sg">
             <div class="tiaoj_1span">
                 <span>科目</span>
                 <img src="../img/xiala.png" alt="">
             </div>
-            <ul class="xiala_ul">
+            <ul class="xiala_ul" id="sub">
                 <li class="xiala_li" onclick="tap1(1)">语文</li>
                 <li class="xiala_li" onclick="tap1(2)">数学</li>
             </ul>
@@ -44,30 +42,32 @@
         <div class="tiaoj_TJ02 selectDiv">
             <div class="tiaoj_2span">
                 <span>老师</span>
+                <!--<input value="老师" onclick="tap2()" id="t">-->
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul">
-                <li class="xiala_li" onclick="tap2(刘志超)">刘志超</li>
-                <li class="xiala_li" onclick="tap2(范炜炜)">范炜炜</li>
-                <li class="xiala_li" onclick="tap2(曹文雯)">曹文雯</li>
-                <li class="xiala_li" onclick="tap2(朱东博)">朱东博</li>
-                <li class="xiala_li" onclick="tap2(朱东博)">朱东博</li>
+                <li class="xiala_li" onclick="tap1(null,'刘志超',null)">刘志超</li>
+                <li class="xiala_li" onclick="tap1(null,'曹文雯',null)">曹文雯</li>
+                <li class="xiala_li" onclick="tap1(null,'范炜炜',null)">范炜炜</li>
+                <li class="xiala_li" onclick="tap1(null,'朱东博',null)">朱东博</li>
+                <li class="xiala_li" onclick="tap1(null,'范炜炜',null)">范炜炜</li>
+                <li class="xiala_li" onclick="tap1(null,'孟凡丽',null)">孟凡丽</li>
             </ul>
         </div>
         <div class="tiaoj_TJ03 selectDiv">
             <div class="tiaoj_3span">
-                <span>年级</span>
+                <span id="g">年级</span>
                 <img src="../img/xiala.png" alt="">
             </div>
-            <ul class="xiala_ul">
-                <li class="xiala_li">一年级</li>
-                <li class="xiala_li">二年级</li>
-                <li class="xiala_li">三年级</li>
-                <li class="xiala_li">四年级</li>
-                <li class="xiala_li">五年级</li>
-                <li class="xiala_li">六年级</li>
-                <li class="xiala_li">一~三年级</li>
-                <li class="xiala_li">四~六年级</li>
+            <ul class="xiala_ul" id="grade">
+                <li class="xiala_li" onclick="tap1(null,null,1)">一年级</li>
+                <li class="xiala_li" onclick="tap1(null,null,2)">二年级</li>
+                <li class="xiala_li" onclick="tap1(null,null,3)">三年级</li>
+                <li class="xiala_li" onclick="tap1(null,null,4)">四年级</li>
+                <li class="xiala_li" onclick="tap1(null,null,5)">五年级</li>
+                <li class="xiala_li" onclick="tap1(null,null,6)">六年级</li>
+                <li class="xiala_li" onclick="tap1(null,null,20)">1-2年级</li>
+                <li class="xiala_li" onclick="tap1(null,null,21)">3-6年级</li>
             </ul>
         </div>
     </div>
@@ -78,12 +78,20 @@
         </div>
     </div>
 </div>
-<template id="video-template">
+
+<!--<template id="teacher-template">-->
+<!--<li class="xiala_li">${teacher}</li>-->
+<!--</template>-->
+<!--<template id="grade-template">-->
+<!--<li class="xiala_li">${grade}</li>-->
+<!--</template>-->
+
+<template id="chinese-template">
     <li class="all_uli">
         <div class="all_liplay">
-            <a class="all_aBtn" href="javascript:void(0)">
+            <a class="all_aBtn" href="video.html?src=${cdnLink}">
                 <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
-                <div class="yuwen_div1">${subject}</div>
+                <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
                     <h3 class="yuwen_h3">${title}</h3>
                     <p class="yuwen_p">${description}</p>
@@ -94,7 +102,7 @@
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
-                <div class="xiaq_div">${description}</div>
+                <div class="xiaq_div">${title}</div>
                 <div>
                     <span>${grade}</span>
                     <div class="course_detail">课程详情</div>
@@ -102,94 +110,98 @@
             </div>
             <div class="course-detail">
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="../img/abc.png" alt="">
                     课程简介
                 </h3>
                 <p>${description}</p>
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="../img/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2"> ${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="../img/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${startTime}</p>
 
                 <h3 class="sml-tit brief4">
-                    <img src="images/cksc_btn.png" alt="">
+                    <img src="../img/cksc_btn.png" alt="">
                     课程时长
                 </h3>
-                <p>${duration}分钟</p>
+                <p id="duration">30分钟</p>
             </div>
         </div>
     </li>
 </template>
+<template id="math-template">
+    <li class="all_uli">
+        <div class="all_liplay shuxue_play">
+            <a class="all_aBtn" href="video.html?src=${cdnLink}">
+                <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
+                <div class="yuwen_div1 shuxue_div1">数学</div>
+                <div class="yuwen_div2 shuxue_div2" id="subjectImg">
+                    <h3 class="yuwen_h3">${title}</h3>
+                    <p class="yuwen_p">${description}</p>
+                </div>
+                <span class="yuwen_a"></span>
+                <span class="yuwen_span">—${teacher}老师</span>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="xiaq_div">${title}</div>
+                <div>
+                    <span>${grade}</span>
+                    <div class="course_detail shuxue_Btn">课程详情</div>
+                </div>
+            </div>
+            <div class="course-detail">
+                <h3 class="sml-tit brief1">
+                    <img src="../img/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p>${description}</p>
+                <h3 class="sml-tit brief2">
+                    <img src="../img/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2"> ${teacherDescription}</p>
+
+                <h3 class="sml-tit brief3">
+                    <img src="../img/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${startTime}</p>
+
+                <h3 class="sml-tit brief4">
+                    <img src="../img/cksc_btn.png" alt="">
+                    课程时长
+                </h3>
+                <p>30分钟</p>
+            </div>
+        </div>
+    </li>
+</template>
+
 <script type="text/javascript">
-    allxqTap(); //all课程详情
     xialaTap(); //下拉
 </script>
 <script type="text/javascript">
-    curseDetailTap();
-    var userId = g.getUrlParameter('userid')
-    g.setCookie('userId', userId)
-    var course = []
-//    $.ajax({
-//        type: "get",
-//        url: "/api/schedulers",
-//        dataType: "json",
-//        success: function (obj) {
-//            alert(JSON.stringify(obj))
-//            var list = obj;
-//            $("#show_list").empty();
-//            $("#show_list").append("<select id='ke' class='a'>科目</select><select id='nian'>年级</select><select id='tea'>老师</select>");
-//            for (var i = 0; i < list.length; ++i) {
-//                for (var j = 0; j < list[i].length; ++j) {
-//                    if(list[i][j].subjectId == 1){
-//                        list[i][j].subjectId = "语文"
-//                    }
-//                    if(list[i][j].subjectId == 2){
-//                        list[i][j].subjectId = "数学"
-//                    }
-//                    if(list[i][j].subjectId== 3){
-//                        list[i][j].subjectId = "英语"
-//                    }
-//                    if(list[i][j].grade == 20){
-//                        list[i][j].grade= "1-2年级"
-//                    }
-//                    if(list[i][j].grade == 21){
-//                        list[i][j].grade = "3-6年级"
-//                    }
-//                    if(list[i][j].grade == 1){
-//                        list[i][j].grade = "一年级"
-//                    }
-//                    if(list[i][j].grade == 2){
-//                        list[i][j].grade = "二年级"
-//                    }
-//                    if(list[i][j].grade == 3){
-//                        list[i][j].grade = "三年级"
-//                    }
-//                    if(list[i][j].grade == 4){
-//                        list[i][j].grade = "四年级"
-//                    }
-//                    if(list[i][j].grade == 5){
-//                        list[i][j].grade = "五年级"
-//                    }
-//                    if(list[i][j].grade == 6){
-//                        list[i][j].grade = "六年级"
-//                    }
-//                    var ke = document.getElementById("ke")
-//                    var nian = document.getElementById("nian")
-//                    var tea = document.getElementById("tea")
-//                    $('#ke').append("<option value="+list[i][j].subjectId+" id='a'  class='ssss'>"+list[i][j].subjectId+"</option>")
-//                    $('#nian').append("<option value="+list[i][j].grade+">"+list[i][j].grade+"</option>")
-//                    $('#tea').append("<option value="+list[i][j].teacher+">"+list[i][j].teacher+"</option>")
-//                }
-//            }
-//        }
-//    });
+    //  function changStyle(data) {
+    //      var sub = document.getElementById("sub")
+    //      for (var i = 0; i < data.length; i++) {
+    //          if (data[i].subjectId == 1) {
+    //              sub.innerHTML = '语文'
+    //          } else {
+    //              sub.innerHTML = '数学'
+    //              $('#sub').addClass("shuxue_div1");
+    //              $('#subjectImg').addClass("shuxue_div2");
+    //          }
+    //      }
+    //  }
+
     var getGrade = function (gradeValue) {
         var result = ''
         if (gradeValue == 1) {
@@ -211,43 +223,366 @@
         }
         return result
     }
-
-    function tap1(subject) {
-//        var now = new Date();
-        var filter = {}
-//        filter.endTime = '< ' + now
-//        filter.cdnLike = '!= NULL'
-//        var subjectChoice = document.getElementById('subjectChoice')
-        filter.subjectId = subject
-//      filter.teacher =
-//      filter.grade =
-        g.ajaxProcess('GET', '/api/schedulers?filter=' + JSON.stringify(filter), [
-            {name: 'Accept', value: 'application/json'}
-        ], null, function (result) {
-            course[subject] = result.data
-            var adjustData = function (subject) {
-                for (var i = 0; i < course[subject].length; ++i) {
-                    for (var j = 0; j < course[subject][i].length; ++j) {
-                        var m = moment().year(course[subject][i][j].year).week(course[subject][i][j].week).day(course[subject][i][j].day)
-                        course[subject][i][j].month = m.month()
-                        course[subject][i][j].day = m.date()
-                        course[subject][i][j].grade = getGrade(course[subject][i][j].grade)
+//    function text(){
+//        $keyword = $("#text").val();
+//        window.location.href = "/list-0-0-0-0-"+$keyword+"-0-0-1.html";
+//    }
+    function entersearch(){
+        var event = window.event || arguments.callee.caller.arguments[0];
+        if (event.keyCode == 13)
+        {
+            text();
+        }
+    }
+    function text() {
+        document.getElementById("video").innerHTML = ""
+        $.ajax({
+            type: "get",
+            url: "/api/schedulers/keywords/" + $("#text").val(),
+            dataType: "json",
+            success: function (result) {
+//                alert(JSON.stringify(result))
+                for (var i = 0; i < result.length; ++i) {
+                    result[i].grade = getGrade(result[i].grade)
+                    result[i].type = 'chinese'
+                    if (result[i].subjectId == 2) {
+                        result[i].type = 'math'
                     }
                 }
+                proc({
+                    data: result,
+                    containerId: 'video',
+                    alterTemplates: [
+                        {type: 'chinese', templateId: 'chinese-template'},
+                        {type: 'math', templateId: 'math-template'}
+                    ]
+                });
+                $keyword = $("#text").val();
+//                window.location.href = "/list-0-0-0-0-"+$keyword+"-0-0-1.html";
+                allxqTap(); //all课程详情
             }
-            adjustData(0)
-            adjustData(1)
-            proc({
-                containerId: 'video',
-                data: course[subject],
-                templateId:'video-template'
-            })
-            curseDetailTap();
-
         })
     }
+    $.ajax({
+        type: "get",
+        url: "/api/schedulers",
+        dataType: "json",
+        success: function (result) {
+            for (var i = 0; i < result[2].length; ++i) {
+                result[2][i].grade = getGrade(result[2][i].grade)
+                result[2][i].type = 'chinese'
+                if (result[2][i].subjectId == 2) {
+                    result[2][i].type = 'math'
+                }
+            }
+            proc({
+                data: result[2],
+                containerId: 'video',
+                alterTemplates: [
+                    {type: 'chinese', templateId: 'chinese-template'},
+                    {type: 'math', templateId: 'math-template'}
+                ]
+            });
+            for (var i = 0; i < result[2].length; ++i) {
+                if (!result[2][i].cdnLink || result[2][i].cdnLink == '') {
+                    result[2].splice(i, 1)
+                    --i
+                }
+            }
+            allxqTap(); //all课程详情
+        }
+    })
+    function tap1(subject, teacher, grade) {
+        document.getElementById("video").innerHTML = ""
+        if (subject == null) {
+            subject = $("#sa").val()
+        }
+        if (teacher == null) {
+            teacher = $("#st").val()
+        }
+        if (grade == null) {
+            grade = $("#sg").val()
+        }
+//       var now = new Date();
+        filter = {
+            subjectId: subject,
+            teacher: teacher,
+            grade: grade
+//            endTime: '< 2016-11-01 18:00:00'
+        }
+        $.ajax({
+            type: "get",
+            url: "/api/schedulers?filter=" + JSON.stringify(filter),
+            dataType: "json",
+            success: function (result2) {
+//                alert(JSON.stringify(result2))
+                for (var i = 0; i < result2[2].length; ++i) {
+                    result2[2][i].type = 'chinese'
+                    result2[2][i].grade = getGrade(result2[2][i].grade)
+                    if (result2[2][i].subjectId == 2) {
+                        result2[2][i].type = 'math'
+                    }
+                }
+                proc({
+                    data: result2[2],
+                    containerId: 'video',
+                    alterTemplates: [
+                        {type: 'chinese', templateId: 'chinese-template'},
+                        {type: 'math', templateId: 'math-template'}
+                    ]
+                });
+                for (var i = 0; i < result2[2].length; ++i) {
+                    if (!result2[2][i].cdnLink || result2[2][i].cdnLink == '') {
+                        result2[2].splice(i, 1)
+                        --i
+                    }
+                }
+                allxqTap(); //all课程详情
+            }
+        })
+        $("#sa").val(subject)
+        $("#st").val(teacher)
+        $("#sg").val(grade)
+    }
 
+    //    function tap2(teacher) {
+    //        document.getElementById("video").innerHTML = ""
+    ////       var now = new Date();
+    //        filter = {
+    //            teacher:teacher,
+    //        }
+    //        $.ajax({
+    //            type: "get",
+    //            url: "/api/schedulers?filter=" + JSON.stringify(filter),
+    //            dataType: "json",
+    //            success: function (result2) {
+    ////                alert(JSON.stringify(result2))
+    //                for (var i = 0; i < result2[2].length; ++i) {
+    //                    result2[2][i].type = 'chinese'
+    //                    result2[2][i].grade = getGrade(result2[2][i].grade)
+    //                    if (result2[2][i].subjectId == 2) {
+    //                        result2[2][i].type = 'math'
+    //                    }
+    //                }
+    //                proc({
+    //                    data: result2[2],
+    //                    containerId: 'video',
+    //                    alterTemplates: [
+    //                        {type: 'chinese', templateId: 'chinese-template'},
+    //                        {type: 'math', templateId: 'math-template'}
+    //                    ]
+    //                });
+    //                for (var i = 0; i < result2[2].length; ++i) {
+    //                    if (!result2[2][i].cdnLink || result2[2][i].cdnLink == '') {
+    //                        result2[2].splice(i, 1)
+    //                        --i
+    //                    }
+    //                }
+    //            }
+    //        })
+    //    }
+    //
+    //    function tap3(grade) {
+    //        document.getElementById("video").innerHTML = ""
+    ////       var now = new Date();
+    //        filter = {
+    //            grade:grade
+    //        }
+    //        $.ajax({
+    //            type: "get",
+    //            url: "/api/schedulers?filter=" + JSON.stringify(filter),
+    //            dataType: "json",
+    //            success: function (result2) {
+    ////                alert(JSON.stringify(result2))
+    //                for (var i = 0; i < result2[2].length; ++i) {
+    //                    result2[2][i].type = 'chinese'
+    //                    result2[2][i].grade = getGrade(result2[2][i].grade)
+    //                    if (result2[2][i].subjectId == 2) {
+    //                        result2[2][i].type = 'math'
+    //                    }
+    //                }
+    //                proc({
+    //                    data: result2[2],
+    //                    containerId: 'video',
+    //                    alterTemplates: [
+    //                        {type: 'chinese', templateId: 'chinese-template'},
+    //                        {type: 'math', templateId: 'math-template'}
+    //                    ]
+    //                });
+    //                for (var i = 0; i < result2[2].length; ++i) {
+    //                    if (!result2[2][i].cdnLink || result2[2][i].cdnLink == '') {
+    //                        result2[2].splice(i, 1)
+    //                        --i
+    //                    }
+    //                }
+    //            }
+    //        })
+    //    }
 
+    //    //获取所有的老师名
+    //    $.ajax({
+    //        type: "get",
+    //        url: "/api/schedulers/teacherses?filter=" + JSON.stringify(filter),
+    //        dataType: "json",
+    //        success: function (teacher) {
+    //            var ts = []
+    //            for (var i = 0; i < teacher.length; ++i) {
+    //                ts[i] = {}
+    //                ts[i].teacher = teacher[i]
+    //            }
+    //            proc({
+    //                containerId: 'teacher',
+    //                data: ts,
+    //                templateId: 'teacher-template'
+    //            })
+    //            $("#teacher").find('.xiala_li').each(function (index, element) {
+    //                element.click(function (e) {
+    //                        $(this).data=e;
+    //                })
+    //            });
+    //
+    //        }
+    //    })
+    //    function tap2(teacher) {
+    //        document.getElementById("teacher").innerHTML = ""
+    //        filter = {
+    //            teacher: teacher,
+    //        }
+    //        $.ajax({
+    //            type: "get",
+    //            url: "/api/schedulers/teacherses?filter=" + JSON.stringify(filter),
+    //            dataType: "json",
+    //            success: function (result) {
+    //                for (var i = 0; i < result[2].length; ++i) {
+    //                    result[2][i].grade = getGrade(result[2][i].grade)
+    //                    result[2][i].type = 'chinese'
+    //                    if (result[2][i].subjectId == 2) {
+    //                        result[2][i].type = 'math'
+    //                    }
+    //                }
+    //                proc({
+    //                    data: result[2],
+    //                    containerId: 'video',
+    //                    alterTemplates: [
+    //                        {type: 'chinese', templateId: 'chinese-template'},
+    //                        {type: 'math', templateId: 'math-template'}
+    //                    ]
+    //                });
+    //                for (var i = 0; i < result[2].length; ++i) {
+    //                    if (!result[2][i].cdnLink || result[2][i].cdnLink == '') {
+    //                        result[2].splice(i, 1)
+    //                        --i
+    //                    }
+    //                }
+    //
+    //            }
+    //        })
+    //    }
+    //    //获取所有的年级
+    //    $.ajax({
+    //        type: "get",
+    //        url: "/api/schedulers/gradeses?filter=" + JSON.stringify(filter),
+    //        dataType: "json",
+    //        success: function (grade) {
+    //            var gs = []
+    //            for (var i = 0; i < grade.length; ++i) {
+    //                gs[i] = {}
+    //                gs[i].grade = getGrade(grade[i])
+    //            }
+    //            proc({
+    //                containerId: 'grade',
+    //                data: gs,
+    //                templateId: 'grade-template'
+    //            })
+    ////                $("#g").val(gs)
+    ////                $("#teacher").click(function() {
+    ////                        for (var i = 0; i < teacher.length; ++i) {
+    ////                            this.innerHTML = ts[i]
+    ////                        }
+    ////                    });
+    //        }
+    //    })
+    //
+    //    function tap3(grade) {
+    //        document.getElementById("grade").innerHTML = ""
+    //        filter = {
+    //            grade: grade,
+    //        }
+    //        $.ajax({
+    //            type: "get",
+    //            url: "/api/schedulers/gradeses?filter=" + JSON.stringify(filter),
+    //            dataType: "json",
+    //            success: function (result) {
+    //                for (var i = 0; i < result[2].length; ++i) {
+    //                    result[2][i].grade = getGrade(result[2][i].grade)
+    //                    result[2][i].type = 'chinese'
+    //                    if (result[2][i].subjectId == 2) {
+    //                        result[2][i].type = 'math'
+    //                    }
+    //                }
+    //                proc({
+    //                    data: result[2],
+    //                    containerId: 'video',
+    //                    alterTemplates: [
+    //                        {type: 'chinese', templateId: 'chinese-template'},
+    //                        {type: 'math', templateId: 'math-template'}
+    //                    ]
+    //                });
+    //                for (var i = 0; i < result[2].length; ++i) {
+    //                    if (!result[2][i].cdnLink || result[2][i].cdnLink == '') {
+    //                        result[2].splice(i, 1)
+    //                        --i
+    //                    }
+    //                }
+    ////                $("#g").val(gs)
+    ////                $("#teacher").click(function() {
+    ////                        for (var i = 0; i < teacher.length; ++i) {
+    ////                            this.innerHTML = ts[i]
+    ////                        }
+    ////                    });
+    //            }
+    //        })
+    //    }
+    //
+    //    function items(subject, teacher, grade) {
+    //        var subject = $("#a").val()
+    //        var teacher = $("#b").val()
+    //        var grade = $("#c").val()
+    //        var filter = {
+    //            subjectId: subject,
+    //            teacher: teacher,
+    //            grade: grade,
+    ////            endTime: '< 2016-11-01 18:00:00'
+    //        }
+    //        $.ajax({
+    //            type: "get",
+    //            url: "/api/schedulers?filter=" + JSON.stringify(filter),
+    //            dataType: "json",
+    //            success: function (result) {
+    //                for (var i = 0; i < result[2].length; ++i) {
+    //                    result[2][i].type = 'chinese'
+    //                    result[2][i].grade = getGrade(result[2][i].grade)
+    //                    if (result[2][i].subjectId == 2) {
+    //                        result[2][i].type = 'math'
+    //                    }
+    //                }
+    //                proc({
+    //                    data: result[2],
+    //                    containerId: 'video',
+    //                    alterTemplates: [
+    //                        {type: 'chinese', templateId: 'chinese-template'},
+    //                        {type: 'math', templateId: 'math-template'}
+    //                    ]
+    //                });
+    //            },
+    //            error: function (result) {
+    //
+    //            }
+    //        })
+    //    }
+
+    var userId = g.getUrlParameter('userid')
+    g.setCookie('userId', userId)
 </script>
 </body>
 </html>

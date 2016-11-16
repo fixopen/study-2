@@ -110,7 +110,7 @@ public class AudioRecords {
                             break;
                     }
                 }
-                String command = "INSERT INTO englishs (id, subject_no, grade_no, book_no, page_no, unit_no, start_time, end_time) VALUES (" + id.toString() + ", '" + subjectNo + "', '" + gradeNo + "', '" + bookNo + "', '" + pageNo + "', '" + unitNo + "', " + fields[2] + ", " + fields[3] + ")";
+                String command = "INSERT INTO audio_records (id, subject_no, grade_no, book_no, page_no, unit_no, start_time, end_time) VALUES (" + id.toString() + ", '" + subjectNo + "', '" + gradeNo + "', '" + bookNo + "', '" + pageNo + "', '" + unitNo + "', " + fields[2] + ", " + fields[3] + ")";
                 Query q = em.createNativeQuery(command);
                 q.executeUpdate();
             }

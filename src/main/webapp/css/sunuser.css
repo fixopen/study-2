@@ -1,3 +1,4 @@
+
 .user_div_css {
     margin: 1.25rem 0 1.875rem;
 }
@@ -51,12 +52,12 @@
     position: relative;
     overflow: hidden;
 }
- .info_li_css{
-     height: 3.71875rem;
-     line-height: 3.71875rem;
-     padding: 0 0.9375rem;
-     border-bottom: 1px solid #e5e5e5;
- }
+.info_li_css{
+    height: 3.71875rem;
+    line-height: 3.71875rem;
+    padding: 0 0.9375rem;
+    border-bottom: 1px solid #e5e5e5;
+}
 .info_span_css{
     display: inline-block;
     width: 4.375rem;

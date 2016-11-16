@@ -11,16 +11,16 @@
     <link rel="stylesheet" href="common.css"/>
 
     <!-- 引入样式表 -->
-    <link rel="stylesheet" href="/css/global.css">
+   <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/common.css">
-    <!--<link rel="stylesheet" href="user/basic-info.css">-->
-    <!--<link rel="stylesheet" href="css/setting1.css">
-    <link rel="stylesheet" href="user/cards.css">
-    <link rel="stylesheet" href="validationCode.css">
-    <link rel="stylesheet" href="css/chagePassword.css">
-    <link rel="stylesheet" href="css/infostyle.css">
-    <link rel="stylesheet" href="css/helpstyle.css">
-    <link rel="stylesheet" href="css/Gold.css">-->
+       <!--<link rel="stylesheet" href="user/basic-info.css">-->
+      <!--<link rel="stylesheet" href="css/setting1.css">
+      <link rel="stylesheet" href="user/cards.css">
+      <link rel="stylesheet" href="validationCode.css">
+      <link rel="stylesheet" href="css/chagePassword.css">
+      <link rel="stylesheet" href="css/infostyle.css">
+      <link rel="stylesheet" href="css/helpstyle.css">
+      <link rel="stylesheet" href="css/Gold.css">-->
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <link rel="stylesheet" href="css/sunuser.css">
 </head>
@@ -29,14 +29,14 @@
 
 </article>
 <article id="cards" style="display: none;">
-    <div class="user_div_css">
-        <div id="card"></div>
-        <div class="card_button_div_css">
-            <a class="card_button_css " href="JavaScript:;">充值</a>
-            <a class="card_button_css card_button_background_css" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
-            <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
+        <div class="user_div_css">
+            <div id="card"></div>
+            <div class="card_button_div_css">
+                <a class="card_button_css " href="JavaScript:;">充值</a>
+                <a class="card_button_css card_button_background_css" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
+                <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
+            </div>
         </div>
-    </div>
 </article>
 <article id="info" style="display: none;"></article>
 <!--<article id="gold" style="display: none;">
@@ -83,27 +83,27 @@
 <article id="change-password" style="display: none;">
     <div class="wrap">
         <!-- main -->
-        <ul class="changePassword_ul_css">
-            <li class="changePassword_li_css">
-                <span class="changePassword_span_css">原密码</span>
-                <input class="changePassword_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
-            </li>
-            <li class="changePassword_li_css">
-                <span class="changePassword_span_css">新密码</span>
-                <input class="changePassword_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
-            </li>
-            <li class="changePassword_li_css">
-                <span class="changePassword_span_css">确认新密码</span>
-                <input class="changePassword_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
-            </li>
-            <div id="error"></div>
-        </ul>
+            <ul class="changePassword_ul_css">
+                <li class="changePassword_li_css">
+                    <span class="changePassword_span_css">原密码</span>
+                    <input class="changePassword_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
+                </li>
+                <li class="changePassword_li_css">
+                    <span class="changePassword_span_css">新密码</span>
+                    <input class="changePassword_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
+                </li>
+                <li class="changePassword_li_css">
+                    <span class="changePassword_span_css">确认新密码</span>
+                    <input class="changePassword_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
+                </li>
+                <div id="error"></div>
+            </ul>
 
-        <div class="changePassword_box_css">
-            <a href="javascript:void(0)" class="changePassword_button_css" id="pwd_save">保 存</a>
-            <a href="javascript:void(0)" id="quxiao" class="changePassword_save_css">取 消</a>
+            <div class="changePassword_box_css">
+                <a href="javascript:void(0)" class="changePassword_button_css" id="pwd_save">保 存</a>
+                <a href="javascript:void(0)" id="quxiao" class="changePassword_save_css">取 消</a>
+            </div>
         </div>
-    </div>
 </article>
 <!--<article id="activeCard" style="display: none;">
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
@@ -752,7 +752,7 @@
                                     success: function (e) {
                                         alert("激活成功")
                                         e.subject =state.getSubjectNameById(e.subject)
-                                        // getSubjectNameById(e.subject)
+                                                // getSubjectNameById(e.subject)
                                         user.cards.push(e);
                                         alert(user.cards)
                                         state.cards.isCards = false
@@ -797,7 +797,7 @@
                                             success: function (e) {
                                                 alert("激活成功")
                                                 e.subject =state.getSubjectNameById(e.subject)
-                                                // getSubjectNameById(e.subject)
+                                                        // getSubjectNameById(e.subject)
                                                 user.cards.push(e);
                                                 //alert(user.cards)
                                                 state.cards.isCards = false
@@ -839,9 +839,9 @@
                     o = 0
                 }, false)
             },
-            //  window.addEventListener('load', function (e) {
+          //  window.addEventListener('load', function (e) {
 
-            // }, false);
+       // }, false);
 
         },
         login: {
@@ -944,9 +944,9 @@
                         })
                     }
                 }, false);
-                /* function back() {
-                 history.back();
-                 }*/
+               /* function back() {
+                    history.back();
+                }*/
             }
         },
         help: {
