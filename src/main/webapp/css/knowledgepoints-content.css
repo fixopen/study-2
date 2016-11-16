@@ -10,6 +10,32 @@ a {
     margin: 1.0625rem 0;
 }
 
+.head-title1 {
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: bold;
+    padding-top: 1.5rem;
+}
+
+.head-title1-bg {
+    display: inline-block;
+    width: 6.03125rem;
+    height: 2.125rem;
+    line-height: 2.125rem;
+    text-align: center;
+    font-weight: normal;
+    margin: 0 auto 0.625rem;
+    background: url('../img/math1.png') 0 0 no-repeat;
+    background-size: 6.03125rem 2.125rem;
+}
+
+.head-title2 {
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: bold;
+    padding-bottom: 0.8rem;
+}
+
 .origin-title {
     display: inline-block;
     font-size: 1.0rem;
@@ -43,9 +69,37 @@ a {
     background-color: #fffcf2;
     box-sizing: border-box;
 }
+
 .content-font {
     text-indent: 2em;
     margin-bottom: 1rem;
+}
+
+.challenge {
+    margin: 0 auto;
+    line-height: 1.875rem;
+    padding: 0.3125rem;
+    border-radius: 0.625rem;
+    background-color: #fffae8;
+    overflow: hidden;
+}
+
+.challenge-left {
+    float: left;
+    width: 1.9375rem;
+    height: 0.65625rem;
+    position: relative;
+    top: -0.3125rem;
+    z-index: 2;
+}
+
+.challenge-bg {
+    padding: 0.625rem;
+    text-indent: 2em;
+    border: 1.5px dashed #fae1e1;
+    border-radius: 0.625rem;
+    background: url('../img/math3.png') right bottom no-repeat;
+    background-size: 2.71875rem 2.5625rem;
 }
 
 /*拼音*/
@@ -64,6 +118,21 @@ a {
 
 .content-img {
     width: 100%;
+}
+
+.math_01 {
+    width: 17.78125rem;
+    height: 10.8125rem;
+    clear: both;
+    display: block;
+    margin: auto;
+}
+
+.math_color {
+    color: #fe6568;
+    text-indent: 2em;
+    position: relative;
+    top: -1.25rem;
 }
 
 /* 闯关练习 */
@@ -87,7 +156,19 @@ a {
     box-shadow: inset 0rem 0rem 0.5rem #bae3f2;
     border-radius: 0.3125rem;
     background-color: #f2fdff;
+    margin-top: 0.625rem;
     box-sizing: border-box;
+}
+
+.lixi_martop {
+    padding-top: 0;
+    margin-top: 0;
+    position: relative;
+    top: -2.75rem;
+}
+
+.lixi_Nomar {
+    padding-top: 0;
 }
 
 ul.ul-style {
@@ -98,6 +179,65 @@ li.mld_Ulli {
     list-style-position: outside;
     line-height: 2.5rem;
     position: relative;
+}
+
+.lian_jie {
+    position: relative;
+    top: 0;
+    z-index: 13;
+}
+
+.lianjie {
+    display: inline-block;
+    position: relative;
+    top: -2.0165rem;
+    z-index: 13;
+    width: 0.5rem;
+    height: 1.75rem;
+    background: url('../img/lianjie.png') 0 0 no-repeat;
+    background-size: 0.5rem 1.75rem;
+}
+
+.lianjie01 {
+    float: left;
+    position: relative;
+    left: 2.5rem;
+}
+
+.lianjie02 {
+    float: right;
+    position: relative;
+    right: 2.5rem;
+}
+
+/* 脑力大PK */
+.bdiv_Pk {
+    width: 8.375rem;
+    margin: 1.875rem auto 0;
+}
+
+.naoli_pk {
+    width: 8.375rem;
+    height: 2.59375rem;
+    margin: 0 auto;
+}
+
+.zongjie_p {
+    color: #fe6568;
+    margin-top: 0.625rem;
+}
+
+.zongjie_txt {
+    color: #444;
+    font-size: 0.9375rem;
+    font-family: "苹方";
+    width: 100%;
+    line-height: 1rem;
+    min-height: 5.0rem;
+    text-indent: 2em;
+    padding: 0.625rem 0.3125rem;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
 /*.mld_liImg {*/
