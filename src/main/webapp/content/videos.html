@@ -27,7 +27,7 @@
             transform: translateX(-50%);
             display: block;
             width: 92%;
-            background: url('/content/schedule.png') no-repeat center top;
+            background: url('/img/schedule.png') no-repeat center top;
             -webkit-background-size: 100% 100%;
             background-size: 100% 100%;
             padding: 10.5% 4.3% 4.5%;
@@ -123,26 +123,34 @@
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul">
-                <li class="xiala_li">${subject}</li>
+                <li class="xiala_li"></li>
             </ul>
         </div>
         <div class="tiaoj_TJ02 selectDiv">
             <div class="tiaoj_2span">
                 <span>老师</span>
-                <!--<input value="老师" onclick="tap2()" id="t">-->
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul" id="teacher">
-                <li class="xiala_li">${teacher}</li>
+                <li class="xiala_li"></li>
             </ul>
         </div>
         <div class="tiaoj_TJ03 selectDiv">
             <div class="tiaoj_3span">
-                <span id="g">年级</span>
+                <span>年级</span>
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul" id="grade">
-                <li class="xiala_li">${grade}</li>
+                <li class="xiala_li"></li>
+            </ul>
+        </div>
+        <div class="tiaoj_TJ03 selectDiv">
+            <div class="tiaoj_3span">
+                <span>日期</span>
+                <img src="../img/xiala.png" alt="">
+            </div>
+            <ul class="xiala_ul" id="date">
+                <li class="xiala_li"></li>
             </ul>
         </div>
     </div>
@@ -151,14 +159,6 @@
         <div class="bottom_txt">
             <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
         </div>
-    </div>
-    <div>
-        <div id="zeroPassed"></div>
-        <div id="zeroTips"></div>
-    </div>
-    <div>
-        <div id="onePassed"></div>
-        <div id="oneTips"></div>
     </div>
 </article>
 <article id="video" style="display: none;">
@@ -263,12 +263,11 @@
 <template id="future-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a href="wait-play.html">
+            <div id="futureNoteEntry" data-article="futureNote">
                 <img src="${cover}" alt="">
                 <div class="video-list-mask">
                         <span class="live-radio">
                             <img src="../img/zb-wait.png" alt="">
-                            <!--鍥剧墖浼氶殢鐫€鍏蜂綋鎯呭喌鏀瑰彉-->
                         </span>
                     <div class="waity-play">${startTime}开讲
                     </div>
@@ -281,7 +280,7 @@
                         </marquee>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
         <div class="course-intro">
             <div class="course-intro-in">
@@ -443,6 +442,8 @@
                         }),
                         dataType: 'json',
                         success: function (zeroSchedulers) {
+                            alert(JSON.stringify(zeroSchedulers))
+
                             subjects[0].playing = zeroSchedulers[0]
                             subjects[0].futures = zeroSchedulers[1]
                             state.adjustData(0)
@@ -587,26 +588,29 @@
                 }
             },
             zeroFuture: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null
+                container: document.getElementById('zeroFuture'),
+                template: document.getElementById('future-template'),
+                data: state.zeroFuture.data
             },
             zeroPlaying: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null
+                container: document.getElementById('zeroPlaying'),
+                template: document.getElementById('playing-template'),
+                data: state.zeroPlaying.data
             },
             oneFuture: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null
+                container: document.getElementById('oneFuture'),
+                template: document.getElementById('future-template'),
+                data: state.oneFuture.data
             },
             onePlaying: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null
+                container: document.getElementById('onePlaying'),
+                template: document.getElementById('playing-template'),
+                data: state.onePlaying.data
             },
+
             schedulerEntry: document.getElementById('schedulerEntry'),
+            passedEntry: document.getElementById('passedEntry'),
+            futureNoteEntry: document.getElementById('futureNoteEntry'),
             teacherChoice: document.getElementById('teacherChoice'),
             gradeChoice: document.getElementById('gradeChoice'),
             keywords: document.getElementById('keywords'),
@@ -734,27 +738,27 @@
                 }
                 return result
             },
-            showPassed: function (state, moreId, tips) {
-                proc(state)
-                document.getElementById(moreId).style.display = 'none'
-                var tips = document.getElementById(tips)
-                tips.innerHTML = '没有更多视频，敬请期待'
-            },
+//            showPassed: function (state, moreId, tips) {
+//                proc(state)
+//                document.getElementById(moreId).style.display = 'none'
+//                var tips = document.getElementById(tips)
+//                tips.innerHTML = '没有更多视频，敬请期待'
+//            },
             zeroPassed: {
                 container: document.getElementById(''),
                 template: document.getElementById(''),
                 data: null,
-                show: function () {
-                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')//????????????
-                }
+//                show: function () {
+//                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')//????????????
+//                }
             },
             onePassed: {
                 container: document.getElementById(''),
                 template: document.getElementById(''),
                 data: null,
-                show: function () {
-                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
-                }
+//                show: function () {
+//                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
+//                }
             }
         },
         scheduler: {
