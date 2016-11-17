@@ -29,14 +29,14 @@
 
 </article>
 <article id="cards" style="display: none;">
-        <div class="user_div_css">
+        <!--<div class="user_div_css">-->
             <div id="card"></div>
-            <div class="card_button_div_css">
+            <!--<div class="card_button_div_css">-->
                 <a class="card_button_css " href="JavaScript:;">充值</a>
                 <a class="card_button_css card_button_background_css" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
                 <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
-            </div>
-        </div>
+            <!--</div>-->
+        <!--</div>-->
 </article>
 <article id="info" style="display: none;"></article>
 <!--<article id="gold" style="display: none;">
@@ -84,17 +84,17 @@
     <div class="wrap">
         <!-- main -->
             <ul class="changePassword_ul_css">
-                <li class="changePassword_li_css">
-                    <span class="changePassword_span_css">原密码</span>
-                    <input class="changePassword_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
+                <li class="changePassword_li_css public_li_css" >
+                    <span class="public_span_css changePassword_interval_width_css" >原密码</span>
+                    <input class="firstActiveCard_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
                 </li>
-                <li class="changePassword_li_css">
-                    <span class="changePassword_span_css">新密码</span>
-                    <input class="changePassword_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
+                <li class="changePassword_li_css public_li_css">
+                    <span class="public_span_css changePassword_interval_width_css">新密码</span>
+                    <input class="firstActiveCard_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
                 </li>
-                <li class="changePassword_li_css">
-                    <span class="changePassword_span_css">确认新密码</span>
-                    <input class="changePassword_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
+                <li class="changePassword_li_css public_li_css">
+                    <span class="public_span_css changePassword_interval_width_css">确认新密码</span>
+                    <input class="firstActiveCard_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
                 </li>
                 <div id="error"></div>
             </ul>
@@ -124,27 +124,27 @@
 <article id="firstActiveCard" style="display: none;">
     <div class="wrap">
         <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
-            <div class="firstActiveCard_li_css">
-                <span class="firstActiveCard_span_css">卡号</span>
+            <div class="firstActiveCard_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">卡号</span>
                 <input class="firstActiveCard_input_css" type="text" placeholder="请输入卡号" id="cardNo"
                        style="height:20px; font-size:18px;"
                        required pattern="\d+">
                 <!--onkeyup="test()"-->
             </div>
-            <div class="firstActiveCard_li_css">
-                <span class="firstActiveCard_span_css">密码</span>
+            <div class="firstActiveCard_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">密码</span>
                 <input class="firstActiveCard_input_css" type="password" placeholder="请输入密码" id="password"
                        style="height:20px; font-size:18px;" required>
             </div>
-            <div class="firstActiveCard_li_css">
-                <span class="firstActiveCard_span_css">手机号</span>
+            <div class="firstActiveCard_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">手机号</span>
                 <input class="firstActiveCard_input_css" type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+"
                        style="height:20px; width: 115px; font-size:16px;">
                 <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"
                        class="send-btn cur">
             </div>
-            <div class="firstActiveCard_li_css">
-                <span class="firstActiveCard_span_css">验证码</span>
+            <div class="firstActiveCard_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">验证码</span>
                 <input class="firstActiveCard_input_css" type="text" placeholder="请输入验证码" id="validCode"
                        style="height:20px; font-size:18px;" required
                        pattern="\d{6}">
@@ -196,13 +196,13 @@
 
         <div class="changePassword_div_css">
             <ul class="changePassword_ul_css">
-                <li class="firstActiveCard_li_css">
+                <li class="firstActiveCard_li_css public_li_css">
                     <a href="javascript:void(0)" data-article="change-password">修改密码 <span class="next-btn"></span></a>
                 </li>
-                <li class="firstActiveCard_li_css">
+                <li class="firstActiveCard_li_css public_li_css">
                     <a href="javascript:void(0)" data-article="info">修改个人信息 <span class="next-btn"></span></a>
                 </li>
-                <li class="firstActiveCard_li_css">
+                <li class="firstActiveCard_li_css public_li_css">
                     <a href="javascript:void(0)" data-article="firstActiveCard">添加新卡 <span class="next-btn"></span></a>
                 </li>
                 <!--<li class="set-li">
@@ -246,68 +246,68 @@
 </article>
 
 <template id="user-template">
-    <div class="user_div_css">
-        <ul class="user_ul_css">
-            <li class="user_li_css" data-article="head">
-                <span class="user_span_css">我的头像</span>
+    <!--<div class="user_div_css">-->
+        <ul class="public_ul_css">
+            <li class="user_li_css public_li_css" data-article="head">
+                <span class="public_span_css">我的头像</span>
                 <img class="user_head_css" src="${head}" alt="">
             </li>
-            <li class="user_li_css">
-                <span class="user_span_css">昵称</span>
-                <input class="user_input_css" type="text" value="${name}" readonly>
+            <li class="user_li_css public_li_css">
+                <span class="public_span_css">昵称</span>
+                <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
             </li>
-            <li class="user_li_css">
-                <span class="user_span_css">账号</span>
-                <input class="user_input_css" type="text" value="${telephone}" readonly>
+            <li class="user_li_css public_li_css">
+                <span class="public_span_css">账号</span>
+                <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
             </li>
             <li>
-                <ul class="user_li_css" data-article="info">我的资料</ul>
+                <ul class="user_li_css public_li_css" data-article="info">我的资料</ul>
             </li>
 
 
             <li>
-                <ul class="user_li_css" data-article="cards">我的学习卡</ul>
+                <ul class="user_li_css public_li_css" data-article="cards">我的学习卡</ul>
             </li>
 
-            <li class="user_li_css" data-article="settings">设置</li>
-            <li class="user_li_css" data-article="help">帮助</li>
+            <li class="user_li_css public_li_css" data-article="settings">设置</li>
+            <li class="user_li_css public_li_css" data-article="help">帮助</li>
         </ul>
-    </div>
+    <!--</div>-->
 </template>
 <template id="info-template">
-    <ul class="info_ul_css">
-        <li class="info_li_css">
-            <span class="info_span_css">真实姓名</span>
-            <input class="info_input_css" type="text" placeholder="请输入真实姓名" value="${name}" id="info_name">
+    <ul class="public_ul_css">
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">真实姓名</span>
+            <input class="info_input_width_css public_input_css" type="text" placeholder="请输入真实姓名" value="${name}" id="info_name">
         </li>
-        <li class="info_li_css">
-            <span class="info_span_css">手机号</span>
-            <input class="info_input_css" type="tel" value="${telephone}" id="info_telephone">
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">手机号</span>
+            <input class="info_input_width_css public_input_css" type="tel" value="${telephone}" id="info_telephone">
         </li>
-        <li class="info_li_css">
-            <span class="info_span_css">性别</span>
-            <input class="info_input_css" type="text" value="${sex}" id="info_sex">
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">性别</span>
+            <input class="info_input_width_css public_input_css" type="text" value="${sex}" id="info_sex">
         </li>
-        <li class="info_li_css">
-            <span class="info_span_css">出生年月</span>
-            <input id="date" class="info_input_css" type="date" value="${birthday}" >
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">出生年月</span>
+            <input id="date" class="info_input_width_css public_input_css" type="date" value="${birthday}" >
             <!--value="${birthday}"  placeholder="请选择出生日期" style="height:41px;overflow: hidden;"  style="height:41px;overflow: hidden;"-->
             <!--<input class="infomine_rightip" type="date" value="${birthday}" placeholder="请选择出生日期" style="height:41px;overflow: hidden;" id="info_birthday">-->
         </li>
-        <li class="info_li_css">
-            <span class="info_span_css">收货地址</span>
-            <input class="info_input_css" type="text" placeholder="请输入收货地址" value="${location}" id="info_location">
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">收货地址</span>
+            <input class="info_input_width_css public_input_css" type="text" placeholder="请输入收货地址" value="${location}" id="info_location">
         </li>
-        <li class="info_li_css">
-            <span class="info_span_css">就读学校</span>
-            <input class="info_input_css" type="text" value="${school}" id="info_school">
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">就读学校</span>
+            <input class="info_input_width_css public_input_css" type="text" value="${school}" id="info_school">
         </li>
-        <li class="info_li_css">
-            <span class="info_span_css">所在班级</span>
-            <input class="info_input_css" type="text" value="${classname}" id="info_class">
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">所在班级</span>
+            <input class="info_input_width_css public_input_css" type="text" value="${classname}" id="info_class">
         </li>
         <li>
-            <span class="info_span_css"></span>
+            <span class="public_span_css info_interval_width_css"></span>
             <button id="save_info"  style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
     margin-right: 5%; background-color: #fe6568; border: none">确 认
             </button>
@@ -315,26 +315,26 @@
     </ul>
 </template>
 <template id="card-template">
-    <ul class="card_ul_css">
-        <li class="card_li_css">
-            <span class="card_span_css">卡号</span>
-            <span class="card_input_css">${no}</span>
+    <ul class="public_ul_css">
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">卡号</span>
+            <span class="public_input_css">${no}</span>
         </li>
-        <li class="card_li_css">
-            <span class="card_span_css">学习类型</span>
-            <span class="card_input_css">${subject}</span>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">学习类型</span>
+            <span class="public_input_css">${subject}</span>
         </li>
-        <li class="card_li_css">
-            <span class="card_span_css">激活时间</span>
-            <span class="card_input_css">${activeTime}</span>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">激活时间</span>
+            <span class="public_input_css">${activeTime}</span>
         </li>
-        <li class="card_li_css">
-            <span class="card_span_css">剩余雨点</span>
-            <span class="card_input_css">${amount}</span>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">剩余雨点</span>
+            <span class="public_input_css">${amount}</span>
         </li>
-        <li class="card_li_css">
-            <span class="card_span_css">有效期</span>
-            <span class="card_input_css">${endTime}</span>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">有效期</span>
+            <span class="public_input_css">${endTime}</span>
         </li>
     </ul>
 </template>
@@ -543,7 +543,7 @@
         },
         head: {
             init: function () {
-                var url = window.location.href;
+             /*   var url = window.location.href;
                 url = url.replace(/[/]/g, ',')
                 $.ajax({
                     type: "get",
@@ -604,12 +604,14 @@
                         }
                     })
                 }
-
+*/
+             var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
+                libai(sdakfjlasf);
                 function libai(mediaId) {
                     alert("李白来了" + mediaId)
                     $.ajax({
                         type: "GET",
-                        url: "/api/public-account/weChatHead/" + mediaId,
+                        url: "/api/public-account/weChat/Head/" + mediaId,
                         dataType: "json",
                         success: function (e) {
                             alert("成功" + JSON.stringify(e))

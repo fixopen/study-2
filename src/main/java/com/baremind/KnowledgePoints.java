@@ -385,9 +385,24 @@ public class KnowledgePoints {
             Map<String, String> orders = new HashMap<>();
             orders.put("order", "ASC");
             List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject, orders);
-            if (!knowledgePoints.isEmpty()) {
-                result = Response.ok(new Gson().toJson(knowledgePoints)).build();
+            List<Map<String, Object>> knowledgePointMaps = new ArrayList<>(knowledgePoints.size());
+            for (KnowledgePoint knowledgePoint : knowledgePoints) {
+                Map<String, Object> knowledgePointMap = new HashMap<>();
+                knowledgePointMap.put("id", knowledgePoint.getId());
+                knowledgePointMap.put("title", knowledgePoint.getTitle());
+                SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                knowledgePointMap.put("showTime", time.format(knowledgePoint.getShowTime()));
+                knowledgePointMap.put("subjectId", knowledgePoint.getSubjectId());
+                knowledgePointMap.put("grade", knowledgePoint.getGrade());
+                knowledgePointMap.put("order", knowledgePoint.getOrder());
+                knowledgePointMap.put("storePath", knowledgePoint.getStorePath());
+                knowledgePointMap.put("videoUrl", knowledgePoint.getVideoUrl());
+                knowledgePointMap.put("volumeId", knowledgePoint.getVolumeId());
+                knowledgePointMap.put("likeCount", Logs.getStatsCount("knowledge-point", knowledgePoint.getId(), "like"));
+                knowledgePointMap.put("readCount", Logs.getStatsCount("knowledge-point", knowledgePoint.getId(), "read"));
+                knowledgePointMaps.add(knowledgePointMap);
             }
+            result = Response.ok(knowledgePointMaps).build();
         }
         return result;
     }

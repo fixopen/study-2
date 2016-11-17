@@ -20,10 +20,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.xml.bind.JAXBElement;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -139,7 +136,26 @@ public class PublicAccounts {
             this.signature = signature;
         }
     }
+    public static class Head {
+        private String filename;
+        private String ContentType;
 
+        public String getFilename() {
+            return filename;
+        }
+
+        public void setFilename(String filename) {
+            this.filename = filename;
+        }
+
+        public String getContentType() {
+            return ContentType;
+        }
+
+        public void setContentType(String contentType) {
+            ContentType = contentType;
+        }
+    }
     @GET
     @Path("config/{url}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -224,8 +240,10 @@ public class PublicAccounts {
         //}
     }
 
+
+
     @GET
-    @Path("weChatHead/{mediaId}")
+    @Path("weChat/Head/{mediaId}")
    // @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateProperty(@CookieParam("userId") String userId,@PathParam("mediaId") String mediaId){
@@ -241,16 +259,23 @@ public class PublicAccounts {
                 .request().get();
 
         if(response.getStatus() == 200){
+            MultivaluedMap<String, String> stringHeaders = response.getStringHeaders();
+
+          /*  MultivaluedMap<String, Object> headers = response.getHeaders();
+            System.out.println("headers++++======================="+headers.toString());*/
+            System.out.println("stringHeaders++++======================="+stringHeaders);
+
             byte[] responseBody = response.readEntity(byte[].class);
             //  System.out.println("互相伤害"+responseBody);
             long now = new Date().getTime();
-            String path = Properties.getPropertyValue("physicalpath");
+            String path = Properties.getPropertyValue("testphysicalpath");
             String filename = now + ".jpg";
             String uploadedFileLocation = path + filename;
             File file = new File(uploadedFileLocation);
             //String content = responseBody;
-            User existuser = JPAEntry.getObject(User.class, "id", userId);
-            existuser.setHead(Properties.getPropertyValue("virtualpath")+filename);
+            Long id = Long.parseLong(userId);
+            User existuser = JPAEntry.getObject(User.class, "id", id);
+            existuser.setHead(Properties.getPropertyValue("testvirtualpath")+filename);
             JPAEntry.genericPut(existuser);
 
             try (FileOutputStream fop = new FileOutputStream(file)) {
