@@ -503,7 +503,7 @@ ${name}</a>-->
 </template>
 <template id="strongest-brain-template">
     <li class="mld_Ulli">
-        <div class="addimg">${title}</div>
+        <div class="addimg" data-type="${type}">${title}</div>
         <img src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
         <div class="baoBtn" data-id="${id}">
@@ -872,8 +872,15 @@ ${name}</a>-->
                                 dataType: "json",
                                 contentType: "application/json; charset=utf-8",
                                 success: function (data) {
-                                    // location.reload();
-                                    //alert(JSON.stringify(data))
+                                    state.knowledgePoint.value.contents.comments.push(data)
+                                    //comments.innerHTML = ''
+                                    $('#comments').html("");
+                                    proc({
+                                        templateId: 'comment-template',
+                                        data: state.knowledgePoint.value.contents.comments,
+                                        containerId: 'comments'
+                                    })
+
                                 }
                             })
                         }
@@ -928,90 +935,93 @@ ${name}</a>-->
                                 $('.addimg span').eq(i).removeClass('mld_liImg_').addClass('mld_liImg');
                             }
                         }
-
                         //判断对错
-                        var findProblem = function (problemId) {
-                            var problem = null
-                            for (var i = 0; i < value.contents.problems.length; ++i) {
-                                if (value.contents.problems[i].id == problemId) {
-                                    problem = value.contents.problems[i]
-                                    break
-                                }
-                            }
-                            return problem
-                        }
-                        var compareAnswer = function (index, standardAnswers) {
-                            var finded = false
-                            for (var j = 0; j < standardAnswers.length; ++j) {
-                                if (index == standardAnswers[j].name) {
-                                    finded = true
-                                    break
-                                }
-                            }
-                            return finded
-                        }
-                        var falseImage = getTemplate('falseImage');
-                        var trueImage = getTemplate('trueImage');
-                        var problemContainer = document.getElementById('problems');
-                        problemContainer.addEventListener('click', function (e) {
-                            var clickedElement = e.target;
-                            if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')) {
-                                var problemType =
-                                        clickedElement.parentNode.parentNode.previousElementSibling.firstElementChild.textContent;
-                                var titleElement = clickedElement.previousElementSibling
-                                switch (problemType) {
-                                    case '多选题':
-                                        if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected ==
-                                                true) {
-                                            titleElement.dataset.selected = false;
-                                            //
-                                            titleElement.removeClass('daanLi_nowBai');
-                                            titleElement.parentNode.removeClass('daanLi_now');
-                                        } else {
-                                            titleElement.dataset.selected = true;
-                                            //
-                                            titleElement.addClass('daanLi_nowBai');
-                                            titleElement.parentNode.addClass('daanLi_now');
-                                        }
-                                        break
-                                    case '单选题':
-                                        var optionsContainer = clickedElement.parentNode.parentNode;
-                                        for (var i = 0; i < optionsContainer.children.length; ++i) {
-                                            var option = optionsContainer.children[i];
-                                            if (option.children[0].dataset.selected == 'true') {
-                                                option.children[0].dataset.selected = false;
-                                                option.children[0].removeClass('daanLi_nowBai');
-                                                option.children[0].parentNode.removeClass('daanLi_now');
-                                            }
-                                        }
-                                        titleElement.dataset.selected = true;
-                                        titleElement.addClass('daanLi_nowBai');
-                                        titleElement.parentNode.addClass('daanLi_now');
-                                        break
-                                }
-                            } else if (clickedElement.hasClass('btnTrue')) {
-                                var optionsContainer = clickedElement.parentNode.previousElementSibling;
-                                for (var i = 0; i < optionsContainer.children.length; ++i) {
-                                    var option = optionsContainer.children[i];
-                                    var problem = findProblem(optionsContainer.dataset.id);
-                                    if (compareAnswer(i, problem.standardAnswers)) {
-                                        option.addClass('daanLi_true');
-                                        option.firstElementChild.innerHTML = ''
-                                        option.firstElementChild.removeClass('daanLi_nowBai');
-                                        option.firstElementChild.appendChild(trueImage.cloneNode(true))
-                                    }
-                                    if (option.children[0].dataset.selected == 'true' || option.children
-                                                    [0].dataset.selected == true) {
-                                        if (!compareAnswer(i, problem.standardAnswers)) {
-                                            option.addClass('daanLi_error');
-                                            option.firstElementChild.innerHTML = ''
-                                            option.firstElementChild.removeClass('daanLi_nowBai');
-                                            option.firstElementChild.appendChild(falseImage.cloneNode(true))
-                                        }
-                                    }
-                                }
-                            }
-                        }, false)
+//                        var problemType = clickedElement.parentNode.parentNode.previousElementSibling.firstElementChild.textContent;
+//                        var titleElement = clickedElement.previousElementSibling
+                        state.knowledgePoints.judgeTrue(problems, clickedElement.parentNode.parentNode.previousElementSibling.firstElementChild.textContent, clickedElement.previousElementSibling)
+//                        //判断对错
+//                        var findProblem = function (problemId) {
+//                            var problem = null
+//                            for (var i = 0; i < value.contents.problems.length; ++i) {
+//                                if (value.contents.problems[i].id == problemId) {
+//                                    problem = value.contents.problems[i]
+//                                    break
+//                                }
+//                            }
+//                            return problem
+//                        }
+//                        var compareAnswer = function (index, standardAnswers) {
+//                            var finded = false
+//                            for (var j = 0; j < standardAnswers.length; ++j) {
+//                                if (index == standardAnswers[j].name) {
+//                                    finded = true
+//                                    break
+//                                }
+//                            }
+//                            return finded
+//                        }
+//                        var falseImage = getTemplate('falseImage');
+//                        var trueImage = getTemplate('trueImage');
+//                        var problemContainer = document.getElementById('problems');
+//                        problemContainer.addEventListener('click', function (e) {
+//                            var clickedElement = e.target;
+//                            if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')) {
+//                                var problemType =
+//                                        clickedElement.parentNode.parentNode.previousElementSibling.firstElementChild.textContent;
+//                                var titleElement = clickedElement.previousElementSibling
+//                                switch (problemType) {
+//                                    case '多选题':
+//                                        if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected ==
+//                                                true) {
+//                                            titleElement.dataset.selected = false;
+//                                            //
+//                                            titleElement.removeClass('daanLi_nowBai');
+//                                            titleElement.parentNode.removeClass('daanLi_now');
+//                                        } else {
+//                                            titleElement.dataset.selected = true;
+//                                            //
+//                                            titleElement.addClass('daanLi_nowBai');
+//                                            titleElement.parentNode.addClass('daanLi_now');
+//                                        }
+//                                        break
+//                                    case '单选题':
+//                                        var optionsContainer = clickedElement.parentNode.parentNode;
+//                                        for (var i = 0; i < optionsContainer.children.length; ++i) {
+//                                            var option = optionsContainer.children[i];
+//                                            if (option.children[0].dataset.selected == 'true') {
+//                                                option.children[0].dataset.selected = false;
+//                                                option.children[0].removeClass('daanLi_nowBai');
+//                                                option.children[0].parentNode.removeClass('daanLi_now');
+//                                            }
+//                                        }
+//                                        titleElement.dataset.selected = true;
+//                                        titleElement.addClass('daanLi_nowBai');
+//                                        titleElement.parentNode.addClass('daanLi_now');
+//                                        break
+//                                }
+//                            } else if (clickedElement.hasClass('btnTrue')) {
+//                                var optionsContainer = clickedElement.parentNode.previousElementSibling;
+//                                for (var i = 0; i < optionsContainer.children.length; ++i) {
+//                                    var option = optionsContainer.children[i];
+//                                    var problem = findProblem(optionsContainer.dataset.id);
+//                                    if (compareAnswer(i, problem.standardAnswers)) {
+//                                        option.addClass('daanLi_true');
+//                                        option.firstElementChild.innerHTML = ''
+//                                        option.firstElementChild.removeClass('daanLi_nowBai');
+//                                        option.firstElementChild.appendChild(trueImage.cloneNode(true))
+//                                    }
+//                                    if (option.children[0].dataset.selected == 'true' || option.children
+//                                                    [0].dataset.selected == true) {
+//                                        if (!compareAnswer(i, problem.standardAnswers)) {
+//                                            option.addClass('daanLi_error');
+//                                            option.firstElementChild.innerHTML = ''
+//                                            option.firstElementChild.removeClass('daanLi_nowBai');
+//                                            option.firstElementChild.appendChild(falseImage.cloneNode(true))
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }, false)
 
                         value.contents.interaction.previousId = value.previousId
                         value.contents.interaction.nextId = value.nextId
@@ -1022,52 +1032,53 @@ ${name}</a>-->
                         })
 
                         // likes---点赞
-                        var id = value.id
-                        $.ajax({
-                            type: "get",
-                            url: 'api/knowledge-points/' + id + '/is-self-like',
-                            dataType: "json",
-                            success: function (like) {
-                                var liked = like.like
-                                var icon = document.getElementById('icon');
-                                if (liked) {
-                                    icon.setAttribute('src', 'img/zan-over.png');
-                                } else {
-                                    icon.setAttribute('src', 'img/zan.png');
-                                }
-                                icon.addEventListener('click', function (e) {
-                                    if (liked) {
-                                        $.ajax({
-                                            type: "put",
-                                            url: '/api/knowledge-points/' + id + '/unlike',
-                                            data: JSON.stringify({}),
-                                            dataType: "json",
-                                            contentType: "application/json; charset=utf-8",
-                                            success: function (unlike) {
-                                                icon.setAttribute('src', 'img/zan.png');
-                                                --value.contents.interaction.likeCount
-                                                e.target.nextElementSibling.textContent = value.contents.interaction.likeCount;
-                                                liked = false;
-                                            }
-                                        })
-                                    } else {
-                                        $.ajax({
-                                            type: "put",
-                                            url: '/api/knowledge-points/' + id + '/like',
-                                            data: JSON.stringify({}),
-                                            dataType: "json",
-                                            contentType: "application/json; charset=utf-8",
-                                            success: function (like) {
-                                                icon.setAttribute('src', 'img/zan-over.png');
-                                                ++value.contents.interaction.likeCount;
-                                                e.target.nextElementSibling.textContent = value.contents.interaction.likeCount
-                                                liked = true;
-                                            }
-                                        })
-                                    }
-                                }, false)
-                            }
-                        });
+//                        var id = value.id
+//                        $.ajax({
+//                            type: "get",
+//                            url: 'api/knowledge-points/' + id + '/is-self-like',
+//                            dataType: "json",
+//                            success: function (like) {
+//                                var liked = like.like
+//                                var icon = document.getElementById('icon');
+//                                if (liked) {
+//                                    icon.setAttribute('src', 'img/zan-over.png');
+//                                } else {
+//                                    icon.setAttribute('src', 'img/zan.png');
+//                                }
+//                                icon.addEventListener('click', function (e) {
+//                                    if (liked) {
+//                                        $.ajax({
+//                                            type: "put",
+//                                            url: '/api/knowledge-points/' + id + '/unlike',
+//                                            data: JSON.stringify({}),
+//                                            dataType: "json",
+//                                            contentType: "application/json; charset=utf-8",
+//                                            success: function (unlike) {
+//                                                icon.setAttribute('src', 'img/zan.png');
+//                                                --value.contents.interaction.likeCount
+//                                                e.target.nextElementSibling.textContent = value.contents.interaction.likeCount;
+//                                                liked = false;
+//                                            }
+//                                        })
+//                                    } else {
+//                                        $.ajax({
+//                                            type: "put",
+//                                            url: '/api/knowledge-points/' + id + '/like',
+//                                            data: JSON.stringify({}),
+//                                            dataType: "json",
+//                                            contentType: "application/json; charset=utf-8",
+//                                            success: function (like) {
+//                                                icon.setAttribute('src', 'img/zan-over.png');
+//                                                ++value.contents.interaction.likeCount;
+//                                                e.target.nextElementSibling.textContent = value.contents.interaction.likeCount
+//                                                liked = true;
+//                                            }
+//                                        })
+//                                    }
+//                                }, false)
+//                            }
+//                        });
+                        state.knowledgePoints.like(value.id);
 
                         proc({
                             templateId: 'comment-template',
@@ -1295,6 +1306,7 @@ ${name}</a>-->
                             data: value.contents.interaction,
                             containerId: 'interaction1'
                         })
+
                         var id = value.id
                         $.ajax({
                             type: "get",
@@ -1412,8 +1424,6 @@ ${name}</a>-->
                         })
                         break
                 }
-
-
             },
             getById: function (id) {
                 var result = null
@@ -1445,6 +1455,157 @@ ${name}</a>-->
                     }
                 }
                 return result
+            },
+            findProblem: function (problemId) {
+                var problem = null
+                for (var i = 0; i < value.contents.problems.length; ++i) {
+                    if (value.contents.problems[i].id == problemId) {
+                        problem = value.contents.problems[i]
+                        break
+                    }
+                }
+                return problem
+            },
+            compareAnswer: function (index, standardAnswers) {
+                var finded = false
+                for (var j = 0; j < standardAnswers.length; ++j) {
+                    if (index == standardAnswers[j].name) {
+                        finded = true
+                        break
+                    }
+                }
+                return finded
+            },
+            judgeTrue: function (id, problemType, titleElement) {
+                //判断对错
+                var findProblem = function (problemId) {
+                    var problem = null
+                    for (var i = 0; i < value.contents.problems.length; ++i) {
+                        if (value.contents.problems[i].id == problemId) {
+                            problem = value.contents.problems[i]
+                            break
+                        }
+                    }
+                    return problem
+                }
+                var compareAnswer = function (index, standardAnswers) {
+                    var finded = false
+                    for (var j = 0; j < standardAnswers.length; ++j) {
+                        if (index == standardAnswers[j].name) {
+                            finded = true
+                            break
+                        }
+                    }
+                    return finded
+                }
+                var falseImage = getTemplate('falseImage');
+                var trueImage = getTemplate('trueImage');
+                var problemContainer = document.getElementById('id');
+                problemContainer.addEventListener('click', function (e) {
+                    var clickedElement = e.target;
+                    if (clickedElement.hasClass('daan_quan') || clickedElement.hasClass('daana')) {
+//                        var problemType=undefined
+//                        var titleElement=undefined
+                        switch (problemType) {
+                            case '多选题':
+                                if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected ==
+                                        true) {
+                                    titleElement.dataset.selected = false;
+                                    //
+                                    titleElement.removeClass('daanLi_nowBai');
+                                    titleElement.parentNode.removeClass('daanLi_now');
+                                } else {
+                                    titleElement.dataset.selected = true;
+                                    //
+                                    titleElement.addClass('daanLi_nowBai');
+                                    titleElement.parentNode.addClass('daanLi_now');
+                                }
+                                break
+                            case '单选题':
+                                var optionsContainer = clickedElement.parentNode.parentNode;
+                                for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                    var option = optionsContainer.children[i];
+                                    if (option.children[0].dataset.selected == 'true') {
+                                        option.children[0].dataset.selected = false;
+                                        option.children[0].removeClass('daanLi_nowBai');
+                                        option.children[0].parentNode.removeClass('daanLi_now');
+                                    }
+                                }
+                                titleElement.dataset.selected = true;
+                                titleElement.addClass('daanLi_nowBai');
+                                titleElement.parentNode.addClass('daanLi_now');
+                                break
+                        }
+                    } else if (clickedElement.hasClass('btnTrue')) {
+                        var optionsContainer = clickedElement.parentNode.previousElementSibling;
+                        for (var i = 0; i < optionsContainer.children.length; ++i) {
+                            var option = optionsContainer.children[i];
+                            var problem = findProblem(optionsContainer.dataset.id);
+                            if (compareAnswer(i, problem.standardAnswers)) {
+                                option.addClass('daanLi_true');
+                                option.firstElementChild.innerHTML = ''
+                                option.firstElementChild.removeClass('daanLi_nowBai');
+                                option.firstElementChild.appendChild(trueImage.cloneNode(true))
+                            }
+                            if (option.children[0].dataset.selected == 'true' || option.children
+                                            [0].dataset.selected == true) {
+                                if (!compareAnswer(i, problem.standardAnswers)) {
+                                    option.addClass('daanLi_error');
+                                    option.firstElementChild.innerHTML = ''
+                                    option.firstElementChild.removeClass('daanLi_nowBai');
+                                    option.firstElementChild.appendChild(falseImage.cloneNode(true))
+                                }
+                            }
+                        }
+                    }
+                }, false)
+            },
+            like: function (id) {
+                $.ajax({
+                    type: "get",
+                    url: 'api/knowledge-points/' + id + '/is-self-like',
+                    dataType: "json",
+                    success: function (like) {
+                        var liked = like.like
+                        var icon = document.getElementById('icon');
+                        if (liked) {
+                            icon.setAttribute('src', 'img/zan-over.png');
+                        } else {
+                            icon.setAttribute('src', 'img/zan.png');
+                        }
+                        icon.addEventListener('click', function (e) {
+                            if (liked) {
+                                $.ajax({
+                                    type: "put",
+                                    url: '/api/knowledge-points/' + id + '/unlike',
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (unlike) {
+                                        icon.setAttribute('src', 'img/zan.png');
+                                        --value.contents.interaction.likeCount
+                                        e.target.nextElementSibling.textContent = value.contents.interaction.likeCount;
+                                        liked = false;
+                                    }
+                                })
+                            } else {
+                                $.ajax({
+                                    type: "put",
+                                    url: '/api/knowledge-points/' + id + '/like',
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (like) {
+                                        icon.setAttribute('src', 'img/zan-over.png');
+                                        ++value.contents.interaction.likeCount;
+                                        e.target.nextElementSibling.textContent = value.contents.interaction.likeCount
+                                        liked = true;
+                                    }
+                                })
+                            }
+                        }, false)
+                    }
+                });
             }
         },
         subject: {
