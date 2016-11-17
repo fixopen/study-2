@@ -16,7 +16,7 @@ import java.util.function.Predicate;
 
 @Path("knowledge-points")
 public class KnowledgePoints {
-    public static List<Map<String, Object>> toMaps(List<KnowledgePoint> knowledgePoints) {
+    static List<Map<String, Object>> toMaps(List<KnowledgePoint> knowledgePoints) {
         List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
         Date now = new Date();
         Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
@@ -327,7 +327,7 @@ public class KnowledgePoints {
             orders.put("order", "ASC");
             List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject, orders);
             if (!knowledgePoints.isEmpty()) {
-                result = Response.ok(new Gson().toJson(knowledgePoints)).build();
+                result = Response.ok(new Gson().toJson(KnowledgePoints.toMaps(knowledgePoints))).build();
             }
         }
         return result;
@@ -342,7 +342,9 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (knowledgePoint != null) {
-                result = Response.ok(new Gson().toJson(knowledgePoint)).build();
+                Date now = new Date();
+                Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+                result = Response.ok(new Gson().toJson(KnowledgePoint.convertToMap(knowledgePoint, now, yesterday))).build();
             }
         }
         return result;

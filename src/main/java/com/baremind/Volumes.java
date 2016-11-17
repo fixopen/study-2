@@ -15,7 +15,7 @@ import java.util.*;
 
 @Path("volumes")
 public class Volumes {
-    public static List<Map<String, Object>> toMaps(List<Volume> volumes) {
+    static List<Map<String, Object>> toMaps(List<Volume> volumes) {
         List<Map<String, Object>> r = new ArrayList<>();
         Date now = new Date();
         Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));

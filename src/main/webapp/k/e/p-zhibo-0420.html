@@ -85,11 +85,25 @@
                             player.play()
                         }, false)
 
-                        player.addEventListener('timeupdate', function (e) {
+                        var checkPause = function () {
+                            var result = false
                             var ct = player.currentTime
                             if (ct >= record.endSecond) {
                                 player.pause()
+                                result = true
                             }
+                            return result
+                        }
+
+                        requestAnimationFrame(function () {
+                            var r = checkPause()
+                            if (!r) {
+                                requestAnimationFrame(checkPause)
+                            }
+                        })
+
+                        player.addEventListener('timeupdate', function (e) {
+                            checkPause()
                         }, false)
                     }
                 })
