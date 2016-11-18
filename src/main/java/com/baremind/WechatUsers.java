@@ -128,10 +128,7 @@ public class WechatUsers {
                 if (province != null) {
                     existwechatUser.setProvince(province);
                 }
-                String refId = wechatUser.getRefId();
-                if (refId != null) {
-                    existwechatUser.setRefId(refId);
-                }
+
                 String refreshToken = wechatUser.getRefreshToken();
                 if (refreshToken != null) {
                     existwechatUser.setRefreshToken(refreshToken);
