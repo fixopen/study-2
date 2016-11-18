@@ -79,11 +79,11 @@ public class ClassRooms/* extends Endpoint*/ {
     @Path("messages")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postMessage(@CookieParam("userId") String userId, Comment comment) {
+    public Response postMessage(@CookieParam("sessionId") String sessionId, Comment comment) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             comment.setId(IdGenerator.getNewId());
-            comment.setUserId(JPAEntry.getLoginId(userId));
+            comment.setUserId(JPAEntry.getLoginId(sessionId));
             comment.setObjectType("class-room");
             comment.setObjectId(classRoomId);
             Date now = new Date();
@@ -98,9 +98,9 @@ public class ClassRooms/* extends Endpoint*/ {
     @GET
     @Path("messages") ///since/{timestamp}
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postMessage(@CookieParam("userId") String userId) { //, @PathParam("timestamp") Date timestamp
+    public Response postMessage(@CookieParam("sessionId") String sessionId) { //, @PathParam("timestamp") Date timestamp
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>();
             filterObject.put("objectType", "class-room");

@@ -22,9 +22,9 @@ public class PinyinTexts {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createPinyinText(@CookieParam("userId") String userId, PinyinText pinyinText) {
+    public Response createPinyinText(@CookieParam("sessionId") String sessionId, PinyinText pinyinText) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             pinyinText.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(pinyinText);
             result = Response.ok(pinyinText).build();
@@ -34,9 +34,9 @@ public class PinyinTexts {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPinyinTexts(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getPinyinTexts(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<PinyinText> pinyinTexts = JPAEntry.getList(PinyinText.class, filterObject);
@@ -50,9 +50,9 @@ public class PinyinTexts {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPinyinTextById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getPinyinTextById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             PinyinText pinyinText = JPAEntry.getObject(PinyinText.class, "id", id);
             if (pinyinText != null) {
@@ -66,9 +66,9 @@ public class PinyinTexts {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePinyinText(@CookieParam("userId") String userId, @PathParam("id") Long id, PinyinText pinyinText) {
+    public Response updatePinyinText(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, PinyinText pinyinText) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             PinyinText existimage = JPAEntry.getObject(PinyinText.class, "id", id);
             if (existimage != null) {

@@ -68,9 +68,9 @@ public class Medias {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadMedia(@Context HttpServletRequest request, @CookieParam("userId") String userId) {
+    public Response uploadMedia(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             try {
                 Part p = request.getPart("file");
                 String contentType = p.getContentType();
@@ -111,9 +111,9 @@ public class Medias {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMedia(@CookieParam("userId") String userId, Media media) {
+    public Response createMedia(@CookieParam("sessionId") String sessionId, Media media) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             media.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(media);
             result = Response.ok(media).build();
@@ -123,9 +123,9 @@ public class Medias {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMedias(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getMedias(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Media> medias = JPAEntry.getList(Media.class, filterObject);
@@ -139,9 +139,9 @@ public class Medias {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMediaById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getMediaById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Media media = JPAEntry.getObject(Media.class, "id", id);
             if (media != null) {
@@ -155,9 +155,9 @@ public class Medias {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMedia(@CookieParam("userId") String userId, @PathParam("id") Long id, Media media) {
+    public Response updateMedia(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Media media) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>(1);
             filterObject.put("id", id);

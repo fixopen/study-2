@@ -17,9 +17,9 @@ public class Images {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createImage(@CookieParam("userId") String userId, Image image) {
+    public Response createImage(@CookieParam("sessionId") String sessionId, Image image) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             image.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(image);
             result = Response.ok(image).build();
@@ -29,9 +29,9 @@ public class Images {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImages(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getImages(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Image> images = JPAEntry.getList(Image.class, filterObject);
@@ -45,9 +45,9 @@ public class Images {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImageById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getImageById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Image image = JPAEntry.getObject(Image.class, "id", id);
             if (image != null) {
@@ -61,9 +61,9 @@ public class Images {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateImage(@CookieParam("userId") String userId, @PathParam("id") Long id, Image image) {
+    public Response updateImage(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Image image) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Image existimage = JPAEntry.getObject(Image.class, "id", id);
             if (existimage != null) {

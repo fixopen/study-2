@@ -92,10 +92,10 @@ public class KnowledgePoints {
     @Path("{id}/like")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response like(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            Log log = Logs.insert(Long.parseLong(userId), "knowledge-point", id, "like");
+        if (JPAEntry.isLogining(sessionId)) {
+            Log log = Logs.insert(Long.parseLong(sessionId), "knowledge-point", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;
@@ -105,10 +105,10 @@ public class KnowledgePoints {
     @Path("{id}/unlike")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response unlike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            Long count = Logs.deleteLike(Long.parseLong(userId), "knowledge-point", id);
+        if (JPAEntry.isLogining(sessionId)) {
+            Long count = Logs.deleteLike(Long.parseLong(sessionId), "knowledge-point", id);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
@@ -117,9 +117,9 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/like-count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikeCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             Long likeCount = Logs.getStatsCount("knowledge-point", id, "like");
             result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
         }
@@ -129,10 +129,10 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/is-self-like")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSelfLike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            Boolean has = Logs.has(Long.parseLong(userId), "knowledge-point", id, "like");
+        if (JPAEntry.isLogining(sessionId)) {
+            Boolean has = Logs.has(Long.parseLong(sessionId), "knowledge-point", id, "like");
             result = Response.ok("{\"like\":" + has.toString() + "}").build();
         }
         return result;
@@ -141,9 +141,9 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/read-count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getReadCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getReadCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             Long readCount = Logs.getStatsCount("knowledge-point", id, "read");
             result = Response.ok("{\"count\":" + readCount.toString() + "}").build();
         }
@@ -153,9 +153,9 @@ public class KnowledgePoints {
     @GET
     @Path("{id}/contents")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getContentsById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getContentsById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        Long selfId = Long.parseLong(userId);
+        Long selfId = Long.parseLong(sessionId);
         if (JPAEntry.isLogining(selfId)) {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
@@ -306,9 +306,9 @@ public class KnowledgePoints {
     @POST//添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createKnowledgePoint(@CookieParam("userId") String userId, KnowledgePoint knowledgePoint) {
+    public Response createKnowledgePoint(@CookieParam("sessionId") String sessionId, KnowledgePoint knowledgePoint) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             knowledgePoint.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(knowledgePoint);
             result = Response.ok(knowledgePoint).build();
@@ -318,9 +318,9 @@ public class KnowledgePoints {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePoints(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getKnowledgePoints(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
@@ -336,9 +336,9 @@ public class KnowledgePoints {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePointById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getKnowledgePointById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (knowledgePoint != null) {
@@ -354,9 +354,9 @@ public class KnowledgePoints {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateKnowledgePoint(@CookieParam("userId") String userId, @PathParam("id") Long id, KnowledgePoint knowledgePoint) {
+    public Response updateKnowledgePoint(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, KnowledgePoint knowledgePoint) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             KnowledgePoint existknowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (existknowledgePoint != null) {

@@ -214,9 +214,9 @@ public class Users {
     @GET
     @Path("{id}/cards")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCards(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getCards(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(404).build();
-        User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+        User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
         if (admin != null && admin.getIsAdministrator()) {
             List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
             if (!cards.isEmpty()) {
@@ -232,9 +232,9 @@ public class Users {
     @GET
     @Path("self/cards")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSelfCards(@CookieParam("userId") String userId) {
+    public Response getSelfCards(@CookieParam("sessionId") String sessionId) {
         Response result = Response.status(404).build();
-        List<Card> cards = JPAEntry.getList(Card.class, "userId", Long.parseLong(userId));
+        List<Card> cards = JPAEntry.getList(Card.class, "userId", JPAEntry.getLoginId(sessionId));
         if (!cards.isEmpty()) {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             result = Response.ok(gson.toJson(cards)).build();
@@ -352,11 +352,11 @@ public class Users {
     @Path("self/cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response activeCard(@CookieParam("userId") String userId, ActiveCard ac) {
+    public Response activeCard(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
         //Random rand = new Random();
         //Long logId = rand.nextLong();
         //Logs.insert(id, "log", logId, "start");
-        return activeCardImpl(Long.parseLong(userId), ac);
+        return activeCardImpl(Long.parseLong(sessionId), ac);
     }
 
     //@@security weak
@@ -501,9 +501,9 @@ public class Users {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(@CookieParam("userId") String userId, User user) {
+    public Response createUser(@CookieParam("sessionId") String sessionId, User user) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             user.setId(IdGenerator.getNewId());
             Date now = new Date();
             user.setCreateTime(now);
@@ -516,9 +516,9 @@ public class Users {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUsers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getUsers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<User> users = JPAEntry.getList(User.class, filterObject);
@@ -554,10 +554,11 @@ public class Users {
     @GET //查询self
     @Path("self")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSelf(@CookieParam("userId") String userId) {
+    public Response getSelf(@CookieParam("sessionId") String sessionId) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            Long id = Long.parseLong(userId);
+        if (JPAEntry.isLogining(sessionId)) {
+
+            Long id = JPAEntry.getLoginId(sessionId);
             User user = JPAEntry.getObject(User.class, "id", id);
             if (user != null) {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -645,10 +646,10 @@ public class Users {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@CookieParam("userId") String userId, @PathParam("id") Long id, User user) {
+    public Response updateUser(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, User user) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
             if (admin.getIsAdministrator()) {
                 result = Response.status(404).build();
                 User existUser = JPAEntry.getObject(User.class, "id", id);
@@ -666,11 +667,11 @@ public class Users {
     @Path("self")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSelf(@CookieParam("userId") String userId, User user) {
+    public Response updateSelf(@CookieParam("sessionId") String sessionId, User user) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            User existUser = JPAEntry.getObject(User.class, "id", userId);
+            User existUser = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
             if (existUser != null) {
                 updateUser(existUser, user);
                 JPAEntry.genericPut(existUser);
