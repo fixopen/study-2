@@ -41,9 +41,9 @@ public class GenericServlet {
 
     @GET
     @Produces("application/json")
-    public <T> Response get(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter, Class<T> type) {
+    public <T> Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter, Class<T> type) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             filterObject.forEach((key, value) -> {
@@ -88,10 +88,10 @@ public class GenericServlet {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public <T> Response getById(@CookieParam("userId") String userId, @PathParam("id") Long id, Class<T> type) {
+    public <T> Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Class<T> type) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(sessionId));
             if (admin.getIsAdministrator()) {
                 result = Response.status(404).build();
                 T entity = JPAEntry.getObject(type, "id", id);
@@ -106,11 +106,11 @@ public class GenericServlet {
     @GET //根据id查询
     @Path("self")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSelf(@CookieParam("userId") String userId) {
+    public Response getSelf(@CookieParam("sessionId") String sessionId) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            User entity = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+            User entity = JPAEntry.getObject(User.class, "id", Long.parseLong(sessionId));
             if (entity != null) {
                 result = Response.ok(new Gson().toJson(entity)).build();
             }
@@ -121,9 +121,9 @@ public class GenericServlet {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public <T extends Entity> Response create(@CookieParam("userId") String userId, T entity) {
+    public <T extends Entity> Response create(@CookieParam("sessionId") String sessionId, T entity) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             entity.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(entity);
             result = Response.ok(entity).build();
@@ -135,10 +135,10 @@ public class GenericServlet {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public <T> Response updateById(@CookieParam("userId") String loginUserId, @PathParam("id") Long id, T newData, Class<T> type, BiConsumer<T, T> update) {
+    public <T> Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, T newData, Class<T> type, BiConsumer<T, T> update) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(loginUserId)) {
-            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(loginUserId));
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(sessionId));
             if (admin.getIsAdministrator()) {
                 result = Response.status(404).build();
                 T existData = JPAEntry.getObject(type, "id", id);
@@ -156,11 +156,11 @@ public class GenericServlet {
     @Path("self")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSelf(@CookieParam("userId") String loginUserId, User newData, BiConsumer<User, User> update) {
+    public Response updateSelf(@CookieParam("sessionId") String sessionId, User newData, BiConsumer<User, User> update) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(loginUserId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            User existData = JPAEntry.getObject(User.class, "id", Long.parseLong(loginUserId));
+            User existData = JPAEntry.getObject(User.class, "id", Long.parseLong(sessionId));
             if (existData != null) {
                 update.accept(existData, newData);
                 JPAEntry.genericPut(existData);
@@ -172,10 +172,10 @@ public class GenericServlet {
 
     @DELETE
     @Path("{id}")
-    public <T> Response deleteById(@CookieParam("userId") String userId, @PathParam("id") Long id, Class<T> type) {
+    public <T> Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Class<T> type) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(userId));
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(sessionId));
             if (admin.getIsAdministrator()) {
                 result = Response.status(404).build();
                 long count = JPAEntry.genericDelete(type, "id", id);
@@ -189,11 +189,11 @@ public class GenericServlet {
 
     @DELETE
     @Path("self")
-    public Response deleteSelf(@CookieParam("userId") String userId) {
+    public Response deleteSelf(@CookieParam("sessionId") String sessionId) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            long count = JPAEntry.genericDelete(User.class, "id", Long.parseLong(userId));
+            long count = JPAEntry.genericDelete(User.class, "id", Long.parseLong(sessionId));
             if (count > 0) {
                 result = Response.ok().build();
             }

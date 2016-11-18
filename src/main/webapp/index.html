@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>小雨知时</title>
+    <script src="jquery/jquery-3.1.1.js"></script>
 </head>
+
 <body>
 <!--
 <img src="jian.png" style="width: 100%"/>
@@ -11,5 +13,35 @@
 <audio src="Episode - Boost 2.0 with Robert Ramey.mp3#t=230,250" autoplay controls></audio>
 <audio src="Jack%20Jack%20what%20do%20you%20see.mp3#t=10,20" autoplay controls></audio>
 -->
+<input id="username"/>
+<input id="password"/>
+<button id="submit">提交</button>
 </body>
+<script>
+   var a = document.getElementById("submit");
+    a.addEventListener('click',function (e) {
+        var loginInfo = {
+            info:$("#username").val(),
+            key:$("#password").val(),
+            type:"name",
+            deviceType:"android",
+            deviceNo:"1111",
+        }
+        $.ajax({
+            type:"PUT",
+            url:"/api/sessions",
+            data:JSON.stringify(loginInfo),
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            success:function (a) {
+                alert("登录成功")
+            },
+            error:function (e) {
+                alert(JSON.stringify(e))
+            }
+        })
+    })
+
+
+</script>
 </html>

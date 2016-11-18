@@ -31,9 +31,9 @@ public class ProblemOptions {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProblemOption(@CookieParam("userId") String userId, ProblemOption problemsOption) {
+    public Response createProblemOption(@CookieParam("sessionId") String sessionId, ProblemOption problemsOption) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             problemsOption.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(problemsOption);
             result = Response.ok(problemsOption).build();
@@ -43,9 +43,9 @@ public class ProblemOptions {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemOptions(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getProblemOptions(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<ProblemOption> problemsOptions = JPAEntry.getList(ProblemOption.class, filterObject);
@@ -59,9 +59,9 @@ public class ProblemOptions {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemOptionById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getProblemOptionById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             ProblemOption problemsOption = JPAEntry.getObject(ProblemOption.class, "id", id);
             if (problemsOption != null) {
@@ -75,9 +75,9 @@ public class ProblemOptions {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProblemOption(@CookieParam("userId") String userId, @PathParam("id") Long id, ProblemOption problemsOption) {
+    public Response updateProblemOption(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemOption problemsOption) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>(1);
             filterObject.put("id", id);
@@ -117,9 +117,9 @@ public class ProblemOptions {
 
     @DELETE
     @Path("{id}")
-    public Response deleteProblemOption(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response deleteProblemOption(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             long count = JPAEntry.genericDelete(ProblemOption.class, "id", id);
             if (count > 0) {

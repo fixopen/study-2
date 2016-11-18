@@ -21,9 +21,9 @@ public class ProblemStandardAnswers {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProblemStandardAnswer(@CookieParam("userId") String userId, ProblemStandardAnswer problemsStandardAnswer) {
+    public Response createProblemStandardAnswer(@CookieParam("sessionId") String sessionId, ProblemStandardAnswer problemsStandardAnswer) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             problemsStandardAnswer.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(problemsStandardAnswer);
             result = Response.ok(problemsStandardAnswer).build();
@@ -33,9 +33,9 @@ public class ProblemStandardAnswers {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemStandardAnswers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getProblemStandardAnswers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<ProblemStandardAnswer> problemsStandardAnswer = JPAEntry.getList(ProblemStandardAnswer.class, filterObject);
@@ -49,9 +49,9 @@ public class ProblemStandardAnswers {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemStandardAnswerById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getProblemStandardAnswerById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             ProblemStandardAnswer problemsStandardAnswer = JPAEntry.getObject(ProblemStandardAnswer.class, "id", id);
             if (problemsStandardAnswer != null) {
@@ -65,9 +65,9 @@ public class ProblemStandardAnswers {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProblemStandardAnswer(@CookieParam("userId") String userId, @PathParam("id") Long id, ProblemStandardAnswer problemsStandardAnswer) {
+    public Response updateProblemStandardAnswer(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemStandardAnswer problemsStandardAnswer) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>(1);
             filterObject.put("id", id);

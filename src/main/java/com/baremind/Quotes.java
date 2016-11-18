@@ -20,9 +20,9 @@ public class Quotes {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createQuote(@CookieParam("userId") String userId, Quote quote) {
+    public Response createQuote(@CookieParam("sessionId") String sessionId, Quote quote) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             quote.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(quote);
             result = Response.ok(quote).build();
@@ -32,9 +32,9 @@ public class Quotes {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getQuotes(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getQuotes(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             //{"subjectId":1,"grade":20}
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
@@ -49,9 +49,9 @@ public class Quotes {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getQuoteById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getQuoteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Quote quote = JPAEntry.getObject(Quote.class, "id", id);
             if (quote != null) {
@@ -65,9 +65,9 @@ public class Quotes {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateQuote(@CookieParam("userId") String userId, @PathParam("id") Long id, Quote quote) {
+    public Response updateQuote(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Quote quote) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Quote existvolume = JPAEntry.getObject(Quote.class, "id", id);
             if (existvolume != null) {

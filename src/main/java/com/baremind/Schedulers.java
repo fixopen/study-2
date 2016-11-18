@@ -68,9 +68,9 @@ public class Schedulers {
     @GET //根据周查询课表
     @Path("keywords/{keywords}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getByKeywords(@CookieParam("userId") String userId, @PathParam("keywords") String keywords) {
+    public Response getByKeywords(@CookieParam("sessionId") String sessionId, @PathParam("keywords") String keywords) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             String[] keywordArray = keywords.split(" ");
             EntityManager em = JPAEntry.getEntityManager();
             String stats = "SELECT s FROM Scheduler s";
@@ -104,9 +104,9 @@ public class Schedulers {
     @GET //根据科目查询老师
     @Path("teachers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTeacher(@CookieParam("userId") String userId, @QueryParam("filter") String filter) {
+    public Response getTeacher(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             EntityManager em = JPAEntry.getEntityManager();
             String stats = "SELECT l.teacher FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.teacher";
@@ -120,9 +120,9 @@ public class Schedulers {
     @GET //根据科目查询年级
     @Path("grades")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGrades(@CookieParam("userId") String userId, @QueryParam("filter") String filter) {
+    public Response getGrades(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             EntityManager em = JPAEntry.getEntityManager();
             String stats = "SELECT l.grade FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.grade";
@@ -136,9 +136,9 @@ public class Schedulers {
     @GET //根据周查询课表
     @Path("years/{year}/weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWeekScheduler(@CookieParam("userId") String userId, @PathParam("year") Integer year, @PathParam("week") Integer week) {
+    public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @PathParam("year") Integer year, @PathParam("week") Integer week) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = new HashMap<>(2);
             filterObject.put("year", year);
             filterObject.put("week", week);
@@ -154,9 +154,9 @@ public class Schedulers {
     @GET //根据周查询课表
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSchedulerById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getSchedulerById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
             if (scheduler != null) {
@@ -170,9 +170,9 @@ public class Schedulers {
 
     @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSchedulers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getSchedulers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response r = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");
@@ -207,9 +207,9 @@ public class Schedulers {
     @GET //获取classroom-key
     @Path("key")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKey(@CookieParam("userId") String userId) {
+    public Response getKey(@CookieParam("sessionId") String sessionId) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             String key = "";
             result = Response.ok("{\"key\":\"" + key + "\"}").build();
         }
@@ -219,9 +219,9 @@ public class Schedulers {
     @POST //添加课表
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createScheduler(@CookieParam("userId") String userId, Scheduler scheduler) {
+    public Response createScheduler(@CookieParam("sessionId") String sessionId, Scheduler scheduler) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             scheduler.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(scheduler);
             result = Response.ok(scheduler).build();
@@ -233,9 +233,9 @@ public class Schedulers {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateScheduler(@CookieParam("userId") String userId, @PathParam("id") Long id, Scheduler scheduler) {
+    public Response updateScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Scheduler scheduler) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Scheduler existScheduler = JPAEntry.getObject(Scheduler.class, "id", id);
             if (existScheduler != null) {

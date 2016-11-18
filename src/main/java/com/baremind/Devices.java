@@ -17,9 +17,9 @@ public class Devices {
     @POST //添
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createDevice(@CookieParam("userId") String userId, Device device) {
+    public Response createDevice(@CookieParam("sessionId") String sessionId, Device device) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             device.setId(IdGenerator.getNewId());
             JPAEntry.genericPost(device);
             result = Response.ok(device).build();
@@ -29,9 +29,9 @@ public class Devices {
 
     @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getDevices(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+    public Response getDevices(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             List<Device> devices = JPAEntry.getList(Device.class, filterObject);
@@ -45,9 +45,9 @@ public class Devices {
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getDeviceById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getDeviceById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Device device = JPAEntry.getObject(Device.class, "id", id);
             if (device != null) {
@@ -61,9 +61,9 @@ public class Devices {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateDevice(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Device device) {
+    public Response updateDevice(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Device device) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(aUserId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Device existdevice = JPAEntry.getObject(Device.class, "id", id);
             if (existdevice != null) {
