@@ -36,7 +36,8 @@
 <article id="content"></article>
 <template id="audio-template">
     <div class="wrap">
-        <audio id="player" src="p-zhibo-0420/${bookNo}.mp3#t=${startSecond},${endSecond}" autoplay></audio>
+        <audio id="player" src="p-zhibo-0420/${bookNo}/${pageNo}${unitNo}.mp3" autoplay></audio>
+        <!--#t=${startSecond},${endSecond}-->
         <img src="p-zhibo-0420/${bookNo}/${pageNo}.jpg" alt="">
         <div id="play" class="amplifier"></div>
     </div>
@@ -65,48 +66,57 @@
                     containerId: 'content'
                 })
             } else {
-                $.ajax({
-                    type: 'get',
-                    url: '/api/audio-records/04/20/' + bookNo + '/' + pageNo + '/' + unitNo,
-                    success: function (record) {
-                        record.startSecond = record.startTime / 1000
-                        record.endSecond = record.endTime / 1000
-                        proc({
-                            templateId: 'audio-template',
-                            data: record,
-                            containerId: 'content'
-                        })
-
-                        var player = document.getElementById('player')
-                        var play = document.getElementById('play')
-
-                        play.addEventListener('click', function (e) {
-                            player.currentTime = record.startSecond
-                            player.play()
-                        }, false)
-
-                        var checkPause = function () {
-                            var result = false
-                            var ct = player.currentTime
-                            if (ct >= record.endSecond) {
-                                player.pause()
-                                result = true
-                            }
-                            return result
-                        }
-
-                        requestAnimationFrame(function () {
-                            var r = checkPause()
-                            if (!r) {
-                                requestAnimationFrame(checkPause)
-                            }
-                        })
-
-                        player.addEventListener('timeupdate', function (e) {
-                            checkPause()
-                        }, false)
-                    }
+                proc({
+                    templateId: 'audio-template',
+                    data: {
+                        bookNo: bookNo,
+                        pageNo: pageNo,
+                        unitNo: unitNo
+                    },
+                    containerId: 'content'
                 })
+//                $.ajax({
+//                    type: 'get',
+//                    url: '/api/audio-records/04/20/' + bookNo + '/' + pageNo + '/' + unitNo,
+//                    success: function (record) {
+//                        record.startSecond = record.startTime / 1000
+//                        record.endSecond = record.endTime / 1000
+//                        proc({
+//                            templateId: 'audio-template',
+//                            data: record,
+//                            containerId: 'content'
+//                        })
+//
+//                        var player = document.getElementById('player')
+//                        var play = document.getElementById('play')
+//
+//                        play.addEventListener('click', function (e) {
+//                            player.currentTime = record.startSecond
+//                            player.play()
+//                        }, false)
+//
+//                        var checkPause = function () {
+//                            var result = false
+//                            var ct = player.currentTime
+//                            if (ct >= record.endSecond) {
+//                                player.pause()
+//                                result = true
+//                            }
+//                            return result
+//                        }
+//
+//                        requestAnimationFrame(function () {
+//                            var r = checkPause()
+//                            if (!r) {
+//                                requestAnimationFrame(checkPause)
+//                            }
+//                        })
+//
+//                        player.addEventListener('timeupdate', function (e) {
+//                            checkPause()
+//                        }, false)
+//                    }
+//                })
             }
         }
     })

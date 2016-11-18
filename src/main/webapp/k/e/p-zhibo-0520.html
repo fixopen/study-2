@@ -65,65 +65,74 @@
                     containerId: 'content'
                 })
             } else {
-                $.ajax({
-                    type: 'get',
-                    url: '/api/audio-records/05/20/' + bookNo + '/' + pageNo + '/' + unitNo,
-                    success: function (record) {
-                        record.duration = record.endTime - record.startTime
-                        record.startSecond = record.startTime / 1000
-                        record.endSecond = record.endTime / 1000
-                        proc({
-                            templateId: 'audio-template',
-                            data: record,
-                            containerId: 'content'
-                        })
-
-//                        var tid = null
-
-                        var start = null
-
-                        var checkPause = function (timestamp) {
-                            if (!start) {
-                                start = timestamp
-                            }
-                            var progress = timestamp - start;
-                            if (progress >= record.duration) {
-                                player.pause()
-                            } else {
-                                requestAnimationFrame(checkPause)
-                            }
-//                            var isPause = false
-//                            var ct = player.currentTime
-//                            if (ct >= record.endSecond - 0.5) {
-//                                isPause = true
-//                                player.pause()
+                proc({
+                    templateId: 'audio-template',
+                    data: {
+                        bookNo: bookNo,
+                        pageNo: pageNo,
+                        unitNo: unitNo
+                    },
+                    containerId: 'content'
+                })
+//                $.ajax({
+//                    type: 'get',
+//                    url: '/api/audio-records/05/20/' + bookNo + '/' + pageNo + '/' + unitNo,
+//                    success: function (record) {
+//                        record.duration = record.endTime - record.startTime
+//                        record.startSecond = record.startTime / 1000
+//                        record.endSecond = record.endTime / 1000
+//                        proc({
+//                            templateId: 'audio-template',
+//                            data: record,
+//                            containerId: 'content'
+//                        })
+//
+////                        var tid = null
+//
+//                        var start = null
+//
+//                        var checkPause = function (timestamp) {
+//                            if (!start) {
+//                                start = timestamp
 //                            }
-//                            if (!isPause) {
+//                            var progress = timestamp - start;
+//                            if (progress >= record.duration) {
+//                                player.pause()
+//                            } else {
 //                                requestAnimationFrame(checkPause)
 //                            }
-                        }
-
-                        var player = document.getElementById('player')
-                        var play = document.getElementById('play')
-
-                        play.addEventListener('click', function (e) {
-                            player.currentTime = record.startSecond
-                            player.play()
-//                            clearTimeout(tid)
-//                            tid = setTimeout(function() {
-//                                var ct = player.currentTime
-//                                if (ct >= record.endSecond) {
-//                                    player.pause()
-//                                }
-//                            }, record.endTime - record.startSecond)
-                            requestAnimationFrame(checkPause)
-                        }, false)
-
-//                        player.addEventListener('timeupdate', function (e) {
-//                            checkPause()
+////                            var isPause = false
+////                            var ct = player.currentTime
+////                            if (ct >= record.endSecond - 0.5) {
+////                                isPause = true
+////                                player.pause()
+////                            }
+////                            if (!isPause) {
+////                                requestAnimationFrame(checkPause)
+////                            }
+//                        }
+//
+//                        var player = document.getElementById('player')
+//                        var play = document.getElementById('play')
+//
+//                        play.addEventListener('click', function (e) {
+//                            player.currentTime = record.startSecond
+//                            player.play()
+////                            clearTimeout(tid)
+////                            tid = setTimeout(function() {
+////                                var ct = player.currentTime
+////                                if (ct >= record.endSecond) {
+////                                    player.pause()
+////                                }
+////                            }, record.endTime - record.startSecond)
+//                            requestAnimationFrame(checkPause)
 //                        }, false)
-                    }
-                })
+//
+////                        player.addEventListener('timeupdate', function (e) {
+////                            checkPause()
+////                        }, false)
+//                    }
+//                })
             }
         }
     })

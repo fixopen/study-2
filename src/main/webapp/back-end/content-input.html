@@ -525,21 +525,22 @@
                         state.append(element)
                     }
                     for (let i = 0; i < contents.contents.length; ++i) {
+                        let element = null
                         switch (contents.contents[i].type) {
                             case 'text':
-                                let element = state.text.create(contents.contents[i])
+                                element = state.text.create(contents.contents[i])
                                 state.append(element)
                                 break
                             case 'image':
-                                let element = state.image.create(contents.contents[i])
+                                element = state.image.create(contents.contents[i])
                                 state.append(element)
                                 break
                             case 'imageText':
-                                let element = state.imageText.create(contents.contents[i])
+                                element = state.imageText.create(contents.contents[i])
                                 state.append(element)
                                 break
                             case 'pinyinText':
-                                let element = state.pinyinText.create(contents.contents[i])
+                                element = state.pinyinText.create(contents.contents[i])
                                 state.append(element)
                                 break
                         }
