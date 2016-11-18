@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="/css/common.css">
     <!--<link rel="stylesheet" href="allVideo0.css">-->
     <link rel="stylesheet" href="videos.css">
-    <!--<link rel="stylesheet" href="allVideo0.css">-->
     <style>
         .convenient {
             position: absolute;
@@ -35,6 +34,7 @@
             overflow: hidden;
             text-align: center;
         }
+
         .week {
             position: absolute;
             top: 3%;
@@ -43,35 +43,41 @@
             color: #000;
             font-family: "Microsoft YaHei", serif;
         }
+
         .schedule-table {
             width: 100%;
             height: 100%;
         }
+
         .schedule-table thead {
             height: 1.8125rem;
         }
+
         .schedule-table tr {
             height: 1.25rem;
         }
+
         .color:nth-child(even) {
             background-color: #ffd5ce;
             border-bottom: 0.0625rem solid #ea875f;
         }
+
         .color:nth-child(odd) {
             background-color: #fff;
             border-bottom: 0.09375rem solid #ea875f;
         }
+
         .schedule-table td {
             font-size: 0.6875rem;
             color: #371f1f;
             text-align: center;
         }
+
         .data :nth-child(even) {
             border-top: 1px solid #ea875f;
         }
     </style>
 </head>
-
 
 <body>
 <article id="main" class="wrap">
@@ -115,43 +121,35 @@
     </div>
 </article>
 <article id="passed" style="display: none;" class="wrap noBackg">
-    <input class="souSuo clearfix" type="text" id="text"  name="keyword"  onkeydown="entersearch()" placeholder="请输入科目、老师、年级 关键词搜索">
+    <!--<input class="souSuo clearfix" type="text" id="text"  name="keyword"  onkeydown="entersearch()" placeholder="请输入科目、老师、年级 关键词搜索">-->
     <div class="tiao_jian" id="st">
-        <div class="tiaoj_TJ01 selectDiv" id="subject">
+        <div class="tiaoj_TJ01 selectDiv">
             <div class="tiaoj_1span">
                 <span>科目</span>
                 <img src="../img/xiala.png" alt="">
             </div>
-            <ul class="xiala_ul">
-                <li class="xiala_li"></li>
-            </ul>
+            <ul class="xiala_ul" id="subject"></ul>
         </div>
         <div class="tiaoj_TJ02 selectDiv">
             <div class="tiaoj_2span">
                 <span>老师</span>
                 <img src="../img/xiala.png" alt="">
             </div>
-            <ul class="xiala_ul" id="teacher">
-                <li class="xiala_li"></li>
-            </ul>
+            <ul class="xiala_ul" id="teacher"></ul>
         </div>
         <div class="tiaoj_TJ03 selectDiv">
             <div class="tiaoj_3span">
                 <span>年级</span>
                 <img src="../img/xiala.png" alt="">
             </div>
-            <ul class="xiala_ul" id="grade">
-                <li class="xiala_li"></li>
-            </ul>
+            <ul class="xiala_ul" id="grade"></ul>
         </div>
         <div class="tiaoj_TJ03 selectDiv">
             <div class="tiaoj_3span">
                 <span>日期</span>
                 <img src="../img/xiala.png" alt="">
             </div>
-            <ul class="xiala_ul" id="date">
-                <li class="xiala_li"></li>
-            </ul>
+            <ul class="xiala_ul" id="date"></ul>
         </div>
     </div>
     <div class="rain-main noPadd">
@@ -162,7 +160,8 @@
     </div>
 </article>
 <article id="video" style="display: none;">
-    <video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>
+    <!--<video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>-->
+    <div class="wrap nohuifBackg"></div>
 </article>
 <article id="scheduler" style="display: none;">
     <div class="convenient">
@@ -177,7 +176,9 @@
                     <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
                         <tr style="width: 100%; height: 100%;">
                             <th style="width: 28%; height: 100%;">时间</th>
-                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
+                                授课年级
+                            </th>
                             <th style="width: 48%; height: 100%;">授课内容</th>
                         </tr>
                     </table>
@@ -325,7 +326,7 @@
 <template id="passed-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a class="passedVideo" href="video.html?src=${cdnLink}">
+            <a class="passedVideo" href="video.html?src=${cdnLink}" id="videoEntry" data-article="video">
                 <img src="${cover}" alt="">
                 <div class="video-list-mask">
                         <span class="live-radio">
@@ -383,6 +384,80 @@
         </div>
     </li>
 </template>
+<template id="subject-template">
+    <li class="xiala_li"></li>
+</template>
+<template id="teacher-template">
+    <li class="xiala_li"></li>
+</template>
+<template id="grade-template">
+    <li class="xiala_li"></li>
+</template>
+<template id="date-template">
+    <li class="xiala_li"></li>
+</template>
+
+
+<!--*****************************video*****************************-->
+<tempalte id="video-template" class="rain-main nohuifPadd">
+    <div class="before_uli">
+        <div class="before_liplay">
+            <a class="all_aBtn" href="javascript:void(0)">
+                <div class="zhezao_top"></div>
+                <div class="zz_topbtn"></div>
+                <div class="zz_toptxt">${title}</div>
+                <div class="zhezao_bottom"></div>
+                <div class="zzbottom_div">
+                    <div class="zzbom_diva1"></div>
+                    <div class="zzbom_diva2">
+                        <span class="zzbom_span">00:00</span>
+                        <p class="zzbom_div2p">
+                            <span class="zzbom_div2span"></span>
+                        </p>
+                        <span class="zzbom_span">30:00</span>
+                    </div>
+                    <div class="zzbom_diva3"></div>
+                </div>
+
+                <div class="before_div1">${subject}</div>
+                <div class="yuwen_div2 yuwen_posin">
+                    <h3 class="yuwen_h3">写人作文</h3>
+                    <p class="yuwen_p">${description}</p>
+                </div>
+                <span class="yuwen_span">—${teacher}老师</span>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div>
+                    <p class="course_xqpsee"><span>${watchCount}</span>人观看过</p>
+                    <a href="javascript:void(0)" class="course_xqpzan">
+                        <img class="dianzanImg" src="/img/dianzan.png" alt="">
+                        <img class="dianzanImg cur" src="/img/zanover.png" alt="">
+                        赞
+                        <span class="xqpZan">${likeCount}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="zz_comment">
+        <div class="zz_center">
+            <h3 class="zz_plh3">评论</h3>
+            <ul class="zz_plul">
+                <li class="zz_plli">
+                    <span class="zz_lispan1">${userName}</span>
+                    <span class="zz_lispan2">${userTime}</span>
+                    <p class="zz_pllip">${comment}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="leave_message">
+        <input class="message_text" type="text" placeholder="留言">
+        <a class="message_btn" href="javascript:void(0)">发送</a>
+    </div>
+</tempalte>
 
 <!--**********************************scheduler********************************-->
 <template id="day-template">
@@ -398,7 +473,9 @@
 <template id="item-template">
     <tr>
         <td style="width: 28%;">${st}-${et}</td>
-        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
+            ${grade}
+        </td>
         <td style="width: 48%;">${title}</td>
     </tr>
 </template>
@@ -424,12 +501,53 @@
 
     var state = {
         currentArticle: document.getElementById('main'),
+        getGrade: function (gradeValue) {
+            var result = ''
+            if (gradeValue == 1) {
+                result = '一年级'
+            } else if (gradeValue == 2) {
+                result = '二年级'
+            } else if (gradeValue == 3) {
+                result = '三年级'
+            } else if (gradeValue == 4) {
+                result = '四年级'
+            } else if (gradeValue == 5) {
+                result = '五年级'
+            } else if (gradeValue == 6) {
+                result = '六年级'
+            } else if (gradeValue == 20) {
+                result = '低年级'
+            } else {
+                result = '高年级'
+            }
+            return result
+        },
         main: {
+            zeroFuture: {
+                container: document.getElementById('zeroFuture'),
+                template: document.getElementById('future-template'),
+                data: null
+            },
+            zeroPlaying: {
+                container: document.getElementById('zeroPlaying'),
+                template: document.getElementById('playing-template'),
+                data: null
+            },
+            oneFuture: {
+                container: document.getElementById('oneFuture'),
+                template: document.getElementById('future-template'),
+                data: null
+            },
+            onePlaying: {
+                container: document.getElementById('onePlaying'),
+                template: document.getElementById('playing-template'),
+                data: null
+            },
             isInit: false,
             init: function () {
                 if (!state.main.isInit) {
-                    $(document).on('click', '@@', function () {
-                        //
+                    $(document).on('click', '.course-detail-btn', function () {
+                        $('course-detail').toggle()
                     })
 
                     var now = Date.now()
@@ -438,7 +556,7 @@
                         type: 'get',
                         url: '/api/schedulers?filter=' + JSON.stringify({
                             subjectId: subjects[0].id,
-                            endTime: '> ' + now
+                            endTime: '> ' +now
                         }),
                         dataType: 'json',
                         success: function (zeroSchedulers) {
@@ -446,10 +564,10 @@
 
                             subjects[0].playing = zeroSchedulers[0]
                             subjects[0].futures = zeroSchedulers[1]
-                            state.adjustData(0)
-                            state.zeroFuture.data = subjects[0].futures
-                            state.zeroPlaying.data = subjects[0].playing
-                            state.refreshState(0)
+                            state.main.adjustData(0)
+                            state.main.zeroFuture.data = subjects[0].futures
+                            state.main.zeroPlaying.data = subjects[0].playing
+                            state.main.refreshState(0)
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers?filter=' + JSON.stringify({
@@ -460,24 +578,28 @@
                                 success: function (oneSchedulers) {
                                     subjects[1].playing = oneSchedulers[0]
                                     subjects[1].futures = oneSchedulers[1]
-                                    state.adjustData(1)
-                                    state.oneFuture.data = subjects[1].futures
-                                    state.onePlaying.data = subjects[1].playing
-                                    state.refreshState(1)
+                                    state.main.adjustData(1)
+                                    state.main.oneFuture.data = subjects[1].futures
+                                    state.main.onePlaying.data = subjects[1].playing
+                                    state.main.refreshState(1)
 
-                                    var whoFirst = function() {
-                                        var comparePlaying = function() {
+                                    var whoFirst = function () {
+                                        var needFuture = true
+                                        var comparePlaying = function () {
+
                                             var result = false
                                             if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
                                                 if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
                                                     result = true
                                                 }
+                                                needFuture = false
                                             } else if (subjects[1].playing.length > 0) {
                                                 result = true
+                                                needFuture = false
                                             }
                                             return result
                                         }
-                                        var compareFuture = function() {
+                                        var compareFuture = function () {
                                             var result = false
                                             if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
                                                 if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
@@ -489,7 +611,7 @@
                                             return result
                                         }
                                         var result = comparePlaying()
-                                        if (!result) {
+                                        if (!needFuture) {
                                             result = compareFuture()
                                         }
                                         return result
@@ -502,8 +624,8 @@
                                         //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
                                     }
                                     setInterval(function () {
-                                        state.refreshState(0)
-                                        state.refreshState(1)
+                                        state.main.refreshState(0)
+                                        state.main.refreshState(1)
                                     }, 60 * 1000)
                                 }
                             })
@@ -512,27 +634,6 @@
 
                     state.main.isInit = true
                 }
-            },
-            getGrade: function (gradeValue) {
-                var result = ''
-                if (gradeValue == 1) {
-                    result = '一年级'
-                } else if (gradeValue == 2) {
-                    result = '二年级'
-                } else if (gradeValue == 3) {
-                    result = '三年级'
-                } else if (gradeValue == 4) {
-                    result = '四年级'
-                } else if (gradeValue == 5) {
-                    result = '五年级'
-                } else if (gradeValue == 6) {
-                    result = '六年级'
-                } else if (gradeValue == 20) {
-                    result = '低年级'
-                } else {
-                    result = '高年级'
-                }
-                return result
             },
             adjustData: function (subjectIndex) {
                 for (var i = 0; i < subjects[subjectIndex].playing.length; ++i) {
@@ -545,7 +646,7 @@
                     item.date = item.startTime.getDate()
                 }
                 for (var i = 0; i < subjects[subjectIndex].futures.length; ++i) {
-                    var item = subjects[subjectIndex].playing[i]
+                    var item = subjects[subjectIndex].futures[i]
                     item.grade = state.getGrade(item.grade)
                     item.startTime = Date.parse(item.startTime.replace('-', '/'))
                     item.endTime = Date.parse(item.endTime.replace('-', '/'))
@@ -572,53 +673,42 @@
                 }
                 switch (subjectIndex) {
                     case 0:
-                        state.zeroFuture.container.innerHTML = ''
-                        proc(state.zeroFuture)
-                        state.zeroPlaying.container.innerHTML = ''
-                        proc(state.zeroPlaying)
+                        state.main.zeroFuture.container.innerHTML = ''
+                        proc(state.main.zeroFuture)
+                        state.main.zeroPlaying.container.innerHTML = ''
+                        proc(state.main.zeroPlaying)
                         break
                     case 1:
-                        state.oneFuture.container.innerHTML = ''
-                        proc(state.oneFuture)
-                        state.onePlaying.container.innerHTML = ''
-                        proc(state.onePlaying)
+                        state.main.oneFuture.container.innerHTML = ''
+                        proc(state.main.oneFuture)
+                        state.main.onePlaying.container.innerHTML = ''
+                        proc(state.main.onePlaying)
                         break
                     default:
                         break
                 }
             },
-            zeroFuture: {
-                container: document.getElementById('zeroFuture'),
-                template: document.getElementById('future-template'),
-                data: state.zeroFuture.data
-            },
-            zeroPlaying: {
-                container: document.getElementById('zeroPlaying'),
-                template: document.getElementById('playing-template'),
-                data: state.zeroPlaying.data
-            },
-            oneFuture: {
-                container: document.getElementById('oneFuture'),
-                template: document.getElementById('future-template'),
-                data: state.oneFuture.data
-            },
-            onePlaying: {
-                container: document.getElementById('onePlaying'),
-                template: document.getElementById('playing-template'),
-                data: state.onePlaying.data
-            },
 
             schedulerEntry: document.getElementById('schedulerEntry'),
             passedEntry: document.getElementById('passedEntry'),
             futureNoteEntry: document.getElementById('futureNoteEntry'),
-            teacherChoice: document.getElementById('teacherChoice'),
-            gradeChoice: document.getElementById('gradeChoice'),
-            keywords: document.getElementById('keywords'),
-            search: function () {
-                //filter the playing and future data via the filter element state
-            }
+
+//            keywords: document.getElementById('keywords'),
+//            search: function () {
+//                //filter the playing and future data via the filter element state
+//            }
         },
         passed: {
+            zeroPassed: {
+                container: document.getElementById('more'),
+                template: document.getElementById('passed-template'),
+                data: passed
+            },
+            content: document.getElementById('video'),
+            subject: document.getElementById('subject'),
+            teacher: document.getElementById('teacher'),
+            grade: document.getElementById('grade'),
+            date: document.getElementById('date'),
             isInit: false,
             init: function () {
                 if (!state.passed.isInit) {
@@ -669,26 +759,33 @@
 
                     state.passed.isInit = true
 
-                    subject.addEventListener('change', function (e) {
+                    state.passed.subject.addEventListener('change', function (e) {
                         var subjectIndex = 0
                         var r = state.passed.search()
-                        teacher.innerHTML = ''
+                        state.passed.teacher.innerHTML = ''
                         proc({
-                            container: teacher,
+                            container: state.passed.teacher,
                             data: subjects[subjectIndex].teachers,
-                            templateId: ''
+                            templateId: 'teacher-template'
                         })
 
-                        grade.innerHTML = ''
+                        state.passed.grade.innerHTML = ''
                         proc({
-                            container: grade,
+                            container: state.passed.grade,
                             data: subjects[subjectIndex].grades + subjects[1].grades,
-                            templateId: ''
+                            templateId: 'grade-template'
                         })
 
-                        content.innerHTML = ''
+                        state.passed.date.innerHTML = ''
                         proc({
-                            container: content,
+                            container: state.passed.date,
+                            data: subjects[subjectIndex].date,
+                            templateId: 'date-template'
+                        })
+
+                        state.passed.content.innerHTML = ''
+                        proc({
+                            container: state.passed.content,
                             data: r,
                             templateId: ''
                         })
@@ -698,25 +795,25 @@
                         //
                     })
 
-                    grade.addEventListener('change', function (e) {
+                    state.passed.grade.addEventListener('change', function (e) {
                         var gradeIndex = 0
                         var r = state.passed.search()
 
-                        content.innerHTML = ''
+                        state.passed.content.innerHTML = ''
                         proc({
-                            container: content,
+                            container: state.passed.content,
                             data: r,
                             templateId: ''
                         })
                     }, false)
 
-                    teacher.addEventListener('change', function (e) {
-                        var teacher = 0
+                    state.passed.teacher.addEventListener('change', function (e) {
+                        var teacherIndex = 0
                         var r = state.passed.search()
 
-                        content.innerHTML = ''
+                        state.passed.content.innerHTML = ''
                         proc({
-                            container: content,
+                            container: state.passed.content,
                             data: r,
                             templateId: ''
                         })
@@ -726,39 +823,40 @@
             search: function () {
                 var result = []
                 //filter the passed data via the filter element state
-                var keywords, subject, teacher, grade
+                var subject, teacher, grade, date
                 for (var i = 0; i < passed.length; ++i) {
                     if (passed[i].subjectId == subject) {
                         if (teacher != 'renyi' && passed[i].teacher == teacher) {
                             if (passed[i].grade == grade) {
-                                result.push(passed[i])
+                                if (passed[i].date == date) {
+                                    result.push(passed[i])
+                                }
                             }
                         }
                     }
                 }
                 return result
             },
-//            showPassed: function (state, moreId, tips) {
-//                proc(state)
-//                document.getElementById(moreId).style.display = 'none'
-//                var tips = document.getElementById(tips)
-//                tips.innerHTML = '没有更多视频，敬请期待'
-//            },
-            zeroPassed: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null,
-//                show: function () {
-//                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')//????????????
-//                }
-            },
-            onePassed: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null,
-//                show: function () {
-//                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
-//                }
+            teacherChoice: document.getElementById('teacherChoice'),
+            gradeChoice: document.getElementById('gradeChoice'),
+//            onePassed: {
+//                container: document.getElementById(''),
+//                template: document.getElementById(''),
+//                data: null,
+////                show: function () {
+////                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
+////                }
+//            }
+        },
+        video: {
+            isInit: false,
+            init: function () {
+                if (!state.video.isInit) {
+                    $.ajax({
+                        type: 'get',
+                        url: ''
+                    })
+                }
             }
         },
         scheduler: {
@@ -878,7 +976,7 @@
             state['main'].init()
             history.pushState(null, null, '/videos.html#main')
 
-            window.addEventListener('hashchange', function (e) {
+            window.addEventListener('hashChange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
