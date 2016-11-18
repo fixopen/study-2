@@ -440,7 +440,7 @@ public class Users {
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
                                 }
-                                Session s = PublicAccounts.putSession(new Date(), user.getId());
+                                Session s = PublicAccounts.putSession(new Date(), user.getId(), 0l); //@@deviceId is temp zero
                                 result = Response.ok(c)
                                     .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                                     .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
@@ -525,43 +525,6 @@ public class Users {
             if (!users.isEmpty()) {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 result = Response.ok(gson.toJson(users)).build();
-            }
-        }
-        return result;
-    }
-
-    @PUT
-    @Path("phone")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response login(ActiveCard activeCard) {
-        Response result = Response.status(404).build();
-        Map<String, Object> validationCodeConditions = new HashMap<>();
-        validationCodeConditions.put("phoneNumber", activeCard.getPhoneNumber());
-        validationCodeConditions.put("validCode", activeCard.getValidCode());
-        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
-
-        if (!validationCodes.isEmpty()) {
-            result = Response.status(405).build();
-            Date now = new Date();
-            Date sendTime = validationCodes.get(0).getTimestamp();
-            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                User user = JPAEntry.getObject(User.class, "telephone", activeCard.getPhoneNumber());
-                if (user == null) {
-                    user = new User();
-                    user.setId(IdGenerator.getNewId());
-                    user.setCreateTime(now);
-                    user.setTelephone(activeCard.getPhoneNumber());
-                    user.setUpdateTime(now);
-                    user.setName("");
-                    user.setSex(0);
-                    JPAEntry.genericPost(user);
-                }
-                Session session = PublicAccounts.putSession(now, user.getId());
-                result = Response.ok()
-                    .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                    .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                    .build();
-
             }
         }
         return result;

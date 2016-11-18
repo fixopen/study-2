@@ -716,7 +716,6 @@ public class PublicAccounts {
         //Logs.insert(0l, "debug", 12l, wechatUser.getId().toString());
         wechatUser.setUserId(userId);
         wechatUser.setOpenId(userInfo.openid);
-        wechatUser.setRefId(userInfo.unionid);
         wechatUser.setCity(userInfo.city);
         wechatUser.setCountry(userInfo.country);
         //user.setExpiry();
@@ -728,7 +727,7 @@ public class PublicAccounts {
         //user.setRefId();
         //user.setRefreshToken();
         //user.setSex(p.Infos.get(sex));
-        wechatUser.setSex(userInfo.sex.intValue());
+        wechatUser.setSex(userInfo.sex);
         wechatUser.setSubscribe(userInfo.subscribe);
         wechatUser.setSubscribeTime(userInfo.subscribe_time);
         wechatUser.setLanguage(userInfo.language);
@@ -756,12 +755,15 @@ public class PublicAccounts {
         return user;
     }
 
-    public static Session putSession(Date now, Long userId) {
+    public static Session putSession(Date now, Long userId, Long deviceId) {
         String nowString = now.toString() + Long.toString(now.getTime());
         byte[] sessionIdentity = Securities.digestor.digest(nowString);
         String sessionString = Hex.bytesToHex(sessionIdentity);
 
-        Session s = JPAEntry.getObject(Session.class, "userId", userId);
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("userId", userId);
+        conditions.put("deviceId", deviceId);
+        Session s = JPAEntry.getObject(Session.class, conditions);
         if (s == null) {
             s = new Session();
             Long sessionId = IdGenerator.getNewId();
@@ -804,7 +806,7 @@ public class PublicAccounts {
             userId = dbWechatUser.getUserId();
         }
 
-        Session s = putSession(now, userId);
+        Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
         long secondCount = now.getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
 
@@ -959,7 +961,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId);
+            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
             try {
                 //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/first-active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
@@ -982,7 +984,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId);
+            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/basic-info.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             } catch (URISyntaxException e) {
@@ -1004,7 +1006,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId);
+            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
             List<Card> activeCards = JPAEntry.getList(Card.class, "userId", userId);
             if (activeCards.isEmpty()) {
                 try {
@@ -1036,7 +1038,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId);
+            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=chinese")).build();
             } catch (URISyntaxException e) {
@@ -1058,7 +1060,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId);
+            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=math")).build();
             } catch (URISyntaxException e) {
@@ -1080,7 +1082,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId);
+            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/videos.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             } catch (URISyntaxException e) {
@@ -1183,7 +1185,6 @@ public class PublicAccounts {
             WechatUser user = new WechatUser();
             user.setId(IdGenerator.getNewId());
             user.setOpenId(us.openid);
-            user.setRefId(us.unionid);
             user.setCity(us.city);
             user.setCountry(us.country);
             //user.setExpiry();

@@ -474,11 +474,10 @@ ALTER TABLE volumes OWNER TO postgres;
 
 CREATE TABLE wechat_users (
     id bigint NOT NULL,
-    user_id bigint DEFAULT 0 NOT NULL,
+    user_id bigint,
     token character varying(8192) DEFAULT ''::character varying,
     refresh_token character varying(8192),
     expiry timestamp without time zone,
-    ref_id name DEFAULT ''::name,
     open_id name,
     union_id character varying(256),
     nickname name,
@@ -804,7 +803,7 @@ ALTER TABLE ONLY wechat_users
 -- Name: comment_content__idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX comment_content__idx ON comments USING gin (to_tsvector('audioRecord'::regconfig, content));
+CREATE INDEX comment_content__idx ON comments USING gin (to_tsvector('english'::regconfig, content));
 
 
 --
