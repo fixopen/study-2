@@ -25,6 +25,9 @@ public class WechatUser {
     @Column(name = "refresh_token")
     private String refreshToken;
 
+    @Column(name = "ref_id")
+    private String refId;
+
     @Column(name = "expiry")
     private Date expiry;
 
@@ -72,6 +75,14 @@ public class WechatUser {
 
     @Column(name = "group_id")
     private int groupId;
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
 
     public String getLanguage() {
         return language;

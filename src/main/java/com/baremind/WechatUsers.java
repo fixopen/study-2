@@ -71,11 +71,11 @@ public class WechatUsers {
         if (wechatUser == null) {
             User user = PublicAccounts.insertUserByOpenId(now, openId);
             userId = user.getId();
-            Session s = PublicAccounts.putSession(now, user.getId());
+            Session s = PublicAccounts.putSession(now, user.getId(), null);
             sessionId = s.getIdentity();
         } else {
             userId = wechatUser.getUserId();
-            Session s = PublicAccounts.putSession(now, userId);
+            Session s = PublicAccounts.putSession(now, userId, null);
             sessionId = s.getIdentity();
         }
         return Response.ok("{\"userId\":" + userId.toString() + ", \"sessionId\": \"" + sessionId + "\"}").build();
