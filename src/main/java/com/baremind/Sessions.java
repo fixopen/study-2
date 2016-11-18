@@ -171,8 +171,7 @@ public class Sessions {
                 JPAEntry.genericPost(device);
             }
             Session session = PublicAccounts.putSession(now, user.getId(), device.getId());
-            result = Response.ok()
-                .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+            result = Response.ok(session)
                 .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                 .build();
         }

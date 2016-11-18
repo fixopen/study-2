@@ -71,11 +71,11 @@ public class WechatUsers {
         if (wechatUser == null) {
             User user = PublicAccounts.insertUserByOpenId(now, openId);
             userId = user.getId();
-            Session s = PublicAccounts.putSession(now, user.getId());
+            Session s = PublicAccounts.putSession(now, user.getId(), null); //@@deviceId is temp null
             sessionId = s.getIdentity();
         } else {
             userId = wechatUser.getUserId();
-            Session s = PublicAccounts.putSession(now, userId);
+            Session s = PublicAccounts.putSession(now, userId, null); //@@deviceId is temp null
             sessionId = s.getIdentity();
         }
         return Response.ok("{\"userId\":" + userId.toString() + ", \"sessionId\": \"" + sessionId + "\"}").build();
@@ -127,10 +127,6 @@ public class WechatUsers {
                 String province = wechatUser.getProvince();
                 if (province != null) {
                     existwechatUser.setProvince(province);
-                }
-                String refId = wechatUser.getRefId();
-                if (refId != null) {
-                    existwechatUser.setRefId(refId);
                 }
                 String refreshToken = wechatUser.getRefreshToken();
                 if (refreshToken != null) {
