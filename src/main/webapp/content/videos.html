@@ -34,6 +34,7 @@
             overflow: hidden;
             text-align: center;
         }
+
         .week {
             position: absolute;
             top: 3%;
@@ -42,29 +43,36 @@
             color: #000;
             font-family: "Microsoft YaHei", serif;
         }
+
         .schedule-table {
             width: 100%;
             height: 100%;
         }
+
         .schedule-table thead {
             height: 1.8125rem;
         }
+
         .schedule-table tr {
             height: 1.25rem;
         }
+
         .color:nth-child(even) {
             background-color: #ffd5ce;
             border-bottom: 0.0625rem solid #ea875f;
         }
+
         .color:nth-child(odd) {
             background-color: #fff;
             border-bottom: 0.09375rem solid #ea875f;
         }
+
         .schedule-table td {
             font-size: 0.6875rem;
             color: #371f1f;
             text-align: center;
         }
+
         .data :nth-child(even) {
             border-top: 1px solid #ea875f;
         }
@@ -168,7 +176,9 @@
                     <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
                         <tr style="width: 100%; height: 100%;">
                             <th style="width: 28%; height: 100%;">时间</th>
-                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
+                                授课年级
+                            </th>
                             <th style="width: 48%; height: 100%;">授课内容</th>
                         </tr>
                     </table>
@@ -316,7 +326,7 @@
 <template id="passed-template">
     <li class="video-list-li">
         <div class="video-list-play">
-            <a class="passedVideo" href="video.html?src=${cdnLink}">
+            <a class="passedVideo" href="video.html?src=${cdnLink}" id="videoEntry" data-article="video">
                 <img src="${cover}" alt="">
                 <div class="video-list-mask">
                         <span class="live-radio">
@@ -374,19 +384,18 @@
         </div>
     </li>
 </template>
-<template id="subject-template" >
+<template id="subject-template">
     <li class="xiala_li"></li>
 </template>
-<template id="teacher-template" >
+<template id="teacher-template">
     <li class="xiala_li"></li>
 </template>
-<template id="grade-template" >
+<template id="grade-template">
     <li class="xiala_li"></li>
 </template>
-<template id="date-template" >
+<template id="date-template">
     <li class="xiala_li"></li>
 </template>
-
 
 
 <!--*****************************video*****************************-->
@@ -464,7 +473,9 @@
 <template id="item-template">
     <tr>
         <td style="width: 28%;">${st}-${et}</td>
-        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
+            ${grade}
+        </td>
         <td style="width: 48%;">${title}</td>
     </tr>
 </template>
@@ -490,12 +501,53 @@
 
     var state = {
         currentArticle: document.getElementById('main'),
+        getGrade: function (gradeValue) {
+            var result = ''
+            if (gradeValue == 1) {
+                result = '一年级'
+            } else if (gradeValue == 2) {
+                result = '二年级'
+            } else if (gradeValue == 3) {
+                result = '三年级'
+            } else if (gradeValue == 4) {
+                result = '四年级'
+            } else if (gradeValue == 5) {
+                result = '五年级'
+            } else if (gradeValue == 6) {
+                result = '六年级'
+            } else if (gradeValue == 20) {
+                result = '低年级'
+            } else {
+                result = '高年级'
+            }
+            return result
+        },
         main: {
+            zeroFuture: {
+                container: document.getElementById('zeroFuture'),
+                template: document.getElementById('future-template'),
+                data: null
+            },
+            zeroPlaying: {
+                container: document.getElementById('zeroPlaying'),
+                template: document.getElementById('playing-template'),
+                data: null
+            },
+            oneFuture: {
+                container: document.getElementById('oneFuture'),
+                template: document.getElementById('future-template'),
+                data: null
+            },
+            onePlaying: {
+                container: document.getElementById('onePlaying'),
+                template: document.getElementById('playing-template'),
+                data: null
+            },
             isInit: false,
             init: function () {
                 if (!state.main.isInit) {
-                    $(document).on('click', '@@', function () {
-                        //
+                    $(document).on('click', '.course-detail-btn', function () {
+                        $('course-detail').toggle()
                     })
 
                     var now = Date.now()
@@ -504,7 +556,7 @@
                         type: 'get',
                         url: '/api/schedulers?filter=' + JSON.stringify({
                             subjectId: subjects[0].id,
-                            endTime: '> ' + now
+                            endTime: '> ' +now
                         }),
                         dataType: 'json',
                         success: function (zeroSchedulers) {
@@ -512,10 +564,10 @@
 
                             subjects[0].playing = zeroSchedulers[0]
                             subjects[0].futures = zeroSchedulers[1]
-                            state.adjustData(0)
-                            state.zeroFuture.data = subjects[0].futures
-                            state.zeroPlaying.data = subjects[0].playing
-                            state.refreshState(0)
+                            state.main.adjustData(0)
+                            state.main.zeroFuture.data = subjects[0].futures
+                            state.main.zeroPlaying.data = subjects[0].playing
+                            state.main.refreshState(0)
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers?filter=' + JSON.stringify({
@@ -526,14 +578,14 @@
                                 success: function (oneSchedulers) {
                                     subjects[1].playing = oneSchedulers[0]
                                     subjects[1].futures = oneSchedulers[1]
-                                    state.adjustData(1)
-                                    state.oneFuture.data = subjects[1].futures
-                                    state.onePlaying.data = subjects[1].playing
-                                    state.refreshState(1)
+                                    state.main.adjustData(1)
+                                    state.main.oneFuture.data = subjects[1].futures
+                                    state.main.onePlaying.data = subjects[1].playing
+                                    state.main.refreshState(1)
 
-                                    var whoFirst = function() {
+                                    var whoFirst = function () {
                                         var needFuture = true
-                                        var comparePlaying = function() {
+                                        var comparePlaying = function () {
 
                                             var result = false
                                             if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
@@ -547,7 +599,7 @@
                                             }
                                             return result
                                         }
-                                        var compareFuture = function() {
+                                        var compareFuture = function () {
                                             var result = false
                                             if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
                                                 if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
@@ -572,8 +624,8 @@
                                         //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
                                     }
                                     setInterval(function () {
-                                        state.refreshState(0)
-                                        state.refreshState(1)
+                                        state.main.refreshState(0)
+                                        state.main.refreshState(1)
                                     }, 60 * 1000)
                                 }
                             })
@@ -582,27 +634,6 @@
 
                     state.main.isInit = true
                 }
-            },
-            getGrade: function (gradeValue) {
-                var result = ''
-                if (gradeValue == 1) {
-                    result = '一年级'
-                } else if (gradeValue == 2) {
-                    result = '二年级'
-                } else if (gradeValue == 3) {
-                    result = '三年级'
-                } else if (gradeValue == 4) {
-                    result = '四年级'
-                } else if (gradeValue == 5) {
-                    result = '五年级'
-                } else if (gradeValue == 6) {
-                    result = '六年级'
-                } else if (gradeValue == 20) {
-                    result = '低年级'
-                } else {
-                    result = '高年级'
-                }
-                return result
             },
             adjustData: function (subjectIndex) {
                 for (var i = 0; i < subjects[subjectIndex].playing.length; ++i) {
@@ -615,7 +646,7 @@
                     item.date = item.startTime.getDate()
                 }
                 for (var i = 0; i < subjects[subjectIndex].futures.length; ++i) {
-                    var item = subjects[subjectIndex].playing[i]
+                    var item = subjects[subjectIndex].futures[i]
                     item.grade = state.getGrade(item.grade)
                     item.startTime = Date.parse(item.startTime.replace('-', '/'))
                     item.endTime = Date.parse(item.endTime.replace('-', '/'))
@@ -642,40 +673,20 @@
                 }
                 switch (subjectIndex) {
                     case 0:
-                        state.zeroFuture.container.innerHTML = ''
-                        proc(state.zeroFuture)
-                        state.zeroPlaying.container.innerHTML = ''
-                        proc(state.zeroPlaying)
+                        state.main.zeroFuture.container.innerHTML = ''
+                        proc(state.main.zeroFuture)
+                        state.main.zeroPlaying.container.innerHTML = ''
+                        proc(state.main.zeroPlaying)
                         break
                     case 1:
-                        state.oneFuture.container.innerHTML = ''
-                        proc(state.oneFuture)
-                        state.onePlaying.container.innerHTML = ''
-                        proc(state.onePlaying)
+                        state.main.oneFuture.container.innerHTML = ''
+                        proc(state.main.oneFuture)
+                        state.main.onePlaying.container.innerHTML = ''
+                        proc(state.main.onePlaying)
                         break
                     default:
                         break
                 }
-            },
-            zeroFuture: {
-                container: document.getElementById('zeroFuture'),
-                template: document.getElementById('future-template'),
-                data: state.zeroFuture.data
-            },
-            zeroPlaying: {
-                container: document.getElementById('zeroPlaying'),
-                template: document.getElementById('playing-template'),
-                data: state.zeroPlaying.data
-            },
-            oneFuture: {
-                container: document.getElementById('oneFuture'),
-                template: document.getElementById('future-template'),
-                data: state.oneFuture.data
-            },
-            onePlaying: {
-                container: document.getElementById('onePlaying'),
-                template: document.getElementById('playing-template'),
-                data: state.onePlaying.data
             },
 
             schedulerEntry: document.getElementById('schedulerEntry'),
@@ -688,6 +699,16 @@
 //            }
         },
         passed: {
+            zeroPassed: {
+                container: document.getElementById('more'),
+                template: document.getElementById('passed-template'),
+                data: passed
+            },
+            content: document.getElementById('video'),
+            subject: document.getElementById('subject'),
+            teacher: document.getElementById('teacher'),
+            grade: document.getElementById('grade'),
+            date: document.getElementById('date'),
             isInit: false,
             init: function () {
                 if (!state.passed.isInit) {
@@ -738,33 +759,33 @@
 
                     state.passed.isInit = true
 
-                    subject.addEventListener('change', function (e) {
+                    state.passed.subject.addEventListener('change', function (e) {
                         var subjectIndex = 0
                         var r = state.passed.search()
-                        teacher.innerHTML = ''
+                        state.passed.teacher.innerHTML = ''
                         proc({
-                            container: teacher,
+                            container: state.passed.teacher,
                             data: subjects[subjectIndex].teachers,
                             templateId: 'teacher-template'
                         })
 
-                        grade.innerHTML = ''
+                        state.passed.grade.innerHTML = ''
                         proc({
-                            container: grade,
+                            container: state.passed.grade,
                             data: subjects[subjectIndex].grades + subjects[1].grades,
                             templateId: 'grade-template'
                         })
 
-                        date.innerHTML = ''
+                        state.passed.date.innerHTML = ''
                         proc({
-                            container: date,
+                            container: state.passed.date,
                             data: subjects[subjectIndex].date,
                             templateId: 'date-template'
                         })
 
-                        content.innerHTML = ''
+                        state.passed.content.innerHTML = ''
                         proc({
-                            container: content,
+                            container: state.passed.content,
                             data: r,
                             templateId: ''
                         })
@@ -774,32 +795,31 @@
                         //
                     })
 
-                    grade.addEventListener('change', function (e) {
+                    state.passed.grade.addEventListener('change', function (e) {
                         var gradeIndex = 0
                         var r = state.passed.search()
 
-                        content.innerHTML = ''
+                        state.passed.content.innerHTML = ''
                         proc({
-                            container: content,
+                            container: state.passed.content,
                             data: r,
                             templateId: ''
                         })
                     }, false)
 
-                    teacher.addEventListener('change', function (e) {
+                    state.passed.teacher.addEventListener('change', function (e) {
                         var teacherIndex = 0
                         var r = state.passed.search()
 
-                        content.innerHTML = ''
+                        state.passed.content.innerHTML = ''
                         proc({
-                            container: content,
+                            container: state.passed.content,
                             data: r,
                             templateId: ''
                         })
                     }, false)
                 }
             },
-
             search: function () {
                 var result = []
                 //filter the passed data via the filter element state
@@ -808,7 +828,7 @@
                     if (passed[i].subjectId == subject) {
                         if (teacher != 'renyi' && passed[i].teacher == teacher) {
                             if (passed[i].grade == grade) {
-                                if(passed[i].date == date){
+                                if (passed[i].date == date) {
                                     result.push(passed[i])
                                 }
                             }
@@ -816,11 +836,6 @@
                     }
                 }
                 return result
-            },
-            zeroPassed: {
-                container: document.getElementById('more'),
-                template: document.getElementById('passed-template'),
-                data: schedulers[2],
             },
             teacherChoice: document.getElementById('teacherChoice'),
             gradeChoice: document.getElementById('gradeChoice'),
@@ -832,6 +847,17 @@
 ////                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
 ////                }
 //            }
+        },
+        video: {
+            isInit: false,
+            init: function () {
+                if (!state.video.isInit) {
+                    $.ajax({
+                        type: 'get',
+                        url: ''
+                    })
+                }
+            }
         },
         scheduler: {
             isInit: false,

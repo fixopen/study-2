@@ -382,14 +382,15 @@ public class Schedulers {
                             if (!opAndValue[1].equals("NULL")) {
                                 switch (key) {
                                     case "endTime":
-                                        String str = opAndValue[1];
-                                        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                        try {
-                                            Date date = format.parse(str);
-                                            val = date;
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
+                                        val = new Date(Long.parseLong(opAndValue[1]));
+//                                        String str = opAndValue[1];
+//                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                                        try {
+//                                            Date date = format.parse(str);
+//                                            val = date;
+//                                        } catch (ParseException e) {
+//                                            e.printStackTrace();
+//                                        }
                                         break;
                                     default:
                                         val = opAndValue[1];
