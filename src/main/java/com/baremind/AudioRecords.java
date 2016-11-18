@@ -66,9 +66,9 @@ public class AudioRecords {
         String uploadedFileLocation = "tempFilename.csv";
         //Response result = Response.status(401).build();
         //if (JPAEntry.isLogining(userId)) {
-            CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
-            parseAndInsert(uploadedFileLocation);
-            Response result = Response.ok("{\"state\":\"ok\"}").build();
+        CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
+        parseAndInsert(uploadedFileLocation);
+        Response result = Response.ok("{\"state\":\"ok\"}").build();
         //}
         return result;
     }
@@ -96,7 +96,7 @@ public class AudioRecords {
                 String unitNo = "";
                 String query = uri.getQuery();
                 String[] queryParameters = query.split("&");
-                for (String queryParameter: queryParameters) {
+                for (String queryParameter : queryParameters) {
                     String[] pair = queryParameter.split("=");
                     switch (pair[0]) {
                         case "book":

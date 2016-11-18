@@ -70,7 +70,7 @@ public class Properties {
         return result;
     }
 
-   public static String getPropertyValue(String name) {
+    public static String getPropertyValue(String name) {
         String result = null;
         Property property = JPAEntry.getObject(Property.class, "name", name);
         if (property != null) {

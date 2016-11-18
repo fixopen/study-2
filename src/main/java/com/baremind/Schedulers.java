@@ -143,7 +143,7 @@ public class Schedulers {
             filterObject.put("year", year);
             filterObject.put("week", week);
 
-           List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
+            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
             result = Response.ok(gson.toJson(schedulers)).build();

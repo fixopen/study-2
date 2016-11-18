@@ -148,13 +148,13 @@ public class Users {
         // Default instance of client
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/msg/HttpBatchSendSM")
-            .queryParam("account", username)
-            .queryParam("pswd", password)
-            .queryParam("mobile", phoneNumber)
-            .queryParam("msg", validInfo)
-            .queryParam("needstatus", true)
-            .request("text/plain").get();
+                .path("/msg/HttpBatchSendSM")
+                .queryParam("account", username)
+                .queryParam("pswd", password)
+                .queryParam("mobile", phoneNumber)
+                .queryParam("msg", validInfo)
+                .queryParam("needstatus", true)
+                .request("text/plain").get();
         String responseBody = response.readEntity(String.class);
         if (responseBody.contains("\n")) {
             String[] lines = responseBody.split("\n");
@@ -442,9 +442,9 @@ public class Users {
                                 }
                                 Session s = PublicAccounts.putSession(new Date(), user.getId(), 0l); //@@deviceId is temp zero
                                 result = Response.ok(c)
-                                    .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                    .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                    .build();
+                                        .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .build();
                             } else {
                                 result = Response.status(405).build();
                             }

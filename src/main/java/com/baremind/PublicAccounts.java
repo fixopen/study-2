@@ -240,10 +240,10 @@ public class PublicAccounts {
         prepare();
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("cgi-bin/ticket/getticket")
-            .queryParam("access_token", accessToken)
-            .queryParam("type", "jsapi")
-            .request().get();
+                .path("cgi-bin/ticket/getticket")
+                .queryParam("access_token", accessToken)
+                .queryParam("type", "jsapi")
+                .request().get();
         String body = response.readEntity(String.class);
         if (body.contains("ticket")) {
             //{"access_token":"ACCESS_TOKEN","expires_in":7200}

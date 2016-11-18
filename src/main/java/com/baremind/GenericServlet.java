@@ -21,9 +21,10 @@ import java.util.function.BiConsumer;
  */
 public class GenericServlet {
     private String[] ops = {"IS NOT ", "IS ", "< ", "<= ", "> ", ">= ", "!= ", "BETWEEN ", "IN "};
+
     private String[] split(String value) {
         String[] result = {"", "", ""};
-        for (String op: ops) {
+        for (String op : ops) {
             if (value.startsWith(op)) {
                 result[0] = op.trim();
                 int pos = value.indexOf("::");
@@ -48,7 +49,7 @@ public class GenericServlet {
             final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             filterObject.forEach((key, value) -> {
                 if (value instanceof String) {
-                    String[] opAndValue = split((String)value);
+                    String[] opAndValue = split((String) value);
                     if (!opAndValue[0].equals("")) {
                         Object val = null;
                         if (!opAndValue[1].equals("NULL")) {
