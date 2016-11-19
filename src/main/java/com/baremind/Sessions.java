@@ -98,43 +98,12 @@ public class Sessions {
                             user = new User();
                             user.setId(IdGenerator.getNewId());
                             user.setCreateTime(now);
-                            user.setTelephone(loginInfo.getInfo());
                             user.setUpdateTime(now);
+                            user.setTelephone(loginInfo.getInfo());
                             //create user via openId
                             WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
-                            if (wechatUser == null) {
-                                PublicAccounts.WechatUserInfo userInfo = PublicAccounts.getUserInfo(loginInfo.getOpenId());
-                                wechatUser = new WechatUser();
-                                wechatUser.setId(IdGenerator.getNewId());
-                                wechatUser.setUserId(user.getId());
-                                wechatUser.setOpenId(userInfo.getOpenid());
-                                wechatUser.setUnionId(userInfo.getOpenid());
+                            PublicAccounts.fillUserByWechatUser(user, wechatUser);
 
-                                wechatUser.setCity(userInfo.getCity());
-                                wechatUser.setProvince(userInfo.getProvince());
-                                wechatUser.setCountry(userInfo.getCountry());
-
-                                //wechatUser.setPrivilege(userInfo.getPrivilege());
-                                //wechatUser.setToken(user.getToken());
-                                //wechatUser.setRefreshToken();
-                                //wechatUser.setExpiry();
-
-                                wechatUser.setHead(userInfo.getHeadimgurl());
-                                wechatUser.setInfo(userInfo.getInfo());
-                                wechatUser.setNickname(userInfo.getNickname());
-                                wechatUser.setSex(userInfo.getSex());
-                                wechatUser.setSubscribe(userInfo.getSubscribe());
-                                wechatUser.setSubscribeTime(userInfo.getSubscribe_time());
-                                wechatUser.setLanguage(userInfo.getLanguage());
-                                wechatUser.setRemark(userInfo.getRemark());
-                                wechatUser.setGroupId(userInfo.getGroupid());
-                            }
-                            user.setName(wechatUser.getNickname());
-                            user.setSex(wechatUser.getSex());
-                            user.setHead(wechatUser.getHead());
-
-                            user.setCreateTime(now);
-                            user.setUpdateTime(now);
                             user.setIsAdministrator(false);
                             user.setSite("http://www.xiaoyuzhishi.com");
                             user.setAmount(0.0f);

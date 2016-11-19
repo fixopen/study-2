@@ -1,7 +1,5 @@
 package com.baremind;
 
-import com.baremind.data.Session;
-import com.baremind.data.User;
 import com.baremind.data.WechatUser;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
@@ -14,6 +12,8 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.baremind.PublicAccounts.fillWechatUserByWechatUserInfo;
 
 @Path("wechat-users")
 public class WechatUsers {
@@ -65,20 +65,30 @@ public class WechatUsers {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getIdentitiesByOpenId(@PathParam("openId") String openId) {
         WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
-        Date now = new Date();
-        Long userId;
-        String sessionId;
         if (wechatUser == null) {
-            User user = PublicAccounts.insertUserByOpenId(now, openId);
-            userId = user.getId();
-            Session s = PublicAccounts.putSession(now, user.getId(), null); //@@deviceId is temp null
-            sessionId = s.getIdentity();
-        } else {
-            userId = wechatUser.getUserId();
-            Session s = PublicAccounts.putSession(now, userId, null); //@@deviceId is temp null
-            sessionId = s.getIdentity();
+            wechatUser = new WechatUser();
+            wechatUser.setId(IdGenerator.getNewId());
+            PublicAccounts.WechatUserInfo userInfo = PublicAccounts.getUserInfo(openId);
+            if (userInfo != null) {
+                fillWechatUserByWechatUserInfo(wechatUser, userInfo);
+                JPAEntry.genericPost(wechatUser);
+            }
         }
-        return Response.ok("{\"userId\":" + userId.toString() + ", \"sessionId\": \"" + sessionId + "\"}").build();
+        return Response.ok(wechatUser).build();
+//        Date now = new Date();
+//        Long userId;
+//        String sessionId;
+//        if (wechatUser == null) {
+//            User user = PublicAccounts.insertUserByOpenId(now, openId);
+//            userId = user.getId();
+//            Session s = PublicAccounts.putSession(now, user.getId(), null); //@@deviceId is temp null
+//            sessionId = s.getIdentity();
+//        } else {
+//            userId = wechatUser.getUserId();
+//            Session s = PublicAccounts.putSession(now, userId, null); //@@deviceId is temp null
+//            sessionId = s.getIdentity();
+//        }
+//        return Response.ok("{\"userId\":" + userId.toString() + ", \"sessionId\": \"" + sessionId + "\"}").build();
     }
 
 
