@@ -1,8 +1,7 @@
 package com.baremind;
 
 import com.baremind.data.*;
-import com.baremind.utils.CharacterEncodingFilter;
-import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
@@ -16,6 +15,88 @@ import java.util.function.Predicate;
 
 @Path("knowledge-points")
 public class KnowledgePoints {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        Map<String, String> orders = new HashMap<>();
+        orders.put("order", "ASC");
+        final Date now = new Date();
+        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, (knowledgePoint) -> KnowledgePoint.convertToMap(knowledgePoint, now, yesterday));
+    }
+
+    @GET //根据id查询
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        final Date now = new Date();
+        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        return Impl.getById(sessionId, id, KnowledgePoint.class, (knowledgePoint) -> KnowledgePoint.convertToMap(knowledgePoint, now, yesterday));
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, KnowledgePoint entity) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
+            }
+        }
+        return result;
+    }
+
+    @PUT //根据id修改
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, KnowledgePoint newData) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, KnowledgePoint.class, (exist, knowledgePoint) -> {
+                    Long volumeId = knowledgePoint.getVolumeId();
+                    if (volumeId != null) {
+                        exist.setVolumeId(volumeId);
+                    }
+                    String title = knowledgePoint.getName();
+                    if (title != null) {
+                        exist.setName(title);
+                    }
+                    Date showTime = knowledgePoint.getShowTime();
+                    if (showTime != null) {
+                        exist.setShowTime(showTime);
+                    }
+                    int order = knowledgePoint.getOrder();
+                    if (order != 0) {
+                        exist.setOrder(order);
+                    }
+                    Date show = knowledgePoint.getShowTime();
+                    if (show != null) {
+                        exist.setShowTime(show);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, KnowledgePoint.class);
+            }
+        }
+        return result;
+    }
+
     static List<Map<String, Object>> toMaps(List<KnowledgePoint> knowledgePoints) {
         List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
         Date now = new Date();
@@ -298,90 +379,6 @@ public class KnowledgePoints {
                 totalResult.put("comments", commentMaps);
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();
-            }
-        }
-        return result;
-    }
-
-    @POST//添
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createKnowledgePoint(@CookieParam("sessionId") String sessionId, KnowledgePoint knowledgePoint) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            knowledgePoint.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(knowledgePoint);
-            result = Response.ok(knowledgePoint).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePoints(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            Map<String, String> orders = new HashMap<>();
-            orders.put("order", "ASC");
-            List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, filterObject, orders);
-            if (!knowledgePoints.isEmpty()) {
-                result = Response.ok(new Gson().toJson(KnowledgePoints.toMaps(knowledgePoints))).build();
-            }
-        }
-        return result;
-    }
-
-    @GET //根据id查询
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getKnowledgePointById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
-            if (knowledgePoint != null) {
-                Date now = new Date();
-                Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-                result = Response.ok(new Gson().toJson(KnowledgePoint.convertToMap(knowledgePoint, now, yesterday))).build();
-            }
-        }
-        return result;
-    }
-
-    @PUT //根据id修改
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateKnowledgePoint(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, KnowledgePoint knowledgePoint) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            KnowledgePoint existknowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
-            if (existknowledgePoint != null) {
-                Long volumeId = knowledgePoint.getVolumeId();
-                if (volumeId != null) {
-                    existknowledgePoint.setVolumeId(volumeId);
-                }
-                String title = knowledgePoint.getName();
-                if (title != null) {
-                    existknowledgePoint.setName(title);
-                }
-                Date showTime = knowledgePoint.getShowTime();
-                if (showTime != null) {
-                    existknowledgePoint.setShowTime(showTime);
-                }
-                int order = knowledgePoint.getOrder();
-                if (order != 0) {
-                    existknowledgePoint.setOrder(order);
-                }
-                Date show = knowledgePoint.getShowTime();
-                if (show != null) {
-                    existknowledgePoint.setShowTime(show);
-                }
-                JPAEntry.genericPut(existknowledgePoint);
-                result = Response.ok(existknowledgePoint).build();
             }
         }
         return result;

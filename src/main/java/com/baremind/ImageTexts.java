@@ -3,8 +3,10 @@ package com.baremind;
 
 import com.baremind.data.Image;
 import com.baremind.data.ImageText;
+import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
@@ -20,8 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -29,6 +29,71 @@ import java.util.Objects;
  */
 @Path("image-texts")
 public class ImageTexts {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, ImageText.class, null);
+    }
+
+    @GET //根据id查询
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, ImageText.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, ImageText entity) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
+            }
+        }
+        return result;
+    }
+
+    @PUT //根据id修改
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ImageText newData) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, ImageText.class, (exist, imageText) -> {
+                    Long size = imageText.getImageId();
+                    if (size != null) {
+                        exist.setImageId(size);
+                    }
+
+                    String content = imageText.getContent();
+                    if (content != null) {
+                        exist.setContent(content);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, ImageText.class);
+            }
+        }
+        return result;
+    }
+
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
@@ -73,75 +138,6 @@ public class ImageTexts {
                 }
             } catch (IOException | ServletException e) {
                 e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    @POST //添
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createImageText(@CookieParam("sessionId") String sessionId, ImageText imageText) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            imageText.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(imageText);
-            result = Response.ok(imageText).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getImageTexts(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<ImageText> imageTexts = JPAEntry.getList(ImageText.class, filterObject);
-            if (!imageTexts.isEmpty()) {
-                result = Response.ok(new Gson().toJson(imageTexts)).build();
-            }
-        }
-        return result;
-    }
-
-    @GET //根据id查询
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getImageTextById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            ImageText imageText = JPAEntry.getObject(ImageText.class, "id", id);
-            if (imageText != null) {
-                result = Response.ok(new Gson().toJson(imageText)).build();
-            }
-        }
-        return result;
-    }
-
-    @PUT //根据id修改
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateImageText(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ImageText imageText) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            ImageText existimage = JPAEntry.getObject(ImageText.class, "id", id);
-            if (existimage != null) {
-                Long size = imageText.getImageId();
-                if (size != null) {
-                    existimage.setImageId(size);
-                }
-
-                String content = imageText.getContent();
-                if (content != null) {
-                    existimage.setContent(content);
-                }
-                JPAEntry.genericPut(existimage);
-                result = Response.ok(existimage).build();
             }
         }
         return result;

@@ -50,6 +50,11 @@ public class PublicAccounts {
     private static String token = "xiaoyuzhishi20160928";
     //private static String token = "xiaoyuzhishi20160907";
 
+    private static class AccessToken {
+        private String access_token;
+        private int expires_in;
+    }
+
     //获取接口调用凭证
     private static void getTokenFromWechatPlatform() {
         //http请求方式: GET
@@ -188,8 +193,8 @@ public class PublicAccounts {
         String sign = "";
         Arrays.sort(origin);
         String v = "";
-        for (int i = 0; i < origin.length; ++i) {
-            v += origin[i];
+        for (String anOrigin : origin) {
+            v += anOrigin;
         }
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -222,8 +227,12 @@ public class PublicAccounts {
         }
         String[] params = {ticket, timestamp, nonceStr, url};
         String sign = sign(params);
-        //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
-        //result = Response.ok(r).build();
+        Map<String, Object> r = new HashMap<>();
+        r.put("appId", appID);
+        r.put("timestamp", timestamp);
+        r.put(nonceStr, nonceStr);
+        r.put("signature", sign);
+        result = Response.ok(r).build();
         return result;
     }
 
@@ -695,7 +704,7 @@ public class PublicAccounts {
         return result;
     }
 
-    static void fillWechatUserByWechatUserInfo(WechatUser wechatUser, WechatUserInfo userInfo) {
+    static void fillWechatUserByUserInfo(WechatUser wechatUser, WechatUserInfo userInfo) {
         wechatUser.setOpenId(userInfo.getOpenid());
         wechatUser.setUnionId(userInfo.getUnionid());
 
@@ -972,7 +981,7 @@ public class PublicAccounts {
             wechatUser = new WechatUser();
             wechatUser.setId(IdGenerator.getNewId());
             //wechatUser.setUserId(user.getId());
-            PublicAccounts.fillWechatUserByWechatUserInfo(wechatUser, userInfo);
+            PublicAccounts.fillWechatUserByUserInfo(wechatUser, userInfo);
             JPAEntry.genericPost(wechatUser);
         }
         return Response.ok().build();
@@ -1038,7 +1047,7 @@ public class PublicAccounts {
             fillWechatUserByTokenInfo(wechatUser, tokenInfo);
             WechatUserInfo userInfo = getUserInfo((String)tokenInfo.get("access_token"), openId);
             if (userInfo != null) {
-                fillWechatUserByWechatUserInfo(wechatUser, userInfo);
+                fillWechatUserByUserInfo(wechatUser, userInfo);
                 EntityManager em = JPAEntry.getNewEntityManager();
                 em.getTransaction().begin();
                 em.persist(wechatUser);
@@ -1067,9 +1076,9 @@ public class PublicAccounts {
         }
         try {
             if (s == null) {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html")).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?openId=" + openId)).build();
             } else {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?essionid=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?sessionId=" + s.getIdentity())).build();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -1859,11 +1868,6 @@ public class PublicAccounts {
             MsgId = msgId;
         }
 
-    }
-
-    private static class AccessToken {
-        private String access_token;
-        private int expires_in;
     }
 
     private static class UserList {

@@ -1,71 +1,41 @@
 package com.baremind;
 
 import com.baremind.data.ProblemOption;
-import com.baremind.utils.CharacterEncodingFilter;
-import com.baremind.utils.IdGenerator;
+import com.baremind.data.User;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by User on 2016/9/19.
  */
 @Path("problem-options")
 public class ProblemOptions {
-    public static List<Map<String, Object>> convertProblemOptions(List<ProblemOption> problemOptions) {
-        List<Map<String, Object>> r = new ArrayList<>();
-        for (ProblemOption problemOption : problemOptions) {
-            Map<String, Object> pom = ProblemOption.convertToMap(problemOption);
-            r.add(pom);
-        }
-        return r;
-    }
-
-    @POST //添
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProblemOption(@CookieParam("sessionId") String sessionId, ProblemOption problemsOption) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            problemsOption.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(problemsOption);
-            result = Response.ok(problemsOption).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemOptions(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<ProblemOption> problemsOptions = JPAEntry.getList(ProblemOption.class, filterObject);
-            if (!problemsOptions.isEmpty()) {
-                result = Response.ok(new Gson().toJson(problemsOptions)).build();
-            }
-        }
-        return result;
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, ProblemOption.class, ProblemOption::convertToMap);
     }
 
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemOptionById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, ProblemOption.class, ProblemOption::convertToMap);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, ProblemOption entity) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            ProblemOption problemsOption = JPAEntry.getObject(ProblemOption.class, "id", id);
-            if (problemsOption != null) {
-                result = Response.ok(new Gson().toJson(problemsOption)).build();
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
             }
         }
         return result;
@@ -75,41 +45,37 @@ public class ProblemOptions {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProblemOption(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemOption problemsOption) {
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ProblemOption newData) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = new HashMap<>(1);
-            filterObject.put("id", id);
-            ProblemOption existmedia = JPAEntry.getObject(ProblemOption.class, "id", id);
-            if (existmedia != null) {
-                Long problemId = problemsOption.getProblemId();
-                if (problemId != null) {
-                    existmedia.setProblemId(problemId);
-                }
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, ProblemOption.class, (exist, problemsOption) -> {
+                    Long problemId = problemsOption.getProblemId();
+                    if (problemId != null) {
+                        exist.setProblemId(problemId);
+                    }
 
-                String name = problemsOption.getName();
-                if (name != null) {
-                    existmedia.setName(name);
-                }
+                    String name = problemsOption.getName();
+                    if (name != null) {
+                        exist.setName(name);
+                    }
 
-                Long imageId = problemsOption.getImageId();
-                if (imageId != null) {
-                    existmedia.setImageId(imageId);
-                }
+                    Long imageId = problemsOption.getImageId();
+                    if (imageId != null) {
+                        exist.setImageId(imageId);
+                    }
 
-                Integer index = problemsOption.getIndex();
-                if (index != null) {
-                    existmedia.setIndex(index);
-                }
+                    Integer index = problemsOption.getIndex();
+                    if (index != null) {
+                        exist.setIndex(index);
+                    }
 
-                Integer order = problemsOption.getOrder();
-                if (order != null) {
-                    existmedia.setOrder(order);
-                }
-
-                JPAEntry.genericPut(existmedia);
-                result = Response.ok(existmedia).build();
+                    Integer order = problemsOption.getOrder();
+                    if (order != null) {
+                        exist.setOrder(order);
+                    }
+                }, null);
             }
         }
         return result;
@@ -117,13 +83,12 @@ public class ProblemOptions {
 
     @DELETE
     @Path("{id}")
-    public Response deleteProblemOption(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            long count = JPAEntry.genericDelete(ProblemOption.class, "id", id);
-            if (count > 0) {
-                result = Response.ok().build();
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, ProblemOption.class);
             }
         }
         return result;

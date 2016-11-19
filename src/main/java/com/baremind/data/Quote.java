@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "quotes")
-public class Quote {
+public class Quote implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

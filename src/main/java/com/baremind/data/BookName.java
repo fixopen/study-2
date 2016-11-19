@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @javax.persistence.Entity
 @Table(name = "book_names")
-public class BookName {
+public class BookName implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

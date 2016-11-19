@@ -1,10 +1,10 @@
 package com.baremind;
 
 import com.baremind.data.Log;
-import com.baremind.utils.CharacterEncodingFilter;
+import com.baremind.data.User;
 import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -13,22 +13,75 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Path("logs")
 public class Logs {
-    @POST //添
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, Log.class, null);
+    }
+
+    @GET //根据id查询
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, Log.class, null);
+    }
+
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLog(@CookieParam("sessionId") String sessionId, Log log) {
+    public Response create(@CookieParam("sessionId") String sessionId, Log entity) {
+        entity.setUserId(Long.parseLong(sessionId));
+        entity.setCreateTime(new Date());
+        return Impl.create(sessionId, entity, null);
+    }
+
+    @PUT //根据id修改
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Log newData) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            log.setId(IdGenerator.getNewId());
-            log.setUserId(Long.parseLong(sessionId));
-            log.setCreateTime(new Date());
-            JPAEntry.genericPost(log);
-            result = Response.ok(log).build();
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, Log.class, (exist, log) -> {
+                    String objectType = log.getObjectType();
+                    if (objectType != null) {
+                        exist.setObjectType(objectType);
+                    }
+                    Long userId = log.getUserId();
+                    if (userId != null) {
+                        exist.setUserId(userId);
+                    }
+
+                    Date createTime = log.getCreateTime();
+                    if (createTime != null) {
+                        exist.setCreateTime(createTime);
+                    }
+
+                    Long objectId = log.getObjectId();
+                    if (objectId != null) {
+                        exist.setObjectId(objectId);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, Log.class);
+            }
         }
         return result;
     }
@@ -96,85 +149,5 @@ public class Logs {
         String stats = "SELECT COUNT(l) FROM Log l WHERE l.userId = " + userId.toString() + " AND l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
         Query q = em.createQuery(stats, Long.class);
         return (Long) q.getSingleResult() > 0L;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getLogs(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Log> logs = JPAEntry.getList(Log.class, filterObject);
-            if (!logs.isEmpty()) {
-                result = Response.ok(new Gson().toJson(logs)).build();
-            }
-        }
-        return result;
-    }
-
-    @GET //根据id查询
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getLogById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Log log = JPAEntry.getObject(Log.class, "id", id);
-            if (log != null) {
-                result = Response.ok(new Gson().toJson(log)).build();
-            }
-        }
-        return result;
-    }
-
-    @PUT //根据id修改
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateLog(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Log log) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Log existlike = JPAEntry.getObject(Log.class, "id", id);
-            if (existlike != null) {
-                String objectType = log.getObjectType();
-                if (objectType != null) {
-                    existlike.setObjectType(objectType);
-                }
-                Long userId = log.getUserId();
-                if (userId != null) {
-                    existlike.setUserId(userId);
-                }
-
-                Date createTime = log.getCreateTime();
-                if (createTime != null) {
-                    existlike.setCreateTime(createTime);
-                }
-
-                Long objectId = log.getObjectId();
-                if (objectId != null) {
-                    existlike.setObjectId(objectId);
-                }
-
-                JPAEntry.genericPut(existlike);
-                result = Response.ok(existlike).build();
-            }
-        }
-        return result;
-    }
-
-    @DELETE
-    @Path("{id}")
-    public Response deleteLog(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            long count = JPAEntry.genericDelete(Log.class, "id", id);
-            if (count > 0) {
-                result = Response.ok().build();
-            }
-        }
-        return result;
     }
 }

@@ -18,7 +18,7 @@ import java.util.Map;
 //@Struct(name = "problems")
 @Entity
 @Table(name = "problems")
-public class Problem {
+public class Problem implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

@@ -1,57 +1,38 @@
 package com.baremind;
 
 import com.baremind.data.Problem;
-import com.baremind.utils.CharacterEncodingFilter;
-import com.baremind.utils.IdGenerator;
+import com.baremind.data.User;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
 
 @Path("problems")
 public class Problems {
-    @POST //添
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProblem(@CookieParam("sessionId") String sessionId, Problem problem) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            problem.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(problem);
-            result = Response.ok(problem).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblems(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Problem> problems = JPAEntry.getList(Problem.class, filterObject);
-            if (!problems.isEmpty()) {
-                result = Response.ok(new Gson().toJson(problems)).build();
-            }
-        }
-        return result;
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, Problem.class, null);
     }
 
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProblemById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, Problem.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, Problem entity) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Problem problem = JPAEntry.getObject(Problem.class, "id", id);
-            if (problem != null) {
-                result = Response.ok(new Gson().toJson(problem)).build();
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
             }
         }
         return result;
@@ -61,28 +42,40 @@ public class Problems {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProblem(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Problem problem) {
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Problem newData) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Problem existproblem = JPAEntry.getObject(Problem.class, "id", id);
-            if (existproblem != null) {
-                String title = problem.getName();
-                if (title != null) {
-                    existproblem.setName(title);
-                }
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, Problem.class, (exist, problem) -> {
+                    String title = problem.getName();
+                    if (title != null) {
+                        exist.setName(title);
+                    }
 
-                Long imageId = problem.getImageId();
-                if (imageId != null) {
-                    existproblem.setImageId(imageId);
-                }
+                    Long imageId = problem.getImageId();
+                    if (imageId != null) {
+                        exist.setImageId(imageId);
+                    }
 
-                Long videoId = problem.getVideoId();
-                if (videoId != null) {
-                    existproblem.setVideoId(videoId);
-                }
-                JPAEntry.genericPut(existproblem);
-                result = Response.ok(existproblem).build();
+                    Long videoId = problem.getVideoId();
+                    if (videoId != null) {
+                        exist.setVideoId(videoId);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, Problem.class);
             }
         }
         return result;

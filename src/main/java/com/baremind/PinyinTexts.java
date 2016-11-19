@@ -2,16 +2,13 @@ package com.baremind;
 
 
 import com.baremind.data.PinyinText;
-import com.baremind.utils.CharacterEncodingFilter;
-import com.baremind.utils.IdGenerator;
+import com.baremind.data.User;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -19,44 +16,28 @@ import java.util.Map;
  */
 @Path("pinyin-texts")
 public class PinyinTexts {
-    @POST //添
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createPinyinText(@CookieParam("sessionId") String sessionId, PinyinText pinyinText) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            pinyinText.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(pinyinText);
-            result = Response.ok(pinyinText).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getPinyinTexts(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<PinyinText> pinyinTexts = JPAEntry.getList(PinyinText.class, filterObject);
-            if (!pinyinTexts.isEmpty()) {
-                result = Response.ok(new Gson().toJson(pinyinTexts)).build();
-            }
-        }
-        return result;
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, PinyinText.class, null);
     }
 
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPinyinTextById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, PinyinText.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, PinyinText entity) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            PinyinText pinyinText = JPAEntry.getObject(PinyinText.class, "id", id);
-            if (pinyinText != null) {
-                result = Response.ok(new Gson().toJson(pinyinText)).build();
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
             }
         }
         return result;
@@ -66,26 +47,35 @@ public class PinyinTexts {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePinyinText(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, PinyinText pinyinText) {
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, PinyinText newData) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            PinyinText existimage = JPAEntry.getObject(PinyinText.class, "id", id);
-            if (existimage != null) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, PinyinText.class, (exist, pinyinText) -> {
+                    String content = pinyinText.getContent();
+                    if (content != null) {
+                        exist.setContent(content);
+                    }
 
+                    String pinyin = pinyinText.getPinyin();
+                    if (pinyin != null) {
+                        exist.setPinyin(pinyin);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
 
-                String content = pinyinText.getContent();
-                if (content != null) {
-                    existimage.setContent(content);
-                }
-
-                String pinyin = pinyinText.getPinyin();
-                if (pinyin != null) {
-                    existimage.setPinyin(pinyin);
-                }
-
-                JPAEntry.genericPut(existimage);
-                result = Response.ok(existimage).build();
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, PinyinText.class);
             }
         }
         return result;
