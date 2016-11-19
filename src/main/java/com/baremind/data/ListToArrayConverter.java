@@ -4,6 +4,7 @@ package com.baremind.data;
 
 import javax.persistence.AttributeConverter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,18 +22,9 @@ public class ListToArrayConverter implements AttributeConverter<List<String>, Ob
 
     @Override
     public List<String> convertToEntityAttribute(Object dbData) {
-
         List<String> rst = new ArrayList<>();
-//        try {
-//            String[] elements = {}; //(String[]) ((Jdbc4Array) dbData).getArray();
-//            for (String element : elements) {
-//                rst.add(element);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
-
+        String[] elements = {}; //(String[]) ((Jdbc4Array) dbData).getArray();
+        Collections.addAll(rst, elements);
         return rst;
     }
 }

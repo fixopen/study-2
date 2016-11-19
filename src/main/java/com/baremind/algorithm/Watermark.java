@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * Created by fixopen on 3/6/15.
  */
-public class Watermark {
+class Watermark {
     public File mark(File rawFile, byte[] waterInfo) {
         File result = null;
         return result;

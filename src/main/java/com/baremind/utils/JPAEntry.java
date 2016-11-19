@@ -189,7 +189,7 @@ public class JPAEntry {
         return result;
     }
 
-    public static Session getSession(String sessionId) {
+    private static Session getSession(String sessionId) {
         return getObject(Session.class, "identity", sessionId);
     }
 
@@ -234,7 +234,7 @@ public class JPAEntry {
 
     public static Long getLoginId(String sessionId) {
         final Map<String, Long> r = new HashMap<>();
-        r.put("value", 0l);
+        r.put("value", 0L);
         isLogining(sessionId, a -> {
             a.setLastOperationTime(new Date());
             genericPut(a);

@@ -40,19 +40,15 @@ import java.util.*;
  */
 @Path("public-account")
 public class PublicAccounts {
-    static String hostname = "https://api.weixin.qq.com";
-    static String accessToken = "";
-    static String appID = "wx92dec5e98645bd1d";
-    static String secret = "d3b30c3ae79c322bc54c93d0ff75210b";
+    private static String hostname = "https://api.weixin.qq.com";
+    private static String accessToken = "";
+    private static String appID = "wx92dec5e98645bd1d";
+    private static String secret = "d3b30c3ae79c322bc54c93d0ff75210b";
     private static String token = "xiaoyuzhishi20160928";
     //private static String token = "xiaoyuzhishi20160907";
 
-    public static void setAccessToken(String token) {
-        accessToken = token;
-    }
-
     //获取接口调用凭证
-    public static void getTokenFromWechatPlatform() {
+    private static void getTokenFromWechatPlatform() {
         //http请求方式: GET
         //https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
         Client client = ClientBuilder.newClient();
@@ -76,8 +72,8 @@ public class PublicAccounts {
         }
     }
 
-    public static class CustomMenu {
-        public static class MenuItem {
+    private static class CustomMenu {
+        static class MenuItem {
             private String type;
             private String name;
             private String key;
@@ -136,7 +132,7 @@ public class PublicAccounts {
         }
     }
 
-    public static class GenericResult {
+    private static class GenericResult {
         private int errcode;
         private String errmsg;
 
@@ -228,7 +224,7 @@ public class PublicAccounts {
         return result;
     }
 
-    public static class Ticket {
+    private static class Ticket {
         private String ticket;
     }
 
@@ -281,26 +277,26 @@ public class PublicAccounts {
         return result;
     }
 
-    public static class WechatPush {
+    private static class WechatPush {
         private String ToUserName;
         private String FromUserName;
         private String CreateTime;
         private String MsgType;
         private Map<String, String> Infos = new HashMap<>();
 
-        public String getToUserName() {
+        String getToUserName() {
             return ToUserName;
         }
 
-        public void setToUserName(String toUserName) {
+        void setToUserName(String toUserName) {
             ToUserName = toUserName;
         }
 
-        public String getFromUserName() {
+        String getFromUserName() {
             return FromUserName;
         }
 
-        public void setFromUserName(String fromUserName) {
+        void setFromUserName(String fromUserName) {
             FromUserName = fromUserName;
         }
 
@@ -312,15 +308,15 @@ public class PublicAccounts {
             CreateTime = createTime;
         }
 
-        public String getMsgType() {
+        String getMsgType() {
             return MsgType;
         }
 
-        public void setMsgType(String msgType) {
+        void setMsgType(String msgType) {
             MsgType = msgType;
         }
 
-        public Map<String, String> getInfos() {
+        Map<String, String> getInfos() {
             return Infos;
         }
 
@@ -329,12 +325,12 @@ public class PublicAccounts {
         }
     }
 
-    public static class WechatXmlHandler extends DefaultHandler {
+    private static class WechatXmlHandler extends DefaultHandler {
         private WechatPush data;
         private String currentTag;
         private String currentData = "";
 
-        public WechatXmlHandler(WechatPush p) {
+        WechatXmlHandler(WechatPush p) {
             super();
             data = p;
         }
@@ -487,7 +483,7 @@ public class PublicAccounts {
         return result;
     }
 
-    public static class WechatUserInfo {
+    static class WechatUserInfo {
         private int subscribe;
         private String openid;
         private String nickname;
@@ -503,7 +499,7 @@ public class PublicAccounts {
         private int groupid;
         private String info;
 
-        public int getSubscribe() {
+        int getSubscribe() {
             return subscribe;
         }
 
@@ -511,7 +507,7 @@ public class PublicAccounts {
             this.subscribe = subscribe;
         }
 
-        public String getOpenid() {
+        String getOpenid() {
             return openid;
         }
 
@@ -519,7 +515,7 @@ public class PublicAccounts {
             this.openid = openid;
         }
 
-        public String getNickname() {
+        String getNickname() {
             return nickname;
         }
 
@@ -543,7 +539,7 @@ public class PublicAccounts {
             this.language = language;
         }
 
-        public String getCity() {
+        String getCity() {
             return city;
         }
 
@@ -551,7 +547,7 @@ public class PublicAccounts {
             this.city = city;
         }
 
-        public String getProvince() {
+        String getProvince() {
             return province;
         }
 
@@ -559,7 +555,7 @@ public class PublicAccounts {
             this.province = province;
         }
 
-        public String getCountry() {
+        String getCountry() {
             return country;
         }
 
@@ -567,7 +563,7 @@ public class PublicAccounts {
             this.country = country;
         }
 
-        public String getHeadimgurl() {
+        String getHeadimgurl() {
             return headimgurl;
         }
 
@@ -575,7 +571,7 @@ public class PublicAccounts {
             this.headimgurl = headimgurl;
         }
 
-        public int getSubscribe_time() {
+        int getSubscribe_time() {
             return subscribe_time;
         }
 
@@ -591,7 +587,7 @@ public class PublicAccounts {
             this.unionid = unionid;
         }
 
-        public String getRemark() {
+        String getRemark() {
             return remark;
         }
 
@@ -599,7 +595,7 @@ public class PublicAccounts {
             this.remark = remark;
         }
 
-        public int getGroupid() {
+        int getGroupid() {
             return groupid;
         }
 
@@ -616,7 +612,7 @@ public class PublicAccounts {
         }
     }
 
-    public static WechatUserInfo getUserInfo(String openId) {
+    static WechatUserInfo getUserInfo(String openId) {
         // http请求方式: GET（请使用https协议）
         //https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
         prepare();
@@ -650,7 +646,7 @@ public class PublicAccounts {
                             isContinue = true;
                             break;
                         default:
-                            Logs.insert(0l, "wechatError", 100l, responseBody);
+                            Logs.insert(0L, "wechatError", 100L, responseBody);
                             isContinue = false;
                             break;
                     }
@@ -660,7 +656,7 @@ public class PublicAccounts {
         return result;
     }
 
-    public static WechatUserInfo getUserInfo(String token, String openId) {
+    private static WechatUserInfo getUserInfo(String token, String openId) {
         // http请求方式: GET（请使用https协议）
         //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
         WechatUserInfo result = null;
@@ -677,12 +673,12 @@ public class PublicAccounts {
             result = new Gson().fromJson(responseBody, WechatUserInfo.class);
             result.setInfo(responseBody);
         } else {
-            Logs.insert(144l, "log", 144l, "errorInfo = " + responseBody);
+            Logs.insert(144L, "log", 144L, "errorInfo = " + responseBody);
         }
         return result;
     }
 
-    public static User fillUserByUserInfo(Date now, WechatUserInfo userInfo) {
+    private static User fillUserByUserInfo(Date now, WechatUserInfo userInfo) {
         long userId = IdGenerator.getNewId();
         User user = new User();
         user.setId(userId);
@@ -700,7 +696,7 @@ public class PublicAccounts {
         if (userInfo.sex == null) {
             user.setSex(0);
         } else {
-            user.setSex(userInfo.sex.intValue());
+            user.setSex(userInfo.sex);
         }
         user.setCreateTime(now);
         user.setUpdateTime(now);
@@ -710,7 +706,7 @@ public class PublicAccounts {
         return user;
     }
 
-    public static WechatUser fillWechatUserByUserInfo(Long userId, WechatUserInfo userInfo) {
+    private static WechatUser fillWechatUserByUserInfo(Long userId, WechatUserInfo userInfo) {
         WechatUser wechatUser = new WechatUser();
         wechatUser.setId(IdGenerator.getNewId());
         //Logs.insert(0l, "debug", 12l, wechatUser.getId().toString());
@@ -738,7 +734,7 @@ public class PublicAccounts {
         return wechatUser;
     }
 
-    public static User insertUserByOpenId(Date now, String openId) {
+    static User insertUserByOpenId(Date now, String openId) {
         WechatUserInfo userInfo = getUserInfo(openId);
         User user = null;
         if (userInfo != null) {
@@ -755,7 +751,7 @@ public class PublicAccounts {
         return user;
     }
 
-    public static Session putSession(Date now, Long userId, Long deviceId) {
+    static Session putSession(Date now, Long userId, Long deviceId) {
         String nowString = now.toString() + Long.toString(now.getTime());
         byte[] sessionIdentity = Securities.digestor.digest(nowString);
         String sessionString = Hex.bytesToHex(sessionIdentity);
@@ -806,11 +802,11 @@ public class PublicAccounts {
             userId = dbWechatUser.getUserId();
         }
 
-        Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
+        Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
         long secondCount = now.getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
 
-        String result = "<xml>\n" +
+        return "<xml>\n" +
                 "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
                 "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
                 "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
@@ -824,27 +820,26 @@ public class PublicAccounts {
                 "       </item>\n" +
                 "   </Articles>\n" +
                 "</xml>";
-        return result;
     }
 
-    Response activeCard(WechatPush p) {
+    private Response activeCard(WechatPush p) {
         String baseUrl = "http://www.xiaoyuzhishi.com/user/active-card.html";
         String result = processAndGenerate(p, "激活新卡", "点击链接将进入卡激活页面", baseUrl);
         return Response.ok(result).build();
     }
 
-    Response userClickMine(WechatPush p) {
+    private Response userClickMine(WechatPush p) {
         String result = generate(p, "系统不断升级中,请稍晚几天再激活。不影响学生上直播课。请关注微信号的公告提示。");
         return Response.ok(result).build();
     }
 
-    Response directPlay(WechatPush p) {
+    private Response directPlay(WechatPush p) {
         String baseUrl = "http://www.xiaoyuzhishi.com/content/direct-play.html";
         String result = processAndGenerate(p, "欢迎", "点击链接将进入卡激活页面", baseUrl);
         return Response.ok(result).build();
     }
 
-    public static void appendTokenInfo(WechatUser dbWechatUser, WechatUser tokenInfo) {
+    private static void appendTokenInfo(WechatUser dbWechatUser, WechatUser tokenInfo) {
         Date expiry = tokenInfo.getExpiry();
         if (expiry != null) {
             dbWechatUser.setExpiry(expiry);
@@ -863,7 +858,7 @@ public class PublicAccounts {
         }
     }
 
-    public static User getOrInsertUserByTokenInfo(Date now, WechatUser tokenInfo) {
+    private static User getOrInsertUserByTokenInfo(Date now, WechatUser tokenInfo) {
         User user = null;
         WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", tokenInfo.getOpenId());
         if (dbWechatUser == null) {
@@ -931,7 +926,7 @@ public class PublicAccounts {
         }.getType());
     }
 
-    Response follow(WechatPush p) {
+    private Response follow(WechatPush p) {
         String openId = p.getFromUserName();
         WechatUser wu = JPAEntry.getObject(WechatUser.class, "openId", openId);
         if (wu == null) {
@@ -961,7 +956,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
+            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
             try {
                 //result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/first-active-card.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
@@ -984,7 +979,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
+            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user/basic-info.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             } catch (URISyntaxException e) {
@@ -1006,7 +1001,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
+            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
             List<Card> activeCards = JPAEntry.getList(Card.class, "userId", userId);
             if (activeCards.isEmpty()) {
                 try {
@@ -1038,7 +1033,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
+            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=chinese")).build();
             } catch (URISyntaxException e) {
@@ -1060,7 +1055,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
+            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=math")).build();
             } catch (URISyntaxException e) {
@@ -1082,7 +1077,7 @@ public class PublicAccounts {
         User user = getOrInsertUserByTokenInfo(now, wechatUser);
         if (user != null) {
             Long userId = user.getId();
-            Session s = putSession(now, userId, 0l); //@@deviceId is temp zero
+            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/videos.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             } catch (URISyntaxException e) {
@@ -1116,7 +1111,7 @@ public class PublicAccounts {
     }
 
     //获取接口调用凭证
-    public static String[] getUserList(String nextOpenid) {
+    private static String[] getUserList(String nextOpenid) {
         prepare();
         // http请求方式: GET（请使用https协议）
         // https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
@@ -1810,12 +1805,12 @@ public class PublicAccounts {
 
     }
 
-    public static class AccessToken {
+    private static class AccessToken {
         private String access_token;
         private int expires_in;
     }
 
-    public static class UserList {
+    private static class UserList {
         private int total;
         private int count;
         private UserData data;
@@ -1827,7 +1822,7 @@ public class PublicAccounts {
     }
 
     // 关注/取消关注事件
-    public static class Follow {
+    private static class Follow {
         public String ToUserName;//	开发者微信号
         public String FromUserName;//	发送方帐号（一个OpenID）
         public int CreateTime;//	消息创建时间 （整型）
@@ -1875,11 +1870,11 @@ public class PublicAccounts {
         }
     }
 
-    public static class DelResult {
+    private static class DelResult {
         public String menuid;
     }
 
-    public static class IPList {
+    private static class IPList {
         private String[] ip_list;
 
         public String[] getIp_list() {
@@ -1903,7 +1898,7 @@ public class PublicAccounts {
     }
 
     //点击菜单拉取消息时的事件推送
-    public static class ClickEvent {
+    private static class ClickEvent {
         public String ToUserName;//开发者微信号
         public String FromUserName;//发送方帐号（一个OpenID）
         public int CreateTime;//消息创建时间 （整型）
@@ -1961,7 +1956,7 @@ public class PublicAccounts {
     }
 
     //点击菜单跳转链接时的事件推送
-    public static class ClickLink {
+    private static class ClickLink {
 
         public String ToUserName;    //开发者微信号
         public String FromUserName;    //发送方帐号（一个OpenID）
@@ -2029,7 +2024,7 @@ public class PublicAccounts {
 
     }
 
-    public static class ScancodePush {
+    private static class ScancodePush {
 
         public String ToUserName;    //开发者微信号
         public String FromUserName;    //发送方帐号（一个OpenID）
@@ -2115,7 +2110,7 @@ public class PublicAccounts {
 
     }
 
-    public static class PicSysphoto {
+    private static class PicSysphoto {
 
         public String ToUserName;//	开发者微信号
         public String FromUserName;//	发送方帐号（一个OpenID）
@@ -2210,7 +2205,7 @@ public class PublicAccounts {
 
     }
 
-    public static class LocationSelect {
+    private static class LocationSelect {
 
         public String ToUserName;    //开发者微信号
         public String FromUserName;    //发送方帐号（一个OpenID）
@@ -2324,7 +2319,7 @@ public class PublicAccounts {
     }
 
     // 接受消息 ：文本消息
-    public static class TextMessage {
+    private static class TextMessage {
 
         public String ToUserName;//	开发者微信号
         public String FromUserName;//发送方帐号（一个OpenID）
@@ -2383,7 +2378,7 @@ public class PublicAccounts {
     }
 
     // 接受消息 ：图片消息
-    public static class PictureMessage {
+    private static class PictureMessage {
 
         public String ToUserName;//	开发者微信号
         public String FromUserName;//	发送方帐号（一个OpenID）
@@ -2451,7 +2446,7 @@ public class PublicAccounts {
     }
 
     // 接受消息 ：语音消息
-    public static class VoiceMeessage {
+    private static class VoiceMeessage {
 
         public String ToUserName;    //开发者微信号
         public String FromUserName;    //发送方帐号（一个OpenID）
@@ -2521,7 +2516,7 @@ public class PublicAccounts {
     }
 
     // 接受消息 ：视频消息
-    public static class VideoMessage {
+    private static class VideoMessage {
 
         public String ToUserName;    //开发者微信号
         public String FromUserName;    //发送方帐号（一个OpenID）
@@ -2590,7 +2585,7 @@ public class PublicAccounts {
 
     }
 
-    public static class LocationInformation {
+    private static class LocationInformation {
 
         public String ToUserName;//	开发者微信号
         public String FromUserName;//	发送方帐号（一个OpenID）
@@ -2677,7 +2672,7 @@ public class PublicAccounts {
 
     }
 
-    public static class LinkMessage {
+    private static class LinkMessage {
 
         public String ToUserName;//	接收方微信号
         public String FromUserName;//	发送方微信号，若为普通用户，则是一个OpenID
@@ -2757,7 +2752,7 @@ public class PublicAccounts {
 
     // 扫描带参数二维码事件
     //如果用户还未关注公众号，则用户可以关注公众号，关注后微信会将带场景值关注事件推送给开发者。
-    public static class Scanning {
+    private static class Scanning {
         public String ToUserName;    //开发者微信号
         public String FromUserName;    //发送方帐号（一个OpenID）
         public int CreateTime;    //消息创建时间 （整型）
@@ -2824,7 +2819,7 @@ public class PublicAccounts {
     }
 
     // 上报地理位置事件
-    public static class Position {
+    private static class Position {
         public String ToUserName;    //开发者微信号
         public String FromUserName;    //发送方帐号（一个OpenID）
         public String CreateTime;    //消息创建时间 （整型）
@@ -2900,7 +2895,7 @@ public class PublicAccounts {
     }
 
     // 自定义菜单事件
-    public static class Menu {
+    private static class Menu {
         public String ToUserName;    //开发者微信号
         public String FromUserName;    //发送方帐号（一个OpenID）
         public int CreateTime;    //消息创建时间 （整型）
@@ -2958,7 +2953,7 @@ public class PublicAccounts {
     }
 
     //回复文本消息
-    public static class ReplyTextMessage {
+    private static class ReplyTextMessage {
         public String ToUserName;    //是	接收方帐号（收到的OpenID）
         public String FromUserName;    //是	开发者微信号
         public String CreateTime;    //是	消息创建时间 （整型）
@@ -3007,7 +3002,7 @@ public class PublicAccounts {
     }
 
     //回复图片消息
-    public static class ReplyPictureMessage {
+    private static class ReplyPictureMessage {
         public String ToUserName;    //是	接收方帐号（收到的OpenID）
         public String FromUserName;//	是	开发者微信号
         public int CreateTime;    //是	消息创建时间 （整型）
@@ -3056,7 +3051,7 @@ public class PublicAccounts {
     }
 
     //回复视频消息
-    public static class ReplyVoideMessage {
+    private static class ReplyVoideMessage {
         public String ToUserName;    //是	接收方帐号（收到的OpenID）
         public String FromUserName;    //是	开发者微信号
         public String CreateTime;    //是	消息创建时间 （整型）
@@ -3123,7 +3118,7 @@ public class PublicAccounts {
     }
 
     //回复音乐消息
-    public static class ReplyMusicMessage {
+    private static class ReplyMusicMessage {
         public String ToUserName;    //是	接收方帐号（收到的OpenID）
         public String FromUserName;    //是	开发者微信号
         public int CreateTime;    //是	消息创建时间 （整型）
@@ -3208,7 +3203,7 @@ public class PublicAccounts {
     }
 
     //回复图文消息
-    public static class ReplyImageTextMessage {
+    private static class ReplyImageTextMessage {
         public String ToUserName;    //是	接收方帐号（收到的OpenID）
         public String FromUserName;    //是	开发者微信号
         public int CreateTime;    //是	消息创建时间 （整型）
@@ -3302,7 +3297,7 @@ public class PublicAccounts {
     }
 
     //获取所有客服账号
-    public static class kfResult {
+    private static class kfResult {
         public server[] kf_list;
 
         public server[] getKf_list() {
@@ -3354,7 +3349,7 @@ public class PublicAccounts {
     }
 
     //客服接口-发消息
-    public static class Message {
+    static class Message {
         private String touser;
         private String msgtype;
         private String customservice;
@@ -3687,18 +3682,18 @@ public class PublicAccounts {
         }
     }
 
-    public static class UrlResult {
+    private static class UrlResult {
         public String url;
     }
 
-    public static class ArticlesResult {
+    private static class ArticlesResult {
         public String type;
         public String media_id;
         public int created_at;
     }
 
     //上传图文消息素材
-    public static class Articles {
+    private static class Articles {
         public static Article[] articles;
 
         private static class Article {
@@ -3757,7 +3752,7 @@ public class PublicAccounts {
 
     }
 
-    public static class MenuBase {
+    static class MenuBase {
         private String type;
         private String name;
 
@@ -3825,5 +3820,4 @@ public class PublicAccounts {
             this.button = button;
         }
     }
-
 }

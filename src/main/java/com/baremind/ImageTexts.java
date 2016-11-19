@@ -71,10 +71,7 @@ public class ImageTexts {
                     result = Response.status(415).build();
                     //上传图片的格式不正确
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ServletException e) {
-
+            } catch (IOException | ServletException e) {
                 e.printStackTrace();
             }
         }

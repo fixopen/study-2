@@ -20,7 +20,7 @@ public class IdGenerator {
             previousTimestamp = timestamp;
             serialNo = 0;
         }
-        result |= ((long) timestamp << 16) & 0x0000FFFFFFFF0000l;
+        result |= ((long) timestamp << 16) & 0x0000FFFFFFFF0000L;
         result |= serialNo;
         return result;
     }

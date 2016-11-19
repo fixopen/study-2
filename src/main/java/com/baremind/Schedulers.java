@@ -25,10 +25,10 @@ public class Schedulers {
         Long result = null;
         switch (k) {
             case "语文":
-                result = 1l;
+                result = 1L;
                 break;
             case "数学":
-                result = 2l;
+                result = 2L;
                 break;
         }
         return result;
@@ -38,28 +38,28 @@ public class Schedulers {
         Long result = null;
         switch (k) {
             case "低年级":
-                result = 20l;
+                result = 20L;
                 break;
             case "高年级":
-                result = 21l;
+                result = 21L;
                 break;
             case "一年级":
-                result = 1l;
+                result = 1L;
                 break;
             case "二年级":
-                result = 2l;
+                result = 2L;
                 break;
             case "三年级":
-                result = 3l;
+                result = 3L;
                 break;
             case "四年级":
-                result = 4l;
+                result = 4L;
                 break;
             case "五年级":
-                result = 5l;
+                result = 5L;
                 break;
             case "六年级":
-                result = 6l;
+                result = 6L;
                 break;
         }
         return result;
@@ -75,20 +75,19 @@ public class Schedulers {
             EntityManager em = JPAEntry.getEntityManager();
             String stats = "SELECT s FROM Scheduler s";
             boolean isFirst = true;
-            for (int i = 0; i < keywordArray.length; ++i) {
+            for (String aKeywordArray : keywordArray) {
                 if (isFirst) {
                     stats += " WHERE ";
                     isFirst = false;
                 } else {
                     stats += " AND ";
                 }
-                String k = keywordArray[i];
-                stats += "((s.teacher = '" + k + "')";
-                Long subjectId = findSubjectIdByName(k);
+                stats += "((s.teacher = '" + aKeywordArray + "')";
+                Long subjectId = findSubjectIdByName(aKeywordArray);
                 if (subjectId != null) {
                     stats += " OR (s.subjectId = " + subjectId.toString() + ")";
                 }
-                Long grade = findGradeByName(k);
+                Long grade = findGradeByName(aKeywordArray);
                 if (grade != null) {
                     stats += " OR (s.grade = " + grade.toString() + ")";
                 }

@@ -49,7 +49,7 @@ public class Logs {
         return insert(JPAEntry.getLoginId(sessionId), objectType, objectId, action);
     }
 
-    public static Long deleteLike(Long userId, String objectType, Long objectId) {
+    static Long deleteLike(Long userId, String objectType, Long objectId) {
         Map<String, Object> filter = new HashMap<>();
         filter.put("userId", userId);
         filter.put("objectType", objectType);
@@ -84,7 +84,7 @@ public class Logs {
         return (Long) q.getSingleResult();
     }
 
-    public static Long getUserStatsCount(Long userId, String objectType, Long objectId, String action) {
+    static Long getUserStatsCount(Long userId, String objectType, Long objectId, String action) {
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM Log l WHERE l.userId = " + userId.toString() + " AND l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
         Query q = em.createQuery(stats, Long.class);
@@ -95,7 +95,7 @@ public class Logs {
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM Log l WHERE l.userId = " + userId.toString() + " AND l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
         Query q = em.createQuery(stats, Long.class);
-        return (Long) q.getSingleResult() > 0l;
+        return (Long) q.getSingleResult() > 0L;
     }
 
     @GET //根据条件查询

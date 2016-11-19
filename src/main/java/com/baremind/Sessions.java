@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Path("sessions")
 public class Sessions {
-    static class LoginInfo {
+    private static class LoginInfo {
         private String type;
         private String info;
         private String key;
@@ -49,7 +49,7 @@ public class Sessions {
             this.key = key;
         }
 
-        public String getDeviceType() {
+        String getDeviceType() {
             return deviceType;
         }
 
@@ -57,7 +57,7 @@ public class Sessions {
             this.deviceType = deviceType;
         }
 
-        public String getDeviceNo() {
+        String getDeviceNo() {
             return deviceNo;
         }
 
@@ -65,7 +65,7 @@ public class Sessions {
             this.deviceNo = deviceNo;
         }
 
-        public String getOpenId() {
+        String getOpenId() {
             return openId;
         }
 

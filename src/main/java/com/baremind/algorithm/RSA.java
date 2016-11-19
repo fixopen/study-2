@@ -6,7 +6,7 @@ import java.security.Key;
 /**
  * Created by fixopen on 3/6/15.
  */
-public class RSA {
+class RSA {
     private static final String KEY_ALGORITHM = "RSA";
 
     public byte[] encryptByPublicKey(byte[] data, Key publicKey) {
@@ -23,18 +23,10 @@ public class RSA {
     }
 
     public byte[] decryptByPrivateKey(byte[] cipherText, Key privateKey) {
-        byte[] result = null;
-        try {
-            Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            result = cipher.doFinal(cipherText);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return decryptByKey(cipherText, privateKey);
     }
 
-    public byte[] encryptByPrivateKey(byte[] data, Key privateKey) {
+    byte[] encryptByPrivateKey(byte[] data, Key privateKey) {
         byte[] result = null;
         try {
             Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
@@ -46,12 +38,16 @@ public class RSA {
         return result;
     }
 
-    public byte[] decryptByPublicKey(byte[] data, Key publicKey) {
+    byte[] decryptByPublicKey(byte[] data, Key publicKey) {
+        return decryptByKey(data, publicKey);
+    }
+
+    private byte[] decryptByKey(byte[] cipherText, Key key) {
         byte[] result = null;
         try {
             Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, publicKey);
-            result = cipher.doFinal(data);
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            result = cipher.doFinal(cipherText);
         } catch (Exception e) {
             e.printStackTrace();
         }

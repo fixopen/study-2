@@ -18,10 +18,6 @@ import java.util.*;
 
 @Path("users")
 public class Users {
-    static String hostname = "https://sapi.253.com";
-    static String username = "zhibo1";
-    static String password = "Tch243450";
-
     @GET
     @Path("telephones/{telephone}/code")
     @Produces(MediaType.APPLICATION_JSON)
@@ -107,13 +103,13 @@ public class Users {
         return result;
     }
 
-    public static class SendMessageResult {
-        public String time;
-        public String code;
-        public String messageId;
+    private static class SendMessageResult {
+        private String time;
+        private String code;
+        private String messageId;
     }
 
-    public static SendMessageResult sendMessage(String phoneNumber, String validInfo) {
+    private static SendMessageResult sendMessage(String phoneNumber, String validInfo) {
         //platform: http://222.73.117.158/msg/index.jsp
         //username: jiekou-clcs-13
         //password: THYnk464hu
@@ -147,6 +143,9 @@ public class Users {
         SendMessageResult result = new SendMessageResult();
         // Default instance of client
         Client client = ClientBuilder.newClient();
+        String hostname = "https://sapi.253.com";
+        String username = "zhibo1";
+        String password = "Tch243450";
         Response response = client.target(hostname)
                 .path("/msg/HttpBatchSendSM")
                 .queryParam("account", username)
@@ -172,13 +171,13 @@ public class Users {
         return result;
     }
 
-    public static class ActiveCard {
+    private static class ActiveCard {
         private String cardNo;
         private String password;
         private String phoneNumber;
         private String validCode;
 
-        public String getCardNo() {
+        String getCardNo() {
             return cardNo;
         }
 
@@ -194,7 +193,7 @@ public class Users {
             this.password = password;
         }
 
-        public String getPhoneNumber() {
+        String getPhoneNumber() {
             return phoneNumber;
         }
 
@@ -202,7 +201,7 @@ public class Users {
             this.phoneNumber = phoneNumber;
         }
 
-        public String getValidCode() {
+        String getValidCode() {
             return validCode;
         }
 
@@ -440,7 +439,7 @@ public class Users {
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
                                 }
-                                Session s = PublicAccounts.putSession(new Date(), user.getId(), 0l); //@@deviceId is temp zero
+                                Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
                                 result = Response.ok(c)
                                         .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                                         .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
@@ -537,7 +536,7 @@ public class Users {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             //if isAdmin
-            Long userId = 0l;
+            Long userId = 0L;
             User admin = JPAEntry.getObject(User.class, "id", userId);
             if (admin != null && admin.getIsAdministrator()) {
                 result = Response.status(404).build();
@@ -681,7 +680,7 @@ public class Users {
         return result;
     }
 
-    public static class SmsState {
+    private static class SmsState {
         public String receiver;
         public String password;
         public String messageId;
@@ -690,7 +689,7 @@ public class Users {
         public String status;
     }
 
-    public static class SmsReceiverState {
+    private static class SmsReceiverState {
         public String receiver;
         public String password;
         public String message;
