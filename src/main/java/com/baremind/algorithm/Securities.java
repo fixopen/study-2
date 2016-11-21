@@ -15,9 +15,9 @@ public class Securities {
     public static final Digestor digestor = new Digestor();
     public static final IOCrypto externalCrypto = new IOCrypto();
     public static final KeyPairGenerator keyPairGenerator = new KeyPairGenerator();
-    public static final KeyStoreManager keyStoreManager = new KeyStoreManager();
+    static final KeyStoreManager keyStoreManager = new KeyStoreManager();
     public static final RandomGenerator randomGenerator = new RandomGenerator();
-    public static final RSA lowLevelRSA = new RSA();
+    static final RSA lowLevelRSA = new RSA();
     public static final Watermark watermark = new Watermark();
     public static final Zip zip = new Zip();
 
@@ -25,8 +25,4 @@ public class Securities {
         // 系统添加BC加密算法 以后系统中调用的算法都是BC的算法
         Security.addProvider(new BouncyCastleProvider());
     }
-    //    public static final String rootPath = System.getProperty("user.dir");
-//    public static final Config config = ConfigManager.parseConfig("/data/program/tomcat/webapps/ROOT/WEB-INF/config.properties");
-//    public static final Config config = ConfigManager.parseConfig("E:\\supportNew\\trunk\\target\\support\\WEB-INF\\config.properties");
-//    public static final Config config = ConfigManager.parseConfig("/opt/apache-tomcat-8.0.23/webapps/ROOT/WEB-INF/config.properties");
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by User on 2016/9/19.
  */
-public class PostgreSQLTextArray implements java.sql.Array, Serializable {
+class PostgreSQLTextArray implements java.sql.Array, Serializable {
 
     private final String[] stringArray;
     private final String stringValue;
@@ -19,7 +19,7 @@ public class PostgreSQLTextArray implements java.sql.Array, Serializable {
      *
      * @param stringArray
      */
-    public PostgreSQLTextArray(String[] stringArray) {
+    PostgreSQLTextArray(String[] stringArray) {
         this.stringArray = stringArray;
         this.stringValue = stringArrayToPostgreSQLTextArray(this.stringArray);
 
@@ -38,7 +38,7 @@ public class PostgreSQLTextArray implements java.sql.Array, Serializable {
      * @param stringArray source String array
      * @return string representation of a given text array
      */
-    public static String stringArrayToPostgreSQLTextArray(String[] stringArray) {
+    private static String stringArrayToPostgreSQLTextArray(String[] stringArray) {
         final int arrayLength;
         if (stringArray == null) {
             return NULL;

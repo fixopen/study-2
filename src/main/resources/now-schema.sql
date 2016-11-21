@@ -140,7 +140,7 @@ CREATE TABLE devices (
     user_id bigint DEFAULT 0 NOT NULL,
     platform name DEFAULT 'iOS'::name NOT NULL,
     platform_identity name DEFAULT ''::name NOT NULL,
-    platform_notification_token name DEFAULT ''::name NOT NULL
+    platform_notification_token name
 );
 
 

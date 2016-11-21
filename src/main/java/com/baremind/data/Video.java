@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "videos")
-public class Video {
+public class Video implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

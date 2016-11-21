@@ -79,7 +79,7 @@ public class Properties {
         return result;
     }
 
-    public static void setProperty(String name, String value) {
+    static void setProperty(String name, String value) {
         Property property = JPAEntry.getObject(Property.class, "name", name);
         if (property != null) {
             property.setValue(value);

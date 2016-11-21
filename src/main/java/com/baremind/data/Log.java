@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "logs")
-public class Log {
+public class Log implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

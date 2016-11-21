@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "knowledge_points")
-public class KnowledgePoint {
+public class KnowledgePoint implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

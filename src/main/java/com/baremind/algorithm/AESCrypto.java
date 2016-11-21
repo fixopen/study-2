@@ -14,7 +14,7 @@ import java.security.spec.AlgorithmParameterSpec;
 /**
  * Created by fixopen on 3/6/15.
  */
-public class AESCrypto {
+class AESCrypto {
     public OutputStream encrypt(InputStream inputStream, byte[] key, byte[] algorithmParameter) {
         return cipher(inputStream, 1, key, algorithmParameter);
     }

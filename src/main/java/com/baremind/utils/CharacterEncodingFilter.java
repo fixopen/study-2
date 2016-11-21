@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 
 public class CharacterEncodingFilter implements ContainerRequestFilter {
     @Context
@@ -18,7 +19,7 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
 
     public static Map<String, Object> getFilters(String filter) {
         Map<String, Object> result = null;
-        if (filter != "") {
+        if (!Objects.equals(filter, "")) {
             try {
                 String rawFilter = URLDecoder.decode(filter, StandardCharsets.UTF_8.toString());
                 result = new Gson().fromJson(rawFilter, new TypeToken<Map<String, Object>>() {
