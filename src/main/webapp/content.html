@@ -233,7 +233,7 @@
                         dataType: 'json',
                         success: function (vs) {
                             for (var i = 0; i < vs.length; ++i) {
-                                vs[i].knowledgePoints = []
+                                //vs[i].knowledgePoints = []
                                 var s = state.subject.getById(vs[i].subjectId)
                                 if (s) {
                                     var gn = state.grade.getNameByValue(vs[i].grade)
@@ -242,45 +242,13 @@
                                     console.log(vs[i])
                                 }
                             }
-                            $.ajax({
-                                type: 'GET',
-                                url: '/api/knowledge-points',
-                                dataType: 'json',
-                                success: function (kps) {
-                                    var isNew = function(now, kp) {
-                                        var result = false
-                                        if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
-                                            result = true
-                                        }
-                                        return result
-                                    }
-                                    var now = Date.now()
-                                    for (var i = 0; i < kps.length; ++i) {
-                                        var v = state.volume.getById(kps[i].volumeId)
-                                        if (v) {
-                                            kps[i].showTime = Date.parse(kps[i].showTime.replace('-', '/'))
-                                            if (isNew(now, kps[i])) {
-                                                kps[i].type = 'normalNew'
-                                                v.knowledgePoints.unshift(kps[i])
-                                            } else {
-                                                kps[i].type = 'normalOld'
-                                                v.knowledgePoints.push(kps[i])
-                                            }
-                                        } else {
-                                            console.log(kps[i])
-                                        }
-                                    }
 
-                                    var subjectId = g.getUrlParameter('subjectId')
-                                    //state.volumes.subjectId = subjectId
-                                    //state['volumes'].init()
-                                    history.pushState(null, null, '/content.html#volumes')
+                            var subjectId = g.getUrlParameter('subjectId')
+                            //state.volumes.subjectId = subjectId
+                            //state['volumes'].init()
+                            history.pushState(null, null, '/content.html#volumes')
 
-                                    state['volumes'].changeId(subjectId)
-                                },
-                                error: function (r) {
-                                }
-                            })
+                            state['volumes'].changeId(subjectId)
                         },
                         error: function (r) {
                         }
@@ -307,7 +275,7 @@
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
-            })
+            }, false)
         },
         volumes: {
             parentId: 0,
@@ -335,6 +303,40 @@
                 if (state.knowledgePoints.parentId != volumeId) {
                     state.knowledgePoints.parentId = volumeId
                     state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId)
+                    if (!state.knowledgePoints.value.knowledgePoints) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
+                            dataType: 'json',
+                            success: function (kps) {
+                                var isNew = function(now, kp) {
+                                    var result = false
+                                    if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+                                        result = true
+                                    }
+                                    return result
+                                }
+                                var now = Date.now()
+                                for (var i = 0; i < kps.length; ++i) {
+                                    var v = state.knowledgePoints.value
+                                    if (v) {
+                                        kps[i].showTime = new Date(Date.parse(kps[i].showTime.replace(/-/g, '/')))
+                                        if (isNew(now, kps[i])) {
+                                            kps[i].type = 'normalNew'
+                                            v.knowledgePoints.unshift(kps[i])
+                                        } else {
+                                            kps[i].type = 'normalOld'
+                                            v.knowledgePoints.push(kps[i])
+                                        }
+                                    } else {
+                                        console.log(kps[i])
+                                    }
+                                }
+                            },
+                            error: function (r) {
+                            }
+                        })
+                    }
                     state.knowledgePoints.show()
                 }
             },

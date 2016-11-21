@@ -75,6 +75,14 @@
                     },
                     containerId: 'content'
                 })
+
+                var player = document.getElementById('player')
+                var play = document.getElementById('play')
+                play.addEventListener('click', function (e) {
+                    player.currentTime = 0
+                    player.play()
+                }, false)
+
 //                $.ajax({
 //                    type: 'get',
 //                    url: '/api/audio-records/04/20/' + bookNo + '/' + pageNo + '/' + unitNo,

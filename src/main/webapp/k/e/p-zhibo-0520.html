@@ -36,7 +36,10 @@
 <article id="content"></article>
 <template id="audio-template">
     <div class="wrap">
+        <audio id="player" src="p-zhibo-0520/${bookNo}.${pageNo}${unitNo}.mp3" autoplay></audio>
+        <!--
         <audio id="player" src="p-zhibo-0520/${bookNo}.mp3#t=${startSecond},${endSecond}" autoplay></audio>
+        -->
         <img src="p-zhibo-0520/${bookNo}/${pageNo}.jpg" alt="">
         <div id="play" class="amplifier"></div>
     </div>
@@ -74,6 +77,14 @@
                     },
                     containerId: 'content'
                 })
+
+                var player = document.getElementById('player')
+                var play = document.getElementById('play')
+                play.addEventListener('click', function (e) {
+                    player.currentTime = 0
+                    player.play()
+                }, false)
+
 //                $.ajax({
 //                    type: 'get',
 //                    url: '/api/audio-records/05/20/' + bookNo + '/' + pageNo + '/' + unitNo,

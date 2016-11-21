@@ -486,7 +486,7 @@
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
-            })
+            }, false)
         },
         user: {
             init: function () {

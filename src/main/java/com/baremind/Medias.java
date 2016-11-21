@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
@@ -118,12 +120,19 @@ public class Medias {
             User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
             if (admin != null && admin.getIsAdministrator()) {
                 Media m = JPAEntry.getObject(Media.class, "id", id);
-                String path = Properties.getPropertyValue("physicalPath") + m.getStorePath();
-                File f = new File(path);
-                boolean success = f.delete();
-                if (success) {
-                    //java.nio.file.Path
-                    result = Impl.deleteById(sessionId, id, Media.class);
+                String physicalPath = Properties.getPropertyValue("physicalPath");
+//                String p = physicalPath + m.getStorePath();
+//                File f = new File(p);
+//                boolean success = f.delete();
+//                if (success) {
+//                    //java.nio.file.Path
+//                    result = Impl.deleteById(sessionId, id, Media.class);
+//                }
+                java.nio.file.Path path = FileSystems.getDefault().getPath(physicalPath, m.getStorePath());
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
