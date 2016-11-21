@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
