@@ -1017,7 +1017,7 @@ public class PublicAccounts {
                 }
             } else {
                 try {
-                    result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+                    result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/userold.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
