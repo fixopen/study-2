@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Path("knowledge-points")
 public class KnowledgePoints {
@@ -375,7 +376,7 @@ public class KnowledgePoints {
                 conditions.put("objectType", "knowledge-point");
                 conditions.put("objectId", id);
                 List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-                List<Map<String, Object>> commentMaps = Comments.toMaps(comments);
+                List<Map<String, Object>> commentMaps = comments.stream().map(Comment::convertToMap).collect(Collectors.toList());
                 totalResult.put("comments", commentMaps);
                 String v = new Gson().toJson(totalResult);
                 result = Response.ok(v, "application/json; charset=utf-8").build();

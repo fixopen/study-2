@@ -95,6 +95,20 @@ public class Sessions {
         }
     }
 
+    private User insertUser(Date now, String telephone, WechatUser wechatUser) {
+        User user = new User();
+        user.setId(IdGenerator.getNewId());
+        user.setCreateTime(now);
+        user.setUpdateTime(now);
+        user.setTelephone(telephone);
+        user.setIsAdministrator(false);
+        user.setSite("http://www.xiaoyuzhishi.com");
+        user.setAmount(0.0f);
+        PublicAccounts.fillUserByWechatUser(user, wechatUser);
+        JPAEntry.genericPost(user);
+        return user;
+    }
+
     private Response loginImpl(LoginInfo loginInfo) {
         Response result = Response.status(404).build();
         Date now = new Date();
@@ -112,20 +126,9 @@ public class Sessions {
                     if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
                         user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
                         if (user == null) {
-                            user = new User();
-                            user.setId(IdGenerator.getNewId());
-                            user.setCreateTime(now);
-                            user.setUpdateTime(now);
-                            user.setTelephone(loginInfo.getInfo());
                             //create user via openId
                             WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
-                            PublicAccounts.fillUserByWechatUser(user, wechatUser);
-
-                            user.setIsAdministrator(false);
-                            user.setSite("http://www.xiaoyuzhishi.com");
-                            user.setAmount(0.0f);
-
-                            JPAEntry.genericPost(user);
+                            user = insertUser(now, loginInfo.getInfo(), wechatUser);
                         }
                     }
                 }
@@ -136,6 +139,8 @@ public class Sessions {
                 user = JPAEntry.getObject(User.class, conditions);
                 if (user == null) {
                     //create user via openId
+                    WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
+                    user = insertUser(now, loginInfo.getInfo(), wechatUser);
                 }
                 break;
             case "name":

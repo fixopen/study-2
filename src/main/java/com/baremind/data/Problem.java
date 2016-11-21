@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -83,7 +84,7 @@ public class Problem implements com.baremind.data.Entity {
         } else {
             pm.put("type", "单选题");
         }
-        List<Map<String, Object>> poms = ProblemOptions.convertProblemOptions(problemOptions);
+        List<Map<String, Object>> poms = problemOptions.stream().map(ProblemOption::convertToMap).collect(Collectors.toList());
         pm.put("options", poms);
         pm.put("standardAnswers", problemStandardAnswers);
         pm.put("name", problemItem.getName());
