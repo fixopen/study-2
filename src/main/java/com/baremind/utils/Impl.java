@@ -101,7 +101,7 @@ public class Impl {
     public static <T> Response getById(String sessionId, Long id, Class<T> type, PostProcessor<T> postProcessor) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(sessionId));
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
             if (admin.getIsAdministrator()) {
                 result = Response.status(404).build();
                 T entity = JPAEntry.getObject(type, "id", id);

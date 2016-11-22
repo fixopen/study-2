@@ -498,6 +498,13 @@ public class Users {
         return activeCardImpl(id, ac);
     }
 
+    @GET
+    @Path("{sessionId}/user")
+    public Long Transformation (@CookieParam("sessionId") String sessionId) {
+       Long userId =  JPAEntry.getLoginId(sessionId);
+        return userId;
+    }
+
     @POST
     @Path("self/cards")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -506,7 +513,8 @@ public class Users {
         //Random rand = new Random();
         //Long logId = rand.nextLong();
         //Logs.insert(id, "log", logId, "start");
-        return activeCardImpl(Long.parseLong(sessionId), ac);
+       Long userId =  JPAEntry.getLoginId(sessionId);
+        return activeCardImpl(userId, ac);
     }
 
     //@@security weak
