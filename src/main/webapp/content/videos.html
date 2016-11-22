@@ -88,7 +88,7 @@
         <!-- Nav tabs -->
         <div class="subject-tab">
             <ul id="subjects" class="nav nav-tabs subject-tab-box" role="tablist">
-                <li role="presentation" class="active subject-tab-li zb-cur cur">
+                <li role="presentation" class="active subject-tab-li zb-cur">
                     <a href="#zero" role="tab" data-toggle="tab">语文</a>
                     <span class="zb-video">(<span id="Cc"></span>)</span>
                 </li>
@@ -159,11 +159,11 @@
         </div>
     </div>
 </article>
-<article id="video" style="display: none;">
-    <!--<video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>-->
-    <div class="wrap nohuifBackg"></div>
-</article>
-<article id="scheduler" style="display: none;">
+<!--<article id="video" style="display: none;">-->
+    <!--&lt;!&ndash;<video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>&ndash;&gt;-->
+    <!--<div class="wrap nohuifBackg"></div>-->
+<!--</article>-->
+<article id="scheduler" style="display: none;" class="wrap">
     <div class="convenient">
         <div class="week">
             第<span id="week"></span>周
@@ -171,15 +171,13 @@
         <table class="schedule-table">
             <thead>
             <tr style="background-color: #fff;">
-                <th style="width: 15%;"></th>
-                <th style="width: 85%; font-size: small">
+                <th style="width: 20%;"></th>
+                <th style="width: 80%; font-size: smaller">
                     <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
                         <tr style="width: 100%; height: 100%;">
                             <th style="width: 28%; height: 100%;">时间</th>
-                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
-                                授课年级
-                            </th>
-                            <th style="width: 48%; height: 100%;">授课内容</th>
+                            <th style="width: 22%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 50%; height: 100%;">授课内容</th>
                         </tr>
                     </table>
                 </th>
@@ -205,7 +203,7 @@
                         <img src="../img/zb-live.png" alt="">
                         <!--图片会随着具体情况改变-->
                     </span>
-                    <span class="live-timeZB">${startTime}</span>
+                    <span class="live-timeZB">${year}-${month}-${day} ${hour}:${minute}:${second}</span>
                     <div class="play-btn">
                         <img src="../img/live-play.png" alt="">
                         <!--图片会随着具体情况改变-->
@@ -228,17 +226,17 @@
                     <!--时间需要服务器自己计算-->
                     <div class="fl">
                         <i>${teacher}</i>老师主讲<br>
-                        <i>${startTime}</i>开讲
+                        <i>${year}-${month}-${day} ${hour}:${minute}:${second}</i>开讲
                     </div>
                     <div class="fr">
                         <div>${grade}</div>
-                        <div class="course-detail-btn fr">
+                        <div class="course-detail-btn fr" data-detail="${id}">
                             课程详情<br>
                             <img src="../img/xiala-btn.png" alt="">
                         </div>
                     </div>
                 </div>
-                <div class="course-detail">
+                <div class="course-detail" data-identity="${id}">
                     <h3 class="sml-tit brief1">
                         <img src="../img/abc.png" alt="">
                         课程简介
@@ -255,7 +253,7 @@
                         <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>${startTime}</p>
+                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
                 </div>
             </div>
         </div>
@@ -270,7 +268,7 @@
                         <span class="live-radio">
                             <img src="../img/zb-wait.png" alt="">
                         </span>
-                    <div class="waity-play">${startTime}开讲
+                    <div class="waity-play">${year}-${month}-${day} ${hour}:${minute}:${second}开讲
                     </div>
                     <div class="course-box">
                         <h3 class="live-title">
@@ -288,17 +286,17 @@
                 <div class="course-speaker">
                     <div class="fl">
                         <i>${teacher}</i>老师主讲<br>
-                        <i>${startTime}</i>开讲
+                        <i>${year}-${month}-${day} ${hour}:${minute}:${second}</i>开讲
                     </div>
                     <div class="fr">
                         <div>${grade}</div>
-                        <div class="course-detail-btn fr">
+                        <div class="course-detail-btn fr" data-detail="${id}">
                             课程详情<br>
                             <img src="../img/xiala-btn.png" alt="">
                         </div>
                     </div>
                 </div>
-                <div class="course-detail">
+                <div class="course-detail" data-identity="${id}">
                     <h3 class="sml-tit brief1">
                         <img src="../img/abc.png" alt="">
                         课程简介
@@ -315,7 +313,7 @@
                         <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>${startTime}</p>
+                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
                 </div>
             </div>
         </div>
@@ -351,7 +349,7 @@
                 <div class="course-speaker">
                     <div class="fl">
                         <i>${teacher}</i>老师主讲<br>
-                        <i>${startTime}</i>开讲
+                        <i>${year}-${month}-${day} ${hour}:${minute}:${second}</i>开讲
                     </div>
                     <div class="fr">
                         <div>${grade}</div>
@@ -378,7 +376,7 @@
                         <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>${startTime}</p>
+                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
                 </div>
             </div>
         </div>
@@ -399,71 +397,71 @@
 
 
 <!--*****************************video*****************************-->
-<tempalte id="video-template" class="rain-main nohuifPadd">
-    <div class="before_uli">
-        <div class="before_liplay">
-            <a class="all_aBtn" href="javascript:void(0)">
-                <div class="zhezao_top"></div>
-                <div class="zz_topbtn"></div>
-                <div class="zz_toptxt">${title}</div>
-                <div class="zhezao_bottom"></div>
-                <div class="zzbottom_div">
-                    <div class="zzbom_diva1"></div>
-                    <div class="zzbom_diva2">
-                        <span class="zzbom_span">00:00</span>
-                        <p class="zzbom_div2p">
-                            <span class="zzbom_div2span"></span>
-                        </p>
-                        <span class="zzbom_span">30:00</span>
-                    </div>
-                    <div class="zzbom_diva3"></div>
-                </div>
+<!--<tempalte id="video-template" class="rain-main nohuifPadd">-->
+    <!--<div class="before_uli">-->
+        <!--<div class="before_liplay">-->
+            <!--<a class="all_aBtn" href="javascript:void(0)">-->
+                <!--<div class="zhezao_top"></div>-->
+                <!--<div class="zz_topbtn"></div>-->
+                <!--<div class="zz_toptxt">${title}</div>-->
+                <!--<div class="zhezao_bottom"></div>-->
+                <!--<div class="zzbottom_div">-->
+                    <!--<div class="zzbom_diva1"></div>-->
+                    <!--<div class="zzbom_diva2">-->
+                        <!--<span class="zzbom_span">00:00</span>-->
+                        <!--<p class="zzbom_div2p">-->
+                            <!--<span class="zzbom_div2span"></span>-->
+                        <!--</p>-->
+                        <!--<span class="zzbom_span">30:00</span>-->
+                    <!--</div>-->
+                    <!--<div class="zzbom_diva3"></div>-->
+                <!--</div>-->
 
-                <div class="before_div1">${subject}</div>
-                <div class="yuwen_div2 yuwen_posin">
-                    <h3 class="yuwen_h3">写人作文</h3>
-                    <p class="yuwen_p">${description}</p>
-                </div>
-                <span class="yuwen_span">—${teacher}老师</span>
-            </a>
-        </div>
-        <div class="course-intro">
-            <div class="course_xiaqing">
-                <div>
-                    <p class="course_xqpsee"><span>${watchCount}</span>人观看过</p>
-                    <a href="javascript:void(0)" class="course_xqpzan">
-                        <img class="dianzanImg" src="/img/dianzan.png" alt="">
-                        <img class="dianzanImg cur" src="/img/zanover.png" alt="">
-                        赞
-                        <span class="xqpZan">${likeCount}</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="zz_comment">
-        <div class="zz_center">
-            <h3 class="zz_plh3">评论</h3>
-            <ul class="zz_plul">
-                <li class="zz_plli">
-                    <span class="zz_lispan1">${userName}</span>
-                    <span class="zz_lispan2">${userTime}</span>
-                    <p class="zz_pllip">${comment}</p>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="leave_message">
-        <input class="message_text" type="text" placeholder="留言">
-        <a class="message_btn" href="javascript:void(0)">发送</a>
-    </div>
-</tempalte>
+                <!--<div class="before_div1">${subject}</div>-->
+                <!--<div class="yuwen_div2 yuwen_posin">-->
+                    <!--<h3 class="yuwen_h3">写人作文</h3>-->
+                    <!--<p class="yuwen_p">${description}</p>-->
+                <!--</div>-->
+                <!--<span class="yuwen_span">—${teacher}老师</span>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="course-intro">-->
+            <!--<div class="course_xiaqing">-->
+                <!--<div>-->
+                    <!--<p class="course_xqpsee"><span>${watchCount}</span>人观看过</p>-->
+                    <!--<a href="javascript:void(0)" class="course_xqpzan">-->
+                        <!--<img class="dianzanImg" src="/img/dianzan.png" alt="">-->
+                        <!--<img class="dianzanImg cur" src="/img/zanover.png" alt="">-->
+                        <!--赞-->
+                        <!--<span class="xqpZan">${likeCount}</span>-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="zz_comment">-->
+        <!--<div class="zz_center">-->
+            <!--<h3 class="zz_plh3">评论</h3>-->
+            <!--<ul class="zz_plul">-->
+                <!--<li class="zz_plli">-->
+                    <!--<span class="zz_lispan1">${userName}</span>-->
+                    <!--<span class="zz_lispan2">${userTime}</span>-->
+                    <!--<p class="zz_pllip">${comment}</p>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="leave_message">-->
+        <!--<input class="message_text" type="text" placeholder="留言">-->
+        <!--<a class="message_btn" href="javascript:void(0)">发送</a>-->
+    <!--</div>-->
+<!--</tempalte>-->
 
 <!--**********************************scheduler********************************-->
 <template id="day-template">
     <tr class="color">
-        <td style="width: 15%;">星期${day}<br>(${date})</td>
-        <td style="width: 85%;">
+        <td style="width: 20%;">星期${day}<br>(${date})</td>
+        <td style="width: 80%;">
             <table style="width: 100%; height: 100%; border: none; border-spacing: 0; border-collapse: collapse;">
                 <tbody data-ext-point="items" class="data"></tbody>
             </table>
@@ -473,10 +471,8 @@
 <template id="item-template">
     <tr>
         <td style="width: 28%;">${st}-${et}</td>
-        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
-            ${grade}
-        </td>
-        <td style="width: 48%;">${title}</td>
+        <td style="width: 22%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 50%;">${title}</td>
     </tr>
 </template>
 
@@ -546,8 +542,8 @@
             isInit: false,
             init: function () {
                 if (!state.main.isInit) {
-                    $(document).on('click', '.course-detail-btn', function () {
-                        $('course-detail').toggle()
+                    $(document).on('click', '.course-detail-btn', function (e) {
+                        $('[data-identity="' + e.target.dataset.detail +'"]').toggle()
                     })
 
                     var now = Date.now()
@@ -560,14 +556,14 @@
                         }),
                         dataType: 'json',
                         success: function (zeroSchedulers) {
-                            alert(JSON.stringify(zeroSchedulers))
-
                             subjects[0].playing = zeroSchedulers[0]
                             subjects[0].futures = zeroSchedulers[1]
                             state.main.adjustData(0)
                             state.main.zeroFuture.data = subjects[0].futures
                             state.main.zeroPlaying.data = subjects[0].playing
                             state.main.refreshState(0)
+                            var Cc = document.getElementById('Cc')
+                            Cc.innerHTML = subjects[0].playing.length + subjects[0].futures.length
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers?filter=' + JSON.stringify({
@@ -582,7 +578,8 @@
                                     state.main.oneFuture.data = subjects[1].futures
                                     state.main.onePlaying.data = subjects[1].playing
                                     state.main.refreshState(1)
-
+                                    var Mc = document.getElementById('Mc')
+                                    Mc.innerHTML = subjects[1].futures.length + subjects[1].playing.length
                                     var whoFirst = function () {
                                         var needFuture = true
                                         var comparePlaying = function () {
@@ -593,8 +590,10 @@
                                                     result = true
                                                 }
                                                 needFuture = false
-                                            } else if (subjects[1].playing.length > 0) {
+                                            } else if(subjects[1].playing.length > 0) {
                                                 result = true
+                                                needFuture = false
+                                            } else if (course[0][1].length > 0) {
                                                 needFuture = false
                                             }
                                             return result
@@ -611,7 +610,7 @@
                                             return result
                                         }
                                         var result = comparePlaying()
-                                        if (!needFuture) {
+                                        if (needFuture) {
                                             result = compareFuture()
                                         }
                                         return result
@@ -619,10 +618,18 @@
                                     var oneFirst = whoFirst()
                                     if (oneFirst) {
                                         $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                                        $('#subjects').find('a[href="#one"]').addClass('cur')
+                                        $('#subjects').find('a[href="#zero"]').removeClass('cur')
                                         //$('#subjects').find('a:first').tab('show') // Select first tab
                                         //$('#subjects').find('a:last').tab('show') // Select last tab
                                         //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
                                     }
+
+//                                    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+//                                        e.target.addClass('cur') // newly activated tab
+//                                        e.relatedTarget.removeClass('cur') // previous active tab
+//                                    })
+
                                     setInterval(function () {
                                         state.main.refreshState(0)
                                         state.main.refreshState(1)
@@ -639,20 +646,42 @@
                 for (var i = 0; i < subjects[subjectIndex].playing.length; ++i) {
                     var item = subjects[subjectIndex].playing[i]
                     item.grade = state.getGrade(item.grade)
-                    item.startTime = Date.parse(item.startTime.replace('-', '/'))
-                    item.endTime = Date.parse(item.endTime.replace('-', '/'))
+                    item.startTime =new Date(Date.parse(item.startTime.replace(/-/g, '/')))
+                    item.endTime =new Date(Date.parse(item.endTime.replace(/-/g, '/')))
                     item.year = item.startTime.getFullYear()
                     item.month = item.startTime.getMonth() + 1
-                    item.date = item.startTime.getDate()
+                    item.day = item.startTime.getDate()
+                    item.hour = item.startTime.getHours()
+                    var minute = item.startTime.getMinutes()
+                    if (minute == 0) {
+                        minute = '00'
+                    }
+                    item.minute = minute
+                    var second = item.startTime.getSeconds()
+                    if (second == 0) {
+                        second = '00'
+                    }
+                    item.second = second
                 }
                 for (var i = 0; i < subjects[subjectIndex].futures.length; ++i) {
                     var item = subjects[subjectIndex].futures[i]
                     item.grade = state.getGrade(item.grade)
-                    item.startTime = Date.parse(item.startTime.replace('-', '/'))
-                    item.endTime = Date.parse(item.endTime.replace('-', '/'))
+                    item.startTime =new Date(Date.parse(item.startTime.replace(/-/g, '/')))
+                    item.endTime =new Date(Date.parse(item.endTime.replace(/-/g, '/')))
                     item.year = item.startTime.getFullYear()
                     item.month = item.startTime.getMonth() + 1
-                    item.date = item.startTime.getDate()
+                    item.day = item.startTime.getDate()
+                    item.hour = item.startTime.getHours()
+                    var minute = item.startTime.getMinutes()
+                    if (minute == 0) {
+                        minute = '00'
+                    }
+                    item.minute = minute
+                    var second = item.startTime.getSeconds()
+                    if (second == 0) {
+                        second = '00'
+                    }
+                    item.second = second
                 }
             },
             refreshState: function (subjectIndex) {
@@ -697,6 +726,7 @@
 //            search: function () {
 //                //filter the playing and future data via the filter element state
 //            }
+
         },
         passed: {
             zeroPassed: {
@@ -856,6 +886,7 @@
                         type: 'get',
                         url: ''
                     })
+                    state.video.isInit = true
                 }
             }
         },
@@ -952,7 +983,6 @@
                 dataType: 'json',
                 success: function (ss) {
                     subjects = ss
-
                     state['main'].init()
                 },
                 error: function (xhr) {
@@ -964,7 +994,7 @@
                 state.currentArticle.style.display = 'none'
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/user.html#' + id)
+                history.pushState(null, null, '/content/videos.html#' + id)
                 state[id].init()
             }
 
@@ -973,14 +1003,14 @@
                 switchTo(id)
             })
 
-            state['main'].init()
-            history.pushState(null, null, '/videos.html#main')
+//            state['main'].init()
+//            history.pushState(null, null, 'content/videos.html#main')
 
-            window.addEventListener('hashChange', function (e) {
+            window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
-            })
+            }, false)
         }
     }
 
