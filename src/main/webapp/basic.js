@@ -115,7 +115,7 @@ var proc = function (option) {
                 }
             }
         } else { //data is object
-            var element = cloneElement()
+            var element = cloneElement(option.data.type)
             if (element) {
                 bind(element, option.data)
                 procSecond(element, option.data)
