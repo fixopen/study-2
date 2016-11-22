@@ -23,7 +23,17 @@ public class KnowledgePoints {
         orders.put("order", "ASC");
         final Date now = new Date();
         final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, (knowledgePoint) -> KnowledgePoint.convertToMap(knowledgePoint, now, yesterday), null);
+        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, now, yesterday), (knowledgePoint) -> {
+            boolean result = true;
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT COUNT(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + knowledgePoint.getId().toString();
+            TypedQuery<Long> q = em.createQuery(stats, Long.class);
+            Long c = q.getSingleResult();
+            if (c == 0L) {
+                result = false;
+            }
+            return result;
+        });
     }
 
     @GET //根据id查询
