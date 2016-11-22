@@ -61,6 +61,15 @@
 .subject-tab-li.cur .zb-video{
 	display: block;
 }
+.nav-tabs > li:nth-child(1).active {
+	border-color: #86bc03;
+	color: #73a200;
+	background-color: #f5ffdd;}
+.nav-tabs > li:nth-child(2).active {
+	border-color: #86bc03;
+	color: #73a200;
+	background-color: #f5ffdd;
+}
 /* 语数外正在直播 */
 .zb-video{
 	color: #73a200;
@@ -70,6 +79,9 @@
 	right: 0.2rem;
 	bottom: 0.7275rem;
 	display: none;
+}
+.nav-tabs > li:nth-child(1).active > .zb-video, .nav-tabs > li:nth-child(2).active > .zb-video {
+	display: block;
 }
 #live-broadcast{
 	margin-top: -12px;
@@ -716,4 +728,76 @@
 	text-align: center;
 	background-color: #ff8067;
 	border-radius: 0.3125rem;
+}
+
+/*schedule*/
+/* @Author:zhaoxq*/
+.timetable-hd {
+	width: 100%;
+	height: 4.78125rem;
+	background: url(../img/kcb-hd.png) no-repeat center top;
+	-webkit-background-size: contain;
+	background-size: contain;
+	margin-bottom: 0.59375rem;
+}
+
+/* 课程表内容 */
+.timetable-main {
+	width: 100%;
+	border: 1px solid #ffcc00;
+	border-radius: 12px;
+	background-color: #fffcf2;
+	color: #242424;
+	position: relative;
+}
+
+#timetable {
+	/*font-size: 0.5625rem;*/
+	border-top: 1px dashed #fff0a1;
+	/*border-left: 1px dashed #fff0a1;*/
+	/*border-bottom: 1px dashed #fff0a1;*/
+	/*padding: 0 5px;*/
+	/*box-sizing: border-box;*/
+}
+
+.tableTitle td {
+	height: 1.46875rem;
+	font-size: 0.875rem;
+	text-align: center;
+	color: #666;
+}
+
+.weekRoll {
+	padding: 0 5px;
+}
+
+.timetable-main td {
+	font-size: 0.7125rem;
+	border-left: 1px dashed #fff0a1;
+	border-bottom: 1px dashed #fff0a1;
+	padding: 0 5px;
+	box-sizing: border-box;
+}
+
+.timetable-main td:first-child {
+	border-left: none;
+	font-size: 0.9375rem;
+	color: #666;
+	text-align: center;
+}
+
+.timetable-main tr:last-child td {
+	border-bottom: none;
+}
+
+/* 固定底部 */
+.timetable-bd {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 7.875rem;
+	background: url(../img/kcb-bd.png) no-repeat center bottom;
+	-webkit-background-size: contain;
+	background-size: contain;
 }
