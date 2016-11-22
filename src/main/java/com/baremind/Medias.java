@@ -120,7 +120,7 @@ public class Medias {
             User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
             if (admin != null && admin.getIsAdministrator()) {
                 Media m = JPAEntry.getObject(Media.class, "id", id);
-                String physicalPath = Properties.getPropertyValue("physicalPath");
+                String physicalPath = Properties.getProperty("physicalPath");
 //                String p = physicalPath + m.getStorePath();
 //                File f = new File(p);
 //                boolean success = f.delete();
@@ -192,7 +192,7 @@ public class Medias {
                 String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
                 if (!Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "png")) {
                     String fileName = now + "." + postfix;
-                    String pyshicalpath = Properties.getPropertyValue("physicalpath");
+                    String pyshicalpath = Properties.getProperty("physicalpath");
                     String uploadedFileLocation = pyshicalpath + fileName;
 
                     File file = new File(uploadedFileLocation);
@@ -205,7 +205,7 @@ public class Medias {
                     image.setMimeType(contentType);
                     image.setName(fileName);
                     image.setSize(p.getSize());
-                    String virtualPath = Properties.getPropertyValue("virtualpath") + fileName;
+                    String virtualPath = Properties.getProperty("virtualpath") + fileName;
                     image.setStorePath(virtualPath);
                     JPAEntry.genericPost(image);
 

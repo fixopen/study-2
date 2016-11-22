@@ -108,7 +108,7 @@ public class ImageTexts {
                 String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
                 if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
                     String fileName = now + "." + postfix;
-                    String pyshicalpath = Properties.getPropertyValue("physicalpath");
+                    String pyshicalpath = Properties.getProperty("physicalpath");
                     String uploadedFileLocation = pyshicalpath + fileName;
                     File file = new File(uploadedFileLocation);
                     FileOutputStream w = new FileOutputStream(file);
@@ -120,7 +120,7 @@ public class ImageTexts {
                     image.setMimeType(contentType);
                     image.setName(fileName);
                     image.setSize(p.getSize());
-                    String virtualPath = Properties.getPropertyValue("testvirtualpath") + fileName;
+                    String virtualPath = Properties.getProperty("testvirtualpath") + fileName;
                     image.setStorePath(virtualPath);
 
                     ImageText imageText = new ImageText();

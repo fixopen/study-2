@@ -45,8 +45,10 @@ import java.util.*;
 public class PublicAccounts {
     private static String hostname = "https://api.weixin.qq.com";
     private static String accessToken = "";
-    private static String appID = "wx92dec5e98645bd1d";
-    private static String secret = "d3b30c3ae79c322bc54c93d0ff75210b";
+    private static String appID = "wx60171bc59d149903";
+    private static String secret = "b632624815e77a67567fb31543f0a15f";
+    //private static String appID = "wx92dec5e98645bd1d";
+    //private static String secret = "d3b30c3ae79c322bc54c93d0ff75210b";
     private static String token = "xiaoyuzhishi20160928";
     //private static String token = "xiaoyuzhishi20160907";
 
@@ -211,7 +213,7 @@ public class PublicAccounts {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getConfig(@PathParam("url") String url) {
         Response result = Response.status(500).build();
-        String ticket = Properties.getPropertyValue("ticket");
+        String ticket = Properties.getProperty("ticket");
         String timestamp = Long.toString(new Date().getTime());
         String nonceStr = "";
         try {

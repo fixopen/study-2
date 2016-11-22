@@ -26,7 +26,7 @@ import java.util.*;
  */
 @Path("class-rooms")
 public class ClassRooms/* extends Endpoint*/ {
-    private static Long classRoomId = 0l;
+    private static Long classRoomId = 0L;
 
     @GET
     @Produces(MediaType.TEXT_HTML)

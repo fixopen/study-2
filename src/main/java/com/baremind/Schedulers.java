@@ -1,8 +1,9 @@
 package com.baremind;
 
 import com.baremind.data.Scheduler;
+import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
-import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,6 +22,120 @@ import java.util.*;
 
 @Path("schedulers")
 public class Schedulers {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        Map<String, String> orders = new HashMap<>();
+        orders.put("startTime", "DESC");
+        return Impl.get(sessionId, filter, orders, Scheduler.class, null);
+    }
+
+    @GET //根据id查询
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, Scheduler.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, Scheduler entity) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
+            }
+        }
+        return result;
+    }
+
+    @PUT //根据id修改
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Scheduler newData) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, Scheduler.class, (exist, scheduler) -> {
+                    Integer year = scheduler.getYear();
+                    if (year != null) {
+                        exist.setYear(year);
+                    }
+                    Integer week = scheduler.getWeek();
+                    if (week != null) {
+                        exist.setWeek(week);
+                    }
+                    Integer day = scheduler.getDay();
+                    if (day != null) {
+                        exist.setDay(day);
+                    }
+                    Date startTime = scheduler.getStartTime();
+                    if (startTime != null) {
+                        exist.setStartTime(startTime);
+                    }
+                    Date endTime = scheduler.getEndTime();
+                    if (endTime != null) {
+                        exist.setEndTime(endTime);
+                    }
+                    Long subjectId = scheduler.getSubjectId();
+                    if (subjectId != null) {
+                        exist.setSubjectId(subjectId);
+                    }
+                    Integer grade = scheduler.getGrade();
+                    if (grade != null) {
+                        exist.setGrade(grade);
+                    }
+                    String title = scheduler.getName();
+                    if (title != null) {
+                        exist.setName(title);
+                    }
+                    Long cover = scheduler.getCoverId();
+                    if (cover != null) {
+                        exist.setCoverId(cover);
+                    }
+                    String cdnLink = scheduler.getContentLink();
+                    if (cdnLink != null) {
+                        exist.setContentLink(cdnLink);
+                    }
+                    String directLink = scheduler.getDirectLink();
+                    if (directLink != null) {
+                        exist.setDirectLink(directLink);
+                    }
+                    String description = scheduler.getDescription();
+                    if (description != null) {
+                        exist.setDescription(description);
+                    }
+                    String teacher = scheduler.getTeacher();
+                    if (teacher != null) {
+                        exist.setTeacher(teacher);
+                    }
+                    String teacherDescription = scheduler.getTeacherDescription();
+                    if (teacherDescription != null) {
+                        exist.setTeacherDescription(teacherDescription);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, Scheduler.class);
+            }
+        }
+        return result;
+    }
+
     private Long findSubjectIdByName(String k) {
         Long result = null;
         switch (k) {
@@ -65,6 +180,38 @@ public class Schedulers {
         return result;
     }
 
+    @GET //根据科目查询老师
+    @Path("teachers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTeacher(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.teacher FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.teacher";
+            TypedQuery<String> q = em.createQuery(stats, String.class);
+            q.setParameter("subjectId", filterObject.get("subjectId"));
+            result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
+
+    @GET //根据科目查询年级
+    @Path("grades")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getGrades(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.grade FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.grade";
+            TypedQuery<Long> q = em.createQuery(stats, Long.class);
+            q.setParameter("subjectId", filterObject.get("subjectId"));
+            result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
+
     @GET //根据周查询课表
     @Path("keywords/{keywords}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -100,38 +247,6 @@ public class Schedulers {
         return result;
     }
 
-    @GET //根据科目查询老师
-    @Path("teachers")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getTeacher(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            EntityManager em = JPAEntry.getEntityManager();
-            String stats = "SELECT l.teacher FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.teacher";
-            TypedQuery<String> q = em.createQuery(stats, String.class);
-            q.setParameter("subjectId", filterObject.get("subjectId"));
-            result = Response.ok(new Gson().toJson(q.getResultList())).build();
-        }
-        return result;
-    }
-
-    @GET //根据科目查询年级
-    @Path("grades")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getGrades(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            EntityManager em = JPAEntry.getEntityManager();
-            String stats = "SELECT l.grade FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.grade";
-            TypedQuery<Long> q = em.createQuery(stats, Long.class);
-            q.setParameter("subjectId", filterObject.get("subjectId"));
-            result = Response.ok(new Gson().toJson(q.getResultList())).build();
-        }
-        return result;
-    }
-
     @GET //根据周查询课表
     @Path("years/{year}/weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -146,23 +261,6 @@ public class Schedulers {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
             result = Response.ok(gson.toJson(schedulers)).build();
-        }
-        return result;
-    }
-
-    @GET //根据周查询课表
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getSchedulerById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
-            if (scheduler != null) {
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
-                result = Response.ok(gson.toJson(scheduler)).build();
-            }
         }
         return result;
     }
@@ -211,92 +309,6 @@ public class Schedulers {
         if (JPAEntry.isLogining(sessionId)) {
             String key = "";
             result = Response.ok("{\"key\":\"" + key + "\"}").build();
-        }
-        return result;
-    }
-
-    @POST //添加课表
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createScheduler(@CookieParam("sessionId") String sessionId, Scheduler scheduler) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            scheduler.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(scheduler);
-            result = Response.ok(scheduler).build();
-        }
-        return result;
-    }
-
-    @PUT //修改课表
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateScheduler(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Scheduler scheduler) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            result = Response.status(404).build();
-            Scheduler existScheduler = JPAEntry.getObject(Scheduler.class, "id", id);
-            if (existScheduler != null) {
-                Integer year = scheduler.getYear();
-                if (year != null) {
-                    existScheduler.setYear(year);
-                }
-                Integer week = scheduler.getWeek();
-                if (week != null) {
-                    existScheduler.setWeek(week);
-                }
-                Integer day = scheduler.getDay();
-                if (day != null) {
-                    existScheduler.setDay(day);
-                }
-                Date startTime = scheduler.getStartTime();
-                if (startTime != null) {
-                    existScheduler.setStartTime(startTime);
-                }
-                Date endTime = scheduler.getEndTime();
-                if (endTime != null) {
-                    existScheduler.setEndTime(endTime);
-                }
-                Long subjectId = scheduler.getSubjectId();
-                if (subjectId != null) {
-                    existScheduler.setSubjectId(subjectId);
-                }
-                Integer grade = scheduler.getGrade();
-                if (grade != null) {
-                    existScheduler.setGrade(grade);
-                }
-                String title = scheduler.getName();
-                if (title != null) {
-                    existScheduler.setName(title);
-                }
-                Long cover = scheduler.getCoverId();
-                if (cover != null) {
-                    existScheduler.setCoverId(cover);
-                }
-                String cdnLink = scheduler.getContentLink();
-                if (cdnLink != null) {
-                    existScheduler.setContentLink(cdnLink);
-                }
-                String directLink = scheduler.getDirectLink();
-                if (directLink != null) {
-                    existScheduler.setDirectLink(directLink);
-                }
-                String description = scheduler.getDescription();
-                if (description != null) {
-                    existScheduler.setDescription(description);
-                }
-                String teacher = scheduler.getTeacher();
-                if (teacher != null) {
-                    existScheduler.setTeacher(teacher);
-                }
-                String teacherDescription = scheduler.getTeacherDescription();
-                if (teacherDescription != null) {
-                    existScheduler.setTeacherDescription(teacherDescription);
-                }
-                JPAEntry.genericPut(existScheduler);
-                result = Response.ok(existScheduler).build();
-            }
         }
         return result;
     }

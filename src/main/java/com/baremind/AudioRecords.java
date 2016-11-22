@@ -68,9 +68,8 @@ public class AudioRecords {
         //if (JPAEntry.isLogining(userId)) {
         CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
         parseAndInsert(uploadedFileLocation);
-        Response result = Response.ok("{\"state\":\"ok\"}").build();
         //}
-        return result;
+        return Response.ok("{\"state\":\"ok\"}").build();
     }
 
     private void parseAndInsert(String csvFilename) {
@@ -150,9 +149,8 @@ public class AudioRecords {
         //if (JPAEntry.isLogining(userId)) {
         CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
         parseAndInsertForName(uploadedFileLocation);
-        Response result = Response.ok("{\"state\":\"ok\"}").build();
         //}
-        return result;
+        return Response.ok("{\"state\":\"ok\"}").build();
     }
 
     private void parseAndInsertForName(String csvFilename) {
