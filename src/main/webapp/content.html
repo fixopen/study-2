@@ -232,7 +232,7 @@
                     <button type="submit" class="sub-btn" id="submitBtn">提交</button>
                 </div>
             </div>
-            <section id="commentsChinese" class="comment-subject"></section>
+            <section id="comments"></section>
         </section>
     </div>
 </template>
@@ -280,18 +280,18 @@
                 <textarea class="zongjie_txt" name="" id="" cols="" rows=""></textarea>
             </section>
             <!--readlike-->
-            <section class="content-bg lixi_Nomar" id="interaction1"></section>
+            <section class="content-bg lixi_Nomar" id="interaction"></section>
         </div>
         <!--message-->
         <section class="mulu_bottom">
-            <div class="muluBn_top" id="message1">
-                <button id="createComment1" type="button" class="comment-btn">写留言</button>
-                <div id="commentPanl1" style="display: none">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
                     <textarea name="message" id="textarea1" cols="30" rows="5" class="textarea"></textarea>
-                    <button type="submit" class="sub-btn" id="submitBtn1">提交</button>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
                 </div>
             </div>
-            <section id="commentsMath" class="comment-subject"></section>
+            <section id="comments"></section>
         </section>
     </div>
 </template>
@@ -349,7 +349,8 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <img class="ul01_imgzan" src="img/zan-over.png" alt="" id="icon">
+                <!--<img class="ul01_imgzan" src="img/zan-over.png" alt="" id="icon">-->
+                <span class="icon">已点</span>
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -365,7 +366,8 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">
+                <!--<img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">-->
+                <span class="icon">未点</span>
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -376,7 +378,31 @@
         </ul>
     </div>
 </template>
-<template id="comment-template">
+<template id="comment-like-template">
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${userAvatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${userName}</div>
+                    <div class="litop_friht" data-id="${id}">
+                        <img class="ul01_imgzan_" src="img/zan-over.png" alt="">
+                        <span class="ul01_count">${likeCount}</span>
+                    </div>
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${createTime}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</template>
+<template id="comment-unlike-template">
     <ul class="muluBn_center">
         <li class="liuyan_li lion_01">
             <img src="${userAvatar}" alt="">
@@ -802,6 +828,16 @@
                                         state.knowledgePoint.show()
                                     }
                                 })
+                                $.ajax({
+                                    type: "get",
+                                    url: 'api/comments/' + state.knowledgePoint.value.contents.comments[i].id + '/is-self-like',
+                                    dataType: "json",
+                                    success: function (like) {
+                                        data.liked = like.like
+                                        state.knowledgePoint.value.contents.comments = data
+                                        state.knowledgePoint.show()
+                                    }
+                                })
                             }
                         })
                     } else {
@@ -832,6 +868,13 @@
                     }, false)
                 };
 
+                //likes
+//                var likeEventBind = function (iconElement,apiUrl, id, likeContent, likeState,likeTemplate,unlikeTemplate,likeContainer) {
+//                    iconElement.addEventListener('clike',function(e){
+//                        state.knowledgePoint.like(apiUrl, id, likeContent, likeState,likeTemplate,unlikeTemplate,likeContainer)
+//                    },false)
+//                }
+
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
@@ -848,7 +891,7 @@
                         var panel = document.getElementById('commentPanl');
                         var btn = document.getElementById('submitBtn');
                         var commentContent = document.getElementById('textarea');
-                        var commentContainer = document.getElementById('commentsChinese');
+                        var commentContainer = document.getElementById('comments');
                         commentEventBind(createComment, panel, btn, commentContent, commentContainer);
 
                         var value = state.knowledgePoint.value;
@@ -903,63 +946,135 @@
 
                         value.contents.interaction.previousId = value.previousId
                         value.contents.interaction.nextId = value.nextId
-                        value.contents.interaction.type = 'unliked'
-                        if (value.contents.liked) {
-                            value.contents.interaction.type = 'liked'
-                        }
-                        proc({
-                            alterTemplates: [
-                                {type: 'liked', templateId: 'interaction-like-template'},
-                                {type: 'unliked', templateId: 'interaction-unlike-template'}
-                            ],
-                            data: value.contents.interaction,
-                            container: state.knowledgePoint.interaction
-                        })
+//                        value.contents.interaction.type = 'unliked'
+//                        if (value.contents.liked) {
+//                            value.contents.interaction.type = 'liked'
+//                        }
+//                        proc({
+//                            alterTemplates: [
+//                                {type: 'liked', templateId: 'interaction-like-template'},
+//                                {type: 'unliked', templateId: 'interaction-unlike-template'}
+//                            ],
+//                            data: value.contents.interaction,
+//                            container: state.knowledgePoint.interaction
+//                        })
 
-                        //  interaction-likes
-                        var iconElement = document.getElementById('icon');
-                        var id=value.id;
-                        iconElement.addEventListener('click', function (e) {
-                            if (state.knowledgePoint.value.contents.liked) {
-                                $.ajax({
-                                    type: "put",
-                                    url: 'api/knowledge-points/' + id + '/unlike',
-                                    data: JSON.stringify({}),
-                                    dataType: "json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (unlike) {
-                                        --state.knowledgePoint.value.contents.interaction.likeCount
-                                        state.knowledgePoint.value.contents.liked = false
-                                    }
-                                })
-                            } else {
-                                $.ajax({
-                                    type: "put",
-                                    url: 'api/knowledge-points/' + id + '/like',
-                                    data: JSON.stringify({}),
-                                    dataType: "json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (unlike) {
-                                        ++state.knowledgePoint.value.contents.interaction.likeCount
-                                        state.knowledgePoint.value.contents.liked = true
-                                    }
-                                })
-                            }
-
-                            state.knowledgePoint.interaction.innerHTML = ''
-                            value.contents.interaction.type = 'unliked'
-                            if (value.contents.liked) {
-                                value.contents.interaction.type = 'liked'
-                            }
-                            proc({
-                                alterTemplate: [
-                                    {type: 'liked', templateId: 'interaction-like-template'},
-                                    {type: 'unliked', templateId: 'interaction-unlike-template'}
-                                ],
-                                data: value.contents.interaction,
-                                container: state.knowledgePoint.interaction
+                        var unlike = function (apiUrl, id) {
+                            $.ajax({
+                                type: "put",
+                                url: apiUrl + id + '/unlike',
+                                data: JSON.stringify({}),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8"
                             })
-                        })
+                        }
+                        var like = function (apiUrl, id) {
+                            $.ajax({
+                                type: "put",
+                                url: apiUrl + id + '/like',
+                                data: JSON.stringify({}),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8"
+                            })
+                        }
+                        var likeProc = function (container, data, liked, likeTemplate, unlikeTemplate, apiUrl, id) {
+                            container.innerHTML = ''
+                            if (liked) {
+                                proc({
+                                    container: container,
+                                    data: data,
+                                    templateId: likeTemplate
+                                })
+                                var button = container.querySelector('.icon')
+                                button.addEventListener('click', function (e) {
+                                    unlike(apiUrl, id)
+                                    data.likeCount--
+                                    liked = false
+                                    likeProc(container, data, liked, likeTemplate, unlikeTemplate, apiUrl, id)
+                                }, false)
+                            } else {
+                                proc({
+                                    container: container,
+                                    data: data,
+                                    templateId: unlikeTemplate
+                                })
+                                var button = container.querySelector('.icon')
+                                button.addEventListener('click', function (e) {
+                                    like(apiUrl, id)
+                                    data.likeCount++
+                                    liked = true
+                                    likeProc(container, data, liked, likeTemplate, unlikeTemplate, apiUrl, id)
+                                }, false)
+                            }
+                        }
+
+                        var container = state.knowledgePoint.interaction;
+                        var data = value.contents.interaction;
+                        var liked = value.contents.liked;
+                        var likeTemplate = 'interaction-like-template';
+                        var unlikeTemplate = 'interaction-unlike-template';
+                        var apiUrl = 'api/knowledge-points/';
+                        var id = value.id;
+                        likeProc(container, data, liked, likeTemplate, unlikeTemplate, apiUrl, id)
+
+
+//                        var likeContent = value.contents.interaction;
+//                        var likeContainer = state.knowledgePoint.interaction;
+//
+//                        state.knowledgePoint.likeBind(likeContent, likeState, likeTemplate, unlikeTemplate, likeContainer)
+//
+//                        //  interaction-likes
+//                        var iconElement = document.getElementById('icon');
+
+
+//
+//                        iconElement.addEventListener('click', function (e) {
+////                            if (state.knowledgePoint.value.contents.liked) {
+////                                $.ajax({
+////                                    type: "put",
+////                                    url: 'api/knowledge-points/' + id + '/unlike',
+////                                    data: JSON.stringify({}),
+////                                    dataType: "json",
+////                                    contentType: "application/json; charset=utf-8",
+////                                    success: function (unlike) {
+////                                        --state.knowledgePoint.value.contents.interaction.likeCount
+////                                        state.knowledgePoint.value.contents.liked = false
+////                                    }
+////                                })
+////                            } else {
+////                                $.ajax({
+////                                    type: "put",
+////                                    url: 'api/knowledge-points/' + id + '/like',
+////                                    data: JSON.stringify({}),
+////                                    dataType: "json",
+////                                    contentType: "application/json; charset=utf-8",
+////                                    success: function (unlike) {
+////                                        ++state.knowledgePoint.value.contents.interaction.likeCount
+////                                        state.knowledgePoint.value.contents.liked = true
+////                                    }
+////                                })
+////                            }
+////
+////                            state.knowledgePoint.interaction.innerHTML = ''
+////                            value.contents.interaction.type = 'unliked'
+////                            if (value.contents.liked) {
+////                                value.contents.interaction.type = 'liked'
+////                            }
+////                            proc({
+////                                alterTemplates: [
+////                                    {type: 'liked', templateId: 'interaction-like-template'},
+////                                    {type: 'unliked', templateId: 'interaction-unlike-template'}
+////                                ],
+////                                data: value.contents.interaction,
+////                                container: state.knowledgePoint.interaction
+////                            })
+//                            state.knowledgePoint.like(apiUrl, id, likeCount, likeContent, likeState, likeTemplate, unlikeTemplate, likeContainer)
+//
+//                            var iconElement = document.getElementById('icon');
+//                            iconElement.addEventListener('click', function (e) {
+//                                state.knowledgePoint.like(apiUrl, id, likeCount, likeContent, likeState, likeTemplate, unlikeTemplate, likeContainer)
+//                            })
+//                        })
 
                         proc({
                             templateId: 'comment-template',
@@ -974,65 +1089,7 @@
                             var contentLike = value.contents.comments[i].likeCount;
                             state.knowledgePoint.like(apiUrl, id, contentLike, e.target)
                         })
-//                        $('.ul01_imgzan_').on('click', function (e) {
-//                            var id = e.target.parentNode.dataset.id
-//                            $.ajax({
-//                                type: "get",
-//                                url: 'api/comments/' + id + '/is-self-like',
-//                                dataType: "json",
-//                                success: function (like) {
-//                                    var likeds = like.like;
-//                                    if (likeds) {
-//                                        e.target.setAttribute('src', 'img/zan-over.png');
-//                                    } else {
-//                                        e.target.setAttribute('src', 'img/zan.png');
-//                                    }
-//                                    if (likeds) {
-//                                        var id = e.target.parentNode.dataset.id
-//                                        $.ajax({
-//                                            type: "put",
-//                                            url: '/api/comments/' + id + '/unlike',
-//                                            data: JSON.stringify({}),
-//                                            dataType: "json",
-//                                            contentType: "application/json; charset=utf-8",
-//                                            success: function (unlike) {
-//                                                for (var i = 0; i < value.contents.comments.length; ++i) {
-//                                                    if (value.contents.comments[i].id == id) {
-//                                                        e.target.setAttribute('src', 'img/zan.png');
-//                                                        --value.contents.comments[i].likeCount;
-//                                                        e.target.nextElementSibling.textContent =
-//                                                                value.contents.comments[i].likeCount;
-//                                                        likeds = false;
-//                                                        break
-//                                                    }
-//                                                }
-//                                            }
-//                                        })
-//                                    } else {
-//                                        var id = e.target.parentNode.dataset.id
-//                                        $.ajax({
-//                                            type: "put",
-//                                            url: '/api/comments/' + id + '/like',
-//                                            data: JSON.stringify({}),
-//                                            dataType: "json",
-//                                            contentType: "application/json; charset=utf-8",
-//                                            success: function (like) {
-//                                                for (var i = 0; i < value.contents.comments.length; ++i) {
-//                                                    if (value.contents.comments[i].id == id) {
-//                                                        e.target.setAttribute('src', 'img/zan-over.png');
-//                                                        ++value.contents.comments[i].likeCount;
-//                                                        e.target.nextElementSibling.textContent =
-//                                                                value.contents.comments[i].likeCount;
-//                                                        likeds = true;
-//                                                        break
-//                                                    }
-//                                                }
-//                                            }
-//                                        })
-//                                    }
-//                                }
-//                            })
-//                        });
+
                         break
                     case 2:
                     case '2':
@@ -1043,11 +1100,11 @@
                         });
 
                         // 写留言---------
-                        var createComment = document.getElementById('createComment1');
-                        var panel = document.getElementById('commentPanl1');
-                        var btn = document.getElementById('submitBtn1');
-                        var commentContent = document.getElementById('textarea1');
-                        var commentContainer = document.getElementById('commentsMath');
+                        var createComment = document.getElementById('createComment');
+                        var panel = document.getElementById('commentPanl');
+                        var btn = document.getElementById('submitBtn');
+                        var commentContent = document.getElementById('textarea');
+                        var commentContainer = document.getElementById('comments');
                         commentEventBind(createComment, panel, btn, commentContent, commentContainer);
 
                         var value = state.knowledgePoint.value;
@@ -1151,131 +1208,13 @@
                         })
 
                         //comments-likes;
-//
                         $('.ul01_imgzan_').on('click', function (e) {
                             var apiUrl = 'api/comments/';
                             var id = e.target.parentNode.dataset.id;
                             var contentLike = value.contents.comments[i].likeCount;
                             state.knowledgePoint.like(apiUrl, id, contentLike, e.target)
                         })
-//                        $('.ul01_imgzan_').on('click', function (e) {
-//                            var id = e.target.parentNode.dataset.id
-//                            $.ajax({
-//                                type: "get",
-//                                url: 'api/comments/' + id + '/is-self-like',
-//                                dataType: "json",
-//                                success: function (like) {
-//                                    var likeds = like.like;
-//                                    if (likeds) {
-//                                        e.target.setAttribute('src', 'img/zan-over.png');
-//                                    } else {
-//                                        e.target.setAttribute('src', 'img/zan.png');
-//                                    }
-//                                    if (likeds) {
-//                                        var id = e.target.parentNode.dataset.id
-//                                        $.ajax({
-//                                            type: "put",
-//                                            url: '/api/comments/' + id + '/unlike',
-//                                            data: JSON.stringify({}),
-//                                            dataType: "json",
-//                                            contentType: "application/json; charset=utf-8",
-//                                            success: function (unlike) {
-//                                                for (var i = 0; i < value.contents.comments.length; ++i) {
-//                                                    if (value.contents.comments[i].id == id) {
-//                                                        e.target.setAttribute('src', 'img/zan.png');
-//                                                        --value.contents.comments[i].likeCount;
-//                                                        e.target.nextElementSibling.textContent =
-//                                                                value.contents.comments[i].likeCount;
-//                                                        likeds = false;
-//                                                        break
-//                                                    }
-//                                                }
-//                                            }
-//                                        })
-//                                    } else {
-//                                        var id = e.target.parentNode.dataset.id
-//                                        $.ajax({
-//                                            type: "put",
-//                                            url: '/api/comments/' + id + '/like',
-//                                            data: JSON.stringify({}),
-//                                            dataType: "json",
-//                                            contentType: "application/json; charset=utf-8",
-//                                            success: function (like) {
-//                                                for (var i = 0; i < value.contents.comments.length; ++i) {
-//                                                    if (value.contents.comments[i].id == id) {
-//                                                        e.target.setAttribute('src', 'img/zan-over.png');
-//                                                        ++value.contents.comments[i].likeCount;
-//                                                        e.target.nextElementSibling.textContent =
-//                                                                value.contents.comments[i].likeCount;
-//                                                        likeds = true;
-//                                                        break
-//                                                    }
-//                                                }
-//                                            }
-//                                        })
-//                                    }
-//                                }
-//                            })
-//                        });
-//                        $('.ul01_imgzan_').on('click', function (e) {
-//                            var id = e.target.parentNode.dataset.id
-//                            $.ajax({
-//                                type: "get",
-//                                url: 'api/comments/' + id + '/is-self-like',
-//                                dataType: "json",
-//                                success: function (like) {
-//                                    var likeds = like.like;
-//                                    if (likeds) {
-//                                        e.target.setAttribute('src', 'img/zan-over.png');
-//                                    } else {
-//                                        e.target.setAttribute('src', 'img/zan.png');
-//                                    }
-//                                    if (likeds) {
-//                                        var id = e.target.parentNode.dataset.id
-//                                        $.ajax({
-//                                            type: "put",
-//                                            url: '/api/comments/' + id + '/unlike',
-//                                            data: JSON.stringify({}),
-//                                            dataType: "json",
-//                                            contentType: "application/json; charset=utf-8",
-//                                            success: function (unlike) {
-//                                                for (var i = 0; i < value.contents.comments.length; ++i) {
-//                                                    if (value.contents.comments[i].id == id) {
-//                                                        e.target.setAttribute('src', 'img/zan.png');
-//                                                        --value.contents.comments[i].likeCount;
-//                                                        e.target.nextElementSibling.textContent =
-//                                                                value.contents.comments[i].likeCount;
-//                                                        likeds = false;
-//                                                        break
-//                                                    }
-//                                                }
-//                                            }
-//                                        })
-//                                    } else {
-//                                        var id = e.target.parentNode.dataset.id
-//                                        $.ajax({
-//                                            type: "put",
-//                                            url: '/api/comments/' + id + '/like',
-//                                            data: JSON.stringify({}),
-//                                            dataType: "json",
-//                                            contentType: "application/json; charset=utf-8",
-//                                            success: function (like) {
-//                                                for (var i = 0; i < value.contents.comments.length; ++i) {
-//                                                    if (value.contents.comments[i].id == id) {
-//                                                        e.target.setAttribute('src', 'img/zan-over.png');
-//                                                        ++value.contents.comments[i].likeCount;
-//                                                        e.target.nextElementSibling.textContent =
-//                                                                value.contents.comments[i].likeCount;
-//                                                        likeds = true;
-//                                                        break
-//                                                    }
-//                                                }
-//                                            }
-//                                        })
-//                                    }
-//                                }
-//                            })
-//                        })
+
                         break
                 }
             },
@@ -1330,80 +1269,48 @@
                 }
                 return finded
             },
-            like: function (apiUrl, id, contentLike, targetElement) {
-//                if (liked) {
-//                    $.ajax({
-//                        type: "put",
-//                        url: apiUrl + id + '/unlike',
-//                        data: JSON.stringify({}),
-//                        dataType: "json",
-//                        contentType: "application/json; charset=utf-8",
-//                        success: function (unlike) {
-//                            iconElement.setAttribute('src', 'img/zan.png');
-//                            --value.contents.contentLike.likeCount
-//                            e.target.nextElementSibling.textContent = value.contents.contentLike.likeCount;
-//                            liked = false;
-//                        }
-//                    })
-//                } else {
-//                    $.ajax({
-//                        type: "put",
-//                        url: apiUrl + id + '/like',
-//                        data: JSON.stringify({}),
-//                        dataType: "json",
-//                        contentType: "application/json; charset=utf-8",
-//                        success: function (like) {
-//                            iconElement.setAttribute('src', 'img/zan-over.png');
-//                            ++value.contents.contentLike.likeCount;
-//                            e.target.nextElementSibling.textContent = value.contents.contentLike.likeCount
-//                            liked = true;
-//                        }
-//                    })
-//                }
-                $.ajax({
-                    type: "get",
-                    url: apiUrl + id + '/is-self-like',
-                    dataType: "json",
-                    success: function (like) {
-                        var liked = like.like
-                        if (liked) {
-                            targetElement.setAttribute('src', 'img/zan-over.png');
-                        } else {
-                            targetElement.setAttribute('src', 'img/zan.png');
+            like: function (apiUrl, id, likeCount, likeContent, likeState, likeTemplate, unlikeTemplate, likeContainer) {
+                if (state.knowledgePoint.value.contents.liked) {
+                    $.ajax({
+                        type: "put",
+                        url: apiUrl + id + '/unlike',
+                        data: JSON.stringify({}),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (unlike) {
+                            --likeCount;
+                            state.knowledgePoint.likeState = false;
                         }
-//                        iconElement.addEventListener('click', function (e) {
-                        if (liked) {
-                            $.ajax({
-                                type: "put",
-                                url: apiUrl + id + '/unlike',
-                                data: JSON.stringify({}),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function (unlike) {
-                                    targetElement.setAttribute('src', 'img/zan.png');
-                                    --contentLike
-                                    targetElement.nextElementSibling.textContent = contentLike;
-                                    liked = false;
-                                }
-                            })
-                        } else {
-                            $.ajax({
-                                type: "put",
-                                url: apiUrl + id + '/like',
-                                data: JSON.stringify({}),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function (like) {
-                                    targetElement.setAttribute('src', 'img/zan-over.png');
-                                    ++contentLike;
-                                    targetElement.nextElementSibling.textContent = contentLike
-                                    liked = true;
-                                }
-                            })
+                    })
+                } else {
+                    $.ajax({
+                        type: "put",
+                        url: apiUrl + id + '/like',
+                        data: JSON.stringify({}),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (unlike) {
+                            ++likeCount;
+                            state.knowledgePoint.likeState = true;
                         }
-//                        }, false)
-                    }
-                });
+                    })
+                }
+                likeContainer.innerHTML = '';
+                state.knowledgePoint.likeBind(likeContent, likeState, likeTemplate, unlikeTemplate, likeContainer)
+            },
+            likeBind: function (likeContent, likeState, likeTemplate, unlikeTemplate, likeContainer) {
+                likeContent.type = 'unliked'
+                if (likeState) {
+                    likeContent.type = 'liked'
+                }
+                proc({
+                    alterTemplates: [
+                        {type: 'liked', templateId: likeTemplate},
+                        {type: 'unliked', templateId: unlikeTemplate}
+                    ],
+                    data: likeContent,
+                    container: likeContainer
+                })
             },
             submit: function (submitButton, commentContent, callback) {
                 submitButton.style.color = '#f5f5f5';
