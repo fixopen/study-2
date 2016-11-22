@@ -7,7 +7,7 @@ import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -133,21 +133,21 @@ public class Logs {
     public static Long getStatsCount(String objectType, Long objectId, String action) {
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM Log l WHERE l.action = '" + action + "' AND l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
-        Query q = em.createQuery(stats, Long.class);
-        return (Long) q.getSingleResult();
+        TypedQuery<Long> q = em.createQuery(stats, Long.class);
+        return q.getSingleResult();
     }
 
     static Long getUserStatsCount(Long userId, String objectType, Long objectId, String action) {
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM Log l WHERE l.userId = " + userId.toString() + " AND l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
-        Query q = em.createQuery(stats, Long.class);
-        return (Long) q.getSingleResult();
+        TypedQuery<Long> q = em.createQuery(stats, Long.class);
+        return q.getSingleResult();
     }
 
     public static Boolean has(Long userId, String objectType, Long objectId, String action) {
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM Log l WHERE l.userId = " + userId.toString() + " AND l.action = '" + action + "' and l.objectType = '" + objectType + "' AND l.objectId = " + objectId.toString();
-        Query q = em.createQuery(stats, Long.class);
-        return (Long) q.getSingleResult() > 0L;
+        TypedQuery<Long> q = em.createQuery(stats, Long.class);
+        return q.getSingleResult() > 0L;
     }
 }
