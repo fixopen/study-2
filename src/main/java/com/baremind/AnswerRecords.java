@@ -23,7 +23,7 @@ public class AnswerRecords {
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Map<String, String> orders = new HashMap<>();
         orders.put("order", "ASC");
-        return Impl.get(sessionId, filter, orders, AnswerRecord.class, null);
+        return Impl.get(sessionId, filter, orders, AnswerRecord.class, null, null);
     }
 
     @GET //根据id查询

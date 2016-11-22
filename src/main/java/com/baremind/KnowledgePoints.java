@@ -23,7 +23,7 @@ public class KnowledgePoints {
         orders.put("order", "ASC");
         final Date now = new Date();
         final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, (knowledgePoint) -> KnowledgePoint.convertToMap(knowledgePoint, now, yesterday));
+        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, (knowledgePoint) -> KnowledgePoint.convertToMap(knowledgePoint, now, yesterday), null);
     }
 
     @GET //根据id查询

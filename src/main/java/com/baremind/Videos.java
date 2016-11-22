@@ -13,7 +13,7 @@ public class Videos {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        return Impl.get(sessionId, filter, null, Video.class, Video::convertToMap);
+        return Impl.get(sessionId, filter, null, Video.class, Video::convertToMap, null);
     }
 
     @GET //根据id查询

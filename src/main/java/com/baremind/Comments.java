@@ -16,7 +16,7 @@ public class Comments {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        return Impl.get(sessionId, filter, null, Comment.class, Comment::convertToMap);
+        return Impl.get(sessionId, filter, null, Comment.class, Comment::convertToMap, null);
     }
 
     @GET //根据id查询

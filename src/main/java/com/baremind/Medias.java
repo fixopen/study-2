@@ -34,7 +34,7 @@ public class Medias {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        return Impl.get(sessionId, filter, null, Media.class, null);
+        return Impl.get(sessionId, filter, null, Media.class, null, null);
     }
 
     @GET //根据id查询

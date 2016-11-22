@@ -7,11 +7,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 /**
  * Created by fixopen on 19/11/2016.
@@ -41,15 +41,14 @@ public class Impl {
         Response result;
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         if (postProcessor != null) {
-            Map<String, Object> r = postProcessor.toMap(entity);
-            result = Response.ok(gson.toJson(r)).build();
+            result = Response.ok(gson.toJson(postProcessor.convert(entity))).build();
         } else {
             result = Response.ok(gson.toJson(entity)).build();
         }
         return result;
     }
 
-    public static <T> Response get(String sessionId, String filter, Map<String, String> orders, Class<T> type, PostProcessor<T> postProcessor) {
+    public static <T> Response get(String sessionId, String filter, Map<String, String> orders, Class<T> type, PostProcessor<T> postProcessor, Predicate<T> accept) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
@@ -87,12 +86,11 @@ public class Impl {
             });
             List<T> entities = JPAEntry.getList(type, filterObject, orders);
             if (!entities.isEmpty()) {
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 if (postProcessor != null) {
-                    List<Map<String, Object>> r = postProcessor.toMaps(entities);
-                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                    List<Map<String, Object>> r = postProcessor.process(entities, accept);
                     result = Response.ok(gson.toJson(r)).build();
                 } else {
-                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                     result = Response.ok(gson.toJson(entities)).build();
                 }
             }

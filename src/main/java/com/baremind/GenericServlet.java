@@ -16,7 +16,7 @@ public class GenericServlet {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public <T> Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter, Class<T> type) {
-        return Impl.get(sessionId, filter, null, type, null);
+        return Impl.get(sessionId, filter, null, type, null, null);
     }
 
     @GET //根据id查询

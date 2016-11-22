@@ -27,7 +27,7 @@ public class Schedulers {
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Map<String, String> orders = new HashMap<>();
         orders.put("startTime", "DESC");
-        return Impl.get(sessionId, filter, orders, Scheduler.class, null);
+        return Impl.get(sessionId, filter, orders, Scheduler.class, null, null);
     }
 
     @GET //根据id查询

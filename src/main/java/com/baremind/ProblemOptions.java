@@ -17,7 +17,7 @@ public class ProblemOptions {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        return Impl.get(sessionId, filter, null, ProblemOption.class, ProblemOption::convertToMap);
+        return Impl.get(sessionId, filter, null, ProblemOption.class, ProblemOption::convertToMap, null);
     }
 
     @GET //根据id查询

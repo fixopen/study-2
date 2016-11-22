@@ -19,7 +19,7 @@ public class Volumes {
         orders.put("order", "ASC");
         final Date now = new Date();
         final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-        return Impl.get(sessionId, filter, orders, Volume.class, (volume) -> Volume.convertToMap(volume, now, yesterday));
+        return Impl.get(sessionId, filter, orders, Volume.class, (volume) -> Volume.convertToMap(volume, now, yesterday), null);
     }
 
     @GET //根据id查询
