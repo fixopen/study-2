@@ -20,26 +20,7 @@
 <script>
    var a = document.getElementById("submit");
     a.addEventListener('click',function (e) {
-        var loginInfo = {
-            info:$("#username").val(),
-            key:$("#password").val(),
-            type:"name",
-            deviceType:"android",
-            deviceNo:"1111",
-        }
-        $.ajax({
-            type:"PUT",
-            url:"/api/sessions",
-            data:JSON.stringify(loginInfo),
-            dataType:"json",
-            contentType: "application/json; charset=utf-8",
-            success:function (a) {
-                alert("登录成功")
-            },
-            error:function (e) {
-                alert(JSON.stringify(e))
-            }
-        })
+
     })
 
 
