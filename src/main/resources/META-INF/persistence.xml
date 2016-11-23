@@ -31,7 +31,7 @@
         <class>com.baremind.data.AnswerRecord</class>
         <class>com.baremind.data.PinyinText</class>
         <class>com.baremind.data.AudioRecord</class>
-        <class>com.baremind.data.BookName</class>
+        <class>com.baremind.data.Book</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 

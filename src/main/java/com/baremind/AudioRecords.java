@@ -1,7 +1,8 @@
 package com.baremind;
 
 import com.baremind.data.AudioRecord;
-import com.baremind.data.BookName;
+import com.baremind.data.Book;
+import com.baremind.data.EnglishBook;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -27,6 +28,22 @@ import java.util.Map;
 @Path("audio-records")
 public class AudioRecords {
     @GET
+    @Path("/{subjectNo}/{gradeNo}/{bookNo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response queryBook(@PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
+        Response result = Response.status(404).build();
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("subjectNo", subjectNo);
+        conditions.put("gradeNo", gradeNo);
+        conditions.put("bookNo", bookNo);
+        Book english = JPAEntry.getObject(Book.class, conditions);
+        if (english != null) {
+            result = Response.ok(new Gson().toJson(Book.convertToMap(english))).build();
+        }
+        return result;
+    }
+
+    @GET
     @Path("/{subjectNo}/{gradeNo}/{bookNo}/name")
     @Produces(MediaType.APPLICATION_JSON)
     public Response queryBookName(@PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
@@ -35,7 +52,7 @@ public class AudioRecords {
         conditions.put("subjectNo", subjectNo);
         conditions.put("gradeNo", gradeNo);
         conditions.put("bookNo", bookNo);
-        BookName english = JPAEntry.getObject(BookName.class, conditions);
+        Book english = JPAEntry.getObject(Book.class, conditions);
         if (english != null) {
             result = Response.ok(new Gson().toJson(english)).build();
         }
@@ -58,6 +75,48 @@ public class AudioRecords {
             result = Response.ok(new Gson().toJson(audioRecord)).build();
         }
         return result;
+    }
+
+
+    @POST //import
+    @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "application/xml"})
+    public Response importXmlRecordsViaBareContent(byte[] contents) {
+        EnglishBook r = new EnglishBook.Builder(contents).build();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("subjectNo", r.getSubjectNo());
+        condition.put("gradeNo", r.getGradeNo());
+        condition.put("bookNo", r.getNo());
+        Book n = JPAEntry.getObject(Book.class, condition);
+        if (n == null) {
+            n = new Book();
+            n.setId(IdGenerator.getNewId());
+            n.setSubjectNo(r.getSubjectNo());
+            n.setGradeNo(r.getGradeNo());
+            n.setBookNo(r.getNo());
+            n.setName(r.getName());
+            JPAEntry.genericPost(n);
+        }
+        Long bookId = n.getId();
+        r.getPages().forEach((page) -> {
+            String pageNo = page.getNo();
+            page.getUnits().forEach((unit) -> {
+                AudioRecord audioRecord = new AudioRecord();
+                audioRecord.setBookId(bookId);
+//                audioRecord.setSubjectNo(n.getSubjectNo());
+//                audioRecord.setGradeNo(n.getGradeNo());
+//                audioRecord.setBookNo(n.getBookNo());
+                audioRecord.setPageNo(pageNo);
+                audioRecord.setUnitNo(unit.getNo());
+                EnglishBook.Page.Unit.Rectangle bounds = unit.getBounds();
+                audioRecord.setLeft(bounds.getLeft());
+                audioRecord.setTop(bounds.getTop());
+                audioRecord.setRight(bounds.getRight());
+                audioRecord.setBottom(bounds.getBottom());
+                audioRecord.setChinese(unit.getContent());
+                JPAEntry.genericPost(audioRecord);
+            });
+        });
+        return Response.ok("{\"state\":\"ok\"}").build();
     }
 
     @POST //import
@@ -166,7 +225,7 @@ public class AudioRecords {
                 String subjectNo = nos.substring(0, 2);
                 String gradeNo = nos.substring(2, 4);
                 String bookNo = nos.substring(4);
-                String command = "INSERT INTO book_names (id, subject_no, grade_no, book_no, name) VALUES (" + id.toString() + ", '" + subjectNo + "', '" + gradeNo + "', '" + bookNo + "', '" + name + "')";
+                String command = "INSERT INTO books (id, subject_no, grade_no, book_no, name) VALUES (" + id.toString() + ", '" + subjectNo + "', '" + gradeNo + "', '" + bookNo + "', '" + name + "')";
                 Query q = em.createNativeQuery(command);
                 q.executeUpdate();
             }

@@ -15,14 +15,17 @@ public class AudioRecord implements com.baremind.data.Entity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "subject_no")
-    private String subjectNo;
+    @Column(name = "book_id")
+    private Long bookId;
 
-    @Column(name = "grade_no")
-    private String gradeNo;
-
-    @Column(name = "book_no")
-    private String bookNo;
+//    @Column(name = "subject_no")
+//    private String subjectNo;
+//
+//    @Column(name = "grade_no")
+//    private String gradeNo;
+//
+//    @Column(name = "book_no")
+//    private String bookNo;
 
     @Column(name = "page_no")
     private String pageNo;
@@ -36,6 +39,21 @@ public class AudioRecord implements com.baremind.data.Entity {
     @Column(name = "end_time")
     private Integer endTime;
 
+    @Column(name = "\"left\"")
+    private Integer left;
+
+    @Column(name = "top")
+    private Integer top;
+
+    @Column(name = "\"right\"")
+    private Integer right;
+
+    @Column(name = "bottom")
+    private Integer bottom;
+
+    @Column(name = "chinese")
+    private String chinese;
+
     public Long getId() {
         return id;
     }
@@ -44,29 +62,37 @@ public class AudioRecord implements com.baremind.data.Entity {
         this.id = id;
     }
 
-    public String getSubjectNo() {
-        return subjectNo;
+    public Long getBookId() {
+        return bookId;
     }
 
-    public void setSubjectNo(String subjectNo) {
-        this.subjectNo = subjectNo;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 
-    public String getGradeNo() {
-        return gradeNo;
-    }
-
-    public void setGradeNo(String gradeNo) {
-        this.gradeNo = gradeNo;
-    }
-
-    public String getBookNo() {
-        return bookNo;
-    }
-
-    public void setBookNo(String bookNo) {
-        this.bookNo = bookNo;
-    }
+//    public String getSubjectNo() {
+//        return subjectNo;
+//    }
+//
+//    public void setSubjectNo(String subjectNo) {
+//        this.subjectNo = subjectNo;
+//    }
+//
+//    public String getGradeNo() {
+//        return gradeNo;
+//    }
+//
+//    public void setGradeNo(String gradeNo) {
+//        this.gradeNo = gradeNo;
+//    }
+//
+//    public String getBookNo() {
+//        return bookNo;
+//    }
+//
+//    public void setBookNo(String bookNo) {
+//        this.bookNo = bookNo;
+//    }
 
     public String getPageNo() {
         return pageNo;
@@ -98,5 +124,45 @@ public class AudioRecord implements com.baremind.data.Entity {
 
     public void setEndTime(Integer endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getLeft() {
+        return left;
+    }
+
+    public void setLeft(Integer left) {
+        this.left = left;
+    }
+
+    public Integer getTop() {
+        return top;
+    }
+
+    public void setTop(Integer top) {
+        this.top = top;
+    }
+
+    public Integer getRight() {
+        return right;
+    }
+
+    public void setRight(Integer right) {
+        this.right = right;
+    }
+
+    public Integer getBottom() {
+        return bottom;
+    }
+
+    public void setBottom(Integer bottom) {
+        this.bottom = bottom;
+    }
+
+    public String getChinese() {
+        return chinese;
+    }
+
+    public void setChinese(String chinese) {
+        this.chinese = chinese;
     }
 }
