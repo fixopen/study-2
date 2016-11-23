@@ -35,7 +35,9 @@ public class Cards {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        return Impl.getById(sessionId, id, Card.class, null);
+        Response byId = Impl.getById(sessionId, id, Card.class, null);
+
+        return byId;
     }
 
     @POST
