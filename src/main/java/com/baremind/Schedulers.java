@@ -27,6 +27,7 @@ public class Schedulers {
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Map<String, String> orders = new HashMap<>();
         orders.put("startTime", "DESC");
+        //@@group data
         return Impl.get(sessionId, filter, orders, Scheduler.class, null, null);
     }
 
@@ -263,42 +264,6 @@ public class Schedulers {
             result = Response.ok(gson.toJson(schedulers)).build();
         }
         return result;
-    }
-
-    @GET //根据条件查询课表
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getSchedulers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response r = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            Map<String, String> orders = new HashMap<>();
-            orders.put("startTime", "DESC");
-            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
-            ArrayList<Scheduler> featured = new ArrayList<>();
-            ArrayList<Scheduler> playing = new ArrayList<>();
-            ArrayList<Scheduler> passed = new ArrayList<>();
-            Date now = new Date();
-            for (Scheduler scheduler : schedulers) {
-                if (now.before(scheduler.getStartTime())) {
-                    featured.add(scheduler);
-                } else {
-                    if (now.before(scheduler.getEndTime())) {
-                        playing.add(scheduler);
-                    } else {
-                        passed.add(scheduler);
-                    }
-                }
-            }
-            ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
-            result.add(playing);//正播
-            Collections.reverse(featured); // 倒序排列
-            result.add(featured); //未播
-            result.add(passed);//播过
-            //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            r = Response.ok(gson.toJson(result)).build();
-        }
-        return r;
     }
 
     @GET //获取classroom-key

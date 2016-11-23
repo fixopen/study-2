@@ -159,7 +159,6 @@ public class EnglishBook { //book
 
         public Builder(byte[] contents) {
             this.contents = contents;
-            data = new EnglishBook();
         }
 
         public void startDocument() {
@@ -173,20 +172,36 @@ public class EnglishBook { //book
         public void startElement(String uri, String name, String qName, Attributes atts) {
             currentTag = name;
             currentData = "";
-            for (int i = 0; i < atts.getLength(); ++i) {
-                String n = atts.getLocalName(i);
-                String v = atts.getValue(i);
-                switch (n) {
-                    case "type":
-                        data.type = v;
-                        break;
-                    case "id":
-                        data.no = v;
-                        break;
-                    case "name":
-                        data.name = v;
-                        break;
-                }
+            switch (currentTag) {
+                case "book":
+                    //new book
+                    data = new EnglishBook();
+                    for (int i = 0; i < atts.getLength(); ++i) {
+                        String n = atts.getLocalName(i);
+                        String v = atts.getValue(i);
+                        switch (n) {
+                            case "type":
+                                data.type = v;
+                                break;
+                            case "id":
+                                data.no = v;
+                                break;
+                            case "name":
+                                data.name = v;
+                                break;
+                        }
+                    }
+                    break;
+                case "item":
+                    //new page, append to pages
+                    currentPage = new EnglishBook.Page();
+                    data.pages.add(currentPage);
+                    break;
+                case "unit":
+                    //new unit, append to units
+                    currentUnit = new EnglishBook.Page.Unit();
+                    currentPage.units.add(currentUnit);
+                    break;
             }
         }
 
@@ -199,21 +214,8 @@ public class EnglishBook { //book
         public void characters(char ch[], int start, int length) {
             currentData += new String(ch, start, length);
             switch (currentTag) {
-                case "book":
-                    //new book
-                    break;
-                case "item":
-                    //new page, append to pages
-                    currentPage = new EnglishBook.Page();
-                    data.pages.add(currentPage);
-                    break;
                 case "page":
                     currentPage.no = currentData;
-                    break;
-                case "unit":
-                    //new unit, append to units
-                    currentUnit = new EnglishBook.Page.Unit();
-                    currentPage.units.add(currentUnit);
                     break;
                 case "unitno":
                     currentUnit.no = currentData;
