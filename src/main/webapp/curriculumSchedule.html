@@ -55,7 +55,14 @@
         .schedule-table tr {
             height: 1.25rem;
         }
-
+        .th {
+            width: 5.0rem;
+            height: 1.8125rem;
+            background: url(img/week_date.png) no-repeat center;
+            -webkit-background-size: contain;
+            background-size: contain;
+            border-left: none;
+        }
         .color:nth-child(odd) {
             background-color: #ffd5ce;
             border-bottom: 0.0625rem solid #ea875f;
@@ -86,9 +93,9 @@
         <table class="schedule-table">
             <thead>
             <tr style="background-color: #fff;">
-                <th style="width: 20%;"></th>
+                <th style="width: 20%;" class="th"></th>
                 <th style="width: 80%; font-size: smaller">
-                    <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
+                    <table style="width: 100%; height: 100%; border: none;  border-spacing: 0; border-collapse: collapse;">
                         <tr style="width: 100%; height: 100%;">
                             <th style="width: 28%; height: 100%;">时间</th>
                             <th style="width: 22%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>

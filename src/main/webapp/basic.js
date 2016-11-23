@@ -26,9 +26,9 @@ var proc = function (option) {
     var template = option.template
     if (!template) {
         template = getTemplate(option.templateId)
-    } else {
+    }/* else {
         template = template.content.children[0]
-    }
+    }*/
     //prepare alt templates
     var templates
     if (option.alterTemplates) {
