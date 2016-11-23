@@ -159,6 +159,7 @@ public class EnglishBook { //book
 
         public Builder(byte[] contents) {
             this.contents = contents;
+            data = new EnglishBook();
         }
 
         public void startDocument() {
@@ -200,7 +201,6 @@ public class EnglishBook { //book
             switch (currentTag) {
                 case "book":
                     //new book
-                    data = new EnglishBook();
                     break;
                 case "item":
                     //new page, append to pages
