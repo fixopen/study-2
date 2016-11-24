@@ -69,13 +69,16 @@ ALTER TABLE answer_records OWNER TO postgres;
 
 CREATE TABLE audio_records (
   id bigint NOT NULL,
-  subject_no character(2) DEFAULT '04'::bpchar NOT NULL,
-  grade_no character(2) DEFAULT '20'::bpchar NOT NULL,
-  book_no character(2) DEFAULT ''::bpchar NOT NULL,
+  book_id bigint NOT NULL,
   page_no name DEFAULT ''::bpchar NOT NULL,
   unit_no character(2) DEFAULT ''::bpchar NOT NULL,
   start_time integer,
-  end_time integer
+  end_time integer,
+  "left" integer,
+  top integer,
+  "right" integer,
+  botttom integer,
+  chinese text
 );
 
 
@@ -85,7 +88,7 @@ ALTER TABLE audio_records OWNER TO fixopen;
 -- Name: book_names; Type: TABLE; Schema: public; Owner: fixopen
 --
 
-CREATE TABLE book_names (
+CREATE TABLE books (
   id bigint NOT NULL,
   subject_no character(2) DEFAULT '04'::bpchar NOT NULL,
   grade_no character(2) DEFAULT '20'::bpchar NOT NULL,
@@ -94,7 +97,7 @@ CREATE TABLE book_names (
 );
 
 
-ALTER TABLE book_names OWNER TO fixopen;
+ALTER TABLE books OWNER TO fixopen;
 
 --
 -- Name: cards; Type: TABLE; Schema: public; Owner: postgres
@@ -595,8 +598,8 @@ ALTER TABLE ONLY audio_records
 -- Name: book_name__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY book_names
-  ADD CONSTRAINT book_name__pk PRIMARY KEY (id);
+ALTER TABLE ONLY books
+  ADD CONSTRAINT book__pk PRIMARY KEY (id);
 
 
 --

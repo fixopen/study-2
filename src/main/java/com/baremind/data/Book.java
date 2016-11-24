@@ -1,13 +1,18 @@
 package com.baremind.data;
 
+import com.baremind.utils.JPAEntry;
+
 import javax.persistence.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by fixopen on 15/11/2016.
  */
 @javax.persistence.Entity
-@Table(name = "book_names")
-public class BookName implements com.baremind.data.Entity {
+@Table(name = "books")
+public class Book implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -62,5 +67,16 @@ public class BookName implements com.baremind.data.Entity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static Map<String, Object> convertToMap(Book book) {
+        Map<String, Object> vm = new HashMap<>();
+        vm.put("id", book.getId());
+        vm.put("subjectNo", book.getSubjectNo());
+        vm.put("gradeNo", book.getGradeNo());
+        vm.put("bookNo", book.getBookNo());
+        vm.put("name", book.getName());
+        vm.put("records", JPAEntry.getList(AudioRecord.class, "bookId", book.getId()));
+        return vm;
     }
 }

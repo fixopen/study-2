@@ -31,7 +31,7 @@
         <class>com.baremind.data.AnswerRecord</class>
         <class>com.baremind.data.PinyinText</class>
         <class>com.baremind.data.AudioRecord</class>
-        <class>com.baremind.data.BookName</class>
+        <class>com.baremind.data.Book</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 
@@ -40,12 +40,14 @@
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="postgres"/>
             -->
-            <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/study"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="123456"/>-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/study"/>
+            <property name="javax.persistence.jdbc.user" value="fixopen"/>
+            <property name="javax.persistence.jdbc.password" value="123456"/>
+            <!--
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/sun"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="sun123"/>
+            -->
         </properties>
     </persistence-unit>
 </persistence>
