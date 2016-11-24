@@ -99,7 +99,7 @@ public class Cards {
                         exist.setUserId(userId);
                     }
 
-                    Double amount = card.getAmount();
+                    Integer amount = card.getAmount();
                     if (amount != null) {
                         exist.setAmount(amount);
                     }

@@ -39,7 +39,7 @@ public class Card implements com.baremind.data.Entity {
     private Long subjectId;
 
     @Column(name = "amount")
-    private Double amount;
+    private Integer amount;
 
     public Long getId() {
         return id;
@@ -105,11 +105,11 @@ public class Card implements com.baremind.data.Entity {
         this.subjectId = subjectId;
     }
 
-    public Double getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 }

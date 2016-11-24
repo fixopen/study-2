@@ -103,7 +103,7 @@ public class Sessions {
         user.setTelephone(telephone);
         user.setIsAdministrator(false);
         user.setSite("http://www.xiaoyuzhishi.com");
-        user.setAmount(0.0f);
+        user.setAmount(0);
         PublicAccounts.fillUserByWechatUser(user, wechatUser);
         JPAEntry.genericPost(user);
         return user;
@@ -164,12 +164,13 @@ public class Sessions {
             }
             Session session = PublicAccounts.putSession(now, user.getId(), device.getId());
             result = Response.ok(session)
-                .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                .build();
+                    .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .build();
         }
 
         return result;
     }
+
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)

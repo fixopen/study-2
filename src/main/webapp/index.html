@@ -4,25 +4,67 @@
     <meta charset="UTF-8">
     <title>小雨知时</title>
     <script src="jquery/jquery-3.1.1.js"></script>
+    <script src="basic.js"></script>
 </head>
-
 <body>
-<!--
-<img src="jian.png" style="width: 100%"/>
-<audio src="Episode - Boost 2.0 with Robert Ramey.mp3" autoplay controls></audio>
-<audio src="Episode - Boost 2.0 with Robert Ramey.mp3#t=230,250" autoplay controls></audio>
-<audio src="Jack%20Jack%20what%20do%20you%20see.mp3#t=10,20" autoplay controls></audio>
--->
-<input id="username"/>
-<input id="password"/>
-<button id="submit">提交</button>
+<article id="knowledgePoint">
+
+</article>
+<template id="knowledgePoint-template">
+    <ul class="public_ul_css">
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">Id</span>
+            <span class="public_input_css">${id}</span>
+        </li>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">科目</span>
+            <span class="public_input_css">${subjectId}</span>
+        </li>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">册名</span>
+            <span class="public_input_css">${volumeId}</span>
+        </li>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">年级</span>
+            <span class="public_input_css">${grade}</span>
+        </li>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">知识点名称</span>
+            <span class="public_input_css">${title}</span>
+        </li>
+        <li class="public_li_css">
+            <span class="public_span_css info_interval_width_css">展示时间</span>
+            <span class="public_input_css">${showTime}</span>
+        </li>
+    </ul>
+</template>
+<!--<button id="submit">提交</button>-->
 </body>
 <script>
-   var a = document.getElementById("submit");
+    var notice = {
+        objectType:"knowledgePoint"
+    }
+    $.ajax({
+        type:"Put",
+        url:"/api/users/notice",
+        data:JSON.stringify(notice),
+        dataType:"JSON",
+        contentType: "application/json; charset=utf-8",
+        success:function (e) {
+            var a =  JSON.stringify(e).replace("\\","");
+            alert(a)
+            proc({
+                containerId: 'knowledgePoint',
+                data: e,
+                templateId: 'knowledgePoint-template'
+            })
+        }
+    })
+  /* var a = document.getElementById("submit");
     a.addEventListener('click',function (e) {
 
     })
-
+*/
 
 </script>
 </html>

@@ -47,7 +47,7 @@ public class User implements com.baremind.data.Entity {
     private String site;
 
     @Column(name = "amount")
-    private Float amount;
+    private Integer amount;
 
     @Column(name = "school")
     private String school;
@@ -209,11 +209,19 @@ public class User implements com.baremind.data.Entity {
         this.sex = sex;
     }
 
-    public Float getAmount() {
+    public Boolean getAdministrator() {
+        return isAdministrator;
+    }
+
+    public void setAdministrator(Boolean administrator) {
+        isAdministrator = administrator;
+    }
+
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(Float amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
