@@ -3,7 +3,6 @@ package com.baremind.data;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,7 +75,12 @@ public class Book implements com.baremind.data.Entity {
         vm.put("gradeNo", book.getGradeNo());
         vm.put("bookNo", book.getBookNo());
         vm.put("name", book.getName());
-        vm.put("records", JPAEntry.getList(AudioRecord.class, "bookId", book.getId()));
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("bookId", book.getId());
+        Map<String, String> orders = new HashMap<>();
+        orders.put("pageNo", "ASC");
+        orders.put("unitNo", "ASC");
+        vm.put("records", JPAEntry.getList(AudioRecord.class, condition, orders));
         return vm;
     }
 }
