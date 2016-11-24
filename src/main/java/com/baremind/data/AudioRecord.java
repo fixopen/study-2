@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "audio_records")
-public class AudioRecord implements com.baremind.data.Entity {
+public class AudioRecord {
     @Id
     @Column(name = "id")
     private Long id;
