@@ -66,4 +66,20 @@ public class Book {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static Map<String, Object> convertToMap(Book book) {
+        Map<String, Object> vm = new HashMap<>();
+        vm.put("id", book.getId());
+        vm.put("subjectNo", book.getSubjectNo());
+        vm.put("gradeNo", book.getGradeNo());
+        vm.put("bookNo", book.getBookNo());
+        vm.put("name", book.getName());
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("bookId", book.getId());
+        Map<String, String> orders = new HashMap<>();
+        orders.put("pageNo", "ASC");
+        orders.put("unitNo", "ASC");
+        vm.put("records", JPAEntry.getList(AudioRecord.class, condition, orders));
+        return vm;
+    }
 }
