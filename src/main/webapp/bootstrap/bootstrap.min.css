@@ -3912,19 +3912,6 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 /*border-bottom-color: transparent*/
 /*}*/
 
-/*小鸟 阴影*/
-.nav-tabs > li:nth-child(1).active {
-    box-shadow: 0rem 0rem 1.25rem #fe6569;
-}
-
-.nav-tabs > li:nth-child(1).active > .grade-bird, .nav-tabs > li:nth-child(2).active > .grade-bird {
-    display: block;
-}
-
-.nav-tabs > li:nth-child(2).active {
-    box-shadow: 0rem 0rem 1.25rem #23cbd1;
-}
-
 .nav-tabs.nav-justified {
     width: 100%;
     border-bottom: 0

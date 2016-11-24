@@ -48,29 +48,29 @@
                 <ul class="video-list" id="chinese-currentVideoList"></ul>
                 <ul class="video-list" id="chinese-futureVideoList"></ul>
                 <ul class="video-list" id="chinese-passedVideoList"></ul>
-                <!--<div class="more">-->
-                <!--<div class="pullUp">-->
-                <!--<span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>-->
-                <!--</div>-->
-                <!--<div class="video-all" id="btn1">-->
-                <!--查看往期录播视频-->
-                <!--</div>-->
-                <!--</div>-->
+                <div class="more">
+                    <div class="pullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp1">没有更多直播，点击查看往期录播视频</span>
+                    </div>
+                    <div class="video-all" id="btn1">
+                        查看往期录播视频
+                    </div>
+                </div>
             </li>
             <li id="mcc" class="subject-list">
                 <ul class="video-list" id="math-currentVideoList"></ul>
                 <ul class="video-list" id="math-futureVideoList"></ul>
                 <ul class="video-list" id="math-passedVideoList"></ul>
+                <div class="more">
+                    <div class="pullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel" id="pullUp">没有更多直播，点击查看往期录播视频</span>
+                    </div>
+                    <div class="video-all" id="btn">
+                        查看往期录播视频
+                    </div>
+                </div>
             </li>
         </ul>
-        <div class="before_video">
-            <a class="bevid_btn" href="allVideo0.html">往期回放</a>
-            <div class="pullUp">
-                <span class="pullUpIcon"></span>
-                <span class="pullUpLabel">除了直播，还有精彩回放等着您哦！</span>
-                <span class="pullUpLabel" style="display: none;">没有更多了，看看往期回放吧！</span>
-            </div>
-        </div>
     </div>
 </div>
 <template id="video-template">
@@ -83,7 +83,7 @@
                         <img src="../img/zb-live.png" alt="">
                         <!--图片会随着具体情况改变-->
                     </span>
-                    <span class="live-timeZB">${startTime}</span>
+                    <span class="live-timeZB">${year}-${month}-${day} ${hour}:${minute}:${second}</span>
                     <div class="play-btn">
                         <img src="../img/live-play.png" alt="">
                         <!--图片会随着具体情况改变-->
@@ -106,7 +106,7 @@
                     <!--时间需要服务器自己计算-->
                     <div class="fl">
                         <i>${teacher}</i>老师主讲<br>
-                        <i>${startTime}</i>开讲
+                        <i>${year}-${month}-${day} ${hour}:${minute}:${second}</i>开讲
                     </div>
                     <div class="fr">
                         <div>${grade}</div>
@@ -133,7 +133,7 @@
                         <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>${startTime}</p>
+                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
                 </div>
             </div>
         </div>
@@ -167,7 +167,7 @@
                 <div class="course-speaker">
                     <div class="fl">
                         <i>${teacher}</i>老师主讲<br>
-                        <i>${startTime}</i>开讲
+                        <i>${year}-${month}-${day} ${hour}:${minute}:${second}</i>开讲
                     </div>
                     <div class="fr">
                         <div>${grade}</div>
@@ -194,7 +194,7 @@
                         <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>${startTime}</p>
+                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
                 </div>
             </div>
         </div>
@@ -210,7 +210,7 @@
                             <img src="../img/zb-wait.png" alt="">
                             <!--鍥剧墖浼氶殢鐫€鍏蜂綋鎯呭喌鏀瑰彉-->
                         </span>
-                    <div class="waity-play">${startTime}开讲
+                    <div class="waity-play">${year}-${month}-${day} ${hour}:${minute}:${second}开讲
                     </div>
                     <div class="course-box">
                         <h3 class="live-title">
@@ -228,7 +228,7 @@
                 <div class="course-speaker">
                     <div class="fl">
                         <i>${teacher}</i>老师主讲<br>
-                        <i>${startTime}</i>开讲
+                        <i>${year}-${month}-${day} ${hour}:${minute}:${second}</i>开讲
                     </div>
                     <div class="fr">
                         <div>${grade}</div>
@@ -255,7 +255,7 @@
                         <img src="../img/sxsj_btn.png" alt="">
                         上线时间
                     </h3>
-                    <p>${startTime}</p>
+                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
                 </div>
             </div>
         </div>
@@ -296,28 +296,28 @@
     var refreshState = function (subject) {
         var now = new Date()
         for (var i = 0; i < course[subject][0].length; ++i) {
-            var endYear = course[subject][0][i].endTime.substring(0, 4)
-            var endMonth = course[subject][0][i].endTime.substring(5, 7)
-            var endDay = course[subject][0][i].endTime.substring(8, 10)
-            var endHour = course[subject][0][i].endTime.substring(11, 13)
-            var endMinute = course[subject][0][i].endTime.substring(14, 16)
-            var endSecond = course[subject][0][i].endTime.substring(17, 19)
-            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
+//            var endYear = course[subject][0][i].endTime.substring(0, 4)
+//            var endMonth = course[subject][0][i].endTime.substring(5, 7)
+//            var endDay = course[subject][0][i].endTime.substring(8, 10)
+//            var endHour = course[subject][0][i].endTime.substring(11, 13)
+//            var endMinute = course[subject][0][i].endTime.substring(14, 16)
+//            var endSecond = course[subject][0][i].endTime.substring(17, 19)
+//            var ET = new Date(parseInt(endYear), parseInt(endMonth) - 1, parseInt(endDay), parseInt(endHour), parseInt(endMinute), parseInt(endSecond))
             course[subject][i].type = 'current'
-            if (+ET < +now) {
+            if (+course[subject][0][i].endTime < +now) {
                 course[subject][0][i].type = 'passed'
                 course[subject][0].splice(i, 1)
             }
         }
         for (var i = 0; i < course[subject][1].length; ++i) {
-            var startYear = course[subject][1][i].startTime.substring(0, 4)
-            var startMonth = course[subject][1][i].startTime.substring(5, 7)
-            var startDay = course[subject][1][i].startTime.substring(8, 10)
-            var startHour = course[subject][1][i].startTime.substring(11, 13)
-            var startMinute = course[subject][1][i].startTime.substring(14, 16)
-            var startSecond = course[subject][1][i].startTime.substring(17, 19)
-            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay), parseInt(startHour), parseInt(startMinute), parseInt(startSecond))
-            ST = new Date(+ST - 15 * 60 * 1000)
+//            var startYear = course[subject][1][i].startTime.substring(0, 4)
+//            var startMonth = course[subject][1][i].startTime.substring(5, 7)
+//            var startDay = course[subject][1][i].startTime.substring(8, 10)
+//            var startHour = course[subject][1][i].startTime.substring(11, 13)
+//            var startMinute = course[subject][1][i].startTime.substring(14, 16)
+//            var startSecond = course[subject][1][i].startTime.substring(17, 19)
+//            var ST = new Date(parseInt(startYear), parseInt(startMonth) - 1, parseInt(startDay), parseInt(startHour), parseInt(startMinute), parseInt(startSecond))
+            var ST = new Date(+course[subject][1][i].startTime - 15 * 60 * 1000)
             course[subject][1][i].type = 'future'
             if (+ST < +now) {
                 course[subject][1][i].type = 'current'
@@ -347,8 +347,6 @@
             course[1] = result.data
             var Mc = document.getElementById('Mc')
             Mc.innerHTML = course[1][0].length + course[1][1].length
-            refreshChineseState()
-            refreshMathState()
 
             var removeNullPassed = function (subject) {
                 for (var i = 0; i < course[subject][2].length; ++i) {
@@ -364,9 +362,28 @@
             var adjustData = function (subject) {
                 for (var i = 0; i < course[subject].length; ++i) {
                     for (var j = 0; j < course[subject][i].length; ++j) {
-                        var m = moment().year(course[subject][i][j].year).week(course[subject][i][j].week).day(course[subject][i][j].day)
-                        course[subject][i][j].month = m.month()
-                        course[subject][i][j].day = m.date()
+//                        var m = moment().year(course[subject][i][j].year).week(course[subject][i][j].week).day(course[subject][i][j].day)
+//                        course[subject][i][j].month = m.month()
+//                        course[subject][i][j].day = m.date()
+                        var startTimeStr = course[subject][i][j].startTime.replace(/-/g, '/')
+                        course[subject][i][j].startTime =  new Date(Date.parse(startTimeStr))
+                        course[subject][i][j].endTime = new Date(Date.parse(course[subject][i][j].endTime.replace(/-/g, '/')))
+                        //var s = course[subject][i][j].startTime
+                        //var m = s.getMonth()
+                        course[subject][i][j].year = course[subject][i][j].startTime.getFullYear()
+                        course[subject][i][j].month = course[subject][i][j].startTime.getMonth() + 1
+                        course[subject][i][j].day = course[subject][i][j].startTime.getDate()
+                        course[subject][i][j].hour = course[subject][i][j].startTime.getHours()
+                        var minute = course[subject][i][j].startTime.getMinutes()
+                        if (minute == 0) {
+                            minute = '00'
+                        }
+                        course[subject][i][j].minute = minute
+                        var second = course[subject][i][j].startTime.getSeconds()
+                        if (second == 0) {
+                            second = '00'
+                        }
+                        course[subject][i][j].second = second
                         course[subject][i][j].grade = getGrade(course[subject][i][j].grade)
                     }
                 }
@@ -374,17 +391,20 @@
             adjustData(0)
             adjustData(1)
 
-//            function showPassed(subject, state, moreId, tips) {
-//                proc({
-//                    container: state.passedContainer,
-//                    data: course[subject][2],
-//                    template: state.passedTemplate
-//                })
-//                document.getElementById(moreId).style.display = "none";
-//                var va = document.getElementById(tips);
-//                va.innerHTML = '没有更多视频，敬请期待'
-//                curseDetailTap();
-//            }
+            refreshChineseState()
+            refreshMathState()
+
+            function showPassed(subject, state, moreId, tips) {
+                proc({
+                    container: state.passedContainer,
+                    data: course[subject][2],
+                    template: state.passedTemplate
+                })
+                document.getElementById(moreId).style.display = "none";
+                var va = document.getElementById(tips);
+                va.innerHTML = '没有更多视频，敬请期待'
+                curseDetailTap();
+            }
 
             var state = {
                 currentContainer: document.getElementById('chinese-currentVideoList'),
@@ -395,10 +415,10 @@
                 passedTemplate: getTemplate('passed-video-template')
             }
 
-//            var moreVideo = document.getElementById('btn1');
-//            moreVideo.addEventListener('click', function (e) {
-//                showPassed(0, state, 'btn1', 'pullUp1')
-//            }, false);
+            var moreVideo = document.getElementById('btn1');
+            moreVideo.addEventListener('click', function (e) {
+                showPassed(0, state, 'btn1', 'pullUp1')
+            }, false);
 
             proc({
                 container: state.currentContainer,
@@ -419,10 +439,10 @@
                 futureTemplate: getTemplate('future-video-template'),
                 passedTemplate: getTemplate('passed-video-template')
             }
-//            var moreMathVideo = document.getElementById('btn');
-//            moreMathVideo.addEventListener('click', function (e) {
-//                showPassed(1, state2, 'btn', 'pullUp')
-//            }, false);
+            var moreMathVideo = document.getElementById('btn');
+            moreMathVideo.addEventListener('click', function (e) {
+                showPassed(1, state2, 'btn', 'pullUp')
+            }, false);
 
             proc({
                 container: state2.currentContainer,
@@ -479,6 +499,8 @@
                     } else if (course[1][0].length > 0) {
                         result = true
                         needFeature = false
+                    } else if (course[0][0].length > 0) {
+                        needFeature = false
                     }
                     return result
                 }
@@ -496,7 +518,7 @@
                 }
 
                 var result = comparePlaying()
-                if (!needFeature) {
+                if (needFeature) {
                     result = compareFuture()
                 }
                 return result
@@ -517,9 +539,7 @@
                     "action": "review"
                 })
             })
-            curseDetailTap();
         })
-        curseDetailTap();
     })
 </script>
 </body>
