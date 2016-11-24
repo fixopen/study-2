@@ -56,6 +56,7 @@
         .schedule-table tr {
             height: 1.25rem;
         }
+
         .th {
             width: 5.0rem;
             height: 1.8125rem;
@@ -65,6 +66,7 @@
             border-left: none;
             border-right: 1px solid #ea875f;
         }
+
         .color:nth-child(odd) {
             background-color: #ffd5ce;
             border-bottom: 0.0625rem solid #ea875f;
@@ -130,7 +132,7 @@
 </article>
 <article id="passed" style="display: none;" class="wrap noBackg">
     <!--<input class="souSuo clearfix" type="text" id="text"  name="keyword"  onkeydown="entersearch()" placeholder="请输入科目、老师、年级 关键词搜索">-->
-    <div class="tiao_jian" id="st">
+    <div class="tiao_jian">
         <div class="tiaoj_TJ01 selectDiv">
             <div class="tiaoj_1span">
                 <span>科目</span>
@@ -184,7 +186,9 @@
                     <table style="width: 100%; height: 100%;  border-spacing: 0; border-collapse: collapse;">
                         <tr style="width: 100%; height: 100%;">
                             <th style="width: 28%; height: 100%;text-align: center;">时间</th>
-                            <th style="width: 22%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;text-align: center;">授课年级</th>
+                            <th style="width: 22%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;text-align: center;">
+                                授课年级
+                            </th>
                             <th style="width: 50%; height: 100%;text-align: center;">授课内容</th>
                         </tr>
                     </table>
@@ -197,7 +201,7 @@
 </article>
 <article id="futureNote" style="display: none;" class="futureWrap">
     <div class="waiting">
-        <a class="goBack" href="allVideo.html"></a>
+        <a class="goBack" href="/content/videos.html"></a>
     </div>
 </article>
 
@@ -445,63 +449,63 @@
 
 <!--*****************************video*****************************-->
 <!--<tempalte id="video-template" class="rain-main nohuifPadd">-->
-    <!--<div class="before_uli">-->
-        <!--<div class="before_liplay">-->
-            <!--<a class="all_aBtn" href="javascript:void(0)">-->
-                <!--<div class="zhezao_top"></div>-->
-                <!--<div class="zz_topbtn"></div>-->
-                <!--<div class="zz_toptxt">${title}</div>-->
-                <!--<div class="zhezao_bottom"></div>-->
-                <!--<div class="zzbottom_div">-->
-                    <!--<div class="zzbom_diva1"></div>-->
-                    <!--<div class="zzbom_diva2">-->
-                        <!--<span class="zzbom_span">00:00</span>-->
-                        <!--<p class="zzbom_div2p">-->
-                            <!--<span class="zzbom_div2span"></span>-->
-                        <!--</p>-->
-                        <!--<span class="zzbom_span">30:00</span>-->
-                    <!--</div>-->
-                    <!--<div class="zzbom_diva3"></div>-->
-                <!--</div>-->
+<!--<div class="before_uli">-->
+<!--<div class="before_liplay">-->
+<!--<a class="all_aBtn" href="javascript:void(0)">-->
+<!--<div class="zhezao_top"></div>-->
+<!--<div class="zz_topbtn"></div>-->
+<!--<div class="zz_toptxt">${title}</div>-->
+<!--<div class="zhezao_bottom"></div>-->
+<!--<div class="zzbottom_div">-->
+<!--<div class="zzbom_diva1"></div>-->
+<!--<div class="zzbom_diva2">-->
+<!--<span class="zzbom_span">00:00</span>-->
+<!--<p class="zzbom_div2p">-->
+<!--<span class="zzbom_div2span"></span>-->
+<!--</p>-->
+<!--<span class="zzbom_span">30:00</span>-->
+<!--</div>-->
+<!--<div class="zzbom_diva3"></div>-->
+<!--</div>-->
 
-                <!--<div class="before_div1">${subject}</div>-->
-                <!--<div class="yuwen_div2 yuwen_posin">-->
-                    <!--<h3 class="yuwen_h3">写人作文</h3>-->
-                    <!--<p class="yuwen_p">${description}</p>-->
-                <!--</div>-->
-                <!--<span class="yuwen_span">—${teacher}老师</span>-->
-            <!--</a>-->
-        <!--</div>-->
-        <!--<div class="course-intro">-->
-            <!--<div class="course_xiaqing">-->
-                <!--<div>-->
-                    <!--<p class="course_xqpsee"><span>${watchCount}</span>人观看过</p>-->
-                    <!--<a href="javascript:void(0)" class="course_xqpzan">-->
-                        <!--<img class="dianzanImg" src="/img/dianzan.png" alt="">-->
-                        <!--<img class="dianzanImg cur" src="/img/zanover.png" alt="">-->
-                        <!--赞-->
-                        <!--<span class="xqpZan">${likeCount}</span>-->
-                    <!--</a>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="zz_comment">-->
-        <!--<div class="zz_center">-->
-            <!--<h3 class="zz_plh3">评论</h3>-->
-            <!--<ul class="zz_plul">-->
-                <!--<li class="zz_plli">-->
-                    <!--<span class="zz_lispan1">${userName}</span>-->
-                    <!--<span class="zz_lispan2">${userTime}</span>-->
-                    <!--<p class="zz_pllip">${comment}</p>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="leave_message">-->
-        <!--<input class="message_text" type="text" placeholder="留言">-->
-        <!--<a class="message_btn" href="javascript:void(0)">发送</a>-->
-    <!--</div>-->
+<!--<div class="before_div1">${subject}</div>-->
+<!--<div class="yuwen_div2 yuwen_posin">-->
+<!--<h3 class="yuwen_h3">写人作文</h3>-->
+<!--<p class="yuwen_p">${description}</p>-->
+<!--</div>-->
+<!--<span class="yuwen_span">—${teacher}老师</span>-->
+<!--</a>-->
+<!--</div>-->
+<!--<div class="course-intro">-->
+<!--<div class="course_xiaqing">-->
+<!--<div>-->
+<!--<p class="course_xqpsee"><span>${watchCount}</span>人观看过</p>-->
+<!--<a href="javascript:void(0)" class="course_xqpzan">-->
+<!--<img class="dianzanImg" src="/img/dianzan.png" alt="">-->
+<!--<img class="dianzanImg cur" src="/img/zanover.png" alt="">-->
+<!--赞-->
+<!--<span class="xqpZan">${likeCount}</span>-->
+<!--</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="zz_comment">-->
+<!--<div class="zz_center">-->
+<!--<h3 class="zz_plh3">评论</h3>-->
+<!--<ul class="zz_plul">-->
+<!--<li class="zz_plli">-->
+<!--<span class="zz_lispan1">${userName}</span>-->
+<!--<span class="zz_lispan2">${userTime}</span>-->
+<!--<p class="zz_pllip">${comment}</p>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="leave_message">-->
+<!--<input class="message_text" type="text" placeholder="留言">-->
+<!--<a class="message_btn" href="javascript:void(0)">发送</a>-->
+<!--</div>-->
 <!--</tempalte>-->
 
 <!--**********************************scheduler********************************-->
@@ -518,12 +522,12 @@
 <template id="item-template">
     <tr>
         <td style="width: 28%;">${st}-${et}</td>
-        <td style="width: 22%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 22%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
+            ${grade}
+        </td>
         <td style="width: 50%;">${title}</td>
     </tr>
 </template>
-
-
 
 
 <script src="/jquery/jquery-3.1.1.min.js"></script>
@@ -593,7 +597,7 @@
             init: function () {
                 if (!state.main.isInit) {
                     $(document).on('click', '.course-detail-btn', function (e) {
-                        $('[data-identity="' + e.target.dataset.detail +'"]').toggle()
+                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                     })
 
                     var now = Date.now()
@@ -602,7 +606,7 @@
                         type: 'get',
                         url: '/api/schedulers?filter=' + JSON.stringify({
                             subjectId: subjects[0].id,
-                            endTime: '> ' +now
+                            endTime: '> ' + now
                         }),
                         dataType: 'json',
                         success: function (zeroSchedulers) {
@@ -640,7 +644,7 @@
                                                     result = true
                                                 }
                                                 needFuture = false
-                                            } else if(subjects[1].playing.length > 0) {
+                                            } else if (subjects[1].playing.length > 0) {
                                                 result = true
                                                 needFuture = false
                                             } else if (subjects[0].playing.length > 0) {
@@ -670,15 +674,7 @@
                                         $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
                                         $('#subjects').find('a[href="#one"]').addClass('cur')
                                         $('#subjects').find('a[href="#zero"]').removeClass('cur')
-                                        //$('#subjects').find('a:first').tab('show') // Select first tab
-                                        //$('#subjects').find('a:last').tab('show') // Select last tab
-                                        //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
                                     }
-
-//                                    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-//                                        e.target.addClass('cur') // newly activated tab
-//                                        e.relatedTarget.removeClass('cur') // previous active tab
-//                                    })
 
                                     setInterval(function () {
                                         state.main.refreshState(0)
@@ -696,8 +692,8 @@
                 for (var i = 0; i < subjects[subjectIndex].playing.length; ++i) {
                     var item = subjects[subjectIndex].playing[i]
                     item.grade = state.getGrade(item.grade)
-                    item.startTime =new Date(Date.parse(item.startTime.replace(/-/g, '/')))
-                    item.endTime =new Date(Date.parse(item.endTime.replace(/-/g, '/')))
+                    item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
+                    item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
                     item.year = item.startTime.getFullYear()
                     item.month = item.startTime.getMonth() + 1
                     item.day = item.startTime.getDate()
@@ -716,8 +712,8 @@
                 for (var i = 0; i < subjects[subjectIndex].futures.length; ++i) {
                     var item = subjects[subjectIndex].futures[i]
                     item.grade = state.getGrade(item.grade)
-                    item.startTime =new Date(Date.parse(item.startTime.replace(/-/g, '/')))
-                    item.endTime =new Date(Date.parse(item.endTime.replace(/-/g, '/')))
+                    item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
+                    item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
                     item.year = item.startTime.getFullYear()
                     item.month = item.startTime.getMonth() + 1
                     item.day = item.startTime.getDate()
@@ -771,12 +767,10 @@
             schedulerEntry: document.getElementById('schedulerEntry'),
             passedEntry: document.getElementById('passedEntry'),
             futureNoteEntry: document.getElementById('futureNoteEntry'),
-
 //            keywords: document.getElementById('keywords'),
 //            search: function () {
 //                //filter the playing and future data via the filter element state
 //            }
-
         },
         passed: {
             zeroPassed: {
@@ -796,7 +790,43 @@
             date: document.getElementById('date'),
             isInit: false,
             init: function () {
+                state.passed.isInit = true
                 if (!state.passed.isInit) {
+                    var now = Date.now()
+//*******************************getPassed*****************************
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers?filter=' + JSON.stringify({
+                            cdnLink: 'IS NOT NULL',
+                            endTime: '< ' + now
+                        }),
+                        dataType: 'json',
+                        success: function (passed) {
+                            for (var i = 0; i < passed.length; ++i) {
+                                passed[i].grade = getGrade(passed[i].grade)
+                                passed[i].type = 'chinese'
+                                if (passed[i].subjectId == 2) {
+                                    passed[i].type = 'math'
+                                }
+                            }
+                            proc({
+                                data: passed,
+                                containerId: 'video',
+                                alterTemplates: [
+                                    {type: 'chinese', templateId: 'chinese-template'},
+                                    {type: 'math', templateId: 'math-template'}
+                                ]
+                            });
+                            for (var i = 0; i < passed.length; ++i) {
+                                if (!passed[i].cdnLink || passed[i].cdnLink == '') {
+                                    passed.splice(i, 1)
+                                    --i
+                                }
+                            }
+                            allxqTap(); //all课程详情
+                        }
+                    })
+//********************************getTeacher*****************************
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
@@ -812,7 +842,7 @@
                             })
                         }
                     })
-
+// **********************************getGrade**************************
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
@@ -829,20 +859,6 @@
                         }
                     })
 
-                    var now = Date.now()
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers?filter=' + JSON.stringify({
-                            cdnLink: 'IS NOT NULL',
-                            endTime: '< ' + +now
-                        }),
-                        dataType: 'json',
-                        success: function (schedulers) {
-                            passed = schedulers[2]
-                        }
-                    })
-
-                    state.passed.isInit = true
 
                     state.passed.subject.addEventListener('change', function (e) {
                         var subjectIndex = 0
@@ -933,11 +949,12 @@
 ////                }
 //            }
         },
-        futureNote:{
-        init: function() {}
-    },
+        futureNote: {
+            init: function () {
+            }
+        },
 
-    //        video: {
+//        video: {
 //            isInit: false,
 //            init: function () {
 //                if (!state.video.isInit) {
@@ -1027,7 +1044,7 @@
                     state.scheduler.isInit = true
                 }
             },
-            now:new Date(),
+            now: new Date(),
             year: null,
             week: null,
             weekDay: null,
