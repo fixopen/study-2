@@ -139,14 +139,17 @@ public class VerifyCodeUtils {
             colors[i] = colorSpaces[rand.nextInt(colorSpaces.length)];
             fractions[i] = rand.nextFloat();
         }
+
+        g2.setColor(Color.white);// 设置边框色
+        g2.fillRect(0, 0, w, h);
         Arrays.sort(fractions);
 
-        g2.setColor(Color.GRAY);// 设置边框色
-        g2.fillRect(0, 0, w, h);
-
-        Color c = getRandColor(200, 250);
-        g2.setColor(c);// 设置背景色
+       // Color c = getRandColor(200, 250);
+        g2.setColor(Color.white);// 设置背景色
         g2.fillRect(0, 2, w, h - 4);
+       /*
+
+
 
         //绘制干扰线
         Random random = new Random();
@@ -168,8 +171,8 @@ public class VerifyCodeUtils {
             int rgb = getRandomIntColor();
             image.setRGB(x, y, rgb);
         }
-
-        shear(g2, w, h, c);// 使图片扭曲
+*/
+       /* shear(g2, w, h, c);// 使图片扭曲*/
 
         g2.setColor(getRandColor(100, 160));
         int fontSize = h - 4;
