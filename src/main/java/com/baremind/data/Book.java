@@ -86,4 +86,20 @@ public class Book {
         vm.put("records", JPAEntry.getList(AudioRecord.class, condition, orders));
         return vm;
     }
+
+    public static Map<String, Object> convertToMap(Book book, String pageNo) {
+        Map<String, Object> vm = new HashMap<>();
+        vm.put("id", book.getId());
+        vm.put("subjectNo", book.getSubjectNo());
+        vm.put("gradeNo", book.getGradeNo());
+        vm.put("bookNo", book.getBookNo());
+        vm.put("name", book.getName());
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("bookId", book.getId());
+        condition.put("pageNo", pageNo);
+        Map<String, String> orders = new HashMap<>();
+        orders.put("unitNo", "ASC");
+        vm.put("records", JPAEntry.getList(AudioRecord.class, condition, orders));
+        return vm;
+    }
 }
