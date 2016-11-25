@@ -35,6 +35,22 @@ public class AudioRecords {
     }
 
     @GET
+    @Path("/{subjectNo}/{gradeNo}/{bookNo}/{pageNo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response queryBook(@PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo, @PathParam("pageNo") String pageNo) {
+        Response result = Response.status(404).build();
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("subjectNo", subjectNo);
+        conditions.put("gradeNo", gradeNo);
+        conditions.put("bookNo", bookNo);
+        Book english = JPAEntry.getObject(Book.class, conditions);
+        if (english != null) {
+            result = Response.ok(new Gson().toJson(Book.convertToMap(english, pageNo))).build();
+        }
+        return result;
+    }
+
+    @GET
     @Path("/{subjectNo}/{gradeNo}/{bookNo}/name")
     @Produces(MediaType.APPLICATION_JSON)
     public Response queryBookName(@PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
@@ -100,10 +116,12 @@ public class AudioRecords {
                 audioRecord.setPageNo(pageNo);
                 audioRecord.setUnitNo(unit.getNo());
                 EnglishBook.Page.Unit.Rectangle bounds = unit.getBounds();
-                audioRecord.setLeft(bounds.getLeft());
-                audioRecord.setTop(bounds.getTop());
-                audioRecord.setRight(bounds.getRight());
-                audioRecord.setBottom(bounds.getBottom());
+                if (bounds != null) {
+                    audioRecord.setLeft(bounds.getLeft());
+                    audioRecord.setTop(bounds.getTop());
+                    audioRecord.setRight(bounds.getRight());
+                    audioRecord.setBottom(bounds.getBottom());
+                }
                 audioRecord.setChinese(unit.getContent());
                 JPAEntry.genericPost(audioRecord);
             });

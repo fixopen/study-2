@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>audioRecord</title>
+    <title>audio record</title>
     <style>
         .wrap {
             position: absolute;
@@ -15,31 +15,59 @@
             overflow: hidden;
         }
 
-        .wrap img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .amplifier {
+        .abs {
             position: absolute;
-            bottom: 2.5%;
-            left: 2.5%;
-            width: 12%;
-            height: 7.3%;
-            background: url('amplifier.png') no-repeat center;
             -webkit-background-size: contain;
             background-size: contain;
+        }
+
+        .dialog {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 51.5%;
+            background-color: white;
+            margin: auto;
+            z-index: 99;
+            display: none;
         }
     </style>
 </head>
 <body>
 <article id="content"></article>
 <template id="audio-template">
-    <div class="wrap">
-        <audio id="player" src="p-zhibo-0420/${bookNo}.mp3#t=${startSecond},${endSecond}" autoplay></audio>
-        <img src="p-zhibo-0420/${bookNo}/${pageNo}.jpg" alt="">
-        <div id="play" class="amplifier"></div>
+    <div class="wrap" data-ext-point="units">
+        <audio id="player" src="p-zhibo-0420/${bookNo}/${pageNo}${unitNo}.mp3" autoplay></audio>
+        <img src="p-zhibo-0420/${bookNo}/${pageNo}.jpg" alt="" style="width: 100%; height: 100%;">
+        <div data-ext-point="operation-panel"></div>
+        <div>
+            <a id="previous" class="abs" style="bottom: 12.5%; left: 82.5%; width: 12%; height: 7.3%;" href="p-zhibo-0540.html?book=${bookNo}&page=${previousPageNo}&unit=${previousUnitNo}">
+                <img src="previous.png" alt="">
+            </a>
+            <a id="next" class="abs" style="bottom: 12.5%; left: 90.5%; width: 12%; height: 7.3%;" href="p-zhibo-0420.html?book=${bookNo}&page=${nextPageNo}&unit=${nextUnitNo}">
+                <img src="next.png" alt="">
+            </a>
+        </div>
+        <div id="mask" style="display: none; position: absolute; z-index: 50; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: 0.6;"></div>
+        <div id="dialog" class="dialog">
+            <img src="dialogIcon.png" alt="" style="position: relative; top: -50px; width: 200px;">
+            <pre id="chinese"></pre>
+            <button id="closeTranslator" style="margin: auto; display: block;"><img src="ok.png" alt=""></button>
+        </div>
     </div>
+</template>
+<template id="operation-panel-template">
+    <section>
+        <div class="abs" style="top: ${top}%; left: ${left}%; width: ${width}%; height: ${height}%;">
+            <div id="play${unitNo}" data-unit="${unitNo}" class="abs" style="bottom: 0; left: 0; width: 30px; height: 30px; background: url('amplifierOn.png') no-repeat center; background-size: contain;"></div>
+            <div id="translator${unitNo}" data-unit="${unitNo}" class="abs" style="bottom: 0; left: 40px; width: 30px; height: 30px; background: url('translatorOn.png') no-repeat center; background-size: contain;"></div>
+        </div>
+    </section>
 </template>
 <template id="video-template">
     <div>
@@ -51,51 +79,180 @@
 <script src="/basic.js"></script>
 <script>
     var bookNo = g.getUrlParameter('book')
-    $.ajax({
-        type: 'get',
-        url: '/api/audio-records/04/20/' + bookNo + '/name',
-        success: function(n) {
-            document.title = n.name
-            var pageNo = g.getUrlParameter('page')
-            var unitNo = g.getUrlParameter('unit')
-            if (pageNo == null && unitNo == null) {
+    var pageNo = g.getUrlParameter('page')
+    var unitNo = g.getUrlParameter('unit')
+    if (pageNo == null && unitNo == null) {
+        $.ajax({
+            type: 'get',
+            url: '/api/audio-records/04/20/' + bookNo + '/name',
+            success: function (n) {
+                document.title = n.name
                 proc({
                     templateId: 'video-template',
                     data: {bookNo: bookNo},
                     containerId: 'content'
                 })
-            } else {
-                $.ajax({
-                    type: 'get',
-                    url: '/api/audio-records/04/20/' + bookNo + '/' + pageNo + '/' + unitNo,
-                    success: function (record) {
-                        record.startSecond = record.startTime / 1000
-                        record.endSecond = record.endTime / 1000
-                        proc({
-                            templateId: 'audio-template',
-                            data: record,
-                            containerId: 'content'
-                        })
+            }
+        })
+    } else {
+        $.ajax({
+            type: 'get',
+            url: '/api/audio-records/04/20/' + bookNo + '/' + pageNo,
+            success: function (n) {
+                document.title = n.name
+                var getNavigatorInfo = function(pageNo) {
+                    var result = {}
+                    switch (pageNo) {
+                        case '00':
+                            result.nextPageNo = '10'
+                            break
+                        case '10':
+                            result.previousPageNo = '00'
+                            result.nextPageNo = '20'
+                            break
+                        case '20':
+                            result.previousPageNo = '10'
+                            result.nextPageNo = '30'
+                            break
+                        case '30':
+                            result.previousPageNo = '20'
+                            result.nextPageNo = '40'
+                            break
+                        case '40':
+                            result.previousPageNo = '30'
+                            result.nextPageNo = '50'
+                            break
+                        case '50':
+                            result.previousPageNo = '40'
+                            result.nextPageNo = '60'
+                            break
+                        case '60':
+                            result.previousPageNo = '50'
+                            result.nextPageNo = '70'
+                            break
+                        case '70':
+                            result.previousPageNo = '60'
+                            result.nextPageNo = '80'
+                            break
+                        case '80':
+                            result.previousPageNo = '70'
+                            result.nextPageNo = '90'
+                            break
+                        case '90':
+                            result.previousPageNo = '80'
+                            result.nextPageNo = '100'
+                            break
+                        case '100':
+                            result.previousPageNo = '90'
+                            result.nextPageNo = '110'
+                            break
+                        case '110':
+                            result.previousPageNo = '100'
+                            result.nextPageNo = '120'
+                            break
+                        case '10':
+                            result.previousPageNo = '00'
+                            result.nextPageNo = '20'
+                            break
+                        case '120':
+                            result.previousPageNo = '110'
+                            result.nextPageNo = '130'
+                            break
+                        case '130':
+                            result.previousPageNo = '120'
+                            result.nextPageNo = '140'
+                            break
+                        case '140':
+                            result.previousPageNo = '130'
+                            result.nextPageNo = '150'
+                            break
+                        case '150':
+                            result.previousPageNo = '140'
+                            break
+                    }
+                }
 
-                        var player = document.getElementById('player')
-                        var play = document.getElementById('play')
+                for (var i = 0; i < n.records.length; ++i) {
+                    var r = n.records[i]
+                    r.width = (r.right - r.left) / 100
+                    r.left = r.left / 100
+                    r.right = r.right / 100
 
-                        play.addEventListener('click', function (e) {
-                            player.currentTime = record.startSecond
-                            player.play()
-                        }, false)
+                    r.height = (r.bottom - r.top) / 100
+                    r.top = r.top / 100
+                    r.bottom = r.bottom / 100
+                }
 
-                        player.addEventListener('timeupdate', function (e) {
-                            var ct = player.currentTime
-                            if (ct >= record.endSecond) {
-                                player.pause()
-                            }
-                        }, false)
+                var navigatorInfo = getNavigatorInfo(pageNo)
+
+                proc({
+                    templateId: 'audio-template',
+                    data: {
+                        bookNo: bookNo,
+                        pageNo: pageNo,
+                        unitNo: unitNo,
+                        records: n.records,
+                        previousPageNo: navigatorInfo.previousPageNo,
+                        previousUnitNo: '10',
+                        nextPageNo: navigatorInfo.nextPageNo,
+                        nextUnitNo: '10',
+                    },
+                    containerId: 'content',
+                    secondBind: {
+                        extPoint: 'operation-panel',
+                        dataFieldName: 'records',
+                        templateId: 'operation-panel-template'
                     }
                 })
+
+                var previous = document.getElementById('previous')
+                var next = document.getElementById('next')
+
+                if (navigatorInfo.previousPageNo == null) {
+                    previous.style.display = 'none'
+                }
+
+                if (navigatorInfo.nextPageNo == null) {
+                    next.style.display = 'none'
+                }
+
+                var player = document.getElementById('player')
+                var dialog = document.getElementById('dialog')
+                var mask = document.getElementById('mask')
+                var chinese = document.getElementById('chinese')
+                var ok = document.getElementById('closeTranslator')
+
+                ok.addEventListener('click', function(e){
+                    dialog.style.display = 'none'
+                    mask.style.display = 'none'
+                }, false)
+
+                for (var i = 0; i < n.records.length; ++i) {
+                    var play = document.getElementById('play' + n.records[i].unitNo)
+                    play.addEventListener('click', function (e) {
+                        player.src = 'p-zhibo-0420/' + bookNo + '/' + pageNo + e.target.dataset.unit + '.mp3'
+                        player.currentTime = 0
+                        player.play()
+                    }, false)
+
+                    var translator = document.getElementById('translator' + n.records[i].unitNo)
+                    translator.addEventListener('click', function (e) {
+                        var content = ''
+                        for (var j = 0; j < n.records.length; ++j) {
+                            if (n.records[j].unitNo == e.target.dataset.unit) {
+                                content = n.records[j].chinese
+                            }
+                        }
+                        //show content via dialog
+                        mask.style.display = 'block'
+                        chinese.textContent = content
+                        dialog.style.display = 'block'
+                        e.target.style.backgroundImage = new Image('translatorOff.png')
+                    }, false)
+                }
             }
-        }
-    })
+        })
+    }
 </script>
 </body>
 </html>
