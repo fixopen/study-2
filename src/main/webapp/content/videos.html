@@ -354,10 +354,10 @@
                 <div class="xiaq_div">${title}</div>
                 <div>
                     <span>${grade}</span>
-                    <div class="course_detail">课程详情</div>
+                    <div class="course_detail detail_Btn" data-detail="${id}">课程详情</div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail" data-identity="${id}">
                 <h3 class="sml-tit brief1">
                     <img src="../img/abc.png" alt="">
                     课程简介
@@ -403,10 +403,10 @@
                 <div class="xiaq_div">${title}</div>
                 <div>
                     <span>${grade}</span>
-                    <div class="course_detail shuxue_Btn">课程详情</div>
+                    <div class="course_detail shuxue_Btn detail_Btn" data-detail="${id}">课程详情</div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail" data-identity="${id}">
                 <h3 class="sml-tit brief1">
                     <img src="../img/abc.png" alt="">
                     课程简介
@@ -790,23 +790,32 @@
             date: document.getElementById('date'),
             isInit: false,
             init: function () {
-                state.passed.isInit = true
                 if (!state.passed.isInit) {
+                    $(document).on('click', '.detail_Btn', function (e) {
+                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
+                    })
                     var now = Date.now()
 //*******************************getPassed*****************************
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers?filter=' + JSON.stringify({
-                            cdnLink: 'IS NOT NULL',
+//                            cdnLink: 'IS NOT NULL',
                             endTime: '< ' + now
                         }),
                         dataType: 'json',
-                        success: function (passed) {
+                        success: function (schedulers) {
+                            passed=schedulers[2]
                             for (var i = 0; i < passed.length; ++i) {
-                                passed[i].grade = getGrade(passed[i].grade)
+                                passed[i].grade = state.getGrade(passed[i].grade)
                                 passed[i].type = 'chinese'
                                 if (passed[i].subjectId == 2) {
                                     passed[i].type = 'math'
+                                }
+                            }
+                            for (var i = 0; i < passed.length; ++i) {
+                                if (!passed[i].cdnLink || passed[i].cdnLink == '') {
+                                    passed.splice(i, 1)
+                                    --i
                                 }
                             }
                             proc({
@@ -817,12 +826,7 @@
                                     {type: 'math', templateId: 'math-template'}
                                 ]
                             });
-                            for (var i = 0; i < passed.length; ++i) {
-                                if (!passed[i].cdnLink || passed[i].cdnLink == '') {
-                                    passed.splice(i, 1)
-                                    --i
-                                }
-                            }
+
                             allxqTap(); //all课程详情
                         }
                     })
@@ -919,6 +923,7 @@
                             templateId: ''
                         })
                     }, false)
+                    state.passed.isInit = true
                 }
             },
             search: function () {

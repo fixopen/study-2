@@ -25,6 +25,9 @@
 </article>
 <!--------------------------volumes--------------------------->
 <template id="chinese-structure">
+    <!-- 课程更新弹窗 -->
+    <!--<div class="tan" style="display: none"></div>-->
+    <!--<div class="new-class" style="display: none"></div>-->
     <div class="rain-main">
         <div class="bao_dul">
             <ul id="subjects" class="nav nav-tabs grade" role="tablist">
@@ -48,6 +51,9 @@
     </div>
 </template>
 <template id="math-structure">
+    <!-- 课程更新弹窗 -->
+    <!--<div class="tan" style="display: none"></div>-->
+    <!--<div class="new-class" style="display: none"></div>-->
     <div class="rain-main">
         <div class="bao_dul">
             <ul id="subjects2" class="nav nav-tabs grade" role="tablist">
@@ -326,6 +332,32 @@
         <input class="daana" name="daan3" type="radio">${name}
     </li>
 </template>
+<template id="problem-checkbox-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span class="mld_liImg_">${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+    </li>
+</template>
+<template id="problem-radio-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span class="mld_liImg">${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+    </li>
+</template>
 <template id="problem-template">
     <li class="mld_Ulli">
         <div class="addimg">
@@ -572,6 +604,39 @@
             value: null,
             show: function () {
                 $('#volumes').html("");
+                function newClass() { //课程更新弹窗
+                    $('.tan').show();
+                    $('.new-class').show();
+                    $(".tan,.new-class").bind('touchmove', function (event) {
+                        event.preventDefault();
+                    });
+                    $(".new-class").click(function () {
+                        $(this).hide();
+                        $(".tan").hide();
+                    });
+                }
+                var popup=function(subjectNum){
+                    $.ajax({
+                        type: "get",
+                        url: '/api/subjects/' + subjectNum + '/popup',
+                        dataType: "json",
+                        success: function (pop) {
+                            var isPopup = pop.popup
+                            if (!isPopup) {
+                                newClass();//课程更新弹窗
+                                $.ajax({
+                                    type: "post",
+                                    url: '/api/subjects/' + subjectNum,
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function () {
+                                    }
+                                })
+                            }
+                        }
+                    });
+                }
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
@@ -597,6 +662,10 @@
                                 {type: 'new', templateId: 'volumes-chinese-new-template'},
                             ]
                         })
+
+                        var subjectNum=1;
+                        popup(subjectNum);
+
                         break
                     case 2:
                     case '2':
@@ -622,6 +691,10 @@
                                 {type: 'new', templateId: 'volumes-math-new-template'},
                             ]
                         })
+
+                        var subjectNum=2;
+                        popup(subjectNum);
+
                         break
                 }
             }
@@ -972,7 +1045,11 @@
                         });
 
                         proc({
-                            templateId: 'problem-template',
+//                            templateId: 'problem-template',
+                            alterTemplates: [
+                                {type: '单选题', templateId: 'problem-radio-template'},
+                                {type: '多选题', templateId: 'problem-checkbox-template'}
+                            ],
                             data: value.contents.problems,
                             containerId: 'problems',
                             secondBind: {
@@ -981,16 +1058,6 @@
                                 templateId: 'problem-option-template'
                             }
                         });
-
-                        //文字样式
-                        var ps = value.contents.problems;
-                        for (var i = 0; i < ps.length; i++) {
-                            if (ps[i].type == '多选题') {
-                                $('.addimg span').eq(i).removeClass('mld_liImg').addClass('mld_liImg_');
-                            } else if (ps[i].type == '单选题') {
-                                $('.addimg span').eq(i).removeClass('mld_liImg_').addClass('mld_liImg');
-                            }
-                        }
 
                         value.contents.interaction.previousId = value.previousId
                         value.contents.interaction.nextId = value.nextId
