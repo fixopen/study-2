@@ -79,61 +79,122 @@
 <script src="/basic.js"></script>
 <script>
     var bookNo = g.getUrlParameter('book')
-    $.ajax({
-        type: 'get',
-        url: '/api/audio-records/05/20/' + bookNo,
-        success: function(n) {
-            document.title = n.name
-            var pageNo = g.getUrlParameter('page')
-            var unitNo = g.getUrlParameter('unit')
-            if (pageNo == null && unitNo == null) {
+    var pageNo = g.getUrlParameter('page')
+    var unitNo = g.getUrlParameter('unit')
+    if (pageNo == null && unitNo == null) {
+        $.ajax({
+            type: 'get',
+            url: '/api/audio-records/05/20/' + bookNo + '/name',
+            success: function (n) {
+                document.title = n.name
                 proc({
                     templateId: 'video-template',
                     data: {bookNo: bookNo},
                     containerId: 'content'
                 })
-            } else {
-                var previousIndex = null
-                var nextIndex = null
-                var records = []
-                var i = 0
-                for (; i < n.records.length; ++i) {
-                    if (n.records[i].pageNo == pageNo) {
-                        if (previousIndex == null && i > 0) {
-                            previousIndex = i - 1
-                        }
-                        var r = n.records[i]
-                        r.width = (r.right - r.left) / 100
-                        r.left = r.left / 100
-                        r.right = r.right / 100
-
-                        r.height = (r.bottom - r.top) / 100
-                        r.top = r.top / 100
-                        r.bottom = r.bottom / 100
-                        records.push(r)
-                        if (i < n.records.length) {
-                            nextIndex = i + 1
-                        }
+            }
+        })
+    } else {
+        $.ajax({
+            type: 'get',
+            url: '/api/audio-records/05/20/' + bookNo + '/' + pageNo,
+            success: function (n) {
+                document.title = n.name
+                var getNavigatorInfo = function(pageNo) {
+                    var result = {}
+                    switch (pageNo) {
+                        case '00':
+                            result.nextPageNo = '10'
+                            break
+                        case '10':
+                            result.previousPageNo = '00'
+                            result.nextPageNo = '20'
+                            break
+                        case '20':
+                            result.previousPageNo = '10'
+                            result.nextPageNo = '30'
+                            break
+                        case '30':
+                            result.previousPageNo = '20'
+                            result.nextPageNo = '40'
+                            break
+                        case '40':
+                            result.previousPageNo = '30'
+                            result.nextPageNo = '50'
+                            break
+                        case '50':
+                            result.previousPageNo = '40'
+                            result.nextPageNo = '60'
+                            break
+                        case '60':
+                            result.previousPageNo = '50'
+                            result.nextPageNo = '70'
+                            break
+                        case '70':
+                            result.previousPageNo = '60'
+                            result.nextPageNo = '80'
+                            break
+                        case '80':
+                            result.previousPageNo = '70'
+                            result.nextPageNo = '90'
+                            break
+                        case '90':
+                            result.previousPageNo = '80'
+                            result.nextPageNo = '100'
+                            break
+                        case '100':
+                            result.previousPageNo = '90'
+                            result.nextPageNo = '110'
+                            break
+                        case '110':
+                            result.previousPageNo = '100'
+                            result.nextPageNo = '120'
+                            break
+                        case '10':
+                            result.previousPageNo = '00'
+                            result.nextPageNo = '20'
+                            break
+                        case '120':
+                            result.previousPageNo = '110'
+                            result.nextPageNo = '130'
+                            break
+                        case '130':
+                            result.previousPageNo = '120'
+                            result.nextPageNo = '140'
+                            break
+                        case '140':
+                            result.previousPageNo = '130'
+                            result.nextPageNo = '150'
+                            break
+                        case '150':
+                            result.previousPageNo = '140'
+                            break
                     }
                 }
-                var previousPageNo = ''
-                if (previousIndex != null) {
-                    previousPageNo = n.records[previousIndex].pageNo
+
+                for (var i = 0; i < n.records.length; ++i) {
+                    var r = n.records[i]
+                    r.width = (r.right - r.left) / 100
+                    r.left = r.left / 100
+                    r.right = r.right / 100
+
+                    r.height = (r.bottom - r.top) / 100
+                    r.top = r.top / 100
+                    r.bottom = r.bottom / 100
                 }
-                var nextPageNo = ''
-                if (nextIndex != null) {
-                    nextPageNo = n.records[nextIndex].pageNo
-                }
+
+                var navigatorInfo = getNavigatorInfo(pageNo)
+
                 proc({
                     templateId: 'audio-template',
                     data: {
                         bookNo: bookNo,
                         pageNo: pageNo,
                         unitNo: unitNo,
-                        records: records,
-                        previousPageNo: previousPageNo,
+                        records: n.records,
+                        previousPageNo: navigatorInfo.previousPageNo,
                         previousUnitNo: '10',
-                        nextPageNo: nextPageNo,
+                        nextPageNo: navigatorInfo.nextPageNo,
                         nextUnitNo: '10',
                     },
                     containerId: 'content',
@@ -143,6 +204,17 @@
                         templateId: 'operation-panel-template'
                     }
                 })
+
+                var previous = document.getElementById('previous')
+                var next = document.getElementById('next')
+
+                if (navigatorInfo.previousPageNo == null) {
+                    previous.style.display = 'none'
+                }
+
+                if (navigatorInfo.nextPageNo == null) {
+                    next.style.display = 'none'
+                }
 
                 var player = document.getElementById('player')
                 var dialog = document.getElementById('dialog')
@@ -155,15 +227,15 @@
                     mask.style.display = 'none'
                 }, false)
 
-                for (var i = 0; i < records.length; ++i) {
-                    var play = document.getElementById('play' + records[i].unitNo)
+                for (var i = 0; i < n.records.length; ++i) {
+                    var play = document.getElementById('play' + n.records[i].unitNo)
                     play.addEventListener('click', function (e) {
                         player.src = 'p-zhibo-0520/' + bookNo + '/' + pageNo + e.target.dataset.unit + '.mp3'
                         player.currentTime = 0
                         player.play()
                     }, false)
 
-                    var translator = document.getElementById('translator' + records[i].unitNo)
+                    var translator = document.getElementById('translator' + n.records[i].unitNo)
                     translator.addEventListener('click', function (e) {
                         var content = ''
                         for (var j = 0; j < n.records.length; ++j) {
@@ -179,8 +251,8 @@
                     }, false)
                 }
             }
-        }
-    })
+        })
+    }
 </script>
 </body>
 </html>
