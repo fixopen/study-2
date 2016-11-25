@@ -25,54 +25,58 @@
 </article>
 <!--------------------------volumes--------------------------->
 <template id="chinese-structure">
-    <!-- 课程更新弹窗 -->
-    <!--<div class="tan" style="display: none"></div>-->
-    <!--<div class="new-class" style="display: none"></div>-->
-    <div class="rain-main">
-        <div class="bao_dul">
-            <ul id="subjects" class="nav nav-tabs grade" role="tablist">
-                <li role="presentation" class="active grade-main grade-low">
-                    <a class="grade-font" href="#low" role="tab" data-toggle="tab">1-2年级</a>
-                    <img class="grade-bird" src="img/bird.png" alt="">
-                </li>
-                <li role="presentation" class="grade-main grade-high">
-                    <a class="grade-font" href="#high" role="tab" data-toggle="tab">3-6年级</a>
-                    <img class="grade-bird" src="img/bird.png" alt="">
-                </li>
-            </ul>
-        </div>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
-            </ol>
-            <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
-            </ol>
+    <div>
+        <!-- 课程更新弹窗 -->
+        <div class="tan"></div>
+        <div class="new-class"></div>
+        <div class="rain-main">
+            <div class="bao_dul">
+                <ul id="subjects" class="nav nav-tabs grade" role="tablist">
+                    <li role="presentation" class="active grade-main grade-low">
+                        <a class="grade-font" href="#low" role="tab" data-toggle="tab">1-2年级</a>
+                        <img class="grade-bird" src="img/bird.png" alt="">
+                    </li>
+                    <li role="presentation" class="grade-main grade-high">
+                        <a class="grade-font" href="#high" role="tab" data-toggle="tab">3-6年级</a>
+                        <img class="grade-bird" src="img/bird.png" alt="">
+                    </li>
+                </ul>
+            </div>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
+                </ol>
+                <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
+                </ol>
+            </div>
         </div>
     </div>
 </template>
 <template id="math-structure">
-    <!-- 课程更新弹窗 -->
-    <!--<div class="tan" style="display: none"></div>-->
-    <!--<div class="new-class" style="display: none"></div>-->
-    <div class="rain-main">
-        <div class="bao_dul">
-            <ul id="subjects2" class="nav nav-tabs grade" role="tablist">
-                <li role="presentation" class="active grade-main grade-low">
-                    <a class="grade-font" href="#low2" role="tab" data-toggle="tab">1-3年级</a>
-                    <img class="grade-bird" src="img/bird.png" alt="">
-                </li>
-                <li role="presentation" class="grade-main grade-high">
-                    <a class="grade-font" href="#high2" role="tab" data-toggle="tab">4-6年级</a>
-                    <img class="grade-bird" src="img/bird.png" alt="">
-                </li>
-            </ul>
-        </div>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <ol role="tabpanel" class="tab-pane active volumes-bg" id="low2">
-            </ol>
-            <ol role="tabpanel" class="tab-pane volumes-bg" id="high2">
-            </ol>
+    <div>
+        <!-- 课程更新弹窗 -->
+        <!--<div class="tan"></div>-->
+        <!--<div class="new-class"></div>-->
+        <div class="rain-main">
+            <div class="bao_dul">
+                <ul id="subjects2" class="nav nav-tabs grade" role="tablist">
+                    <li role="presentation" class="active grade-main grade-low">
+                        <a class="grade-font" href="#low2" role="tab" data-toggle="tab">1-3年级</a>
+                        <img class="grade-bird" src="img/bird.png" alt="">
+                    </li>
+                    <li role="presentation" class="grade-main grade-high">
+                        <a class="grade-font" href="#high2" role="tab" data-toggle="tab">4-6年级</a>
+                        <img class="grade-bird" src="img/bird.png" alt="">
+                    </li>
+                </ul>
+            </div>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <ol role="tabpanel" class="tab-pane active volumes-bg" id="low2">
+                </ol>
+                <ol role="tabpanel" class="tab-pane volumes-bg" id="high2">
+                </ol>
+            </div>
         </div>
     </div>
 </template>
@@ -604,6 +608,7 @@
             value: null,
             show: function () {
                 $('#volumes').html("");
+
                 function newClass() { //课程更新弹窗
                     $('.tan').show();
                     $('.new-class').show();
@@ -615,7 +620,7 @@
                         $(".tan").hide();
                     });
                 }
-                var popup=function(subjectNum){
+                var popups=function(subjectNum){
                     $.ajax({
                         type: "get",
                         url: '/api/subjects/' + subjectNum + '/popup',
@@ -645,6 +650,7 @@
                             data: {},
                             templateId: 'chinese-structure'
                         })
+
                         var value = state.volumes.value
                         proc({
                             data: value.low,
@@ -664,7 +670,7 @@
                         })
 
                         var subjectNum=1;
-                        popup(subjectNum);
+                       popups(subjectNum);
 
                         break
                     case 2:
@@ -693,11 +699,45 @@
                         })
 
                         var subjectNum=2;
-                        popup(subjectNum);
+                        popups(subjectNum);
+
 
                         break
                 }
-            }
+            },
+            newClass:function() { //课程更新弹窗
+                $('.tan').show();
+                $('.new-class').show();
+                $(".tan,.new-class").bind('touchmove', function (event) {
+                    event.preventDefault();
+                });
+                $(".new-class").click(function () {
+                    $(this).hide();
+                    $(".tan").hide();
+                });
+    },
+            popup:function(subjectNum){
+                $.ajax({
+                    type: "get",
+                    url: '/api/subjects/' + subjectNum + '/popup',
+                    dataType: "json",
+                    success: function (pop) {
+                        var isPopup = pop.popup;
+                        if (!isPopup) {
+                            state.volumes.newClass();//课程更新弹窗
+                            $.ajax({
+                                type: "post",
+                                url: '/api/subjects/' + subjectNum,
+                                data: JSON.stringify({}),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function () {
+                                }
+                            })
+                        }
+                    }
+                });
+    }
         },
         knowledgePoints: {
             parentId: null,
@@ -1346,12 +1386,12 @@
 </script>
 <script>
     //    挑战百分百的分割线
-    $(window).resize(function () {
-        $(".split_line").css("width", $("#whole_width").width())
-    })
-    window.onpageshow = function () {
-        $(".split_line").css("width", $("#whole_width").width())
-    }
+//    $(window).resize(function () {
+//        $(".split_line").css("width", $("#whole_width").width())
+//    })
+//    window.onpageshow = function () {
+//        $(".split_line").css("width", $("#whole_width").width())
+//    }
 </script>
 </body>
 </html>
