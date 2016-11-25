@@ -209,14 +209,6 @@ public class User implements com.baremind.data.Entity {
         this.sex = sex;
     }
 
-    public Boolean getAdministrator() {
-        return isAdministrator;
-    }
-
-    public void setAdministrator(Boolean administrator) {
-        isAdministrator = administrator;
-    }
-
     public Integer getAmount() {
         return amount;
     }
