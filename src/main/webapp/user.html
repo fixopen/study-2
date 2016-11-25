@@ -54,7 +54,7 @@
                             <!--密码错误-->
                         </i>
                     </li>
-                    <li class="mine_zuli zuli_yzm" style="display: none;">
+                    <li class="mine_zuli zuli_yzm" style="display: block;">
                         <span class="mine_leftsp">验证码</span>
                         <input class="mine_rightip" type="password" id="Verification" placeholder="请输入验证码">
                         <a class="yanZma" href="#">点击换一张</a>
@@ -357,14 +357,27 @@
                 <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
             </li>
             <li>
-                <ul class="user_li_css public_li_css" data-article="info">我的资料</ul>
+                <ul class="user_li_css public_li_css" data-article="info">个人资料</ul>
             </li>
-
+<br/>
 
             <li>
                 <ul class="user_li_css public_li_css" data-article="cards">我的学习卡</ul>
             </li>
-
+            <li>
+                <ul class="user_li_css public_li_css" >学习记录</ul>
+            </li>
+            <br/>
+            <li>
+                <ul class="user_li_css public_li_css" >账户余额</ul>
+            </li>
+            <li>
+                <ul class="user_li_css public_li_css" >充值</ul>
+            </li>
+            <li>
+                <ul class="user_li_css public_li_css" >我的积分</ul>
+            </li>
+            <br/>
             <li class="user_li_css public_li_css" data-article="settings">设置</li>
             <li class="user_li_css public_li_css" data-article="help">帮助</li>
         </ul>
@@ -467,7 +480,7 @@
     var duan;
     //var count =0;
     var state = {
-        currentArticle: document.getElementById('sign'),
+        currentArticle: document.getElementById('user'),
         init: function () {
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId)
@@ -498,8 +511,8 @@
                 Transformation = "user"
             }
 */
-            state['sign'].init()
-            history.pushState(null, null, '/user.html#sign');
+            state['user'].init()
+            history.pushState(null, null, '/user.html#user');
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
@@ -539,7 +552,7 @@
         sign: {
 
             init: function () {
-                document.getElementById("sign").style.display="block"
+               // document.getElementById("sign").style.display="block"
                 var biaoji = 1;
                 var shortMessage = document.getElementById("shortMessage");
                 shortMessage.addEventListener('click',function (e) {

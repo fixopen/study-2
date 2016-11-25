@@ -673,12 +673,12 @@ public class PublicAccounts {
     private static Map<String, Object> getTokenByCode(String code) {
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
-            .path("/sns/oauth2/access_token")
-            .queryParam("appid", appID)
-            .queryParam("secret", secret)
-            .queryParam("code", code)
-            .queryParam("grant_type", "authorization_code")
-            .request().get();
+                .path("/sns/oauth2/access_token")
+                .queryParam("appid", appID)
+                .queryParam("secret", secret)
+                .queryParam("code", code)
+                .queryParam("grant_type", "authorization_code")
+                .request().get();
         String responseBody = response.readEntity(String.class);
         return new Gson().fromJson(responseBody, new TypeToken<Map<String, Object>>() {
         }.getType());
@@ -1041,13 +1041,13 @@ public class PublicAccounts {
         Response result = null;
         Map<String, Object> tokenInfo = getTokenByCode(code);
         User user = null;
-        String openId = (String)tokenInfo.get("openid");
+        String openId = (String) tokenInfo.get("openid");
         WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
         if (wechatUser == null) {
             wechatUser = new WechatUser();
             wechatUser.setId(IdGenerator.getNewId());
             fillWechatUserByTokenInfo(wechatUser, tokenInfo);
-            WechatUserInfo userInfo = getUserInfo((String)tokenInfo.get("access_token"), openId);
+            WechatUserInfo userInfo = getUserInfo((String) tokenInfo.get("access_token"), openId);
             if (userInfo != null) {
                 fillWechatUserByUserInfo(wechatUser, userInfo);
                 EntityManager em = JPAEntry.getNewEntityManager();
@@ -1277,7 +1277,7 @@ public class PublicAccounts {
             u.setUpdateTime(now);
             u.setIsAdministrator(false);
             u.setSite("http://www.xiaoyuzhishi.com");
-            u.setAmount(0.0f);
+            u.setAmount(0);
             user.setUserId(userId);
 
             EntityManager em = JPAEntry.getNewEntityManager();
