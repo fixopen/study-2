@@ -99,7 +99,10 @@
 .video-list-li{
 	margin-bottom: 1.25rem;
 }
-.video-list-li:last-child{
+.video-list-li-last{
+	margin-bottom: 1.25rem;
+}
+.video-list-li-last:last-child{
 	margin-bottom: 4.25rem;
 }
 .video-list-play{
