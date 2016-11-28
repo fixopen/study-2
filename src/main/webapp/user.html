@@ -11,11 +11,9 @@
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="myUser/css/common.css"/>
-   <link rel="stylesheet" href="myUser/css/global.css">
+    <link rel="stylesheet" href="myUser/css/global.css">
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <link rel="stylesheet" href="myUser/css/user.css">
-
-
 </head>
 <body>
 <article id="sign" style="display: none">
@@ -23,7 +21,7 @@
         <div class="header">
             <div class="avatar"></div>
             <div class="touImg">
-                 <img src="myUser/image/login_tou.png" class="avatarImg"/>
+                <img src="myUser/image/login_tou.png" class="avatarImg"/>
             </div>
             <ul class="tab_switch">
                 <li class="tab_swli cur">
@@ -75,7 +73,7 @@
                         <span class="mine_leftsp">密码</span>
                         <input class="mine_rightip" type="password" id="duanDense" placeholder="请输入短信密码">
                         <!--<a class="famima" href="JavaScript:;" id="fapassword">发送密码</a>-->
-                        <input type="button" id="fapassword" class="famima"  value="发送密码">
+                        <input type="button" id="fapassword" class="famima" value="发送密码">
                     </li>
                 </ul>
                 <span class="mine_tishi" id="errorfamima"></span>
@@ -83,7 +81,8 @@
             <div class="bottom_bdiv">
                 <a class="bottom_btn" href="JavaScript:;" id="signSubmit">登 录</a>
             </div>
-            <div class="bottom_txt" data-article="firstActiveCard"><span class="leftLine">——</span>还没有账号？先去“填加卡号”<span class="leftLine">——</span></div>
+            <div class="bottom_txt" data-article="firstActiveCard"><span class="leftLine">——</span>还没有账号？先去“填加卡号”<span
+                    class="leftLine">——</span></div>
         </div>
     </div>
 
@@ -121,18 +120,18 @@
             <img src="images/cg.png" alt="">
         </div>
     </div>
-</article >
+</article>
 <article id="user">
 </article>
 <article id="cards" style="display: none;">
-        <!--<div class="user_div_css">-->
-            <div id="card"></div>
-            <!--<div class="card_button_div_css">-->
-                <a class="card_button_css " href="JavaScript:;">充值</a>
-                <a class="card_button_css card_button_background_css" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
-                <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
-            <!--</div>-->
-        <!--</div>-->
+    <!--<div class="user_div_css">-->
+    <div id="card"></div>
+    <!--<div class="card_button_div_css">-->
+    <a class="card_button_css " href="JavaScript:;">充值</a>
+    <a class="card_button_css card_button_background_css" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>
+    <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
+    <!--</div>-->
+    <!--</div>-->
 </article>
 <article id="info" style="display: none;"></article>
 <!--<article id="gold" style="display: none;">
@@ -179,27 +178,27 @@
 <article id="change-password" style="display: none;">
     <div class="wrap">
         <!-- main -->
-            <ul class="changePassword_ul_css">
-                <li class="changePassword_li_css public_li_css" >
-                    <span class="public_span_css changePassword_interval_width_css" >原密码</span>
-                    <input class="firstActiveCard_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
-                </li>
-                <li class="changePassword_li_css public_li_css">
-                    <span class="public_span_css changePassword_interval_width_css">新密码</span>
-                    <input class="firstActiveCard_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
-                </li>
-                <li class="changePassword_li_css public_li_css">
-                    <span class="public_span_css changePassword_interval_width_css">确认新密码</span>
-                    <input class="firstActiveCard_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
-                </li>
-                <div id="error"></div>
-            </ul>
+        <ul class="changePassword_ul_css">
+            <li class="changePassword_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">原密码</span>
+                <input class="firstActiveCard_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
+            </li>
+            <li class="changePassword_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">新密码</span>
+                <input class="firstActiveCard_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
+            </li>
+            <li class="changePassword_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">确认新密码</span>
+                <input class="firstActiveCard_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
+            </li>
+            <div id="error"></div>
+        </ul>
 
-            <div class="changePassword_box_css">
-                <a href="javascript:void(0)" class="changePassword_button_css" id="pwd_save">保 存</a>
-                <a href="javascript:void(0)" id="quxiao" class="changePassword_save_css">取 消</a>
-            </div>
+        <div class="changePassword_box_css">
+            <a href="javascript:void(0)" class="changePassword_button_css" id="pwd_save">保 存</a>
+            <a href="javascript:void(0)" id="quxiao" class="changePassword_save_css">取 消</a>
         </div>
+    </div>
 </article>
 <!--<article id="activeCard" style="display: none;">
     <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
@@ -234,7 +233,8 @@
             </div>
             <div class="firstActiveCard_li_css public_li_css">
                 <span class="public_span_css changePassword_interval_width_css">手机号</span>
-                <input class="firstActiveCard_input_css" type="tel" id="phoneNumber" placeholder="请输入手机号" required pattern="\d+"
+                <input class="firstActiveCard_input_css" type="tel" id="phoneNumber" placeholder="请输入手机号" required
+                       pattern="\d+"
                        style="height:20px; width: 115px; font-size:16px;">
                 <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"
                        class="send-btn cur">
@@ -343,51 +343,52 @@
 
 <template id="user-template">
     <!--<div class="user_div_css">-->
-        <ul class="public_ul_css">
-            <li class="user_li_css public_li_css" data-article="head">
-                <span class="public_span_css">我的头像</span>
-                <img class="user_head_css" src="${head}" alt="">
-            </li>
-            <li class="user_li_css public_li_css">
-                <span class="public_span_css">昵称</span>
-                <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
-            </li>
-            <li class="user_li_css public_li_css">
-                <span class="public_span_css">账号</span>
-                <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
-            </li>
-            <li>
-                <ul class="user_li_css public_li_css" data-article="info">个人资料</ul>
-            </li>
-<br/>
+    <ul class="public_ul_css">
+        <li class="user_li_css public_li_css" data-article="head">
+            <span class="public_span_css">我的头像</span>
+            <img class="user_head_css" src="${head}" alt="">
+        </li>
+        <li class="user_li_css public_li_css">
+            <span class="public_span_css">昵称</span>
+            <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
+        </li>
+        <li class="user_li_css public_li_css">
+            <span class="public_span_css">账号</span>
+            <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
+        </li>
+        <li>
+            <ul class="user_li_css public_li_css" data-article="info">个人资料</ul>
+        </li>
+        <br/>
 
-            <li>
-                <ul class="user_li_css public_li_css" data-article="cards">我的学习卡</ul>
-            </li>
-            <li>
-                <ul class="user_li_css public_li_css" >学习记录</ul>
-            </li>
-            <br/>
-            <li>
-                <ul class="user_li_css public_li_css" >账户余额</ul>
-            </li>
-            <li>
-                <ul class="user_li_css public_li_css" >充值</ul>
-            </li>
-            <li>
-                <ul class="user_li_css public_li_css" >我的积分</ul>
-            </li>
-            <br/>
-            <li class="user_li_css public_li_css" data-article="settings">设置</li>
-            <li class="user_li_css public_li_css" data-article="help">帮助</li>
-        </ul>
+        <li>
+            <ul class="user_li_css public_li_css" data-article="cards">我的学习卡</ul>
+        </li>
+        <li>
+            <ul class="user_li_css public_li_css">学习记录</ul>
+        </li>
+        <br/>
+        <li>
+            <ul class="user_li_css public_li_css">账户余额</ul>
+        </li>
+        <li>
+            <ul class="user_li_css public_li_css">充值</ul>
+        </li>
+        <li>
+            <ul class="user_li_css public_li_css">我的积分</ul>
+        </li>
+        <br/>
+        <li class="user_li_css public_li_css" data-article="settings">设置</li>
+        <li class="user_li_css public_li_css" data-article="help">帮助</li>
+    </ul>
     <!--</div>-->
 </template>
 <template id="info-template">
     <ul class="public_ul_css">
         <li class="public_li_css">
             <span class="public_span_css info_interval_width_css">真实姓名</span>
-            <input class="info_input_width_css public_input_css" type="text" placeholder="请输入真实姓名" value="${name}" id="info_name">
+            <input class="info_input_width_css public_input_css" type="text" placeholder="请输入真实姓名" value="${name}"
+                   id="info_name">
         </li>
         <li class="public_li_css">
             <span class="public_span_css info_interval_width_css">手机号</span>
@@ -399,13 +400,14 @@
         </li>
         <li class="public_li_css">
             <span class="public_span_css info_interval_width_css">出生年月</span>
-            <input id="date" class="info_input_width_css public_input_css" type="date" value="${birthday}" >
+            <input id="date" class="info_input_width_css public_input_css" type="date" value="${birthday}">
             <!--value="${birthday}"  placeholder="请选择出生日期" style="height:41px;overflow: hidden;"  style="height:41px;overflow: hidden;"-->
             <!--<input class="infomine_rightip" type="date" value="${birthday}" placeholder="请选择出生日期" style="height:41px;overflow: hidden;" id="info_birthday">-->
         </li>
         <li class="public_li_css">
             <span class="public_span_css info_interval_width_css">收货地址</span>
-            <input class="info_input_width_css public_input_css" type="text" placeholder="请输入收货地址" value="${location}" id="info_location">
+            <input class="info_input_width_css public_input_css" type="text" placeholder="请输入收货地址" value="${location}"
+                   id="info_location">
         </li>
         <li class="public_li_css">
             <span class="public_span_css info_interval_width_css">就读学校</span>
@@ -417,7 +419,7 @@
         </li>
         <li>
             <span class="public_span_css info_interval_width_css"></span>
-            <button id="save_info"  style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+            <button id="save_info" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
     margin-right: 5%; background-color: #fe6568; border: none">确 认
             </button>
         </li>
@@ -485,11 +487,11 @@
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId)
             $.ajax({
-                type:"get",
-                url:"/api/users/"+sessionId+"/userId",
-                dataType:"json",
-                success:function (e) {
-                userId = e;
+                type: "get",
+                url: "/api/users/" + sessionId + "/userId",
+                dataType: "json",
+                success: function (e) {
+                    userId = e;
                 }
             })
             var switchTo = function (id) {
@@ -505,12 +507,12 @@
                 switchTo(id)
             })
 
-           /* if(g.getUrlParameter('openId') !=null){
-                var Transformation = "sign"
-            }else{
-                Transformation = "user"
-            }
-*/
+            /* if(g.getUrlParameter('openId') !=null){
+             var Transformation = "sign"
+             }else{
+             Transformation = "user"
+             }
+             */
             state['user'].init()
             history.pushState(null, null, '/user.html#user');
             window.addEventListener('hashchange', function (e) {
@@ -532,7 +534,7 @@
             }
             return result
         },
-        getSexNameById:function (sex) {
+        getSexNameById: function (sex) {
             var result = 0
             if (sex == 1) {
                 result = "男"
@@ -552,18 +554,18 @@
         sign: {
 
             init: function () {
-               // document.getElementById("sign").style.display="block"
+                // document.getElementById("sign").style.display="block"
                 var biaoji = 1;
                 var shortMessage = document.getElementById("shortMessage");
-                shortMessage.addEventListener('click',function (e) {
-                    document.getElementById("username").style.display="none";
-                    document.getElementById("short").style.display="block";
+                shortMessage.addEventListener('click', function (e) {
+                    document.getElementById("username").style.display = "none";
+                    document.getElementById("short").style.display = "block";
                     biaoji = 0;
                 })
                 var pass = document.getElementById("pass");
-                pass.addEventListener('click',function (e) {
-                    document.getElementById("username").style.display="block";
-                    document.getElementById("short").style.display="none";
+                pass.addEventListener('click', function (e) {
+                    document.getElementById("username").style.display = "block";
+                    document.getElementById("short").style.display = "none";
                     biaoji = 1;
                 })
                 var deviceType;
@@ -574,7 +576,7 @@
                 }, false);
 
                 var signSubmit = document.getElementById("signSubmit");
-                signSubmit.addEventListener('click',function (e) {
+                signSubmit.addEventListener('click', function (e) {
                     var browser = {
                         versions: function () {
                             var u = navigator.userAgent, app = navigator.appVersion;
@@ -592,84 +594,84 @@
                                     webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
                                 };
 
-                            if(yng.mobile == true){
-                                if(yng.ios == true){
+                            if (yng.mobile == true) {
+                                if (yng.ios == true) {
                                     deviceType = "ios";
                                 }
-                                if(yng.android == true){
+                                if (yng.android == true) {
                                     deviceType = "android";
                                 }
-                                if(yng.iPhone == true){
+                                if (yng.iPhone == true) {
                                     deviceType = "iPhone";
                                 }
-                                if(yng.iPad == true){
+                                if (yng.iPad == true) {
                                     deviceType = "iPad";
                                 }
-                            }else{
-                                if(yng.trident == true){
+                            } else {
+                                if (yng.trident == true) {
                                     deviceType = "IE内核";
                                 }
-                                if(yng.presto == true){
+                                if (yng.presto == true) {
                                     deviceType = "opera内核";
                                 }
-                                if(yng.webKit == true){
+                                if (yng.webKit == true) {
                                     deviceType = "苹果/谷歌内核";
                                 }
-                                if(yng.gecko == true){
+                                if (yng.gecko == true) {
                                     deviceType = "火狐内核";
                                 }
                             }
                             return yng;
-                        } (),
+                        }(),
                         // language: (navigator.browserLanguage || navigator.language).toLowerCase()
                     }
                     alert(deviceType)
-                   // alert(JSON.stringify(deviceType))
-                    var loginInfo={};
-                    var nub =$("#Number").val();
-                    var dnub =$("#duanNumber").val();
+                    // alert(JSON.stringify(deviceType))
+                    var loginInfo = {};
+                    var nub = $("#Number").val();
+                    var dnub = $("#duanNumber").val();
 
-                    if(biaoji == 1){
+                    if (biaoji == 1) {
                         loginInfo = {
-                            info:nub,
-                            key:$("#Dense").val(),
-                            type:"telephone",
-                            deviceType:deviceType,
-                            deviceNo:nub,
-                            openId:g.getUrlParameter('openId'),
+                            info: nub,
+                            key: $("#Dense").val(),
+                            type: "telephone",
+                            deviceType: deviceType,
+                            deviceNo: nub,
+                            openId: g.getUrlParameter('openId'),
                         }
                         var dense = $("#Dense").val();
                         if (dense.length >= 6 && dense.length <= 16) {
-                            document.getElementById("errorpassword1").style.display="none";
+                            document.getElementById("errorpassword1").style.display = "none";
                             document.getElementById("errorpassword1").innerHTML = ""
                             pan = 0
                         } else {
-                            document.getElementById("errorpassword1").style.display="block";
+                            document.getElementById("errorpassword1").style.display = "block";
                             document.getElementById("errorpassword1").innerHTML = "请输入6-16位密码";
                             pan = 1
                         }
 
                         var ber = $("#Number").val();
                         if (ber.length != 11) {
-                            document.getElementById("errorNumber").style.display="block";
+                            document.getElementById("errorNumber").style.display = "block";
                             document.getElementById("errorNumber").innerHTML = "请输入正确的手机格式";
                             duan = 1
                         } else {
-                            document.getElementById("errorNumber").style.display="none";
+                            document.getElementById("errorNumber").style.display = "none";
                             document.getElementById("errorNumber").innerHTML = ""
                             duan = 0
                         }
-                        if(pan == 0 && duan == 0){
+                        if (pan == 0 && duan == 0) {
                             send(loginInfo)
                         }
-                    }else{
+                    } else {
                         loginInfo = {
-                            info:dnub,
-                            key:$("#duanDense").val(),
-                            type:"validationCode",
-                            deviceType:deviceType,
-                            deviceNo:dnub,
-                            openId:g.getUrlParameter('openId'),
+                            info: dnub,
+                            key: $("#duanDense").val(),
+                            type: "validationCode",
+                            deviceType: deviceType,
+                            deviceNo: dnub,
+                            openId: g.getUrlParameter('openId'),
                         }
                         send(loginInfo)
                     }
@@ -677,25 +679,25 @@
 
                     function send(loginInfo) {
                         $.ajax({
-                            type:"PUT",
-                            url:"/api/sessions",
-                            data:JSON.stringify(loginInfo),
-                            dataType:"json",
+                            type: "PUT",
+                            url: "/api/sessions",
+                            data: JSON.stringify(loginInfo),
+                            dataType: "json",
                             contentType: "application/json; charset=utf-8",
-                            success:function (a) {
+                            success: function (a) {
                                 alert("登录成功")
 
                             },
-                            error:function (e) {
+                            error: function (e) {
                                 alert(JSON.stringify(e))
                                 /*  alert("登录失败");*/
-                                if(loginInfo.type == "telephone"){
-                                    document.getElementById("zhanghaoerror").innerHTML="账号或密码错误，请重新输入！"
-                                }else {
-                                    if(e.status == 405){
-                                        document.getElementById("errorfamima").innerHTML="密码过期，请重新输入！"
-                                    }else {
-                                        document.getElementById("errorfamima").innerHTML="手机号或密码错误，请重新输入！"
+                                if (loginInfo.type == "telephone") {
+                                    document.getElementById("zhanghaoerror").innerHTML = "账号或密码错误，请重新输入！"
+                                } else {
+                                    if (e.status == 405) {
+                                        document.getElementById("errorfamima").innerHTML = "密码过期，请重新输入！"
+                                    } else {
+                                        document.getElementById("errorfamima").innerHTML = "手机号或密码错误，请重新输入！"
                                     }
 
                                 }
@@ -705,8 +707,6 @@
                     }
                 })
             },
-
-
 
 
         },
@@ -826,76 +826,76 @@
             init: function () {
 
             },
-         },
+        },
         consumes: {
             init: function () {
             }
         },
         head: {
             init: function () {
-             /*   var url = window.location.href;
-                url = url.replace(/[/]/g, ',')
-                $.ajax({
-                    type: "get",
-                    url: "/api/public-account/config/" + url,
-                    dataType: "json",
-                    success: function (e) {
-                        alert(JSON.stringify(e));
-                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
-                    }
-                })
-                function wechat(appId, timestamp, nonceStr, signature) {
-                    wx.config({
-                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                        appId: appId, // 必填，公众号的唯一标识
-                        timestamp: timestamp, // 必填，生成签名的时间戳
-                        nonceStr: nonceStr, // 必填，生成签名的随机串
-                        signature: signature,// 必填，签名，见附录1
-                        jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                    });
-                    wx.error(function (res) {
-                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                        gettick();
-                        alert("服务器繁忙，请刷新！")
-                    });
-                    wx.ready(function () {
-                        wx.chooseImage({
-                            count: 1,
-                            needResult: 1,
-                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                            success: function (res) {
-                                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                                //上传图片接口
-                                wx.uploadImage({
-                                    localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
-                                    isShowProgressTips: 1, // 默认为1，显示进度提示
-                                    success: function (res) {
-                                        var mediaId = res.serverId; // 返回图片的服务器端ID
-                                        //alert("返回图片的服务器端ID=="+mediaId)
-                                        libai(mediaId)
-                                    }
-                                });
-                            }
-                        });
-                    })
-                }
+                /*   var url = window.location.href;
+                 url = url.replace(/[/]/g, ',')
+                 $.ajax({
+                 type: "get",
+                 url: "/api/public-account/config/" + url,
+                 dataType: "json",
+                 success: function (e) {
+                 alert(JSON.stringify(e));
+                 wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                 }
+                 })
+                 function wechat(appId, timestamp, nonceStr, signature) {
+                 wx.config({
+                 debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                 appId: appId, // 必填，公众号的唯一标识
+                 timestamp: timestamp, // 必填，生成签名的时间戳
+                 nonceStr: nonceStr, // 必填，生成签名的随机串
+                 signature: signature,// 必填，签名，见附录1
+                 jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                 });
+                 wx.error(function (res) {
+                 // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                 gettick();
+                 alert("服务器繁忙，请刷新！")
+                 });
+                 wx.ready(function () {
+                 wx.chooseImage({
+                 count: 1,
+                 needResult: 1,
+                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                 success: function (res) {
+                 var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                 //上传图片接口
+                 wx.uploadImage({
+                 localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                 isShowProgressTips: 1, // 默认为1，显示进度提示
+                 success: function (res) {
+                 var mediaId = res.serverId; // 返回图片的服务器端ID
+                 //alert("返回图片的服务器端ID=="+mediaId)
+                 libai(mediaId)
+                 }
+                 });
+                 }
+                 });
+                 })
+                 }
 
-                function gettick() {
-                    $.ajax({
-                        type: "get",
-                        url: "/api/public-account/ticket/",
-                        dataType: "json",
-                        success: function (e) {
-                            //alert(JSON.stringify(e))
-                        },
-                        error: function (e) {
-                            //alert(JSON.stringify(e))
-                        }
-                    })
-                }
-*/
-             var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
+                 function gettick() {
+                 $.ajax({
+                 type: "get",
+                 url: "/api/public-account/ticket/",
+                 dataType: "json",
+                 success: function (e) {
+                 //alert(JSON.stringify(e))
+                 },
+                 error: function (e) {
+                 //alert(JSON.stringify(e))
+                 }
+                 })
+                 }
+                 */
+                var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
                 libai(sdakfjlasf);
                 function libai(mediaId) {
                     alert("李白来了" + mediaId)
@@ -905,7 +905,7 @@
                         dataType: "json",
                         success: function (e) {
                             alert("成功" + JSON.stringify(e))
-                            user.head=e.head;
+                            user.head = e.head;
                             state.user.isCards = false
                             history.back();
                         },
@@ -974,10 +974,10 @@
                 }
 
                 //userId = g.getUrlParameter('userid');
-               /* if (userId) {
-                    g.setCookie("userId", userId)
-                }
-*/
+                /* if (userId) {
+                 g.setCookie("userId", userId)
+                 }
+                 */
 
                 var o = 0
 
@@ -990,150 +990,150 @@
                     if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
                         alert("输入框不能为空")
                     } else {
-                        document.getElementById("gold").style.display="block";
-                       /* kai();*/
+                        document.getElementById("gold").style.display = "block";
+                        /* kai();*/
                         /*var data = {};
-                        var code = document.getElementById('cardNo').value
-                        data.cardNo = code.replace(/\s/ig, '');
-                        data.password = document.getElementById('password').value;
-                        data.phoneNumber = document.getElementById('phoneNumber').value;
-                        data.validCode = document.getElementById('validCode').value;
-                        var url = '/api/users/self/cards'
-                        if (userId) {
-                            url = '/api/users/' + userId + '/cards'
-                        }
-                        $.ajax({
-                            type:"post",
-                            url:url,
-                            dataType:"json",
-                            data:JSON.stringify(data),
-                            contentType: "application/json; charset=utf-8",
-                            success:function (e) {
-                                $.ajax({
-                                    type: "get",
-                                    url: "/api/cards/" + e.id,
-                                    dataType: "json",
-                                    success: function (e) {
-                                        // alert("激活成功")
-                                      /!*  e.subject =state.getSubjectNameById(e.subject)
-                                        // getSubjectNameById(e.subject)
-                                        user.cards.push(e);
-                                        //alert(user.cards)
-                                        state.cards.isCards = false;*!/
-                                        document.getElementById("gold").style.display="block";
-                                        state.gold.yao();
-                                        // history.back();
-                                        //back();
-                                    },
-                                    error: function (e) {
-                                        alert(JSON.stringify(e));
-                                    }
-                                })
-                            },
-                            error:function (e) {
-                                var tips = document.getElementById("tips");
-                                switch (e.status) {
-                                    case 500:
-                                        tips.innerHTML = "你的手机号跟别人重复啦";
-                                        break;
-                                    case 412:
-                                        tips.innerHTML = "请返回的我的首页";
-                                        break;
-                                    case 520:
-                                        tips.innerHTML = "后台错误520";
-                                        break;
-                                    case 404:
-                                        tips.innerHTML = "卡号或密码错误";
-                                        break;
-                                    case 405:
-                                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                                        break;
-                                    case 401:
-                                        tips.innerHTML = "手机号或验证码错误";
-                                        break;
-                                    case 410:
-                                        tips.innerHTML = "验证码超时";
-                                        break;
+                         var code = document.getElementById('cardNo').value
+                         data.cardNo = code.replace(/\s/ig, '');
+                         data.password = document.getElementById('password').value;
+                         data.phoneNumber = document.getElementById('phoneNumber').value;
+                         data.validCode = document.getElementById('validCode').value;
+                         var url = '/api/users/self/cards'
+                         if (userId) {
+                         url = '/api/users/' + userId + '/cards'
+                         }
+                         $.ajax({
+                         type:"post",
+                         url:url,
+                         dataType:"json",
+                         data:JSON.stringify(data),
+                         contentType: "application/json; charset=utf-8",
+                         success:function (e) {
+                         $.ajax({
+                         type: "get",
+                         url: "/api/cards/" + e.id,
+                         dataType: "json",
+                         success: function (e) {
+                         // alert("激活成功")
+                         /!*  e.subject =state.getSubjectNameById(e.subject)
+                         // getSubjectNameById(e.subject)
+                         user.cards.push(e);
+                         //alert(user.cards)
+                         state.cards.isCards = false;*!/
+                         document.getElementById("gold").style.display="block";
+                         state.gold.yao();
+                         // history.back();
+                         //back();
+                         },
+                         error: function (e) {
+                         alert(JSON.stringify(e));
+                         }
+                         })
+                         },
+                         error:function (e) {
+                         var tips = document.getElementById("tips");
+                         switch (e.status) {
+                         case 500:
+                         tips.innerHTML = "你的手机号跟别人重复啦";
+                         break;
+                         case 412:
+                         tips.innerHTML = "请返回的我的首页";
+                         break;
+                         case 520:
+                         tips.innerHTML = "后台错误520";
+                         break;
+                         case 404:
+                         tips.innerHTML = "卡号或密码错误";
+                         break;
+                         case 405:
+                         tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                         break;
+                         case 401:
+                         tips.innerHTML = "手机号或验证码错误";
+                         break;
+                         case 410:
+                         tips.innerHTML = "验证码超时";
+                         break;
 
-                                }
-                            }
-                        })*/
+                         }
+                         }
+                         })*/
                         /*ajax('POST', url, [
-                            {name: 'Content-Type', value: 'application/json'},
-                            {name: 'Accept', value: 'application/json'}
-                        ], data, function (r) {
-                            if (r.meta.code < 400) {
-                                $.ajax({
-                                    type: "get",
-                                    url: "/api/users/cards/" + data.cardNo,
-                                    dataType: "json",
-                                    success: function (e) {
-                                       // alert("激活成功")
-                                        e.subject =state.getSubjectNameById(e.subject)
-                                                // getSubjectNameById(e.subject)
-                                        user.cards.push(e);
-                                        //alert(user.cards)
-                                        state.cards.isCards = false;
-                                        document.getElementById("gold").style.display="block";
-                                        state.gold.yao();
-                                       // history.back();
-                                        //back();
-                                    },
-                                    error: function (e) {
-                                        alert(JSON.stringify(e));
-                                    }
-                                })
-                            } else {
-                                //alert('save error');
-                                var tips = document.getElementById("tips");
-                                //alert('get tips');
-                                switch (r.meta.code) {
-                                    case 500:
-                                        tips.innerHTML = "你的手机号跟别人重复啦";
-                                        break;
-                                    case 412:
-                                        tips.innerHTML = "请返回的我的首页";
-                                        break;
-                                    case 520:
-                                        tips.innerHTML = "后台错误520";
-                                        break;
-                                    case 404:
-                                        tips.innerHTML = "卡号或密码错误";
-                                        break;
-                                    case 405:
-                                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                                        o = 1;
-                                        break;
-                                    case 401:
-                                        tips.innerHTML = "手机号或验证码错误";
-                                        break;
-                                    case 410:
-                                        tips.innerHTML = "验证码超时";
-                                        break;
-                                    case 200:
-                                        $.ajax({
-                                            type: "get",
-                                            url: "/api/users/cards/" + data.cardNo,
-                                            dataType: "json",
-                                            success: function (e) {
-                                               // alert("激活成功")
-                                                e.subject =state.getSubjectNameById(e.subject)
-                                                        // getSubjectNameById(e.subject)
-                                                user.cards.push(e);
-                                                //alert(user.cards)
-                                                state.cards.isCards = false
-                                                document.getElementById("gold").style.display="block";
-                                                state.gold.yao();
-                                                //history.back();
-                                            },
-                                            error: function (e) {
-                                                alert(JSON.stringify(e));
-                                            }
-                                        })
-                                        break;
-                                }
-                            }
-                        })*/
+                         {name: 'Content-Type', value: 'application/json'},
+                         {name: 'Accept', value: 'application/json'}
+                         ], data, function (r) {
+                         if (r.meta.code < 400) {
+                         $.ajax({
+                         type: "get",
+                         url: "/api/users/cards/" + data.cardNo,
+                         dataType: "json",
+                         success: function (e) {
+                         // alert("激活成功")
+                         e.subject =state.getSubjectNameById(e.subject)
+                         // getSubjectNameById(e.subject)
+                         user.cards.push(e);
+                         //alert(user.cards)
+                         state.cards.isCards = false;
+                         document.getElementById("gold").style.display="block";
+                         state.gold.yao();
+                         // history.back();
+                         //back();
+                         },
+                         error: function (e) {
+                         alert(JSON.stringify(e));
+                         }
+                         })
+                         } else {
+                         //alert('save error');
+                         var tips = document.getElementById("tips");
+                         //alert('get tips');
+                         switch (r.meta.code) {
+                         case 500:
+                         tips.innerHTML = "你的手机号跟别人重复啦";
+                         break;
+                         case 412:
+                         tips.innerHTML = "请返回的我的首页";
+                         break;
+                         case 520:
+                         tips.innerHTML = "后台错误520";
+                         break;
+                         case 404:
+                         tips.innerHTML = "卡号或密码错误";
+                         break;
+                         case 405:
+                         tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                         o = 1;
+                         break;
+                         case 401:
+                         tips.innerHTML = "手机号或验证码错误";
+                         break;
+                         case 410:
+                         tips.innerHTML = "验证码超时";
+                         break;
+                         case 200:
+                         $.ajax({
+                         type: "get",
+                         url: "/api/users/cards/" + data.cardNo,
+                         dataType: "json",
+                         success: function (e) {
+                         // alert("激活成功")
+                         e.subject =state.getSubjectNameById(e.subject)
+                         // getSubjectNameById(e.subject)
+                         user.cards.push(e);
+                         //alert(user.cards)
+                         state.cards.isCards = false
+                         document.getElementById("gold").style.display="block";
+                         state.gold.yao();
+                         //history.back();
+                         },
+                         error: function (e) {
+                         alert(JSON.stringify(e));
+                         }
+                         })
+                         break;
+                         }
+                         }
+                         })*/
                     }
                 }
 
@@ -1143,44 +1143,44 @@
                     activeCodeButton.disabled = false
                     activeCodeButton.value = '发送验证码'
                 }
-               /* var timeoutId;
-                //var asfdf = "phoneNumber";
-                var activeCode = function () {
-                    //alert('active code')
-                    alert("来了")
-                    var phoneNumber = document.getElementById("phoneNumber").value
-                    if (phoneNumber != "") {
-                        ajax('GET', '/api/users/telephones/' + phoneNumber + '/code', [
-                            {name: 'Accept', value: 'application/json'}
-                        ], null, function (r) {
-                            var tips = document.getElementById("tips")
-                            if (r.meta.code < 400) {
-                                tips.innerHTML = '发送成功，请注意查收'
-                            } else {
-                                tips.innerHTML = '发送失败，请重新获取验证码'
-                            }
-                        })
+                /* var timeoutId;
+                 //var asfdf = "phoneNumber";
+                 var activeCode = function () {
+                 //alert('active code')
+                 alert("来了")
+                 var phoneNumber = document.getElementById("phoneNumber").value
+                 if (phoneNumber != "") {
+                 ajax('GET', '/api/users/telephones/' + phoneNumber + '/code', [
+                 {name: 'Accept', value: 'application/json'}
+                 ], null, function (r) {
+                 var tips = document.getElementById("tips")
+                 if (r.meta.code < 400) {
+                 tips.innerHTML = '发送成功，请注意查收'
+                 } else {
+                 tips.innerHTML = '发送失败，请重新获取验证码'
+                 }
+                 })
 
-                        var timeoutCount = 180;
-                        var proc = function () {
-                            e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
-                            --timeoutCount;
-                            e.target.disabled = true
-                            if (timeoutCount <= 0) {
-                                e.target.value = ' 重新发送 ';
-                                clearInterval(timeoutId);
-                                e.target.disabled = false
-                            }
-                        }
-                        timeoutId = setInterval(proc, 1000);
-                    } else {
-                        alert('手机号不能为空')
-                    }
-                }*/
+                 var timeoutCount = 180;
+                 var proc = function () {
+                 e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
+                 --timeoutCount;
+                 e.target.disabled = true
+                 if (timeoutCount <= 0) {
+                 e.target.value = ' 重新发送 ';
+                 clearInterval(timeoutId);
+                 e.target.disabled = false
+                 }
+                 }
+                 timeoutId = setInterval(proc, 1000);
+                 } else {
+                 alert('手机号不能为空')
+                 }
+                 }*/
 
                 var activeCodeButton = document.getElementById('activeCode');
                 activeCodeButton.addEventListener('click', function () {
-                   // count = 1;
+                    // count = 1;
                     state.firstActiveCard.activeCode(1)
                     //state.firstActiveCard.activeCode
                 }, false);
@@ -1201,63 +1201,63 @@
                 }, false)
             },
 
-            activeCode:function (e) {
+            activeCode: function (e) {
                 var timeoutId;
                 var an;
                 var error;
                 //var asfdf = "phoneNumber";
-                if(e == 1){
+                if (e == 1) {
                     var phoneNumber = document.getElementById("phoneNumber").value
-                    an="activeCode";
-                    error="tips";
-                }else{
+                    an = "activeCode";
+                    error = "tips";
+                } else {
                     var phoneNumber = document.getElementById("duanNumber").value
                     an = "fapassword";
-                    error="errorfamima";
+                    error = "errorfamima";
                 }
-                        //e = document.getElementById("activeCode")
-                    if (phoneNumber != "") {
-                        $.ajax({
-                            type:"get",
-                            url:"/api/users/telephones/"+ phoneNumber + "/code",
-                            dataType:"json",
-                            error:function (r) {
-                                var tips = document.getElementById(error);
-                                //alert(JSON.stringify(r))
-                                if (r.status < 400) {
-                                    tips.innerHTML = '短信已发送至手机，3分钟内有效'
-                                } else {
-                                    tips.innerHTML = '发送失败，请重新获取验证码'
-                                }
-                                var timeoutCount = 180;
-                                var proc = function () {
-                                    document.getElementById(an).value = ' (' + timeoutCount + ')  秒后\n重新发送';
-                                    --timeoutCount;
-                                    document.getElementById(an).disabled = true
-                                    if (timeoutCount <= 0) {
-                                        document.getElementById(an).value = ' 重新发送 ';
-                                        clearInterval(timeoutId);
-                                        document.getElementById(an).disabled = false
-                                    }
-                                }
-                                timeoutId = setInterval(proc, 1000);
-                            }
-                        })
-                        /*ajax('GET', '/api/users/telephones/' + phoneNumber + '/code', [
-                            {name: 'Accept', value: 'application/json'}
-                        ], null, function (r) {
-                            var tips = document.getElementById("tips")
-                            if (r.meta.code < 400) {
-                                tips.innerHTML = '发送成功，请注意查收'
+                //e = document.getElementById("activeCode")
+                if (phoneNumber != "") {
+                    $.ajax({
+                        type: "get",
+                        url: "/api/users/telephones/" + phoneNumber + "/code",
+                        dataType: "json",
+                        error: function (r) {
+                            var tips = document.getElementById(error);
+                            //alert(JSON.stringify(r))
+                            if (r.status < 400) {
+                                tips.innerHTML = '短信已发送至手机，3分钟内有效'
                             } else {
                                 tips.innerHTML = '发送失败，请重新获取验证码'
                             }
-                        })*/
+                            var timeoutCount = 180;
+                            var proc = function () {
+                                document.getElementById(an).value = ' (' + timeoutCount + ')  秒后\n重新发送';
+                                --timeoutCount;
+                                document.getElementById(an).disabled = true
+                                if (timeoutCount <= 0) {
+                                    document.getElementById(an).value = ' 重新发送 ';
+                                    clearInterval(timeoutId);
+                                    document.getElementById(an).disabled = false
+                                }
+                            }
+                            timeoutId = setInterval(proc, 1000);
+                        }
+                    })
+                    /*ajax('GET', '/api/users/telephones/' + phoneNumber + '/code', [
+                     {name: 'Accept', value: 'application/json'}
+                     ], null, function (r) {
+                     var tips = document.getElementById("tips")
+                     if (r.meta.code < 400) {
+                     tips.innerHTML = '发送成功，请注意查收'
+                     } else {
+                     tips.innerHTML = '发送失败，请重新获取验证码'
+                     }
+                     })*/
 
 
-                    } else {
-                        alert('手机号不能为空')
-                    }
+                } else {
+                    alert('手机号不能为空')
+                }
             }
 
         },
@@ -1276,7 +1276,7 @@
                 var x;
                 var p1 = document.getElementById("newpwd1");
                 p1.addEventListener('blur', function () {
-                    validatePWD1(newpwd1,error);
+                    validatePWD1(newpwd1, error);
                 })
                 var p2 = document.getElementById("newpwd2");
                 p2.addEventListener('blur', function () {
@@ -1284,27 +1284,27 @@
                 })
                 var p3 = document.getElementById("oldpwd");
                 p3.addEventListener('blur', function () {
-                    validatePWD3(oldpwd,error);
+                    validatePWD3(oldpwd, error);
                 })
 
-                function validatePWD1(id,error) {
-                    var pwd1 = $("#"+id+"").val();
+                function validatePWD1(id, error) {
+                    var pwd1 = $("#" + id + "").val();
                     if (pwd1.length >= 6 && pwd1.length <= 16) {
-                        document.getElementById(""+error+"").innerHTML = ""
+                        document.getElementById("" + error + "").innerHTML = ""
                         j = 1;
                     } else {
-                        document.getElementById(""+error+"").innerHTML = "请输入6-16位密码"
+                        document.getElementById("" + error + "").innerHTML = "请输入6-16位密码"
                         j = 0;
                     }
                 }
 
-                function validatePWD3(id,error) {
-                    var pwd3 = $("#"+id+"").val();
+                function validatePWD3(id, error) {
+                    var pwd3 = $("#" + id + "").val();
                     if (pwd3.length >= 6 && pwd3.length <= 16) {
-                        document.getElementById(""+error+"").innerHTML = ""
+                        document.getElementById("" + error + "").innerHTML = ""
                         x = 1;
                     } else {
-                        document.getElementById(""+error+"").innerHTML = "请输入6-16位密码"
+                        document.getElementById("" + error + "").innerHTML = "请输入6-16位密码"
                         x = 0;
                     }
                 }
@@ -1323,7 +1323,7 @@
 
                 var pwdSave = document.getElementById("pwd_save");
                 var quxiao = document.getElementById("quxiao");
-                quxiao.addEventListener('click',function () {
+                quxiao.addEventListener('click', function () {
                     history.back();
                 })
                 pwdSave.addEventListener('click', function () {
@@ -1361,9 +1361,9 @@
                         })
                     }
                 }, false);
-               /* function back() {
-                    history.back();
-                }*/
+                /* function back() {
+                 history.back();
+                 }*/
             }
         },
         help: {
@@ -1374,314 +1374,314 @@
 
     state.init()
 
-  /*  function Coin(opts){
-        //默认参数
-        this.defaults={
-            coinSrc:"images/corn1.png",     //金币图片地址
-            audioSrc:"images/shake.mp3",	//金币音频地址
-            coinWidth:30,           //金币宽度
-            coinHeight:30,          //金币高度、密度
-            density:40
-        };
-        this.settings=this._extendDeep(this.defaults,opts);   //深拷贝
-        this.density=this.settings.density;                   //密度，即金币个数
-        this.timeLag=800;                                    //金币散落的事件间隔，数字越大表示间隔越大
-        this.coinWidth=this.settings.coinWidth;               //金币宽度
-        this.coinHeight=this.settings.coinHeight;             //金币高度
-        this.wrapWidth=0;
-        this.wrapHeight=0;
-        this._init();
-    }
-    Coin.prototype={
-        constructor:Coin,
-        /!**
-         * 动画初始化方法
-         * @method _init
-         **!/
-        _init:function(){
-            //初始化包括尺寸大小
-            this.wrapWidth=document.documentElement.clientWidth;
-            this.wrapHeight=document.documentElement.clientHeight;
-            this._requestAnimationFrame();
-            this._createCanvas();
-            this._createAudio();
-        },
-        /!**
-         * 对象深拷贝方法
-         * @method _extendDeep
-         * @param  {object} parent 父对象
-         {object} child  子对象
-         @return {object} child  父对象继承给子对象
-         **!/
-        _extendDeep:function(child,parent){
-            var i,
-                    toStr = Object.prototype.toString,
-                    astr = "[object Array]";
-            child = child || {};
-            for (i in parent) {
-                if (parent.hasOwnProperty(i)) {
-                    if (typeof parent[i] === "object") {
-                        child[i] = (toStr.call(parent[i]) === astr) ? [] : {};
-                        extendDeep(parent[i], child[i]);
-                    } else {
-                        child[i] = parent[i];
-                    }
-                }
-            }
-            return child;
-        },
-        /!**
-         * requestAnimationFrame做兼容
-         * @method _requestAnimationFrame
-         **!/
-        _requestAnimationFrame:function(){
-            var lastTime = 0;
-            var vendors = ['webkit', 'moz'];
-            for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-                window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-                window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||    // name has changed in Webkit
-                        window[vendors[x] + 'CancelRequestAnimationFrame'];
-            }
-            if (!window.requestAnimationFrame) {
-                window.requestAnimationFrame = function(callback, element) {
-                    var currTime = new Date().getTime();
-                    var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
-                    var id = window.setTimeout(function() {
-                        callback(currTime + timeToCall);
-                    }, timeToCall);
-                    lastTime = currTime + timeToCall;
-                    return id;
-                };
-            }
-            if (!window.cancelAnimationFrame) {
-                window.cancelAnimationFrame = function(id) {
-                    clearTimeout(id);
-                };
-            }
-        },
-        /!**
-         * 创建canvas画布
-         * @method _createCanvas
-         **!/
-        _createCanvas:function(){
-            var _self=this;
-            this.canvas=document.createElement('canvas');
-            this.canvas.setAttribute("data-id",Date.now());
-            if(!this.canvas.getContext){
-                alert("您的浏览器不支持canvas");
-                return;
-            }
-            this.context=this.canvas.getContext('2d');
-            this.canvas.width=this.wrapWidth;
-            this.canvas.height=this.wrapHeight;
-            var oBody=document.getElementsByTagName('body')[0];
-            oBody.appendChild(this.canvas);
-            this._createCacheCanvas();
-        },
-        _createCacheCanvas:function(){
-            var _self=this;
-            this.cacheCanvas=document.createElement('canvas');
-            this.cacheContext=this.cacheCanvas.getContext('2d');
-            this.cacheCanvas.width=this.wrapWidth;
-            this.cacheCanvas.height=this.wrapHeight;
-            this.coinImg=new Image();
-            this.coinImg.src=this.settings.coinSrc;
-            this.coinImg.onload=function(){
-                _self._startCacheCanvasAnim();
-            }
-        },
-        /!**
-         * 执行金币绘制动画
-         * @method _startCanvasAnim
-         **!/
-        _startCacheCanvasAnim:function(){
-            var _self=this;
-            var availWidth=this.cacheCanvas.width-this.coinWidth;
-            var availHeight=this.cacheCanvas.height-this.coinHeight;
-            //var disX=availWidth/this.density;  //每个硬币X轴的间距
-            var coinRange=availWidth*this.density/(this.density+10);
-            var rangeStart=(availWidth-coinRange)/2;
-            var g=9.8*280;   //重力加速度
-            var bPlayAudio=false;
-            var coinAttrArr=[];  //存储金币下落过程中的一些属性参数
-            for(var i=0;i<_self.density;i++){
-                coinAttrArr[i]={
-                    rndX:Math.random(),                                    //存储金币开始降落x轴随机值
-                    rndOrder:Math.round(Math.random()*_self.timeLag/17),   //存储金币撒落顺序的一个数组
-                    time:0,									               //存储金币绘制的具体时间
-                    top:0,                                                 //存储金币绘制距离顶部的距离
-                    left:0,                                                //存储金币弹起后距离左边的距离
-                    endSpeed:0,                                            //存储金币第一次接触地面的速度
-                    bEnd:false,								               //存储金币是否触碰到地面
-                    reDownSpeed:0,                                         //存储金币弹起后重新降落的速度
-                    reDownHDelta:Math.random()*100+250,                    //存储金币弹起的高度参数，随机值250~350之间
-                    rndOffsetX:Math.random()*0.06+0.97                     //存储金币x轴的偏移量，随机值0.97~1.03之间
-                }
-            }
-            var startTime =  Date.now();  //开始绘制前的时间
-            function draw(){
-                var drawStart = Date.now();  //记录重绘的结束事件
-                var diff = (drawStart - startTime)/1000;  //计算每次重绘所需要的事件，单位为秒
-                startTime = drawStart;   //结束事件传给开始事件
-                _self.context.clearRect(0,0,_self.canvas.width,_self.canvas.height);  //清除画布，方便重绘
-                _self.cacheContext.clearRect(0,0,_self.cacheCanvas.width,_self.cacheCanvas.height);  //清除画布，方便重绘
-                _self.cacheContext.save();
-                //根据金币个数循环绘制金币
-                for(var i=0;i<_self.density;i++){
-                    if((coinAttrArr[i].rndOrder==0&&coinAttrArr[i].time==0)){   //如果顺序为0，表示开始下落，同时下落的初始时间为0时，赋值初始时间
-                        coinAttrArr[i].time=diff;
-                    }
-                    if(coinAttrArr[i].time>0){     //如果初始事件大于0，表示已经在下落过程中,则每次的初始时间递增
-                        coinAttrArr[i].time=coinAttrArr[i].time+diff;
-                    }
-                    if(coinAttrArr[i].rndOrder==0){  //如果顺序为0，开始下落，则开始绘制金币
-                        if(!coinAttrArr[i].bEnd){   //金币下落（过程一），自由落体运动
-                            coinAttrArr[i].top=g*Math.pow(coinAttrArr[i].time,2)/2-_self.coinHeight;   //自由落体加速度运动，求下落的高度
-                            //coinAttrArr[i].left=disX*coinAttrArr[i].rndX+i*disX;
-                            coinAttrArr[i].left=coinRange*coinAttrArr[i].rndX+rangeStart;
-                        }else if(coinAttrArr[i].endSpeed==0){   //金币弹起后在空中重新下落（过程三）
-                            coinAttrArr[i].reDownSpeed=coinAttrArr[i].reDownSpeed*1.1;
-                            coinAttrArr[i].top=coinAttrArr[i].top+coinAttrArr[i].reDownSpeed;
-                            coinAttrArr[i].left=coinAttrArr[i].left*coinAttrArr[i].rndOffsetX;
-                        }else{   //金币弹起（过程二）
-                            coinAttrArr[i].endSpeed=-Math.abs(coinAttrArr[i].endSpeed*0.96);
-                            if(Math.abs(coinAttrArr[i].endSpeed)<1) coinAttrArr[i].endSpeed=0;
-                            coinAttrArr[i].top=coinAttrArr[i].top+coinAttrArr[i].endSpeed;
-                            coinAttrArr[i].left=coinAttrArr[i].left*coinAttrArr[i].rndOffsetX;
-                        }
-                        //金币第一次降落超过地面时，将其高度设置和地面齐平
-                        if(coinAttrArr[i].top>_self.cacheCanvas.height-_self.coinHeight&&!coinAttrArr[i].bEnd){
-                            coinAttrArr[i].top=_self.cacheCanvas.height-_self.coinHeight;
-                        }
-                        //金币落地时，计算落地的速度
-                        if(coinAttrArr[i].top==_self.cacheCanvas.height-_self.coinHeight){
-                            coinAttrArr[i].endSpeed=g*coinAttrArr[i].time/coinAttrArr[i].reDownHDelta;
-                            coinAttrArr[i].reDownSpeed=coinAttrArr[i].endSpeed/10;
-                            coinAttrArr[i].bEnd=true;
-                        }
-                        //绘制金币
-                        _self.cacheContext.drawImage(_self.coinImg,coinAttrArr[i].left,coinAttrArr[i].top,_self.coinWidth,_self.coinHeight);
-                    }
-                    coinAttrArr[i].rndOrder=coinAttrArr[i].rndOrder==0?0:coinAttrArr[i].rndOrder-1;//顺序每一次重绘则递减一次，直到为0时，代表开始下落
-                }
-                _self.cacheContext.restore();
-                _self.context.drawImage(_self.cacheCanvas,0,0,_self.canvas.width,_self.canvas.height);
-                var firstH=_self._maxNum(coinAttrArr,"top");//求降落过程中高度最大的金币高度
-                if(firstH>=_self.cacheCanvas.height-_self.coinHeight&&!bPlayAudio){
-                    _self._playAudio();
-                    bPlayAudio=true;
-                }
-                var lastH=_self._minNum(coinAttrArr,"top");//求降落过程中高度最小的金币高度
-                if(lastH<=_self.cacheCanvas.height+_self.coinHeight){ //最后一个金币高度超出canvas的高度停止重绘
-                    window.requestAnimationFrame(draw);  //重绘，递回调用绘制方法
-                }else{
-                    console.log("金币都撒完了");
-                    _self._destory();
-                }
-            }
-            window.requestAnimationFrame(draw);  //第一次绘制
-        },
-        /!**
-         * 求最小值
-         * @method _minNum
-         * @param   {arr}    arr  属性数组
-         {string} attr 数组下的属性名称
-         * @return  {number}      返回数组下属性值最小的值
-         **!/
-        _minNum:function(arr,attr){
-            var tempArr=[];
-            for(var i=0;i<arr.length;i++){
-                tempArr.push(arr[i][attr]);
-            }
-            return tempArr.sort(function(a,b){return a-b})[0];
-        },
-        /!**
-         * 求最大值
-         * @method _minNum
-         * @param   {arr}    arr  属性数组
-         {string} attr 数组下的属性名称
-         * @return  {number}      返回数组下属性值最大的值
-         **!/
-        _maxNum:function(arr,attr){
-            var tempArr=[];
-            for(var i=0;i<arr.length;i++){
-                tempArr.push(arr[i][attr]);
-            }
-            return tempArr.sort(function(a,b){return b-a})[0];
-        },
-        /!**
-         * 创建音频对象
-         * @method _createAudio
-         **!/
-        _createAudio:function(){
-            this.audio=document.createElement('audio');
-            this.audio.setAttribute("preload","load");
-            var oSource=document.createElement('source');
-            oSource.setAttribute("src",this.settings.audioSrc);
-            oSource.setAttribute("type","audio/mp3");
-            this.audio.appendChild(oSource);
-            var oBody=document.getElementsByTagName('body')[0];
-            oBody.appendChild(this.audio);
-        },
-        /!**
-         * 播放音频
-         * @method _playAudio
-         **!/
-        _playAudio:function(){
-            this.audio.play();
-        },
-        /!**
-         * 销毁canvas和audio
-         * @method _destory
-         **!/
-        _destory:function(){
-            var oBody=document.getElementsByTagName('body')[0];
-            oBody.removeChild(this.canvas);
-            oBody.removeChild(this.audio);
-        }
-    }
-    function kai(){
-       // var oBtn=document.getElementById('goldbtn1');
-        init();
-        var coin=new Coin();
-        // oBtn.onclick=function(){
-        // }
-        var SHAKE_THRESHOLD = 400;
-        var last_update = 0;
-        var index=0;
-        var x = y = z = last_x = last_y = last_z = 0;
-        var w_curTime=0;
-        function init() {
-            if (window.DeviceMotionEvent) {
-                window.addEventListener('devicemotion', deviceMotionHandler, false);
-            } else {
-                alert('not support mobile event');
-            }
-        }
-        function deviceMotionHandler(eventData) {
-            var acceleration = eventData.accelerationIncludingGravity;
-            var curTime = new Date().getTime();
-            if ((curTime - last_update) > 100) {
-                var diffTime = curTime - last_update;
-                last_update = curTime;
-                x = acceleration.x;
-                y = acceleration.y;
-                z = acceleration.z;
-                var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-                var delta=Math.abs(x + y + z - last_x - last_y - last_z);
-                if (speed > SHAKE_THRESHOLD) {
-                    if((curTime-w_curTime)>2000){
-                        w_curTime!=0 && new Coin({density:Math.round(delta)});
-                        w_curTime=curTime;
-                    }
-                }
-                last_x = x;
-                last_y = y;
-                last_z = z;
-            }
-        }
-    }
-*/
+    /*  function Coin(opts){
+     //默认参数
+     this.defaults={
+     coinSrc:"images/corn1.png",     //金币图片地址
+     audioSrc:"images/shake.mp3",	//金币音频地址
+     coinWidth:30,           //金币宽度
+     coinHeight:30,          //金币高度、密度
+     density:40
+     };
+     this.settings=this._extendDeep(this.defaults,opts);   //深拷贝
+     this.density=this.settings.density;                   //密度，即金币个数
+     this.timeLag=800;                                    //金币散落的事件间隔，数字越大表示间隔越大
+     this.coinWidth=this.settings.coinWidth;               //金币宽度
+     this.coinHeight=this.settings.coinHeight;             //金币高度
+     this.wrapWidth=0;
+     this.wrapHeight=0;
+     this._init();
+     }
+     Coin.prototype={
+     constructor:Coin,
+     /!**
+     * 动画初始化方法
+     * @method _init
+     **!/
+     _init:function(){
+     //初始化包括尺寸大小
+     this.wrapWidth=document.documentElement.clientWidth;
+     this.wrapHeight=document.documentElement.clientHeight;
+     this._requestAnimationFrame();
+     this._createCanvas();
+     this._createAudio();
+     },
+     /!**
+     * 对象深拷贝方法
+     * @method _extendDeep
+     * @param  {object} parent 父对象
+     {object} child  子对象
+     @return {object} child  父对象继承给子对象
+     **!/
+     _extendDeep:function(child,parent){
+     var i,
+     toStr = Object.prototype.toString,
+     astr = "[object Array]";
+     child = child || {};
+     for (i in parent) {
+     if (parent.hasOwnProperty(i)) {
+     if (typeof parent[i] === "object") {
+     child[i] = (toStr.call(parent[i]) === astr) ? [] : {};
+     extendDeep(parent[i], child[i]);
+     } else {
+     child[i] = parent[i];
+     }
+     }
+     }
+     return child;
+     },
+     /!**
+     * requestAnimationFrame做兼容
+     * @method _requestAnimationFrame
+     **!/
+     _requestAnimationFrame:function(){
+     var lastTime = 0;
+     var vendors = ['webkit', 'moz'];
+     for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+     window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+     window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||    // name has changed in Webkit
+     window[vendors[x] + 'CancelRequestAnimationFrame'];
+     }
+     if (!window.requestAnimationFrame) {
+     window.requestAnimationFrame = function(callback, element) {
+     var currTime = new Date().getTime();
+     var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+     var id = window.setTimeout(function() {
+     callback(currTime + timeToCall);
+     }, timeToCall);
+     lastTime = currTime + timeToCall;
+     return id;
+     };
+     }
+     if (!window.cancelAnimationFrame) {
+     window.cancelAnimationFrame = function(id) {
+     clearTimeout(id);
+     };
+     }
+     },
+     /!**
+     * 创建canvas画布
+     * @method _createCanvas
+     **!/
+     _createCanvas:function(){
+     var _self=this;
+     this.canvas=document.createElement('canvas');
+     this.canvas.setAttribute("data-id",Date.now());
+     if(!this.canvas.getContext){
+     alert("您的浏览器不支持canvas");
+     return;
+     }
+     this.context=this.canvas.getContext('2d');
+     this.canvas.width=this.wrapWidth;
+     this.canvas.height=this.wrapHeight;
+     var oBody=document.getElementsByTagName('body')[0];
+     oBody.appendChild(this.canvas);
+     this._createCacheCanvas();
+     },
+     _createCacheCanvas:function(){
+     var _self=this;
+     this.cacheCanvas=document.createElement('canvas');
+     this.cacheContext=this.cacheCanvas.getContext('2d');
+     this.cacheCanvas.width=this.wrapWidth;
+     this.cacheCanvas.height=this.wrapHeight;
+     this.coinImg=new Image();
+     this.coinImg.src=this.settings.coinSrc;
+     this.coinImg.onload=function(){
+     _self._startCacheCanvasAnim();
+     }
+     },
+     /!**
+     * 执行金币绘制动画
+     * @method _startCanvasAnim
+     **!/
+     _startCacheCanvasAnim:function(){
+     var _self=this;
+     var availWidth=this.cacheCanvas.width-this.coinWidth;
+     var availHeight=this.cacheCanvas.height-this.coinHeight;
+     //var disX=availWidth/this.density;  //每个硬币X轴的间距
+     var coinRange=availWidth*this.density/(this.density+10);
+     var rangeStart=(availWidth-coinRange)/2;
+     var g=9.8*280;   //重力加速度
+     var bPlayAudio=false;
+     var coinAttrArr=[];  //存储金币下落过程中的一些属性参数
+     for(var i=0;i<_self.density;i++){
+     coinAttrArr[i]={
+     rndX:Math.random(),                                    //存储金币开始降落x轴随机值
+     rndOrder:Math.round(Math.random()*_self.timeLag/17),   //存储金币撒落顺序的一个数组
+     time:0,									               //存储金币绘制的具体时间
+     top:0,                                                 //存储金币绘制距离顶部的距离
+     left:0,                                                //存储金币弹起后距离左边的距离
+     endSpeed:0,                                            //存储金币第一次接触地面的速度
+     bEnd:false,								               //存储金币是否触碰到地面
+     reDownSpeed:0,                                         //存储金币弹起后重新降落的速度
+     reDownHDelta:Math.random()*100+250,                    //存储金币弹起的高度参数，随机值250~350之间
+     rndOffsetX:Math.random()*0.06+0.97                     //存储金币x轴的偏移量，随机值0.97~1.03之间
+     }
+     }
+     var startTime =  Date.now();  //开始绘制前的时间
+     function draw(){
+     var drawStart = Date.now();  //记录重绘的结束事件
+     var diff = (drawStart - startTime)/1000;  //计算每次重绘所需要的事件，单位为秒
+     startTime = drawStart;   //结束事件传给开始事件
+     _self.context.clearRect(0,0,_self.canvas.width,_self.canvas.height);  //清除画布，方便重绘
+     _self.cacheContext.clearRect(0,0,_self.cacheCanvas.width,_self.cacheCanvas.height);  //清除画布，方便重绘
+     _self.cacheContext.save();
+     //根据金币个数循环绘制金币
+     for(var i=0;i<_self.density;i++){
+     if((coinAttrArr[i].rndOrder==0&&coinAttrArr[i].time==0)){   //如果顺序为0，表示开始下落，同时下落的初始时间为0时，赋值初始时间
+     coinAttrArr[i].time=diff;
+     }
+     if(coinAttrArr[i].time>0){     //如果初始事件大于0，表示已经在下落过程中,则每次的初始时间递增
+     coinAttrArr[i].time=coinAttrArr[i].time+diff;
+     }
+     if(coinAttrArr[i].rndOrder==0){  //如果顺序为0，开始下落，则开始绘制金币
+     if(!coinAttrArr[i].bEnd){   //金币下落（过程一），自由落体运动
+     coinAttrArr[i].top=g*Math.pow(coinAttrArr[i].time,2)/2-_self.coinHeight;   //自由落体加速度运动，求下落的高度
+     //coinAttrArr[i].left=disX*coinAttrArr[i].rndX+i*disX;
+     coinAttrArr[i].left=coinRange*coinAttrArr[i].rndX+rangeStart;
+     }else if(coinAttrArr[i].endSpeed==0){   //金币弹起后在空中重新下落（过程三）
+     coinAttrArr[i].reDownSpeed=coinAttrArr[i].reDownSpeed*1.1;
+     coinAttrArr[i].top=coinAttrArr[i].top+coinAttrArr[i].reDownSpeed;
+     coinAttrArr[i].left=coinAttrArr[i].left*coinAttrArr[i].rndOffsetX;
+     }else{   //金币弹起（过程二）
+     coinAttrArr[i].endSpeed=-Math.abs(coinAttrArr[i].endSpeed*0.96);
+     if(Math.abs(coinAttrArr[i].endSpeed)<1) coinAttrArr[i].endSpeed=0;
+     coinAttrArr[i].top=coinAttrArr[i].top+coinAttrArr[i].endSpeed;
+     coinAttrArr[i].left=coinAttrArr[i].left*coinAttrArr[i].rndOffsetX;
+     }
+     //金币第一次降落超过地面时，将其高度设置和地面齐平
+     if(coinAttrArr[i].top>_self.cacheCanvas.height-_self.coinHeight&&!coinAttrArr[i].bEnd){
+     coinAttrArr[i].top=_self.cacheCanvas.height-_self.coinHeight;
+     }
+     //金币落地时，计算落地的速度
+     if(coinAttrArr[i].top==_self.cacheCanvas.height-_self.coinHeight){
+     coinAttrArr[i].endSpeed=g*coinAttrArr[i].time/coinAttrArr[i].reDownHDelta;
+     coinAttrArr[i].reDownSpeed=coinAttrArr[i].endSpeed/10;
+     coinAttrArr[i].bEnd=true;
+     }
+     //绘制金币
+     _self.cacheContext.drawImage(_self.coinImg,coinAttrArr[i].left,coinAttrArr[i].top,_self.coinWidth,_self.coinHeight);
+     }
+     coinAttrArr[i].rndOrder=coinAttrArr[i].rndOrder==0?0:coinAttrArr[i].rndOrder-1;//顺序每一次重绘则递减一次，直到为0时，代表开始下落
+     }
+     _self.cacheContext.restore();
+     _self.context.drawImage(_self.cacheCanvas,0,0,_self.canvas.width,_self.canvas.height);
+     var firstH=_self._maxNum(coinAttrArr,"top");//求降落过程中高度最大的金币高度
+     if(firstH>=_self.cacheCanvas.height-_self.coinHeight&&!bPlayAudio){
+     _self._playAudio();
+     bPlayAudio=true;
+     }
+     var lastH=_self._minNum(coinAttrArr,"top");//求降落过程中高度最小的金币高度
+     if(lastH<=_self.cacheCanvas.height+_self.coinHeight){ //最后一个金币高度超出canvas的高度停止重绘
+     window.requestAnimationFrame(draw);  //重绘，递回调用绘制方法
+     }else{
+     console.log("金币都撒完了");
+     _self._destory();
+     }
+     }
+     window.requestAnimationFrame(draw);  //第一次绘制
+     },
+     /!**
+     * 求最小值
+     * @method _minNum
+     * @param   {arr}    arr  属性数组
+     {string} attr 数组下的属性名称
+     * @return  {number}      返回数组下属性值最小的值
+     **!/
+     _minNum:function(arr,attr){
+     var tempArr=[];
+     for(var i=0;i<arr.length;i++){
+     tempArr.push(arr[i][attr]);
+     }
+     return tempArr.sort(function(a,b){return a-b})[0];
+     },
+     /!**
+     * 求最大值
+     * @method _minNum
+     * @param   {arr}    arr  属性数组
+     {string} attr 数组下的属性名称
+     * @return  {number}      返回数组下属性值最大的值
+     **!/
+     _maxNum:function(arr,attr){
+     var tempArr=[];
+     for(var i=0;i<arr.length;i++){
+     tempArr.push(arr[i][attr]);
+     }
+     return tempArr.sort(function(a,b){return b-a})[0];
+     },
+     /!**
+     * 创建音频对象
+     * @method _createAudio
+     **!/
+     _createAudio:function(){
+     this.audio=document.createElement('audio');
+     this.audio.setAttribute("preload","load");
+     var oSource=document.createElement('source');
+     oSource.setAttribute("src",this.settings.audioSrc);
+     oSource.setAttribute("type","audio/mp3");
+     this.audio.appendChild(oSource);
+     var oBody=document.getElementsByTagName('body')[0];
+     oBody.appendChild(this.audio);
+     },
+     /!**
+     * 播放音频
+     * @method _playAudio
+     **!/
+     _playAudio:function(){
+     this.audio.play();
+     },
+     /!**
+     * 销毁canvas和audio
+     * @method _destory
+     **!/
+     _destory:function(){
+     var oBody=document.getElementsByTagName('body')[0];
+     oBody.removeChild(this.canvas);
+     oBody.removeChild(this.audio);
+     }
+     }
+     function kai(){
+     // var oBtn=document.getElementById('goldbtn1');
+     init();
+     var coin=new Coin();
+     // oBtn.onclick=function(){
+     // }
+     var SHAKE_THRESHOLD = 400;
+     var last_update = 0;
+     var index=0;
+     var x = y = z = last_x = last_y = last_z = 0;
+     var w_curTime=0;
+     function init() {
+     if (window.DeviceMotionEvent) {
+     window.addEventListener('devicemotion', deviceMotionHandler, false);
+     } else {
+     alert('not support mobile event');
+     }
+     }
+     function deviceMotionHandler(eventData) {
+     var acceleration = eventData.accelerationIncludingGravity;
+     var curTime = new Date().getTime();
+     if ((curTime - last_update) > 100) {
+     var diffTime = curTime - last_update;
+     last_update = curTime;
+     x = acceleration.x;
+     y = acceleration.y;
+     z = acceleration.z;
+     var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+     var delta=Math.abs(x + y + z - last_x - last_y - last_z);
+     if (speed > SHAKE_THRESHOLD) {
+     if((curTime-w_curTime)>2000){
+     w_curTime!=0 && new Coin({density:Math.round(delta)});
+     w_curTime=curTime;
+     }
+     }
+     last_x = x;
+     last_y = y;
+     last_z = z;
+     }
+     }
+     }
+     */
 </script>
 </body>
 </html>
