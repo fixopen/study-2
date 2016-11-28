@@ -19,7 +19,7 @@
 
 </head>
 <body>
-<article id="volumes" class="wrap"></article>
+<article id="volumes"></article>
 <article id="knowledgePoints" style="display: none;"></article>
 <article id="knowledgePoint" class="wrap" style="display: none;">
 </article>
@@ -29,25 +29,27 @@
         <!-- 课程更新弹窗 -->
         <div class="tan"></div>
         <div class="new-class"></div>
-        <div class="rain-main">
-            <div class="bao_dul">
-                <ul id="subjects" class="nav nav-tabs grade" role="tablist">
-                    <li role="presentation" class="active grade-main grade-low">
-                        <a class="grade-font" href="#low" role="tab" data-toggle="tab">1-2年级</a>
-                        <img class="grade-bird" src="img/bird.png" alt="">
-                    </li>
-                    <li role="presentation" class="grade-main grade-high">
-                        <a class="grade-font" href="#high" role="tab" data-toggle="tab">3-6年级</a>
-                        <img class="grade-bird" src="img/bird.png" alt="">
-                    </li>
-                </ul>
-            </div>
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
-                </ol>
-                <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
-                </ol>
+        <div class="wrap">
+            <div class="rain-main">
+                <div class="bao_dul">
+                    <ul id="subjects" class="nav nav-tabs grade" role="tablist">
+                        <li role="presentation" class="active grade-main grade-low">
+                            <a class="grade-font" href="#low" role="tab" data-toggle="tab">1-2年级</a>
+                            <img class="grade-bird" src="img/bird.png" alt="">
+                        </li>
+                        <li role="presentation" class="grade-main grade-high">
+                            <a class="grade-font" href="#high" role="tab" data-toggle="tab">3-6年级</a>
+                            <img class="grade-bird" src="img/bird.png" alt="">
+                        </li>
+                    </ul>
+                </div>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
@@ -55,27 +57,29 @@
 <template id="math-structure">
     <div>
         <!-- 课程更新弹窗 -->
-        <!--<div class="tan"></div>-->
-        <!--<div class="new-class"></div>-->
-        <div class="rain-main">
-            <div class="bao_dul">
-                <ul id="subjects2" class="nav nav-tabs grade" role="tablist">
-                    <li role="presentation" class="active grade-main grade-low">
-                        <a class="grade-font" href="#low2" role="tab" data-toggle="tab">1-3年级</a>
-                        <img class="grade-bird" src="img/bird.png" alt="">
-                    </li>
-                    <li role="presentation" class="grade-main grade-high">
-                        <a class="grade-font" href="#high2" role="tab" data-toggle="tab">4-6年级</a>
-                        <img class="grade-bird" src="img/bird.png" alt="">
-                    </li>
-                </ul>
-            </div>
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <ol role="tabpanel" class="tab-pane active volumes-bg" id="low2">
-                </ol>
-                <ol role="tabpanel" class="tab-pane volumes-bg" id="high2">
-                </ol>
+        <div class="tan"></div>
+        <div class="new-class"></div>
+        <div class="wrap">
+            <div class="rain-main">
+                <div class="bao_dul">
+                    <ul id="subjects2" class="nav nav-tabs grade" role="tablist">
+                        <li role="presentation" class="active grade-main grade-low">
+                            <a class="grade-font" href="#low2" role="tab" data-toggle="tab">1-3年级</a>
+                            <img class="grade-bird" src="img/bird.png" alt="">
+                        </li>
+                        <li role="presentation" class="grade-main grade-high">
+                            <a class="grade-font" href="#high2" role="tab" data-toggle="tab">4-6年级</a>
+                            <img class="grade-bird" src="img/bird.png" alt="">
+                        </li>
+                    </ul>
+                </div>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes-bg" id="low2">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes-bg" id="high2">
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
@@ -540,7 +544,9 @@
                     for (var i = 0; i < subjects.length; ++i) {
                         subjects[i].low = []
                         subjects[i].high = []
+
                     }
+
                     $.ajax({
                         type: 'GET',
                         url: '/api/volumes',
@@ -558,10 +564,21 @@
                             }
 
                             var subjectId = g.getUrlParameter('subjectId')
-                            history.pushState(null, null, '/content.html#volumes')
-                            state.volumes.changeId(subjectId)
-                            //state.volumes.subjectId = subjectId
-                            //state['volumes'].init()
+                            $.ajax({
+                                type: "get",
+                                url: '/api/subjects/' + subjectId + '/popup',
+                                dataType: "json",
+                                success: function (pop) {
+                                    state.volumes.popuped = pop.popup;
+                                    //state.volumes.popuped = false;
+
+                                    history.pushState(null, null, '/content.html#volumes')
+                                    state.volumes.changeId(subjectId)
+
+                                    //state.volumes.subjectId = subjectId
+                                    //state['volumes'].init()
+                                }
+                            });
                         },
                         error: function (r) {
                         }
@@ -609,39 +626,6 @@
             show: function () {
                 $('#volumes').html("");
 
-                function newClass() { //课程更新弹窗
-                    $('.tan').show();
-                    $('.new-class').show();
-                    $(".tan,.new-class").bind('touchmove', function (event) {
-                        event.preventDefault();
-                    });
-                    $(".new-class").click(function () {
-                        $(this).hide();
-                        $(".tan").hide();
-                    });
-                }
-                var popups=function(subjectNum){
-                    $.ajax({
-                        type: "get",
-                        url: '/api/subjects/' + subjectNum + '/popup',
-                        dataType: "json",
-                        success: function (pop) {
-                            var isPopup = pop.popup
-                            if (!isPopup) {
-                                newClass();//课程更新弹窗
-                                $.ajax({
-                                    type: "post",
-                                    url: '/api/subjects/' + subjectNum,
-                                    data: JSON.stringify({}),
-                                    dataType: "json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function () {
-                                    }
-                                })
-                            }
-                        }
-                    });
-                }
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
@@ -669,8 +653,8 @@
                             ]
                         })
 
-                        var subjectNum=1;
-                       popups(subjectNum);
+                        var subjectId = 1;
+                        state.volumes.popups(subjectId);
 
                         break
                     case 2:
@@ -680,6 +664,7 @@
                             data: {},
                             templateId: 'math-structure'
                         })
+
                         var value = state.volumes.value
                         proc({
                             data: value.low,
@@ -698,14 +683,13 @@
                             ]
                         })
 
-                        var subjectNum=2;
-                        popups(subjectNum);
-
+                        var subjectId = 2;
+                        state.volumes.popups(subjectId);
 
                         break
                 }
             },
-            newClass:function() { //课程更新弹窗
+            newClass: function () {
                 $('.tan').show();
                 $('.new-class').show();
                 $(".tan,.new-class").bind('touchmove', function (event) {
@@ -715,29 +699,21 @@
                     $(this).hide();
                     $(".tan").hide();
                 });
-    },
-            popup:function(subjectNum){
-                $.ajax({
-                    type: "get",
-                    url: '/api/subjects/' + subjectNum + '/popup',
-                    dataType: "json",
-                    success: function (pop) {
-                        var isPopup = pop.popup;
-                        if (!isPopup) {
-                            state.volumes.newClass();//课程更新弹窗
-                            $.ajax({
-                                type: "post",
-                                url: '/api/subjects/' + subjectNum,
-                                data: JSON.stringify({}),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function () {
-                                }
-                            })
+            },
+            popups: function (subjectId) {
+                if (!state.volumes.popuped) {
+                    state.volumes.newClass();//课程更新弹窗
+                    $.ajax({
+                        type: "post",
+                        url: '/api/subjects/' + subjectId,
+                        data: JSON.stringify({}),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function () {
                         }
-                    }
-                });
-    }
+                    })
+                }
+            }
         },
         knowledgePoints: {
             parentId: null,
@@ -804,6 +780,7 @@
                             data: {},
                             templateId: 'global-knowledgepoints'
                         })
+
                         var value = state.knowledgePoints.value
                         proc({
                             templateId: 'volume-c-title-template',
@@ -842,8 +819,6 @@
                         })
                         break
                 }
-
-
             }
         },
         knowledgePoint: {
@@ -963,7 +938,6 @@
             show: function () {
                 $('#knowledgePoint').html("");
 
-
                 //留言
                 var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
                     toggleButton.addEventListener('click', function (e) {
@@ -1032,7 +1006,6 @@
                         }, false)
                     }
                 }
-
 
                 switch (state.volumes.parentId) {
                     case 1:
@@ -1386,12 +1359,12 @@
 </script>
 <script>
     //    挑战百分百的分割线
-//    $(window).resize(function () {
-//        $(".split_line").css("width", $("#whole_width").width())
-//    })
-//    window.onpageshow = function () {
-//        $(".split_line").css("width", $("#whole_width").width())
-//    }
+    //    $(window).resize(function () {
+    //        $(".split_line").css("width", $("#whole_width").width())
+    //    })
+    //    window.onpageshow = function () {
+    //        $(".split_line").css("width", $("#whole_width").width())
+    //    }
 </script>
 </body>
 </html>
