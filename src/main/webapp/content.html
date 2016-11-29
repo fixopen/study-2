@@ -33,12 +33,12 @@
             <div class="rain-main">
                 <div class="bao_dul">
                     <ul id="subjects" class="nav nav-tabs grade" role="tablist">
-                        <li role="presentation" class="active grade-main grade-low">
-                            <a class="grade-font" href="#low" role="tab" data-toggle="tab">1-2年级</a>
+                        <li role="presentation" class="active grade-main grade-low" data-grade="low">
+                            <a class="grade-font" href="#low" role="tab" data-toggle="tab" data-grade="low">1-2年级</a>
                             <img class="grade-bird" src="img/bird.png" alt="">
                         </li>
-                        <li role="presentation" class="grade-main grade-high">
-                            <a class="grade-font" href="#high" role="tab" data-toggle="tab">3-6年级</a>
+                        <li role="presentation" class="grade-main grade-high" data-grade="high">
+                            <a class="grade-font" href="#high" role="tab" data-toggle="tab" data-grade="high">3-6年级</a>
                             <img class="grade-bird" src="img/bird.png" alt="">
                         </li>
                     </ul>
@@ -527,6 +527,7 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
+    //[{id: 1, name: ..., low: [{id: ..., name: ..., knowledgePoints:[{id: ..., ..., likeCount: ..., contents: {:., interaction: {likeCount: ..., ...}, ....}, ....}, {}, ...], ...}, ...], high: []}, {}, ...]
     var subjects = []
 
     var state = {
@@ -544,7 +545,6 @@
                     for (var i = 0; i < subjects.length; ++i) {
                         subjects[i].low = []
                         subjects[i].high = []
-
                     }
 
                     $.ajax({
@@ -577,6 +577,11 @@
 
                                     //state.volumes.subjectId = subjectId
                                     //state['volumes'].init()
+
+                                    $(document).on('click', '.like-icon', function(e) {
+                                        var commentId = e.target.parentNode.dataset.id
+                                        state.knowledgePoint.process(commentId)
+                                    })
                                 }
                             });
                         },
@@ -597,9 +602,14 @@
             }
 
             $(document).on('click', '[data-article]', function (e) {
-                var id = e.target.dataset.article
-                switchTo(id)
+                var id = e.target.dataset.article;
+                switchTo(id);
                 state[id].changeId(e.target.dataset.id)
+            })
+
+            $(document).on('shown.bs.tab', '.grade-main', function (e) {
+                state.volumes.grade = e.target.dataset.grade
+                //$(e.target).tab('show')
             })
 
             window.addEventListener('hashchange', function (e) {
@@ -610,6 +620,8 @@
         },
 
         volumes: {
+            isChanged: true,
+            grade: 'low',
             parentId: 0,
             init: function () {
                 state.volumes.value = state.subject.getById(state.volumes.parentId)
@@ -617,76 +629,89 @@
             },
             changeId: function (subjectId) {
                 if (state.volumes.parentId != subjectId) {
-                    state.volumes.parentId = subjectId
-                    state.volumes.value = state.subject.getById(state.volumes.parentId)
-                    state.volumes.show()
+                    state.volumes.parentId = subjectId;
+                    state.volumes.value = state.subject.getById(state.volumes.parentId);
+                    state.volumes.isChanged = true;
+                    state.volumes.show();
                 }
             },
             value: null,
             show: function () {
-                $('#volumes').html("");
+                if (state.volumes.isChanged) {
+                    $('#volumes').html("");
 
-                switch (state.volumes.parentId) {
-                    case 1:
-                    case "1":
-                        proc({
-                            containerId: 'volumes',
-                            data: {},
-                            templateId: 'chinese-structure'
-                        })
+                    switch (state.volumes.parentId) {
+                        case 1:
+                        case "1":
+                            proc({
+                                containerId: 'volumes',
+                                data: {},
+                                templateId: 'chinese-structure'
+                            })
 
-                        var value = state.volumes.value
-                        proc({
-                            data: value.low,
-                            containerId: 'low',
-                            alterTemplates: [
-                                {type: 'old', templateId: 'volumes-chinese-old-template'},
-                                {type: 'new', templateId: 'volumes-chinese-new-template'},
-                            ]
-                        })
-                        proc({
-                            data: value.high,
-                            containerId: 'high',
-                            alterTemplates: [
-                                {type: 'old', templateId: 'volumes-chinese-old-template'},
-                                {type: 'new', templateId: 'volumes-chinese-new-template'},
-                            ]
-                        })
+                            var value = state.volumes.value;
 
-                        var subjectId = 1;
-                        state.volumes.popups(subjectId);
+                            proc({
+                                data: value.low,
+                                containerId: 'low',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-chinese-old-template'},
+                                    {type: 'new', templateId: 'volumes-chinese-new-template'},
+                                ]
+                            })
+                            proc({
+                                data: value.high,
+                                containerId: 'high',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-chinese-old-template'},
+                                    {type: 'new', templateId: 'volumes-chinese-new-template'},
+                                ]
+                            })
 
-                        break
-                    case 2:
-                    case '2':
-                        proc({
-                            containerId: 'volumes',
-                            data: {},
-                            templateId: 'math-structure'
-                        })
+//                        () => {
+//                            if (switch to low) {
+//                                subjects[0].isLow = true
+//                                document.getElementById('subjects').dataset.grade = 'low'
+//                            }
+//                        }
 
-                        var value = state.volumes.value
-                        proc({
-                            data: value.low,
-                            containerId: 'low2',
-                            alterTemplates: [
-                                {type: 'old', templateId: 'volumes-math-old-template'},
-                                {type: 'new', templateId: 'volumes-math-new-template'},
-                            ]
-                        })
-                        proc({
-                            data: value.high,
-                            containerId: 'high2',
-                            alterTemplates: [
-                                {type: 'old', templateId: 'volumes-math-old-template'},
-                                {type: 'new', templateId: 'volumes-math-new-template'},
-                            ]
-                        })
+                            var subjectId = 1;
+                            state.volumes.popups(subjectId);
 
-                        var subjectId = 2;
-                        state.volumes.popups(subjectId);
+                            break
+                        case 2:
+                        case '2':
+                            proc({
+                                containerId: 'volumes',
+                                data: {},
+                                templateId: 'math-structure'
+                            })
 
-                        break
+                            var value = state.volumes.value
+                            proc({
+                                data: value.low,
+                                containerId: 'low2',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-math-old-template'},
+                                    {type: 'new', templateId: 'volumes-math-new-template'},
+                                ]
+                            })
+                            proc({
+                                data: value.high,
+                                containerId: 'high2',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-math-old-template'},
+                                    {type: 'new', templateId: 'volumes-math-new-template'},
+                                ]
+                            })
+
+                            var subjectId = 2;
+                            state.volumes.popups(subjectId);
+
+                            break
+                    }
+
+                    state.volumes.isChanged = false
                 }
             },
             newClass: function () {
@@ -716,8 +741,13 @@
             }
         },
         knowledgePoints: {
+            isChanged: false,
             parentId: null,
             init: function () {
+                if (state.knowledgePoints.isChanged) {
+                    state.knowledgePoints.show()
+                    state.knowledgePoints.isChanged = false
+                }
             },
             changeId: function (volumeId) {
                 if (state.knowledgePoints.parentId != volumeId) {
@@ -908,7 +938,7 @@
                                     url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/is-self-like',
                                     dataType: "json",
                                     success: function (like) {
-                                        data.liked = like.like
+                                        state.knowledgePoint.value.liked = like.like
                                         state.knowledgePoint.value.contents = data
                                         for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
                                             $.ajax({
@@ -935,6 +965,65 @@
             value: null,
             interaction: null,
             comments: null,
+            findCommentById: function(commentId) {
+                var result = null
+                for (var i = 0; i < state.knowledgePoint.value.contents.comments.length; ++i) {
+                    if (state.knowledgePoint.value.contents.comments[i].id == commentId) {
+                        result = state.knowledgePoint.value.contents.comments[i]
+                        break
+                    }
+                }
+                return result
+            },
+            unlike: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/unlike',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            like: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/like',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            process: function(commentId) {
+                var comment = state.knowledgePoint.findCommentById(commentId)
+                if (comment.liked) {
+                    comment.liked = false
+                    comment.likeCount--
+                    state.knowledgePoint.unlike('/api/comments/', comment.id)
+                } else {
+                    comment.liked = true
+                    comment.likeCount++
+                    state.knowledgePoint.like('/api/comments/', comment.id)
+                }
+                state.knowledgePoint.renderComments()
+            },
+            renderComments: function() {
+                state.knowledgePoint.comments.innerHTML = ''
+                for (var i = 0; i < state.knowledgePoint.value.contents.comments.length; ++i) {
+                    if (state.knowledgePoint.value.contents.comments[i].liked) {
+                        proc({
+                            container: state.knowledgePoint.comments,
+                            data: state.knowledgePoint.value.contents.comments[i],
+                            templateId: 'comment-like-template'
+                        })
+                    } else {
+                        proc({
+                            container: state.knowledgePoint.comments,
+                            data: state.knowledgePoint.value.contents.comments[i],
+                            templateId: 'comment-unlike-template'
+                        })
+                    }
+                }
+            },
             show: function () {
                 $('#knowledgePoint').html("");
 
@@ -956,27 +1045,10 @@
                     }, false)
                 };
 
-                var unlike = function (apiUrl, id) {
-                    $.ajax({
-                        type: "put",
-                        url: apiUrl + id + '/unlike',
-                        data: JSON.stringify({}),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8"
-                    })
-                }
-                var like = function (apiUrl, id) {
-                    $.ajax({
-                        type: "put",
-                        url: apiUrl + id + '/like',
-                        data: JSON.stringify({}),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8"
-                    })
-                }
-                var likeProc = function (container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, id) {
+                var likeProc = function (container, data, iconName, likeTemplate, unlikeTemplate, apiUrl) {
 //                  container.innerHTML = '';
-                    if (liked) {
+                    var d = data
+                    if (d.liked) {
                         proc({
                             container: container,
                             data: data,
@@ -984,11 +1056,11 @@
                         })
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
-                            unlike(apiUrl, id)
-                            data.likeCount--
-                            liked = false
+                            state.knowledgePoint.unlike(apiUrl, d.id)
+                            d.likeCount--
+                            d.liked = false
                             container.innerHTML = '';
-                            likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, id)
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl, index)
                         }, false)
                     } else {
                         proc({
@@ -998,13 +1070,14 @@
                         })
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
-                            like(apiUrl, id)
-                            data.likeCount++
-                            liked = true
+                            state.knowledgePoint.like(apiUrl, d.id)
+                            d.likeCount++
+                            d.liked = true
                             container.innerHTML = '';
-                            likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, id)
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl, index)
                         }, false)
                     }
+                    state.knowledgePoints.isChanged = true
                 }
 
                 switch (state.volumes.parentId) {
@@ -1072,31 +1145,16 @@
                             }
                         });
 
-                        value.contents.interaction.previousId = value.previousId
-                        value.contents.interaction.nextId = value.nextId
-
                         //  interaction-likes
                         var container = state.knowledgePoint.interaction;
-                        var data = value.contents.interaction;
-                        var liked = value.contents.liked;
                         var iconName = '.icon';
                         var likeTemplate = 'interaction-like-template';
                         var unlikeTemplate = 'interaction-unlike-template';
                         var apiUrl = 'api/knowledge-points/';
-                        var id = value.id;
-                        likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, id)
+                        likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
 
                         //comments-likes;
-                        for (var i = 0; i < value.contents.comments.length; ++i) {
-                            var container = state.knowledgePoint.comments;
-                            var data = value.contents.comments[i];
-                            var liked = data.liked;
-                            var iconName = '.like-icon';
-                            var likeTemplate = 'comment-like-template';
-                            var unlikeTemplate = 'comment-unlike-template';
-                            var apiUrl = '/api/comments/';
-                            likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, data.id)
-                        }
+                        state.knowledgePoint.renderComments()
                         break
                     case 2:
                     case '2':
@@ -1207,17 +1265,17 @@
                         var id = value.id;
                         likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, id)
 
-                        //comments-likes;
-                        for (var i = 0; i < value.contents.comments.length; ++i) {
-                            var container = state.knowledgePoint.comments;
-                            var data = value.contents.comments[i];
-                            var liked = data.liked;
-                            var iconName = '.like-icon';
-                            var likeTemplate = 'comment-like-template';
-                            var unlikeTemplate = 'comment-unlike-template';
-                            var apiUrl = '/api/comments/';
-                            likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, data.id)
-                        }
+//                        //comments-likes;
+//                        for (var i = 0; i < value.contents.comments.length; ++i) {
+//                            var container = state.knowledgePoint.comments;
+//                            var data = value.contents.comments[i];
+//                            var liked = data.liked;
+//                            var iconName = '.like-icon';
+//                            var likeTemplate = 'comment-like-template';
+//                            var unlikeTemplate = 'comment-unlike-template';
+//                            var apiUrl = '/api/comments/';
+//                            likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, data.id)
+//                        }
                         break
                 }
             },
