@@ -578,7 +578,7 @@
                                     //state.volumes.subjectId = subjectId
                                     //state['volumes'].init()
 
-                                    $(document).on('click', '.like-icon', function(e) {
+                                    $(document).on('click', '.like-icon', function (e) {
                                         var commentId = e.target.parentNode.dataset.id
                                         state.knowledgePoint.process(commentId)
                                     })
@@ -965,7 +965,7 @@
             value: null,
             interaction: null,
             comments: null,
-            findCommentById: function(commentId) {
+            findCommentById: function (commentId) {
                 var result = null
                 for (var i = 0; i < state.knowledgePoint.value.contents.comments.length; ++i) {
                     if (state.knowledgePoint.value.contents.comments[i].id == commentId) {
@@ -993,7 +993,7 @@
                     contentType: "application/json; charset=utf-8"
                 })
             },
-            process: function(commentId) {
+            process: function (commentId) {
                 var comment = state.knowledgePoint.findCommentById(commentId)
                 if (comment.liked) {
                     comment.liked = false
@@ -1006,7 +1006,7 @@
                 }
                 state.knowledgePoint.renderComments()
             },
-            renderComments: function() {
+            renderComments: function () {
                 state.knowledgePoint.comments.innerHTML = ''
                 for (var i = 0; i < state.knowledgePoint.value.contents.comments.length; ++i) {
                     if (state.knowledgePoint.value.contents.comments[i].liked) {
