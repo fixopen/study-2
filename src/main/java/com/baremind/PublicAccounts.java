@@ -605,6 +605,7 @@ public class PublicAccounts {
                                     break;
                                 case "text":
                                     String Content = p.getInfos().get("Content");
+                                    System.out.println("来到了text，打印Content====================================================="+Content);
                                     String text = "";
                                     switch (Content){
                                         case "课表":
@@ -652,20 +653,15 @@ public class PublicAccounts {
         }
         return result;
     }
-/*
- String result = "<xml>\n" +
-                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-                "   <MsgType><![CDATA[text]]></MsgType>\n" +
-                "   <Content><![CDATA[" + content + "]]></Content>\n" +
-                "</xml>";
-        return result;/
- */
+
     private static String text(WechatPush p) {
+        System.out.println("来到了text方法，打印WechatPush====================================================="+p);
         String openId = p.getFromUserName();
+        System.out.println("来到了text方法，打印openId====================================================="+p);
         long secondCount = new Date().getTime() / 1000;
+        System.out.println("来到了text方法，打印secondCount====================================================="+p);
         String currentEpochTime = Long.toString(secondCount);
+        System.out.println("来到了text方法，打印currentEpochTime====================================================="+p);
         String picUrl ="http://xiaoyuzhishi.com/medias/1480389780313.jpeg";
         String url ="http://xiaoyuzhishi.com/user/active-card.html";
         String result = "<xml>\n" +
@@ -683,6 +679,7 @@ public class PublicAccounts {
                 "   </item>\n" +
                 "   </Articles>\n" +
                 "   </xml>";
+        System.out.println("来到了text方法，打印result结果====================================================="+result);
         return result;
     }
 
