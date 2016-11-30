@@ -60,6 +60,7 @@ public class Users {
     }
 
     @POST
+    @Path("admin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(User entity) { //admin bootstrap
