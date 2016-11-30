@@ -248,10 +248,10 @@ public class Users {
             noticeMap.put("amount", amount(type));
             noticeMap.put("account", user.getAmount());
             List<Card> cards = JPAEntry.getList(Card.class, "userId", JPAEntry.getLoginId(sessionId));
+            noticeMap.put("cards", cards);
+
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            String toJson = gson.toJson(cards);
-            noticeMap.put("cards", toJson);
-            result = Response.ok(noticeMap).build();
+            result = Response.ok(gson.toJson(noticeMap)).build();
         }
         return result;
     }
@@ -316,7 +316,7 @@ public class Users {
     //转入/转出
     private String TransferORtransfer(String to, Notice.Transfer[] from, Long id) {
         String Struts = "201";
-        if (to == "account") {//把账户的钱给账户（不支持） && 把转出卡的钱给账户
+      /*  if (to == "account") {//把账户的钱给账户（不支持） && 把转出卡的钱给账户
             for (int i = 0; i < from.length; i++) {
                 if (from[i].getId() == null) {//把账户里面钱发给账户
                     System.out.println("把账户里面钱发给账户，");
@@ -338,13 +338,13 @@ public class Users {
 
                 }
             }
-        } else {//把账户的钱给指定卡 || 把转出卡的钱给指定卡
+        } else {//把账户的钱给指定卡 || 把转出卡的钱给指定卡*/
             for (int i = 0; i < from.length; i++) {//对要转出的数据进行循环
-                Card card = JPAEntry.getObject(Card.class, "id", from[i].getId());//根据转出卡的ID得到转出卡的数据
+//                Card card = JPAEntry.getObject(Card.class, "id", from[i].getId());//根据转出卡的ID得到转出卡的数据
                 Card tocard = JPAEntry.getObject(Card.class, "id", to);//根据指定卡id得到指定卡的数据
                 User user = JPAEntry.getObject(User.class, "id", id);//根据id得到账户
                 Integer formamount = Integer.valueOf(from[i].getAmount());//要转出的金额
-                Integer cardAmount = card.getAmount();//卡余额
+//                Integer cardAmount = card.getAmount();//卡余额
                 Integer userAmount = user.getAmount();//账户余额
                 Integer tocardAmount = tocard.getAmount();//指定卡余额
 
@@ -357,7 +357,7 @@ public class Users {
                         tocard.setAmount(tocardAmount + formamount);//指定卡余额 = 原卡余额+转入的钱
                         JPAEntry.genericPut(tocard);
                     }
-                } else {//转出学习卡的金额 && 转入到指定学习卡
+                } /*else { //转出学习卡的金额 && 转入到指定学习卡
                     if (formamount > cardAmount) {//转出金额大于学习卡余额
                         Struts = "410";
                         break;
@@ -368,9 +368,9 @@ public class Users {
                         JPAEntry.genericPut(tocard);
                     }
 
-                }
+                }*/
             }
-        }
+//        }
 
         return Struts;
     }
@@ -389,11 +389,11 @@ public class Users {
             Integer amount = amount(type);//根据消费类型得到消费金额
             if (from != null && to != null) {//把账户或卡的钱给指定卡
                 AmountStruts = TransferORtransfer(to, from, JPAEntry.getLoginId(sessionId));//进行转入转出
-            } else if (from != null && to == null) {//把转出卡的钱给账户
+            } /*else if (from != null && to == null) {//把转出卡的钱给账户
                 AmountStruts = TransferORtransfer("account", from, JPAEntry.getLoginId(sessionId));//进行转入转出
-            }
+            }*/
 
-            if (notice.subjectId == null) {//扣除账户余额
+            if (notice.subjectId == null  && AmountStruts == "201") {//扣除账户余额
                 AmountStruts = deductionAmount(JPAEntry.getLoginId(sessionId), amount, "account");
             } else {//扣除指定卡余额
                 AmountStruts = deductionAmount(notice.getSubjectId(), amount, "card");

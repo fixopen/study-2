@@ -480,7 +480,7 @@
     var duan;
     //var count =0;
     var state = {
-        currentArticle: document.getElementById('user'),
+        currentArticle: document.getElementById('sign'),
         init: function () {
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId)
@@ -511,8 +511,8 @@
                 Transformation = "user"
             }
 */
-            state['user'].init()
-            history.pushState(null, null, '/user.html#user');
+            state['sign'].init()
+            history.pushState(null, null, '/user.html#sign');
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
@@ -552,7 +552,7 @@
         sign: {
 
             init: function () {
-               // document.getElementById("sign").style.display="block"
+                document.getElementById("sign").style.display="block"
                 var biaoji = 1;
                 var shortMessage = document.getElementById("shortMessage");
                 shortMessage.addEventListener('click',function (e) {

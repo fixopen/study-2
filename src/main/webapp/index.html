@@ -5,66 +5,301 @@
     <title>小雨知时</title>
     <script src="jquery/jquery-3.1.1.js"></script>
     <script src="basic.js"></script>
+    <link rel="stylesheet" href="myUser/css/Popup.css">
+    <link rel="stylesheet" href="myUser/css/global.css">
+
 </head>
 <body>
-<article id="knowledgePoint">
+
+<article id="knowledgePoints">
 
 </article>
+<article id="selectCard" style="display: none">
+    <div class="wrap">
+        <ul class="mine_baodiv">
+            <li>
+                <a class="mine_zuli" href="javascript:void(0)">
+                    <img class="mine_img1" src="myUser/image/keBiao.png" alt="">
+                    <div class="mine_leftdiv">
+                        <span class="mine_leftsp">语文</span>
+                        <span class="mine_leftsp">5487965452</span>
+                        <br>
+                        <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
+                    </div>
+                    <img class="mine_img2" src="myUser/image/true.png" alt="">
+                </a>
+            </li>
+            <li>
+                <a class="mine_zuli" href="javascript:void(0)">
+                    <img class="mine_img1" src="myUser/image/mathBiao.png" alt="">
+                    <div class="mine_leftdiv">
+                        <span class="mine_leftsp">数学</span>
+                        <span class="mine_leftsp">5487965452</span>
+                        <br>
+                        <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
+                    </div>
+                    <img class="mine_img2" src="myUser/image/true.png" alt="">
+                </a>
+            </li>
+            <li>
+                <a class="mine_zuli" href="javascript:void(0)">
+                    <img class="mine_img1" src="myUser/image/englishBiao.png" alt="">
+                    <div class="mine_leftdiv">
+                        <span class="mine_leftsp">英语</span>
+                        <span class="mine_leftsp">5487965452</span>
+                        <br>
+                        <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
+                    </div>
+                    <img class="mine_img2 cur" src="myUser/image/true.png" alt="">
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</article>
+<article id="selectOneCard" style="display: none">
+    <div class="wrap">
+        <ul class="mine_baodiv">
+            <li>
+                <a class="mine_zuli" href="javascript:void(0)">
+                    <img class="mine_img1"src="myUser/image/keBiao.png" alt="">
+                    <div class="mine_leftdiv">
+                        <span class="mine_leftsp">语文</span>
+                        <span class="mine_leftsp">5487965452</span>
+                        <br>
+                        <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul class="mine_baodiv">
+            <li class="mine_liname">
+                <div class="mine_leftdiv">
+                    <p class="mine_zhaunc">转出金豆数量</p>
+                    <span class="mine_leftsp">金豆：</span>
+                    <input class="mine_zhauncIn" type="text" placeholder="最多可转出到卡5880 金豆">
+                </div>
+            </li>
+        </ul>
+        <div class="zhaunc_btn">
+            <a class="zhaunc_a" href="javascript:void(0)">确认转出</a>
+        </div>
+    </div>
+</article>
 <template id="knowledgePoint-template">
-    <ul class="public_ul_css">
-        <li class="public_li_css">
-            <span class="public_span_css info_interval_width_css">Id</span>
-            <span class="public_input_css">${id}</span>
-        </li>
-        <li class="public_li_css">
-            <span class="public_span_css info_interval_width_css">科目</span>
-            <span class="public_input_css">${subjectId}</span>
-        </li>
-        <li class="public_li_css">
-            <span class="public_span_css info_interval_width_css">册名</span>
-            <span class="public_input_css">${volumeId}</span>
-        </li>
-        <li class="public_li_css">
-            <span class="public_span_css info_interval_width_css">年级</span>
-            <span class="public_input_css">${grade}</span>
-        </li>
-        <li class="public_li_css">
-            <span class="public_span_css info_interval_width_css">知识点名称</span>
-            <span class="public_input_css">${title}</span>
-        </li>
-        <li class="public_li_css">
-            <span class="public_span_css info_interval_width_css">展示时间</span>
-            <span class="public_input_css">${showTime}</span>
-        </li>
-    </ul>
+<ul class="public_ul_css" id="knowledgePoint">
+    <li class="public_li_css">
+        <span class="public_span_css info_interval_width_css">Id</span>
+        <span class="public_input_css">${id}</span>
+    </li>
+    <li class="public_li_css">
+        <span class="public_span_css info_interval_width_css">科目</span>
+        <span class="public_input_css">${subjectId}</span>
+    </li>
+    <li class="public_li_css">
+        <span class="public_span_css info_interval_width_css">册名</span>
+        <span class="public_input_css">${volumeId}</span>
+    </li>
+    <li class="public_li_css">
+        <span class="public_span_css info_interval_width_css">年级</span>
+        <span class="public_input_css">${grade}</span>
+    </li>
+    <li class="public_li_css">
+        <span class="public_span_css info_interval_width_css">知识点名称</span>
+        <span class="public_input_css">${name}</span>
+    </li>
+    <li class="public_li_css">
+        <span class="public_span_css info_interval_width_css">展示时间</span>
+        <span class="public_input_css">${showTime}</span>
+    </li>
+</ul>
 </template>
 <!--<button id="submit">提交</button>-->
+<!-- 弹窗开始 -->
+<div id="Popup" style="display: none;">
+    <div class="tan" style="display: block;" ></div>
+
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p1"></p>
+            <p class="neir_ptxt" id="p2"></p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p3"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a1"></a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a2"></a>
+            </p>
+        </div>
+    </div>
+</div>
+<!-- 弹窗结束-->
 </body>
 <script>
-    var notice = {
-        objectType:"knowledgePoint"
-    }
+    var card_evolution = [];
+    var card_evolution_subject = [];
+    var cards;
+    var user_amount;
+    var Consumption_amount;
     $.ajax({
-        type:"Put",
-        url:"/api/users/notice",
-        data:JSON.stringify(notice),
-        dataType:"JSON",
-        contentType: "application/json; charset=utf-8",
-        success:function (e) {
-            var a =  JSON.stringify(e).replace("\\","");
-            alert(a)
+        type: "get",
+        url: "/api/volumes/" + 1 + "/knowledge-points",
+        dataType: "json",
+        success: function (e) {
             proc({
-                containerId: 'knowledgePoint',
+                containerId: 'knowledgePoints',
                 data: e,
                 templateId: 'knowledgePoint-template'
             })
         }
     })
-  /* var a = document.getElementById("submit");
-    a.addEventListener('click',function (e) {
 
+    var knowledgePoints = document.getElementById("knowledgePoints");
+    knowledgePoints.addEventListener('click', function (e) {
+       // alert("来了")
+        notice("knowledgePoint", 2);
     })
-*/
+
+    //只要给我你的消费类型如知识点、直播等，返回账户余额、所有的卡号余额和需要消费的金豆数
+    function notice(objectType, subjectId) {
+        var notice = {
+            objectType: objectType
+        }
+
+        $.ajax({
+            type: "Put",
+            url: "/api/users/notice",
+            data: JSON.stringify(notice),
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            success: function (e) {
+                cards = e.cards;
+                user_amount = e.account;
+                Consumption_amount = e.amount;
+                for (var i = 0; i < cards.length; i++) {
+                    if (cards[i].subjectId == subjectId) {
+                        if (cards[i].amount > Consumption_amount) {
+                            card_evolution.push(cards[i]);//得到符合科目并符合余额大于最低消费金额的所有卡（直接是不是扣钱）
+                        }
+                    } else {
+                        if (cards[i].amount > Consumption_amount) {
+                            card_evolution_subject.push(cards[i]);//得到不符合科目并符合余额大于最低消费金额的所有卡（直接是不是扣钱）
+                        }
+                    }
+                }
+                if (card_evolution.length != 0) {
+                    var s = subject(card_evolution[0].subjectId)
+                    document.getElementById("p1").innerHTML="<br/>"
+                    document.getElementById("p2").innerHTML="您确定扣除"+s+"卡"+Consumption_amount+"金豆吗?"
+                    document.getElementById("a1").innerHTML="确认"
+                    document.getElementById("a1").value="submit"
+                    document.getElementById("a2").innerHTML="充值"
+                    document.getElementById("a2").value="chong"
+                    document.getElementById("Popup").style.display="block"
+                  /*  // 直接扣除该科目的卡金额
+
+                    document.getElementById("Popup").style.display="block"*/
+                   // alert("是否扣除语文卡"+Consumption_amount+"金豆？");
+                } else {
+                    if (card_evolution_subject.length != 0) {
+                        var s = subject(subjectId)
+                        document.getElementById("p1").innerHTML="您没有"+s+"卡"
+                        var ss = subject(card_evolution_subject[0].subjectId)
+                        document.getElementById("p2").innerHTML="您确定扣"+ss+"卡"+Consumption_amount+"金豆吗?"
+                        document.getElementById("a1").innerHTML="确认"
+                        document.getElementById("a1").value="save"
+
+                        document.getElementById("a2").innerHTML="购买"+s+"卡"
+                        document.getElementById("a2").value="shop"
+
+                        document.getElementById("Popup").style.display="block"
+                        //直接扣除不同科目的卡金额
+                        /*document.getElementById("Popup").style.display="block"
+                        alert("你没有语文卡，是否扣除数学卡"+Consumption_amount+"金豆？");*/
+                    } else {
+                        if (user_amount > Consumption_amount) {
+                            document.getElementById("p1").innerHTML="<br/>"
+                            document.getElementById("p2").innerHTML="您确定扣除账户"+Consumption_amount+"金豆吗?"
+                            document.getElementById("a1").innerHTML="确认"
+                            document.getElementById("a1").value="user_save"
+                            document.getElementById("a2").innerHTML="转出"
+                            document.getElementById("a2").value="turnOut"
+                            document.getElementById("Popup").style.display="block"
+                        }else{
+                            if (card_evolution.length == 0 && card_evolution_subject.length == 0 && user_amount < Consumption_amount) {
+                                document.getElementById("a1").innerHTML="充值"
+                                document.getElementById("a1").value="chong"
+                                document.getElementById("Popup").style.display="block"
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        var a2 = document.getElementById("a2");
+        a2.addEventListener('click',function (e) {
+            if(a2.value == "chong"){
+                alert("跳转到充值页面")
+            }
+            if(a2.value == "shop"){
+                alert("跳转到购买页面")
+            }
+            if(a2.value == "turnOut"){
+                TurnOut(cards)
+            }
+        })
+
+        var a1 = document.getElementById("a1");
+        a1.addEventListener('click',function (e) {
+            if(a1.value == "submit"){
+                alert("提交"+card_evolution[0].id+objectType)
+            }
+            if(a1.value == "save"){
+                alert("提交没有"+card_evolution_subject[0].id+objectType)
+            }
+            if(a1.value == "user_save"){
+                alert("提账户user"+objectType)
+            }
+            if(a1.value == "chong"){
+                alert("充值")
+            }
+        })
+
+        var close = document.getElementById("close");
+        close.addEventListener('click',function (e) {
+            document.getElementById("Popup").style.display="none"
+        })
+
+    }
+
+    function TurnOut(cards) {
+        if (cards.length > 1) {
+            document.getElementById("knowledgePoints").style.display="none"
+            document.getElementById("Popup").style.display="none"
+            document.getElementById("selectCard").style.display="block"
+            alert("到多个卡选择页面")
+        } else if (cards.length == 1) {
+            document.getElementById("knowledgePoints").style.display="none"
+            document.getElementById("Popup").style.display="none"
+            document.getElementById("selectOneCard").style.display="block"
+            alert("到一个卡选择页面")
+        }
+    }
+
+
+    function subject(sex) {
+        var result;
+        if(sex == 1){
+            result = "语文"
+        }
+        if(sex == 2){
+              result = "数学"
+        }
+        return result;
+    }
 
 </script>
 </html>
