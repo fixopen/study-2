@@ -7,7 +7,6 @@ import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.json.Json;
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
@@ -17,6 +16,8 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.*;
 import java.util.function.BiConsumer;
+
+import static com.baremind.utils.Impl.finalResult;
 
 @Path("users")
 public class Users {
@@ -45,10 +46,29 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, User entity) {
+        Response result = Response.status(401).build();
         Date now = new Date();
         entity.setCreateTime(now);
         entity.setUpdateTime(now);
-        return Impl.create(sessionId, entity, null);
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
+            }
+        }
+        return result;
+    }
+
+    @POST
+    @Path("admin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(User entity) { //admin bootstrap
+        Date now = new Date();
+        entity.setCreateTime(now);
+        entity.setUpdateTime(now);
+        JPAEntry.genericPost(entity);
+        return finalResult(entity, null);
     }
 
     private static class Updater implements BiConsumer<User, User> {

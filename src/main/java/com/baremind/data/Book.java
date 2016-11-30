@@ -2,16 +2,19 @@ package com.baremind.data;
 
 import com.baremind.utils.JPAEntry;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by fixopen on 15/11/2016.
  */
-@javax.persistence.Entity
+@Entity
 @Table(name = "books")
-public class Book implements com.baremind.data.Entity {
+public class Book {
     @Id
     @Column(name = "id")
     private Long id;
@@ -79,6 +82,22 @@ public class Book implements com.baremind.data.Entity {
         condition.put("bookId", book.getId());
         Map<String, String> orders = new HashMap<>();
         orders.put("pageNo", "ASC");
+        orders.put("unitNo", "ASC");
+        vm.put("records", JPAEntry.getList(AudioRecord.class, condition, orders));
+        return vm;
+    }
+
+    public static Map<String, Object> convertToMap(Book book, String pageNo) {
+        Map<String, Object> vm = new HashMap<>();
+        vm.put("id", book.getId());
+        vm.put("subjectNo", book.getSubjectNo());
+        vm.put("gradeNo", book.getGradeNo());
+        vm.put("bookNo", book.getBookNo());
+        vm.put("name", book.getName());
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("bookId", book.getId());
+        condition.put("pageNo", pageNo);
+        Map<String, String> orders = new HashMap<>();
         orders.put("unitNo", "ASC");
         vm.put("records", JPAEntry.getList(AudioRecord.class, condition, orders));
         return vm;

@@ -37,7 +37,7 @@ public class Impl {
         return result;
     }
 
-    private static <T> Response finalResult(T entity, PostProcessor<T> postProcessor) {
+    public static <T> Response finalResult(T entity, PostProcessor<T> postProcessor) {
         Response result;
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         if (postProcessor != null) {

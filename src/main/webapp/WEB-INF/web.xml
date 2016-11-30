@@ -16,7 +16,7 @@
             <max-request-size>20971520</max-request-size>
             <file-size-threshold>5242880</file-size-threshold>
         </multipart-config>
-        <!--<load-on-startup>1</load-on-startup>-->
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
