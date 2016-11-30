@@ -604,7 +604,13 @@ public class PublicAccounts {
                                     }
                                     break;
                                 case "text":
-                                    result = Response.ok().build();
+                                    String Content = p.getInfos().get("Content");
+                                    String text = "";
+                                    switch (Content){
+                                        case "课表":
+                                            text = text(p);
+                                    }
+                                    result = Response.ok(text).build();
                                     break;
                                 case "image":
                                     result = Response.ok().build();
@@ -644,6 +650,39 @@ public class PublicAccounts {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return result;
+    }
+/*
+ String result = "<xml>\n" +
+                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
+                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+                "   <MsgType><![CDATA[text]]></MsgType>\n" +
+                "   <Content><![CDATA[" + content + "]]></Content>\n" +
+                "</xml>";
+        return result;/
+ */
+    private static String text(WechatPush p) {
+        String openId = p.getFromUserName();
+        long secondCount = new Date().getTime() / 1000;
+        String currentEpochTime = Long.toString(secondCount);
+        String picUrl ="http://xiaoyuzhishi.com/medias/1480389780313.jpeg";
+        String url ="http://xiaoyuzhishi.com/user/active-card.html";
+        String result = "<xml>\n" +
+                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
+                "    <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName> \n" +
+                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
+                "   <MsgType><![CDATA[news]]></MsgType>\n" +
+                "   <ArticleCount>1</ArticleCount>\n" +
+                "   <Articles>\n" +
+                "   <item>\n" +
+                "   <Title><![CDATA[课表]]></Title> \n" +
+                "   <Description><![CDATA[小雨直播第九周课表]]></Description>\n" +
+                "   <PicUrl><![CDATA["+ picUrl +"]]></PicUrl>\n" +
+                "   <Url><![CDATA["+ url +"]]></Url>\n" +
+                "   </item>\n" +
+                "   </Articles>\n" +
+                "   </xml>";
         return result;
     }
 
