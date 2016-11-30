@@ -605,7 +605,11 @@ public class PublicAccounts {
                                     break;
                                 case "text":
                                     String Content = p.getInfos().get("Content");
-                                    System.out.println("来到了text，打印Content====================================================="+Content);
+                                    Property property = new Property();
+                                    property.setName("来到了text");
+                                    property.setValue(Content);
+                                    JPAEntry.genericPost(property);
+                                   // System.out.println("来到了text，打印Content====================================================="+Content);
                                     String text = "";
                                     switch (Content){
                                         case "课表":
@@ -655,13 +659,16 @@ public class PublicAccounts {
     }
 
     private static String text(WechatPush p) {
-        System.out.println("来到了text方法，打印WechatPush====================================================="+p);
+
+
+
         String openId = p.getFromUserName();
-        System.out.println("来到了text方法，打印openId====================================================="+p);
         long secondCount = new Date().getTime() / 1000;
-        System.out.println("来到了text方法，打印secondCount====================================================="+p);
         String currentEpochTime = Long.toString(secondCount);
-        System.out.println("来到了text方法，打印currentEpochTime====================================================="+p);
+        Property property = new Property();
+        property.setName("到text====================================================");
+        property.setValue(openId);
+        JPAEntry.genericPost(property);
         String picUrl ="http://xiaoyuzhishi.com/medias/1480389780313.jpeg";
         String url ="http://xiaoyuzhishi.com/user/active-card.html";
         String result = "<xml>\n" +
@@ -679,7 +686,10 @@ public class PublicAccounts {
                 "   </item>\n" +
                 "   </Articles>\n" +
                 "   </xml>";
-        System.out.println("来到了text方法，打印result结果====================================================="+result);
+
+        property.setName("运行结果====================================================");
+        property.setValue(result);
+        JPAEntry.genericPost(property);
         return result;
     }
 
