@@ -282,8 +282,7 @@
                         <span class="live-radio">
                             <img src="../img/zb-wait.png" alt="">
                         </span>
-                    <div class="waity-play">${year}-${month}-${day} ${hour}:${minute}:${second}开讲
-                    </div>
+                    <div class="waity-play">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</div>
                     <div class="course-box">
                         <h3 class="live-title">
                             <span>${title}</span>
@@ -597,7 +596,7 @@
             init: function () {
                 if (!state.main.isInit) {
                     $(document).on('click', '.course-detail-btn', function (e) {
-                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
+                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle(1000)
                     })
 
                     var now = Date.now()
@@ -637,7 +636,6 @@
                                     var whoFirst = function () {
                                         var needFuture = true
                                         var comparePlaying = function () {
-
                                             var result = false
                                             if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
                                                 if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
@@ -804,7 +802,7 @@
                         }),
                         dataType: 'json',
                         success: function (schedulers) {
-                            passed=schedulers[2]
+                            passed = schedulers[2]
                             for (var i = 0; i < passed.length; ++i) {
                                 passed[i].grade = state.getGrade(passed[i].grade)
                                 passed[i].type = 'chinese'
@@ -826,7 +824,6 @@
                                     {type: 'math', templateId: 'math-template'}
                                 ]
                             });
-
                             allxqTap(); //all课程详情
                         }
                     })
@@ -842,6 +839,7 @@
                                 success: function (ts) {
                                     subjects[1].teachers = ts
                                     //fill to teachers choice
+                                    
                                 }
                             })
                         }
@@ -924,6 +922,7 @@
                         })
                     }, false)
                     state.passed.isInit = true
+                    xialaTap()
                 }
             },
             search: function () {
@@ -943,6 +942,22 @@
                 }
                 return result
             },
+            xialaTap: function () { //下拉选项
+                $(".selectDiv").each(function (index, el) {
+                    $(this).click(function () {
+                        if ($(this).children(".xiala_ul").is(":visible")) {
+                            $(".xiala_ul").hide();
+                            $(".xiala_ul").eq(index).hide();
+                        } else {
+                            $(".xiala_ul").hide();
+                            $(".xiala_ul").eq(index).show();
+                        }
+                    });
+                });
+                $(".xiala_ul li").click(function () {
+                    $(this).parent(".xiala_ul").siblings().children('span').text($(this).text());
+                });
+            },
             teacherChoice: document.getElementById('teacherChoice'),
             gradeChoice: document.getElementById('gradeChoice'),
 //            onePassed: {
@@ -958,7 +973,6 @@
             init: function () {
             }
         },
-
 //        video: {
 //            isInit: false,
 //            init: function () {
@@ -1056,8 +1070,8 @@
             weekElement: document.getElementById("week")
         },
         init: function () {
-            var userId = g.getUrlParameter('userid')
-            g.setCookie('userId', userId)
+//            var userId = g.getUrlParameter('userid')
+//            g.setCookie('userId', userId)
 
             $.ajax({
                 type: 'get',
