@@ -134,27 +134,27 @@
     <!--<input class="souSuo clearfix" type="text" id="text"  name="keyword"  onkeydown="entersearch()" placeholder="请输入科目、老师、年级 关键词搜索">-->
     <div class="tiao_jian">
         <div class="tiaoj_TJ01 selectDiv">
-            <div class="tiaoj_1span">
+            <div class="tiaoj_1span" id="subjectSelect">
                 <span>科目</span>
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul" id="subject"></ul>
         </div>
         <div class="tiaoj_TJ02 selectDiv">
-            <div class="tiaoj_2span">
+            <div class="tiaoj_2span" id="teacherSelect">
                 <span>老师</span>
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul" id="teacher"></ul>
         </div>
-        <div class="tiaoj_TJ03 selectDiv">
+        <div class="tiaoj_TJ03 selectDiv" id="gradeeSelect">
             <div class="tiaoj_3span">
                 <span>年级</span>
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul" id="grade"></ul>
         </div>
-        <div class="tiaoj_TJ04 selectDiv">
+        <div class="tiaoj_TJ04 selectDiv" id="dateSelect">
             <div class="tiaoj_4span">
                 <span>日期</span>
                 <img src="../img/xiala.png" alt="">
@@ -282,8 +282,7 @@
                         <span class="live-radio">
                             <img src="../img/zb-wait.png" alt="">
                         </span>
-                    <div class="waity-play">${year}-${month}-${day} ${hour}:${minute}:${second}开讲
-                    </div>
+                    <div class="waity-play">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</div>
                     <div class="course-box">
                         <h3 class="live-title">
                             <span>${title}</span>
@@ -434,13 +433,19 @@
     </li>
 </template>
 <template id="subject-template">
-    <li class="xiala_li"></li>
+    <li class="xiala_li">
+        <span data-id="${id}" data-type="subject">${name}</span>
+    </li>
 </template>
 <template id="teacher-template">
-    <li class="xiala_li"></li>
+    <li class="xiala_li">
+        <span data-type="teacher">${teacher}</span>
+    </li>
 </template>
 <template id="grade-template">
-    <li class="xiala_li"></li>
+    <li class="xiala_li">
+        <span data-type="grade">${grade}</span>
+    </li>
 </template>
 <template id="date-template">
     <li class="xiala_li"></li>
@@ -572,6 +577,36 @@
             }
             return result
         },
+        getSubjectById: function(subjectId) {
+            var result = null
+            for (var i = 0; i < subjects.length; ++i) {
+                if (subjects[i].id == subjectId) {
+                    result = subjects[i]
+                    break
+                }
+            }
+            return result
+        },
+        containTeacher: function(subject, teacher) {
+            var result = false
+            for (var i = 0; i < subject.teachers.length; ++i) {
+                if (subject.teachers[i] == teacher) {
+                    result = true
+                    break
+                }
+            }
+            return result
+        },
+        containGrade: function(subject, grade) {
+            var result = false
+            for (var i = 0; i < subject.grades.length; ++i) {
+                if (subject.grades[i] == grade) {
+                    result = true
+                    break
+                }
+            }
+            return result
+        },
         main: {
             zeroFuture: {
                 container: document.getElementById('zeroFuture'),
@@ -597,7 +632,7 @@
             init: function () {
                 if (!state.main.isInit) {
                     $(document).on('click', '.course-detail-btn', function (e) {
-                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
+                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle(1000)
                     })
 
                     var now = Date.now()
@@ -637,7 +672,6 @@
                                     var whoFirst = function () {
                                         var needFuture = true
                                         var comparePlaying = function () {
-
                                             var result = false
                                             if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
                                                 if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
@@ -794,6 +828,71 @@
                     $(document).on('click', '.detail_Btn', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                     })
+                    $(document).on('click', '[data-type="subject"]', function(e) {
+                        //hide subjects
+                        state.passed.subject.style.display = 'none'
+
+                        //change subjectSelect
+                        var s = document.getElementById('subjectSelect')
+                        s.textContent = e.target.textContent
+                        s.dataset.id = e.target.dataset.id
+
+                        var sub = state.getSubjectById(e.target.dataset.id)
+
+                        if (!state.containTeacher(sub, t.textContent)) {
+                            state.passed.teacherChoice.textContent = '老师'
+                        }
+
+                        //change teachers container
+                        state.passed.teacher.innerHTML = ''
+                        proc({
+                            container: state.passed.teacher,
+                            data: sub.teachers,
+                            templateId: 'teacher-template'
+                        })
+
+                        //if need {
+                        // change gradeSelect
+                        //}
+                        if (!state.containGrade(sub, g.textContent)) {
+                            state.passed.gradeChoice.textContent = '年级'
+                        }
+
+                        //change grades container
+                        state.passed.grade.innerHTML = ''
+                        proc({
+                            container: state.passed.grade,
+                            data: sub.grades,
+                            templateId: 'grade-template'
+                        })
+
+                        //filter data
+                        var d = state.passed.search()
+                        //refill the content
+                        state.passed.content.innerHTML = ''
+                        proc({
+                            container: state.passed.content,
+                            data: d,
+                            templateId: ''
+                        })
+                    })
+
+                    $(document).on('click', '[data-type="teacher"]', function(e) {
+                        //hide teachers
+                        // change teacherSelect
+
+                        //filter data
+                        //refill the content
+                    })
+
+                    $(document).on('click', '[data-type="grade"]', function(e) {
+                        //hide grade
+                        // change gradeSelect
+
+                        //filter data
+                        //refill the content
+                    })
+
                     var now = Date.now()
 //*******************************getPassed*****************************
                     $.ajax({
@@ -804,7 +903,7 @@
                         }),
                         dataType: 'json',
                         success: function (schedulers) {
-                            passed=schedulers[2]
+                            passed = schedulers[2]
                             for (var i = 0; i < passed.length; ++i) {
                                 passed[i].grade = state.getGrade(passed[i].grade)
                                 passed[i].type = 'chinese'
@@ -826,7 +925,6 @@
                                     {type: 'math', templateId: 'math-template'}
                                 ]
                             });
-
                             allxqTap(); //all课程详情
                         }
                     })
@@ -834,14 +932,26 @@
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
-                        success: function (ts) {
-                            subjects[0].teachers = ts
+                        success: function (t0s) {
+                            subjects[0].teachers = t0s
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function (ts) {
-                                    subjects[1].teachers = ts
+                                success: function (t1s) {
+                                    subjects[1].teachers = t1s
                                     //fill to teachers choice
+                                    var teachers = []
+                                    for (var i = 0; i < t0s.length; ++i) {
+                                        teachers.push({teacher: t0s[i]})
+                                    }
+                                    for (var i = 0; i < t1s.length; ++i) {
+                                        teachers.push({teacher: t1s[i]})
+                                    }
+                                    proc({
+                                        containerId: 'teacher',
+                                        data: teachers,
+                                        template: 'teacher-template'
+                                    })
                                 }
                             })
                         }
@@ -850,101 +960,81 @@
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
-                        success: function (gs) {
-                            subjects[0].grades = gs
+                        success: function (g0s) {
+                            subjects[0].grades = g0s
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function (gs) {
-                                    subjects[1].grades = gs
+                                success: function (g1s) {
+                                    subjects[1].grades = g1s
                                     //fill to grades choice
+                                    var grades = []
+                                    for (var i = 0; i < g0s.length; ++i) {
+                                        grades.push({grade: g0s[i]})
+                                    }
+                                    for (var i = 0; i < g1s.length; ++i) {
+                                        grades.push({grade: g1s[i]})
+                                    }
+                                    proc({
+                                        containerId: 'grade',
+                                        data: grades,
+                                        template: 'grade-template'
+                                    })
                                 }
                             })
                         }
                     })
 
-
-                    state.passed.subject.addEventListener('change', function (e) {
-                        var subjectIndex = 0
-                        var r = state.passed.search()
-                        state.passed.teacher.innerHTML = ''
-                        proc({
-                            container: state.passed.teacher,
-                            data: subjects[subjectIndex].teachers,
-                            templateId: 'teacher-template'
-                        })
-
-                        state.passed.grade.innerHTML = ''
-                        proc({
-                            container: state.passed.grade,
-                            data: subjects[subjectIndex].grades + subjects[1].grades,
-                            templateId: 'grade-template'
-                        })
-
-                        state.passed.date.innerHTML = ''
-                        proc({
-                            container: state.passed.date,
-                            data: subjects[subjectIndex].date,
-                            templateId: 'date-template'
-                        })
-
-                        state.passed.content.innerHTML = ''
-                        proc({
-                            container: state.passed.content,
-                            data: r,
-                            templateId: ''
-                        })
+                    var s = document.getElementById('subjectSelect')
+                    s.addEventListener('click', function(e) {
+                        if (state.passed.subject.style.display == 'block') {
+                            state.passed.subject.style.display = 'none'
+                        } else if (state.passed.subject.style.display == 'none') {
+                            state.passed.subject.style.display = 'block'
+                        }
                     }, false)
 
-                    $(subject).on('change', function (e) {
-                        //
-                    })
-
-                    state.passed.grade.addEventListener('change', function (e) {
-                        var gradeIndex = 0
-                        var r = state.passed.search()
-
-                        state.passed.content.innerHTML = ''
-                        proc({
-                            container: state.passed.content,
-                            data: r,
-                            templateId: ''
-                        })
-                    }, false)
-
-                    state.passed.teacher.addEventListener('change', function (e) {
-                        var teacherIndex = 0
-                        var r = state.passed.search()
-
-                        state.passed.content.innerHTML = ''
-                        proc({
-                            container: state.passed.content,
-                            data: r,
-                            templateId: ''
-                        })
-                    }, false)
                     state.passed.isInit = true
+                    xialaTap()
                 }
             },
             search: function () {
                 var result = []
+                var s = document.getElementById('subjectSelect')
+                var t = document.getElementById('teacherSelect')
+                var g = document.getElementById('gradeSelect')
                 //filter the passed data via the filter element state
                 var subject, teacher, grade, date
                 for (var i = 0; i < passed.length; ++i) {
-                    if (passed[i].subjectId == subject) {
-                        if (teacher != 'renyi' && passed[i].teacher == teacher) {
-                            if (passed[i].grade == grade) {
-                                if (passed[i].date == date) {
-                                    result.push(passed[i])
-                                }
-                            }
+                    var pass = true
+                    if (s.textContent != '科目') {
+                        if (passed[i].subjectId != s.dataset.id) {
+                            pass = false
                         }
+                    }
+
+                    var tPass = true
+                    if (s.textContent != '老师') {
+                        if (passed[i].teacher != t.textContent) {
+                            tPass = false
+                        }
+                    }
+
+                    var gPass = true
+                    if (g.textContent != '年级') {
+                        if (passed[i].grade != g.textContent) {
+                            gPass = false
+                        }
+                    }
+
+                    if (pass && tPass && gPass) {
+                        result.push(passed[i])
                     }
                 }
                 return result
             },
-            teacherChoice: document.getElementById('teacherChoice'),
-            gradeChoice: document.getElementById('gradeChoice'),
+//            teacherChoice: document.getElementById('teacherChoice'),
+//            gradeChoice: document.getElementById('gradeChoice'),
 //            onePassed: {
 //                container: document.getElementById(''),
 //                template: document.getElementById(''),
@@ -958,7 +1048,6 @@
             init: function () {
             }
         },
-
 //        video: {
 //            isInit: false,
 //            init: function () {
@@ -1056,8 +1145,8 @@
             weekElement: document.getElementById("week")
         },
         init: function () {
-            var userId = g.getUrlParameter('userid')
-            g.setCookie('userId', userId)
+//            var userId = g.getUrlParameter('userid')
+//            g.setCookie('userId', userId)
 
             $.ajax({
                 type: 'get',
