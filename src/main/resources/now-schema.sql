@@ -64,7 +64,7 @@ CREATE TABLE answer_records (
 ALTER TABLE answer_records OWNER TO postgres;
 
 --
--- Name: audio_records; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: audio_records; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE audio_records (
@@ -82,10 +82,10 @@ CREATE TABLE audio_records (
 );
 
 
-ALTER TABLE audio_records OWNER TO fixopen;
+ALTER TABLE audio_records OWNER TO postgres;
 
 --
--- Name: book_names; Type: TABLE; Schema: public; Owner: fixopen
+-- Name: book_names; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE books (
@@ -97,7 +97,7 @@ CREATE TABLE books (
 );
 
 
-ALTER TABLE books OWNER TO fixopen;
+ALTER TABLE books OWNER TO postgres;
 
 --
 -- Name: cards; Type: TABLE; Schema: public; Owner: postgres
