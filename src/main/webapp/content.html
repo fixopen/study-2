@@ -296,7 +296,7 @@
             <div class="muluBn_top" id="message">
                 <button id="createComment" type="button" class="comment-btn">写留言</button>
                 <div id="commentPanl" style="display: none">
-                    <textarea name="message" id="textarea1" cols="30" rows="5" class="textarea"></textarea>
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
                     <button type="submit" class="sub-btn" id="submitBtn">提交</button>
                 </div>
             </div>
@@ -527,7 +527,6 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    //[{id: 1, name: ..., low: [{id: ..., name: ..., knowledgePoints:[{id: ..., ..., likeCount: ..., contents: {:., interaction: {likeCount: ..., ...}, ....}, ....}, {}, ...], ...}, ...], high: []}, {}, ...]
     var subjects = []
 
     var state = {
@@ -668,13 +667,6 @@
                                 ]
                             })
 
-//                        () => {
-//                            if (switch to low) {
-//                                subjects[0].isLow = true
-//                                document.getElementById('subjects').dataset.grade = 'low'
-//                            }
-//                        }
-
                             var subjectId = 1;
                             state.volumes.popups(subjectId);
 
@@ -710,7 +702,6 @@
 
                             break
                     }
-
                     state.volumes.isChanged = false
                 }
             },
@@ -1047,8 +1038,7 @@
 
                 var likeProc = function (container, data, iconName, likeTemplate, unlikeTemplate, apiUrl) {
 //                  container.innerHTML = '';
-                    var d = data
-                    if (d.liked) {
+                    if (data.liked) {
                         proc({
                             container: container,
                             data: data,
@@ -1056,11 +1046,11 @@
                         })
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
-                            state.knowledgePoint.unlike(apiUrl, d.id)
-                            d.likeCount--
-                            d.liked = false
+                            state.knowledgePoint.unlike(apiUrl, data.id)
+                            data.likeCount--
+                            data.liked = false
                             container.innerHTML = '';
-                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl, index)
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
                         }, false)
                     } else {
                         proc({
@@ -1070,11 +1060,11 @@
                         })
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
-                            state.knowledgePoint.like(apiUrl, d.id)
-                            d.likeCount++
-                            d.liked = true
+                            state.knowledgePoint.like(apiUrl, data.id)
+                            data.likeCount++
+                            data.liked = true
                             container.innerHTML = '';
-                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl, index)
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
                         }, false)
                     }
                     state.knowledgePoints.isChanged = true
@@ -1176,6 +1166,7 @@
                         commentEventBind(createComment, panel, btn, commentContent, commentContainer);
 
                         var value = state.knowledgePoint.value;
+
                         proc({
                             templateId: 'title1-template',
                             data: value,
@@ -1251,31 +1242,16 @@
                             ]
                         });
 
-                        value.contents.interaction.previousId = value.previousId
-                        value.contents.interaction.nextId = value.nextId
-
                         //  interaction-likes
                         var container = state.knowledgePoint.interaction;
-                        var data = value.contents.interaction;
-                        var liked = value.contents.liked;
                         var iconName = '.icon';
                         var likeTemplate = 'interaction-like-template';
                         var unlikeTemplate = 'interaction-unlike-template';
                         var apiUrl = 'api/knowledge-points/';
-                        var id = value.id;
-                        likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, id)
+                        likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
 
 //                        //comments-likes;
-//                        for (var i = 0; i < value.contents.comments.length; ++i) {
-//                            var container = state.knowledgePoint.comments;
-//                            var data = value.contents.comments[i];
-//                            var liked = data.liked;
-//                            var iconName = '.like-icon';
-//                            var likeTemplate = 'comment-like-template';
-//                            var unlikeTemplate = 'comment-unlike-template';
-//                            var apiUrl = '/api/comments/';
-//                            likeProc(container, data, liked, iconName, likeTemplate, unlikeTemplate, apiUrl, data.id)
-//                        }
+                        state.knowledgePoint.renderComments()
                         break
                 }
             },
