@@ -58,16 +58,19 @@
     </div>
 </article>
 <article id="selectOneCard" style="display: none">
+
+</article>
+<template id="selectOneCard-template">
     <div class="wrap">
         <ul class="mine_baodiv">
             <li>
                 <a class="mine_zuli" href="javascript:void(0)">
                     <img class="mine_img1"src="myUser/image/keBiao.png" alt="">
                     <div class="mine_leftdiv">
-                        <span class="mine_leftsp">语文</span>
-                        <span class="mine_leftsp">5487965452</span>
+                        <span class="mine_leftsp">${subjectId}</span>
+                        <span class="mine_leftsp">${no}</span>
                         <br>
-                        <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
+                        <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
                     </div>
                 </a>
             </li>
@@ -77,7 +80,7 @@
                 <div class="mine_leftdiv">
                     <p class="mine_zhaunc">转出金豆数量</p>
                     <span class="mine_leftsp">金豆：</span>
-                    <input class="mine_zhauncIn" type="text" placeholder="最多可转出到卡5880 金豆">
+                    <input class="mine_zhauncIn" type="text" placeholder="最多可转出到卡5880金豆">
                 </div>
             </li>
         </ul>
@@ -85,7 +88,7 @@
             <a class="zhaunc_a" href="javascript:void(0)">确认转出</a>
         </div>
     </div>
-</article>
+</template>
 <template id="knowledgePoint-template">
 <ul class="public_ul_css" id="knowledgePoint">
     <li class="public_li_css">
@@ -282,10 +285,21 @@
             document.getElementById("selectCard").style.display="block"
             alert("到多个卡选择页面")
         } else if (cards.length == 1) {
+
+            var a = cards[0].subjectId
+            cards[0].subjectId = subject(a)
+            if(cards[0].amount == 0){
+                cards[0].amount = "0"
+            }
+            proc({
+                containerId: 'selectOneCard',
+                data: cards,
+                templateId: 'selectOneCard-template'
+            })
             document.getElementById("knowledgePoints").style.display="none"
             document.getElementById("Popup").style.display="none"
             document.getElementById("selectOneCard").style.display="block"
-            alert("到一个卡选择页面")
+           /// alert("到一个卡选择页面")
         }
     }
 
