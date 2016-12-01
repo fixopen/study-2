@@ -23,6 +23,9 @@ public class KnowledgePoint implements com.baremind.data.Entity {
     @Column(name = "volume_id")
     private Long volumeId;
 
+    @Column(name = "price")
+    private Long price;
+
     @Column(name = "name")
     private String name;
 
@@ -31,6 +34,14 @@ public class KnowledgePoint implements com.baremind.data.Entity {
 
     @Column(name = "show_time")
     private Date showTime;
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 
     public Long getId() {
         return id;

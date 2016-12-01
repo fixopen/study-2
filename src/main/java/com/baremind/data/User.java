@@ -47,7 +47,7 @@ public class User implements com.baremind.data.Entity {
     private String site;
 
     @Column(name = "amount")
-    private Integer amount;
+    private Long amount;
 
     @Column(name = "school")
     private String school;
@@ -209,11 +209,11 @@ public class User implements com.baremind.data.Entity {
         this.sex = sex;
     }
 
-    public Integer getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 

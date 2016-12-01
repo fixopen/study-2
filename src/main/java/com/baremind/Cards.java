@@ -97,7 +97,7 @@ public class Cards {
                         exist.setUserId(userId);
                     }
 
-                    Integer amount = card.getAmount();
+                    Long amount = card.getAmount();
                     if (amount != null) {
                         exist.setAmount(amount);
                     }
