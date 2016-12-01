@@ -47,7 +47,7 @@ public class ClassRooms/* extends Endpoint*/ {
         user.setUpdateTime(now);
         user.setIsAdministrator(false);
         user.setSite("http://www.xiaoyuzhishi.com");
-        user.setAmount(-1);
+        user.setAmount(-1l);
         JPAEntry.genericPost(user);
 
         String nowString = now.toString();

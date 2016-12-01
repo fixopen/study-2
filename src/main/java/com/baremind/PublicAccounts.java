@@ -1277,7 +1277,7 @@ public class PublicAccounts {
             u.setUpdateTime(now);
             u.setIsAdministrator(false);
             u.setSite("http://www.xiaoyuzhishi.com");
-            u.setAmount(0);
+            u.setAmount(0L);
             user.setUserId(userId);
 
             EntityManager em = JPAEntry.getNewEntityManager();

@@ -103,7 +103,7 @@ public class Sessions {
         user.setTelephone(telephone);
         user.setIsAdministrator(false);
         user.setSite("http://www.xiaoyuzhishi.com");
-        user.setAmount(0);
+        user.setAmount(0l);
         PublicAccounts.fillUserByWechatUser(user, wechatUser);
         JPAEntry.genericPost(user);
         return user;
