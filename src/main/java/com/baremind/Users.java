@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 import static com.baremind.utils.Impl.finalResult;
+import static org.bouncycastle.asn1.x509.X509ObjectIdentifiers.id;
 
 @Path("users")
 public class Users {
@@ -74,7 +75,7 @@ public class Users {
     private static class Updater implements BiConsumer<User, User> {
         @Override
         public void accept(User existUser, User userData) {
-            Integer amount = userData.getAmount();
+            Long amount = userData.getAmount();
             if (amount != null) {
                 existUser.setAmount(amount);
             }
@@ -186,10 +187,12 @@ public class Users {
 
     private static class Notice {
         private String objectType; //被消费的类型（知识点、直播等等）
+        private Long objectId; //被消费的类型（知识点、直播等等）
         private String subjectType;//要消费的类型(学习卡、账户)
         private Long subjectId;//学习卡的Id
         private String to;//转入卡或者账户
-        private Transfer[] from;//把账户、卡、多张卡的金额转出
+       // private Transfer[] from;//把账户、卡、多张卡的金额转出
+        private String from;//把账户、卡、多张卡的金额转出
 
         public String getTo() {
             return to;
@@ -199,11 +202,27 @@ public class Users {
             this.to = to;
         }
 
-        public Transfer[] getFrom() {
+        public Long getObjectId() {
+            return objectId;
+        }
+
+        public void setObjectId(Long objectId) {
+            this.objectId = objectId;
+        }
+
+        /*public Transfer[] getFrom() {
             return from;
         }
 
         public void setFrom(Transfer[] from) {
+            this.from = from;
+        }*/
+
+        public String getFrom() {
+            return from;
+        }
+
+        public void setFrom(String from) {
             this.from = from;
         }
 
@@ -265,7 +284,7 @@ public class Users {
             Map noticeMap = new HashMap();
             String type = notice.objectType;
             User user = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            noticeMap.put("amount", amount(type));
+            noticeMap.put("amount", amount(type,notice.objectId));
             noticeMap.put("account", user.getAmount());
             List<Card> cards = JPAEntry.getList(Card.class, "userId", JPAEntry.getLoginId(sessionId));
             noticeMap.put("cards", cards);
@@ -278,34 +297,28 @@ public class Users {
 
 
     //得到应该消费的金额
-    private Integer amount(String type) {
-        Integer amount = null;
+    private Long amount(String type,Long objectId) {
+        Long amount = null;
         switch (type) {
             case "knowledgePoint":
-//                amount = JPAEntry.getObject(金额消费表.class, "knowledgePoint", type);
-                amount = 1;
+                KnowledgePoint id = JPAEntry.getObject(KnowledgePoint.class, "id", objectId);
+                amount = id.getPrice();
                 break;
             case "scheduler":
-                Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "scheduler", type);
-                if (scheduler.getContentLink() != null) {
-//                    amount = JPAEntry.getObject(金额消费表.class, "video", type);
-                    amount = 20;
-                } else {
-//                    amount = JPAEntry.getObject(金额消费表.class, "directSeeding",type);
-                    amount = 150;
-                }
-                break;
+                Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", objectId);
+                amount =scheduler.getPrice();
         }
         return amount;
     }
 
     //扣除
-    private String deductionAmount(Long id, Integer amount, String type) {
+    private String deductionAmount(Long id, Long amount, String type) {
         String accountAmountStruts = "";
         if (type == "account") {
             User user = JPAEntry.getObject(User.class, "id", id);//得到账户
-            Integer userAmount = user.getAmount();//得到账户余额
-            Integer accountAmount = userAmount - amount;
+            Long userAmount = user.getAmount();//得到账户余额
+            Long accountAmount = userAmount - amount;
+
             if (accountAmount > 0) {
                 //成功
                 user.setAmount(accountAmount);
@@ -317,8 +330,8 @@ public class Users {
             }
         } else {
             Card card = JPAEntry.getObject(Card.class, "id", id);//得到指定卡
-            Integer cardAmount = card.getAmount();//得到指定卡余额
-            Integer cardsAmount = cardAmount - amount;
+            Long cardAmount = card.getAmount();//得到指定卡余额
+            Long cardsAmount = cardAmount - amount;
             if (cardsAmount > 0) {
                 //成功
                 card.setAmount(cardsAmount);
@@ -334,8 +347,49 @@ public class Users {
     }
 
     //转入/转出
-    private String TransferORtransfer(String to, Notice.Transfer[] from, Long id) {
-        String Struts = "201";
+    @PUT
+    @Path("transfer/transfer")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response transfertransfer(@CookieParam("sessionId") String sessionId, Notice notice) {
+        Response result = Response.status(401).build();
+//        Notice.Transfer[] from = notice.from;
+        String from = notice.from;
+        String to = notice.to;
+        Long id = Long.valueOf(to);
+        if (JPAEntry.isLogining(sessionId)) {
+            //for (int i = 0; i < from.length; i++) {     //对要转出的数据进行循环
+                Card tocard = JPAEntry.getObject(Card.class, "id", id);//根据指定卡id得到指定卡的数据
+                User user = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));//根据id得到账户
+                Integer formamount = Integer.valueOf(from);//要转出的金额
+
+                Long userAmount = user.getAmount();//账户余额
+                Long tocardAmount;
+                if(tocard.getAmount() == null){
+                    tocardAmount = Long.valueOf(0);
+                }else{
+                    tocardAmount = tocard.getAmount();//指定卡余额
+                }
+
+            if (formamount > userAmount) {//转出金额大于账户余额
+                result = Response.status(408).build();
+            } else {
+                user.setAmount(userAmount - formamount);//账户余额 = 原余额 - 转出的钱
+                JPAEntry.genericPut(user);
+                tocard.setAmount(tocardAmount + formamount);//指定卡余额 = 原卡余额+转入的钱
+                JPAEntry.genericPut(tocard);
+                result = Response.ok().build();
+            }
+        }
+        return result;
+    }
+//                if (from[i].getId() == null) {//转出账户的金额 && 装入到指定卡金额
+
+//            }
+       // }
+
+
+
       /*  if (to == "account") {//把账户的钱给账户（不支持） && 把转出卡的钱给账户
             for (int i = 0; i < from.length; i++) {
                 if (from[i].getId() == null) {//把账户里面钱发给账户
@@ -359,25 +413,11 @@ public class Users {
                 }
             }
         } else {//把账户的钱给指定卡 || 把转出卡的钱给指定卡*/
-            for (int i = 0; i < from.length; i++) {//对要转出的数据进行循环
-//                Card card = JPAEntry.getObject(Card.class, "id", from[i].getId());//根据转出卡的ID得到转出卡的数据
-                Card tocard = JPAEntry.getObject(Card.class, "id", to);//根据指定卡id得到指定卡的数据
-                User user = JPAEntry.getObject(User.class, "id", id);//根据id得到账户
-                Integer formamount = Integer.valueOf(from[i].getAmount());//要转出的金额
-//                Integer cardAmount = card.getAmount();//卡余额
-                Integer userAmount = user.getAmount();//账户余额
-                Integer tocardAmount = tocard.getAmount();//指定卡余额
 
-                if (from[i].getId() == null) {//转出账户的金额 && 装入到指定卡金额
-                    if (formamount > userAmount) {//转出金额大于账户余额
-                        Struts = "409";
-                    } else {
-                        user.setAmount(userAmount - formamount);//账户余额 = 原余额 - 转出的钱
-                        JPAEntry.genericPut(user);
-                        tocard.setAmount(tocardAmount + formamount);//指定卡余额 = 原卡余额+转入的钱
-                        JPAEntry.genericPut(tocard);
-                    }
-                } /*else { //转出学习卡的金额 && 转入到指定学习卡
+//                Card card = JPAEntry.getObject(Card.class, "id", from[i].getId());//根据转出卡的ID得到转出卡的数据
+
+//                Integer cardAmount = card.getAmount();//卡余额
+                /*else { //转出学习卡的金额 && 转入到指定学习卡
                     if (formamount > cardAmount) {//转出金额大于学习卡余额
                         Struts = "410";
                         break;
@@ -389,11 +429,9 @@ public class Users {
                     }
 
                 }*/
-            }
+
 //        }
 
-        return Struts;
-    }
 
     @PUT
     @Path("deductMoney")
@@ -402,23 +440,35 @@ public class Users {
     public String DeductMoneyUser(@CookieParam("sessionId") String sessionId, Notice notice) {
         String AmountStruts = "";
         if (JPAEntry.isLogining(sessionId)) {
-            Notice.Transfer[] from = notice.getFrom();//那些卡或账户的钱要转出
-            String to = notice.getTo();//转入到那些卡或用户
             String type = notice.objectType;//要消费那些类型
-
-            Integer amount = amount(type);//根据消费类型得到消费金额
-            if (from != null && to != null) {//把账户或卡的钱给指定卡
-                AmountStruts = TransferORtransfer(to, from, JPAEntry.getLoginId(sessionId));//进行转入转出
-            } /*else if (from != null && to == null) {//把转出卡的钱给账户
-                AmountStruts = TransferORtransfer("account", from, JPAEntry.getLoginId(sessionId));//进行转入转出
-            }*/
-
-            if (notice.subjectId == null  && AmountStruts == "201") {//扣除账户余额
+            Long amount = amount(type,notice.objectId);//根据消费类型得到消费金额
+            if (notice.subjectId == null) {//扣除账户余额
                 AmountStruts = deductionAmount(JPAEntry.getLoginId(sessionId), amount, "account");
             } else {//扣除指定卡余额
                 AmountStruts = deductionAmount(notice.getSubjectId(), amount, "card");
             }
 
+       /*     Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id",  notice.objectId);//得到账户
+            String playbackLink = "";
+            String directSeedingLink = "";
+
+            if(scheduler.getContentLink() != null){
+                playbackLink = scheduler.getContentLink();
+            }else{
+                 directSeedingLink = scheduler.getDirectLink();
+            }*/
+            /*if(AmountStruts == "200"){
+               if(notice.objectType == "directSeeding"){
+                  return directSeedingLink;
+               }
+                if(notice.objectType == "playback"){
+                   return playbackLink;
+                }
+                if(notice.objectType == "knowledgePoint"){
+                    KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", notice.objectId);//得到账户
+                    //return knowledgePoint;
+                }
+            }*/
         }
         return AmountStruts;
     }
@@ -719,7 +769,7 @@ public class Users {
                                     cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
                                     Date oneYearAfter = cal.getTime();
                                     c.setEndTime(oneYearAfter);
-                                    c.setAmount(588);
+                                    c.setAmount(588L);
                                     c.setUserId(id);
                                     JPAEntry.genericPut(c);
                                     result = Response.ok(c).build();
@@ -841,7 +891,7 @@ public class Users {
                                 cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
                                 Date oneYearAfter = cal.getTime();
                                 c.setEndTime(oneYearAfter);
-                                c.setAmount(588);
+                                c.setAmount(588L);
                                 User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                                 if (user == null) {
                                     user = new User();

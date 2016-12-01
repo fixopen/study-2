@@ -140,11 +140,11 @@ span.ptxt_span{
 }
 .mine_img2{
     float: right;
-    width: 1.125rem;
-    height: 0.8125rem;
+   /* width: 1.125rem;
+    height: 0.8125rem;*/
     vertical-align: top;
     margin-top: 2.0rem;
-    display: none;
+    /* display: none;*/
 }
 .mine_img2.cur{
     display: block;

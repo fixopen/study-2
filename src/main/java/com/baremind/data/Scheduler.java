@@ -59,6 +59,17 @@ public class Scheduler implements com.baremind.data.Entity {
     @Column(name = "teacher_description")
     private String teacherDescription;
 
+    @Column(name = "price")
+    private Long price;
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
     public Long getId() {
         return id;
     }

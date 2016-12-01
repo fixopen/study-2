@@ -10,56 +10,35 @@
 
 </head>
 <body>
-
 <article id="knowledgePoints">
 
 </article>
 <article id="selectCard" style="display: none">
-    <div class="wrap">
-        <ul class="mine_baodiv">
-            <li>
-                <a class="mine_zuli" href="javascript:void(0)">
-                    <img class="mine_img1" src="myUser/image/keBiao.png" alt="">
-                    <div class="mine_leftdiv">
-                        <span class="mine_leftsp">语文</span>
-                        <span class="mine_leftsp">5487965452</span>
-                        <br>
-                        <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
-                    </div>
-                    <img class="mine_img2" src="myUser/image/true.png" alt="">
-                </a>
-            </li>
-            <li>
-                <a class="mine_zuli" href="javascript:void(0)">
-                    <img class="mine_img1" src="myUser/image/mathBiao.png" alt="">
-                    <div class="mine_leftdiv">
-                        <span class="mine_leftsp">数学</span>
-                        <span class="mine_leftsp">5487965452</span>
-                        <br>
-                        <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
-                    </div>
-                    <img class="mine_img2" src="myUser/image/true.png" alt="">
-                </a>
-            </li>
-            <li>
-                <a class="mine_zuli" href="javascript:void(0)">
-                    <img class="mine_img1" src="myUser/image/englishBiao.png" alt="">
-                    <div class="mine_leftdiv">
-                        <span class="mine_leftsp">英语</span>
-                        <span class="mine_leftsp">5487965452</span>
-                        <br>
-                        <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
-                    </div>
-                    <img class="mine_img2 cur" src="myUser/image/true.png" alt="">
-                </a>
-            </li>
 
-        </ul>
-    </div>
 </article>
 <article id="selectOneCard" style="display: none">
 
 </article>
+<template id="selectCard-template">
+<div class="wrap" >
+    <ul class="mine_baodiv" >
+        <li >
+            <a class="mine_zuli" href="#" data-id="${id}">
+                <img class="mine_img1" src="${image}"alt="">
+                <div class="mine_leftdiv" >
+                    <span class="mine_leftsp">${subjectId}</span>
+                    <span class="mine_leftsp">${no}</span>
+                    <br>
+                    <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
+                </div>
+                <img src="" id="${id}" src="" class="mine_img2"/>
+                <!---->
+            </a>
+        </li>
+    </ul>
+</div>
+
+</template>
 <template id="selectOneCard-template">
     <div class="wrap">
         <ul class="mine_baodiv">
@@ -80,12 +59,14 @@
                 <div class="mine_leftdiv">
                     <p class="mine_zhaunc">转出金豆数量</p>
                     <span class="mine_leftsp">金豆：</span>
-                    <input class="mine_zhauncIn" type="text" placeholder="最多可转出到卡5880金豆">
+                    <input class="mine_zhauncIn" type="text" id="Number" placeholder="最多可转出到卡5880金豆">
                 </div>
             </li>
         </ul>
-        <div class="zhaunc_btn">
-            <a class="zhaunc_a" href="javascript:void(0)">确认转出</a>
+        <div class="zhaunc_btn" >
+            <!--确认转出-->
+            <a class="zhaunc_a"  href="#" id="submitTransfer" >确认转出</a>
+            <!--<button class="zhaunc_a" id="submitTransfer">确认转出</button>onclick="aa()"-->
         </div>
     </div>
 </template>
@@ -141,11 +122,13 @@
 <!-- 弹窗结束-->
 </body>
 <script>
+
     var card_evolution = [];
     var card_evolution_subject = [];
     var cards;
     var user_amount;
     var Consumption_amount;
+    var transfer;
     $.ajax({
         type: "get",
         url: "/api/volumes/" + 1 + "/knowledge-points",
@@ -162,13 +145,16 @@
     var knowledgePoints = document.getElementById("knowledgePoints");
     knowledgePoints.addEventListener('click', function (e) {
        // alert("来了")
-        notice("knowledgePoint", 2);
-    })
+        notice("knowledgePoint", 2,3);
+    },false)
+
+
 
     //只要给我你的消费类型如知识点、直播等，返回账户余额、所有的卡号余额和需要消费的金豆数
-    function notice(objectType, subjectId) {
+    function notice(objectType, subjectId,objectId) {
         var notice = {
-            objectType: objectType
+            objectType: objectType,
+            objectId: objectId
         }
 
         $.ajax({
@@ -255,10 +241,17 @@
             }
         })
 
+        var filter = {}
         var a1 = document.getElementById("a1");
         a1.addEventListener('click',function (e) {
             if(a1.value == "submit"){
-                alert("提交"+card_evolution[0].id+objectType)
+                filter = {
+                    subjectId:card_evolution[0].id,
+                    objectType:objectType,
+                    objectId:objectId,
+                }
+                save(filter)
+                //alert("提交"++objectType)
             }
             if(a1.value == "save"){
                 alert("提交没有"+card_evolution_subject[0].id+objectType)
@@ -271,6 +264,26 @@
             }
         })
 
+        function save(filter) {
+            $.ajax({
+                type:"put",
+                url:"/api/users/deductMoney",
+                data:JSON.stringify(filter),
+                dataType:"json",
+                contentType: "application/json; charset=utf-8",
+                success:function (e) {
+                    if(e == "200"){
+                        document.getElementById("Popup").style.display="none"
+                        alert("购买成功，点击观看")
+                    }
+
+                },
+                error:function (e) {
+                    alert(e)
+                }
+            })
+        }
+
         var close = document.getElementById("close");
         close.addEventListener('click',function (e) {
             document.getElementById("Popup").style.display="none"
@@ -278,14 +291,84 @@
 
     }
 
+    function transfers(no,form) {
+        var filter = {
+            to:no,
+            from:form
+        }
+        $.ajax({
+            type:"put",
+            url:"/api/users/transfer/transfer",
+            dataType:"json",
+            data:JSON.stringify(filter),
+            contentType: "application/json; charset=utf-8",
+            error: function (e) {
+                if(e.status == 408){
+                    alert("余额不足")
+                }else{
+                    alert("转账成功")
+                    document.getElementById("selectOneCard").style.display="none"
+                    document.getElementById("knowledgePoints").style.display="block"
+                    notice("knowledgePoint", 2);
+                }
+
+            }
+        })
+    }
+
     function TurnOut(cards) {
         if (cards.length > 1) {
+            for (var i = 0; i < cards.length; i++) {
+                if(cards[i].subjectId == 1){
+                    cards[i].image = "keBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                if(cards[i].subjectId == 2){
+                    cards[i].image = "mathBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                cards[i].subjectId = subject(cards[i].subjectId)
+                if(cards[i].amount == 0){
+                    cards[i].amount = "0"
+                }
+            }
+            proc({
+                containerId: 'selectCard',
+                data: cards,
+                templateId: 'selectCard-template'
+            })
             document.getElementById("knowledgePoints").style.display="none"
             document.getElementById("Popup").style.display="none"
             document.getElementById("selectCard").style.display="block"
-            alert("到多个卡选择页面")
-        } else if (cards.length == 1) {
 
+            $('.mine_zuli').on('click',  function(e) {
+                var id = e.target.dataset.id
+                document.getElementById(id).src ="true.png";
+                setTimeout(function(){duo(id)}, 1000)
+
+                //duo(id)
+            })
+           // alert("到多个卡选择页面")
+        } else if (cards.length == 1) {
+            dan(cards);
+    }
+
+    function duo(id) {
+        var w = 1;
+        w = id;
+        $.ajax({
+            type:"get",
+            url:"/api/cards/"+w,
+            dataType:"json",
+            success:function (e) {
+                var arrList = new Array();
+                arrList.push(e);
+                dan(arrList)
+            }
+        })
+    }
+
+    function dan(cards) {
             var a = cards[0].subjectId
             cards[0].subjectId = subject(a)
             if(cards[0].amount == 0){
@@ -296,13 +379,18 @@
                 data: cards,
                 templateId: 'selectOneCard-template'
             })
+            transfer = cards;
+            document.getElementById("selectCard").style.display="none"
             document.getElementById("knowledgePoints").style.display="none"
             document.getElementById("Popup").style.display="none"
             document.getElementById("selectOneCard").style.display="block"
-           /// alert("到一个卡选择页面")
-        }
-    }
+        var  submitTransfer = document.getElementById("submitTransfer")
+        submitTransfer.addEventListener('click',function (e) {
+            transfers(transfer[0].id,$("#Number").val())
+        })
 
+    }
+    }
 
     function subject(sex) {
         var result;
