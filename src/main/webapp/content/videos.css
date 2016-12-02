@@ -90,9 +90,7 @@
 .subject-list{
 	display: none;
 }
-.subject-list.cur{
-	display: block;
-}
+
 .video-list{
 	/* overflow: hidden; */
 }

@@ -632,7 +632,7 @@
             init: function () {
                 if (!state.main.isInit) {
                     $(document).on('click', '.course-detail-btn', function (e) {
-                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle(1000)
+                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                     })
 
                     var now = Date.now()
@@ -828,21 +828,18 @@
                     $(document).on('click', '.detail_Btn', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                     })
+
                     $(document).on('click', '[data-type="subject"]', function(e) {
                         //hide subjects
                         state.passed.subject.style.display = 'none'
-
                         //change subjectSelect
                         var s = document.getElementById('subjectSelect')
                         s.textContent = e.target.textContent
                         s.dataset.id = e.target.dataset.id
-
                         var sub = state.getSubjectById(e.target.dataset.id)
-
                         if (!state.containTeacher(sub, t.textContent)) {
-                            state.passed.teacherChoice.textContent = '老师'
+                            state.passed.teacherSelect.textContent = '老师'
                         }
-
                         //change teachers container
                         state.passed.teacher.innerHTML = ''
                         proc({
@@ -877,16 +874,27 @@
                         })
                     })
 
+
                     $(document).on('click', '[data-type="teacher"]', function(e) {
                         //hide teachers
+                        state.passed.teacher.style.display = 'none'
                         // change teacherSelect
+                        var s = document.getElementById('teacherSelect')
+                        s.textContent = e.target.textContent
+                        s.dataset.id = e.target.dataset.id
 
+                        var sub = state.getSubjectById(e.target.dataset.id)
+
+                        if (!state.containTeacher(sub, t.textContent)) {
+                            state.passed.teacherSelect.textContent = '老师'
+                        }
                         //filter data
                         //refill the content
                     })
 
                     $(document).on('click', '[data-type="grade"]', function(e) {
                         //hide grade
+                        state.passed.grade.style.display = 'none'
                         // change gradeSelect
 
                         //filter data
@@ -1004,7 +1012,7 @@
                 var t = document.getElementById('teacherSelect')
                 var g = document.getElementById('gradeSelect')
                 //filter the passed data via the filter element state
-                var subject, teacher, grade, date
+//                var subject, teacher, grade, date
                 for (var i = 0; i < passed.length; ++i) {
                     var pass = true
                     if (s.textContent != '科目') {
@@ -1155,6 +1163,7 @@
                 success: function (ss) {
                     subjects = ss
                     state['main'].init()
+                    history.pushState(null, null, '/content/videos.html#main')
                 },
                 error: function (xhr) {
                     alert('back-end not response, places retry')
@@ -1174,9 +1183,6 @@
                 switchTo(id)
                 state[id].changeId(e.target.dataset.id)
             })
-
-            state['main'].init()
-            history.pushState(null, null, '/content/videos.html#main')
 
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
