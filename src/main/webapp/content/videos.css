@@ -211,6 +211,7 @@ li.active > a.tab_toggle {
     position: absolute;
     bottom: 0.625rem;
     right: 0.5rem;
+    z-index: 4;
 }
 
 .yuwen_p2 {
@@ -218,7 +219,7 @@ li.active > a.tab_toggle {
     color: #fff;
     font-size: 0.8125rem;
     position: absolute;
-    bottom: 0.625rem;
+    bottom: 0rem;
     left: 0.5rem;
 }
 
