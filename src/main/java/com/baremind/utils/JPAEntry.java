@@ -45,8 +45,12 @@ public class JPAEntry {
     }
 
     public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
-        T result = null;
         EntityManager em = getEntityManager();
+        return getObject(em, type, conditions);
+    }
+
+    public static <T> T getObject(EntityManager em, Class<T> type, Map<String, Object> conditions) {
+        T result = null;
         String jpql = "SELECT a FROM " + type.getSimpleName() + " a ";
         boolean isFirst = true;
         if (conditions != null) {
@@ -246,4 +250,6 @@ public class JPAEntry {
     public static void log(Long userId, String action, String objectType, Long objectId) {
         Logs.insert(userId, objectType, objectId, action);
     }
+
+
 }

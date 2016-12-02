@@ -215,6 +215,8 @@ CREATE TABLE knowledge_points (
     name character varying(64),
     "order" integer,
     show_time timestamp without time zone
+    price bigint,
+    discount double precision
 );
 
 
@@ -337,8 +339,11 @@ CREATE TABLE schedulers (
     content_link character varying(256),
     direct_link character varying(256),
     description text,
-    teacher character varying(64),
-    teacher_description text
+    teacher_id bigint
+    price bigint,
+    discount double precision
+--     teacher character varying(64),
+--     teacher_description text
 );
 
 

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery/jquery-3.1.1.min.js"></script>
+
+</head>
+<body>
+    <button onclick="transfers(1,10,0)">卡id→金额→账户</button>
+    <button onclick="transfers(0,20,2)">账户→金额→卡id</button>
+    <button onclick="transfers(2,100,1)">卡id→金额→卡id</button>
+
+    <button onclick="kou(1,'card','knowledgePoint',3)">卡id→卡→资源id→资源类型→扣钱</button>
+
+    <button onclick="kou(96520767275011,'user','knowledgePoint',3)">用户id→用户→资源id→资源类型→扣钱</button>
+
+    <button onclick="xiao(1,'knowledgePoint')">知识点id→知识点类型</button>
+    <button onclick="xiao(2,'knowledgePoint')">知识点id→知识点类型</button>
+    <button onclick="xiao(3,'knowledgePoint')">知识点id→知识点类型</button>
+
+</body>
+<script>
+    function transfers(cardId,money,subjectId) {
+        var filter = {
+           // to:cardId
+            target:{
+                objectId : cardId ,
+                amount : money,
+                subjectId : subjectId,
+            }
+        }
+        alert(JSON.stringify(filter))
+        $.ajax({
+            type:"put",
+            url:"/api/users/transfer/transfer",
+            dataType:"json",
+            data:JSON.stringify(filter),
+            contentType: "application/json; charset=utf-8",
+            error: function (e) {
+                switch (JSON.stringify(e.status)){
+                    case "408":
+                        alert("余额不足")
+                        break;
+                    case "200":
+                        alert("转账成功")
+                        document.getElementById("selectOneCard").style.display="none"
+                        document.getElementById("knowledgePoints").style.display="block"
+                        notice("knowledgePoint", 2);
+                        break;
+                }
+            }
+        })
+    }
+
+    function kou(sourceId,sourceType,objectType,objectId) {
+        var filter = {
+            subjectId:sourceId,//账户id/卡id
+            subjectType:sourceType,//账户/卡
+
+            objectType:objectType,//资源类型
+            objectId:objectId//资源id
+
+        }
+        $.ajax({
+            type:"put",
+            url:"/api/users/deductMoney",
+            data:JSON.stringify(filter),
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            success:function (e) {
+                switch (e){
+                    case 408:
+                        alert("余额不足")
+                        break;
+                    case 200:
+                       // document.getElementById("Popup").style.display="none"
+                        alert("购买成功，点击观看")
+                        break;
+                }
+            }
+        })
+    }
+
+    function xiao(objectId,objectType) {
+         $.ajax({
+             type:"get",
+             url:"/api/knowledge-points/"+objectId+"/"+objectType+"/contents",
+             dataType:"json",
+             success:function (e) {
+                 alert("成功直接展示资源内容")
+             },
+             error: function (e) {
+                 switch (JSON.stringify(e.status)) {
+                     case "403":
+                         alert("你没有购买")
+                         break;
+                     case "408":
+                         alert("你购买的资源已经消费完了，请重新购买在观看")
+                         break;
+
+                 }
+             }
+         })
+    }
+</script>
+</html>

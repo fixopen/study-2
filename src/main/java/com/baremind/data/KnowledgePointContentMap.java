@@ -24,6 +24,17 @@ public class KnowledgePointContentMap implements com.baremind.data.Entity {
     @Column(name = "object_id")
     private Long objectId;
 
+    @Column(name = "discount")
+    private double discount;
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
     @Column(name = "\"order\"")
     private int order;
 
