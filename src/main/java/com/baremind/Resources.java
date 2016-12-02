@@ -1,14 +1,13 @@
 package com.baremind;
 
-import com.baremind.data.Card;
-import com.baremind.data.KnowledgePoint;
-import com.baremind.data.Scheduler;
-import com.baremind.data.User;
+import com.baremind.data.*;
+import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +57,6 @@ public class Resources {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(403).build();
             Long userId = JPAEntry.getLoginId(sessionId);
-            User user = JPAEntry.getObject(User.class, "id", userId);
             Map<String, Object> filter = new HashMap<>();
             filter.put("userId", userId);
             filter.put("objectType", type);
@@ -67,35 +65,42 @@ public class Resources {
             List<Consumption> cs = JPAEntry.getList(Consumption.class, filter);
 
             Long total = 0L;
-            Map<Transaction, Long> remindCount = new HashMap<>();
+            Map<Transaction, Long> transactionCount = new HashMap<>();
             for (Transaction t : ts) {
                 Long count = t.getCount();
-                remindCount.put(t, count);
+                transactionCount.put(t, count);
                 total += count;
             }
 
             if (cs.size() < total) {
                 for (Consumption c : cs) {
-                    remindCount.forEach((t, c) -> {
+                    transactionCount.forEach((t, count) -> {
                         if (t.getId().longValue() == c.getTransactionId().longValue()) {
-                            remindCount.put(t, c - 1);
+                            transactionCount.put(t, count - 1);
                         }
                     });
                 }
 
-                for (int i = 0; i < remindCount.size(); ++i) {
-                    if (remindCount[i].getValue() > 0) {
-                        Consumption consumption = new Consumption();
-                        consumption.setTransactionId(remindCount[i].getKey().getId());
-                        //post
+                Transaction findTransaction = null;
+                for (Map.Entry<Transaction, Long> item : transactionCount.entrySet()) {
+                    if (item.getValue() > 0L) {
+                        findTransaction = item.getKey();
                         break;
                     }
                 }
+
+                Consumption consumption = new Consumption();
+                consumption.setId(IdGenerator.getNewId());
+                consumption.setUserId(userId);
+                consumption.setObjectId(id);
+                consumption.setObjectType(type);
+                consumption.setTimestamp(new Date());
+                consumption.setTransactionId(findTransaction.getId());
+                JPAEntry.genericPost(consumption);
+
+                Object resource = getResource(type, id);
+                result = Response.ok(resource).build();
             }
-
-
-            Object resource = getResource(type, id);
-            result = Response.ok(resource).build();
         }
         return result;
     }
