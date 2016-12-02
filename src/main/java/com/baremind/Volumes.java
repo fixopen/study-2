@@ -111,6 +111,7 @@ public class Volumes {
                     kpm.put("showTime", kp.getShowTime());
                     kpm.put("likeCount", 0);
                     kpm.put("stateType", "old");
+                    kpm.put("order", kp.getOrder());
                     Date now = new Date();
                     Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
 
