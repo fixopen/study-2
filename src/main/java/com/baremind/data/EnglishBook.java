@@ -19,6 +19,7 @@ public class EnglishBook { //book
     private String type; //@type
     private String no; //@id
     private String name; //@name
+
     public static class Page {
         public static class Unit {
             public static class Rectangle {
@@ -59,6 +60,7 @@ public class EnglishBook { //book
                     this.bottom = bottom;
                 }
             }
+
             String no; //unitno
             Rectangle bounds = new Rectangle(); //rect
             String content; //url
@@ -87,6 +89,7 @@ public class EnglishBook { //book
                 this.content = content;
             }
         }
+
         String no; //page
         List<Unit> units = new ArrayList<>(); //unit
 
@@ -106,6 +109,7 @@ public class EnglishBook { //book
             this.units = units;
         }
     }
+
     private List<Page> pages = new ArrayList<>(); //item
 
     public String getType() {

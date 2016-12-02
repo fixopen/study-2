@@ -53,17 +53,26 @@ public class Scheduler implements com.baremind.data.Entity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "teacher")
-    private String teacher;
+    @Column(name = "teacher_id")
+    private Long teacherId;
 
-    @Column(name = "teacher_description")
-    private String teacherDescription;
 
     @Column(name = "price")
     private Long price;
 
     public Long getPrice() {
         return price;
+    }
+
+    @Column(name = "discount")
+    private double discount;
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
     }
 
     public void setPrice(Long price) {
@@ -174,19 +183,11 @@ public class Scheduler implements com.baremind.data.Entity {
         this.description = description;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public Long getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public String getTeacherDescription() {
-        return teacherDescription;
-    }
-
-    public void setTeacherDescription(String teacherDescription) {
-        this.teacherDescription = teacherDescription;
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 }

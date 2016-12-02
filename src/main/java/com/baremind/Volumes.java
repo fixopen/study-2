@@ -82,7 +82,7 @@ public class Volumes {
             orders.put("order", "ASC");
             List<KnowledgePoint> knowledgePoints = JPAEntry.getList(KnowledgePoint.class, conditions, orders);
             if (!knowledgePoints.isEmpty()) {
-              //  List<Map<String, Object>> kpsm = KnowledgePoints.toMaps(knowledgePoints);
+                //  List<Map<String, Object>> kpsm = KnowledgePoints.toMaps(knowledgePoints);
                 //SELECT count(l), object_id FROM likes WHERE object_id IN (...) GROUP BY object_id
                 result = Response.ok(new Gson().toJson(knowledgePoints)).build();
             }

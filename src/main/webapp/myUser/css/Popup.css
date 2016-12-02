@@ -204,3 +204,13 @@ span.ptxt_span{
     background-color: #ff8067;
     border-radius: 0.3125rem;
 }
+
+.turnOut_note{
+    color: #ccc;
+    font-size: 0.9375rem;
+    font-family: "苹方";
+    padding: 0 1.25rem;
+}
+.note_number{
+    margin: 0 0.3125rem;
+}
