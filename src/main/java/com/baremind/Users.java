@@ -270,18 +270,6 @@ public class Users {
             this.subjectId = subjectId;
         }
 
-
-    }
-
-    Map<Transaction, Long> getTransaction(Map<Transaction, Long>, Long id) {
-        Map<Transaction, Long> result = null;
-        for (Map<Transaction, Long> t: ts) {
-            if (t.getKey().getId() == id) {
-                result = t;
-                break;
-            }
-        }
-        return result;
     }
 
     @PUT
@@ -298,36 +286,6 @@ public class Users {
             noticeMap.put("account", user.getAmount());
             List<Card> cards = JPAEntry.getList(Card.class, "userId", JPAEntry.getLoginId(sessionId));
             noticeMap.put("cards", cards);
-
-
-            List<Transaction> ts = JPAEntry.getList(...);
-            List<Consumption> cs = JPAEntry.getList(...);
-            type;id;
-
-            Long total = 0;
-            Map<Transaction, Long> remindCount = new HashMap<>();
-            for (int i = 0; i < ts.size(); ++i) {
-                Long count = ts.get(i).getCount();
-                remindCount.put(ts.get(i), count);
-                total += count;
-            }
-
-            if (cs.size() < total) {
-                for (Consumption c : cs) {
-                    transactionId = c.getTransactionId();
-                    t = getTransaction(ts, transactionId);
-                    t.getValue()--;
-                }
-
-                for (int i = 0; i < remindCount.size(); ++i) {
-                    if (remindCount[i].getValue() > 0) {
-                        Consumption consumption = new Consumption();
-                        consumption.setTransactionId(remindCount[i].getKey().getId());
-                        //post
-                        break;
-                    }
-                }
-            }
 
 
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
