@@ -18,8 +18,15 @@
 <body>
 <div class="wrap">
     <div class="waiting">
-        <a class="goBack" href="allVideo.html"></a>
+        <div class="goBack"></div>
     </div>
 </div>
+<script src="../jquery/jquery.min.js"></script>
+<script>
+    $('.goBack').on('click', function(e) {
+        history.back()
+    })
+</script>
+
 </body>
 </html>
