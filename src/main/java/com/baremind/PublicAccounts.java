@@ -605,6 +605,11 @@ public class PublicAccounts {
                                     break;
                                 case "text":
                                     String Content = p.getInfos().get("Content");
+                                    Property property = new Property();
+                                    property.setName("来到了text");
+                                    property.setValue(Content);
+                                    JPAEntry.genericPost(property);
+                                   // System.out.println("来到了text，打印Content====================================================="+Content);
                                     String text = "";
                                     switch (Content){
                                         case "课表":
@@ -652,20 +657,18 @@ public class PublicAccounts {
         }
         return result;
     }
-/*
- String result = "<xml>\n" +
-                "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
-                "   <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName>\n" +
-                "   <CreateTime>" + currentEpochTime + "</CreateTime>\n" +
-                "   <MsgType><![CDATA[text]]></MsgType>\n" +
-                "   <Content><![CDATA[" + content + "]]></Content>\n" +
-                "</xml>";
-        return result;/
- */
+
     private static String text(WechatPush p) {
+
+
+
         String openId = p.getFromUserName();
         long secondCount = new Date().getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
+        Property property = new Property();
+        property.setName("到text====================================================");
+        property.setValue(openId);
+        JPAEntry.genericPost(property);
         String picUrl ="http://xiaoyuzhishi.com/medias/1480389780313.jpeg";
         String url ="http://xiaoyuzhishi.com/user/active-card.html";
         String result = "<xml>\n" +
@@ -683,6 +686,10 @@ public class PublicAccounts {
                 "   </item>\n" +
                 "   </Articles>\n" +
                 "   </xml>";
+
+        property.setName("运行结果====================================================");
+        property.setValue(result);
+        JPAEntry.genericPost(property);
         return result;
     }
 
