@@ -247,6 +247,10 @@ public class Volumes {
                 if (subjectId != null) {
                     existvolume.setSubjectId(subjectId);
                 }
+                String bookCover = volume.getBookCover();
+                if(bookCover != null){
+                    existvolume.setBookCover(bookCover);
+                }
                 JPAEntry.genericPut(existvolume);
                 result = Response.ok(existvolume).build();
             }

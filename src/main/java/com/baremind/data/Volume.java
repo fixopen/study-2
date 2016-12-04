@@ -86,6 +86,7 @@ public class Volume {
         vm.put("grade", volume.getGrade());
         vm.put("order", volume.getOrder());
         vm.put("subjectId", volume.getSubjectId());
+        vm.put("bookCover", volume.getBookCover());
         vm.put("title", volume.getTitle());
         vm.put("type", "old");
         EntityManager em = JPAEntry.getEntityManager();
