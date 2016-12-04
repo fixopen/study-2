@@ -320,7 +320,7 @@ public class Users {
     }
 
 
-    //转入/转出
+  /*  //转入/转出
     @PUT
     @Path("transfer/transfer")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -374,55 +374,10 @@ public class Users {
         return result;
     }
 
-    private static <T extends TransferObject, U extends TransferObject> boolean transfer(EntityManager em, T src, U dst, Long money, Long userId, Long sourceId, String sourceType, Date now, Long objectId, String objectType, Long count) {
-        boolean result = false;
-        if (src.getAmount() >= money) {
-            em.getTransaction().begin();
+*/
 
-            dst.setAmount(dst.getAmount() + money);
-            em.merge(dst);
-            src.setAmount(src.getAmount() - money);
-            em.merge(src);
 
-            postTransferObject(userId, sourceId, money, now, objectId, sourceType, objectType, count);
 
-            em.getTransaction().commit();
-
-            result = true;
-        }
-        return result;
-    }
-
-    private static <T extends TransferObject> boolean kou(EntityManager em, T src, Long money, Long userId, Long sourceId, String sourceType, Date now, Long objectId, String objectType, Long count) {
-        boolean result = false;
-        if (src.getAmount() > money) {
-            em.getTransaction().begin();
-
-            src.setAmount(src.getAmount() - money);
-            em.merge(src);
-
-            postTransferObject(userId, sourceId, money, now, objectId, sourceType, objectType, count);
-
-            em.getTransaction().commit();
-
-            result = true;
-        }
-        return result;
-    }
-
-    public static void postTransferObject(Long userId, Long sourceId, Long money, Date now, Long objectId, String sourceType, String objectType, Long count) {
-        Transaction transactions = new Transaction();
-        transactions.setId(IdGenerator.getNewId());
-        transactions.setUserId(userId);
-        transactions.setCount(count);
-        transactions.setMoney(money);
-        transactions.setTimestamp(now);
-        transactions.setSourceId(sourceId);
-        transactions.setSourceType(sourceType);
-        transactions.setObjectId(objectId);
-        transactions.setObjectType(objectType);
-        JPAEntry.genericPost(transactions);
-    }
 
     public static void postConsumption(Long userId, Date now, Long objectId, String objectType, Long transactionId) {
         Consumption consumption = new Consumption();
@@ -435,7 +390,7 @@ public class Users {
         JPAEntry.genericPost(consumption);
     }
 
-    @PUT
+   /* @PUT
     @Path("deductMoney")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -469,7 +424,7 @@ public class Users {
             //余额不足
         }
         return AmountStruts;
-    }
+    }*/
 
     public static String guan(Long userId, Long objectId, String objectType) {
         String struts = "403";

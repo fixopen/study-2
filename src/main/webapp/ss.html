@@ -7,43 +7,80 @@
 
 </head>
 <body>
-    <button onclick="transfers(1,10,0)">卡id→金额→账户</button>
-    <button onclick="transfers(0,20,2)">账户→金额→卡id</button>
-    <button onclick="transfers(2,100,1)">卡id→金额→卡id</button>
+<!--
+<button onclick="xiao(3,'knowledgePoint')">根据id和type获取资源：知识点详情、、</button>
+    <button onclick="xiao(2,'knowledgePoint')">根据id和type获取资源：知识点详情、、</button>
+    <button onclick="xiao(1,'knowledgePoint')">根据id和type获取资源：知识点详情、、</button>
 
-    <button onclick="kou(1,'card','knowledgePoint',3)">卡id→卡→资源id→资源类型→扣钱</button>
 
-    <button onclick="kou(96520767275011,'user','knowledgePoint',3)">用户id→用户→资源id→资源类型→扣钱</button>
+
 
     <button onclick="xiao(1,'knowledgePoint')">知识点id→知识点类型</button>
-    <button onclick="xiao(2,'knowledgePoint')">知识点id→知识点类型</button>
-    <button onclick="xiao(3,'knowledgePoint')">知识点id→知识点类型</button>
+    <button onclick="xiao(2,'knowledgePoint')">知识点id→知识点类型</button>-->
+   <!-- <button onclick="xiao('knowledgePoint',3)">根据id和type判断是否可以观看知识点</button>
+    <button onclick="xiao('liveVideo',1)">根据id和type判断是否可以观看直播</button>
+    <button onclick="xiao('video',2)">根据id和type判断是否可以观看回放</button>-->
+
+    <!--<button onclick="transfers(2,'card',96520767275011,'user',10)">卡id→账户</button>
+    <button onclick="transfers(96520767275011,'user',1,'card',66)">账户→卡id</button>
+    <button onclick="transfers(2,'card',1,'card',10)">卡id→卡id</button>-->
+
+    <!--<button onclick="transfers(null,'recharge',1,'card',24)">给卡充值</button>
+    <button onclick="transfers(null,'recharge',96520767275011,'user',500)">给账户充值</button>-->
+    <!--
+    <button onclick="transfers(1,'card',3,'knowledgePoint',1)">用卡1购买第三个知识点一次</button>
+    <button onclick="transfers(3,'card',1,'liveVideo',2)">用卡3购买直播两次</button>
+    <button onclick="transfers(4,'card',2,'video',3)">用卡4购买回放三次</button>
+
+    <button onclick="transfers(96520767275011,'user',3,'knowledgePoint',1)">用账户购买第三个知识点一次</button>
+    <button onclick="transfers(96520767275011,'user',1,'liveVideo',2)">用账户购买直播</button>
+    <button onclick="transfers(96520767275011,'user',2,'video',3)">用账户购买回放</button>-->
 
 </body>
 <script>
-    function transfers(cardId,money,subjectId) {
-        var filter = {
-           // to:cardId
-            target:{
-                objectId : cardId ,
-                amount : money,
-                subjectId : subjectId,
-            }
+    /*function transfers(sourceId,sourceType,objectId,objectType,count) {
+        /!*var filter = {转账
+            sourceId:sourceId,
+            sourceType:sourceType,
+            objectId:objectId,
+            objectType:objectType,
+            money:money
+            //count 0
+        }*!/
+        /!*var filter = { // 充值
+            //sourceId:sourceId,
+            sourceType:sourceType,
+            objectId:objectId,
+            objectType:objectType,
+            money:money
+            //count 0
+        }*!/
+        var filter = { // 购买
+            sourceId:sourceId,
+            sourceType:sourceType,
+            objectId:objectId,
+            objectType:objectType,
+            count:count
         }
-        alert(JSON.stringify(filter))
+      //  alert(JSON.stringify(filter))
         $.ajax({
-            type:"put",
-            url:"/api/users/transfer/transfer",
+            type:"post",
+            url:"/api/transactions",
             dataType:"json",
             data:JSON.stringify(filter),
             contentType: "application/json; charset=utf-8",
+            success:function (e) {
+                alert("成功")
+                alert(JSON.stringify(e))
+            },
             error: function (e) {
+                alert(JSON.stringify(e))
                 switch (JSON.stringify(e.status)){
                     case "408":
                         alert("余额不足")
                         break;
                     case "200":
-                        alert("转账成功")
+                        alert("成功")
                         document.getElementById("selectOneCard").style.display="none"
                         document.getElementById("knowledgePoints").style.display="block"
                         notice("knowledgePoint", 2);
@@ -80,17 +117,18 @@
                 }
             }
         })
-    }
-
-    function xiao(objectId,objectType) {
+    }*/
+    /*function xiao(objectId,objectType) {//得到内容
          $.ajax({
              type:"get",
-             url:"/api/knowledge-points/"+objectId+"/"+objectType+"/contents",
+             url:"/api/resources/"+objectType+"/"+objectId+"/sale-info",
              dataType:"json",
              success:function (e) {
                  alert("成功直接展示资源内容")
+                 alert(JSON.stringify(e))
              },
              error: function (e) {
+                 alert(JSON.stringify(e))
                  switch (JSON.stringify(e.status)) {
                      case "403":
                          alert("你没有购买")
@@ -102,6 +140,45 @@
                  }
              }
          })
-    }
+    }*/
+    /*function xiao(objectId,objectType) {//自己有多少钱
+        $.ajax({
+            type:"get",
+            url:"/api/resources/"+objectId+"/"+objectType+"/info",
+            dataType:"json",
+            success:function (e) {
+                alert("成功直接展示资源内容")
+                alert(JSON.stringify(e))
+            },
+            error: function (e) {
+                alert(JSON.stringify(e))
+                switch (JSON.stringify(e.status)) {
+                    case "403":
+                        alert("你没有购买")
+                        break;
+                    case "408":
+                        alert("你购买的资源已经消费完了，请重新购买在观看")
+                        break;
+
+                }
+            }
+        })
+    }*/
+    /*function xiao(objectType,objectId) {//自己可以看吗？
+        $.ajax({
+            type:"get",
+            url:"/api/resources/"+objectType+"/"+objectId,
+            dataType:"json",
+            success:function (e) {
+                alert("可以")
+                alert(JSON.stringify(e))
+            },
+            error: function (e) {
+                alert("不可以")
+                alert(JSON.stringify(e))
+
+            }
+        })
+    }*/
 </script>
 </html>
