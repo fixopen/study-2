@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>操作课表</title>
+    <script src="../jquery/jquery-3.1.1.min.js"></script>
+    <script src="../util.js"></script>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <td>科目</td>
+        <td>
+            <input type="radio" name="subjectId" id="subjectId1" value="1"/>语文
+            <input type="radio" name="subjectId" id="subjectId2" value="2"/>数学
+            <input type="radio" name="subjectId" id="subjectId3" value="3"/>英语
+        </td>
+    </tr>
+    <tr>
+        <td>年级</td>
+        <td>
+            <input type="radio" name="grade" id="grade20" value="20"/>低年级(1-3)
+            <input type="radio" name="grade" id="grade21" value="21"/>高年级(4-6)
+            <input type="radio" name="grade" id="grade1" value="1"/>1年级
+            <input type="radio" name="grade" id="grade2" value="2"/>2年级
+            <input type="radio" name="grade" id="grade3" value="3"/>3年级
+            <input type="radio" name="grade" id="grade4" value="4"/>4年级
+            <input type="radio" name="grade" id="grade5" value="5"/>5年级
+            <input type="radio" name="grade" id="grade6" value="6"/>6年级
+        </td>
+    </tr>
+    <tr>
+        <td>书名</td>
+        <td><input type="text" id="title"/></td>
+    </tr>
+    <tr>
+        <td>封面</td>
+        <td><input type="file" id="cover"/></td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="submit()">提交</button>
+        </td>
+    </tr>
+</table>
+<script>
+    let coverInput = document.getElementById("cover")
+    let id = g.getUrlParameter("id");
+    if (id != null) {
+        //alert(id)
+        $.ajax({
+            type: "get",
+            url: "/api/volumes/" + id,
+            dataType: 'json',
+            success: function (scheduler) {
+                $("#subjectId" + scheduler.subjectId).attr("checked", true);//勾选
+                $("#grade" + scheduler.grade).attr("checked", true);
+                $("#title").attr("value", scheduler.title);
+            },
+            error: function (scheduler) {
+                alert(JSON.stringify(scheduler))
+            }
+        })
+    }
+    function submitfile(postprocess) {
+        var formData = new FormData();
+        formData.append("file", coverInput.files[0]);
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                if (request.status == 200) {
+                    returndata = JSON.parse(request.responseText)
+                    coverInput.dataset.storePath = returndata.storePath;
+                    postprocess()
+                }
+            }
+        }
+        request.open("POST", "/api/medias");
+        request.send(formData);
+    }
+
+    function submit() {
+        if (!coverInput.dataset.storePath) {
+            if (coverInput.files.length == 0) {
+                alert("请选中图片，如果不选中图片将无法进行添加或修改")
+            }
+            submitfile(function () {
+                post()
+            });
+        } else {
+            if (coverInput.files.length == 0) {
+                alert("请选中图片，如果不选中图片将无法进行添加或修改")
+            }
+            post()
+        }
+        function post() {
+            let data = {
+                subjectId: $("input[name='subjectId']:checked").val(),
+                grade: $("input[name='grade']:checked").val(),
+                title: $("#title").val(),
+                bookCover: coverInput.dataset.storePath,
+
+            }
+            alert(JSON.stringify(data));
+            if (id != null) {
+                $.ajax({
+                    type: "put",
+                    url: "/api/volumes/" + id,
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (volume) {
+                        alert("修改成功")
+                        window.location.href = "book.html"
+                    },
+                    error: function (volume) {
+                        alert("修改失败")
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: "post",
+                    url: "/api/schedulers",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (scheduler) {
+                        alert("添加成功！")
+                        window.location.href = "book.html"
+                    },
+                    error: function (scheduler) {
+                        alert("添加失败！")
+                    }
+                })
+            }
+
+        }
+    }
+</script>
+
+</body>
+</html>

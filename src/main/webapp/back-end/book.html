@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>图书列表</title>
+</head>
+<script src="../jquery/jquery-1.8.2.min.js"></script>
+<link rel="stylesheet" href="../css/index2.css">
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "/api/volumes",
+            dataType: "json",
+            success: function (obj) {
+                var list = obj;
+                $("#show_list").empty();
+                $("#show_list").append("<tr><th colspan='10'>图书列表</th></tr>");
+                $("#show_list").append("<tr><td>ID</td><td>科目</td><td>年级</td><td>书名</td><td>封面</td><td>操作(<button onclick='add()'>添加</button>)</td>");
+                for (var i = 0; i < list.length; ++i) {
+                    $("#show_list").append("<tr><td>" + list[i].id + "</td><td>" + list[i].subjectId + "</td><td>" + list[i].grade + "</td><td>" + list[i].title + "</td><td>" + list[i].bookCover + "</td><td><button onclick='update(" + list[i].id + ")'>修改</button></td></tr>");
+                }
+            }
+        });
+    });
+
+    function add() {
+        //alert("添加")
+        window.location.href = "bookAdd.html"
+    }
+
+    function update(id) {
+        window.location.href = "bookAdd.html?id=" + id;
+        //alert("修改：id="+id)
+    }
+</script>
+<body>
+<table id="show_list"></table>
+</body>
+</html>
+

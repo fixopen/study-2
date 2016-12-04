@@ -29,6 +29,17 @@ public class Volume {
     @Column(name = "\"order\"")
     private int order;
 
+    @Column(name = "bookcover")
+    private String bookCover;
+
+    public String getBookCover() {
+        return bookCover;
+    }
+
+    public void setBookCover(String bookCover) {
+        this.bookCover = bookCover;
+    }
+
     public int getOrder() {
         return order;
     }
