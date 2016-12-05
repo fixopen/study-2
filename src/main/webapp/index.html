@@ -180,10 +180,10 @@
     <a class="mine_zuli" href="javascript:void(0)" id="z">
         <img src="myUser/image/keBiao.png" alt="">
         <div class="mine_leftdiv">
-            <span class="mine_leftsp">账号</span>
+            <span class="mine_leftsp" id="name"></span>
             <!-- <span class="mine_leftsp">5487965452</span> -->
             <br>
-            <span class="uli_span">余<i class="uli_spani">1500</i>金豆</span>
+            <span class="uli_span">余<i class="uli_spani" id="usermoney"></i>金豆</span>
         </div>
     </a>
     <div class="charge-main">
@@ -232,6 +232,7 @@
     var price;
     var d = document;
     var biao;
+    var ji;
     var transfer;
     var count = 1;
     var object_Id;
@@ -264,7 +265,7 @@
                 var subject_card = transformation(a);
                 var object_Type = transformationType(objectType);
                 d.getElementById("p11").innerHTML = "" + object_Type + "需要" + price + "金豆";
-                d.getElementById("p21").innerHTML = "确认要扣" + subject_card + "" + price + "个金豆吗？";
+                d.getElementById("p21").innerHTML = "确认要扣" + subject_card + "卡" + price + "金豆吗？";
                 d.getElementById("a11").innerHTML = "确认";
                 d.getElementById("a21").innerHTML = "充值";
                 d.getElementById("1").style.display = "block"
@@ -289,7 +290,7 @@
                     var subject_card = transformation(a);
                     var object_Type = transformationType(objectType);
                     d.getElementById("p12").innerHTML = "" + object_Type + "需要" + price + "金豆";
-                    d.getElementById("p22").innerHTML = "您的" + subject_card + "余额不足";
+                    d.getElementById("p22").innerHTML = "您的" + subject_card + "卡余额不足";
                     d.getElementById("a12").innerHTML = "充值";
                     if(mp == "true"){
                         d.getElementById("a22").innerHTML = "转入";
@@ -316,7 +317,7 @@
                     }
                     var object_Type = transformationType(objectType);
                     d.getElementById("p13").innerHTML = "您没有" + object_card + "卡";
-                    d.getElementById("p23").innerHTML = "确认要扣" + subject_card + "" + price + "个金豆吗？";
+                    d.getElementById("p23").innerHTML = "确认要扣" + subject_card + "卡" + price + "金豆吗？";
                     d.getElementById("a13").innerHTML = "确认";
                     d.getElementById("a23").innerHTML = "充值";
                     d.getElementById("3").style.display = "block"
@@ -348,7 +349,7 @@
                     }
                     var object_Type = transformationType(objectType);
                     d.getElementById("p14").innerHTML = "您没有" + object_card + "卡";
-                    d.getElementById("p24").innerHTML = "您的" + subject_card + "余额不足";
+                    d.getElementById("p24").innerHTML = "您的" + subject_card + "卡余额不足";
                     d.getElementById("a14").innerHTML = "充值";
                     if(mp == "true"){
                         d.getElementById("a24").innerHTML = "转入";
@@ -457,7 +458,8 @@
         d.getElementById("1").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
-        d.getElementById("c").style.display="block";
+        //d.getElementById("c").style.display="block";
+        rechargePage(cards,"c")
     })
 
     var recharge2 = document.getElementById("a12")
@@ -466,7 +468,8 @@
         d.getElementById("2").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
-        d.getElementById("c").style.display="block";
+       // d.getElementById("c").style.display="block";
+        rechargePage(cards)
     })
 
     var recharge3 = document.getElementById("a23")
@@ -475,7 +478,8 @@
         d.getElementById("3").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
-        d.getElementById("c").style.display="block";
+       // d.getElementById("c").style.display="block";
+        rechargePage(cards)
     })
 
     var recharge4 = document.getElementById("a14")
@@ -484,14 +488,15 @@
         d.getElementById("4").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
-        d.getElementById("c").style.display="block";
+      //  d.getElementById("c").style.display="block";
+        rechargePage(cards)
     })
 
     var turnOut1 = document.getElementById("a22")
     turnOut1.addEventListener('click', function (e) {
         alert("转入1")
         d.getElementById("2").style.display = "none"
-        turnOutPage(cards)
+        turnOutPage(cards,"z")
         //d.getElementById("1").style.display = "none"
        // d.getElementById("c").style.display="block";
     })
@@ -500,7 +505,7 @@
     turnOut2.addEventListener('click', function (e) {
         alert("转入2")
         d.getElementById("4").style.display = "none"
-        turnOutPage(cards)
+        turnOutPage(cards,"z")
         //d.getElementById("1").style.display = "none"
         //d.getElementById("c").style.display="block";
     })
@@ -556,7 +561,29 @@
         }
         return result;
     }
+    function duo(id,T) {
+        var w = 1;
+        w = id;
+        $.ajax({
+            type: "get",
+            url: "/api/cards/" + w,
+            dataType: "json",
+            success: function (e) {
+                var arrList = new Array();
+                arrList.push(e);
+                if(T == "z"){
+                    dan(arrList)
 
+                }else
+                if(T == "c"){
+                    rechargePagedan(arrList)
+
+                }
+
+
+            }
+        })
+    }
     function turnOutPage(cards,none) {
         if (cards.length > 1) {
             for (var i = 0; i < cards.length; i++) {
@@ -584,31 +611,21 @@
 
             $('.mine_zuli').on('click', function (e) {
                 var id = e.target.dataset.id
+              //  var id = e.target.dataset.id
+
                 document.getElementById(id).src = "true.png";
               /*  setTimeout(function () {
 
                 }, 1000)*/
                 duo(id)
+                document.getElementById(id).src = "";
                 //duo(id)
             })
             // alert("到多个卡选择页面")
         } else if (cards.length == 1) {
             dan(cards);
         }
-        function duo(id) {
-            var w = 1;
-            w = id;
-            $.ajax({
-                type: "get",
-                url: "/api/cards/" + w,
-                dataType: "json",
-                success: function (e) {
-                    var arrList = new Array();
-                    arrList.push(e);
-                    dan(arrList)
-                }
-            })
-        }
+
         function dan(cards) {
             var a = cards[0].subjectId
             cards[0].subjectId = transformation(a)
@@ -639,9 +656,60 @@
     }
 
 
-   /* function rechargePage(cards) {
-        alert(cards)
-    }*/
+    function rechargePage(cards,T) {
+        if (cards.length > 1) {
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].subjectId == 1) {
+                    cards[i].image = "keBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                if (cards[i].subjectId == 2) {
+                    cards[i].image = "mathBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                cards[i].subjectId = transformation(cards[i].subjectId)
+                if (cards[i].amount == 0) {
+                    cards[i].amount = "0"
+                }
+            }
+            proc({
+                containerId: 'selectCard',
+                data: cards,
+                templateId: 'selectCard-template'
+            })
+            //  document.getElementById("1").style.display = "none"
+
+            d.getElementById("selectCard").style.display = "block"
+
+            $('.mine_zuli').on('click', function (e) {
+                var id = e.target.dataset.id
+                document.getElementById(id).src = " ";
+                document.getElementById(id).src = "true.png";
+                /*  setTimeout(function () {
+
+                 }, 1000)*/
+                duo(id,T)
+                //duo(id)
+            })
+            // alert("到多个卡选择页面")
+        } else if (cards.length == 1) {
+            rechargePagedan(cards);
+        }
+    }
+
+    function rechargePagedan(cards) {
+        var a = cards[0].subjectId
+        cards[0].subjectId = transformation(a)
+        if (cards[0].amount == 0) {
+            cards[0].amount = "0"
+        }
+        d.getElementById("selectCard").style.display = "none"
+        d.getElementById("name").innerHTML = ""+cards[0].no+""
+        d.getElementById("usermoney").innerHTML = ""+cards[0].amount+""
+        d.getElementById("c").style.display = "block"
+    }
+
+
 </script>
 <!--<script>
 
