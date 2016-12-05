@@ -65,7 +65,7 @@ public class Resources {
         switch (type) {
             case "knowledgePoint":
                 KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
-                result = knowledgePoint.getSubjectId();
+                //result = knowledgePoint.getSubjectId();
                 break;
             case "video":
                 if(scheduler.getContentLink() !=null){

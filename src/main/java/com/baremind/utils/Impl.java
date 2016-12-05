@@ -53,37 +53,39 @@ public class Impl {
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            filterObject.forEach((key, value) -> {
-                if (value instanceof String) {
-                    String[] opAndValue = split((String) value);
-                    if (!opAndValue[0].equals("")) {
-                        Object val = null;
-                        if (!opAndValue[1].equals("NULL")) {
-                            String typeName = opAndValue[2];
-                            switch (typeName) {
-                                case "timestamp":
-                                    val = new Date(Long.parseLong(opAndValue[1]));
-                                    break;
-                                case "integer":
-                                case "int":
-                                    val = Integer.parseInt(opAndValue[1]);
-                                    break;
-                                case "long":
-                                    val = Long.parseLong(opAndValue[1]);
-                                    break;
-                                case "bool":
-                                    val = Boolean.parseBoolean(opAndValue[1]);
-                                    break;
-                                default:
-                                    val = opAndValue[1];
-                                    break;
+            if (filterObject != null) {
+                filterObject.forEach((key, value) -> {
+                    if (value instanceof String) {
+                        String[] opAndValue = split((String) value);
+                        if (!opAndValue[0].equals("")) {
+                            Object val = null;
+                            if (!opAndValue[1].equals("NULL")) {
+                                String typeName = opAndValue[2];
+                                switch (typeName) {
+                                    case "timestamp":
+                                        val = new Date(Long.parseLong(opAndValue[1]));
+                                        break;
+                                    case "integer":
+                                    case "int":
+                                        val = Integer.parseInt(opAndValue[1]);
+                                        break;
+                                    case "long":
+                                        val = Long.parseLong(opAndValue[1]);
+                                        break;
+                                    case "bool":
+                                        val = Boolean.parseBoolean(opAndValue[1]);
+                                        break;
+                                    default:
+                                        val = opAndValue[1];
+                                        break;
+                                }
                             }
+                            Condition c = new Condition(opAndValue[0], val);
+                            filterObject.put(key, c);
                         }
-                        Condition c = new Condition(opAndValue[0], val);
-                        filterObject.put(key, c);
                     }
-                }
-            });
+                });
+            }
             List<T> entities = JPAEntry.getList(type, filterObject, orders);
             if (!entities.isEmpty()) {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();

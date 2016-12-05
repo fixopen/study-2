@@ -23,9 +23,6 @@ public class KnowledgePoint implements com.baremind.data.Entity {
     @Column(name = "volume_id")
     private Long volumeId;
 
-    @Column(name = "subject_id")
-    private Long subjectId;
-
     @Column(name = "price")
     private Long price;
 
@@ -37,16 +34,9 @@ public class KnowledgePoint implements com.baremind.data.Entity {
 
     @Column(name = "show_time")
     private Date showTime;
+
     @Column(name = "discount")
     private double discount;
-
-    public Long getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
-    }
 
     public double getDiscount() {
         return discount;
