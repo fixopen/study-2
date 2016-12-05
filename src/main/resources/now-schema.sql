@@ -77,7 +77,7 @@ CREATE TABLE audio_records (
   "left" integer,
   top integer,
   "right" integer,
-  botttom integer,
+  bottom integer,
   chinese text
 );
 

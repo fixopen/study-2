@@ -378,7 +378,7 @@
                 url: "/api/cards/" + w,
                 dataType: "json",
                 success: function (e) {
-                    var arrList = new Array();
+                    var arrList = [];
                     arrList.push(e);
                     dan(arrList)
                 }
@@ -408,7 +408,6 @@
             submitTransfer.addEventListener('click', function (e) {
                 transfers(transfer[0].id, $("#Number").val())
             })
-
         }
     }
 
