@@ -238,10 +238,10 @@
     var object_Id;
     var object_Types;
     var card;
-
-    xiao(2, "video", 1)//点击知识点后
+    var ke;
+    xiao(2, "video")//点击知识点后
     //第一步得到自己账户多少钱，自己的所有的卡，资源价格
-    function xiao(objectId, objectType, subject) {
+    function xiao(objectId, objectType) {
         $.ajax({
             type: "get",
             url: "/api/resources/" + objectId + "/" + objectType + "/info",
@@ -251,7 +251,8 @@
                 cards = e.cards;
                 userAmount = e.user_amount;
                 price = e.price;
-                tan(cards, subject, objectType,objectId)
+                ke = e.subject;
+                tan(cards, ke, objectType,objectId)
                // turnOutPage(cards);
             }
         })
@@ -564,27 +565,58 @@
     function duo(id,T) {
         var w = 1;
         w = id;
-        $.ajax({
+        var arrList = new Array;
+        for (var i = 0; i < cards.length; i++) {
+            if(cards[i].id == id){
+                arrList.push(cards[i]);
+                if(T == "z"){
+                    dan(arrList)
+                }else
+                if(T == "c"){
+                    rechargePagedan(arrList)
+                }
+            }
+        }
+        /*$.ajax({
             type: "get",
             url: "/api/cards/" + w,
             dataType: "json",
             success: function (e) {
                 var arrList = new Array();
-                arrList.push(e);
-                if(T == "z"){
-                    dan(arrList)
 
-                }else
-                if(T == "c"){
-                    rechargePagedan(arrList)
-
-                }
 
 
             }
+        })*/
+    }
+    function dan(cards) {
+        var a = cards[0].subjectId
+        cards[0].subjectId = transformation(a)
+        if (cards[0].amount == 0) {
+            cards[0].amount = "0"
+        }
+        proc({
+            containerId: 'selectOneCard',
+            data: cards,
+            templateId: 'selectOneCard-template'
+        })
+        transfer = cards;
+        d.getElementById("selectCard").style.display = "none"
+//            document.getElementById("knowledgePoints").style.display = "none"
+        d.getElementById("tishi").innerHTML = "" + userAmount + " 金豆"
+
+
+        d.getElementById("1").style.display = "none"
+        d.getElementById("selectOneCard").style.display = "block"
+        var submitTransfer = document.getElementById("submitTransfer")
+        submitTransfer.addEventListener('click', function (e) {
+            //userAmount(transfer[0].id, $("#Number").val())
+            atom("96520767275011","user",transfer[0].id,"card",null,$("#Number").val())
+            d.getElementById("selectOneCard").style.display = "none"
+
         })
     }
-    function turnOutPage(cards,none) {
+    function turnOutPage(cards,T) {
         if (cards.length > 1) {
             for (var i = 0; i < cards.length; i++) {
                 if (cards[i].subjectId == 1) {
@@ -613,12 +645,12 @@
                 var id = e.target.dataset.id
               //  var id = e.target.dataset.id
 
-                document.getElementById(id).src = "true.png";
+              //  document.getElementById(id).src = "true.png";
               /*  setTimeout(function () {
 
                 }, 1000)*/
-                duo(id)
-                document.getElementById(id).src = "";
+                duo(id,T)
+           //     document.getElementById(id).src = "";
                 //duo(id)
             })
             // alert("到多个卡选择页面")
@@ -626,33 +658,7 @@
             dan(cards);
         }
 
-        function dan(cards) {
-            var a = cards[0].subjectId
-            cards[0].subjectId = transformation(a)
-            if (cards[0].amount == 0) {
-                cards[0].amount = "0"
-            }
-            proc({
-                containerId: 'selectOneCard',
-                data: cards,
-                templateId: 'selectOneCard-template'
-            })
-            transfer = cards;
-            d.getElementById("selectCard").style.display = "none"
-//            document.getElementById("knowledgePoints").style.display = "none"
-            d.getElementById("tishi").innerHTML = "" + userAmount + " 金豆"
 
-
-            d.getElementById("1").style.display = "none"
-            d.getElementById("selectOneCard").style.display = "block"
-            var submitTransfer = document.getElementById("submitTransfer")
-            submitTransfer.addEventListener('click', function (e) {
-                //userAmount(transfer[0].id, $("#Number").val())
-                atom("96520767275011","user",transfer[0].id,"card",null,$("#Number").val())
-                d.getElementById("selectOneCard").style.display = "none"
-
-            })
-        }
     }
 
 
@@ -683,8 +689,8 @@
 
             $('.mine_zuli').on('click', function (e) {
                 var id = e.target.dataset.id
-                document.getElementById(id).src = " ";
-                document.getElementById(id).src = "true.png";
+              //  document.getElementById(id).src = " ";
+              //  document.getElementById(id).src = "true.png";
                 /*  setTimeout(function () {
 
                  }, 1000)*/

@@ -59,6 +59,27 @@ public class Resources {
         return result;
     }
 
+    public static Object getSubject(Long id, String type) {
+        Object result = null;
+        Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
+        switch (type) {
+            case "knowledgePoint":
+                KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
+                result = knowledgePoint.getSubjectId();
+                break;
+            case "video":
+                if(scheduler.getContentLink() !=null){
+                    result = scheduler.getSubjectId();
+                }
+                break;
+            case "liveVideo":
+
+                result = scheduler.getSubjectId();
+                break;
+        }
+        return result;
+    }
+
 
 
     /*@GET
@@ -80,11 +101,13 @@ public class Resources {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             Object amount = getAmount(id,type);
+            Object subject = getSubject(id,type);
             Long userId = JPAEntry.getLoginId(sessionId);
             User user = JPAEntry.getObject(User.class, "id", userId);
 //            List<Card> cards = JPAEntry.getList(Card.class, "userId", userId);
             Map<String, Object> r = new HashMap<>();
             r.put("price", amount);
+            r.put("subject", subject);
             r.put("user_amount", user.getAmount());
             List<Card> cards = JPAEntry.getList(Card.class, "userId", userId);
             r.put("cards", cards);
