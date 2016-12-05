@@ -483,7 +483,7 @@
         currentArticle: document.getElementById('user'),
         init: function () {
             sessionId = g.getUrlParameter('sessionId')
-            g.setCookie('sessionId', sessionId)
+            g.setCookie('sessionId', sessionId, '/api')
          //   alert(sessionId)
             $.ajax({
                 type:"get",
