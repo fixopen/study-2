@@ -484,6 +484,7 @@
         init: function () {
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId)
+         //   alert(sessionId)
             $.ajax({
                 type:"get",
                 url:"/api/users/"+sessionId+"/userId",
