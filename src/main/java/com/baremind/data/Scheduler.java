@@ -60,23 +60,25 @@ public class Scheduler implements com.baremind.data.Entity {
     @Column(name = "price")
     private Long price;
 
+
+    @Column(name = "discount")
+    private Double discount;
+
+
     public Long getPrice() {
         return price;
     }
 
-    @Column(name = "discount")
-    private double discount;
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 
-    public double getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
     }
 
     public Long getId() {
