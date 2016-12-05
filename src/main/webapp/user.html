@@ -480,7 +480,7 @@
     var duan;
     //var count =0;
     var state = {
-        currentArticle: document.getElementById('sign'),
+        currentArticle: document.getElementById('user'),
         init: function () {
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId)
@@ -510,8 +510,8 @@
             }else{
                 switchTo("sign")
             }*/
-            state['sign'].init()
-            history.pushState(null, null, '/user.html#sign');
+            state['user'].init()
+            history.pushState(null, null, '/user.html#user');
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
@@ -683,7 +683,8 @@
                             contentType: "application/json; charset=utf-8",
                             success:function (a) {
                                 alert("登录成功")
-                                state['user'].init()
+                               // document.getElementById("sign").style.display="none"
+                               // state.init()
                                 //switchTo("user")
                             },
                             error:function (e) {
@@ -833,13 +834,17 @@
         },
         head: {
             init: function () {
-             /*   var url = window.location.href;
+
+                var url = window.location.href;
                 url = url.replace(/[/]/g, ',')
                 $.ajax({
                     type: "get",
                     url: "/api/public-account/config/" + url,
                     dataType: "json",
                     success: function (e) {
+                        alert(JSON.stringify(e));
+                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                    },error:function (e) {
                         alert(JSON.stringify(e));
                         wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
                     }
@@ -894,8 +899,7 @@
                         }
                     })
                 }
-*/
-             var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
+             /*var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
                 libai(sdakfjlasf);
                 function libai(mediaId) {
                     alert("李白来了" + mediaId)
@@ -913,7 +917,7 @@
                             alert(JSON.stringify(e))
                         }
                     })
-                }
+                }*/
             }
         },
         study: {

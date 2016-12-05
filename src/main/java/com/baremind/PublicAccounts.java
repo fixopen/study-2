@@ -1078,9 +1078,9 @@ public class PublicAccounts {
         }
         try {
             if (s == null) {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?openId=" + openId)).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?openId=" + openId)).build();
             } else {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?sessionId=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId=" + s.getIdentity())).build();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
