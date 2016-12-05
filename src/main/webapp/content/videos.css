@@ -185,8 +185,8 @@ li.active > a.tab_toggle {
     color: #fff;
     font-size: 2.625rem;
     font-weight: bold;
-    width: 11.2rem;
-    /*height: 3.625rem;*/
+    width: 63%;
+    height: 3rem;
     margin: 0;
     margin-top: 20px;
     margin-left: 7.0rem;
@@ -200,6 +200,8 @@ li.active > a.tab_toggle {
     margin: 0;
     margin-left: 7.0rem;
     text-align: left;
+    height: 1.25rem;
+    overflow: hidden;
 }
 
 .yuwen_a {
@@ -298,13 +300,13 @@ li.active > a.tab_toggle {
 
     .yuwen_h3 {
         font-size: 1.875rem;
-        width: 7.75rem;
-        height: 2.5rem;
+        width: 63%;
+        height: 2.15rem;
         margin-left: 5.0rem;
     }
 
     .yuwen_p {
-        margin-left: 4.5rem;
+        margin-left: 5rem;
     }
 }
 
@@ -424,6 +426,7 @@ li.active > a.tab_toggle {
     height: 3.4375rem;
     border-top: 2px solid #24cbd1;
     background-color: #fff;
+    z-index: 1000000;
 }
 
 .bevid_btn {
