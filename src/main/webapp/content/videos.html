@@ -769,7 +769,6 @@
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 switchTo(id)
-                state[id].changeId(e.target.dataset.id)
             })
 
             window.addEventListener('hashchange', function (e) {
@@ -1075,10 +1074,10 @@
 //*******************************getPassed*****************************
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers?filter=' + JSON.stringify({
+                        url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
 //                            cdnLink: 'IS NOT NULL',
                             endTime: '< ' + now
-                        }),
+                        })),
                         dataType: 'json',
                         success: function (schedulers) {
                             passed = schedulers[2]
@@ -1109,7 +1108,7 @@
 //********************************getTeacher*****************************
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                        url: '/api/schedulers/teachers?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[0].id})),
                         success: function (t0s) {
                             subjects[0].teachers = t0s
                             $.ajax({
@@ -1137,12 +1136,12 @@
 // **********************************getGrade**************************
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                        url: '/api/schedulers/grades?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[0].id})),
                         success: function (g0s) {
                             subjects[0].grades = g0s
                             $.ajax({
                                 type: 'get',
-                                url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[1].id}),
+                                url: '/api/schedulers/grades?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[1].id})),
                                 success: function (g1s) {
                                     subjects[1].grades = g1s
                                     //fill to grades choice
