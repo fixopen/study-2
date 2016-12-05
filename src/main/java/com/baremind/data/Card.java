@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "cards")
-public class Card implements com.baremind.data.Entity {
+public class Card implements com.baremind.data.Entity, TransferObject {
     @Id
     @Column(name = "id")
     private Long id;

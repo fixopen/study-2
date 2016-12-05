@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "users")
-public class User implements com.baremind.data.Entity {
+public class User implements com.baremind.data.Entity, TransferObject {
     @Id
     @Column(name = "id")
     private Long id;

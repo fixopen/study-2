@@ -23,12 +23,25 @@ import java.util.*;
 @Path("schedulers")
 public class Schedulers {
     @GET
+    @Path("{objectId}/{objectType}/schedulers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Map<String, String> orders = new HashMap<>();
-        orders.put("startTime", "DESC");
-        //@@group data
-        return Impl.get(sessionId, filter, orders, Scheduler.class, null, null);
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter, @PathParam("objectId") Long objectId, @PathParam("objectType") String objectType) {
+        Response result = Response.status(401).build();
+        String guan = Users.guan(JPAEntry.getLoginId(sessionId), objectId, objectType);
+        switch (guan) {
+            case "200":
+                Map<String, String> orders = new HashMap<>();
+                orders.put("startTime", "DESC");
+                //@@group data
+                return Impl.get(sessionId, filter, orders, Scheduler.class, null, null);
+            case "403":
+                result = Response.status(403).build();
+                break;
+            case "408":
+                result = Response.status(408).build();
+                break;
+        }
+        return result;
     }
 
     @GET //根据id查询
@@ -110,13 +123,9 @@ public class Schedulers {
                     if (description != null) {
                         exist.setDescription(description);
                     }
-                    String teacher = scheduler.getTeacher();
+                    Long teacher = scheduler.getTeacherId();
                     if (teacher != null) {
-                        exist.setTeacher(teacher);
-                    }
-                    String teacherDescription = scheduler.getTeacherDescription();
-                    if (teacherDescription != null) {
-                        exist.setTeacherDescription(teacherDescription);
+                        exist.setTeacherId(teacher);
                     }
                 }, null);
             }
