@@ -1041,6 +1041,7 @@ public class PublicAccounts {
         Map<String, Object> tokenInfo = getTokenByCode(code);
         User user = null;
         String openId = (String) tokenInfo.get("openid");
+
         System.out.println(code);
         System.out.println(openId);
         WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
