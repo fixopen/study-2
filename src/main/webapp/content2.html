@@ -14,243 +14,248 @@
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/volume.css">
+    <link rel="stylesheet" href="css/content_version2.css">
     <link rel="stylesheet" href="css/knowledgepoints.css">
     <link rel="stylesheet" href="css/knowledgepoints-content.css">
+    <link rel="stylesheet" href="css/math-detail.css">
+    <link rel="stylesheet" href="css/chinese-detail.css">
+    <link rel="stylesheet" href="css/english-detail.css">
 
 </head>
 <body>
-<article id="volumes"></article>
-<article id="knowledgePoints" style="display: none;"></article>
-<article id="knowledgePoint" class="wrap" style="display: none;">
+
+<article id="volumes" style="display: none;"><!--课程封皮--></article>
+<article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
+<article id="knowledgePoint">
+
 </article>
+
 <!--------------------------volumes--------------------------->
-<template id="chinese-structure">
+<template id="chinese-structure"><!--课程封皮：学习-语文-->
     <div>
-        <!-- 课程更新弹窗 -->
-        <div class="tan"></div>
-        <div class="new-class"></div>
-        <div class="wrap">
+        <div id="popup">
+        </div>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav">
+                    <li class="grade_main active" data-grade="low">
+                        <a href="#low" data-toggle="tab" data-grade="low">1-2年级</a>
+                    </li>
+                    <li class="grade_main" data-grade="high">
+                        <a href="#high" data-toggle="tab" data-grade="high">3-6年级</a>
+                    </li>
+                </ul>
+            </div>
             <div class="rain-main">
-                <div class="bao_dul">
-                    <ul id="subjects" class="nav nav-tabs grade" role="tablist">
-                        <li role="presentation" class="active grade-main grade-low" data-grade="low">
-                            <a class="grade-font" href="#low" role="tab" data-toggle="tab" data-grade="low">1-2年级</a>
-                            <img class="grade-bird" src="img/bird.png" alt="">
-                        </li>
-                        <li role="presentation" class="grade-main grade-high" data-grade="high">
-                            <a class="grade-font" href="#high" role="tab" data-toggle="tab" data-grade="high">3-6年级</a>
-                            <img class="grade-bird" src="img/bird.png" alt="">
-                        </li>
-                    </ul>
-                </div>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
-                        <!--<li class="volume">-->
-                        <!--<img class="new-label" src="img/new-label.png" alt="">-->
-                        <!--<div class="volume-c-bg">-->
-                        <!--<span class="volume-c-font" data-id="${id}" data-type="volume"-->
-                        <!--data-article="knowledgePoints">共有的</span>-->
-                        <!--</div>-->
-                        <!--</li>-->
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
                     </ol>
-                    <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
                     </ol>
                 </div>
             </div>
         </div>
     </div>
 </template>
-<template id="math-structure">
+<template id="math-structure"><!--课程封皮：学习-数学-->
     <div>
-        <!-- 课程更新弹窗 -->
-        <div class="tan"></div>
-        <div class="new-class"></div>
-        <div class="wrap">
+        <div id="popup">
+        </div>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav_math">
+                    <li class="grade_main active" data-grade="low">
+                        <a href="#low2" data-toggle="tab" data-grade="low">1-3年级</a>
+                    </li>
+                    <li class="grade_main" data-grade="high">
+                        <a href="#high2" data-toggle="tab" data-grade="high">4-6年级</a>
+                    </li>
+                </ul>
+            </div>
             <div class="rain-main">
-                <div class="bao_dul">
-                    <ul id="subjects2" class="nav nav-tabs grade" role="tablist">
-                        <li role="presentation" class="active grade-main grade-low">
-                            <a class="grade-font" href="#low2" role="tab" data-toggle="tab">1-3年级</a>
-                            <img class="grade-bird" src="img/bird.png" alt="">
-                        </li>
-                        <li role="presentation" class="grade-main grade-high">
-                            <a class="grade-font" href="#high2" role="tab" data-toggle="tab">4-6年级</a>
-                            <img class="grade-bird" src="img/bird.png" alt="">
-                        </li>
-                    </ul>
-                </div>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <ol role="tabpanel" class="tab-pane active volumes-bg" id="low2">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
                     </ol>
-                    <ol role="tabpanel" class="tab-pane volumes-bg" id="high2">
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
                     </ol>
                 </div>
             </div>
         </div>
     </div>
+
 </template>
-<template id="volumes-chinese-new-template">
-    <li class="volume">
-        <img class="new-label" src="img/new-label.png" alt="">
-        <div class="volume-c-bg">
-            <span class="volume-c-font" data-id="${id}" data-type="volume"
-                  data-article="knowledgePoints">${title}</span>
+<template id="english-structure"><!--课程封皮：学习-英语-->
+    <div class="wrap noBackg">
+        <div class="bao_dul">
+            <ul class="grade_nav_english">
+                <li class="grade_main active">
+                    <a href="#low2" data-toggle="tab">Happy Reading AA</a>
+                </li>
+                <li class="grade_main">
+                    <a href="#high2" data-toggle="tab">My first phonics Book</a>
+                </li>
+            </ul>
         </div>
-    </li>
-</template>
-<template id="volumes-chinese-old-template">
-    <li class="volume">
-        <div class="volume-c-bg">
-            <span class="volume-c-font" data-id="${id}" data-type="volume"
-                  data-article="knowledgePoints">${title}</span>
+        <div class="rain-main">
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                </ol>
+                <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                </ol>
+            </div>
         </div>
-    </li>
+    </div>
 </template>
-<template id="volumes-math-new-template">
-    <li class="volume volume-center">
-        <img class="new-label" src="img/new-label.png" alt="">
-        <div class="volume-m-bg">
-            <span class="volume-m-font" data-id="${id}" data-type="volume"
-                  data-article="knowledgePoints">${title}</span>
-        </div>
-    </li>
-</template>
-<template id="volumes-math-old-template">
-    <li class="volume volume-center">
-        <div class="volume-m-bg">
-            <span class="volume-m-font" data-id="${id}" data-type="volume"
-                  data-article="knowledgePoints">${title}</span>
-            <!--<a class="volume-m-font" data-id="${id}" data-type="volume"-->
-            <!--href="mathKnowledgePoints.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
-        </div>
-    </li>
-</template>
-<template id="volume-template">
-    <!--<li data-article="knowledgePoints">${title}</li>-->
+<template id="volumes-new-template">
     <li>
-        <a href="#">${title}</a>
+        <a class="textbook" href="javascript:void(0)">
+            <span class="textbook_num" id="newCount">1</span>
+            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
+        </a>
+    </li>
+</template>
+<template id="volumes-old-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
+        </a>
+    </li>
+</template>
+<template id="volumes-chinese-expect-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <img src="${bookCover}" alt="">
+        </a>
     </li>
 </template>
 <!------------------------------knowledgepoints----------------------------->
-<template id="global-knowledgepoints">
+<template id="math-catalog"><!--数学-目录-->
     <div class="wrap">
-        <div class="rain-main">
-            <div class="volume-title" id="volumeTitle">
-            </div>
-            <div class="knowledgepoints-bg" id="whole_width">
-                <ul class="knowledgepoints-list" id="knowledge-point">
-                </ul>
+        <div class="catalog">
+            <div class="mltop_main" id="book_infor"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main catalog_list">
+            <div>
+                <ul class="each_chapter" id="chapter_section1"></ul>
+                <ul class="each_chapter" id="chapter_section2"></ul>
             </div>
         </div>
     </div>
 </template>
-<template id="volume-m-title-template">
-    <span class="vtitle vtitle-m">${title}</span>
-</template>
-<template id="volume-c-title-template">
-    <span class="vtitle vtitle-c">${title}</span>
-</template>
-<template id="knowledge-chinese-normalNew-template">
-    <li class="knowledgepoint">
-        <div class="knowledgepoint-left">
-            <span class="knowledgepoint-name" style="font-weight:bold" data-article="knowledgePoint" data-id="${id}">${name}</span>
+<template id="book-infor-template">
+    <div>
+        <div class="mltop_left">
+            <img src="${bookCover}" alt="">
         </div>
-        <div class="knowledgepoint-right">
-            <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
-            <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
+        <div class="mltop_right">
+            <p class="mltop_biao">${title}</p>
+            <p class="mltop_xinxi">
+                <span>年        级：</span>
+                <span>${grade}</span>
+            </p>
+            <p class="mltop_xinxi">
+                <span>章        数：</span>
+                <span>${knowledgePointCount}篇</span>
+            </p>
         </div>
-        <img class="knowledgepoint-c-img" src="img/fenjie.png" alt="">
+    </div>
+</template>
+<template id="title-pack-up-template">
+    <p class="mltop_xiaoBiao">${title}</p>
+</template>
+<template id="chapter-new-template">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="javascript:;">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
+        </div>
     </li>
 </template>
-<template id="knowledge-chinese-normalOld-template">
-    <li class="knowledgepoint">
-        <div class="knowledgepoint-left">
-            <span class="knowledgepoint-name" data-article="knowledgePoint" data-id="${id}">${name}</span>
+<template id="chapter-old-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="javascript:;">${title}</a>
         </div>
-        <div class="knowledgepoint-right">
-            <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
-            <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
         </div>
-        <img class="knowledgepoint-c-img" src="img/fenjie.png" alt="">
     </li>
 </template>
-<template id="knowledge-math-normalNew-template">
-    <li class="knowledgepoint">
-        <div class="knowledgepoint-left">
-            <span class="knowledgepoint-name" style="font-weight:bold" data-article="knowledgePoint" data-id="${id}">${name}</span>
+<template id="chapter-challenge">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi neir_tianZ" href="javascript:;">${title}</a>
         </div>
-        <div class="knowledgepoint-right">
-            <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
-            <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
         </div>
-        <img class="knowledgepoint-m-img" src="img/fenjie1.png" alt="">
     </li>
 </template>
-<template id="knowledge-math-normalOld-template">
-    <li class="knowledgepoint">
-        <div class="knowledgepoint-left">
-            <span class="knowledgepoint-name" data-article="knowledgePoint" data-id="${id}">${name}</span>
+<template id="chinese-catalog"><!--语文-目录-->
+    <div class="wrap">
+        <div class="catalog chinese_catalog">
+            <div class="mltop_main" id="book_infor"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
         </div>
-        <div class="knowledgepoint-right">
-            <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
-            <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
+        <div class="catalog_pack_up chinese_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
         </div>
-        <img class="knowledgepoint-m-img" src="img/fenjie1.png" alt="">
-    </li>
-</template>
-<template id="knowledge-math-pkOld-template">
-    <li class="knowledgepoint-test">
-        <div class="knowledgepoint-left">
-            <span class="knowledgepoint-name test" data-article="knowledgePoint" data-id="${id}">${name}</span>
+        <div class="rain-main catalog_list">
+            <!--<div class="mulu_div">-->
+            <!--<ul class="cont_sul" id="chapter_section2"></ul>-->
+            <div class="chinese_catalog_list">
+                <ul class="each_chapter" id="chapter_section2"></ul>
+            </div>
         </div>
-        <div class="knowledgepoint-right">
-            <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
-            <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
-        </div>
-        <!--<div class="connect">-->
-        <!--&lt;!&ndash;<span class="connect-bg connect-one"></span>&ndash;&gt;-->
-        <!--<div class="split_line"></div>-->
-        <!--&lt;!&ndash;<span class="connect-bg connect-two"></span>&ndash;&gt;-->
-        <!--</div>-->
-    </li>
-</template>
-<template id="knowledge-math-pkNew-template">
-    <li class="knowledgepoint-test">
-        <div class="knowledgepoint-left">
-            <span class="knowledgepoint-name test" style="font-weight:bold" data-article="knowledgePoint"
-                  data-id="${id}">${name}</span>
-        </div>
-        <div class="knowledgepoint-right">
-            <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
-            <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
-        </div>
-        <!--<div class="connect">-->
-        <!--&lt;!&ndash;<span class="connect-bg connect-one"></span>&ndash;&gt;-->
-        <!--<div class="split_line"></div>-->
-        <!--&lt;!&ndash;<span class="connect-bg connect-two"></span>&ndash;&gt;-->
-        <!--</div>-->
-    </li>
+    </div>
 </template>
 <!----------------------------------detail-structure----------------------------->
-<template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个-->
-    <div>
+<template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个--><!--语文-课程详情-->
+    <div class="" wrap>
         <section class="head-title" id="knowledgePointTitle">
         </section>
         <section class="rain-main">
-            <section>
-                <span class="origin-title">选文赏析</span>
-                <section class="origin-bg content-bg" id="origin">
+            <div class="details_show youKuang">
+                <section>
+                    <section class="origin-title">选文赏析<span>XUAN WEN SHANG XI</span></section>
+                    <section id="origin"></section>
                 </section>
-            </section>
-            <section class="content-bg" id="content">
-            </section>
+            </div>
+            <section class="content-bg" id="content"></section>
             <section class="content-bg" id="video"></section>
-            <section>
-                <span class="cg-title">闯关练习</span>
-            </section>
-            <section class="content-bg cg-bg">
+
+            <section class="exercise">
+                <h3 class="break_through">闯关练习<span>CHAUNG GUAN LIAN XI</span></h3>
                 <ul id="problems" classs="ul-style">
                 </ul>
             </section>
@@ -268,49 +273,49 @@
         </section>
     </div>
 </template>
-<template id="math-template">
-    <div>
-        <section class="head-title1">
-            <span class="head-title1-bg"> 挑战<span id="title1"></span></span>
+<template id="math-template"><!--数学-课程详情-->
+    <div class="wrap">
+        <section class="title_math_details">
+            <span class="dare"> 挑战<span id="title1"></span></span>
+            <h3 class="title_module" id="title2"></h3>
         </section>
-        <h3 class="head-title2" id="title2"></h3>
         <!--section-->
         <div class="rain-main">
             <!--lead-->
             <section class="challenge">
-                <img class="challenge-left" src="img/math2.png" alt="">
-                <div class="challenge-bg" id="challenge">
-                </div>
-            </section>
-            <section>
-                <span class="origin-title">最强讲解</span>
+                <div id="challenge"></div>
+                赶紧开始吧！
             </section>
             <!--最强讲解-->
-            <section class="content-bg origin-bg">
-                <div id="content1" class="content"></div>
-                <div id="video1"></div>
-            </section>
-            <section>
-                <span class="cg-title">最强大脑</span>
-            </section>
-            <!--最强大脑-->
-            <section class="content-bg cg-bg">
-                <ul class="ul-style" id="strongest-brain"></ul>
-            </section>
-            <div class="lian_jie">
-                <span class="lianjie lianjie01"></span>
-                <span class="lianjie lianjie02"></span>
+            <div class="module_math">
+                <section class="xuanwen">
+                    <span class="icon_img1"></span>
+                    最强讲解<span>ZUI QIANG JIANG JIE</span>
+                </section>
+                <section>
+                    <div id="content1" class="explain_content"></div>
+                    <div id="video1"></div>
+                </section>
             </div>
-            <!--脑力大PK-->
-            <section class="content-bg cg-bg lixi_martop">
-                <div class="bdiv_Pk">
-                    <img class="naoli_pk" src="img/math8.png" alt="">
-                </div>
-                <ul class="mld_xiaoUl" id="pk">
-                </ul>
+            <!--最强大脑-->
+            <div class="module_math">
+                <section class="xuanwen">
+                    <span class="icon_img2"></span>
+                    最强大脑<span>ZUI QIANG DA NAO</span>
+                </section>
+                <ul class="ul-style" id="strongest-brain"></ul>
+
+                <!--脑力大PK-->
+                <section class="brain_pk">脑力大PK
+                    <span>NAO LI DA PK</span>
+                </section>
+                <ul class="ul-style" id="pk"></ul>
+
+                <!--智慧结晶-->
                 <p class="zongjie_p">将你的智慧结晶写在这里吧。</p>
                 <textarea class="zongjie_txt" name="" id="" cols="" rows=""></textarea>
-            </section>
+            </div>
+
             <!--readlike-->
             <section class="content-bg lixi_Nomar" id="interaction"></section>
         </div>
@@ -327,16 +332,36 @@
         </section>
     </div>
 </template>
-<template id="mathtest-template">
-    <div>
-        <h3 class="head_h3">
-            <span class="head_himg" id="title"></span>
-        </h3>
+<template id="mathtest-template"><!--X学习-数学-课程详情-挑战百分百-->
+    <div class="wrap">
+        <div class="catalog_pack_up" style="display:block">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
         <div class="rain-main">
-            <ul id="question" class="content-bg"></ul>
+            <div class="challenge_percenter">
+                <ul class="ul-style" id="strongest-brain">
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="english-template"><!--英语-课程详情-->
+    <div class="wrap">
+        <div class="catalog english_catalog">
+            <div class="mltop_main" id="book_infor_english"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up english_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main english_top">
+            <section id="english_content"></section>
+
+            <!--readlike-->
             <section class="content-bg lixi_Nomar" id="interaction"></section>
         </div>
-        <!--message-->
         <section class="mulu_bottom">
             <div class="muluBn_top" id="message">
                 <button id="createComment" type="button" class="comment-btn">写留言</button>
@@ -358,24 +383,19 @@
     <p class="content-font">${content}<span>${source}</span></p>
 </template>
 <template id="content-text-template">
-    <p class="content-font">${content}</p>
+    <p class="paragraph">${content}</p>
 </template>
 <template id="content-c-image-template">
-    <span>
+    <div class="details_show">
         <img class="content-img" src="${href}" alt="${description}">
-    </span>
-</template>
-<template id="content-image-text-template">
-    <p class="content-font">${content}
-        <img src="${href}" style="width:40px;height: 40px;vertical-align:middle">
-    </p>
+    </div>
 </template>
 <template id="video-template">
-    <span>
-           <a href="${storePath}">
-               <img src="${cover}"/>
-           </a>
-    </span>
+    <div class="details_show">
+        <a href="${storePath}">
+            <img src="${cover}"/>
+        </a>
+    </div>
 </template>
 <template id="problem-option-template">
     <li class="mld_daanLi">
@@ -391,6 +411,7 @@
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
         <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
             <span class="btnTrue">查看答案</span>
         </div>
     </li>
@@ -403,6 +424,7 @@
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
         <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
             <span class="btnTrue">查看答案</span>
         </div>
     </li>
@@ -420,13 +442,12 @@
         </div>
     </li>
 </template>
-<template id="interaction-like-template">
+<template id="interaction-like-template"><!--已点赞-->
     <div>
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <!--<img class="ul01_imgzan" src="img/zan-over.png" alt="" id="icon">-->
-                <span class="icon">已点</span>
+                <span class="favour">已点</span>
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -437,13 +458,12 @@
         </ul>
     </div>
 </template>
-<template id="interaction-unlike-template">
+<template id="interaction-unlike-template"><!--未点赞-->
     <div>
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <!--<img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">-->
-                <span class="icon">未点</span>
+                <span class="dislike"></span>
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -518,12 +538,13 @@
     <span>${name}</span>
 </template>
 <template id="challenge-template">
-    <p>${content}</p>
+    <span>${content}</span>
 </template>
 <template id="content-m-image-template">
     <div>
-        <img class="math_01" src="${href}" alt="">
-        <p class="content-font math_color">
+        <p>${explainContent}</p>
+        <img class="muld_images" src="${href}" alt="">
+        <p class="mulu_dp math_color">
             ${content}
         </p>
     </div>
@@ -543,6 +564,7 @@
         <img src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
         <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
             <span class="btnTrue">查看答案</span>
         </div>
         <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
@@ -555,38 +577,132 @@
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
     </li>
 </template>
-<!--mathtest-->
-<template id="title-template">
-    <span>${name}</span>
+<!--english-->
+<template id="english-envelope-template">
+    <div>
+        <div class="mltop_left">
+            <img src="${bookImg}" alt="">
+        </div>
+        <div class="mltop_right">
+            <p class="mltop_biao">${bookName}</p>
+            <p class="mltop_xinxi">
+                <span class="xinxi_left">概要：</span>
+                <span class="xinxi_right">${summary}</span>
+            </p>
+        </div>
+    </div>
 </template>
-<template id="question-option-template">
-    <li class="mld_daanLi">
-        <span class="daan_quan">${title}</span>
-        <input type="radio" class="daana" name="daan1">
-        <img class="ceshi_ti1" src="${optionImagePath}" alt="">
-        <!--<label for="daan_s3A">${name}</label>-->
-        <label>${name}</label>
-    </li>
+<template id="english-content-template">
+    <div class="english_page">
+        <img class="muld_images" src="${img}" alt="">
+    </div>
 </template>
-<template id="question-template">
-    <li class="mulu_div">
-        <div class="mld_xiaoUl">
-            <div class="mld_Ulli">
-                <div data-type="${type}">${title}</div>
-                <img class="ceshi_ti1" src="${storePath}" alt="">
-                <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
-                <div class="baoBtn" data-id="${id}">
-                    <span class="btnTrue">查看答案</span>
-                </div>
-                <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
+<!-----------------------------dialog---------------------------->
+<template id="cover-template"><!-- 学习-更新通知 -->
+    <div>
+        <div class="tan"></div>
+        <div class="update_notify">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="detail_content">
+                    <span>每个工作日10:00<br>会有一堂新的课程上线，</span><br>不要错过哦！
+                </p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">知道了</a>
+                </p>
             </div>
         </div>
-        <!--<div class="lian_jie">-->
-        <!--<span class="lianjie lianjie01"></span>-->
-        <!--<span class="lianjie lianjie02"></span>-->
-        <!--</div>-->
-    </li>
+    </div>
 </template>
+<template id="cover-member-template"><!-- 非会员 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="member_content">会员才可以观看视频呦！</p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">成为会员</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-overdue-template"><!--学习卡过期弹窗-->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="member_content">您的学习卡已过期！</p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">购买新卡</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-deduct-bean-template"><!-- 扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="deduct_bean">确定要扣<span class="ptxt_span">1</span>金豆<br>观看本视频吗？</p>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
+                </p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">确定</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-no-card-template"><!-- 语文-无此卡扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <div class="deduct_math_bean">
+                    您还没有语文卡<br>确定要扣数学卡<span class="ptxt_span">1</span>金豆吗？
+                </div>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
+                </p>
+                <div>
+                    <a class="confirm_btn" href="javascript:;"><span>确定</span></a>
+                    <a class="buy_card" href="javascript:;">买语文卡</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-math-no-card-template"><!-- 数学-无此卡扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <div class="deduct_math_bean">
+                    您还没有数学卡<br>确定要扣语文卡<span class="ptxt_span">1</span>金豆吗？
+                </div>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
+                </p>
+                <div>
+                    <a class="confirm_btn" href="javascript:;"><span>确定</span></a>
+                    <a class="buy_card" href="javascript:;">买数学卡</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 
 <!--<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>-->
 <!--<dialog>您的卡片已过期，请重新购买！</dialog>-->
@@ -598,6 +714,152 @@
 <script src="/bootstrap/bootstrap.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
+<script>
+    $(function () {
+        var data = {
+            low: [
+                {
+                    type: 'new',
+                    img: 'images_version2/yuwen_mulu1.png'
+                },
+                {
+                    type: 'old',
+                    img: 'images_version2/yuwen_mulu2.png'
+                },
+                {
+                    type: 'expect',
+                    img: 'images_version2/yuwen_mulu0.png'
+                }
+            ],
+            high: [
+                {
+                    type: 'new',
+                    img: 'images_version2/yuwen_mulu2.png'
+                },
+                {
+                    type: 'old',
+                    img: 'images_version2/yuwen_mulu1.png'
+                },
+                {
+                    type: 'expect',
+                    img: 'images_version2/yuwen_mulu0.png'
+                }
+            ],
+            bookInfor: [
+                {
+                    type: 'bookinfor',
+                    bookImg: 'images_version2/shuxue1.png',
+                    bookName: '钟表喊你吃饭啦',
+                    grade: '1-3年级',
+                    chapterNum: '12'
+                }
+            ],
+            packUpTitle: [
+                {
+                    type: 'packUp',
+                    title: '钟表喊你吃饭啦'
+                }
+            ],
+            chapter_section: [
+                {
+                    type: 'new',
+                    title: '加与减',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
+                },
+                {
+                    type: 'old',
+                    title: '简单的图形数量规律',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
+                },
+                {
+                    type: 'challenge',
+                    title: '挑战百分百',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
+                }
+            ],
+            head_title: [
+                {
+                    type: 'headTitle',
+                    name: '放纵不羁名垂青史的竹林七贤'
+                }
+            ],
+            text_appreciate: [
+                {
+                    type: 'textAppreciate',
+                    content: '陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
+                    source: ' ——【南朝】刘义庆《世说新语·任诞》',
+                }
+            ],
+            content_text: [
+                {
+                    type: 'contentText',
+                    content: '魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？',
+                }
+            ],
+            content_image: [
+                {
+                    type: 'contentImage',
+                    href: 'images_version2/video1.png'
+                }
+            ],
+            content_video: [
+                {
+                    type: 'contentVideo',
+                    storePath: '',
+                    cover: 'images_version2/video3.png'
+                }
+            ],
+            challenge_num: [
+                {
+                    type: 'challengeNum',
+                    order: '一'
+                }
+            ],
+            title_math_details: [
+                {
+                    type: 'titleMathDetails',
+                    name: '火柴竟是运动迷'
+                }
+            ],
+            challenge_period: [
+                {
+                    type: 'challengePeriod',
+                    content: '欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。'
+                }
+            ],
+            explain_content: [
+                {
+                    type: 'explainContent',
+                    explainContent: '今天，我们来学习加减法运算。',
+                    href: 'images_version2/math4.png',
+                    content: '在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
+                }
+            ],
+            english_details: [
+                {
+                    type: 'englishDetails',
+                    bookImg: 'images_version2/yingyu1.png',
+                    bookName: 'My Family',
+                    summary: '学习爸爸、妈妈、哥哥、姐姐等亲属称容词,如，mother，grandma等'
+                }
+            ],
+            english_content: [
+                {
+                    type: 'englishContent',
+                    img: 'img/eng_mo.png'
+                }
+            ],
+        }
+</script>
 <script>
     /*
      *  [
@@ -645,8 +907,8 @@
                 success: function (ss) {
                     subjects = ss
                     for (var i = 0; i < subjects.length; ++i) {
-                        subjects[i].low = []
-                        subjects[i].high = []
+                        subjects[i].low = [];
+                        subjects[i].high = [];
                     }
 
                     $.ajax({
@@ -664,7 +926,15 @@
                                     //console.log(vs[i])
                                 }
                             }
-
+                            for (var i = 0; i < subjects.length; ++i) {
+                                var newVolume = {
+                                    name: '期待新书',
+                                    bookCover: 'images_version2/yuwen_mulu0.png',
+                                    type: 'old'
+                                }
+                                subjects[i].low.push(newVolume);
+                                subjects[i].high.push(newVolume);
+                            }
                             var subjectId = g.getUrlParameter('subjectId')
                             $.ajax({
                                 type: "get",
@@ -672,9 +942,9 @@
                                 dataType: "json",
                                 success: function (pop) {
                                     state.volumes.popuped = pop.popup;
-                                    //state.volumes.popuped = false;
+                                    state.volumes.popuped = false;
 
-                                    history.pushState(null, null, '/content.html#volumes')
+                                    history.pushState(null, null, '/content2.html#volumes')
                                     state.volumes.changeId(subjectId)
 
                                     //state.volumes.subjectId = subjectId
@@ -699,7 +969,7 @@
                 state.currentArticle.style.display = 'none'
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/content.html#' + id)
+                history.pushState(null, null, '/content2.html#' + id)
                 state[id].init()
             }
 
@@ -754,19 +1024,30 @@
                             var value = state.volumes.value;
 
                             proc({
+                                containerId: 'popup',
+                                data: {},
+                                templateId: 'cover-template'
+                            })
+
+//                            for (var i = 0; i < value.low.length; ++i) {
+//                                state.volume.value = value.low[i]
+//                                value.low[i].newCount = state.volume.calcNew()
+//                            }
+                            proc({
                                 data: value.low,
                                 containerId: 'low',
                                 alterTemplates: [
-                                    {type: 'old', templateId: 'volumes-chinese-old-template'},
-                                    {type: 'new', templateId: 'volumes-chinese-new-template'},
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
+
                             proc({
                                 data: value.high,
                                 containerId: 'high',
                                 alterTemplates: [
-                                    {type: 'old', templateId: 'volumes-chinese-old-template'},
-                                    {type: 'new', templateId: 'volumes-chinese-new-template'},
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
 
@@ -784,19 +1065,29 @@
 
                             var value = state.volumes.value
                             proc({
+                                containerId: 'popup',
+                                data: {},
+                                templateId: 'cover-template'
+                            })
+
+//                            for (var i = 0; i < value.low.length; ++i) {
+//                                state.volume.value = value.low[i]
+//                                value.low[i].newCount = state.volume.calcNew()
+//                            }
+                            proc({
                                 data: value.low,
                                 containerId: 'low2',
                                 alterTemplates: [
-                                    {type: 'old', templateId: 'volumes-math-old-template'},
-                                    {type: 'new', templateId: 'volumes-math-new-template'},
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
                             proc({
                                 data: value.high,
                                 containerId: 'high2',
                                 alterTemplates: [
-                                    {type: 'old', templateId: 'volumes-math-old-template'},
-                                    {type: 'new', templateId: 'volumes-math-new-template'},
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
 
@@ -809,14 +1100,14 @@
                 }
             },
             newClass: function () {
-                $('.tan').show();
-                $('.new-class').show();
-                $(".tan,.new-class").bind('touchmove', function (event) {
+                $('.tan').slideDown();
+                $('.update_notify').slideDown();
+                $(".tan,.update_notify").bind('touchmove', function (event) {
                     event.preventDefault();
                 });
-                $(".new-class").click(function () {
-                    $(this).hide();
-                    $(".tan").hide();
+                $(".update_notify").click(function () {
+                    $(this).slideUp();
+                    $(".tan").slideUp();
                 });
             },
             popups: function (subjectId) {
@@ -917,12 +1208,12 @@
                         proc({
                             containerId: 'knowledgePoints',
                             data: {},
-                            templateId: 'global-knowledgepoints'
+                            templateId: 'chinese-catalog'
                         })
 
                         var value = state.knowledgePoints.value
                         proc({
-                            templateId: 'volume-c-title-template',
+                            templateId: 'book-infor-template',
                             data: value,
                             containerId: 'volumeTitle'
                         })
@@ -930,8 +1221,8 @@
                             data: value.knowledgePoints,
                             containerId: 'knowledge-point',
                             alterTemplates: [
-                                {type: 'normalNew', templateId: 'knowledge-chinese-normalNew-template'},
-                                {type: 'normalOld', templateId: 'knowledge-chinese-normalOld-template'},
+                                {type: 'normalNew', templateId: 'chapter-new-template'},
+                                {type: 'normalOld', templateId: 'chapter-old-template'},
                             ]
                         })
                         break
@@ -940,11 +1231,11 @@
                         proc({
                             containerId: 'knowledgePoints',
                             data: {},
-                            templateId: 'global-knowledgepoints'
+                            templateId: 'math-catalog'
                         })
                         var value = state.knowledgePoints.value
                         proc({
-                            templateId: 'volume-m-title-template',
+                            templateId: 'book-infor-template',
                             data: value,
                             containerId: 'volumeTitle'
                         })
@@ -952,10 +1243,10 @@
                             data: value.knowledgePoints,
                             containerId: 'knowledge-point',
                             alterTemplates: [
-                                {type: 'normalNew', templateId: 'knowledge-math-normalNew-template'},
-                                {type: 'normalOld', templateId: 'knowledge-math-normalOld-template'},
-                                {type: 'pkOld', templateId: 'knowledge-math-pkOld-template'},
-                                {type: 'pkNew', templateId: 'knowledge-math-pkNew-template'},
+                                {type: 'normalNew', templateId: 'chapter-new-template'},
+                                {type: 'normalOld', templateId: 'chapter-old-template'},
+                                {type: 'pkOld', templateId: 'chapter-old-challenge'},
+                                {type: 'pkNew', templateId: 'chapter-new-challenge'},
                             ]
                         })
                         break
@@ -1568,17 +1859,7 @@
             }
         }
     }
-
     state.init()
-</script>
-<script>
-    //    挑战百分百的分割线
-    //        $(window).resize(function () {
-    //            $(".split_line").css("width", $("#whole_width").width())
-    //        })
-    //        window.onpageshow = function () {
-    //            $(".split_line").css("width", $("#whole_width").width())
-    //        }
 </script>
 </body>
 </html>
