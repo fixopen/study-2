@@ -22,83 +22,77 @@
 
 </head>
 <body>
-<article id="volumes" ><!--课程封皮--></article>
-<article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
-<article id="knowledgePoint" style="display: none;">
 
-</article>
+<article id="volumes"><!--课程封皮--></article>
+<article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
+<article id="knowledgePoint" style="display: none;"></article>
+
 <!--------------------------volumes--------------------------->
-<template id="chinese-structure">
-    <div>
-        <div class="wrap noBackg">
-            <div class="bao_dul">
-                <ul class="grade_nav">
-                    <li class="grade_main active">
-                        <a href="#low" data-toggle="tab">1-2年级</a>
-                    </li>
-                    <li class="grade_main">
-                        <a href="#high" data-toggle="tab">3-6年级</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="rain-main">
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
-                    </ol>
-                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
-                    </ol>
-                </div>
+<template id="chinese-structure"><!--课程封皮：学习-语文-->
+    <div class="wrap noBackg">
+        <div class="bao_dul">
+            <ul class="grade_nav">
+                <li class="grade_main active">
+                    <a href="#low" data-toggle="tab">1-2年级</a>
+                </li>
+                <li class="grade_main">
+                    <a href="#high" data-toggle="tab">3-6年级</a>
+                </li>
+            </ul>
+        </div>
+        <div class="rain-main">
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
+                </ol>
+                <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
+                </ol>
             </div>
         </div>
     </div>
 </template  >
-<template id="math-structure">
-    <div>
-        <div class="wrap noBackg">
-            <div class="bao_dul">
-                <ul class="grade_nav">
-                    <li class="grade_main active">
-                        <a href="#low2" data-toggle="tab">1-3年级</a>
-                    </li>
-                    <li class="grade_main">
-                        <a href="#high2" data-toggle="tab">4-6年级</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="rain-main">
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
-                    </ol>
-                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
-                    </ol>
-                </div>
+<template id="math-structure"><!--课程封皮：学习-数学-->
+    <div class="wrap noBackg">
+        <div class="bao_dul">
+            <ul class="grade_nav_math">
+                <li class="grade_main active">
+                    <a href="#low2" data-toggle="tab">1-3年级</a>
+                </li>
+                <li class="grade_main">
+                    <a href="#high2" data-toggle="tab">4-6年级</a>
+                </li>
+            </ul>
+        </div>
+        <div class="rain-main">
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                </ol>
+                <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                </ol>
             </div>
         </div>
     </div>
 </template>
-<template id="english-structure">
-    <div>
-        <div class="wrap noBackg">
-            <div class="bao_dul">
-                <ul class="grade_nav english_grade">
-                    <li class="grade_main active">
-                        <a href="#low2" data-toggle="tab">Happy Reading AA</a>
-                    </li>
-                    <li class="grade_main">
-                        <a href="#high2" data-toggle="tab">My first phonics Book</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="rain-main">
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
-                    </ol>
-                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
-                    </ol>
-                </div>
+<template id="english-structure"><!--课程封皮：学习-英语-->
+    <div class="wrap noBackg">
+        <div class="bao_dul">
+            <ul class="grade_nav_english">
+                <li class="grade_main active">
+                    <a href="#low2" data-toggle="tab">Happy Reading AA</a>
+                </li>
+                <li class="grade_main">
+                    <a href="#high2" data-toggle="tab">My first phonics Book</a>
+                </li>
+            </ul>
+        </div>
+        <div class="rain-main">
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                </ol>
+                <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                </ol>
             </div>
         </div>
     </div>
@@ -124,22 +118,6 @@
             <img src="${bookCover}" alt="">
         </a>
     </li>
-</template>
-<template id="cover-template">
-    <div>
-        <div class="tan" style="display: block;"></div>
-        <div class="update_notify" style="display: block;">
-            <a class="close_window_btn" href="javascript:;"></a>
-            <div class="notify_content">
-                <p class="detail_content">
-                    <span>每个工作日10:00<br>会有一堂新的课程上线，</span><br>不要错过哦！
-                </p>
-                <p class="btn_line">
-                    <a class="got_it_btn" href="javascript:;">知道了</a>
-                </p>
-            </div>
-        </div>
-    </div>
 </template>
 <!------------------------------knowledgepoints----------------------------->
 <template id="math-catalog">
@@ -544,6 +522,22 @@
     </li>
 </template>
 <!-----------------------------dialog---------------------------->
+<template id="cover-template"><!-- 学习-更新通知 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="detail_content">
+                    <span>每个工作日10:00<br>会有一堂新的课程上线，</span><br>不要错过哦！
+                </p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">知道了</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
 <template id="cover-member-template"><!-- 非会员 -->
     <div>
         <div class="tan" style="display: block;"></div>
