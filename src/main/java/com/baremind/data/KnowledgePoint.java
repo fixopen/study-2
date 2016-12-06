@@ -34,6 +34,7 @@ public class KnowledgePoint implements com.baremind.data.Entity {
 
     @Column(name = "show_time")
     private Date showTime;
+
     @Column(name = "discount")
     private double discount;
 

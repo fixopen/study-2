@@ -792,51 +792,50 @@ public class PublicAccounts {
 //        user.setAmount(0.0f);
 //        return user;
 //    }
+    private static WechatUser WechatUserByUserInfo(Long userId, WechatUserInfo userInfo) {
+        WechatUser wechatUser = new WechatUser();
+        wechatUser.setId(IdGenerator.getNewId());
+        //Logs.insert(0l, "debug", 12l, wechatUser.getId().toString());
+        wechatUser.setUserId(userId);
+        wechatUser.setOpenId(userInfo.openid);
+        wechatUser.setCity(userInfo.city);
+        wechatUser.setCountry(userInfo.country);
+        //user.setExpiry();
+        wechatUser.setHead(userInfo.headimgurl);
+        wechatUser.setInfo(userInfo.getInfo());
+        wechatUser.setNickname(userInfo.nickname);
+        //user.setPrivilege();
+        wechatUser.setProvince(userInfo.province);
+        //user.setRefId();
+        //user.setRefreshToken();
+        //user.setSex(p.Infos.get(sex));
+        wechatUser.setSex(userInfo.sex);
+        wechatUser.setSubscribe(userInfo.subscribe);
+        wechatUser.setSubscribeTime(userInfo.subscribe_time);
+        wechatUser.setLanguage(userInfo.language);
+        wechatUser.setRemark(userInfo.remark);
+        wechatUser.setGroupId(userInfo.groupid);
+        //user.setToken();
+        wechatUser.setUnionId(userInfo.unionid);
+        return wechatUser;
+    }
 
-//    private static WechatUser fillWechatUserByUserInfo(Long userId, WechatUserInfo userInfo) {
-//        WechatUser wechatUser = new WechatUser();
-//        wechatUser.setId(IdGenerator.getNewId());
-//        //Logs.insert(0l, "debug", 12l, wechatUser.getId().toString());
-//        wechatUser.setUserId(userId);
-//        wechatUser.setOpenId(userInfo.openid);
-//        wechatUser.setCity(userInfo.city);
-//        wechatUser.setCountry(userInfo.country);
-//        //user.setExpiry();
-//        wechatUser.setHead(userInfo.headimgurl);
-//        wechatUser.setInfo(userInfo.getInfo());
-//        wechatUser.setNickname(userInfo.nickname);
-//        //user.setPrivilege();
-//        wechatUser.setProvince(userInfo.province);
-//        //user.setRefId();
-//        //user.setRefreshToken();
-//        //user.setSex(p.Infos.get(sex));
-//        wechatUser.setSex(userInfo.sex);
-//        wechatUser.setSubscribe(userInfo.subscribe);
-//        wechatUser.setSubscribeTime(userInfo.subscribe_time);
-//        wechatUser.setLanguage(userInfo.language);
-//        wechatUser.setRemark(userInfo.remark);
-//        wechatUser.setGroupId(userInfo.groupid);
-//        //user.setToken();
-//        wechatUser.setUnionId(userInfo.unionid);
-//        return wechatUser;
-//    }
+    static User insertUserByOpenId(Date now, String openId) {
+        WechatUserInfo userInfo = getUserInfo(openId);
+        User user = null;
+        if (userInfo != null) {
+           // user = fillUserByUserInfo(now, userInfo);
+            WechatUser wechatUser = WechatUserByUserInfo(null, userInfo);
 
-//    static User insertUserByOpenId(Date now, String openId) {
-//        WechatUserInfo userInfo = getUserInfo(openId);
-//        User user = null;
-//        if (userInfo != null) {
-//            user = fillUserByUserInfo(now, userInfo);
-//            WechatUser wechatUser = fillWechatUserByUserInfo(user.getId(), userInfo);
-//
-//            EntityManager em = JPAEntry.getNewEntityManager();
-//            em.getTransaction().begin();
-//            em.persist(wechatUser);
-//            em.persist(user);
-//            em.getTransaction().commit();
-//            em.close();
-//        }
-//        return user;
-//    }
+            EntityManager em = JPAEntry.getNewEntityManager();
+            em.getTransaction().begin();
+            em.persist(wechatUser);
+            //em.persist(user);
+            em.getTransaction().commit();
+            em.close();
+        }
+        return user;
+    }
 
     static Session putSession(Date now, Long userId, Long deviceId) {
         String nowString = now.toString() + Long.toString(now.getTime());
@@ -1042,6 +1041,9 @@ public class PublicAccounts {
         Map<String, Object> tokenInfo = getTokenByCode(code);
         User user = null;
         String openId = (String) tokenInfo.get("openid");
+
+        System.out.println(code);
+        System.out.println(openId);
         WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
         if (wechatUser == null) {
             wechatUser = new WechatUser();
@@ -1078,9 +1080,9 @@ public class PublicAccounts {
         }
         try {
             if (s == null) {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?openId=" + openId)).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?openId=" + openId)).build();
             } else {
-                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/user.html?sessionId=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId=" + s.getIdentity())).build();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -1207,33 +1209,33 @@ public class PublicAccounts {
         return result.toArray(a);
     }
 
-//    @POST
-//    @Path("followers")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response getFollowers() {
-//        String maxOpenid = "";
-//        Date now = new Date();
-//        while (true) {
-//            String[] openids = getUserList(maxOpenid);
-//            boolean isFirst = true;
-//            for (String openId : openids) {
-//                if (isFirst) {
-//                    isFirst = false;
-//                } else {
-//                    WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
-//                    if (dbWechatUser == null) {
-//                        insertUserByOpenId(now, openId);
-//                    }
-//                }
-//            }
-//            maxOpenid = openids[0];
-//            if (maxOpenid == null) {
-//                break;
-//            }
-//        }
-//        return Response.ok().build();
-//    }
+    @POST
+    @Path("followers")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFollowers() {
+        String maxOpenid = "";
+        Date now = new Date();
+        while (true) {
+            String[] openids = getUserList(maxOpenid);
+            boolean isFirst = true;
+            for (String openId : openids) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    WechatUser dbWechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
+                    if (dbWechatUser == null) {
+                        insertUserByOpenId(now, openId);
+                    }
+                }
+            }
+            maxOpenid = openids[0];
+            if (maxOpenid == null) {
+                break;
+            }
+        }
+        return Response.ok().build();
+    }
 
     @POST
     @Path("follow")
