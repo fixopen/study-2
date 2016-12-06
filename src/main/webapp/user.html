@@ -1012,10 +1012,10 @@
                         data.password = document.getElementById('password').value;
                         data.phoneNumber = document.getElementById('phoneNumber').value;
                         data.validCode = document.getElementById('validCode').value;
-                        var url = 'api/users/self/cards'
-                        if (userId) {
+                        var url = 'api/users/cards'
+                      /*  if (userId) {
                             url = 'api/users/' + userId + '/cards'
-                        }
+                        }*/
                         ajax('POST', url, [
                             {name: 'Content-Type', value: 'application/json'},
                             {name: 'Accept', value: 'application/json'}

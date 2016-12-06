@@ -159,6 +159,7 @@ public class Sessions {
                 device.setId(IdGenerator.getNewId());
                 device.setPlatform(loginInfo.getDeviceType());
                 device.setPlatformIdentity(loginInfo.getDeviceNo());
+                device.setPlatformNotificationToken("");
                 device.setUserId(user.getId());
                 JPAEntry.genericPost(device);
             }

@@ -822,6 +822,8 @@ public class Users {
         return activeCardImpl(id, ac);
     }
 
+
+
     @GET
     @Path("{sessionId}/user")
     public Long Transformation(@CookieParam("sessionId") String sessionId) {
@@ -997,4 +999,49 @@ public class Users {
         public String mobile;
         public String destinationCode;
     }
+
+
+    /*@POST
+    @Path("phone/Verification")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getv(ActiveCard activeCard) {
+        Response result = result = Response.status(404).build();
+        Map<String, Object> validationCodeConditions = new HashMap<>();
+        validationCodeConditions.put("phoneNumber", activeCard.getPhoneNumber());
+        validationCodeConditions.put("validCode", activeCard.getValidCode());
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+        Map<String, Object> validationCode = new HashMap<>();
+        validationCode.put("telephone", activeCard.getPhoneNumber());
+        if (!validationCodes.isEmpty()) {
+            Date now = new Date();
+            Date sendTime = validationCodes.get(0).getTimestamp();
+            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                List<User> users = JPAEntry.getList(User.class, validationCode);
+                if (!users.isEmpty()) {
+                    Session session = PublicAccounts.putSession(now, users.get(0).getId());
+                    result = Response.ok()
+                            .cookie(new NewCookie("userId", users.get(0).getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .build();
+                } else {
+                    User user = new User();
+                    user.setId(IdGenerator.getNewId());
+                    user.setCreateTime(now);
+                    user.setTelephone(activeCard.getPhoneNumber());
+                    user.setUpdateTime(now);
+                    user.setName("");
+                    user.setSex(0l);
+                    JPAEntry.genericPost(user);
+                    Session session = PublicAccounts.putSession(now, user.getId());
+                    result = Response.ok()
+                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .build();
+                }
+            } else {
+                result = Response.status(405).build();
+            }
+        }
+        return result;
+    }*/
 }
