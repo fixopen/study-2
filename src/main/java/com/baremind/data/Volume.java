@@ -29,6 +29,28 @@ public class Volume {
     @Column(name = "\"order\"")
     private int order;
 
+    @Column(name = "bookcover")
+    private String bookCover;
+
+    @Column(name = "knowledge_point_count")
+    private Long knowledgePointCount;
+
+    public Long getKnowledgePointCount() {
+        return knowledgePointCount;
+    }
+
+    public void setKnowledgePointCount(Long knowledgePointCount) {
+        this.knowledgePointCount = knowledgePointCount;
+    }
+
+    public String getBookCover() {
+        return bookCover;
+    }
+
+    public void setBookCover(String bookCover) {
+        this.bookCover = bookCover;
+    }
+
     public int getOrder() {
         return order;
     }
@@ -75,8 +97,10 @@ public class Volume {
         vm.put("grade", volume.getGrade());
         vm.put("order", volume.getOrder());
         vm.put("subjectId", volume.getSubjectId());
+        vm.put("bookCover", volume.getBookCover());
         vm.put("title", volume.getTitle());
         vm.put("type", "old");
+        vm.put("knowledgePointCount", volume.getKnowledgePointCount());
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.showTime > :yesterday AND l.showTime < :now";
         Query q = em.createQuery(stats, Long.class);

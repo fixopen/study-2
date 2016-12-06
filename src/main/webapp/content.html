@@ -46,6 +46,13 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
+                        <!--<li class="volume">-->
+                        <!--<img class="new-label" src="img/new-label.png" alt="">-->
+                        <!--<div class="volume-c-bg">-->
+                        <!--<span class="volume-c-font" data-id="${id}" data-type="volume"-->
+                        <!--data-article="knowledgePoints">共有的</span>-->
+                        <!--</div>-->
+                        <!--</li>-->
                     </ol>
                     <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
                     </ol>
@@ -193,21 +200,37 @@
         <img class="knowledgepoint-m-img" src="img/fenjie1.png" alt="">
     </li>
 </template>
-<template id="knowledge-math-test-template">
-    <li class="knowledgepoint-test" data-article="knowledgePoint">
+<template id="knowledge-math-pkOld-template">
+    <li class="knowledgepoint-test">
         <div class="knowledgepoint-left">
-            <a class="knowledgepoint-name test" href="mathKnowledgePointsTest.html?id=${id}&volumeId=${volumeId}">
-                ${title}</a>
+            <span class="knowledgepoint-name test" data-article="knowledgePoint" data-id="${id}">${name}</span>
         </div>
         <div class="knowledgepoint-right">
             <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
             <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
         </div>
-        <div class="connect">
-            <span class="connect-bg connect-one"></span>
-            <div class="split_line"></div>
-            <span class="connect-bg connect-two"></span>
+        <!--<div class="connect">-->
+        <!--&lt;!&ndash;<span class="connect-bg connect-one"></span>&ndash;&gt;-->
+        <!--<div class="split_line"></div>-->
+        <!--&lt;!&ndash;<span class="connect-bg connect-two"></span>&ndash;&gt;-->
+        <!--</div>-->
+    </li>
+</template>
+<template id="knowledge-math-pkNew-template">
+    <li class="knowledgepoint-test">
+        <div class="knowledgepoint-left">
+            <span class="knowledgepoint-name test" style="font-weight:bold" data-article="knowledgePoint"
+                  data-id="${id}">${name}</span>
         </div>
+        <div class="knowledgepoint-right">
+            <a class="knowledgepoint-read" href="#">阅读<span class="read-count">${readCount}</span></a>
+            <a class="knowledgepoint-like" href="#"><span class="read-count">${likeCount}</span></a>
+        </div>
+        <!--<div class="connect">-->
+        <!--&lt;!&ndash;<span class="connect-bg connect-one"></span>&ndash;&gt;-->
+        <!--<div class="split_line"></div>-->
+        <!--&lt;!&ndash;<span class="connect-bg connect-two"></span>&ndash;&gt;-->
+        <!--</div>-->
     </li>
 </template>
 <!----------------------------------detail-structure----------------------------->
@@ -305,6 +328,26 @@
     </div>
 </template>
 <template id="mathtest-template">
+    <div>
+        <h3 class="head_h3">
+            <span class="head_himg" id="title"></span>
+        </h3>
+        <div class="rain-main">
+            <ul id="question" class="content-bg"></ul>
+            <section class="content-bg lixi_Nomar" id="interaction"></section>
+        </div>
+        <!--message-->
+        <section class="mulu_bottom">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+                </div>
+            </div>
+            <section id="comments"></section>
+        </section>
+    </div>
 </template>
 <!-----------------------------knowledgepoint-content---------------------------->
 <!--chinese-->
@@ -348,7 +391,6 @@
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
         <div class="baoBtn" data-id="${id}">
-            <!--<a class="btnTrue" href="#">查看答案</a>-->
             <span class="btnTrue">查看答案</span>
         </div>
     </li>
@@ -361,7 +403,6 @@
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
         <div class="baoBtn" data-id="${id}">
-            <!--<a class="btnTrue" href="#">查看答案</a>-->
             <span class="btnTrue">查看答案</span>
         </div>
     </li>
@@ -502,7 +543,6 @@
         <img src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
         <div class="baoBtn" data-id="${id}">
-            <!--<a class="btnTrue" href="#">查看答案</a>-->
             <span class="btnTrue">查看答案</span>
         </div>
         <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
@@ -513,6 +553,38 @@
         <div>${title}</div>
         <img class="ceshi_ti1" src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+    </li>
+</template>
+<!--mathtest-->
+<template id="title-template">
+    <span>${name}</span>
+</template>
+<template id="question-option-template">
+    <li class="mld_daanLi">
+        <span class="daan_quan">${title}</span>
+        <input type="radio" class="daana" name="daan1">
+        <img class="ceshi_ti1" src="${optionImagePath}" alt="">
+        <!--<label for="daan_s3A">${name}</label>-->
+        <label>${name}</label>
+    </li>
+</template>
+<template id="question-template">
+    <li class="mulu_div">
+        <div class="mld_xiaoUl">
+            <div class="mld_Ulli">
+                <div data-type="${type}">${title}</div>
+                <img class="ceshi_ti1" src="${storePath}" alt="">
+                <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+                <div class="baoBtn" data-id="${id}">
+                    <span class="btnTrue">查看答案</span>
+                </div>
+                <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
+            </div>
+        </div>
+        <!--<div class="lian_jie">-->
+        <!--<span class="lianjie lianjie01"></span>-->
+        <!--<span class="lianjie lianjie02"></span>-->
+        <!--</div>-->
     </li>
 </template>
 
@@ -527,6 +599,37 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
+    /*
+     *  [
+     *     {
+     *       id:...
+     *       name: ...
+     *       low:[
+     *           {
+     *               id: ..
+     *               name: ...
+     *               cover: ...
+     *               knowledgePoints: [
+     *                   {
+     *                       id:
+     *                       name: ...
+     *                       oldOrNew:...
+     *                       ...
+     *                       contents: {
+     *                       }
+     *                   }
+     *                   ...
+     *               ]
+     *           }
+     *           ...
+     *       ],
+     *       high: [
+     *
+     *       ]
+     *   }
+     *  ....
+     *  ]
+     */
     var subjects = []
 
     var state = {
@@ -757,6 +860,13 @@
                                     }
                                     return result
                                 }
+//                                var newLength=function(kp){
+//                                    var num=0;
+//                                    if(kp.type == 'normalNew'){
+//                                        num++;
+//                                    }
+//                                    return num;
+//                                }
                                 var now = new Date()
                                 for (var i = 0; i < kps.length; ++i) {
                                     var v = state.knowledgePoints.value //state.volume.getById(kps[i].volumeId)
@@ -770,10 +880,18 @@
 
                                         kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
                                         if (isNew(now, kps[i])) {
-                                            kps[i].type = 'normalNew'
+                                            if (kps[i].type) {
+                                                kps[i].type += 'New'
+                                            } else {
+                                                kps[i].type = 'normalNew'
+                                            }
                                             v.knowledgePoints.unshift(kps[i])
                                         } else {
-                                            kps[i].type = 'normalOld'
+                                            if (kps[i].type) {
+                                                kps[i].type += 'Old'
+                                            } else {
+                                                kps[i].type = 'normalOld'
+                                            }
                                             v.knowledgePoints.push(kps[i])
                                         }
                                     } else {
@@ -836,6 +954,8 @@
                             alterTemplates: [
                                 {type: 'normalNew', templateId: 'knowledge-math-normalNew-template'},
                                 {type: 'normalOld', templateId: 'knowledge-math-normalOld-template'},
+                                {type: 'pkOld', templateId: 'knowledge-math-pkOld-template'},
+                                {type: 'pkNew', templateId: 'knowledge-math-pkNew-template'},
                             ]
                         })
                         break
@@ -1148,111 +1268,162 @@
                         break
                     case 2:
                     case '2':
-                        proc({
-                            containerId: 'knowledgePoint',
-                            data: {},
-                            templateId: 'math-template'
-                        });
+                        switch (state.knowledgePoint.value.type) {
+                            case 'normalNew':
+                            case 'normalOld':
+                                proc({
+                                    containerId: 'knowledgePoint',
+                                    data: {},
+                                    templateId: 'math-template'
+                                })
+                                state.knowledgePoint.interaction = document.getElementById('interaction');
+                                state.knowledgePoint.comments = document.getElementById('comments');
 
-                        state.knowledgePoint.interaction = document.getElementById('interaction');
-                        state.knowledgePoint.comments = document.getElementById('comments');
+                                // 写留言---------
+                                var createComment = document.getElementById('createComment');
+                                var panel = document.getElementById('commentPanl');
+                                var btn = document.getElementById('submitBtn');
+                                var commentContent = document.getElementById('textarea');
+                                var commentContainer = document.getElementById('comments');
+                                commentEventBind(createComment, panel, btn, commentContent, commentContainer);
 
-                        // 写留言---------
-                        var createComment = document.getElementById('createComment');
-                        var panel = document.getElementById('commentPanl');
-                        var btn = document.getElementById('submitBtn');
-                        var commentContent = document.getElementById('textarea');
-                        var commentContainer = document.getElementById('comments');
-                        commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+                                var value = state.knowledgePoint.value;
 
-                        var value = state.knowledgePoint.value;
+                                proc({
+                                    templateId: 'title1-template',
+                                    data: value,
+                                    containerId: 'title1'
+                                });
+                                proc({
+                                    templateId: 'title2-template',
+                                    data: value,
+                                    containerId: 'title2'
+                                });
 
-                        proc({
-                            templateId: 'title1-template',
-                            data: value,
-                            containerId: 'title1'
-                        });
-                        proc({
-                            templateId: 'title2-template',
-                            data: value,
-                            containerId: 'title2'
-                        });
+                                proc({
+                                    templateId: 'challenge-template',
+                                    data: value.contents.quotes,
+                                    containerId: 'challenge'
+                                });
 
-                        proc({
-                            templateId: 'challenge-template',
-                            data: value.contents.quotes,
-                            containerId: 'challenge'
-                        });
+                                proc({
+                                    data: value.contents.contents,
+                                    containerId: 'content1',
+                                    alterTemplates: [
+                                        {type: 'text', templateId: 'content-text-template'},
+                                        {type: 'imageText', templateId: 'content-m-image-template'}
+                                    ]
+                                });
 
-                        proc({
-                            data: value.contents.contents,
-                            containerId: 'content1',
-                            alterTemplates: [
-                                {type: 'text', templateId: 'content-text-template'},
-                                {type: 'imageText', templateId: 'content-m-image-template'}
-                            ]
-                        });
+                                proc({
+                                    templateId: 'video-template',
+                                    data: value.contents.video,
+                                    containerId: 'video1'
+                                });
 
-                        proc({
-                            templateId: 'video-template',
-                            data: value.contents.video,
-                            containerId: 'video1'
-                        });
-
-                        //data.problems
-                        var ps = []
-                        for (var i = 0; i < value.contents.problems.length; ++i) {
-                            ps[i] = value.contents.problems[i]
-                        }
-                        var pk = null
-                        var strongestBrains = []
-                        if (ps.length > 0) {
-                            pk = ps[ps.length - 1]
-                            ps.pop()
-                            strongestBrains = ps
-                        }
-
-                        proc({
-                            templateId: 'pk-template',
-                            data: pk,
-                            containerId: 'pk',
-                            secondBind: [
-                                {
-                                    extPoint: 'options',
-                                    dataFieldName: 'options',
-                                    templateId: 'strongest-brain-option-template'
+                                //data.problems
+                                var ps = []
+                                for (var i = 0; i < value.contents.problems.length; ++i) {
+                                    ps[i] = value.contents.problems[i]
                                 }
-                            ]
-                        });
-                        proc({
-                            templateId: 'strongest-brain-template',
-                            data: strongestBrains,
-                            containerId: 'strongest-brain',
-                            secondBind: [
-                                {
-                                    extPoint: 'options',
-                                    dataFieldName: 'options',
-                                    templateId: 'strongest-brain-option-template'
-                                },
-                                // {
-                                //     extPoint: 'explain',
-                                //     dataFieldName: 'video',
-                                //     templateId: 'video-template'
-                                // }
-                            ]
-                        });
+                                var pk = null
+                                var strongestBrains = []
+                                if (ps.length > 0) {
+                                    pk = ps[ps.length - 1]
+                                    ps.pop()
+                                    strongestBrains = ps
+                                }
 
-                        //  interaction-likes
-                        var container = state.knowledgePoint.interaction;
-                        var iconName = '.icon';
-                        var likeTemplate = 'interaction-like-template';
-                        var unlikeTemplate = 'interaction-unlike-template';
-                        var apiUrl = 'api/knowledge-points/';
-                        likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                                proc({
+                                    templateId: 'pk-template',
+                                    data: pk,
+                                    containerId: 'pk',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'strongest-brain-option-template'
+                                        }
+                                    ]
+                                });
+                                proc({
+                                    templateId: 'strongest-brain-template',
+                                    data: strongestBrains,
+                                    containerId: 'strongest-brain',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'strongest-brain-option-template'
+                                        }
+                                    ]
+                                });
 
-//                        //comments-likes;
-                        state.knowledgePoint.renderComments()
-                        break
+                                //  interaction-likes
+                                var container = state.knowledgePoint.interaction;
+                                var iconName = '.icon';
+                                var likeTemplate = 'interaction-like-template';
+                                var unlikeTemplate = 'interaction-unlike-template';
+                                var apiUrl = 'api/knowledge-points/';
+                                likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                                //comments-likes;
+                                state.knowledgePoint.renderComments()
+
+                                break
+                            case 'pkNew':
+                            case 'pkOld':
+                                proc({
+                                    containerId: 'knowledgePoint',
+                                    data: {},
+                                    templateId: 'mathtest-template'
+                                });
+
+                                state.knowledgePoint.interaction = document.getElementById('interaction');
+                                state.knowledgePoint.comments = document.getElementById('comments');
+
+                                // 写留言---------
+                                var createComment = document.getElementById('createComment');
+                                var panel = document.getElementById('commentPanl');
+                                var btn = document.getElementById('submitBtn');
+                                var commentContent = document.getElementById('textarea');
+                                var commentContainer = document.getElementById('comments');
+                                commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                                var value = state.knowledgePoint.value;
+
+                                proc({
+                                    templateId: 'title-template',
+                                    data: value,
+                                    containerId: 'title'
+                                });
+
+                                proc({
+                                    templateId: 'question-template',
+                                    data: value.contents.problems,
+                                    containerId: 'question',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'question-option-template'
+                                        }
+                                    ]
+                                });
+
+                                //  interaction-likes
+                                var container = state.knowledgePoint.interaction;
+                                var iconName = '.icon';
+                                var likeTemplate = 'interaction-like-template';
+                                var unlikeTemplate = 'interaction-unlike-template';
+                                var apiUrl = 'api/knowledge-points/';
+                                likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                                //comments-likes;
+                                state.knowledgePoint.renderComments()
+
+                                break
+                        }
                 }
             },
             getById: function (id) {
@@ -1385,6 +1556,15 @@
                     }
                 }
                 return result
+            },
+            calcNew: function () {
+                var newCount = 0
+                for (var i = 0; i < state.volume.value.knowledgePoints.length; ++i) {
+                    if (state.volume.value.knowledgePoints[i].type == 'normalNew') {
+                        newCount++
+                    }
+                }
+                return newCount
             }
         }
     }
@@ -1393,12 +1573,12 @@
 </script>
 <script>
     //    挑战百分百的分割线
-    //    $(window).resize(function () {
-    //        $(".split_line").css("width", $("#whole_width").width())
-    //    })
-    //    window.onpageshow = function () {
-    //        $(".split_line").css("width", $("#whole_width").width())
-    //    }
+    //        $(window).resize(function () {
+    //            $(".split_line").css("width", $("#whole_width").width())
+    //        })
+    //        window.onpageshow = function () {
+    //            $(".split_line").css("width", $("#whole_width").width())
+    //        }
 </script>
 </body>
 </html>

@@ -48,12 +48,20 @@ $(function () {
                 var t = new Date(kp.showTime.replace(/-/g, "/"));
                 var h = (now.getTime() - t.getTime()) / ( 60 * 60 * 1000);
                 if (h < 24) {
-                    kp.type = 'normalNew';
+                    if (kp.type) {
+                        kp.type += 'New'
+                    } else {
+                        kp.type = 'normalNew'
+                    }
                     knowledgePoints.splice(i, 1);
                     knowledgePoints.unshift(kp);
                     // $('.neir_lidiv a').eq(i).removeClass('neir_pzi').addClass('neir_pzi_');
                 } else {
-                    kp.type = 'normalOld';
+                    if (kp.type) {
+                        kp.type += 'Old'
+                    } else {
+                        kp.type = 'normalOld'
+                    }
                     //   $('.neir_lidiv a').eq(i).removeClass('neir_pzi_').addClass('neir_pzi');
                 }
             }
