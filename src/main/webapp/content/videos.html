@@ -665,7 +665,7 @@
 
 
 <!--*****************************video*****************************-->
-<<<<<<< HEAD
+
 <template id="live-video-template">
     <div>
         <div class="live-details-videoPlay">
@@ -716,16 +716,6 @@
         <p class="liveDetails-txt">${content}</p>
     </li>
 </template>
-=======
-<<<<<<< HEAD
-<tempalte id="video-template"></tempalte>
-=======
-<tempalte id="video-template">
-
-</tempalte>
-
->>>>>>> 08c084cdecd5eb154aca11ca71eaf2e218f4687d
->>>>>>> 83154f379ca0683adb16c9a06f474d26d3c21c6c
 
 <!--**********************************scheduler********************************-->
 <template id="day-template">
@@ -825,19 +815,19 @@
 //            var userId = g.getUrlParameter('userid')
 //            g.setCookie('userId', userId)
 
-//            $.ajax({
-//                type: 'get',
-//                url: '/api/subjects',
-//                dataType: 'json',
-//                success: function (ss) {
-//                    subjects = ss
-//                    state['main'].init()
-//                    history.pushState(null, null, '/content/videos.html#main')
-//                },
-//                error: function (xhr) {
-//                    alert('back-end not response, places retry')
-//                }
-//            })
+            $.ajax({
+                type: 'get',
+                url: '/api/subjects',
+                dataType: 'json',
+                success: function (ss) {
+                    subjects = ss
+                    state['main'].init()
+                    history.pushState(null, null, '/content/videos.html#main')
+                },
+                error: function (xhr) {
+                    alert('back-end not response, places retry')
+                }
+            })
 
             var switchTo = function (id) {
                 state.currentArticle.style.display = 'none'
@@ -858,7 +848,7 @@
                 switchTo(hash)
             }, false)
 
-            switchTo('videoDetail')
+//            switchTo('videoDetail')
         },
         main: {
             zeroFuture: {
