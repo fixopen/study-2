@@ -493,7 +493,7 @@
     //var count =0;
     var oppid;
     var state = {
-        currentArticle: document.getElementById('user'),
+        currentArticle: document.getElementById('sign'),
         init: function () {
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId, '/api')
@@ -521,12 +521,12 @@
                 var id = e.target.dataset.article
                 switchTo(id)
             })
-            if(oppid != null){
+            /*if(oppid != null){
                 switchTo("user")
             }else{
                 switchTo("sign")
-            }
-            state['user'].init()
+            }*/
+            state['sign'].init()
             history.pushState(null, null, '/user.html#user');
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
