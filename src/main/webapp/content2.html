@@ -23,11 +23,13 @@
 
 </head>
 <body>
+
 <article id="volumes" style="display: none;"><!--课程封皮--></article>
 <article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
 <article id="knowledgePoint">
 
 </article>
+
 <!--------------------------volumes--------------------------->
 <template id="chinese-structure"><!--课程封皮：学习-语文-->
     <div class="wrap noBackg">
@@ -51,7 +53,7 @@
             </div>
         </div>
     </div>
-</template  >
+</template>
 <template id="math-structure"><!--课程封皮：学习-数学-->
     <div class="wrap noBackg">
         <div class="bao_dul">
@@ -98,25 +100,25 @@
         </div>
     </div>
 </template>
-<template id="volumes-chinese-new-template">
+<template id="volumes-new-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
             <span class="textbook_num">1</span>
-            <img src="${img}" alt="">
+            <img src="${bookCover}" alt="">
         </a>
     </li>
 </template>
-<template id="volumes-chinese-old-template">
+<template id="volumes-old-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
-            <img src="${img}" alt="">
+            <img src="${bookCover}" alt="">
         </a>
     </li>
 </template>
 <template id="volumes-chinese-expect-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
-            <img src="${img}" alt="">
+            <img src="${bookCover}" alt="">
         </a>
     </li>
 </template>
@@ -221,14 +223,14 @@
         </div>
         <div class="rain-main catalog_list">
             <div class="chinese_catalog_list">
-                <ul class="each_chapter"  id="chapter_section2"></ul>
+                <ul class="each_chapter" id="chapter_section2"></ul>
             </div>
         </div>
     </div>
 </template>
 <!----------------------------------detail-structure----------------------------->
 <template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个--><!--语文-课程详情-->
-    <div class=""wrap>
+    <div class="" wrap>
         <section class="head-title" id="knowledgePointTitle">
         </section>
         <section class="rain-main">
@@ -262,7 +264,7 @@
 </template>
 <template id="math-template"><!--数学-课程详情-->
     <div class="wrap">
-        <section  class="title_math_details">
+        <section class="title_math_details">
             <span class="dare"> 挑战<span id="title1"></span></span>
             <h3 class="title_module" id="title2"></h3>
         </section>
@@ -270,7 +272,8 @@
         <div class="rain-main">
             <!--lead-->
             <section class="challenge">
-                <div id="challenge"></div> 赶紧开始吧！
+                <div id="challenge"></div>
+                赶紧开始吧！
             </section>
             <!--最强讲解-->
             <div class="module_math">
@@ -378,9 +381,9 @@
 </template>
 <template id="video-template">
     <div class="details_show">
-           <a href="${storePath}">
-               <img src="${cover}"/>
-           </a>
+        <a href="${storePath}">
+            <img src="${cover}"/>
+        </a>
     </div>
 </template>
 <template id="problem-option-template">
@@ -636,7 +639,8 @@
             <div class="notify_content">
                 <p class="deduct_bean">确定要扣<span class="ptxt_span">1</span>金豆<br>观看本视频吗？</p>
                 <p class="next_no_prompt">
-                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox" id="no_prompt">下次不提醒</label>
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
                 </p>
                 <p class="btn_line">
                     <a class="got_it_btn" href="javascript:;">确定</a>
@@ -655,7 +659,8 @@
                     您还没有语文卡<br>确定要扣数学卡<span class="ptxt_span">1</span>金豆吗？
                 </div>
                 <p class="next_no_prompt">
-                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox" id="no_prompt">下次不提醒</label>
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
                 </p>
                 <div>
                     <a class="confirm_btn" href="javascript:;"><span>确定</span></a>
@@ -675,7 +680,8 @@
                     您还没有数学卡<br>确定要扣语文卡<span class="ptxt_span">1</span>金豆吗？
                 </div>
                 <p class="next_no_prompt">
-                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox" id="no_prompt">下次不提醒</label>
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
                 </p>
                 <div>
                     <a class="confirm_btn" href="javascript:;"><span>确定</span></a>
@@ -700,423 +706,1121 @@
 <script>
     $(function () {
         var data = {
-            low:[
+            low: [
                 {
-                    type:'new',
-                    img:'images_version2/yuwen_mulu1.png'
-                },
-                {  type:'old',
-                    img:'images_version2/yuwen_mulu2.png'
-                },
-                {  type:'expect',
-                    img:'images_version2/yuwen_mulu0.png'
-                }
-            ],
-            high:[
-                {
-                    type:'new',
-                    img:'images_version2/yuwen_mulu2.png'
-                },
-                {  type:'old',
-                    img:'images_version2/yuwen_mulu1.png'
-                },
-                {  type:'expect',
-                    img:'images_version2/yuwen_mulu0.png'
-                }
-            ],
-            bookInfor:[
-                {
-                    type:'bookinfor',
-                    bookImg:'images_version2/shuxue1.png',
-                    bookName:'钟表喊你吃饭啦',
-                    grade:'1-3年级',
-                    chapterNum:'12'
-                }
-            ],
-            packUpTitle:[
-                {
-                    type:'packUp',
-                    title:'钟表喊你吃饭啦'
-                }
-            ],
-            chapter_section:[
-                {
-                    type:'new',
-                    title:'加与减',
-                    peopleNum:'54682',
-                    zan:'images_version2/dianzan.png',
-                    zanover:'images_version2/zanover.png',
-                    zanNum:'381'
+                    type: 'new',
+                    img: 'images_version2/yuwen_mulu1.png'
                 },
                 {
-                    type:'old',
-                    title:'简单的图形数量规律',
-                    peopleNum:'54682',
-                    zan:'images_version2/dianzan.png',
-                    zanover:'images_version2/zanover.png',
-                    zanNum:'381'
+                    type: 'old',
+                    img: 'images_version2/yuwen_mulu2.png'
                 },
                 {
-                    type:'challenge',
-                    title:'挑战百分百',
-                    peopleNum:'54682',
-                    zan:'images_version2/dianzan.png',
-                    zanover:'images_version2/zanover.png',
-                    zanNum:'381'
+                    type: 'expect',
+                    img: 'images_version2/yuwen_mulu0.png'
                 }
             ],
-            head_title:[
+            high: [
                 {
-                    type:'headTitle',
-                    name:'放纵不羁名垂青史的竹林七贤'
+                    type: 'new',
+                    img: 'images_version2/yuwen_mulu2.png'
+                },
+                {
+                    type: 'old',
+                    img: 'images_version2/yuwen_mulu1.png'
+                },
+                {
+                    type: 'expect',
+                    img: 'images_version2/yuwen_mulu0.png'
                 }
             ],
-            text_appreciate:[
+            bookInfor: [
                 {
-                    type:'textAppreciate',
-                    content:'陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
-                    source:' ——【南朝】刘义庆《世说新语·任诞》',
+                    type: 'bookinfor',
+                    bookImg: 'images_version2/shuxue1.png',
+                    bookName: '钟表喊你吃饭啦',
+                    grade: '1-3年级',
+                    chapterNum: '12'
                 }
             ],
-            content_text:[
+            packUpTitle: [
                 {
-                    type:'contentText',
-                    content:'魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？',
+                    type: 'packUp',
+                    title: '钟表喊你吃饭啦'
                 }
             ],
-            content_image:[
+            chapter_section: [
                 {
-                    type:'contentImage',
-                    href:'images_version2/video1.png'
+                    type: 'new',
+                    title: '加与减',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
+                },
+                {
+                    type: 'old',
+                    title: '简单的图形数量规律',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
+                },
+                {
+                    type: 'challenge',
+                    title: '挑战百分百',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
                 }
             ],
-            content_video:[
+            head_title: [
                 {
-                    type:'contentVideo',
-                    storePath:'',
-                    cover:'images_version2/video3.png'
+                    type: 'headTitle',
+                    name: '放纵不羁名垂青史的竹林七贤'
                 }
             ],
-            challenge_num:[
+            text_appreciate: [
                 {
-                    type:'challengeNum',
-                    order:'一'
+                    type: 'textAppreciate',
+                    content: '陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
+                    source: ' ——【南朝】刘义庆《世说新语·任诞》',
                 }
             ],
-            title_math_details:[
+            content_text: [
                 {
-                    type:'titleMathDetails',
-                    name:'火柴竟是运动迷'
+                    type: 'contentText',
+                    content: '魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？',
                 }
             ],
-            challenge_period:[
+            content_image: [
                 {
-                    type:'challengePeriod',
-                    content:'欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。'
+                    type: 'contentImage',
+                    href: 'images_version2/video1.png'
                 }
             ],
-            explain_content:[
+            content_video: [
                 {
-                    type:'explainContent',
-                    explainContent:'今天，我们来学习加减法运算。',
-                    href:'images_version2/math4.png',
-                    content:'在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
+                    type: 'contentVideo',
+                    storePath: '',
+                    cover: 'images_version2/video3.png'
                 }
             ],
-            english_details:[
+            challenge_num: [
                 {
-                    type:'englishDetails',
-                    bookImg:'images_version2/yingyu1.png',
-                    bookName:'My Family',
-                    summary:'学习爸爸、妈妈、哥哥、姐姐等亲属称容词,如，mother，grandma等'
+                    type: 'challengeNum',
+                    order: '一'
                 }
             ],
-            english_content:[
+            title_math_details: [
                 {
-                    type:'englishContent',
-                    img:'img/eng_mo.png'
+                    type: 'titleMathDetails',
+                    name: '火柴竟是运动迷'
+                }
+            ],
+            challenge_period: [
+                {
+                    type: 'challengePeriod',
+                    content: '欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。'
+                }
+            ],
+            explain_content: [
+                {
+                    type: 'explainContent',
+                    explainContent: '今天，我们来学习加减法运算。',
+                    href: 'images_version2/math4.png',
+                    content: '在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
+                }
+            ],
+            english_details: [
+                {
+                    type: 'englishDetails',
+                    bookImg: 'images_version2/yingyu1.png',
+                    bookName: 'My Family',
+                    summary: '学习爸爸、妈妈、哥哥、姐姐等亲属称容词,如，mother，grandma等'
+                }
+            ],
+            english_content: [
+                {
+                    type: 'englishContent',
+                    img: 'img/eng_mo.png'
                 }
             ],
         }
 
-        let doc = document
+</script>
+<script>
+    /*
+     *  [
+     *     {
+     *       id:...
+     *       name: ...
+     *       low:[
+     *           {
+     *               id: ..
+     *               name: ...
+     *               cover: ...
+     *               knowledgePoints: [
+     *                   {
+     *                       id:
+     *                       name: ...
+     *                       oldOrNew:...
+     *                       ...
+     *                       contents: {
+     *                       }
+     *                   }
+     *                   ...
+     *               ]
+     *           }
+     *           ...
+     *       ],
+     *       high: [
+     *
+     *       ]
+     *   }
+     *  ....
+     *  ]
+     */
+    var subjects = []
 
-        let getTemplate = function (templateId) {
-            let result
-            let template = doc.getElementById(templateId)
-            if (template) {
-                result = template.content.children[0]
-            }
-            return result
-        }
+    var state = {
+        currentArticle: document.getElementById('volumes'),
+        init: function () {
+            var userId = g.getUrlParameter('userid')
+            g.setCookie('userId', userId)
 
-        let bind = function (element, data) {
-            element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
-                let result = ''
-                if (variable) {
-                    result = data[variable]
-                }
-                return result
-            })
-        }
-
-        let proc = function (option) {
-            let template = option.template
-            if (!template) {
-                template = getTemplate(option.templateId)
-            }
-            let templates
-            if (option.alterTemplates) {
-                templates = []
-                for (let i = 0; i < option.alterTemplates.length; ++i) {
-                    let template = getTemplate(option.alterTemplates[i].templateId)
-                    if (template) {
-                        templates.push({type: option.alterTemplates[i].type, template: template})
+            $.ajax({
+                type: 'GET',
+                url: '/api/subjects',
+                dataType: 'json',
+                success: function (ss) {
+                    subjects = ss
+                    for (var i = 0; i < subjects.length; ++i) {
+                        subjects[i].low = []
+                        subjects[i].high = []
                     }
-                }
-            }
-            let container = option.container
-            if (!container) {
-                container = doc.getElementById(option.containerId)
-            }
-            if ((template || templates) && container) {
-                if (Array.isArray(option.data)) {
-                    let secondTemplates = []
-                    if (option.secondBind) {
-                        if (Array.isArray(option.secondBind)) {
-                            for (let i = 0; i < option.secondBind.length; ++i) {
-                                let secondTemplate = getTemplate(option.secondBind[i].templateId)
-                                secondTemplates.push({
-                                    extPoint: option.secondBind[i].extPoint,
-                                    template: secondTemplate
-                                })
-                            }
-                        } else {
-                            let secondTemplate = getTemplate(option.secondBind.templateId)
-                            secondTemplates.push({extPoint: option.secondBind.extPoint, template: secondTemplate})
-                        }
-                    }
-                    for (let i = 0; i < option.data.length; ++i) {
-                        let element
-                        if (template) {
-                            element = template.cloneNode(true)
-                        } else if (templates) {
-                            for (let j = 0; j < templates.length; ++j) {
-                                if (option.data[i].type == templates[j].type) {
-                                    element = templates[j].template.cloneNode(true)
-                                    break
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/volumes',
+                        dataType: 'json',
+                        success: function (vs) {
+                            for (var i = 0; i < vs.length; ++i) {
+                                vs[i].knowledgePoints = []
+                                var s = state.subject.getById(vs[i].subjectId)
+                                if (s) {
+                                    var gn = state.grade.getNameByValue(vs[i].grade)
+                                    s[gn].push(vs[i])
+                                } else {
+                                    //console.log(vs[i])
                                 }
                             }
+
+                            var subjectId = g.getUrlParameter('subjectId')
+                            $.ajax({
+                                type: "get",
+                                url: '/api/subjects/' + subjectId + '/popup',
+                                dataType: "json",
+                                success: function (pop) {
+                                    state.volumes.popuped = pop.popup;
+                                    //state.volumes.popuped = false;
+
+                                    history.pushState(null, null, '/content2.html#volumes')
+                                    state.volumes.changeId(subjectId)
+
+                                    //state.volumes.subjectId = subjectId
+                                    //state['volumes'].init()
+
+                                    $(document).on('click', '.like-icon', function (e) {
+                                        var commentId = e.target.parentNode.dataset.id
+                                        state.knowledgePoint.process(commentId)
+                                    })
+                                }
+                            });
+                        },
+                        error: function (r) {
                         }
-                        bind(element, option.data[i])
-                        if (option.secondBind) {
-                            let secondContainer
-                            let secondIndex
-                            if (Array.isArray(option.secondBind)) {
-                                for (let j = 0; j < option.secondBind.length; ++j) {
-                                    if (option.secondBind[j].extPoint == option.secondBind.extPoint) {
-                                        secondIndex = j
-                                        secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind[j].extPoint + '"]')
-                                        break
+                    })
+                },
+                error: function (r) {
+                }
+            })
+
+            var switchTo = function (id) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/content2.html#' + id)
+                state[id].init()
+            }
+
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article;
+                switchTo(id);
+                state[id].changeId(e.target.dataset.id)
+            })
+
+            $(document).on('shown.bs.tab', '.grade-main', function (e) {
+                state.volumes.grade = e.target.dataset.grade
+                //$(e.target).tab('show')
+            })
+
+            window.addEventListener('hashchange', function (e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            }, false)
+        },
+
+        volumes: {
+            isChanged: true,
+            grade: 'low',
+            parentId: 0,
+            init: function () {
+                state.volumes.value = state.subject.getById(state.volumes.parentId)
+                state.volumes.show()
+            },
+            changeId: function (subjectId) {
+                if (state.volumes.parentId != subjectId) {
+                    state.volumes.parentId = subjectId;
+                    state.volumes.value = state.subject.getById(state.volumes.parentId);
+                    state.volumes.isChanged = true;
+                    state.volumes.show();
+                }
+            },
+            value: null,
+            show: function () {
+                if (state.volumes.isChanged) {
+                    $('#volumes').html("");
+
+                    switch (state.volumes.parentId) {
+                        case 1:
+                        case "1":
+                            proc({
+                                containerId: 'volumes',
+                                data: {},
+                                templateId: 'chinese-structure'
+                            })
+
+                            var value = state.volumes.value;
+
+                            proc({
+                                data: value.low,
+                                containerId: 'low',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
+                                ]
+                            })
+                            proc({
+                                data: value.high,
+                                containerId: 'high',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
+                                ]
+                            })
+
+                            var subjectId = 1;
+                            state.volumes.popups(subjectId);
+
+                            break
+                        case 2:
+                        case '2':
+                            proc({
+                                containerId: 'volumes',
+                                data: {},
+                                templateId: 'math-structure'
+                            })
+
+                            var value = state.volumes.value
+                            proc({
+                                data: value.low,
+                                containerId: 'low2',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
+                                ]
+                            })
+                            proc({
+                                data: value.high,
+                                containerId: 'high2',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
+                                ]
+                            })
+
+                            var subjectId = 2;
+                            state.volumes.popups(subjectId);
+
+                            break
+                    }
+                    state.volumes.isChanged = false
+                }
+            },
+            newClass: function () {
+                $('.tan').show();
+                $('.new-class').show();
+                $(".tan,.new-class").bind('touchmove', function (event) {
+                    event.preventDefault();
+                });
+                $(".new-class").click(function () {
+                    $(this).hide();
+                    $(".tan").hide();
+                });
+            },
+            popups: function (subjectId) {
+                if (!state.volumes.popuped) {
+                    state.volumes.newClass();//课程更新弹窗
+                    $.ajax({
+                        type: "post",
+                        url: '/api/subjects/' + subjectId,
+                        data: JSON.stringify({}),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function () {
+                        }
+                    })
+                }
+            }
+        },
+        knowledgePoints: {
+            isChanged: false,
+            parentId: null,
+            init: function () {
+                if (state.knowledgePoints.isChanged) {
+                    state.knowledgePoints.show()
+                    state.knowledgePoints.isChanged = false
+                }
+            },
+            changeId: function (volumeId) {
+                if (state.knowledgePoints.parentId != volumeId) {
+                    state.knowledgePoints.parentId = volumeId
+                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId)
+                    if (state.knowledgePoints.value.knowledgePoints.length == 0) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
+                            dataType: 'json',
+                            success: function (kps) {
+                                var isNew = function (now, kp) {
+                                    var result = false
+                                    if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+                                        result = true
+                                    }
+                                    return result
+                                }
+//                                var newLength=function(kp){
+//                                    var num=0;
+//                                    if(kp.type == 'normalNew'){
+//                                        num++;
+//                                    }
+//                                    return num;
+//                                }
+                                var now = new Date()
+                                for (var i = 0; i < kps.length; ++i) {
+                                    var v = state.knowledgePoints.value //state.volume.getById(kps[i].volumeId)
+                                    if (v) {
+                                        //console.log(v.knowledgePoints)
+                                        var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
+                                        if (lastKp) {
+                                            lastKp.nextId = kps[i].id
+                                            kps[i].previousId = lastKp.id
+                                        }
+
+                                        kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
+                                        if (isNew(now, kps[i])) {
+                                            if (kps[i].type) {
+                                                kps[i].type += 'New'
+                                            } else {
+                                                kps[i].type = 'normalNew'
+                                            }
+                                            v.knowledgePoints.unshift(kps[i])
+                                        } else {
+                                            if (kps[i].type) {
+                                                kps[i].type += 'Old'
+                                            } else {
+                                                kps[i].type = 'normalOld'
+                                            }
+                                            v.knowledgePoints.push(kps[i])
+                                        }
+                                    } else {
+                                        //console.log(kps[i])
                                     }
                                 }
-                            } else {
-                                secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]')
+                                state.knowledgePoints.show()
+                            },
+                            error: function (r) {
                             }
-                            let secondTemplate
-                            for (let j = 0; j < secondTemplates.length; ++j) {
-                                if (secondTemplates[j].extPoint == option.secondBind.extPoint) {
-                                    secondTemplate = secondTemplates[j].template
-                                }
-                            }
-                            let secondData = option.data[i][option.secondBind.dataFieldName]
-                            if (Array.isArray(option.secondBind)) {
-                                secondData = option.data[i][option.secondBind[secondIndex].dataFieldName]
-                            }
-                            if (secondContainer && secondTemplate) {
-                                proc({
-                                    container: secondContainer,
-                                    template: secondTemplate,
-                                    data: secondData
-                                })
-                            }
-                        }
-                        container.appendChild(element)
+                        })
+                    } else {
+                        state.knowledgePoints.show()
                     }
-                } else {
-                    let element = template.cloneNode(true)
-                    bind(element, option.data)
-                    if (option.secondBind) {
-                        let secondContainer
-                        let secondIndex
-                        if (Array.isArray(option.secondBind)) {
-                            for (let j = 0; j < option.secondBind.length; ++j) {
-                                if (option.secondBind[j].extPoint == option.secondBind.extPoint) {
-                                    secondIndex = j
-                                    secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind[j].extPoint + '"]')
-                                    break
-                                }
-                            }
-                        } else {
-                            secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]')
-                        }
-                        let secondTemplate
-                        for (let j = 0; j < secondTemplates.length; ++j) {
-                            if (secondTemplates[j].extPoint == option.secondBind.extPoint) {
-                                secondTemplate = secondTemplates[j].template
-                            }
-                        }
-                        let secondData = option.data[option.secondBind.dataFieldName]
-                        if (Array.isArray(option.secondBind)) {
-                            secondData = option.data[option.secondBind[secondIndex].dataFieldName]
-                        }
-                        if (secondContainer && secondTemplate) {
-                            proc({
-                                container: secondContainer,
-                                template: secondTemplate,
-                                data: secondData
-                            })
-                        }
-                    }
-                    container.appendChild(element)
+                }
+            },
+            value: null,
+            show: function () {
+                $('#knowledgePoints').html("");
+                switch (state.volumes.parentId) {
+                    case 1:
+                    case "1":
+                        proc({
+                            containerId: 'knowledgePoints',
+                            data: {},
+                            templateId: 'chinese-catalog'
+                        })
+
+                        var value = state.knowledgePoints.value
+                        proc({
+                            templateId: 'book-infor-template',
+                            data: value,
+                            containerId: 'volumeTitle'
+                        })
+                        proc({
+                            data: value.knowledgePoints,
+                            containerId: 'knowledge-point',
+                            alterTemplates: [
+                                {type: 'normalNew', templateId: 'chapter-new-template'},
+                                {type: 'normalOld', templateId: 'chapter-old-template'},
+                            ]
+                        })
+                        break
+                    case 2:
+                    case '2':
+                        proc({
+                            containerId: 'knowledgePoints',
+                            data: {},
+                            templateId: 'math-catalog'
+                        })
+                        var value = state.knowledgePoints.value
+                        proc({
+                            templateId: 'book-infor-template',
+                            data: value,
+                            containerId: 'volumeTitle'
+                        })
+                        proc({
+                            data: value.knowledgePoints,
+                            containerId: 'knowledge-point',
+                            alterTemplates: [
+                                {type: 'normalNew', templateId: 'chapter-new-template'},
+                                {type: 'normalOld', templateId: 'chapter-old-template'},
+                                {type: 'pkOld', templateId: 'chapter-old-challenge'},
+                                {type: 'pkNew', templateId: 'chapter-new-challenge'},
+                            ]
+                        })
+                        break
                 }
             }
-        }
+        },
+        knowledgePoint: {
+            init: function () {
+                var falseImage = getTemplate('falseImage');
+                var trueImage = getTemplate('trueImage');
+                $(document).on('click', '.mld_daanLi', function (e) {
+                    var elm = e.currentTarget
+                    if (state.volumes.parentId == 1) {
+                        var problemType = elm.parentNode.previousElementSibling.firstElementChild.textContent
+                    } else if (state.volumes.parentId == 2) {
+                        var problemType = elm.parentNode.previousElementSibling.previousElementSibling.dataset.type;
+                    }
+                    var titleElement = elm.children[1]
+                    switch (problemType) {
+                        case '多选题':
+                            if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected == true) {
+                                titleElement.dataset.selected = false;
 
-        proc({
-            data: data.low,
-            containerId: 'low',
-            alterTemplates: [
-                {type: 'old', templateId: 'volumes-chinese-old-template'},
-                {type: 'new', templateId: 'volumes-chinese-new-template'},
-                {type: 'expect', templateId: 'volumes-chinese-expect-template'},
-            ]
-        })
-        proc({
-            data: data.high,
-            containerId: 'high',
-            alterTemplates: [
-                {type: 'old', templateId: 'volumes-chinese-old-template'},
-                {type: 'new', templateId: 'volumes-chinese-new-template'},
-                {type: 'expect', templateId: 'volumes-chinese-expect-template'},
-            ]
-        })
-        proc({
-            data:data.bookInfor,
-            containerId:'book_infor',
-            alterTemplates:[
-                {type: 'bookinfor', templateId: 'book-infor-template'},
-            ]
-        })
-        proc({
-            data:data.packUpTitle,
-            containerId:'pack_up_title',
-            alterTemplates:[
-                {type: 'packUp', templateId: 'title-pack-up-template'}
-            ]
-        })
-        proc({
-            data:data.chapter_section,
-            containerId:'chapter_section1',
-            alterTemplates:[
-                {type: 'new', templateId:'chapter-new-template'},
-                {type: 'old', templateId:'chapter-old-template'},
-                {type: 'challenge', templateId:'chapter-challenge'},
-            ]
-        })
-        proc({
-            data:data.chapter_section,
-            containerId:'chapter_section2',
-            alterTemplates:[
-                {type: 'new', templateId:'chapter-new-template'},
-                {type: 'old', templateId:'chapter-old-template'},
-            ]
-        })
-        proc({ //语文课程详情：知识点标题
-            data:data.head_title,
-            containerId:'knowledgePointTitle',
-            alterTemplates:[
-                {type: 'headTitle', templateId:'knowledge-point-title-template'},
-            ]
-        })
-        proc({ //语文课程详情：选文赏析
-            data:data.text_appreciate,
-            containerId:'origin',
-            alterTemplates:[
-                {type:'textAppreciate',templateId:'origin-template'},
-            ]
-        })
-        proc({ //语文课程详情：文章内容
-            data:data.content_text,
-            containerId:'content',
-            alterTemplates:[
-                {type: 'contentText', templateId:'content-text-template'},
-            ]
-        })
-        proc({ //语文课程详情：文章图片
-            data:data.content_image,
-            containerId:'content',
-            alterTemplates:[
-                {type:'contentImage',templateId:'content-c-image-template'},
-            ]
-        })
-        proc({ //语文课程详情：视频
-            data:data.content_video,
-            containerId:'video',
-            alterTemplates:[
-                {type:'contentVideo',templateId:'video-template'},
-            ]
-        })
-        proc({ //数学课程详情：挑战一
-            data:data.challenge_num,
-            containerId:'title1',
-            alterTemplates:[
-                {type:'challengeNum',templateId:'title1-template'},
-            ]
-        })
-        proc({ //数学课程详情：标题
-            data:data.title_math_details,
-            containerId:'title2',
-            alterTemplates:[
-                {type:'titleMathDetails',templateId:'title2-template'}
-            ]
-        })
-        proc({ //数学课程详情：本期挑战
-            data:data.challenge_period,
-            containerId:'challenge',
-            alterTemplates:[
-                {type:'challengePeriod',templateId:'challenge-template'}
-            ]
-        })
-        proc({ //数学详情：最强讲解
-            data:data.explain_content,
-            containerId:'content1',
-            alterTemplates:[
-                {type:'explainContent',templateId:'content-m-image-template'}
-            ]
-        })
-        proc({ //数学课程详情：视频
-            data:data.content_video,
-            containerId:'video1',
-            alterTemplates:[
-                {type:'contentVideo',templateId:'video-template'},
-            ]
-        })
-        proc({ //英语课程详情：课本名称、概要
-            data:data.english_details,
-            containerId:'book_infor_english',
-            alterTemplates:[
-                {type:'englishDetails',templateId:'english-envelope-template'},
-            ]
-        })
-        proc({ //英语课程详情：课本内容图片
-            data:data.english_content,
-            containerId:'english_content',
-            alterTemplates:[
-                {type:'englishContent',templateId:'english-content-template'},
-            ]
-        })
-    })
+                                titleElement.previousElementSibling.removeClass('daanLi_nowBai');
+                                elm.removeClass('daanLi_now');
+                            } else {
+                                titleElement.dataset.selected = true;
+
+                                titleElement.previousElementSibling.addClass('daanLi_nowBai');
+                                elm.addClass('daanLi_now');
+                            }
+                            break
+                        case '单选题':
+                            var optionsContainer = elm.parentNode;
+                            for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                var option = optionsContainer.children[i];
+                                if (option.children[1].dataset.selected == 'true') {
+                                    option.children[1].dataset.selected = false;
+                                    option.children[1].previousElementSibling.removeClass('daanLi_nowBai');
+                                    option.children[1].parentNode.removeClass('daanLi_now');
+                                }
+                            }
+                            titleElement.dataset.selected = true;
+                            titleElement.previousElementSibling.addClass('daanLi_nowBai');
+                            elm.addClass('daanLi_now');
+                            break
+                    }
+                })
+                $(document).on('click', '.btnTrue', function (e) {
+                    var optionsContainer = e.target.parentNode.previousElementSibling
+                    for (var i = 0; i < optionsContainer.children.length; ++i) {
+                        var option = optionsContainer.children[i];
+                        var problem = state.knowledgePoint.findProblem(optionsContainer.dataset.id);
+                        if (state.knowledgePoint.compareAnswer(i, problem.standardAnswers)) {
+                            option.addClass('daanLi_true');
+                            option.firstElementChild.innerHTML = ''
+                            option.firstElementChild.removeClass('daanLi_nowBai');
+                            option.firstElementChild.appendChild(trueImage.cloneNode(true))
+                        }
+                        if (option.children[1].dataset.selected == 'true' || option.children[1].dataset.selected == true) {
+                            if (!state.knowledgePoint.compareAnswer(i, problem.standardAnswers)) {
+                                option.addClass('daanLi_error');
+                                option.firstElementChild.innerHTML = ''
+                                option.firstElementChild.removeClass('daanLi_nowBai');
+                                option.firstElementChild.appendChild(falseImage.cloneNode(true))
+                            }
+                        }
+                    }
+                })
+            },
+            parentId: 0,
+            changeId: function (knowledgePointId) {
+                if (state.knowledgePoint.parentId != knowledgePointId) {
+                    state.knowledgePoint.parentId = knowledgePointId
+                    state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.parentId)
+                    if (!state.knowledgePoint.value.contents) {
+                        $.ajax({
+                            type: 'get',
+                            url: 'api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
+                            dataType: 'json',
+                            success: function (data) {
+                                //  选项ABCD
+                                for (var i = 0; i < data.problems.length; ++i) {
+                                    var p = data.problems[i];
+                                    for (var j = 0; j < p.options.length; ++j) {
+                                        p.options[j].title = String.fromCharCode(65 + j);
+                                    }
+                                }
+                                $.ajax({
+                                    type: "get",
+                                    url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/is-self-like',
+                                    dataType: "json",
+                                    success: function (like) {
+                                        state.knowledgePoint.value.liked = like.like
+                                        state.knowledgePoint.value.contents = data
+                                        for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
+                                            $.ajax({
+                                                type: "get",
+                                                url: '/api/comments/' + state.knowledgePoint.value.contents.comments[s].id + '/is-self-like',
+                                                dataType: "json",
+                                                async: false,
+                                                success: function (like) {
+                                                    state.knowledgePoint.value.contents.comments[s].liked = like.like;
+                                                    state.knowledgePoint.show()
+                                                }
+                                            })
+                                        }
+                                        state.knowledgePoint.show()
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        state.knowledgePoint.show()
+                    }
+                }
+            },
+            value: null,
+            interaction: null,
+            comments: null,
+            findCommentById: function (commentId) {
+                var result = null
+                for (var i = 0; i < state.knowledgePoint.value.contents.comments.length; ++i) {
+                    if (state.knowledgePoint.value.contents.comments[i].id == commentId) {
+                        result = state.knowledgePoint.value.contents.comments[i]
+                        break
+                    }
+                }
+                return result
+            },
+            unlike: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/unlike',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            like: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/like',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            process: function (commentId) {
+                var comment = state.knowledgePoint.findCommentById(commentId)
+                if (comment.liked) {
+                    comment.liked = false
+                    comment.likeCount--
+                    state.knowledgePoint.unlike('/api/comments/', comment.id)
+                } else {
+                    comment.liked = true
+                    comment.likeCount++
+                    state.knowledgePoint.like('/api/comments/', comment.id)
+                }
+                state.knowledgePoint.renderComments()
+            },
+            renderComments: function () {
+                state.knowledgePoint.comments.innerHTML = ''
+                for (var i = 0; i < state.knowledgePoint.value.contents.comments.length; ++i) {
+                    if (state.knowledgePoint.value.contents.comments[i].liked) {
+                        proc({
+                            container: state.knowledgePoint.comments,
+                            data: state.knowledgePoint.value.contents.comments[i],
+                            templateId: 'comment-like-template'
+                        })
+                    } else {
+                        proc({
+                            container: state.knowledgePoint.comments,
+                            data: state.knowledgePoint.value.contents.comments[i],
+                            templateId: 'comment-unlike-template'
+                        })
+                    }
+                }
+            },
+            show: function () {
+                $('#knowledgePoint').html("");
+
+                //留言
+                var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
+                    toggleButton.addEventListener('click', function (e) {
+                        $(commentContentPanel).toggle()
+                    }, false)
+                    submitButton.addEventListener('click', function (e) {
+                        state.knowledgePoint.submit(e.target, commentContent, function (c) {
+                            state.knowledgePoint.value.contents.comments.push(c)
+                            commentsContainer.innerHTML = ''
+                            proc({
+                                data: state.knowledgePoint.value.contents.comments,
+                                container: comments,
+                                templateId: 'comment-unlike-template'
+                            })
+                        })
+                    }, false)
+                };
+
+                var likeProc = function (container, data, iconName, likeTemplate, unlikeTemplate, apiUrl) {
+//                  container.innerHTML = '';
+                    if (data.liked) {
+                        proc({
+                            container: container,
+                            data: data,
+                            templateId: likeTemplate
+                        })
+                        var button = container.querySelector(iconName)
+                        button.addEventListener('click', function (e) {
+                            state.knowledgePoint.unlike(apiUrl, data.id)
+                            data.likeCount--
+                            data.liked = false
+                            container.innerHTML = '';
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                        }, false)
+                    } else {
+                        proc({
+                            container: container,
+                            data: data,
+                            templateId: unlikeTemplate
+                        })
+                        var button = container.querySelector(iconName)
+                        button.addEventListener('click', function (e) {
+                            state.knowledgePoint.like(apiUrl, data.id)
+                            data.likeCount++
+                            data.liked = true
+                            container.innerHTML = '';
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                        }, false)
+                    }
+                    state.knowledgePoints.isChanged = true
+                }
+
+                switch (state.volumes.parentId) {
+                    case 1:
+                    case "1":
+                        proc({
+                            containerId: 'knowledgePoint',
+                            data: {},
+                            templateId: 'chinese-template'
+                        })
+
+                        state.knowledgePoint.interaction = document.getElementById('interaction');
+                        state.knowledgePoint.comments = document.getElementById('comments');
+
+                        // 写留言---------
+                        var createComment = document.getElementById('createComment');
+                        var panel = document.getElementById('commentPanl');
+                        var btn = document.getElementById('submitBtn');
+                        var commentContent = document.getElementById('textarea');
+                        var commentContainer = document.getElementById('comments');
+                        commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                        var value = state.knowledgePoint.value;
+
+                        proc({
+                            templateId: 'knowledge-point-title-template',
+                            data: value,
+                            containerId: 'knowledgePointTitle'
+                        });
+
+                        proc({
+                            templateId: 'origin-template',
+                            data: value.contents.quotes,
+                            containerId: 'origin'
+                        });
+
+                        proc({
+                            data: value.contents.contents,
+                            containerId: 'content',
+                            alterTemplates: [
+                                {type: 'text', templateId: 'content-text-template'},
+                                {type: 'image', templateId: 'content-c-image-template'},
+                                {type: 'imageText', templateId: 'content-image-text-template'},
+                            ]
+                        });
+
+                        proc({
+                            templateId: 'video-template',
+                            data: value.contents.video,
+                            containerId: 'video'
+                        });
+
+                        proc({
+//                            templateId: 'problem-template',
+                            alterTemplates: [
+                                {type: '单选题', templateId: 'problem-radio-template'},
+                                {type: '多选题', templateId: 'problem-checkbox-template'}
+                            ],
+                            data: value.contents.problems,
+                            containerId: 'problems',
+                            secondBind: {
+                                extPoint: 'options',
+                                dataFieldName: 'options',
+                                templateId: 'problem-option-template'
+                            }
+                        });
+
+                        //  interaction-likes
+                        var container = state.knowledgePoint.interaction;
+                        var iconName = '.icon';
+                        var likeTemplate = 'interaction-like-template';
+                        var unlikeTemplate = 'interaction-unlike-template';
+                        var apiUrl = 'api/knowledge-points/';
+                        likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                        //comments-likes;
+                        state.knowledgePoint.renderComments()
+                        break
+                    case 2:
+                    case '2':
+                        switch (state.knowledgePoint.value.type) {
+                            case 'normalNew':
+                            case 'normalOld':
+                                proc({
+                                    containerId: 'knowledgePoint',
+                                    data: {},
+                                    templateId: 'math-template'
+                                })
+                                state.knowledgePoint.interaction = document.getElementById('interaction');
+                                state.knowledgePoint.comments = document.getElementById('comments');
+
+                                // 写留言---------
+                                var createComment = document.getElementById('createComment');
+                                var panel = document.getElementById('commentPanl');
+                                var btn = document.getElementById('submitBtn');
+                                var commentContent = document.getElementById('textarea');
+                                var commentContainer = document.getElementById('comments');
+                                commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                                var value = state.knowledgePoint.value;
+
+                                proc({
+                                    templateId: 'title1-template',
+                                    data: value,
+                                    containerId: 'title1'
+                                });
+                                proc({
+                                    templateId: 'title2-template',
+                                    data: value,
+                                    containerId: 'title2'
+                                });
+
+                                proc({
+                                    templateId: 'challenge-template',
+                                    data: value.contents.quotes,
+                                    containerId: 'challenge'
+                                });
+
+                                proc({
+                                    data: value.contents.contents,
+                                    containerId: 'content1',
+                                    alterTemplates: [
+                                        {type: 'text', templateId: 'content-text-template'},
+                                        {type: 'imageText', templateId: 'content-m-image-template'}
+                                    ]
+                                });
+
+                                proc({
+                                    templateId: 'video-template',
+                                    data: value.contents.video,
+                                    containerId: 'video1'
+                                });
+
+                                //data.problems
+                                var ps = []
+                                for (var i = 0; i < value.contents.problems.length; ++i) {
+                                    ps[i] = value.contents.problems[i]
+                                }
+                                var pk = null
+                                var strongestBrains = []
+                                if (ps.length > 0) {
+                                    pk = ps[ps.length - 1]
+                                    ps.pop()
+                                    strongestBrains = ps
+                                }
+
+                                proc({
+                                    templateId: 'pk-template',
+                                    data: pk,
+                                    containerId: 'pk',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'strongest-brain-option-template'
+                                        }
+                                    ]
+                                });
+                                proc({
+                                    templateId: 'strongest-brain-template',
+                                    data: strongestBrains,
+                                    containerId: 'strongest-brain',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'strongest-brain-option-template'
+                                        }
+                                    ]
+                                });
+
+                                //  interaction-likes
+                                var container = state.knowledgePoint.interaction;
+                                var iconName = '.icon';
+                                var likeTemplate = 'interaction-like-template';
+                                var unlikeTemplate = 'interaction-unlike-template';
+                                var apiUrl = 'api/knowledge-points/';
+                                likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                                //comments-likes;
+                                state.knowledgePoint.renderComments()
+
+                                break
+                            case 'pkNew':
+                            case 'pkOld':
+                                proc({
+                                    containerId: 'knowledgePoint',
+                                    data: {},
+                                    templateId: 'mathtest-template'
+                                });
+
+                                state.knowledgePoint.interaction = document.getElementById('interaction');
+                                state.knowledgePoint.comments = document.getElementById('comments');
+
+                                // 写留言---------
+                                var createComment = document.getElementById('createComment');
+                                var panel = document.getElementById('commentPanl');
+                                var btn = document.getElementById('submitBtn');
+                                var commentContent = document.getElementById('textarea');
+                                var commentContainer = document.getElementById('comments');
+                                commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                                var value = state.knowledgePoint.value;
+
+                                proc({
+                                    templateId: 'title-template',
+                                    data: value,
+                                    containerId: 'title'
+                                });
+
+                                proc({
+                                    templateId: 'question-template',
+                                    data: value.contents.problems,
+                                    containerId: 'question',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'question-option-template'
+                                        }
+                                    ]
+                                });
+
+                                //  interaction-likes
+                                var container = state.knowledgePoint.interaction;
+                                var iconName = '.icon';
+                                var likeTemplate = 'interaction-like-template';
+                                var unlikeTemplate = 'interaction-unlike-template';
+                                var apiUrl = 'api/knowledge-points/';
+                                likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                                //comments-likes;
+                                state.knowledgePoint.renderComments()
+
+                                break
+                        }
+                }
+            },
+            getById: function (id) {
+                var result = null
+                var isFind = false
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].low.length; ++j) {
+                        for (var k = 0; k < subjects[i].low[j].knowledgePoints.length; ++k) {
+                            if (subjects[i].low[j].knowledgePoints[k].id == id) {
+                                result = subjects[i].low[j].knowledgePoints[k]
+                                isFind = true
+                                break
+                            }
+                        }
+                    }
+                    if (isFind) {
+                        break
+                    }
+                    for (var j = 0; j < subjects[i].high.length; ++j) {
+                        for (var k = 0; k < subjects[i].high[j].knowledgePoints.length; ++k) {
+                            if (subjects[i].high[j].knowledgePoints[k].id == id) {
+                                result = subjects[i].high[j].knowledgePoints[k]
+                                isFind = true
+                                break
+                            }
+                        }
+                    }
+                    if (isFind) {
+                        break
+                    }
+                }
+                return result
+            },
+            findProblem: function (problemId) {
+                var problem = null
+                for (var i = 0; i < state.knowledgePoint.value.contents.problems.length; ++i) {
+                    if (state.knowledgePoint.value.contents.problems[i].id == problemId) {
+                        problem = state.knowledgePoint.value.contents.problems[i]
+                        break
+                    }
+                }
+                return problem
+            },
+            compareAnswer: function (index, standardAnswers) {
+                var finded = false
+                for (var j = 0; j < standardAnswers.length; ++j) {
+                    if (index == standardAnswers[j].name) {
+                        finded = true
+                        break
+                    }
+                }
+                return finded
+            },
+            submit: function (submitButton, commentContent, callback) {
+                submitButton.style.color = '#f5f5f5';
+                var value = commentContent.value;
+                if (value.length < 1) {
+                    return false;
+                }
+                commentContent.value = '';
+                $.ajax({
+                    type: "post",
+                    url: "/api/comments",
+                    data: JSON.stringify({
+                        objectType: 'knowledge-point',
+                        objectId: state.knowledgePoint.value.id,
+                        content: value
+                    }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        callback(data)
+                    }
+                })
+            }
+        },
+        subject: {
+            index: 0,
+            value: null,
+            getById: function (id) {
+                var result = null
+                for (var i = 0; i < subjects.length; ++i) {
+                    if (subjects[i].id == id) {
+                        result = subjects[i]
+                        break
+                    }
+                }
+                return result
+            }
+        },
+        grade: {
+            index: 0,
+            value: 20,
+            name: 'low',
+            getNameByValue: function (v) {
+                var result = 'low'
+                if (v == 21) {
+                    result = 'high'
+                }
+                return result
+            }
+        },
+        volume: {
+            index: 0,
+            value: null,
+            maxOrder: 1,
+            getById: function (id) {
+                var result = null
+                var finded = false
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].low.length; ++j) {
+                        if (subjects[i].low[j].id == id) {
+                            result = subjects[i].low[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                    for (var j = 0; j < subjects[i].high.length; ++j) {
+                        if (subjects[i].high[j].id == id) {
+                            result = subjects[i].high[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                }
+                return result
+            },
+            calcNew: function () {
+                var newCount = 0
+                for (var i = 0; i < state.volume.value.knowledgePoints.length; ++i) {
+                    if (state.volume.value.knowledgePoints[i].type == 'normalNew') {
+                        newCount++
+                    }
+                }
+                return newCount
+            }
+        }
+    }
+    state.init()
 </script>
 </body>
 </html>

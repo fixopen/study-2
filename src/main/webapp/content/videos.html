@@ -334,13 +334,13 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${gaishu}</p>
-                    <div class="course_detail">详情
+                    <div class="course_detail detail">详情
                         <img src="images/xiala.png" alt="">
                         <img src="images/xiala_sq.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
                     <span>${preparation}</span>
@@ -390,13 +390,13 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${gaishu}</p>
-                    <div class="course_detail">详情
+                    <div class="course_detail detail">详情
                         <img src="images/xiala.png" alt="">
                         <img src="images/xiala_sq.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
                     <span>${preperation}</span>
@@ -444,13 +444,13 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${gaishu}</p>
-                    <div class="course_detail shuxue_Btn">详情
+                    <div class="course_detail shuxue_Btn detail">详情
                         <img src="images/xiala_sx.png" alt="">
                         <img src="images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
                     <span>${preparation}</span>
@@ -500,13 +500,14 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${gaishu}</p>
-                    <div class="course_detail shuxue_Btn">详情
+                    <div class="course_detail shuxue_Btn detail">详情
                         <img src="images/xiala_sx.png" alt="">
                         <img src="images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail"data-identity="${id}">
+
                 <div class="keqian_zb">
                     课前准备：
                     <span>${preperation}</span>
@@ -664,10 +665,14 @@
 
 
 <!--*****************************video*****************************-->
+<<<<<<< HEAD
+<tempalte id="video-template"></tempalte>
+=======
 <tempalte id="video-template">
 
 </tempalte>
 
+>>>>>>> 08c084cdecd5eb154aca11ca71eaf2e218f4687d
 
 <!--**********************************scheduler********************************-->
 <template id="day-template">
@@ -824,7 +829,7 @@
             isInit: false,
             init: function () {
                 if (!state.main.isInit) {
-                    $(document).on('click', '.course-detail-btn', function (e) {
+                    $(document).on('click', '.detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                     })
 
