@@ -1,7 +1,9 @@
-<%--
 <html>
 <body>
-<img src="jian.png" style="width: 100%"/>
+<script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/basic.js"></script>
+<script>
+    login('admin', '123456')
+</script>
 </body>
 </html>
---%>

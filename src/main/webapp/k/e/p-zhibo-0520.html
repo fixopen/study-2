@@ -59,7 +59,11 @@
         <div id="dialog" class="dialog">
             <img src="dialogIcon.png" alt="" style="position: relative; top: -105px; left:-6px; width: 370px;">
             <img id="tanClose" src="mask.png" alt="" style="position: absolute; top: -120px; right:0; width: 74px;">
-            <pre id="chinese" style="color: #131212; font-size: 2.5em; font-family: '微软雅黑'; margin: 0; padding:0 40px; height:300px;overflow-y: auto;"></pre>
+            <!--<div style="word-wrap: break-word;">-->
+            <pre id="chinese"
+                 style="color: #131212; font-size: 2.5em; font-family: '微软雅黑'; margin: 0; padding:0 40px; height:300px;overflow-y: auto;
+                     white-space: pre-wrap;word-wrap: break-word;"></pre>
+            <!--</div>-->
             <div class="bottomBtn" style="width:100%;text-align: center;position: absolute; bottom: 40px;">
                 <button id="closeTranslator" style="margin: auto; display: block; border:none; background: none;"><img src="okOff.png" alt="" style="width:360px; height: 103.2px;"></button>
             </div>
