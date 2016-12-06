@@ -1,0 +1,143 @@
+a{
+    color: #444;
+}
+.title_math_details{
+    padding-top: 0.7125rem;
+    margin: 0 0 0.9375rem;
+    width: 100%;
+    height: 4.8125rem;
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: bold;
+    color: #fff;
+    background: url("../images_version2/shuxueBG.png") 0 0 no-repeat;
+    background-size: 100% 4.8125rem;
+}
+.head_himg{
+    font-size: 1.0rem;
+    text-align: center;
+    font-weight: normal;
+    margin: 0 auto;
+}
+.title_module{
+    margin: 0;
+    padding: 0 0.3125rem 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: bold;
+}
+.challenge{
+    color: #ff8067;
+    font-size: 0.9375rem;
+    line-height: 1.875rem;
+    padding: 0.625rem;
+    margin-bottom: 1.25rem;
+    border-radius: 0.625rem;
+    background: url("../images_version2/shuxue01.png") 98% 95% no-repeat;
+    background-size: 3.78125rem 4.125rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+.details_show{
+    width: 100%;
+    margin: 0 auto;
+    line-height: 1.875rem;
+    font-size: 0.9375rem;
+    border-radius: 0.3125rem;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+.module_math{
+    width: 100%;
+    margin: 0 auto 1.375rem;
+    line-height: 1.875rem;
+    font-size: 0.9375rem;
+    padding: 0.625rem;
+    border-radius: 0.3125rem;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+.xuanwen{
+    position: relative;
+    padding-left:4.125rem;
+    height:3.0625rem;
+    color: #39b4fa;
+    font-size: 1.125rem;
+    font-weight: bold;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.icon_img1, .icon_img2{
+    position: absolute;
+    top: -1.5rem;
+    left: -1rem;
+    width: 3.90625rem;
+    height: 4.53125rem;
+    background: url("../images_version2/shuxue02.png") 0 0 no-repeat;
+    -webkit-background-size:100% 100%;
+    background-size:100% 100%;
+}
+.icon_img2{
+    top: -1.8rem;
+    left: -1.3rem;
+    background: url("../images_version2/shuxue03.png") 0 0 no-repeat;
+    -webkit-background-size:100% 100%;
+    background-size:100% 100%;
+}
+.xuanwen span{
+    color: #b1b1b1;
+    font-size: 0.9375rem;
+    font-weight: 100;
+    margin-left: 0.625rem;
+}
+.explain_content{
+    font-size: 0.9375rem;
+    text-indent: 2em;
+}
+.explain_content p{
+    margin: 0;
+}
+.muld_images{
+    margin-top: 0.625rem;
+}
+/*脑力大PK*/
+.brain_pk{
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: bold;
+    width: 14.375rem;
+    height: 3.4375rem;
+    line-height: 3.4375rem;
+    text-align: center;
+    margin: 0 auto;
+    padding-left: 0.625rem;
+    background: url("../images_version2/shuxue04.png") 0 0 no-repeat;
+    background-size: 14.375rem 3.4375rem;
+}
+.brain_pk span{
+    font-size: 0.9375rem;
+    font-weight: normal;
+}
+/*阅读、点赞、上一节课、下一节课*/
+.favour,.dislike{
+    position: relative;
+    top:0.0625rem;
+    display: inline-block;
+    width: 1.0625rem;
+    height: 1.0625rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.favour{
+    background: url("../images_version2/zan-over.png") no-repeat center;
+    -webkit-background-size:100% 100%;
+    background-size:100% 100%;
+}
+.dislike{
+    background: url("../images_version2/zan.png") no-repeat center;
+    -webkit-background-size:100% 100%;
+    background-size:100% 100%;
+}
