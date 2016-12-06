@@ -170,33 +170,33 @@
     </div>
 </article>
 <article id="passed" style="display: none;" class="noBackg">
-    <input class="souSuo clearfix" type="text" id="text" name="keyword" onkeydown="entersearch()"
-           placeholder="请输入科目、老师、年级 关键词搜索">
-    <div class="tan" style="display: block;"></div>
-    <div class="window1"><!-- 有此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
-        </div>
-    </div>
-    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">您还没有数学卡</p>
-            <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">20</span>金豆吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="#">买数学卡</a>
-            </p>
-        </div>
-    </div>
+    <!--<input class="souSuo clearfix" type="text" id="text" name="keyword" onkeydown="entersearch()"-->
+           <!--placeholder="请输入科目、老师、年级 关键词搜索">-->
+    <!--<div class="tan" style="display: block;"></div>-->
+    <!--<div class="window1">&lt;!&ndash; 有此卡扣豆提醒 &ndash;&gt;-->
+    <!--<a class="windowClose" href="#"></a>-->
+    <!--<div class="win_neir koudou_win">-->
+    <!--<p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>-->
+    <!--<p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>-->
+    <!--<p class="neir_pBtn kou_dou">-->
+    <!--<a class="p_btn" href="#">确定</a>-->
+    <!--</p>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;-->
+    <!--<a class="windowClose" href="#"></a>-->
+    <!--<div class="win_neir koudou_win">-->
+    <!--<p class="neir_ptxt">您还没有数学卡</p>-->
+    <!--<p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">20</span>金豆吗？</p>-->
+    <!--<p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>-->
+    <!--<p class="neir_pBtn kou_dou">-->
+    <!--<a class="p_btn" href="#">确定</a>-->
+    <!--</p>-->
+    <!--<p class="neir_pBtn2">-->
+    <!--<a class="p_buyka" href="#">买数学卡</a>-->
+    <!--</p>-->
+    <!--</div>-->
+    <!--</div>-->
     <div class="wrap"></div>
     <div class="tiao_jian">
         <div class="tiaoj_TJ01">
@@ -334,13 +334,13 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${gaishu}</p>
-                    <div class="course_detail">详情
+                    <div class="course_detail detail" data-detail="${id}">详情
                         <img src="images/xiala.png" alt="">
                         <img src="images/xiala_sq.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
                     <span>${preparation}</span>
@@ -390,13 +390,13 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${gaishu}</p>
-                    <div class="course_detail">详情
+                    <div class="course_detail detail" data-detail="${id}">详情
                         <img src="images/xiala.png" alt="">
                         <img src="images/xiala_sq.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
                     <span>${preperation}</span>
@@ -444,13 +444,13 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${gaishu}</p>
-                    <div class="course_detail shuxue_Btn">详情
+                    <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
                         <img src="images/xiala_sx.png" alt="">
                         <img src="images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
                     <span>${preparation}</span>
@@ -500,13 +500,14 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${gaishu}</p>
-                    <div class="course_detail shuxue_Btn">详情
+                    <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
                         <img src="images/xiala_sx.png" alt="">
                         <img src="images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
             </div>
-            <div class="course-detail">
+            <div class="course-detail"data-identity="${id}">
+
                 <div class="keqian_zb">
                     课前准备：
                     <span>${preperation}</span>
@@ -555,7 +556,7 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${title}</p>
-                    <div class="course_detail">详情
+                    <div class="course_detail passed-detail" data-detail="${id}">详情
                         <img src="/images/xiala.png" alt="">
                         <img src="/images/xiala_sq.png" alt="">
                     </div>
@@ -608,7 +609,7 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${description}</p>
-                    <div class="course_detail shuxue_Btn">详情
+                    <div class="course_detail shuxue_Btn passed-detail" data-detail="${id}">详情
                         <img src="/images/xiala_sx.png" alt="">
                         <img src="/images/xiala_sqsx.png" alt="">
                     </div>
@@ -664,9 +665,7 @@
 
 
 <!--*****************************video*****************************-->
-<tempalte id="video-template">
-
-</tempalte>
+<tempalte id="video-template"></tempalte>
 
 
 <!--**********************************scheduler********************************-->
@@ -824,7 +823,7 @@
             isInit: false,
             init: function () {
                 if (!state.main.isInit) {
-                    $(document).on('click', '.course-detail-btn', function (e) {
+                    $(document).on('click', '.detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                     })
 
@@ -1022,7 +1021,7 @@
             isInit: false,
             init: function () {
                 if (!state.passed.isInit) {
-                    $(document).on('click', '.detail_Btn', function (e) {
+                    $(document).on('click', '.passed-detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                     })
 

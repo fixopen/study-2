@@ -515,6 +515,21 @@ public class Schedulers {
                 if (teacher != null) {
                     existScheduler.setTeacher(teacher);
                 }
+
+                String generalization = scheduler.getGeneralization();
+                if (generalization != null) {
+                    existScheduler.setGeneralization(generalization);
+                }
+
+                String outline = scheduler.getOutline();
+                if (outline != null) {
+                    existScheduler.setOutline(outline);
+                }
+
+                String prepare = scheduler.getPrepare();
+                if (prepare != null) {
+                    existScheduler.setPrepare(prepare);
+                }
                 String cover = scheduler.getCover();
                 if (cover != null) {
                     existScheduler.setCover(cover);

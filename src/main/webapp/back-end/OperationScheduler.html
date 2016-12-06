@@ -63,6 +63,26 @@
             <textarea id="description"></textarea>
         </td>
     </tr>
+
+    <tr>
+        <td>概括</td>
+        <td>
+            <textarea id="generalization"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>摘要</td>
+        <td>
+            <textarea id="outline"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>准备</td>
+        <td>
+            <textarea id="prepare"></textarea>
+        </td>
+    </tr>
+
     <tr>
         <td>老师</td>
         <td><input type="text" id="teacher"/></td>
@@ -134,6 +154,9 @@
                 document.getElementById('description').value = scheduler.description
                 //$("#description").val(scheduler.description);
                 $("#teacher").attr("value", scheduler.teacher);
+                $("#generalization").attr("value", scheduler.generalization);
+                $("#outline").attr("value", scheduler.outline);
+                $("#prepare").attr("value", scheduler.prepare);
                 //alert(scheduler.teacherDescription)
                 //$("#teacherDescription").attr("value", scheduler.teacherDescription);
                 // $("#teacherDescription").innerHTML = scheduler.teacherDescription
@@ -200,6 +223,9 @@
                 title: $("#title").val(),
                 description: $("#description").val(),
                 teacher: $("#teacher").val(),
+                generalization: $("#generalization").val(),
+                outline: $("#outline").val(),
+                prepare: $("#prepare").val(),
                 teacherDescription: $("#teacherDescription").val(),
                 cover: coverInput.dataset.storePath,
                 cdnLink: $("#cdnLink").val(),
