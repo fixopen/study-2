@@ -830,6 +830,10 @@
 
                     var now = Date.now()
 
+                    var url = '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
+                                subjectId: subjects[0].id,
+                                endTime: '> ' + now
+                            }))
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
