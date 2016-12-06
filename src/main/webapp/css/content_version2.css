@@ -156,3 +156,160 @@
     -webkit-background-clip: text;
     color: transparent;
 }
+
+/*X学习-数学-目录*/
+.catalog{
+    width: 100%;
+    height: 8.75rem;
+    background: url('../images_version2/muluBG.png') 0 0 no-repeat;
+    background-size: 100% 8.75rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+.chinese_catalog{
+    background: url("../images_version2/chinese-catalog.png") 0 0 no-repeat;
+    background-size: 100% 8.75rem;
+}
+.catalog_pack_up{
+    width: 100%;
+    height: 3.125rem;
+    background: url('../images_version2/mulusqBG.png') 0 0 no-repeat;
+    background-size: 100% 3.125rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: none;
+}
+.chinese_pack_up{
+    background: url('../images_version2/chinese-catalog-sq.png') 0 0 no-repeat;
+    background-size: 100% 3.125rem;
+}
+.mltop_xiaoBiao{
+    display: inline-block;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    line-height: 1.71875rem;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.juchi{
+    width: 100%;
+    height: 0.46875rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.mltop_main{
+    height: 8.71875rem;
+    padding: 0.625rem 0.9375rem 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.mltop_left{
+    float: left;
+}
+.mltop_left img{
+    width: 6.1875rem;
+    margin-right: 1.25rem;
+    vertical-align: top;
+    border: 3px solid #fff;
+}
+.mltop_biao{
+    display: inline-block;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin: 1.25rem 0 0.625rem 0;
+}
+.mltop_xinxi{
+    color: #fff;
+    font-size: 0.8125rem;
+    margin-top: 0.3125rem;
+}
+.catalog_list{
+    position: relative;
+    top: 8.75rem;
+}
+.each_chapter{
+    border: 1px solid #fecf50;
+    border-radius: 0.3125rem;
+    margin-bottom: 0.625rem;
+    background-color: #fff;
+}
+.neir_li{
+    padding: 0 0.9375rem;
+    margin-bottom: 0.625rem;
+    border-top: 1px solid #f1f1f1;
+    position: relative;
+}
+.neir_li:first-child{
+    border: none;
+}
+.neir_lidiv{
+    margin-top: 0.8125rem;
+}
+.neir_pzi{
+    font-size: 1.0rem;
+    font-family: "苹方";
+}
+.neir_tianZ{
+    color: #ff8067;
+    font-weight: bold;
+}
+.neir_ridiv{
+    line-height: 2.0rem;
+}
+.course_xqpsee{
+    display: inline-block;
+    color: #aaa;
+    font-size: 0.8125rem;
+    padding-left: 1.5625rem;
+    background: url('../img/liulan.png') 0 center no-repeat;
+    background-size: 1.21875rem 0.84375rem;
+}
+.course_xqpzan{
+    display: inline-block;
+    float: right;
+    color: #aaa;
+    font-size: 0.8125rem;
+}
+.dianzanImg{
+    display: inline-block;
+    width: 1.125rem;
+    height: 1.0rem;
+    vertical-align: middle;
+}
+.dianzanImg.cur{
+    display: none;
+}
+.shang_new{
+    width: 2.59375rem;
+    height: 2.5625rem;
+    position: absolute;
+    top: -0.8125rem;
+    right: 0;
+}
+
+/*X学习-语文-目录*/
+.chinese_catalog_list{
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.3125rem;
+    margin-bottom: 0.625rem;
+}
+.chinese_catalog_list .each_chapter{
+    border:0;
+}
+.chinese_catalog_list .course_xqpsee{
+    margin: 0;
+}

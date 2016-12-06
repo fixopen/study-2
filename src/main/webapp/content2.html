@@ -19,12 +19,15 @@
     <link rel="stylesheet" href="css/knowledgepoints-content.css">
     <link rel="stylesheet" href="css/math-detail.css">
     <link rel="stylesheet" href="css/chinese-detail.css">
+    <link rel="stylesheet" href="css/english-detail.css">
 
 </head>
 <body>
-<article id="volumes"><!--课程封皮--></article>
+<article id="volumes" style="display: none;"><!--课程封皮--></article>
 <article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
-<article id="knowledgePoint" style="display: none;"></article>
+<article id="knowledgePoint">
+
+</article>
 <!--------------------------volumes--------------------------->
 <template id="chinese-structure"><!--课程封皮：学习-语文-->
     <div class="wrap noBackg">
@@ -118,7 +121,7 @@
     </li>
 </template>
 <!------------------------------knowledgepoints----------------------------->
-<template id="math-catalog">
+<template id="math-catalog"><!--数学-目录-->
     <div class="wrap">
         <div class="catalog">
             <div class="mltop_main" id="book_infor"></div>
@@ -206,7 +209,7 @@
         </div>
     </li>
 </template>
-<template id="chinese-catalog">
+<template id="chinese-catalog"><!--语文-目录-->
     <div class="wrap">
         <div class="catalog chinese_catalog">
             <div class="mltop_main" id="book_infor"></div>
@@ -217,14 +220,14 @@
             <img class="juchi" src="images_version2/juchi.png" alt="">
         </div>
         <div class="rain-main catalog_list">
-            <div class="mulu_div">
-                <ul class="cont_sul"  id="chapter_section2"></ul>
+            <div class="chinese_catalog_list">
+                <ul class="each_chapter"  id="chapter_section2"></ul>
             </div>
         </div>
     </div>
 </template>
 <!----------------------------------detail-structure----------------------------->
-<template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个-->
+<template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个--><!--语文-课程详情-->
     <div class=""wrap>
         <section class="head-title" id="knowledgePointTitle">
         </section>
@@ -257,10 +260,10 @@
         </section>
     </div>
 </template>
-<template id="math-template">
+<template id="math-template"><!--数学-课程详情-->
     <div class="wrap">
         <section  class="title_math_details">
-            <span class="head_himg"> 挑战<span id="title1"></span></span>
+            <span class="dare"> 挑战<span id="title1"></span></span>
             <h3 class="title_module" id="title2"></h3>
         </section>
         <!--section-->
@@ -315,7 +318,48 @@
         </section>
     </div>
 </template>
-<template id="mathtest-template"></template>
+<template id="mathtest-template"><!--X学习-数学-课程详情-挑战百分百-->
+    <div class="wrap">
+        <div class="catalog_pack_up" style="display:block">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main">
+            <div class="challenge_percenter">
+                <ul class="ul-style" id="strongest-brain">
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="english-template"><!--英语-课程详情-->
+    <div class="wrap">
+        <div class="catalog english_catalog">
+            <div class="mltop_main" id="book_infor_english"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up english_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main english_top">
+            <section id="english_content"></section>
+
+            <!--readlike-->
+            <section class="content-bg lixi_Nomar" id="interaction"></section>
+        </div>
+        <section class="mulu_bottom">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+                </div>
+            </div>
+            <section id="comments"></section>
+        </section>
+    </div>
+</template>
 <!-----------------------------knowledgepoint-content---------------------------->
 <!--chinese-->
 <template id="knowledge-point-title-template">
@@ -518,6 +562,26 @@
         <img class="ceshi_ti1" src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
     </li>
+</template>
+<!--english-->
+<template id="english-envelope-template">
+    <div>
+        <div class="mltop_left">
+            <img src="${bookImg}" alt="">
+        </div>
+        <div class="mltop_right">
+            <p class="mltop_biao">${bookName}</p>
+            <p class="mltop_xinxi">
+                <span class="xinxi_left">概要：</span>
+                <span class="xinxi_right">${summary}</span>
+            </p>
+        </div>
+    </div>
+</template>
+<template id="english-content-template">
+    <div class="english_page">
+        <img class="muld_images" src="${img}" alt="">
+    </div>
 </template>
 <!-----------------------------dialog---------------------------->
 <template id="cover-template"><!-- 学习-更新通知 -->
@@ -757,6 +821,20 @@
                     explainContent:'今天，我们来学习加减法运算。',
                     href:'images_version2/math4.png',
                     content:'在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
+                }
+            ],
+            english_details:[
+                {
+                    type:'englishDetails',
+                    bookImg:'images_version2/yingyu1.png',
+                    bookName:'My Family',
+                    summary:'学习爸爸、妈妈、哥哥、姐姐等亲属称容词,如，mother，grandma等'
+                }
+            ],
+            english_content:[
+                {
+                    type:'englishContent',
+                    img:'img/eng_mo.png'
                 }
             ],
         }
@@ -1022,6 +1100,20 @@
             containerId:'video1',
             alterTemplates:[
                 {type:'contentVideo',templateId:'video-template'},
+            ]
+        })
+        proc({ //英语课程详情：课本名称、概要
+            data:data.english_details,
+            containerId:'book_infor_english',
+            alterTemplates:[
+                {type:'englishDetails',templateId:'english-envelope-template'},
+            ]
+        })
+        proc({ //英语课程详情：课本内容图片
+            data:data.english_content,
+            containerId:'english_content',
+            alterTemplates:[
+                {type:'englishContent',templateId:'english-content-template'},
             ]
         })
     })
