@@ -340,7 +340,19 @@
         </div>
     </div>
 </article>
-
+<article id="nickname" style="display: none">
+    <div class="wrap">
+        <div class="mine_zilo">
+            <ul class="mine_zUl">
+                <li class="mine_zuli">
+                    <span class="mine_leftsp">昵称</span>
+                    <input class="mine_rightip" type="text" value="小雨知时" id="nicknameval">
+                    <a class="chahao" href="JavaScript:;" id="nicehng"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</article>
 <template id="user-template">
     <!--<div class="user_div_css">-->
         <ul class="public_ul_css">
@@ -348,7 +360,7 @@
                 <span class="public_span_css">我的头像</span>
                 <img class="user_head_css" src="${head}" alt="">
             </li>
-            <li class="user_li_css public_li_css">
+            <li class="user_li_css public_li_css" data-article="nickname">
                 <span class="public_span_css">昵称</span>
                 <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
             </li>
@@ -479,20 +491,23 @@
     var pan;
     var duan;
     //var count =0;
+    var oppid;
     var state = {
         currentArticle: document.getElementById('user'),
         init: function () {
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId, '/api')
+            oppid = g.getUrlParameter("oppid");
+            alert(oppid)
          //   alert(sessionId)
-            $.ajax({
+           /* $.ajax({
                 type:"get",
                 url:"/api/users/"+sessionId+"/userId",
                 dataType:"json",
                 success:function (e) {
                 userId = e;
                 }
-            })
+            })*/
 
             var switchTo = function (id) {
                 state.currentArticle.style.display = 'none'
@@ -506,11 +521,11 @@
                 var id = e.target.dataset.article
                 switchTo(id)
             })
-           /* if("有oppind"){
+            if(oppid != null){
                 switchTo("user")
             }else{
                 switchTo("sign")
-            }*/
+            }
             state['user'].init()
             history.pushState(null, null, '/user.html#user');
             window.addEventListener('hashchange', function (e) {
@@ -1374,6 +1389,13 @@
         help: {
             init: function () {
             }
+        },
+        nickname:{
+           init:function () {
+               $("#nicehng").on('click',function () {
+                    $("#nicknameval").val("")
+               })
+           }
         }
     }
 
