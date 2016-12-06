@@ -110,7 +110,7 @@
         <div class="goldcloud1"></div>
         <div class="goldblue-bg"></div>
         <div class="goldbtm-img">
-            <a href="JavaScript:;" data-article="info">完善资料</a>
+            <a href="JavaScript:;" data-article="info" >完善资料</a>
         </div>
     </div>
     <div class="goldcloud2"></div>
@@ -369,7 +369,7 @@
                 <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
             </li>
             <li>
-                <ul class="user_li_css public_li_css" data-article="info">个人资料</ul>
+                <ul class="user_li_css public_li_css" data-article="info" >个人资料</ul>
             </li>
 <br/>
 
@@ -521,12 +521,12 @@
                 var id = e.target.dataset.article
                 switchTo(id)
             })
-            /*if(oppid != null){
+            if(oppid != null){
                 switchTo("user")
             }else{
                 switchTo("sign")
-            }*/
-            state['sign'].init()
+            }
+          //  state['sign'].init()
             history.pushState(null, null, '/user.html#user');
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
@@ -953,8 +953,9 @@
             }
         },
         firstActiveCard: {
+           // var timeoutId;
             init: function () {
-
+                var timeoutId;
                 var cardNo = document.getElementById("cardNo");
                 cardNo.addEventListener('keyup', function (e) {
                     e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
@@ -993,210 +994,27 @@
                     //alert('send content');
                 }
 
-                //userId = g.getUrlParameter('userid');
-               /* if (userId) {
-                    g.setCookie("userId", userId)
-                }
-*/
-
-                var o = 0
+               /* var o = 0*/
 
                 var save = function (e) {
-                    if (o == 1) {
+                   /* if (o == 1) {
                         var tips = document.getElementById("tips");
                         tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
                         return
-                    }
+                    }*/
                     if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
                         alert("输入框不能为空")
                     } else {
-                        document.getElementById("gold").style.display="block";
-                       /* kai();*/
-                        /*var data = {};
-                        var code = document.getElementById('cardNo').value
-                        data.cardNo = code.replace(/\s/ig, '');
-                        data.password = document.getElementById('password').value;
-                        data.phoneNumber = document.getElementById('phoneNumber').value;
-                        data.validCode = document.getElementById('validCode').value;
-                        var url = '/api/users/self/cards'
-                        if (userId) {
-                            url = '/api/users/' + userId + '/cards'
-                        }
-                        $.ajax({
-                            type:"post",
-                            url:url,
-                            dataType:"json",
-                            data:JSON.stringify(data),
-                            contentType: "application/json; charset=utf-8",
-                            success:function (e) {
-                                $.ajax({
-                                    type: "get",
-                                    url: "/api/cards/" + e.id,
-                                    dataType: "json",
-                                    success: function (e) {
-                                        // alert("激活成功")
-                                      /!*  e.subject =state.getSubjectNameById(e.subject)
-                                        // getSubjectNameById(e.subject)
-                                        user.cards.push(e);
-                                        //alert(user.cards)
-                                        state.cards.isCards = false;*!/
-                                        document.getElementById("gold").style.display="block";
-                                        state.gold.yao();
-                                        // history.back();
-                                        //back();
-                                    },
-                                    error: function (e) {
-                                        alert(JSON.stringify(e));
-                                    }
-                                })
-                            },
-                            error:function (e) {
-                                var tips = document.getElementById("tips");
-                                switch (e.status) {
-                                    case 500:
-                                        tips.innerHTML = "你的手机号跟别人重复啦";
-                                        break;
-                                    case 412:
-                                        tips.innerHTML = "请返回的我的首页";
-                                        break;
-                                    case 520:
-                                        tips.innerHTML = "后台错误520";
-                                        break;
-                                    case 404:
-                                        tips.innerHTML = "卡号或密码错误";
-                                        break;
-                                    case 405:
-                                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                                        break;
-                                    case 401:
-                                        tips.innerHTML = "手机号或验证码错误";
-                                        break;
-                                    case 410:
-                                        tips.innerHTML = "验证码超时";
-                                        break;
-
-                                }
-                            }
-                        })*/
-                        /*ajax('POST', url, [
-                            {name: 'Content-Type', value: 'application/json'},
-                            {name: 'Accept', value: 'application/json'}
-                        ], data, function (r) {
-                            if (r.meta.code < 400) {
-                                $.ajax({
-                                    type: "get",
-                                    url: "/api/users/cards/" + data.cardNo,
-                                    dataType: "json",
-                                    success: function (e) {
-                                       // alert("激活成功")
-                                        e.subject =state.getSubjectNameById(e.subject)
-                                                // getSubjectNameById(e.subject)
-                                        user.cards.push(e);
-                                        //alert(user.cards)
-                                        state.cards.isCards = false;
-                                        document.getElementById("gold").style.display="block";
-                                        state.gold.yao();
-                                       // history.back();
-                                        //back();
-                                    },
-                                    error: function (e) {
-                                        alert(JSON.stringify(e));
-                                    }
-                                })
-                            } else {
-                                //alert('save error');
-                                var tips = document.getElementById("tips");
-                                //alert('get tips');
-                                switch (r.meta.code) {
-                                    case 500:
-                                        tips.innerHTML = "你的手机号跟别人重复啦";
-                                        break;
-                                    case 412:
-                                        tips.innerHTML = "请返回的我的首页";
-                                        break;
-                                    case 520:
-                                        tips.innerHTML = "后台错误520";
-                                        break;
-                                    case 404:
-                                        tips.innerHTML = "卡号或密码错误";
-                                        break;
-                                    case 405:
-                                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
-                                        o = 1;
-                                        break;
-                                    case 401:
-                                        tips.innerHTML = "手机号或验证码错误";
-                                        break;
-                                    case 410:
-                                        tips.innerHTML = "验证码超时";
-                                        break;
-                                    case 200:
-                                        $.ajax({
-                                            type: "get",
-                                            url: "/api/users/cards/" + data.cardNo,
-                                            dataType: "json",
-                                            success: function (e) {
-                                               // alert("激活成功")
-                                                e.subject =state.getSubjectNameById(e.subject)
-                                                        // getSubjectNameById(e.subject)
-                                                user.cards.push(e);
-                                                //alert(user.cards)
-                                                state.cards.isCards = false
-                                                document.getElementById("gold").style.display="block";
-                                                state.gold.yao();
-                                                //history.back();
-                                            },
-                                            error: function (e) {
-                                                alert(JSON.stringify(e));
-                                            }
-                                        })
-                                        break;
-                                }
-                            }
-                        })*/
+                       // document.getElementById("gold").style.display="block";
                     }
                 }
-
+                //var timeoutId;
                 var enableActive = function (e) {
                     clearInterval(timeoutId);
                     var activeCodeButton = document.getElementById('activeCode');
                     activeCodeButton.disabled = false
                     activeCodeButton.value = '发送验证码'
                 }
-               /* var timeoutId;
-                //var asfdf = "phoneNumber";
-                var activeCode = function () {
-                    //alert('active code')
-                    alert("来了")
-                    var phoneNumber = document.getElementById("phoneNumber").value
-                    if (phoneNumber != "") {
-                        ajax('GET', '/api/users/telephones/' + phoneNumber + '/code', [
-                            {name: 'Accept', value: 'application/json'}
-                        ], null, function (r) {
-                            var tips = document.getElementById("tips")
-                            if (r.meta.code < 400) {
-                                tips.innerHTML = '发送成功，请注意查收'
-                            } else {
-                                tips.innerHTML = '发送失败，请重新获取验证码'
-                            }
-                        })
-
-                        var timeoutCount = 180;
-                        var proc = function () {
-                            e.target.value = ' (' + timeoutCount + ')  秒后\n重新发送';
-                            --timeoutCount;
-                            e.target.disabled = true
-                            if (timeoutCount <= 0) {
-                                e.target.value = ' 重新发送 ';
-                                clearInterval(timeoutId);
-                                e.target.disabled = false
-                            }
-                        }
-                        timeoutId = setInterval(proc, 1000);
-                    } else {
-                        alert('手机号不能为空')
-                    }
-                }*/
 
                 var activeCodeButton = document.getElementById('activeCode');
                 activeCodeButton.addEventListener('click', function () {
@@ -1215,10 +1033,10 @@
                 var phoneNumber = document.getElementById('phoneNumber')
                 phoneNumber.addEventListener('change', enableActive, false)
 
-                var cardNo = document.getElementById('cardNo')
+                /*var cardNo = document.getElementById('cardNo')
                 cardNo.addEventListener('change', function (e) {
-                    o = 0
-                }, false)
+                   /!* o = 0*!/
+                }, false)*/
             },
 
             activeCode:function (e) {
