@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小雨知时</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/volume.css">
+    <link rel="stylesheet" href="css/content_version2.css">
+    <link rel="stylesheet" href="css/knowledgepoints.css">
+    <link rel="stylesheet" href="css/knowledgepoints-content.css">
+    <link rel="stylesheet" href="css/math-detail.css">
+    <link rel="stylesheet" href="css/chinese-detail.css">
+
+</head>
+<body>
+<article id="volumes" style="display: none;"><!--课程封皮--></article>
+<article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
+<article id="knowledgePoint">
+
+</article>
+<!--------------------------volumes--------------------------->
+<template id="chinese-structure">
+    <div>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav">
+                    <li class="grade_main active">
+                        <a href="#low" data-toggle="tab">1-2年级</a>
+                    </li>
+                    <li class="grade_main">
+                        <a href="#high" data-toggle="tab">3-6年级</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="rain-main">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</template  >
+<template id="math-structure">
+    <div>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav">
+                    <li class="grade_main active">
+                        <a href="#low2" data-toggle="tab">1-3年级</a>
+                    </li>
+                    <li class="grade_main">
+                        <a href="#high2" data-toggle="tab">4-6年级</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="rain-main">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="english-structure">
+    <div>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav english_grade">
+                    <li class="grade_main active">
+                        <a href="#low2" data-toggle="tab">Happy Reading AA</a>
+                    </li>
+                    <li class="grade_main">
+                        <a href="#high2" data-toggle="tab">My first phonics Book</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="rain-main">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="volumes-chinese-new-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <span class="textbook_num">1</span>
+            <img src="${img}" alt="">
+        </a>
+    </li>
+</template>
+<template id="volumes-chinese-old-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <img src="${img}" alt="">
+        </a>
+    </li>
+</template>
+<template id="volumes-chinese-expect-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <img src="${img}" alt="">
+        </a>
+    </li>
+</template>
+<template id="cover-template">
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="detail_content">
+                    <span>每个工作日10:00<br>会有一堂新的课程上线，</span><br>不要错过哦！
+                </p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">知道了</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<!------------------------------knowledgepoints----------------------------->
+<template id="math-catalog">
+    <div class="wrap">
+        <div class="catalog">
+            <div class="mltop_main" id="book_infor"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main catalog_list">
+            <div>
+                <ul class="each_chapter" id="chapter_section1"></ul>
+                <ul class="each_chapter" id="chapter_section2"></ul>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="book-infor-template">
+    <div>
+        <div class="mltop_left">
+            <img src="${bookImg}" alt="">
+        </div>
+        <div class="mltop_right">
+            <p class="mltop_biao">${bookName}</p>
+            <p class="mltop_xinxi">
+                <span>年        级：</span>
+                <span>${grade}</span>
+            </p>
+            <p class="mltop_xinxi">
+                <span>章        数：</span>
+                <span>${chapterNum}篇</span>
+            </p>
+        </div>
+    </div>
+</template>
+<template id="title-pack-up-template">
+    <p class="mltop_xiaoBiao">${title}</p>
+</template>
+<template id="chapter-new-template">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="javascript:;">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-old-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="javascript:;">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-challenge">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi neir_tianZ" href="javascript:;">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chinese-catalog">
+    <div class="wrap">
+        <div class="catalog chinese_catalog">
+            <div class="mltop_main" id="book_infor"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up chinese_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main catalog_list">
+            <div class="mulu_div">
+                <ul class="cont_sul"  id="chapter_section2"></ul>
+            </div>
+        </div>
+    </div>
+</template>
+<!----------------------------------detail-structure----------------------------->
+<template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个-->
+    <div class=""wrap>
+        <section class="head-title" id="knowledgePointTitle">
+        </section>
+        <section class="rain-main">
+            <div class="details_show youKuang">
+                <section>
+                    <section class="origin-title">选文赏析<span>XUAN WEN SHANG XI</span></section>
+                    <section id="origin"></section>
+                </section>
+            </div>
+            <section class="content-bg" id="content"></section>
+            <section class="content-bg" id="video"></section>
+
+            <section class="exercise">
+                <h3 class="break_through">闯关练习<span>CHAUNG GUAN LIAN XI</span></h3>
+                <ul id="problems" classs="ul-style">
+                </ul>
+            </section>
+            <section class="content-bg" id="interaction"></section>
+        </section>
+        <section class="mulu_bottom">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+                </div>
+            </div>
+            <section id="comments"></section>
+        </section>
+    </div>
+</template>
+<template id="math-template">
+    <div class="wrap">
+        <section  class="title_math_details">
+            <span class="head_himg"> 挑战<span id="title1"></span></span>
+            <h3 class="title_module" id="title2"></h3>
+        </section>
+        <!--section-->
+        <div class="rain-main">
+            <!--lead-->
+            <section class="challenge">
+                <div id="challenge"></div> 赶紧开始吧！
+            </section>
+            <!--最强讲解-->
+            <div class="module_math">
+                <section class="xuanwen">
+                    <span class="icon_img1"></span>
+                    最强讲解<span>ZUI QIANG JIANG JIE</span>
+                </section>
+                <section>
+                    <div id="content1" class="explain_content"></div>
+                    <div id="video1"></div>
+                </section>
+            </div>
+            <!--最强大脑-->
+            <div class="module_math">
+                <section class="xuanwen">
+                    <span class="icon_img2"></span>
+                    最强大脑<span>ZUI QIANG DA NAO</span>
+                </section>
+                <ul class="ul-style" id="strongest-brain"></ul>
+
+                <!--脑力大PK-->
+                <section class="brain_pk">脑力大PK
+                    <span>NAO LI DA PK</span>
+                </section>
+                <ul class="ul-style" id="pk"></ul>
+
+                <!--智慧结晶-->
+                <p class="zongjie_p">将你的智慧结晶写在这里吧。</p>
+                <textarea class="zongjie_txt" name="" id="" cols="" rows=""></textarea>
+            </div>
+
+            <!--readlike-->
+            <section class="content-bg lixi_Nomar" id="interaction"></section>
+        </div>
+        <!--message-->
+        <section class="mulu_bottom">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+                </div>
+            </div>
+            <section id="comments"></section>
+        </section>
+    </div>
+</template>
+<template id="mathtest-template"></template>
+<!-----------------------------knowledgepoint-content---------------------------->
+<!--chinese-->
+<template id="knowledge-point-title-template">
+    <span>${name}</span>
+</template>
+<template id="origin-template">
+    <p class="content-font">${content}<span>${source}</span></p>
+</template>
+<template id="content-text-template">
+    <p class="paragraph">${content}</p>
+</template>
+<template id="content-c-image-template">
+    <div class="details_show">
+        <img class="content-img" src="${href}" alt="${description}">
+    </div>
+</template>
+<template id="video-template">
+    <div class="details_show">
+           <a href="${storePath}">
+               <img src="${cover}"/>
+           </a>
+    </div>
+</template>
+<template id="problem-option-template">
+    <li class="mld_daanLi">
+        <span class="daan_quan">${title}</span>
+        <input class="daana" name="daan3" type="radio">${name}
+    </li>
+</template>
+<template id="problem-checkbox-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span class="mld_liImg_">${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+    </li>
+</template>
+<template id="problem-radio-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span class="mld_liImg">${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+    </li>
+</template>
+<template id="problem-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span>${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+    </li>
+</template>
+<template id="interaction-like-template"><!--已点赞-->
+    <div>
+        <ul class="ul01_flet">
+            <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+            <li>
+                <span class="favour">已点</span>
+                <span class="ul01_count">${likeCount}</span>
+            </li>
+        </ul>
+        <ul class="ul01_riht">
+            <li class="ul01_fli"><span class="ul01_aBtn" data-article="knowledgePoint"
+                                       data-id="${previousId}">上一节课</span></li>
+            <li><span class="ul01_aBtn" data-article="knowledgePoint" data-id="${nextId}">下一节课</span></li>
+        </ul>
+    </div>
+</template>
+<template id="interaction-unlike-template"><!--未点赞-->
+    <div>
+        <ul class="ul01_flet">
+            <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+            <li>
+                <span class="dislike"></span>
+                <span class="ul01_count">${likeCount}</span>
+            </li>
+        </ul>
+        <ul class="ul01_riht">
+            <li class="ul01_fli"><span class="ul01_aBtn" data-article="knowledgePoint"
+                                       data-id="${previousId}">上一节课</span></li>
+            <li><span class="ul01_aBtn" data-article="knowledgePoint" data-id="${nextId}">下一节课</span></li>
+        </ul>
+    </div>
+</template>
+<template id="comment-like-template">
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${userAvatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${userName}</div>
+                    <div class="litop_friht" data-id="${id}" data-liked="${liked}">
+                        <!--<img class="ul01_imgzan_" src="img/zan-over.png" alt="">-->
+                        <span class="like-icon">已点</span>
+                        <span class="ul01_count">${likeCount}</span>
+                    </div>
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${createTime}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</template>
+<template id="comment-unlike-template">
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${userAvatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${userName}</div>
+                    <div class="litop_friht" data-id="${id}">
+                        <!--<img class="ul01_imgzan_" src="img/zan.png" alt="">-->
+                        <span class="like-icon">未点</span>
+                        <span class="ul01_count">${likeCount}</span>
+                    </div>
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${createTime}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</template>
+<template id="trueImage">
+    <img src="img/true.png" alt="">
+</template>
+<template id="falseImage">
+    <img src="img/error.png" alt="">
+</template>
+<!--math-->
+<template id="title1-template">
+    <span>${order}</span>
+</template>
+<template id="title2-template">
+    <span>${name}</span>
+</template>
+<template id="challenge-template">
+    <span>${content}</span>
+</template>
+<template id="content-m-image-template">
+    <div>
+        <p>${explainContent}</p>
+        <img class="muld_images" src="${href}" alt="">
+        <p class="mulu_dp math_color">
+            ${content}
+        </p>
+    </div>
+</template>
+<template id="strongest-brain-option-template">
+    <li class="mld_daanLi">
+        <span class="daan_quan">${title}</span>
+        <input type="radio" class="daana" name="daan3">${name}
+        <!--<input type="radio" id="daan_s3A" class="daana" name="daan1">-->
+        <img src="${optionImagePath}" class="option" alt="">
+        <!--<label for="daan_s3A">${name}</label>-->
+    </li>
+</template>
+<template id="strongest-brain-template">
+    <li class="mld_Ulli">
+        <div class="addimg" data-type="${type}">${title}</div>
+        <img src="${storePath}" alt="">
+        <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+        <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
+    </li>
+</template>
+<template id="pk-template">
+    <li class="mld_Ulli">
+        <div>${title}</div>
+        <img class="ceshi_ti1" src="${storePath}" alt="">
+        <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+    </li>
+</template>
+<!-----------------------------dialog---------------------------->
+<template id="cover-member-template"><!-- 非会员 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="member_content">会员才可以观看视频呦！</p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">成为会员</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-overdue-template"><!--学习卡过期弹窗-->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="member_content">您的学习卡已过期！</p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">购买新卡</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-deduct-bean-template"><!-- 扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="deduct_bean">确定要扣<span class="ptxt_span">1</span>金豆<br>观看本视频吗？</p>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox" id="no_prompt">下次不提醒</label>
+                </p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">确定</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-no-card-template"><!-- 语文-无此卡扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <div class="deduct_math_bean">
+                    您还没有语文卡<br>确定要扣数学卡<span class="ptxt_span">1</span>金豆吗？
+                </div>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox" id="no_prompt">下次不提醒</label>
+                </p>
+                <div>
+                    <a class="confirm_btn" href="javascript:;"><span>确定</span></a>
+                    <a class="buy_card" href="javascript:;">买语文卡</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-math-no-card-template"><!-- 数学-无此卡扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <div class="deduct_math_bean">
+                    您还没有数学卡<br>确定要扣语文卡<span class="ptxt_span">1</span>金豆吗？
+                </div>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox" id="no_prompt">下次不提醒</label>
+                </p>
+                <div>
+                    <a class="confirm_btn" href="javascript:;"><span>确定</span></a>
+                    <a class="buy_card" href="javascript:;">买数学卡</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<!--<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>-->
+<!--<dialog>您的卡片已过期，请重新购买！</dialog>-->
+<!--<dialog>您的卡片只可观看***，<br>观看其他内容请购买相应卡片！</dialog>-->
+<!--<dialog>还剩24雨点不够观看啦，请充值！</dialog>-->
+<!--<dialog>雨点所剩不多，请尽快充值哦！</dialog>-->
+
+<script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/bootstrap/bootstrap.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script>
+    $(function () {
+        var data = {
+            low:[
+                {
+                    type:'new',
+                    img:'images_version2/yuwen_mulu1.png'
+                },
+                {  type:'old',
+                    img:'images_version2/yuwen_mulu2.png'
+                },
+                {  type:'expect',
+                    img:'images_version2/yuwen_mulu0.png'
+                }
+            ],
+            high:[
+                {
+                    type:'new',
+                    img:'images_version2/yuwen_mulu2.png'
+                },
+                {  type:'old',
+                    img:'images_version2/yuwen_mulu1.png'
+                },
+                {  type:'expect',
+                    img:'images_version2/yuwen_mulu0.png'
+                }
+            ],
+            bookInfor:[
+                {
+                    type:'bookinfor',
+                    bookImg:'images_version2/shuxue1.png',
+                    bookName:'钟表喊你吃饭啦',
+                    grade:'1-3年级',
+                    chapterNum:'12'
+                }
+            ],
+            packUpTitle:[
+                {
+                    type:'packUp',
+                    title:'钟表喊你吃饭啦'
+                }
+            ],
+            chapter_section:[
+                {
+                    type:'new',
+                    title:'加与减',
+                    peopleNum:'54682',
+                    zan:'images_version2/dianzan.png',
+                    zanover:'images_version2/zanover.png',
+                    zanNum:'381'
+                },
+                {
+                    type:'old',
+                    title:'简单的图形数量规律',
+                    peopleNum:'54682',
+                    zan:'images_version2/dianzan.png',
+                    zanover:'images_version2/zanover.png',
+                    zanNum:'381'
+                },
+                {
+                    type:'challenge',
+                    title:'挑战百分百',
+                    peopleNum:'54682',
+                    zan:'images_version2/dianzan.png',
+                    zanover:'images_version2/zanover.png',
+                    zanNum:'381'
+                }
+            ],
+            head_title:[
+                {
+                    type:'headTitle',
+                    name:'放纵不羁名垂青史的竹林七贤'
+                }
+            ],
+            text_appreciate:[
+                {
+                    type:'textAppreciate',
+                    content:'陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
+                    source:' ——【南朝】刘义庆《世说新语·任诞》',
+                }
+            ],
+            content_text:[
+                {
+                    type:'contentText',
+                    content:'魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？',
+                }
+            ],
+            content_image:[
+                {
+                    type:'contentImage',
+                    href:'images_version2/video1.png'
+                }
+            ],
+            content_video:[
+                {
+                    type:'contentVideo',
+                    storePath:'',
+                    cover:'images_version2/video3.png'
+                }
+            ],
+            challenge_num:[
+                {
+                    type:'challengeNum',
+                    order:'一'
+                }
+            ],
+            title_math_details:[
+                {
+                    type:'titleMathDetails',
+                    name:'火柴竟是运动迷'
+                }
+            ],
+            challenge_period:[
+                {
+                    type:'challengePeriod',
+                    content:'欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。'
+                }
+            ],
+            explain_content:[
+                {
+                    type:'explainContent',
+                    explainContent:'今天，我们来学习加减法运算。',
+                    href:'images_version2/math4.png',
+                    content:'在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
+                }
+            ],
+        }
+
+        let doc = document
+
+        let getTemplate = function (templateId) {
+            let result
+            let template = doc.getElementById(templateId)
+            if (template) {
+                result = template.content.children[0]
+            }
+            return result
+        }
+
+        let bind = function (element, data) {
+            element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
+                let result = ''
+                if (variable) {
+                    result = data[variable]
+                }
+                return result
+            })
+        }
+
+        let proc = function (option) {
+            let template = option.template
+            if (!template) {
+                template = getTemplate(option.templateId)
+            }
+            let templates
+            if (option.alterTemplates) {
+                templates = []
+                for (let i = 0; i < option.alterTemplates.length; ++i) {
+                    let template = getTemplate(option.alterTemplates[i].templateId)
+                    if (template) {
+                        templates.push({type: option.alterTemplates[i].type, template: template})
+                    }
+                }
+            }
+            let container = option.container
+            if (!container) {
+                container = doc.getElementById(option.containerId)
+            }
+            if ((template || templates) && container) {
+                if (Array.isArray(option.data)) {
+                    let secondTemplates = []
+                    if (option.secondBind) {
+                        if (Array.isArray(option.secondBind)) {
+                            for (let i = 0; i < option.secondBind.length; ++i) {
+                                let secondTemplate = getTemplate(option.secondBind[i].templateId)
+                                secondTemplates.push({
+                                    extPoint: option.secondBind[i].extPoint,
+                                    template: secondTemplate
+                                })
+                            }
+                        } else {
+                            let secondTemplate = getTemplate(option.secondBind.templateId)
+                            secondTemplates.push({extPoint: option.secondBind.extPoint, template: secondTemplate})
+                        }
+                    }
+                    for (let i = 0; i < option.data.length; ++i) {
+                        let element
+                        if (template) {
+                            element = template.cloneNode(true)
+                        } else if (templates) {
+                            for (let j = 0; j < templates.length; ++j) {
+                                if (option.data[i].type == templates[j].type) {
+                                    element = templates[j].template.cloneNode(true)
+                                    break
+                                }
+                            }
+                        }
+                        bind(element, option.data[i])
+                        if (option.secondBind) {
+                            let secondContainer
+                            let secondIndex
+                            if (Array.isArray(option.secondBind)) {
+                                for (let j = 0; j < option.secondBind.length; ++j) {
+                                    if (option.secondBind[j].extPoint == option.secondBind.extPoint) {
+                                        secondIndex = j
+                                        secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind[j].extPoint + '"]')
+                                        break
+                                    }
+                                }
+                            } else {
+                                secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]')
+                            }
+                            let secondTemplate
+                            for (let j = 0; j < secondTemplates.length; ++j) {
+                                if (secondTemplates[j].extPoint == option.secondBind.extPoint) {
+                                    secondTemplate = secondTemplates[j].template
+                                }
+                            }
+                            let secondData = option.data[i][option.secondBind.dataFieldName]
+                            if (Array.isArray(option.secondBind)) {
+                                secondData = option.data[i][option.secondBind[secondIndex].dataFieldName]
+                            }
+                            if (secondContainer && secondTemplate) {
+                                proc({
+                                    container: secondContainer,
+                                    template: secondTemplate,
+                                    data: secondData
+                                })
+                            }
+                        }
+                        container.appendChild(element)
+                    }
+                } else {
+                    let element = template.cloneNode(true)
+                    bind(element, option.data)
+                    if (option.secondBind) {
+                        let secondContainer
+                        let secondIndex
+                        if (Array.isArray(option.secondBind)) {
+                            for (let j = 0; j < option.secondBind.length; ++j) {
+                                if (option.secondBind[j].extPoint == option.secondBind.extPoint) {
+                                    secondIndex = j
+                                    secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind[j].extPoint + '"]')
+                                    break
+                                }
+                            }
+                        } else {
+                            secondContainer = element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]')
+                        }
+                        let secondTemplate
+                        for (let j = 0; j < secondTemplates.length; ++j) {
+                            if (secondTemplates[j].extPoint == option.secondBind.extPoint) {
+                                secondTemplate = secondTemplates[j].template
+                            }
+                        }
+                        let secondData = option.data[option.secondBind.dataFieldName]
+                        if (Array.isArray(option.secondBind)) {
+                            secondData = option.data[option.secondBind[secondIndex].dataFieldName]
+                        }
+                        if (secondContainer && secondTemplate) {
+                            proc({
+                                container: secondContainer,
+                                template: secondTemplate,
+                                data: secondData
+                            })
+                        }
+                    }
+                    container.appendChild(element)
+                }
+            }
+        }
+
+        proc({
+            data: data.low,
+            containerId: 'low',
+            alterTemplates: [
+                {type: 'old', templateId: 'volumes-chinese-old-template'},
+                {type: 'new', templateId: 'volumes-chinese-new-template'},
+                {type: 'expect', templateId: 'volumes-chinese-expect-template'},
+            ]
+        })
+        proc({
+            data: data.high,
+            containerId: 'high',
+            alterTemplates: [
+                {type: 'old', templateId: 'volumes-chinese-old-template'},
+                {type: 'new', templateId: 'volumes-chinese-new-template'},
+                {type: 'expect', templateId: 'volumes-chinese-expect-template'},
+            ]
+        })
+        proc({
+            data:data.bookInfor,
+            containerId:'book_infor',
+            alterTemplates:[
+                {type: 'bookinfor', templateId: 'book-infor-template'},
+            ]
+        })
+        proc({
+            data:data.packUpTitle,
+            containerId:'pack_up_title',
+            alterTemplates:[
+                {type: 'packUp', templateId: 'title-pack-up-template'}
+            ]
+        })
+        proc({
+            data:data.chapter_section,
+            containerId:'chapter_section1',
+            alterTemplates:[
+                {type: 'new', templateId:'chapter-new-template'},
+                {type: 'old', templateId:'chapter-old-template'},
+                {type: 'challenge', templateId:'chapter-challenge'},
+            ]
+        })
+        proc({
+            data:data.chapter_section,
+            containerId:'chapter_section2',
+            alterTemplates:[
+                {type: 'new', templateId:'chapter-new-template'},
+                {type: 'old', templateId:'chapter-old-template'},
+            ]
+        })
+        proc({ //语文课程详情：知识点标题
+            data:data.head_title,
+            containerId:'knowledgePointTitle',
+            alterTemplates:[
+                {type: 'headTitle', templateId:'knowledge-point-title-template'},
+            ]
+        })
+        proc({ //语文课程详情：选文赏析
+            data:data.text_appreciate,
+            containerId:'origin',
+            alterTemplates:[
+                {type:'textAppreciate',templateId:'origin-template'},
+            ]
+        })
+        proc({ //语文课程详情：文章内容
+            data:data.content_text,
+            containerId:'content',
+            alterTemplates:[
+                {type: 'contentText', templateId:'content-text-template'},
+            ]
+        })
+        proc({ //语文课程详情：文章图片
+            data:data.content_image,
+            containerId:'content',
+            alterTemplates:[
+                {type:'contentImage',templateId:'content-c-image-template'},
+            ]
+        })
+        proc({ //语文课程详情：视频
+            data:data.content_video,
+            containerId:'video',
+            alterTemplates:[
+                {type:'contentVideo',templateId:'video-template'},
+            ]
+        })
+        proc({ //数学课程详情：挑战一
+            data:data.challenge_num,
+            containerId:'title1',
+            alterTemplates:[
+                {type:'challengeNum',templateId:'title1-template'},
+            ]
+        })
+        proc({ //数学课程详情：标题
+            data:data.title_math_details,
+            containerId:'title2',
+            alterTemplates:[
+                {type:'titleMathDetails',templateId:'title2-template'}
+            ]
+        })
+        proc({ //数学课程详情：本期挑战
+            data:data.challenge_period,
+            containerId:'challenge',
+            alterTemplates:[
+                {type:'challengePeriod',templateId:'challenge-template'}
+            ]
+        })
+        proc({ //数学详情：最强讲解
+            data:data.explain_content,
+            containerId:'content1',
+            alterTemplates:[
+                {type:'explainContent',templateId:'content-m-image-template'}
+            ]
+        })
+        proc({ //数学课程详情：视频
+            data:data.content_video,
+            containerId:'video1',
+            alterTemplates:[
+                {type:'contentVideo',templateId:'video-template'},
+            ]
+        })
+    })
+</script>
+</body>
+</html>
