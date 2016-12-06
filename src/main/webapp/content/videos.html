@@ -209,8 +209,16 @@
     </div>
 </article>
 <article id="videoDetail" style="display: none;">
-    <!--<video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>-->
-    <div class="wrap nohuifBackg"></div>
+    <div class="wrap">
+        <div class="rain-main live-details">
+            <div class="live-details-video"></div>
+            <div class="liveDetails-comment"></div>
+            <div class="liveDetails-message">
+                <input class="liveDetails-messageTxt" type="text" placeholder="留言">
+                <a class="liveDetails-messageBtn" href="javascript:void(0)">发送</a>
+            </div>
+        </div>
+    </div>
 </article>
 <article id="scheduler" style="display: none;" class="wrap">
     <div class="convenient">
@@ -586,7 +594,10 @@
 
 
 <!--*****************************video*****************************-->
-<!--<tempalte id="video-template" class="rain-main nohuifPadd">-->
+<tempalte id="video-template" class="rain-main live-details">
+    <div class="live-details-video"></div>
+</tempalte>
+<!--<tempalte id="video-template" class="rain-main live-details">-->
 <!--<div class="before_uli">-->
 <!--<div class="before_liplay">-->
 <!--<a class="all_aBtn" href="javascript:void(0)">-->
