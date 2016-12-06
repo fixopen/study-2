@@ -169,31 +169,58 @@
         </div>
     </div>
 </article>
-<article id="passed" style="display: none;" class="wrap noBackg">
-    <!--<input class="souSuo clearfix" type="text" id="text"  name="keyword"  onkeydown="entersearch()" placeholder="请输入科目、老师、年级 关键词搜索">-->
+<article id="passed" style="display: none;" class="noBackg">
+    <input class="souSuo clearfix" type="text" id="text" name="keyword" onkeydown="entersearch()"
+           placeholder="请输入科目、老师、年级 关键词搜索">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1"><!-- 有此卡扣豆提醒 -->
+        <a class="windowClose" href="#"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
+            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="#">确定</a>
+            </p>
+        </div>
+    </div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="#"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt">您还没有数学卡</p>
+            <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">20</span>金豆吗？</p>
+            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="#">确定</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="#">买数学卡</a>
+            </p>
+        </div>
+    </div>
+    <div class="wrap"></div>
     <div class="tiao_jian">
-        <div class="tiaoj_TJ01 selectDiv">
+        <div class="tiaoj_TJ01">
             <div class="tiaoj_1span" id="subjectSelect">
                 <span>科目</span>
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul" id="subject"></ul>
         </div>
-        <div class="tiaoj_TJ02 selectDiv">
+        <div class="tiaoj_TJ02">
             <div class="tiaoj_2span" id="teacherSelect">
                 <span>老师</span>
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul" id="teacher"></ul>
         </div>
-        <div class="tiaoj_TJ03 selectDiv" id="gradeeSelect">
+        <div class="tiaoj_TJ03" id="gradeeSelect">
             <div class="tiaoj_3span">
                 <span>年级</span>
                 <img src="../img/xiala.png" alt="">
             </div>
             <ul class="xiala_ul" id="grade"></ul>
         </div>
-        <div class="tiaoj_TJ04 selectDiv" id="dateSelect">
+        <div class="tiaoj_TJ04" id="dateSelect">
             <div class="tiaoj_4span">
                 <span>日期</span>
                 <img src="../img/xiala.png" alt="">
@@ -201,6 +228,32 @@
             <ul class="xiala_ul" id="date"></ul>
         </div>
     </div>
+    <ul class="tiaoj_jieG">
+        <li class="jieG_li">
+            <span>语文</span>
+            <a href="javascript:void(0)">
+                <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
+            </a>
+        </li>
+        <li class="jieG_li">
+            <span>刘志超</span>
+            <a href="javascript:void(0)">
+                <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
+            </a>
+        </li>
+        <li class="jieG_li">
+            <span>一年级</span>
+            <a href="javascript:void(0)">
+                <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
+            </a>
+        </li>
+        <li class="jieG_li">
+            <span>2016年12月12日</span>
+            <a href="javascript:void(0)">
+                <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
+            </a>
+        </li>
+    </ul>
     <div class="rain-main noPadd">
         <ul id="video"></ul>
         <div class="bottom_txt">
@@ -479,47 +532,51 @@
     <li class="all_uli">
         <div class="all_liplay">
             <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
+                <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
                     <h3 class="yuwen_h3">${title}</h3>
                     <p class="yuwen_p">${description}</p>
                 </div>
+                <p class="yuwen_p2">
+                    <span>${grade}</span>
+                    <span class="yuwen_span">${teacher}</span>
+                    <span class="yuwen_riqi">${startTime}</span>
+                </p>
                 <span class="yuwen_a"></span>
-                <span class="yuwen_span">—${teacher}老师</span>
             </a>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
-                <div class="xiaq_div">${title}</div>
-                <div>
-                    <span>${grade}</span>
-                    <div class="course_detail detail_Btn" data-detail="${id}">课程详情</div>
+                <div class="xiaq_div">
+                    <p>${title}</p>
+                    <div class="course_detail">详情
+                        <img src="/images/xiala.png" alt="">
+                        <img src="/images/xiala_sq.png" alt="">
+                    </div>
                 </div>
             </div>
             <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>笔记本、铅笔、橡皮、圆珠笔、课本</span>
+                </div>
                 <h3 class="sml-tit brief1">
-                    <img src="../img/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
-                <p>${description}</p>
+                <p class="tim2">${description}</p>
                 <h3 class="sml-tit brief2">
-                    <img src="../img/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2"> ${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="../img/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${startTime}</p>
-
-                <h3 class="sml-tit brief4">
-                    <img src="../img/cksc_btn.png" alt="">
-                    课程时长
-                </h3>
-                <p id="duration">30分钟</p>
             </div>
         </div>
     </li>
@@ -528,67 +585,75 @@
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
             <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
+                <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">数学</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
                     <h3 class="yuwen_h3">${title}</h3>
                     <p class="yuwen_p">${description}</p>
                 </div>
+                <p class="yuwen_p2">
+                    <span>${grade}</span>
+                    <span class="yuwen_span">${teacher}</span>
+                    <span class="yuwen_riqi">${startTime}</span>
+                </p>
                 <span class="yuwen_a"></span>
-                <span class="yuwen_span">—${teacher}老师</span>
             </a>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
-                <div class="xiaq_div">${title}</div>
-                <div>
-                    <span>${grade}</span>
-                    <div class="course_detail shuxue_Btn detail_Btn" data-detail="${id}">课程详情</div>
+                <div class="xiaq_div">
+                    <p>${description}</p>
+                    <div class="course_detail shuxue_Btn">详情
+                        <img src="/images/xiala_sx.png" alt="">
+                        <img src="/images/xiala_sqsx.png" alt="">
+                    </div>
                 </div>
             </div>
             <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>笔记本、铅笔、橡皮、圆珠笔、课本</span>
+                </div>
                 <h3 class="sml-tit brief1">
-                    <img src="../img/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p>${description}</p>
                 <h3 class="sml-tit brief2">
-                    <img src="../img/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2"> ${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="../img/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${startTime}</p>
-
-                <h3 class="sml-tit brief4">
-                    <img src="../img/cksc_btn.png" alt="">
-                    课程时长
-                </h3>
-                <p>30分钟</p>
             </div>
         </div>
     </li>
 </template>
 <template id="subject-template">
+    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
     <li class="xiala_li">
         <span data-id="${id}" data-type="subject">${name}</span>
     </li>
 </template>
 <template id="teacher-template">
+    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
     <li class="xiala_li">
         <span data-type="teacher">${teacher}</span>
     </li>
 </template>
 <template id="grade-template">
+    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
     <li class="xiala_li">
         <span data-type="grade">${grade}</span>
     </li>
 </template>
 <template id="date-template">
+    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
     <li class="xiala_li"></li>
 </template>
 
@@ -1033,7 +1098,7 @@
                         // change gradeSelect
                         //}
                         if (!state.containGrade(sub, g.textContent)) {
-                            state.passed.gradeChoice.textContent = '年级'
+                            state.passed.gradeSelect.textContent = '年级'
                         }
 
                         //change grades container
@@ -1070,15 +1135,38 @@
                             state.passed.teacherSelect.textContent = '老师'
                         }
                         //filter data
+                        var d = state.passed.search()
                         //refill the content
+                        state.passed.content.innerHTML = ''
+                        proc({
+                            container: state.passed.content,
+                            data: d,
+                            templateId: ''
+                        })
                     })
+
                     $(document).on('click', '[data-type="grade"]', function (e) {
                         //hide grade
                         state.passed.grade.style.display = 'none'
                         // change gradeSelect
+                        var s = document.getElementById('gradeSelect')
+                        s.textContent = e.target.textContent
+                        s.dataset.id = e.target.dataset.id
 
+                        var sub = state.getSubjectById(e.target.dataset.id)
+
+                        if (!state.containTeacher(sub, t.textContent)) {
+                            state.passed.teacherSelect.textContent = '老师'
+                        }
                         //filter data
+                        var d = state.passed.search()
                         //refill the content
+                        state.passed.content.innerHTML = ''
+                        proc({
+                            container: state.passed.content,
+                            data: d,
+                            templateId: ''
+                        })
                     })
 
                     var now = Date.now()
@@ -1231,6 +1319,7 @@
 ////                }
 //            }
         },
+
         futureNote: {
             init: function () {
             }

@@ -68,7 +68,7 @@
     border-right: none;
 }
 
-.tab_swli.cur {
+.cur {
     color: #fff;
     background-color: #24cbd1;
 }
@@ -481,62 +481,272 @@ li.active > a.tab_toggle {
     background-size: 1.1875rem 1.1875rem;
     background-color: #fff;
 }
-
-.tiao_jian {
-    width: 100%;
-    height: 3.40625rem;
-    margin-top: 3.75rem;
-    background: url('../img/huabian.png') 0 center no-repeat;
-    background-size: 100% 100%;
+@media screen and (max-width: 320px) {
+    .bevid_btn{
+        font-size: 1.025rem;
+        width: 4.5rem;
+    }
+    .pullUp{
+        width: 75%;
+    }
 }
-
-.tiaoj_TJ01, .tiaoj_TJ02, .tiaoj_TJ03, .tiaoj_TJ04 {
+/* 往期回放 */
+.tiao_jian{
+    width: 100%;
+    height: 3.125rem;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 101;
+}
+.tiaoj_TJ01,.tiaoj_TJ02,.tiaoj_TJ03,.tiaoj_TJ04{
     display: inline-block;
     color: #888;
     font-size: 0.9375rem;
     width: 23%;
-    height: 0.9375rem;
     text-align: center;
-    margin-top: 1.40625rem;
-    position: relative;
+    padding-top: 1.0rem;
 }
-
-.tiaoj_1span, .tiaoj_2span, .tiaoj_3span, .tiaoj_4span {
+.tiaoj_1span,.tiaoj_2span,.tiaoj_3span,.tiaoj_4span{
     display: inline-block;
     width: 100%;
     height: 1.25rem;
     border-right: 1px solid #ccc;
 }
-
-.tiaoj_1span img, .tiaoj_2span img, .tiaoj_3span img, .tiaoj_4span img {
+.tiaoj_1span img,.tiaoj_2span img,.tiaoj_3span img,.tiaoj_4span img{
     display: inline-block;
-    width: 0.90625rem;
-    height: 0.5rem;
+    width:0.90625rem;
+    height:0.5rem;
 }
-
-.tiaoj_4span {
+.tiaoj_4span{
     border-right: none;
 }
-
-.xiala_ul {
-    max-height: 6.25rem;
+.xiala_ul{
+    width: 100%;
     overflow-y: auto;
     background-color: #fff;
+    padding: 0.75rem;
+    text-align: left;
+    box-sizing: border-box;
     position: absolute;
-    top: 2.03125rem;
-    left: 2.1875rem;
+    top: 3.175rem;
+    left: 0;
     z-index: 10;
-    border: 1px solid #ccc;
     display: none;
 }
-
-.xiala_li {
-    min-width: 3.125rem;
-    text-align: left;
-    line-height: 1.2rem;
-    padding: 0.3125rem;
+.xiala_li{
+    display: inline-block;
+    width: 5.4375rem;
+    height: 2.125rem;
+    line-height: 2.125rem;
+    text-align: center;
+    margin: 0.625rem;
+    background-color: #f1f1f1;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.3125rem;
+}
+.xiala_li.cur{
+    border: 1px solid #ff8067;
+    position: relative;
+}
+.xiala_li.cur img{
+    width: 1.125rem;
+    height: 1.15625rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.tiaoj_jieG{
+    width: 100%;
+    background-color: #f1f1f1;
+    padding: 0 0.9375rem 0.625rem;
+    position: fixed;
+    top: 3.125rem;
+    left: 0;
+    z-index: 100;
+}
+.jieG_li{
+    display: inline-block;
+    color: #888;
+    font-size: 0.8125rem;
+    padding: 0.3125rem 0.375rem;
+    margin: 0.625rem 0 0 0;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.3125rem;
+}
+.jieG_licha{
+    width: 0.4375rem;
+    height: 0.4375rem;
+    padding: 0 0 0 0.15625rem;
 }
 
+.noPadd{
+    padding: 0;
+}
+.all_uli{
+    background-color: #fff;
+    padding: 0.9375rem;
+    margin-bottom: 1.25rem;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    box-sizing: border-box;
+}
+.all_liplay{
+    width: 100%;
+    height: 10.0rem;
+    background-color: #ffbc3c;
+    position: relative;
+}
+.all_aBtn{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+.yuwen_div0{
+    display: inline-block;
+    overflow: hidden;
+    color: #fff;
+    font-size: 0.9375rem;
+    padding: 0 0.625rem;
+    height: 1.375rem;
+    line-height: 1.375rem;
+    text-align: center;
+    border: 1px solid #fff;
+    border-radius: 0.3125rem;
+    background: url('../img/jindou.png') 0 0 repeat-x;
+    position: absolute;
+    top: 0.3125rem;
+    left: 0.3125rem;
+    z-index: 2;
+}
+.yuwen_div1{
+    float: right;
+    color: #ff6c00;
+    font-size: 0.9375rem;
+    width: 1.5625rem;
+    height: 2.65625rem;
+    text-align: center;
+    background: url('../img/shuqian.png') center no-repeat;
+    background-size: 100% 100%;
+    padding-top: 0.15625rem;
+    position: absolute;
+    top: 0.625rem;
+    right: 0.625rem;
+    z-index: 2;
+}
+.yuwen_div2{
+    background: url('../img/yuwen.png') 1.375rem 2.375rem no-repeat;
+    background-size: 4.59375rem 4.59375rem;
+    padding-top: 2rem;
+    position: absolute;
+    top: 0.9375rem;
+    left: 0;
+    z-index: 2;
+}
+.yuwen_h3{
+    color: #fff;
+    font-size: 2.625rem;
+    font-weight: bold;
+    width: 11.2rem;
+    height: 3.625rem;
+    margin-left: 7.0rem;
+    text-align: left;
+    overflow: hidden;
+}
+.yuwen_p{
+    color: #fff88c;
+    font-size: 0.9375rem;
+    margin-left: 7.0rem;
+    padding-left: 0.625rem;
+    text-align: left;
+}
+.yuwen_a{
+    display: inline-block;
+    width: 1.4375rem;
+    height: 1.4375rem;
+    background: url('../img/boniu.png') 0 0 no-repeat;
+    background-size: 1.4375rem 1.4375rem;
+    position: absolute;
+    bottom: 0.625rem;
+    right: 0.5rem;
+}
+.yuwen_p2{
+    display: inline-block;
+    color: #fff;
+    font-size: 0.8125rem;
+    position: absolute;
+    bottom: 0.625rem;
+    left: 0.5rem;
+}
+.yuwen_span{
+    padding-left: 0.3125rem;
+    border-left: 1px solid #fff;
+}
+.yuwen_riqi{
+    font-size: 0.6875rem;
+}
+.course_xiaqing{
+    color: #888;
+    font-size: 1.0rem;
+}
+.course_dianzan{
+    line-height: 2.25rem;
+}
+.xiaq_div{
+    padding: 0.5rem 0;
+}
+.xiaq_div p{
+    width: 82%;
+    display: inline-block;
+}
+.course_detail{
+    float: right;
+    color: #ffbc3c;
+    font-size: 1.0rem;
+}
+.course_detail img{
+    width: 0.6875rem;
+    height: 0.5rem;
+}
+.course_detail img:nth-child(2){
+    display: none;
+}
+.shuxue_play{
+    background-color: #39b4fa;
+}
+.shuxue_div1{
+    color: #13a9ff;
+}
+.shuxue_div2{
+    background: url('../img/shuxue.png') 1.375rem 2.375rem no-repeat;
+    background-size: 4.59375rem 4.59375rem;
+}
+.shuxue_Btn{
+    color: #13a9ff;
+}
+.yingyu_play{
+    background-color: #ff8067;
+}
+.yingyu_div1{
+    color: #ff6d50;
+}
+.yingyu_div2{
+    background: url('../img/yingyu.png') 1.375rem 2.375rem no-repeat;
+    background-size: 4.59375rem 4.59375rem;
+}
+.yingyu_Btn{
+    color: #ff6d50;
+}
+.bottom_txt{
+    color: #aaa;
+    font-size: 1.0rem;
+    text-align: center;
+    margin-bottom: 1.0rem;
+}
 /* 往期回放视频详情start */
 .live-details{
     padding: 0;

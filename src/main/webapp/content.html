@@ -46,6 +46,13 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <ol role="tabpanel" class="tab-pane active volumes-bg" id="low">
+                        <!--<li class="volume">-->
+                        <!--<img class="new-label" src="img/new-label.png" alt="">-->
+                        <!--<div class="volume-c-bg">-->
+                        <!--<span class="volume-c-font" data-id="${id}" data-type="volume"-->
+                        <!--data-article="knowledgePoints">共有的</span>-->
+                        <!--</div>-->
+                        <!--</li>-->
                     </ol>
                     <ol role="tabpanel" class="tab-pane volumes-bg" id="high">
                     </ol>
@@ -592,6 +599,37 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
+    /*
+     *  [
+     *     {
+     *       id:...
+     *       name: ...
+     *       low:[
+     *           {
+     *               id: ..
+     *               name: ...
+     *               cover: ...
+     *               knowledgePoints: [
+     *                   {
+     *                       id:
+     *                       name: ...
+     *                       oldOrNew:...
+     *                       ...
+     *                       contents: {
+     *                       }
+     *                   }
+     *                   ...
+     *               ]
+     *           }
+     *           ...
+     *       ],
+     *       high: [
+     *
+     *       ]
+     *   }
+     *  ....
+     *  ]
+     */
     var subjects = []
 
     var state = {
@@ -822,6 +860,13 @@
                                     }
                                     return result
                                 }
+//                                var newLength=function(kp){
+//                                    var num=0;
+//                                    if(kp.type == 'normalNew'){
+//                                        num++;
+//                                    }
+//                                    return num;
+//                                }
                                 var now = new Date()
                                 for (var i = 0; i < kps.length; ++i) {
                                     var v = state.knowledgePoints.value //state.volume.getById(kps[i].volumeId)
@@ -1511,6 +1556,15 @@
                     }
                 }
                 return result
+            },
+            calcNew: function () {
+                var newCount = 0
+                for (var i = 0; i < state.volume.value.knowledgePoints.length; ++i) {
+                    if (state.volume.value.knowledgePoints[i].type == 'normalNew') {
+                        newCount++
+                    }
+                }
+                return newCount
             }
         }
     }

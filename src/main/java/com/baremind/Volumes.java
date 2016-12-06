@@ -247,6 +247,10 @@ public class Volumes {
                 if (subjectId != null) {
                     existvolume.setSubjectId(subjectId);
                 }
+                Long knowledgePointCount = volume.getKnowledgePointCount();
+                if (knowledgePointCount != null) {
+                    existvolume.setKnowledgePointCount(knowledgePointCount);
+                }
                 String bookCover = volume.getBookCover();
                 if(bookCover != null){
                     existvolume.setBookCover(bookCover);
