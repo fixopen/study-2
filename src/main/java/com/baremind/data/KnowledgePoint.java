@@ -158,11 +158,21 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         kpm.put("readCount", Resources.findItem(readCount, (BaseStats stats) -> stats.getId().longValue() == kp.getId().longValue()));
         kpm.put("liked", Resources.findItem(likedCount, (BaseStats stats) -> stats.getId().longValue() == kp.getId().longValue()) != null);
         List<ContentStats> stats = Resources.findItems(contentType, (ContentStats s) -> s.getId().longValue() == kp.getId().longValue());
-        kpm.put("type", "normal");
-        if (stats.size() == 1) {
-            if (stats.get(0).getType().equals("problem")) {
-                kpm.put("type", "pk");
+        kpm.put("type", "pk");
+        for (ContentStats s : stats) {
+            if (!s.getType().equals("problem")) {
+                if (s.getCount() > 0L) {
+                    kpm.put("type", "normal");
+                    break;
+                }
             }
+        }
+        long total = 0L;
+        for (ContentStats s : stats) {
+            total += s.getCount();
+        }
+        if (total == 0L) {
+            kpm = null;
         }
         return kpm;
     }

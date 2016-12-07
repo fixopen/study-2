@@ -43,13 +43,11 @@ public class KnowledgePoints {
         TypedQuery<KnowledgePoint.BaseStats> ldq = (TypedQuery<KnowledgePoint.BaseStats>)em.createNativeQuery(likedQuery, KnowledgePoint.BaseStats.class);
         List<KnowledgePoint.BaseStats> likedStats = ldq.getResultList();
 
-        Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-//        filterObject.put("(SELECT count(*) FROM knowledge_point_content_maps WHERE knowledge_point_id = selfId)", "> 0");
         Map<String, String> orders = new HashMap<>();
         orders.put("order", "ASC");
         final Date now = new Date();
         final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-        return Impl.get(sessionId, filterObject, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats, now, yesterday), null);
+        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats, now, yesterday), null);
 
 //        Map<String, String> orders = new HashMap<>();
 //        orders.put("order", "ASC");
