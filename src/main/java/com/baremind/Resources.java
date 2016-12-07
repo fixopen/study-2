@@ -19,7 +19,7 @@ import java.util.function.Predicate;
  */
 @Path("resources")
 public class Resources {
-    private static String join(List<String> ids) {
+    static String join(List<String> ids) {
         String result = "";
         boolean isFirst = true;
         for (String id : ids) {

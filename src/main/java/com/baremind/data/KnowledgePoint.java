@@ -3,6 +3,7 @@ package com.baremind.data;
 import com.baremind.Logs;
 import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
+import com.sun.xml.internal.rngom.parse.host.Base;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -46,6 +47,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
+
     public Long getPrice() {
         return price;
     }
@@ -94,15 +96,97 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         showTime = show;
     }
 
-    public static Map<String, Object> convertToMap(KnowledgePoint kp, Date now, Date yesterday) {
+    public static class ContentStats {
+        Long id;
+        String type;
+        Long count;
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public Long getCount() {
+            return count;
+        }
+
+        public void setCount(Long count) {
+            this.count = count;
+        }
+    }
+
+    public static class BaseStats {
+        Long id;
+        Long count;
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public Long getCount() {
+            return count;
+        }
+
+        public void setCount(Long count) {
+            this.count = count;
+        }
+    }
+
+    public static Map<String, Object> convertToMap(KnowledgePoint kp, List<BaseStats> likeCount, List<BaseStats> likedCount, List<BaseStats> readCount, List<ContentStats> contentType, Date now, Date yesterday) {
+        Map<String, Object> kpm = new HashMap<>();
+        kpm.put("id", kp.getId());
+        kpm.put("volumeId", kp.getVolumeId());
+        kpm.put("name", kp.getName());
+        Date showTime = kp.getShowTime();
+        kpm.put("showTime", showTime);
+        kpm.put("likeCount", Resources.findItem(likeCount, (BaseStats stats) -> stats.getId().longValue() == kp.getId().longValue()));
+        kpm.put("readCount", Resources.findItem(readCount, (BaseStats stats) -> stats.getId().longValue() == kp.getId().longValue()));
+        kpm.put("liked", Resources.findItem(likedCount, (BaseStats stats) -> stats.getId().longValue() == kp.getId().longValue()) != null);
+        List<ContentStats> stats = Resources.findItems(contentType, (ContentStats s) -> s.getId().longValue() == kp.getId().longValue());
+        kpm.put("type", "normal");
+        if (stats.size() == 1) {
+            if (stats.get(0).getType().equals("problem")) {
+                kpm.put("type", "pk");
+            }
+        }
+        return kpm;
+    }
+
+    public static Map<String, Object> convertToMap(KnowledgePoint kp, Long userId, Date now, Date yesterday) {
         Map<String, Object> kpm = new HashMap<>();
         kpm.put("id", kp.getId());
         kpm.put("volumeId", kp.getVolumeId());
         kpm.put("name", kp.getName());
         kpm.put("showTime", kp.getShowTime());
-        kpm.put("likeCount", 0);
-        String stateType = "old";
 
+        kpm.put("likeCount", 0);
+        Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
+        if (likeCount != null) {
+            kpm.put("likeCount", likeCount);
+        }
+        kpm.put("liked", Logs.has(userId, "knowledge-point", kp.getId(), "like"));
+        kpm.put("readCount", 0);
+        Long readCount = Logs.getStatsCount("knowledge-point", kp.getId(), "read");
+        if (readCount != null) {
+            kpm.put("readCount", readCount);
+        }
+
+        String stateType = "old";
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.id = :id  AND l.showTime > :yesterday AND l.showTime < :now";
         TypedQuery<Long> q = em.createQuery(stats, Long.class);
@@ -113,16 +197,6 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         Long count = q.getSingleResult();
         if (count > 0) {
             stateType = "new";
-        }
-
-        Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
-        if (likeCount != null) {
-            kpm.put("likeCount", likeCount);
-        }
-        kpm.put("readCount", 0);
-        Long readCount = Logs.getStatsCount("knowledge-point", kp.getId(), "read");
-        if (readCount != null) {
-            kpm.put("readCount", readCount);
         }
         String type = "normal";
         String query = "SELECT m.objectType FROM KnowledgePointContentMap m GROUP BY m.objectType";
@@ -160,7 +234,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
 
     @Override
     public Long getAmount() {
-        return (long)(price * discount);
+        return (long) (price * discount);
     }
 
     @Override
