@@ -32,50 +32,59 @@
 
 <!--------------------------volumes--------------------------->
 <template id="chinese-structure"><!--课程封皮：学习-语文-->
-    <div class="wrap noBackg">
-        <div class="bao_dul">
-            <ul class="grade_nav">
-                <li class="grade_main active">
-                    <a href="#low" data-toggle="tab">1-2年级</a>
-                </li>
-                <li class="grade_main">
-                    <a href="#high" data-toggle="tab">3-6年级</a>
-                </li>
-            </ul>
+    <div>
+        <div id="popup">
         </div>
-        <div class="rain-main">
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
-                </ol>
-                <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
-                </ol>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav">
+                    <li class="grade_main active" data-grade="low">
+                        <a href="#low" data-toggle="tab" data-grade="low">1-2年级</a>
+                    </li>
+                    <li class="grade_main" data-grade="high">
+                        <a href="#high" data-toggle="tab" data-grade="high">3-6年级</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="rain-main">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <template id="math-structure"><!--课程封皮：学习-数学-->
-    <div class="wrap noBackg">
-        <div class="bao_dul">
-            <ul class="grade_nav_math">
-                <li class="grade_main active">
-                    <a href="#low2" data-toggle="tab">1-3年级</a>
-                </li>
-                <li class="grade_main">
-                    <a href="#high2" data-toggle="tab">4-6年级</a>
-                </li>
-            </ul>
+    <div>
+        <div id="popup">
         </div>
-        <div class="rain-main">
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
-                </ol>
-                <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
-                </ol>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav_math">
+                    <li class="grade_main active" data-grade="low">
+                        <a href="#low2" data-toggle="tab" data-grade="low">1-3年级</a>
+                    </li>
+                    <li class="grade_main" data-grade="high">
+                        <a href="#high2" data-toggle="tab" data-grade="high">4-6年级</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="rain-main">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
+
 </template>
 <template id="english-structure"><!--课程封皮：学习-英语-->
     <div class="wrap noBackg">
@@ -103,15 +112,15 @@
 <template id="volumes-new-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
-            <span class="textbook_num">1</span>
-            <img src="${bookCover}" alt="">
+            <span class="textbook_num" id="newCount">1</span>
+            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
         </a>
     </li>
 </template>
 <template id="volumes-old-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
-            <img src="${bookCover}" alt="">
+            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
         </a>
     </li>
 </template>
@@ -144,17 +153,17 @@
 <template id="book-infor-template">
     <div>
         <div class="mltop_left">
-            <img src="${bookImg}" alt="">
+            <img src="${bookCover}" alt="">
         </div>
         <div class="mltop_right">
-            <p class="mltop_biao">${bookName}</p>
+            <p class="mltop_biao">${title}</p>
             <p class="mltop_xinxi">
                 <span>年        级：</span>
                 <span>${grade}</span>
             </p>
             <p class="mltop_xinxi">
                 <span>章        数：</span>
-                <span>${chapterNum}篇</span>
+                <span>${knowledgePointCount}篇</span>
             </p>
         </div>
     </div>
@@ -222,6 +231,8 @@
             <img class="juchi" src="images_version2/juchi.png" alt="">
         </div>
         <div class="rain-main catalog_list">
+            <!--<div class="mulu_div">-->
+            <!--<ul class="cont_sul" id="chapter_section2"></ul>-->
             <div class="chinese_catalog_list">
                 <ul class="each_chapter" id="chapter_section2"></ul>
             </div>
@@ -589,8 +600,8 @@
 <!-----------------------------dialog---------------------------->
 <template id="cover-template"><!-- 学习-更新通知 -->
     <div>
-        <div class="tan" style="display: block;"></div>
-        <div class="update_notify" style="display: block;">
+        <div class="tan"></div>
+        <div class="update_notify">
             <a class="close_window_btn" href="javascript:;"></a>
             <div class="notify_content">
                 <p class="detail_content">
@@ -848,7 +859,6 @@
                 }
             ],
         }
-
 </script>
 <script>
     /*
@@ -897,8 +907,8 @@
                 success: function (ss) {
                     subjects = ss
                     for (var i = 0; i < subjects.length; ++i) {
-                        subjects[i].low = []
-                        subjects[i].high = []
+                        subjects[i].low = [];
+                        subjects[i].high = [];
                     }
 
                     $.ajax({
@@ -916,7 +926,15 @@
                                     //console.log(vs[i])
                                 }
                             }
-
+                            for (var i = 0; i < subjects.length; ++i) {
+                                var newVolume = {
+                                    name: '期待新书',
+                                    bookCover: 'images_version2/yuwen_mulu0.png',
+                                    type: 'old'
+                                }
+                                subjects[i].low.push(newVolume);
+                                subjects[i].high.push(newVolume);
+                            }
                             var subjectId = g.getUrlParameter('subjectId')
                             $.ajax({
                                 type: "get",
@@ -924,7 +942,7 @@
                                 dataType: "json",
                                 success: function (pop) {
                                     state.volumes.popuped = pop.popup;
-                                    //state.volumes.popuped = false;
+                                    state.volumes.popuped = false;
 
                                     history.pushState(null, null, '/content2.html#volumes')
                                     state.volumes.changeId(subjectId)
@@ -1006,6 +1024,16 @@
                             var value = state.volumes.value;
 
                             proc({
+                                containerId: 'popup',
+                                data: {},
+                                templateId: 'cover-template'
+                            })
+
+//                            for (var i = 0; i < value.low.length; ++i) {
+//                                state.volume.value = value.low[i]
+//                                value.low[i].newCount = state.volume.calcNew()
+//                            }
+                            proc({
                                 data: value.low,
                                 containerId: 'low',
                                 alterTemplates: [
@@ -1013,6 +1041,7 @@
                                     {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
+
                             proc({
                                 data: value.high,
                                 containerId: 'high',
@@ -1035,6 +1064,16 @@
                             })
 
                             var value = state.volumes.value
+                            proc({
+                                containerId: 'popup',
+                                data: {},
+                                templateId: 'cover-template'
+                            })
+
+//                            for (var i = 0; i < value.low.length; ++i) {
+//                                state.volume.value = value.low[i]
+//                                value.low[i].newCount = state.volume.calcNew()
+//                            }
                             proc({
                                 data: value.low,
                                 containerId: 'low2',
@@ -1061,14 +1100,14 @@
                 }
             },
             newClass: function () {
-                $('.tan').show();
-                $('.new-class').show();
-                $(".tan,.new-class").bind('touchmove', function (event) {
+                $('.tan').slideDown();
+                $('.update_notify').slideDown();
+                $(".tan,.update_notify").bind('touchmove', function (event) {
                     event.preventDefault();
                 });
-                $(".new-class").click(function () {
-                    $(this).hide();
-                    $(".tan").hide();
+                $(".update_notify").click(function () {
+                    $(this).slideUp();
+                    $(".tan").slideUp();
                 });
             },
             popups: function (subjectId) {
