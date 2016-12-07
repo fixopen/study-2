@@ -1,0 +1,134 @@
+/*
+* @Author: User
+* @Date:   2016-10-24 16:11:44
+* @Last Modified by:   User
+* @Last Modified time: 2016-11-08 11:35:57
+*/
+.convenient{
+    position: absolute;
+    top: 2.7%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+    display: block;
+    width: 92%;
+    background: url('../img/schedule.png') no-repeat center top;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    padding: 11.5% 4.3% 4.5%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: center;
+}
+.week{
+    position: absolute;
+    top: 3%;
+    left: 28.3%;
+    font-size: 1rem;
+    color: #000;
+    font-family: "Microsoft YaHei";
+}
+
+/* 重新布局-start */
+.class-table{
+    width: 100%;
+    height: 100%;
+}
+.class-table>thead{
+    height: 1.8125rem;
+}
+.class-table>thead>tr {
+    height: 100%;
+    border-bottom: 0.125rem solid #ea875f;
+    background-color: #fff;
+}
+.class-table>thead>tr>th{
+    height: 100%;
+    border-left: 0.09375rem solid #ea875f;
+}
+.class-table>thead>tr>th:first-child {
+    width: 5.0rem;
+    height: 1.8125rem;
+    background: url(../img/week_date.png) no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+    border-left: none;
+}
+
+.class-table>tbody>tr{
+    height: 2.6875rem;
+    border-bottom: 0.0625rem solid #ea875f;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.class-table>tbody>tr:nth-child(2n-1){
+    background-color: #ffd5ce;
+}
+.class-table>tbody>tr:nth-child(2n){
+    background-color: #fff;
+}
+.class-table>tbody>tr>td:first-child{
+    font-size: 0.75rem;
+    border-left: none;
+    color: #371f1f;
+    text-align: center;
+}
+.class-table>tbody>tr>td:nth-child(2){
+    height: 100%;
+    overflow: hidden;
+    border-left: 0.09375rem solid #ea875f;
+}
+
+
+
+.th-table{
+    width: 100%;
+    height: 120%;
+}
+.th-table>thead>tr>th{
+    padding: 0 1.5rem;
+    width: 33.3%;
+    height: 1.8125rem;
+    border-left: 0.09375rem solid #ea875f;
+    box-sizing: border-box;
+}
+.th-table>thead>tr>th:first-child{
+    border-left: none;
+    background: url(../img/time.png) no-repeat center;
+    -webkit-background-size: 1.375rem 0.75rem;
+    background-size: 1.375rem 0.75rem;
+}
+.th-table>thead>tr>th:nth-child(2){
+    background: url(../img/nianji.png) no-repeat center;
+    -webkit-background-size: 2.96875rem 0.6875rem;
+    background-size: 2.96875rem 0.6875rem;
+}
+.th-table>thead>tr>th:nth-child(3){
+    background: url(../img/neirong.png) no-repeat center;
+    -webkit-background-size: 2.96875rem 0.71875rem;
+    background-size: 2.96875rem 0.71875rem;
+}
+
+.th-table>tbody>tr{
+    height: 1.25rem;
+    border-top: 0.0625rem solid #ea875f;
+    box-sizing: border-box;
+}
+.th-table>tbody>tr:first-child{
+    border-top: none;
+}
+.th-table>tbody>tr>td{
+    font-size: 0.6875rem;
+    width: 33.3%;
+    color: #371f1f;
+    text-align: center;
+    border-left: 0.09375rem solid #ea875f;
+    box-sizing: border-box;
+}
+.th-table>tbody>tr>td:first-child{
+    border-left: none;
+}
+
+/* 重新布局-end */

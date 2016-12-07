@@ -18,15 +18,24 @@ public class KnowledgePointContentMap implements com.baremind.data.Entity {
     @Column(name = "knowledge_point_id")
     private Long knowledgePointId;
 
-    @Column(name = "object_type")
-    private String objectType;
+    @Column(name = "volume_id")
+    private Long volumeId;
 
-    @Column(name = "object_id")
-    private Long objectId;
+    @Column(name = "subject_id")
+    private Long subjectId;
+
+    @Column(name = "grade")
+    private Long grade;
+
+    @Column(name = "type")
+    private String type;
 
 
     @Column(name = "\"order\"")
     private int order;
+
+    @Column(name = "object_id")
+    private Long objectId;
 
     public Long getId() {
         return id;
@@ -44,12 +53,28 @@ public class KnowledgePointContentMap implements com.baremind.data.Entity {
         this.knowledgePointId = knowledgePointId;
     }
 
-    public String getObjectType() {
-        return objectType;
+    public Long getVolumeId() {
+        return volumeId;
     }
 
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
+    public void setVolumeId(Long volumeId) {
+        this.volumeId = volumeId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     public Long getObjectId() {
@@ -60,11 +85,19 @@ public class KnowledgePointContentMap implements com.baremind.data.Entity {
         this.objectId = objectId;
     }
 
-    public int getOrder() {
-        return order;
+    public Long getSubjectId() {
+        return subjectId;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public Long getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Long grade) {
+        this.grade = grade;
     }
 }

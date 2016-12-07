@@ -46,6 +46,7 @@ public class KnowledgePointContentMaps {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, KnowledgePointContentMap newData) {
         Response result = Response.status(401).build();
+
         if (JPAEntry.isLogining(sessionId)) {
             User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
             if (admin != null && admin.getIsAdministrator()) {

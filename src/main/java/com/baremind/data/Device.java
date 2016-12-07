@@ -66,4 +66,6 @@ public class Device implements com.baremind.data.Entity {
     public void setPlatformNotificationToken(String platformNotificationToken) {
         this.platformNotificationToken = platformNotificationToken;
     }
+
+
 }

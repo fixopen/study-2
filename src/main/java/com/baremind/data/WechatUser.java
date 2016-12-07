@@ -39,7 +39,7 @@ public class WechatUser implements com.baremind.data.Entity {
     private String nickname;
 
     @Column(name = "sex")
-    private Integer sex;
+    private Long sex;
 
     @Column(name = "city")
     private String city;
@@ -179,11 +179,11 @@ public class WechatUser implements com.baremind.data.Entity {
         this.nickname = nickname;
     }
 
-    public Integer getSex() {
+    public Long getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(Long sex) {
         this.sex = sex;
     }
 
@@ -218,6 +218,14 @@ public class WechatUser implements com.baremind.data.Entity {
     public void setHead(String head) {
         this.head = head;
     }
+
+//    public String[] getPrivilege() {
+//        return privilege;
+//    }
+//
+//    public void setPrivilege(String[] privilege) {
+//        this.privilege = privilege;
+//    }
 
     public String getInfo() {
         return info;
