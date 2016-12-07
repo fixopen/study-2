@@ -1,21 +1,22 @@
 package com.baremind.data;
 
 import com.baremind.Logs;
+import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.baremind.Resources.getList;
 
 /**
  * Created by lenovo on 2016/8/18.
  */
 @Entity
 @Table(name = "knowledge_points")
-public class KnowledgePoint implements com.baremind.data.Entity {
+public class KnowledgePoint implements com.baremind.data.Entity, Resource {
     @Id
     @Column(name = "id")
     private Long id;
@@ -155,5 +156,167 @@ public class KnowledgePoint implements com.baremind.data.Entity {
                 break;
         }
         return kpm;
+    }
+
+    @Override
+    public Long getAmount() {
+        return (long)(price * discount);
+    }
+
+    @Override
+    public Long getSubjectId() {
+        Long result = null;
+        Volume v = JPAEntry.getObject(Volume.class, "id", getVolumeId());
+        if (v != null) {
+            Subject s = JPAEntry.getObject(Subject.class, "id", v.getSubjectId());
+            if (s != null) {
+                result = s.getId();
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void setAmount(Long a) {
+        //do nothing
+    }
+
+    @Override
+    public Map<String, Object> getContent() {
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("knowledgePointId", id);
+        Map<String, String> orders = new HashMap<>();
+        orders.put("order", "ASC");
+        List<KnowledgePointContentMap> maps = JPAEntry.getList(KnowledgePointContentMap.class, conditions, orders);
+
+        List<String> textIds = new ArrayList<>();
+        List<String> imageIds = new ArrayList<>();
+        List<String> videoIds = new ArrayList<>();
+        List<String> problemIds = new ArrayList<>();
+        List<String> imageTextIds = new ArrayList<>();
+        List<String> quoteIds = new ArrayList<>();
+        List<String> pinyinIds = new ArrayList<>();
+
+        for (KnowledgePointContentMap item : maps) {
+            switch (item.getObjectType()) {
+                case "text":
+                    textIds.add(item.getObjectId().toString());
+                    break;
+                case "image":
+                    imageIds.add(item.getObjectId().toString());
+                    break;
+                case "video":
+                    videoIds.add(item.getObjectId().toString());
+                    break;
+                case "problem":
+                    problemIds.add(item.getObjectId().toString());
+                    break;
+                case "imageText":
+                    imageTextIds.add(item.getObjectId().toString());
+                    break;
+                case "quote":
+                    quoteIds.add(item.getObjectId().toString());
+                    break;
+                case "pinyinText":
+                    pinyinIds.add(item.getObjectId().toString());
+                    break;
+            }
+        }
+
+        EntityManager em = JPAEntry.getEntityManager();
+
+        List<Text> textObjects = getList(em, textIds, Text.class);
+
+        List<Image> imageObjects = getList(em, imageIds, Image.class);
+
+        List<Video> videoObjects = getList(em, videoIds, Video.class);
+
+        List<Problem> problemObjects = getList(em, problemIds, Problem.class);
+        List<ProblemOption> problemOptionObjects = Resources.getListByColumn(em, "problemId", problemIds, ProblemOption.class);
+        List<ProblemStandardAnswer> problemStandardAnswerObjects = Resources.getListByColumn(em, "problemId", problemIds, ProblemStandardAnswer.class);
+
+        List<ImageText> imageTextObject = getList(em, imageTextIds, ImageText.class);
+
+        List<Quote> quoteObject = getList(em, quoteIds, Quote.class);
+
+        List<PinyinText> pinyinTextObject = getList(em, pinyinIds, PinyinText.class);
+
+        List<Object> orderedContents = new ArrayList<>();
+        List<Object> orderedProblems = new ArrayList<>();
+        List<Object> orderedQuotes = new ArrayList<>();
+
+        for (final KnowledgePointContentMap item : maps) {
+            switch (item.getObjectType()) {
+                case "text":
+                    if (textObjects != null) {
+                        Text t = Resources.findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
+                        Map<String, Object> tm = Text.convertToMap(t);
+                        orderedContents.add(tm);
+                    }
+                    break;
+                case "image":
+                    if (imageObjects != null) {
+                        Image i = Resources.findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
+                        Map<String, Object> im = Image.convertToMap(i);
+                        orderedContents.add(im);
+                    }
+                    break;
+                case "imageText":
+                    if (imageTextObject != null) {
+                        ImageText it = Resources.findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
+                        Map<String, Object> itm = ImageText.convertToMap(it);
+                        orderedContents.add(itm);
+                    }
+                    break;
+                case "pinyinText":
+                    if (pinyinTextObject != null) {
+                        PinyinText pt = Resources.findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
+                        Map<String, Object> qm = PinyinText.convertToMap(pt);
+                        orderedContents.add(qm);
+                    }
+                    break;
+                case "problem":
+                    if (problemObjects != null || problemOptionObjects != null || problemStandardAnswerObjects != null) {
+                        Problem problemItem = Resources.findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
+                        List<ProblemOption> problemOptions = Resources.findItems(problemOptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
+                        List<ProblemStandardAnswer> problemStandardAnswers = Resources.findItems(problemStandardAnswerObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
+                        Map<String, Object> pm = Problem.convertToMap(problemItem, problemOptions, problemStandardAnswers);
+                        orderedProblems.add(pm);
+                    }
+                    break;
+                case "quote":
+                    if (quoteObject != null) {
+                        Quote q = Resources.findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
+                        orderedQuotes.add(q);
+                    }
+                    break;
+            }
+        }
+
+        Map<String, Object> totalResult = new HashMap<>();
+        totalResult.put("title", getName());
+        totalResult.put("quotes", orderedQuotes);
+        totalResult.put("contents", orderedContents);
+
+        if ((videoObjects != null) && !videoObjects.isEmpty()) {
+            Video video = videoObjects.get(0);
+            Map<String, Object> vm = Video.convertToMap(video);
+            totalResult.put("video", vm);
+        }
+
+        Map<String, Object> interaction = new HashMap<>();
+        interaction.put("likeCount", Logs.getStatsCount("knowledge-point", id, "like"));
+        interaction.put("readCount", Logs.getStatsCount("knowledge-point", id, "read"));
+        totalResult.put("interaction", interaction);
+
+        totalResult.put("problems", orderedProblems);
+
+        conditions = new HashMap<>();
+        conditions.put("objectType", "knowledge-point");
+        conditions.put("objectId", id);
+        List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
+        List<Map<String, Object>> commentMaps = comments.stream().map(Comment::convertToMap).collect(Collectors.toList());
+        totalResult.put("comments", commentMaps);
+        return totalResult;
     }
 }
