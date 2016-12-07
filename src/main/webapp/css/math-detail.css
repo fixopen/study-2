@@ -1,6 +1,4 @@
-a{
-    color: #444;
-}
+/* @Author:zhaoxq*/
 .title_math_details{
     padding-top: 0.7125rem;
     margin: 0 0 0.9375rem;
@@ -13,7 +11,7 @@ a{
     background: url("../images_version2/shuxueBG.png") 0 0 no-repeat;
     background-size: 100% 4.8125rem;
 }
-.head_himg{
+.dare{
     font-size: 1.0rem;
     text-align: center;
     font-weight: normal;
@@ -48,7 +46,7 @@ a{
     background-color: #fff;
     box-sizing: border-box;
 }
-.module_math{
+.module_math,.challenge_percenter{
     width: 100%;
     margin: 0 auto 1.375rem;
     line-height: 1.875rem;
@@ -57,6 +55,10 @@ a{
     border-radius: 0.3125rem;
     background-color: #fff;
     box-sizing: border-box;
+}
+.challenge_percenter{
+    position: relative;
+    top: 4.0625rem;
 }
 .xuanwen{
     position: relative;
@@ -72,7 +74,7 @@ a{
 .icon_img1, .icon_img2{
     position: absolute;
     top: -1.5rem;
-    left: -1rem;
+    left: -1.5rem;
     width: 3.90625rem;
     height: 4.53125rem;
     background: url("../images_version2/shuxue02.png") 0 0 no-repeat;
@@ -140,4 +142,94 @@ a{
     background: url("../images_version2/zan.png") no-repeat center;
     -webkit-background-size:100% 100%;
     background-size:100% 100%;
+}
+
+/*数学-挑战百分百*/
+ul.ul-style{
+    list-style-type: demical;
+}
+li.mld_Ulli{
+    list-style-position: outside;
+    line-height: 2.5rem;
+}
+.mld_tihao{
+    vertical-align: top;
+}
+.mld_timu{
+    display: inline-block;
+    width: 92%;
+}
+.daan_quan{
+    display: inline-block;
+    width: 1.5625rem;
+    height: 1.5625rem;
+    line-height: 1.5625rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    margin-right: 0.25rem;
+    box-sizing: border-box;
+}
+.daan_error,.daan_true{
+    width: 1.625rem;
+    height: 1.625rem;
+    border: none;
+}
+.daan_error img,.daan_true img{
+    float: left;
+    position: relative;
+    top: -1.625rem;
+    left: 0;
+}
+.daanLi_now{
+    color: #ffbc3d;
+}
+.daanLi_nowBai{
+    color: #fff;
+    width: 1.625rem;
+    height: 1.625rem;
+    background-color: #ffbc3d;
+    border: none;
+}
+.daanLi_error{
+    color: #ff795e;
+}
+.daanLi_true{
+    color: #24cbd1;
+}
+.daan_zuo{
+    float: left;
+    display: inline-block;
+}
+.daan_you{
+    display: inline-block;
+    width: 88%;
+}
+.mld_daanUl{
+    overflow: hidden;
+}
+.mld_daanLi{
+    min-height: 2.5rem;
+    margin-right: 3.75rem;
+    position: relative;
+}
+.baoBtn{
+    font-size: 1.0rem;
+    width: 100%;
+    height: 1.75rem;
+    line-height: 1.75rem;
+    text-align: right;
+}
+.btnTrue{
+    color: #24cbd1;
+    text-decoration: underline;
+}
+/* 答案 */
+.daana{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    z-index: 10;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }

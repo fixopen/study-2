@@ -464,17 +464,11 @@ public class Users {
              result = Response.status(404).build();
         }else
         if(user == null){
-            User users = new User();
-            users.setGrade(reissue.getGrade());
-            users.setId(IdGenerator.getNewId());
-            users.setSchool(reissue.getSchool());
-            users.setName(reissue.getName());
-            users.setAmount(0l);
-            users.setSex(0l);
-            users.setCreateTime(now);
-            users.setUpdateTime(now);
-            users.setTelephone(reissue.getPhone());
-            JPAEntry.genericPost(users);
+            Map map = new HashMap();
+            map.put("学校",reissue.getSchool());
+            map.put("班级",reissue.getGrade());
+            map.put("姓名",reissue.getName());
+            JPAEntry.log(Long.valueOf(userId),new Gson().toJson(map),"reissue",Long.valueOf(reissue.getPhone()));
             SendMessageResult r = sendMessage(reissue.getPhone(), "《小雨知时》" +reissue.getName()+"补办的卡号是"+reissue.getCode()+",密码是"+reissue.getPassword()+"");
             result = Response.ok().build();
         }else{
