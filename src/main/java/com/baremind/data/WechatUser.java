@@ -25,7 +25,6 @@ public class WechatUser implements com.baremind.data.Entity {
     @Column(name = "refresh_token")
     private String refreshToken;
 
-
     @Column(name = "expiry")
     private Date expiry;
 
@@ -39,7 +38,7 @@ public class WechatUser implements com.baremind.data.Entity {
     private String nickname;
 
     @Column(name = "sex")
-    private Long sex;
+    private Integer sex;
 
     @Column(name = "city")
     private String city;
@@ -73,7 +72,6 @@ public class WechatUser implements com.baremind.data.Entity {
 
     @Column(name = "group_id")
     private int groupId;
-
 
     public String getLanguage() {
         return language;
@@ -179,11 +177,11 @@ public class WechatUser implements com.baremind.data.Entity {
         this.nickname = nickname;
     }
 
-    public Long getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(Long sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 

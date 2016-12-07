@@ -41,7 +41,7 @@ public class User implements com.baremind.data.Entity, TransferObject {
     private Date birthday;
 
     @Column(name = "sex")
-    private Long sex;
+    private Integer sex;
 
     @Column(name = "site")
     private String site;
@@ -58,8 +58,8 @@ public class User implements com.baremind.data.Entity, TransferObject {
     @Column(name = "class")
     private String classname;
 
-    @Column(name = "location")
-    private String location;
+    @Column(name = "address")
+    private String address;
 
     @Column(name = "description")
     private String description;
@@ -153,12 +153,12 @@ public class User implements com.baremind.data.Entity, TransferObject {
         this.classname = classname;
     }
 
-    public String getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddress(String location) {
+        this.address = location;
     }
 
     public String getDescription() {
@@ -201,11 +201,11 @@ public class User implements com.baremind.data.Entity, TransferObject {
         this.birthday = birthday;
     }
 
-    public Long getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(Long sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -232,6 +232,4 @@ public class User implements com.baremind.data.Entity, TransferObject {
     public void setGrade(String grade) {
         this.grade = grade;
     }
-
-
 }

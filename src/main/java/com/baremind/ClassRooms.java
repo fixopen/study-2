@@ -41,7 +41,7 @@ public class ClassRooms/* extends Endpoint*/ {
         String randomName = Integer.toString(randValue);
         int length = randomName.length();
         user.setName(new String(origin, 0, 6 - length) + randomName);
-        user.setSex(0l);
+        user.setSex(0);
         Date now = new Date();
         user.setCreateTime(now);
         user.setUpdateTime(now);

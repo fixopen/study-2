@@ -15,8 +15,8 @@ public class Additional implements com.baremind.data.Entity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "table_name")
-    private String tableName;
+    @Column(name = "object_type")
+    private String objectType;
 
     @Column(name = "object_id")
     private Long objectId;
@@ -35,12 +35,12 @@ public class Additional implements com.baremind.data.Entity {
         this.id = id;
     }
 
-    public String getTableName() {
-        return tableName;
+    public String getObjectType() {
+        return objectType;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setObjectType(String tableName) {
+        this.objectType = tableName;
     }
 
     public Long getObjectId() {
@@ -66,6 +66,4 @@ public class Additional implements com.baremind.data.Entity {
     public void setValue(String value) {
         this.value = value;
     }
-
-
 }
