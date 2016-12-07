@@ -917,6 +917,7 @@ public class Users {
                                     user.setUpdateTime(now);
                                     user.setName("");
                                     user.setSex(0);
+                                    user.setAmount(0l);
                                     JPAEntry.genericPost(user);
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
@@ -926,7 +927,7 @@ public class Users {
                                 }
                                 Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
                                 result = Response.ok(c)
-                                        .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        //.cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                                         .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                                         .build();
                             } else {

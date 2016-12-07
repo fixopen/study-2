@@ -49,7 +49,7 @@
             <!--  <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/sun"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="sun123"/>-->
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/study"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://114.215.16.159:5432/study"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="postgres"/>
 

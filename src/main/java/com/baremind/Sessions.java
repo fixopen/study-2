@@ -45,6 +45,24 @@ public class Sessions {
         private String deviceType;
         private String deviceNo;
         private String openId;
+        private String code;
+        private String ip;
+
+        public String getIp() {
+            return ip;
+        }
+
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
 
         public String getType() {
             return type;
@@ -114,6 +132,8 @@ public class Sessions {
         Date now = new Date();
         User user = null;
         Map<String, Object> conditions = new HashMap<>();
+        Map<String, Object> filter = new HashMap<>();
+
         switch (loginInfo.getType()) {
             case "validationCode":
                 conditions.put("phoneNumber", loginInfo.getInfo());
@@ -121,7 +141,7 @@ public class Sessions {
                 List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, conditions);
 
                 if (!validationCodes.isEmpty()) {
-                    result = Response.status(405).build();
+
                     Date sendTime = validationCodes.get(0).getTimestamp();
                     if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
                         user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
@@ -130,18 +150,50 @@ public class Sessions {
                             WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
                             user = insertUser(now, loginInfo.getInfo(), wechatUser);
                         }
+                    }else{
+                        return result = Response.status(405).build();
                     }
                 }
                 break;
             case "telephone":
-                conditions.put("telephone", loginInfo.getInfo());
-                conditions.put("password", loginInfo.getKey());
-                user = JPAEntry.getObject(User.class, conditions);
-                if (user == null) {
-                    //create user via openId
-                    WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
-                    user = insertUser(now, loginInfo.getInfo(), wechatUser);
+                User telephone = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
+                if(telephone != null){
+                    if(telephone.getLogonCount() <= 5){
+                        conditions.put("telephone", loginInfo.getInfo());
+                        conditions.put("password", loginInfo.getKey());
+                        user = JPAEntry.getObject(User.class, conditions);
+
+                        if (user == null) {
+                            //create user via openId
+                           /* WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
+                            user = insertUser(now, loginInfo.getInfo(), wechatUser);*/
+                            telephone.setLogonCount(telephone.getLogonCount() + 1l);
+                            JPAEntry.genericPut(telephone);
+                            return  result;//用户名或密码错误
+                        }
+                    }else
+                        if(telephone.getLogonCount() > 5 && loginInfo.getCode() == null) {
+                        return  result = Response.status(410).build();//登录次数超过五次
+                    }else
+                        if(telephone.getLogonCount() > 5 && loginInfo.getCode() != null) {
+                            conditions.put("telephone", loginInfo.getInfo());
+                            conditions.put("password", loginInfo.getKey());
+                            user = JPAEntry.getObject(User.class, conditions);
+                            filter.put("ip", loginInfo.getIp());
+                            filter.put("code", loginInfo.getCode());
+                            ValidationCode validationCode = JPAEntry.getObject(ValidationCode.class, filter);
+                            if (user == null) {
+                                return result;//用户名或密码错误
+                            }
+                            if (validationCode == null) {
+                                return result = Response.status(407).build();//验证码错误
+                            }
+                        }
+                }else{
+                     return  result = Response.status(412).build();//手机没有激活
                 }
+
+
                 break;
             case "name":
                 conditions.put("loginName", loginInfo.getInfo());
@@ -167,6 +219,8 @@ public class Sessions {
             result = Response.ok(session)
                     .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                     .build();
+        }else{
+            result = Response.status(406).build();//手机号或密码错误
         }
 
         return result;

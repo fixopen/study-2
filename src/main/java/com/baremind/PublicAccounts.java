@@ -1041,9 +1041,6 @@ public class PublicAccounts {
         Map<String, Object> tokenInfo = getTokenByCode(code);
         User user = null;
         String openId = (String) tokenInfo.get("openid");
-
-        System.out.println(code);
-        System.out.println(openId);
         WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
         if (wechatUser == null) {
             wechatUser = new WechatUser();
@@ -1082,7 +1079,7 @@ public class PublicAccounts {
             if (s == null) {
                 result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?openId=" + openId)).build();
             } else {
-                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId=" + s.getIdentity())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId=" + s.getIdentity()+"?wechatuserId="+wechatUser.getId())).build();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
