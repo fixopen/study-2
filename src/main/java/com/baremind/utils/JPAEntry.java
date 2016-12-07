@@ -45,8 +45,12 @@ public class JPAEntry {
     }
 
     public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
-        T result = null;
         EntityManager em = getEntityManager();
+        return getObject(em, type, conditions);
+    }
+
+    public static <T> T getObject(EntityManager em, Class<T> type, Map<String, Object> conditions) {
+        T result = null;
         String jpql = "SELECT a FROM " + type.getSimpleName() + " a ";
         boolean isFirst = true;
         if (conditions != null) {
@@ -119,7 +123,7 @@ public class JPAEntry {
                 if (item.getValue() instanceof Condition) {
                     op = ((Condition) item.getValue()).getOp();
                 }
-                jpql += "o." + item.getKey() + op + " :" + item.getKey();
+                jpql += "o." + item.getKey() + " " + op + " :" + item.getKey();
             }
         }
         if (orders != null) {
@@ -189,7 +193,7 @@ public class JPAEntry {
         return result;
     }
 
-    public static Session getSession(String sessionId) {
+    private static Session getSession(String sessionId) {
         return getObject(Session.class, "identity", sessionId);
     }
 
@@ -234,7 +238,7 @@ public class JPAEntry {
 
     public static Long getLoginId(String sessionId) {
         final Map<String, Long> r = new HashMap<>();
-        r.put("value", 0l);
+        r.put("value", 0L);
         isLogining(sessionId, a -> {
             a.setLastOperationTime(new Date());
             genericPut(a);
@@ -246,4 +250,6 @@ public class JPAEntry {
     public static void log(Long userId, String action, String objectType, Long objectId) {
         Logs.insert(userId, objectType, objectId, action);
     }
+
+
 }

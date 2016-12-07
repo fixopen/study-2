@@ -9,10 +9,72 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
     <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+    <style>
+        .convenient {
+            position: absolute;
+            top: 2.7%;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+            display: block;
+            width: 92%;
+            background: url('/content/schedule.png') no-repeat center top;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            padding: 10.5% 4.3% 4.5%;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .week {
+            position: absolute;
+            top: 3%;
+            left: 28.3%;
+            font-size: 1rem;
+            color: #000;
+            font-family: "Microsoft YaHei", serif;
+        }
+
+        .schedule-table {
+            width: 100%;
+            height: 100%;
+        }
+
+        .schedule-table thead {
+            height: 1.8125rem;
+        }
+
+        .schedule-table tr {
+            height: 1.25rem;
+        }
+
+        .color:nth-child(even) {
+            background-color: #ffd5ce;
+            border-bottom: 0.0625rem solid #ea875f;
+        }
+
+        .color:nth-child(odd) {
+            background-color: #fff;
+            border-bottom: 0.09375rem solid #ea875f;
+        }
+
+        .schedule-table td {
+            font-size: 0.6875rem;
+            color: #371f1f;
+            text-align: center;
+        }
+
+        .data :nth-child(even) {
+            border-top: 1px solid #ea875f;
+        }
+    </style>
 </head>
 <body>
 <article id="main">
-    <img src="" alt="" id="schedulerEntry" data-article="scheduler"/>
+    <img src="" alt="" id="schedulerEntry" data-article="sched  uler"/>
     <!-- Nav tabs -->
     <ul id="subjects" class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#zero" role="tab" data-toggle="tab">chinese</a></li>
@@ -51,49 +113,238 @@
     <video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>
 </article>
 <article id="scheduler" style="display: none;">
-    <div class="week">第<sapn id="week"></sapn>周</div>
-    <table class="schedule-table">
-        <thead style="width: 100%; height: 100%">
-        <tr>
-            <th style="width: 15%;" class="weekDay"></th>
-            <th style="width: 85%;" class="schedule-table1">
-                <table style="width: 100%; height: 100% ">
-                    <tr style="width: 100%; height: 100%; color: #515151;">
-                        <th style="width: 33%; height: 100%; border-left:transparent;">时间</th>
-                        <th style="width: 33%; height: 100%;">授课年级</th>
-                        <th style="width: 33%; height: 100%;">授课内容</th>
-                    </tr>
-                </table>
-            </th>
-        </tr>
-        </thead>
-        <tbody id="day"></tbody>
-    </table>
+    <div class="convenient">
+        <div class="week">
+            第<span id="week"></span>周
+        </div>
+        <table class="schedule-table">
+            <thead>
+            <tr style="background-color: #fff;">
+                <th style="width: 15%;"></th>
+                <th style="width: 85%; font-size: small">
+                    <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
+                        <tr style="width: 100%; height: 100%;">
+                            <th style="width: 28%; height: 100%;">时间</th>
+                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 48%; height: 100%;">授课内容</th>
+                        </tr>
+                    </table>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="day"></tbody>
+        </table>
+    </div>
 </article>
 <article id="futureNote" style="display: none;">
     <div class="goBack"></div>
 </article>
 
-<template id="playing-template"></template>
-<template id="future-template"></template>
+<template id="playing-template">
+    <li class="video-list-li">
+        <div class="video-list-play">
+            <a href="${directLink}">
+                <img src="${cover}" alt="">
+                <div class="video-list-mask">
+                    <span class="live-radio">
+                        <img src="../img/zb-live.png" alt="">
+                        <!--图片会随着具体情况改变-->
+                    </span>
+                    <span class="live-timeZB">${startTime}</span>
+                    <div class="play-btn">
+                        <img src="../img/live-play.png" alt="">
+                        <!--图片会随着具体情况改变-->
+                    </div>
+                    <div class="course-box">
+                        <h3 class="live-title">
+                            <span>${title}</span>
+                        </h3>
+                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
+                                 onmouseout=this.start()>${description}
+                        </marquee>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course-intro-in">
+                <div class="course-speaker">
+                    <!--<i>${year}年${month}月${day}日</i>&nbsp;-->
+                    <!--时间需要服务器自己计算-->
+                    <div class="fl">
+                        <i>${teacher}</i>老师主讲<br>
+                        <i>${startTime}</i>开讲
+                    </div>
+                    <div class="fr">
+                        <div>${grade}</div>
+                        <div class="course-detail-btn fr">
+                            课程详情<br>
+                            <img src="../img/xiala-btn.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="course-detail">
+                    <h3 class="sml-tit brief1">
+                        <img src="../img/abc.png" alt="">
+                        课程简介
+                    </h3>
+                    <p class="tim2">${description}</p>
 
-<template id="passed-template"></template>
+                    <h3 class="sml-tit brief2">
+                        <img src="../img/zjr_btn.png" alt="">
+                        主讲人简介
+                    </h3>
+                    <p class="tim2">${teacherDescription}</p>
+
+                    <h3 class="sml-tit brief3">
+                        <img src="../img/sxsj_btn.png" alt="">
+                        上线时间
+                    </h3>
+                    <p>${startTime}</p>
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
+<template id="future-template">
+    <li class="video-list-li">
+        <div class="video-list-play">
+            <a href="wait-play.html">
+                <img src="${cover}" alt="">
+                <div class="video-list-mask">
+                        <span class="live-radio">
+                            <img src="../img/zb-wait.png" alt="">
+                            <!--鍥剧墖浼氶殢鐫€鍏蜂綋鎯呭喌鏀瑰彉-->
+                        </span>
+                    <div class="waity-play">${startTime}开讲
+                    </div>
+                    <div class="course-box">
+                        <h3 class="live-title">
+                            <span>${title}</span>
+                        </h3>
+                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
+                                 onmouseout=this.start()>${description}
+                        </marquee>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course-intro-in">
+                <div class="course-speaker">
+                    <div class="fl">
+                        <i>${teacher}</i>老师主讲<br>
+                        <i>${startTime}</i>开讲
+                    </div>
+                    <div class="fr">
+                        <div>${grade}</div>
+                        <div class="course-detail-btn fr">
+                            课程详情<br>
+                            <img src="../img/xiala-btn.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="course-detail">
+                    <h3 class="sml-tit brief1">
+                        <img src="../img/abc.png" alt="">
+                        课程简介
+                    </h3>
+                    <p class="tim2">${description}</p>
+
+                    <h3 class="sml-tit brief2">
+                        <img src="../img/zjr_btn.png" alt="">
+                        主讲人简介
+                    </h3>
+                    <p class="tim2">${teacherDescription}</p>
+
+                    <h3 class="sml-tit brief3">
+                        <img src="../img/sxsj_btn.png" alt="">
+                        上线时间
+                    </h3>
+                    <p>${startTime}</p>
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
+
+<template id="passed-template">
+    <li class="video-list-li">
+        <div class="video-list-play">
+            <a class="passedVideo" href="video.html?src=${cdnLink}">
+                <img src="${cover}" alt="">
+                <div class="video-list-mask">
+                        <span class="live-radio">
+                            <img src="../img/zb-lu.png" alt="">
+                        </span>
+                    <div class="play-btn">
+                        <img src="../img/lu-play.png" alt="">
+                    </div>
+                    <div class="course-box">
+                        <h3 class="live-title">
+                            <span>${title}</span>
+                        </h3>
+                        <marquee class="live-theme" behavior="scroll" direction="left" onmouseover=this.stop();
+                                 onmouseout=this.start()>${description}
+                        </marquee>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course-intro-in">
+                <div class="course-speaker">
+                    <div class="fl">
+                        <i>${teacher}</i>老师主讲<br>
+                        <i>${startTime}</i>开讲
+                    </div>
+                    <div class="fr">
+                        <div>${grade}</div>
+                        <div class="course-detail-btn fr">
+                            课程详情<br>
+                            <img src="../img/xiala-btn.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="course-detail">
+                    <h3 class="sml-tit brief1">
+                        <img src="../img/abc.png" alt="">
+                        课程简介
+                    </h3>
+                    <p class="tim2">${description}</p>
+
+                    <h3 class="sml-tit brief2">
+                        <img src="../img/zjr_btn.png" alt="">
+                        主讲人简介
+                    </h3>
+                    <p class="tim2">${teacherDescription}</p>
+
+                    <h3 class="sml-tit brief3">
+                        <img src="../img/sxsj_btn.png" alt="">
+                        上线时间
+                    </h3>
+                    <p>${startTime}</p>
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
 
 <template id="day-template">
     <tr class="color">
         <td style="width: 15%;">星期${day}<br>(${date})</td>
         <td style="width: 85%;">
-            <table style="width: 100%; height: 100%">
-                <tbody data-ext-point="items"></tbody>
+            <table style="width: 100%; height: 100%; border: none; border-spacing: 0; border-collapse: collapse;">
+                <tbody data-ext-point="items" class="data"></tbody>
             </table>
         </td>
     </tr>
 </template>
 <template id="item-template">
     <tr>
-        <td style="width: 33%;" class="line">${st}-${et}</td>
-        <td style="width: 33%;" class="line">${grade}</td>
-        <td style="width: 33%;" class="line">${title}</td>
+        <td style="width: 28%;">${st}-${et}</td>
+        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 48%;">${title}</td>
     </tr>
 </template>
 
@@ -104,9 +355,9 @@
 <script src="/basic.js"></script>
 <script>
     //{..., teachers: [], grades: [], playings: [], futures: [], ...}
-    var subjects = []
+    var subjects = [];
 
-    var passed = []
+    var passed = [];
 
     var courseTable = [
         {day: '一', date: '', items: []},
@@ -114,7 +365,7 @@
         {day: '三', date: '', items: []},
         {day: '四', date: '', items: []},
         {day: '五', date: '', items: []}
-    ]
+    ];
 
     var state = {
         currentArticle: document.getElementById('main'),
@@ -157,26 +408,40 @@
                                     state.onePlaying.data = subjects[1].playing
                                     state.refreshState(1)
 
-                                    var oneFirst = true
-                                    if (subjects[0].playing.length > 0) {
-                                        if (subjects[1].playing.length > 0) {
-                                            if (+subjects[0].playing[0].startTime < +subjects[1].playing[0].startTime) {
-                                                oneFirst = false
+                                    var whoFirst = function() {
+                                        var comparePlaying = function() {
+                                            var result = false
+                                            if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
+                                                if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
+                                                    result = true
+                                                }
+                                            } else if (subjects[1].playing.length > 0) {
+                                                result = true
                                             }
-                                        } else {
-                                            oneFirst = false
+                                            return result
                                         }
-                                    } else if (subjects[0].futures.length > 0) {
-                                        if (subjects[1].futures.length > 0) {
-                                            if (+subjects[0].futures[0].startTime < +subjects[1].futures[0].startTime) {
-                                                oneFirst = false
+
+                                        var compareFuture = function() {
+                                            var result = false
+                                            if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
+                                                if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
+                                                    result = true
+                                                }
+                                            } else if (subjects[1].futures.length > 0) {
+                                                result = true
                                             }
-                                        } else {
-                                            oneFirst = false
+                                            return result
                                         }
-                                    } else {
-                                        oneFirst = false
+
+                                        var result = comparePlaying()
+                                        if (!result) {
+                                            result = compareFuture()
+                                        }
+
+                                        return result
                                     }
+
+                                    var oneFirst = whoFirst()
                                     if (oneFirst) {
                                         $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
                                         //$('#subjects').find('a:first').tab('show') // Select first tab
@@ -471,19 +736,31 @@
                     subjects = ss
 
                     state['main'].init()
+                    history.pushState(null, null, '/videos.html#main')
                 },
                 error: function (xhr) {
                     alert('back-end not response, places retry')
                 }
             })
 
-            $(document).on('click', '[data-article]', function(e) {
+            var switchTo = function(id) {
                 state.currentArticle.style.display = 'none'
-                var id = e.target.dataset.article
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/video.html#' + id)
                 state[id].init()
+            }
+
+            $(document).on('click', '[data-article]', function(e) {
+                var id = e.target.dataset.article
+                switchTo(id)
             })
+
+            window.addEventListener('hashchange', function(e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            }, false)
         }
     }
 

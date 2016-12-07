@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "schedulers")
-public class Scheduler {
+public class Scheduler implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -32,9 +32,6 @@ public class Scheduler {
     @Column(name = "end_time")
     private Date endTime;
 
-    @Column(name = "duration")
-    private Integer duration;
-
     @Column(name = "subject_id")
     private Long subjectId;
 
@@ -44,11 +41,11 @@ public class Scheduler {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "cover")
-    private String cover;
+    @Column(name = "cover_id")
+    private Long coverId;
 
-    @Column(name = "cdn_link")
-    private String cdnLink;
+    @Column(name = "content_link")
+    private String contentLink;
 
     @Column(name = "direct_link")
     private String directLink;
@@ -56,11 +53,33 @@ public class Scheduler {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "teacher")
-    private String teacher;
+    @Column(name = "teacher_id")
+    private Long teacherId;
 
-    @Column(name = "teacher_description")
-    private String teacherDescription;
+
+    @Column(name = "price")
+    private Long price;
+
+
+    @Column(name = "discount")
+    private Double discount;
+
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
 
     public Long getId() {
         return id;
@@ -110,14 +129,6 @@ public class Scheduler {
         this.endTime = endTime;
     }
 
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
     public Long getSubjectId() {
         return subjectId;
     }
@@ -142,20 +153,20 @@ public class Scheduler {
         this.name = name;
     }
 
-    public String getCover() {
-        return cover;
+    public Long getCoverId() {
+        return coverId;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setCoverId(Long cover) {
+        this.coverId = cover;
     }
 
-    public String getCdnLink() {
-        return cdnLink;
+    public String getContentLink() {
+        return contentLink;
     }
 
-    public void setCdnLink(String cdnLink) {
-        this.cdnLink = cdnLink;
+    public void setContentLink(String cdnLink) {
+        this.contentLink = cdnLink;
     }
 
     public String getDirectLink() {
@@ -174,19 +185,11 @@ public class Scheduler {
         this.description = description;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public Long getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public String getTeacherDescription() {
-        return teacherDescription;
-    }
-
-    public void setTeacherDescription(String teacherDescription) {
-        this.teacherDescription = teacherDescription;
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 }

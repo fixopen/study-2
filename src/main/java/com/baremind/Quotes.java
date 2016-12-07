@@ -1,61 +1,41 @@
 package com.baremind;
 
 import com.baremind.data.Quote;
-import com.baremind.utils.CharacterEncodingFilter;
-import com.baremind.utils.IdGenerator;
+import com.baremind.data.User;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by User on 2016/9/20.
  */
 @Path("quotes")
 public class Quotes {
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createQuote(@CookieParam("userId") String userId, Quote quote) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            quote.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(quote);
-            result = Response.ok(quote).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getQuotes(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            //{"subjectId":1,"grade":20}
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Quote> quotes = JPAEntry.getList(Quote.class, filterObject);
-            if (!quotes.isEmpty()) {
-                result = Response.ok(new Gson().toJson(quotes)).build();
-            }
-        }
-        return result;
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, Quote.class, null, null);
     }
 
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getQuoteById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, Quote.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, Quote entity) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Quote quote = JPAEntry.getObject(Quote.class, "id", id);
-            if (quote != null) {
-                result = Response.ok(new Gson().toJson(quote)).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
             }
         }
         return result;
@@ -65,22 +45,34 @@ public class Quotes {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateQuote(@CookieParam("userId") String userId, @PathParam("id") Long id, Quote quote) {
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Quote newData) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Quote existvolume = JPAEntry.getObject(Quote.class, "id", id);
-            if (existvolume != null) {
-                String content = quote.getContent();
-                if (content != null) {
-                    existvolume.setContent(content);
-                }
-                String source = quote.getSource();
-                if (source != null) {
-                    existvolume.setSource(source);
-                }
-                JPAEntry.genericPut(existvolume);
-                result = Response.ok(existvolume).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, Quote.class, (exist, quote) -> {
+                    String content = quote.getContent();
+                    if (content != null) {
+                        exist.setContent(content);
+                    }
+                    String source = quote.getSource();
+                    if (source != null) {
+                        exist.setSource(source);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, Quote.class);
             }
         }
         return result;

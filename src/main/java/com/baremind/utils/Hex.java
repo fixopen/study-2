@@ -6,11 +6,11 @@ package com.baremind.utils;
 public class Hex {
     public static String bytesToHex(byte[] bytes) {
         StringBuilder buffer = new StringBuilder(bytes.length * 2);
-        for (int i = 0; i < bytes.length; i++) {
-            if (((int) bytes[i] & 0xff) < 0x10) { //小于十前面补零
+        for (byte aByte : bytes) {
+            if (((int) aByte & 0xff) < 0x10) { //小于十前面补零
                 buffer.append("0");
             }
-            buffer.append(Long.toString((int) bytes[i] & 0xff, 16));
+            buffer.append(Long.toString((int) aByte & 0xff, 16));
         }
         return buffer.toString();
     }

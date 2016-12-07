@@ -3,7 +3,6 @@ package com.baremind.utils;
 import com.baremind.algorithm.Config;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -24,8 +23,6 @@ public class ConfigManager {
             result.COVERS = props.getProperty("COVERS");
             result.ZIP_FILES = props.getProperty("ZIP_FILES");
             result.ZIP_TEMPORARY = props.getProperty("ZIP_TEMPORARY");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

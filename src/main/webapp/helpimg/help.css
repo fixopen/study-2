@@ -1,0 +1,16 @@
+
+body{
+    font-family : 微软雅黑,宋体;
+
+    color : black;
+}
+.wen{
+    font-size : 55px;
+    color : RED;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.da{
+    font-size : 33px;
+}

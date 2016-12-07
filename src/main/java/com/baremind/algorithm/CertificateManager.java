@@ -14,7 +14,7 @@ import java.util.Arrays;
 /**
  * Created by fixopen on 3/6/15.
  */
-public class CertificateManager {
+class CertificateManager {
     public Certificate getCertificate(User user, Device device) {
         Certificate result = null;
         //find by local-cache

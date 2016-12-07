@@ -1,57 +1,38 @@
 package com.baremind;
 
 import com.baremind.data.Tag;
-import com.baremind.utils.CharacterEncodingFilter;
-import com.baremind.utils.IdGenerator;
+import com.baremind.data.User;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
 
 @Path("tags")
 public class Tags {
-    @POST //添
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createTag(@CookieParam("userId") String userId, Tag tag) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            tag.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(tag);
-            result = Response.ok(tag).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getTags(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Tag> tags = JPAEntry.getList(Tag.class, filterObject);
-            if (!tags.isEmpty()) {
-                result = Response.ok(new Gson().toJson(tags)).build();
-            }
-        }
-        return result;
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, Tag.class, null, null);
     }
 
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTagById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, Tag.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, Tag entity) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Tag tag = JPAEntry.getObject(Tag.class, "id", id);
-            if (tag != null) {
-                result = Response.ok(new Gson().toJson(tag)).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
             }
         }
         return result;
@@ -61,18 +42,30 @@ public class Tags {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTag(@CookieParam("userId") String userId, @PathParam("id") Long id, Tag tag) {
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Tag newData) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Tag existtag = JPAEntry.getObject(Tag.class, "id", id);
-            if (existtag != null) {
-                String name = tag.getName();
-                if (name != null) {
-                    existtag.setName(name);
-                }
-                JPAEntry.genericPut(existtag);
-                result = Response.ok(existtag).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, Tag.class, (exist, tag) -> {
+                    String name = tag.getName();
+                    if (name != null) {
+                        exist.setName(name);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, Tag.class);
             }
         }
         return result;

@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/knowledgepoints-content.css">
 
 </head>
+<<<<<<< HEAD
 <body>
 <article id="volumes"></article>
 <article id="knowledgePoints" style="display: none;"></article>
@@ -127,6 +128,28 @@
         </div>
     </li>
 </template>
+=======
+<body class="wrap">
+<article id="volumes">
+    <h1 id="subjectTitle"></h1>
+    <!-- Nav tabs -->
+    <ul id="subjects" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#low" role="tab" data-toggle="tab">chinese</a></li>
+        <li role="presentation"><a href="#high" role="tab" data-toggle="tab">math</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="low"></div>
+        <div role="tabpanel" class="tab-pane" id="high"></div>
+    </div>
+</article>
+<article id="knowledgePoints" style="display: none;">
+    <h1 id="volumeTitle"></h1>
+    <ol id="knowledge-point-contents"></ol>
+</article>
+<article id="knowledgePoint" style="display: none;"></article>
+
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
 <template id="volume-template">
     <!--<li data-article="knowledgePoints">${title}</li>-->
     <li>
@@ -164,6 +187,7 @@
         <img class="knowledgepoint-c-img" src="img/fenjie.png" alt="">
     </li>
 </template>
+<<<<<<< HEAD
 <template id="knowledge-chinese-normalOld-template">
     <li class="knowledgepoint">
         <div class="knowledgepoint-left">
@@ -351,6 +375,60 @@
 </template>
 <!-----------------------------knowledgepoint-content---------------------------->
 <!--chinese-->
+=======
+
+<template id="chinese-structure-template">
+    <div>
+        <section id="knowledgePointTitle"></section>
+        <section>
+            <h2>选文赏析</h2>
+            <ul id="origin"></ul>
+        </section>
+        <section id="chineseContent"></section>
+        <section id="chineseVideo"></section>
+        <section>
+            <h2>闯关练习</h2>
+            <dl id="problems"></dl>
+        </section>
+        <section id="chineseInteraction"></section>
+        <section>
+            <span>写留言<img src="write.png" alt="写留言"/></span>
+            <textarea id="new-comment" style="display: none"></textarea>
+            <section id="chineseComments"></section>
+        </section>
+    </div>
+</template>
+<template id="math-structure-template">
+    <div>
+        <section>
+            <h1 id="title1"></h1>
+            <h2 id="title2"></h2>
+        </section>
+        <section>
+            <h2>非常挑战</h2>
+            <ul id="challenge"></ul>
+        </section>
+        <section>
+            <h2>最强讲解</h2>
+            <section id="mathContent"></section>
+        </section>
+        <section id="mathVideo"></section>
+        <section>
+            <h2>最强大脑</h2>
+            <dl id="strongest-brain"></dl>
+        </section>
+        <section>
+            <h2>脑力大PK</h2>
+            <dl id="pk"></dl>
+        </section>
+        <section id="mathInteraction"></section>
+        <section>
+            <span>写留言<img src="pen.jpg" alt="写留言"/></span>
+            <section id="mathComments"></section>
+        </section>
+    </div>
+</template>
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
 <template id="knowledge-point-title-template">
     <span>${name}</span>
 </template>
@@ -360,10 +438,18 @@
 <template id="content-text-template">
     <p class="content-font">${content}</p>
 </template>
+<<<<<<< HEAD
 <template id="content-c-image-template">
     <span>
         <img class="content-img" src="${href}" alt="${description}">
     </span>
+=======
+<template id="content-image-template">
+    <p>
+        <img src="${href}" alt="${description}"/>
+        ${content}
+    </p>
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
 </template>
 <template id="content-image-text-template">
     <p class="content-font">${content}
@@ -372,9 +458,18 @@
 </template>
 <template id="video-template">
     <span>
+<<<<<<< HEAD
            <a href="${storePath}">
                <img src="${cover}"/>
            </a>
+=======
+        <video src="${href}">
+            <img src="${coverHref}" alt="${coverDescription}"/>
+        </video>
+    </span>
+    <span>
+        <a href="${href}"><img src="${storePath}"/></a>
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
     </span>
 </template>
 <template id="problem-option-template">
@@ -587,6 +682,38 @@
         <!--</div>-->
     </li>
 </template>
+<template id="title1-template">
+    <span>${title1}</span>
+</template>
+<template id="title2-template">
+    <span>${title2}</span>
+</template>
+<template id="challenge-template">
+    <section>${content}</section>
+</template>
+<template id="strongest-brain-option-template">
+    <li>${option}</li>
+</template>
+<template id="strongest-brain-template">
+    <div>
+        <dt><span>${type}</span>${title}</dt>
+        <dd>
+            <ol type="A" data-ext-point="options"></ol>
+            <div data-ext-point="explain"></div>
+        </dd>
+    </div>
+    <!-- ... -->
+</template>
+<template id="pk-template">
+    <div>
+        <dt><span>${type}</span>${title}</dt>
+        <dd>
+            <ol type="A" data-ext-point="options"></ol>
+            <span>将你得智慧结晶写在这里吧:</span><br/>
+            <textarea></textarea>
+        </dd>
+    </div>
+</template>
 
 <!--<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>-->
 <!--<dialog>您的卡片已过期，请重新购买！</dialog>-->
@@ -655,12 +782,13 @@
                         dataType: 'json',
                         success: function (vs) {
                             for (var i = 0; i < vs.length; ++i) {
-                                vs[i].knowledgePoints = []
+                                //vs[i].knowledgePoints = []
                                 var s = state.subject.getById(vs[i].subjectId)
                                 if (s) {
                                     var gn = state.grade.getNameByValue(vs[i].grade)
                                     s[gn].push(vs[i])
                                 } else {
+<<<<<<< HEAD
                                     //console.log(vs[i])
                                 }
                             }
@@ -686,6 +814,18 @@
                                     })
                                 }
                             });
+=======
+                                    console.log(vs[i])
+                                }
+                            }
+
+                            var subjectId = g.getUrlParameter('subjectId')
+                            //state.volumes.subjectId = subjectId
+                            //state['volumes'].init()
+                            history.pushState(null, null, '/content.html#volumes')
+
+                            state['volumes'].changeId(subjectId)
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
                         },
                         error: function (r) {
                         }
@@ -695,7 +835,11 @@
                 }
             })
 
+<<<<<<< HEAD
             var switchTo = function (id) {
+=======
+            var switchTo = function(id) {
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
                 state.currentArticle.style.display = 'none'
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
@@ -704,6 +848,7 @@
             }
 
             $(document).on('click', '[data-article]', function (e) {
+<<<<<<< HEAD
                 var id = e.target.dataset.article;
                 switchTo(id);
                 state[id].changeId(e.target.dataset.id)
@@ -715,6 +860,13 @@
             })
 
             window.addEventListener('hashchange', function (e) {
+=======
+                var id = e.target.dataset.article
+                switchTo(id)
+            })
+
+            window.addEventListener('hashchange', function(e) {
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
@@ -722,6 +874,7 @@
         },
 
         volumes: {
+<<<<<<< HEAD
             isChanged: true,
             grade: 'low',
             parentId: 0,
@@ -730,6 +883,11 @@
                 state.volumes.show()
             },
             changeId: function (subjectId) {
+=======
+            parentId: 0,
+            init: function () {},
+            changeId: function(subjectId) {
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
                 if (state.volumes.parentId != subjectId) {
                     state.volumes.parentId = subjectId;
                     state.volumes.value = state.subject.getById(state.volumes.parentId);
@@ -837,8 +995,50 @@
         knowledgePoints: {
             isChanged: false,
             parentId: null,
+<<<<<<< HEAD
             init: function () {
                 if (state.knowledgePoints.isChanged) {
+=======
+            init: function () {},
+            changeId: function(volumeId) {
+                if (state.knowledgePoints.parentId != volumeId) {
+                    state.knowledgePoints.parentId = volumeId
+                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId)
+                    if (!state.knowledgePoints.value.knowledgePoints) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
+                            dataType: 'json',
+                            success: function (kps) {
+                                var isNew = function(now, kp) {
+                                    var result = false
+                                    if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+                                        result = true
+                                    }
+                                    return result
+                                }
+                                var now = Date.now()
+                                for (var i = 0; i < kps.length; ++i) {
+                                    var v = state.knowledgePoints.value
+                                    if (v) {
+                                        kps[i].showTime = new Date(Date.parse(kps[i].showTime.replace(/-/g, '/')))
+                                        if (isNew(now, kps[i])) {
+                                            kps[i].type = 'normalNew'
+                                            v.knowledgePoints.unshift(kps[i])
+                                        } else {
+                                            kps[i].type = 'normalOld'
+                                            v.knowledgePoints.push(kps[i])
+                                        }
+                                    } else {
+                                        console.log(kps[i])
+                                    }
+                                }
+                            },
+                            error: function (r) {
+                            }
+                        })
+                    }
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
                     state.knowledgePoints.show()
                     state.knowledgePoints.isChanged = false
                 }
@@ -963,6 +1163,7 @@
             }
         },
         knowledgePoint: {
+<<<<<<< HEAD
             init: function () {
                 var falseImage = getTemplate('falseImage');
                 var trueImage = getTemplate('trueImage');
@@ -1026,6 +1227,9 @@
                     }
                 })
             },
+=======
+            init: function () {},
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
             parentId: 0,
             changeId: function (knowledgePointId) {
                 if (state.knowledgePoint.parentId != knowledgePointId) {
@@ -1074,6 +1278,7 @@
                 }
             },
             value: null,
+<<<<<<< HEAD
             interaction: null,
             comments: null,
             findCommentById: function (commentId) {
@@ -1137,6 +1342,12 @@
             },
             show: function () {
                 $('#knowledgePoint').html("");
+=======
+            show: function() {
+                //step0: fill article structure by subject's no
+
+                //bind knowledgePoint's contents to this article
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
 
                 //留言
                 var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
@@ -1190,6 +1401,7 @@
                     state.knowledgePoints.isChanged = true
                 }
 
+<<<<<<< HEAD
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
@@ -1425,6 +1637,52 @@
                                 break
                         }
                 }
+=======
+                var contents = value.contents
+                proc({
+                    templateId: 'origin-template',
+                    data: contents.quotes,
+                    containerId: 'origin'
+                })
+
+                proc({
+                    data: contents.contents,
+                    containerId: 'content',
+                    alterTemplates: [
+                        {type: 'text', templateId: 'content-text-template'},
+                        {type: 'image', templateId: 'content-image-template'}
+                    ]
+                })
+
+                proc({
+                    templateId: 'video-template',
+                    data: contents.video,
+                    containerId: 'video'
+                })
+
+                proc({
+                    templateId: 'problem-template',
+                    data: contents.problems,
+                    containerId: 'problems',
+                    secondBind: {
+                        extPoint: 'options',
+                        dataFieldName: 'options',
+                        templateId: 'problem-option-template'
+                    }
+                })
+
+                proc({
+                    templateId: 'interaction-template',
+                    data: contents.interaction,
+                    containerId: 'interaction'
+                })
+
+                proc({
+                    templateId: 'comment-template',
+                    data: contents.comments,
+                    containerId: 'comments'
+                })
+>>>>>>> ad8ac7c0998efafaa38f28b0377a36358b428f0b
             },
             getById: function (id) {
                 var result = null
@@ -1532,26 +1790,26 @@
             maxOrder: 1,
             getById: function (id) {
                 var result = null
-                var finded = false
+                var isFind = false
                 for (var i = 0; i < subjects.length; ++i) {
                     for (var j = 0; j < subjects[i].low.length; ++j) {
                         if (subjects[i].low[j].id == id) {
                             result = subjects[i].low[j]
-                            finded = true
+                            isFind = true
                             break
                         }
                     }
-                    if (finded) {
+                    if (isFind) {
                         break
                     }
                     for (var j = 0; j < subjects[i].high.length; ++j) {
                         if (subjects[i].high[j].id == id) {
                             result = subjects[i].high[j]
-                            finded = true
+                            isFind = true
                             break
                         }
                     }
-                    if (finded) {
+                    if (isFind) {
                         break
                     }
                 }

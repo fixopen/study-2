@@ -7,13 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 
 public class CharacterEncodingFilter implements ContainerRequestFilter {
     @Context
@@ -21,7 +19,7 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
 
     public static Map<String, Object> getFilters(String filter) {
         Map<String, Object> result = null;
-        if (filter != "") {
+        if (!Objects.equals(filter, "")) {
             try {
                 String rawFilter = URLDecoder.decode(filter, StandardCharsets.UTF_8.toString());
                 result = new Gson().fromJson(rawFilter, new TypeToken<Map<String, Object>>() {
@@ -44,6 +42,17 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
         }
         servletInputStream.close();
         w.close();
+    }
+
+    public static void writeToFile(byte[] data, String uploadedFileLocation) {
+        try {
+            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+            out.write(data);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

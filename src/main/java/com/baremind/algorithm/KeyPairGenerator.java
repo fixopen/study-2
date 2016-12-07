@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by fixopen on 3/6/15.
  */
-public class KeyPairGenerator {
+class KeyPairGenerator {
     public KeyPair generate() {
         KeyPair result = null;
         try {

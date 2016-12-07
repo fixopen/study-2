@@ -12,7 +12,7 @@ import java.security.cert.Certificate;
 /**
  * Created by fixopen on 3/6/15.
  */
-public class KeyStoreManager {
+class KeyStoreManager {
     public int createKeyStore(final String storePath, final KeyPair keyPair, final Certificate[] certificates) {
         int result = 0;
         FileOutputStream fileOutputStream = null;
@@ -43,7 +43,7 @@ public class KeyStoreManager {
         return result;
     }
 
-    public PrivateKey getSelfPrivateKey(final String storePath, final String alias, final String secret) {
+    PrivateKey getSelfPrivateKey(final String storePath, final String alias, final String secret) {
         PrivateKey result = null;
         try {
             KeyStore store = KeyStore.getInstance("JKS");

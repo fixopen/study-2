@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tags")
-public class Tag {
+public class Tag implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

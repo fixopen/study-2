@@ -2,8 +2,10 @@ package com.baremind;
 
 
 import com.baremind.data.ImageText;
+import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
@@ -18,99 +20,36 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by User on 2016/9/20.
  */
 @Path("image-texts")
 public class ImageTexts {
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadImageText(@Context HttpServletRequest request, @CookieParam("userId") String userId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            try {
-                Part p = request.getPart("file");
-                String contentType = p.getContentType();
-                InputStream inputStream = p.getInputStream();
-                long now = new Date().getTime();
-                String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
-                if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
-                    String fileName = now + "." + postfix;
-                    String pyshicalpath = Properties.getPropertyValue("physicalpath");
-                    String uploadedFileLocation = pyshicalpath + fileName;
-                    File file = new File(uploadedFileLocation);
-                    FileOutputStream w = new FileOutputStream(file);
-                    CharacterEncodingFilter.saveFile(w, inputStream);
-
-                    String content = request.getParameter("content");
-                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
-                    ImageText imageText = new ImageText();
-                    imageText.setId(IdGenerator.getNewId());
-                    imageText.setExt(postfix);
-                    imageText.setMimeType(contentType);
-                    imageText.setName(fileName);
-                    imageText.setSize(p.getSize());
-                    String virtualPath = Properties.getPropertyValue("testvirtualpath") + fileName;
-                    imageText.setStorePath(virtualPath);
-                    imageText.setContent(content);
-                    JPAEntry.genericPost(imageText);
-
-                    result = Response.ok(new Gson().toJson(imageText)).build();
-                } else {
-                    result = Response.status(415).build();
-                    //上传图片的格式不正确
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ServletException e) {
-
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    @POST //添
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createImageText(@CookieParam("userId") String userId, ImageText imageText) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            imageText.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(imageText);
-            result = Response.ok(imageText).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getImageTexts(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<ImageText> imageTexts = JPAEntry.getList(ImageText.class, filterObject);
-            if (!imageTexts.isEmpty()) {
-                result = Response.ok(new Gson().toJson(imageTexts)).build();
-            }
-        }
-        return result;
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, ImageText.class, null, null);
     }
 
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getImageTextById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, ImageText.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, ImageText entity) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            ImageText imageText = JPAEntry.getObject(ImageText.class, "id", id);
-            if (imageText != null) {
-                result = Response.ok(new Gson().toJson(imageText)).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.create(sessionId, entity, null);
             }
         }
         return result;
@@ -120,48 +59,92 @@ public class ImageTexts {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateImageText(@CookieParam("userId") String userId, @PathParam("id") Long id, ImageText imageText) {
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ImageText newData) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            ImageText existimage = JPAEntry.getObject(ImageText.class, "id", id);
-            if (existimage != null) {
-                String ext = imageText.getExt();
-                if (ext != null) {
-                    existimage.setName(ext);
-                }
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.updateById(sessionId, id, newData, ImageText.class, (exist, imageText) -> {
+                    Long size = imageText.getImageId();
+                    if (size != null) {
+                        exist.setImageId(size);
+                    }
 
-                Integer mainColor = imageText.getMainColor();
-                if (mainColor != null) {
-                    existimage.getMainColor();
-                }
+                    String content = imageText.getContent();
+                    if (content != null) {
+                        exist.setContent(content);
+                    }
+                }, null);
+            }
+        }
+        return result;
+    }
 
-                String mimeType = imageText.getMimeType();
-                if (mimeType != null) {
-                    existimage.setMimeType(mimeType);
-                }
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            if (admin != null && admin.getIsAdministrator()) {
+                result = Impl.deleteById(sessionId, id, ImageText.class);
+            }
+        }
+        return result;
+    }
 
-                Long size = imageText.getSize();
-                if (size != null) {
-                    existimage.setSize(size);
-                }
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response uploadImageText(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            try {
+                Part p = request.getPart("file");
+                String contentType = p.getContentType();
+                InputStream inputStream = p.getInputStream();
+                long now = new Date().getTime();
+                String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
+                if (!Objects.equals(postfix, "jpg") || !Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "pdg")) {
+                    String fileName = now + "." + postfix;
+                    String pyshicalpath = Properties.getProperty("physicalpath");
+                    String uploadedFileLocation = pyshicalpath + fileName;
+                    File file = new File(uploadedFileLocation);
+                    FileOutputStream w = new FileOutputStream(file);
+                    CharacterEncodingFilter.saveFile(w, inputStream);
 
-                String storePath = imageText.getStorePath();
-                if (storePath != null) {
-                    existimage.setStorePath(storePath);
-                }
+//                    Image image = new Image();
+//                    image.setId(IdGenerator.getNewId());
+//                    image.setExt(postfix);
+//                    image.setMimeType(contentType);
+//                    image.setName(fileName);
+//                    image.setSize(p.getSize());
+//                    String virtualPath = Properties.getProperty("testvirtualpath") + fileName;
+//                    image.setStorePath(virtualPath);
+//
+//                    ImageText imageText = new ImageText();
+//                    imageText.setId(IdGenerator.getNewId());
+//                    imageText.setImageId(image.getId());
+//                    String content = request.getParameter("content");
+//                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
+//                    ImageText imageText = new ImageText();
+//                    imageText.setId(IdGenerator.getNewId());
+//                    imageText.setExt(postfix);
+//                    imageText.setMimeType(contentType);
+//                    imageText.setName(fileName);
+//                    imageText.setSize(p.getSize());
+//                    String virtualPath = Properties.getPropertyValue("testvirtualpath") + fileName;
+//                    imageText.setStorePath(virtualPath);
+//                    imageText.setContent(content);
+//                    JPAEntry.genericPost(imageText);
 
-                String name = imageText.getName();
-                if (name != null) {
-                    existimage.setName(name);
+//                    result = Response.ok(new Gson().toJson(imageText)).build();
+                } else {
+                    result = Response.status(415).build();
+                    //上传图片的格式不正确
                 }
-
-                String content = imageText.getContent();
-                if (content != null) {
-                    existimage.setContent(content);
-                }
-                JPAEntry.genericPut(existimage);
-                result = Response.ok(existimage).build();
+            } catch (IOException | ServletException e) {
+                e.printStackTrace();
             }
         }
         return result;

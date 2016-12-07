@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "images")
-public class Image {
+public class Image implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

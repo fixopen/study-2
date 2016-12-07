@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "cards")
-public class Card {
+public class Card implements com.baremind.data.Entity, TransferObject {
     @Id
     @Column(name = "id")
     private Long id;
@@ -39,7 +39,7 @@ public class Card {
     private Long subjectId;
 
     @Column(name = "amount")
-    private Double amount;
+    private Long amount;
 
     public Long getId() {
         return id;
@@ -105,11 +105,11 @@ public class Card {
         this.subjectId = subjectId;
     }
 
-    public Double getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 }

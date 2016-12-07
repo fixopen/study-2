@@ -15,17 +15,18 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-//import javax.websocket.Endpoint;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+
+//import javax.websocket.Endpoint;
 
 /**
  * Created by fixopen on 27/9/2016.
  */
 @Path("class-rooms")
 public class ClassRooms/* extends Endpoint*/ {
-    private static Long classRoomId = 0l;
+    private static Long classRoomId = 0L;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -46,7 +47,7 @@ public class ClassRooms/* extends Endpoint*/ {
         user.setUpdateTime(now);
         user.setIsAdministrator(false);
         user.setSite("http://www.xiaoyuzhishi.com");
-        user.setAmount(-1.0f);
+        user.setAmount(-1l);
         JPAEntry.genericPost(user);
 
         String nowString = now.toString();
@@ -78,11 +79,11 @@ public class ClassRooms/* extends Endpoint*/ {
     @Path("messages")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postMessage(@CookieParam("userId") String userId, Comment comment) {
+    public Response postMessage(@CookieParam("sessionId") String sessionId, Comment comment) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             comment.setId(IdGenerator.getNewId());
-            comment.setUserId(JPAEntry.getLoginId(userId));
+            comment.setUserId(JPAEntry.getLoginId(sessionId));
             comment.setObjectType("class-room");
             comment.setObjectId(classRoomId);
             Date now = new Date();
@@ -97,9 +98,9 @@ public class ClassRooms/* extends Endpoint*/ {
     @GET
     @Path("messages") ///since/{timestamp}
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postMessage(@CookieParam("userId") String userId) { //, @PathParam("timestamp") Date timestamp
+    public Response postMessage(@CookieParam("sessionId") String sessionId) { //, @PathParam("timestamp") Date timestamp
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+        if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
             Map<String, Object> filterObject = new HashMap<>();
             filterObject.put("objectType", "class-room");

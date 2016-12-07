@@ -4,6 +4,7 @@ import com.baremind.Logs;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,13 +15,16 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "knowledge_points")
-public class KnowledgePoint {
+public class KnowledgePoint implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
 
     @Column(name = "volume_id")
     private Long volumeId;
+
+    @Column(name = "price")
+    private Long price;
 
     @Column(name = "name")
     private String name;
@@ -30,6 +34,24 @@ public class KnowledgePoint {
 
     @Column(name = "show_time")
     private Date showTime;
+
+    @Column(name = "discount")
+    private double discount;
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 
     public Long getId() {
         return id;
@@ -78,7 +100,7 @@ public class KnowledgePoint {
         kpm.put("name", kp.getName());
         kpm.put("showTime", kp.getShowTime());
         kpm.put("likeCount", 0);
-        kpm.put("stateType", "old");
+        String stateType = "old";
 
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.id = :id  AND l.showTime > :yesterday AND l.showTime < :now";
@@ -87,9 +109,9 @@ public class KnowledgePoint {
         q.setParameter("id", kp.getId());
         q.setParameter("yesterday", yesterday);
         q.setParameter("now", now);
-        Long count = (Long) q.getSingleResult();
+        Long count = q.getSingleResult();
         if (count > 0) {
-            kpm.put("stateType ", "new");
+            stateType = "new";
         }
 
         Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
@@ -110,7 +132,28 @@ public class KnowledgePoint {
                 type = "pk";
             }
         }
-        kpm.put("type", type);
+        switch (stateType) {
+            case "old":
+                switch (type) {
+                    case "normal":
+                        kpm.put("type", "normalOld");
+                        break;
+                    case "pk":
+                        kpm.put("type", "pkOld");
+                        break;
+                }
+                break;
+            case "new":
+                switch (type) {
+                    case "normal":
+                        kpm.put("type", "normalNew");
+                        break;
+                    case "pk":
+                        kpm.put("type", "pkNew");
+                        break;
+                }
+                break;
+        }
         return kpm;
     }
 }

@@ -11,7 +11,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * Created by fixopen on 3/6/15.
  */
-public class Zip {
+class Zip {
     public void uncompress(File zipFile, File folder) {
         try {
             FileInputStream fileInputStream = new FileInputStream(zipFile);
@@ -36,7 +36,7 @@ public class Zip {
                         fileItemFolder.mkdirs();
                     }
                     FileOutputStream fileOutputStream = new FileOutputStream(fileItem);
-                    int readLength = 0;
+                    int readLength;
                     while ((readLength = zipInputStream.read(buffer)) != -1) {
                         fileOutputStream.write(buffer, 0, readLength);
                     }
@@ -135,7 +135,7 @@ public class Zip {
             ZipEntry ze = new ZipEntry(basePath + file.getName());
             zos.putNextEntry(ze);
             byte[] buffer = new byte[8192];
-            int count = 0;
+            int count;
             while ((count = fis.read(buffer)) > 0) {
                 zos.write(buffer, 0, count);
             }

@@ -6,7 +6,7 @@ import java.io.OutputStream;
 /**
  * Created by fixopen on 3/6/15.
  */
-public class IOCrypto {
+class IOCrypto {
     public OutputStream encrypt(InputStream inputStream) {
         OutputStream result = null;
         return result;

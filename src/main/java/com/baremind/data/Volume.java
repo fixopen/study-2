@@ -3,6 +3,7 @@ package com.baremind.data;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "volumes")
-public class Volume {
+public class Volume implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -26,8 +27,8 @@ public class Volume {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "image_id")
-    private Long imageId;
+    @Column(name = "cover_id")
+    private Long coverId;
 
     @Column(name = "\"order\"")
     private Integer order;
@@ -64,12 +65,12 @@ public class Volume {
         this.name = title;
     }
 
-    public Long getImageId() {
-        return imageId;
+    public Long getCoverId() {
+        return coverId;
     }
 
-    public void setImageId(Long imageId) {
-        this.imageId = imageId;
+    public void setCoverId(Long imageId) {
+        this.coverId = imageId;
     }
 
     public Integer getOrder() {

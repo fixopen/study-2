@@ -64,6 +64,42 @@ CREATE TABLE answer_records (
 ALTER TABLE answer_records OWNER TO postgres;
 
 --
+-- Name: audio_records; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE audio_records (
+  id bigint NOT NULL,
+  book_id bigint NOT NULL,
+  page_no name DEFAULT ''::bpchar NOT NULL,
+  unit_no character(2) DEFAULT ''::bpchar NOT NULL,
+  start_time integer,
+  end_time integer,
+  "left" integer,
+  top integer,
+  "right" integer,
+  bottom integer,
+  chinese text
+);
+
+
+ALTER TABLE audio_records OWNER TO postgres;
+
+--
+-- Name: book_names; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE books (
+  id bigint NOT NULL,
+  subject_no character(2) DEFAULT '04'::bpchar NOT NULL,
+  grade_no character(2) DEFAULT '20'::bpchar NOT NULL,
+  book_no character(2) DEFAULT ''::bpchar NOT NULL,
+  name name DEFAULT ''::name
+);
+
+
+ALTER TABLE books OWNER TO postgres;
+
+--
 -- Name: cards; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -96,7 +132,6 @@ CREATE TABLE comments (
     update_time timestamp without time zone DEFAULT now() NOT NULL
 );
 
-
 ALTER TABLE comments OWNER TO postgres;
 
 --
@@ -108,7 +143,7 @@ CREATE TABLE devices (
     user_id bigint DEFAULT 0 NOT NULL,
     platform name DEFAULT 'iOS'::name NOT NULL,
     platform_identity name DEFAULT ''::name NOT NULL,
-    platform_notification_token name DEFAULT ''::name NOT NULL
+    platform_notification_token name
 );
 
 
@@ -180,6 +215,8 @@ CREATE TABLE knowledge_points (
     name character varying(64),
     "order" integer,
     show_time timestamp without time zone
+    price bigint,
+    discount double precision
 );
 
 
@@ -295,13 +332,18 @@ CREATE TABLE schedulers (
     day integer,
     start_time timestamp without time zone,
     end_time timestamp without time zone,
-    duration bigint,
     subject_id bigint,
     grade integer,
     name character varying(64),
+    cover_id bigint,
+    content_link character varying(256),
+    direct_link character varying(256),
     description text,
-    teacher character varying(64),
-    teacher_description text
+    teacher_id bigint
+    price bigint,
+    discount double precision
+--     teacher character varying(64),
+--     teacher_description text
 );
 
 
@@ -427,7 +469,7 @@ CREATE TABLE volumes (
     subject_id bigint,
     grade integer,
     name character varying(64),
-    image_id bigint,
+    cover_id bigint,
     "order" integer
 );
 
@@ -440,11 +482,10 @@ ALTER TABLE volumes OWNER TO postgres;
 
 CREATE TABLE wechat_users (
     id bigint NOT NULL,
-    user_id bigint DEFAULT 0 NOT NULL,
+    user_id bigint,
     token character varying(8192) DEFAULT ''::character varying,
     refresh_token character varying(8192),
     expiry timestamp without time zone,
-    ref_id name DEFAULT ''::name,
     open_id name,
     union_id character varying(256),
     nickname name,
@@ -552,6 +593,21 @@ ALTER TABLE ONLY answer_records
 
 
 --
+-- Name: audio_record__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY audio_records
+  ADD CONSTRAINT audio_record__pk PRIMARY KEY (id);
+
+--
+-- Name: book_name__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY books
+  ADD CONSTRAINT book__pk PRIMARY KEY (id);
+
+
+--
 -- Name: card__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -565,14 +621,6 @@ ALTER TABLE ONLY cards
 
 ALTER TABLE ONLY comments
     ADD CONSTRAINT comment__pk PRIMARY KEY (id);
-
-
---
--- Name: content__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY texts
-    ADD CONSTRAINT content__pk PRIMARY KEY (id);
 
 
 --
@@ -709,6 +757,14 @@ ALTER TABLE ONLY subjects
 
 ALTER TABLE ONLY tags
     ADD CONSTRAINT tag__pk PRIMARY KEY (id);
+
+
+--
+-- Name: text__pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY texts
+  ADD CONSTRAINT text__pk PRIMARY KEY (id);
 
 
 --

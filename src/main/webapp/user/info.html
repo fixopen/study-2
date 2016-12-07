@@ -60,15 +60,15 @@
 <script src="/basic.js"></script>
 <script type="text/javascript">
     //var userId = g.getUrlParameter('userid')
-
+    var a = '未知'
     var getSexName = function (v) {
-        var result = '未知'
+
         switch (v) {
             case 1:
-                result = '男'
+                a = '男'
                 break
             case 2:
-                result = '女'
+                a = '女'
                 break
             case 0:
                 break
@@ -82,9 +82,10 @@
         url: '/api/users/self',
         dataType: 'json',
         success: function (user) {
-            user.sexName = getSexName(user.sex)
+            getSexName(user.sex)
+            user.sexName = a;
             proc({
-                containerId: 'user',
+                containerId: 'userold',
                 data: user,
                 templateId: 'user-template'
             })
