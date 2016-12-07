@@ -24,11 +24,9 @@
 </head>
 <body>
 
-<article id="volumes" style="display: none;"><!--课程封皮--></article>
+<article id="volumes" ><!--课程封皮--></article>
 <article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
-<article id="knowledgePoint">
-
-</article>
+<article id="knowledgePoint" style="display: none;"></article>
 
 <!--------------------------volumes--------------------------->
 <template id="chinese-structure"><!--课程封皮：学习-语文-->
@@ -66,19 +64,19 @@
             <div class="bao_dul">
                 <ul class="grade_nav_math">
                     <li class="grade_main active" data-grade="low">
-                        <a href="#low2" data-toggle="tab" data-grade="low">1-3年级</a>
+                        <a href="#low" data-toggle="tab" data-grade="low">1-3年级</a>
                     </li>
                     <li class="grade_main" data-grade="high">
-                        <a href="#high2" data-toggle="tab" data-grade="high">4-6年级</a>
+                        <a href="#high" data-toggle="tab" data-grade="high">4-6年级</a>
                     </li>
                 </ul>
             </div>
             <div class="rain-main">
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
                     </ol>
-                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
                     </ol>
                 </div>
             </div>
@@ -90,20 +88,20 @@
     <div class="wrap noBackg">
         <div class="bao_dul">
             <ul class="grade_nav_english">
-                <li class="grade_main active">
-                    <a href="#low2" data-toggle="tab">Happy Reading AA</a>
+                <li class="grade_main active"  data-grade="low">
+                    <a href="#low" data-toggle="tab" data-grade="low">Happy Reading AA</a>
                 </li>
-                <li class="grade_main">
-                    <a href="#high2" data-toggle="tab">My first phonics Book</a>
+                <li class="grade_main" data-grade="high">
+                    <a href="#high" data-toggle="tab" data-grade="high">My first phonics Book</a>
                 </li>
             </ul>
         </div>
         <div class="rain-main">
             <!-- Tab panes -->
             <div class="tab-content">
-                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
                 </ol>
-                <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
                 </ol>
             </div>
         </div>
@@ -121,6 +119,21 @@
     <li>
         <a class="textbook" href="javascript:void(0)">
             <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
+        </a>
+    </li>
+</template>
+<template id="volumes-english-new-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <span class="textbook_num" id="newCount">1</span>
+            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoint" alt="">
+        </a>
+    </li>
+</template>
+<template id="volumes-english-old-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoint" alt="">
         </a>
     </li>
 </template>
@@ -144,8 +157,25 @@
         </div>
         <div class="rain-main catalog_list">
             <div>
-                <ul class="each_chapter" id="chapter_section1"></ul>
-                <ul class="each_chapter" id="chapter_section2"></ul>
+                <ul class="each_chapter" id="chapter_section"></ul>
+                <!--<ul class="each_chapter" id="chapter_section2"></ul>-->
+            </div>
+        </div>
+    </div>
+</template>
+<template id="chinese-catalog"><!--语文-目录-->
+    <div class="wrap">
+        <div class="catalog chinese_catalog">
+            <div class="mltop_main" id="book_infor"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up chinese_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main catalog_list">
+            <div class="chinese_catalog_list">
+                <ul class="each_chapter" id="chapter_section"></ul>
             </div>
         </div>
     </div>
@@ -175,15 +205,15 @@
     <li class="neir_li">
         <img class="shang_new" src="images_version2/muluNew.png" alt="">
         <div class="neir_lidiv">
-            <a class="neir_pzi" href="javascript:;">${title}</a>
+            <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
         </div>
         <div class="neir_ridiv">
-            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg" src="${zan}" alt="">
-                <img class="dianzanImg cur" src="${zanover}" alt="">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
                 赞
-                <span>${zanNum}</span>
+                <span>${likeCount}</span>
             </a>
         </div>
     </li>
@@ -191,57 +221,55 @@
 <template id="chapter-old-template">
     <li class="neir_li">
         <div class="neir_lidiv">
-            <a class="neir_pzi" href="javascript:;">${title}</a>
+            <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
         </div>
         <div class="neir_ridiv">
-            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg" src="${zan}" alt="">
-                <img class="dianzanImg cur" src="${zanover}" alt="">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
                 赞
-                <span>${zanNum}</span>
+                <span>${likeCount}</span>
             </a>
         </div>
     </li>
 </template>
-<template id="chapter-challenge">
+<template id="chapter-new-challenge">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-old-challenge">
     <li class="neir_li">
         <div class="neir_lidiv">
-            <a class="neir_pzi neir_tianZ" href="javascript:;">${title}</a>
+            <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
         </div>
         <div class="neir_ridiv">
-            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg" src="${zan}" alt="">
-                <img class="dianzanImg cur" src="${zanover}" alt="">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
                 赞
-                <span>${zanNum}</span>
+                <span>${likeCount}</span>
             </a>
         </div>
     </li>
-</template>
-<template id="chinese-catalog"><!--语文-目录-->
-    <div class="wrap">
-        <div class="catalog chinese_catalog">
-            <div class="mltop_main" id="book_infor"></div>
-            <img class="juchi" src="images_version2/juchi.png" alt="">
-        </div>
-        <div class="catalog_pack_up chinese_pack_up">
-            <div class="mltop_main" id="pack_up_title"></div>
-            <img class="juchi" src="images_version2/juchi.png" alt="">
-        </div>
-        <div class="rain-main catalog_list">
-            <!--<div class="mulu_div">-->
-            <!--<ul class="cont_sul" id="chapter_section2"></ul>-->
-            <div class="chinese_catalog_list">
-                <ul class="each_chapter" id="chapter_section2"></ul>
-            </div>
-        </div>
-    </div>
 </template>
 <!----------------------------------detail-structure----------------------------->
 <template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个--><!--语文-课程详情-->
-    <div class="" wrap>
+    <div class="wrap" >
         <section class="head-title" id="knowledgePointTitle">
         </section>
         <section class="rain-main">
@@ -447,7 +475,9 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <span class="favour">已点</span>
+                <!--<img class="ul01_imgzan" src="img/zan-over.png" alt="" id="icon">-->
+                <span class="icon">已点</span>
+                <!--<span class="favour">已点</span>-->
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -463,7 +493,9 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <span class="dislike"></span>
+                <!--<img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">-->
+                <span class="icon">未点</span>
+                <!--<span class="dislike"></span>-->
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -581,13 +613,13 @@
 <template id="english-envelope-template">
     <div>
         <div class="mltop_left">
-            <img src="${bookImg}" alt="">
+            <img src="${bookCover}" alt="">
         </div>
         <div class="mltop_right">
-            <p class="mltop_biao">${bookName}</p>
+            <p class="mltop_biao">${name}</p>
             <p class="mltop_xinxi">
                 <span class="xinxi_left">概要：</span>
-                <span class="xinxi_right">${summary}</span>
+                <span class="xinxi_right">${content}</span>
             </p>
         </div>
     </div>
@@ -715,150 +747,150 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    $(function () {
-        var data = {
-            low: [
-                {
-                    type: 'new',
-                    img: 'images_version2/yuwen_mulu1.png'
-                },
-                {
-                    type: 'old',
-                    img: 'images_version2/yuwen_mulu2.png'
-                },
-                {
-                    type: 'expect',
-                    img: 'images_version2/yuwen_mulu0.png'
-                }
-            ],
-            high: [
-                {
-                    type: 'new',
-                    img: 'images_version2/yuwen_mulu2.png'
-                },
-                {
-                    type: 'old',
-                    img: 'images_version2/yuwen_mulu1.png'
-                },
-                {
-                    type: 'expect',
-                    img: 'images_version2/yuwen_mulu0.png'
-                }
-            ],
-            bookInfor: [
-                {
-                    type: 'bookinfor',
-                    bookImg: 'images_version2/shuxue1.png',
-                    bookName: '钟表喊你吃饭啦',
-                    grade: '1-3年级',
-                    chapterNum: '12'
-                }
-            ],
-            packUpTitle: [
-                {
-                    type: 'packUp',
-                    title: '钟表喊你吃饭啦'
-                }
-            ],
-            chapter_section: [
-                {
-                    type: 'new',
-                    title: '加与减',
-                    peopleNum: '54682',
-                    zan: 'images_version2/dianzan.png',
-                    zanover: 'images_version2/zanover.png',
-                    zanNum: '381'
-                },
-                {
-                    type: 'old',
-                    title: '简单的图形数量规律',
-                    peopleNum: '54682',
-                    zan: 'images_version2/dianzan.png',
-                    zanover: 'images_version2/zanover.png',
-                    zanNum: '381'
-                },
-                {
-                    type: 'challenge',
-                    title: '挑战百分百',
-                    peopleNum: '54682',
-                    zan: 'images_version2/dianzan.png',
-                    zanover: 'images_version2/zanover.png',
-                    zanNum: '381'
-                }
-            ],
-            head_title: [
-                {
-                    type: 'headTitle',
-                    name: '放纵不羁名垂青史的竹林七贤'
-                }
-            ],
-            text_appreciate: [
-                {
-                    type: 'textAppreciate',
-                    content: '陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
-                    source: ' ——【南朝】刘义庆《世说新语·任诞》',
-                }
-            ],
-            content_text: [
-                {
-                    type: 'contentText',
-                    content: '魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？',
-                }
-            ],
-            content_image: [
-                {
-                    type: 'contentImage',
-                    href: 'images_version2/video1.png'
-                }
-            ],
-            content_video: [
-                {
-                    type: 'contentVideo',
-                    storePath: '',
-                    cover: 'images_version2/video3.png'
-                }
-            ],
-            challenge_num: [
-                {
-                    type: 'challengeNum',
-                    order: '一'
-                }
-            ],
-            title_math_details: [
-                {
-                    type: 'titleMathDetails',
-                    name: '火柴竟是运动迷'
-                }
-            ],
-            challenge_period: [
-                {
-                    type: 'challengePeriod',
-                    content: '欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。'
-                }
-            ],
-            explain_content: [
-                {
-                    type: 'explainContent',
-                    explainContent: '今天，我们来学习加减法运算。',
-                    href: 'images_version2/math4.png',
-                    content: '在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
-                }
-            ],
-            english_details: [
-                {
-                    type: 'englishDetails',
-                    bookImg: 'images_version2/yingyu1.png',
-                    bookName: 'My Family',
-                    summary: '学习爸爸、妈妈、哥哥、姐姐等亲属称容词,如，mother，grandma等'
-                }
-            ],
-            english_content: [
-                {
-                    type: 'englishContent',
-                    img: 'img/eng_mo.png'
-                }
-            ],
-        }
+//    $(function () {
+//        var data = {
+//            low: [
+//                {
+//                    type: 'new',
+//                    img: 'images_version2/yuwen_mulu1.png'
+//                },
+//                {
+//                    type: 'old',
+//                    img: 'images_version2/yuwen_mulu2.png'
+//                },
+//                {
+//                    type: 'expect',
+//                    img: 'images_version2/yuwen_mulu0.png'
+//                }
+//            ],
+//            high: [
+//                {
+//                    type: 'new',
+//                    img: 'images_version2/yuwen_mulu2.png'
+//                },
+//                {
+//                    type: 'old',
+//                    img: 'images_version2/yuwen_mulu1.png'
+//                },
+//                {
+//                    type: 'expect',
+//                    img: 'images_version2/yuwen_mulu0.png'
+//                }
+//            ],
+//            bookInfor: [
+//                {
+//                    type: 'bookinfor',
+//                    bookImg: 'images_version2/shuxue1.png',
+//                    bookName: '钟表喊你吃饭啦',
+//                    grade: '1-3年级',
+//                    chapterNum: '12'
+//                }
+//            ],
+//            packUpTitle: [
+//                {
+//                    type: 'packUp',
+//                    title: '钟表喊你吃饭啦'
+//                }
+//            ],
+//            chapter_section: [
+//                {
+//                    type: 'new',
+//                    title: '加与减',
+//                    peopleNum: '54682',
+//                    zan: 'images_version2/dianzan.png',
+//                    zanover: 'images_version2/zanover.png',
+//                    zanNum: '381'
+//                },
+//                {
+//                    type: 'old',
+//                    title: '简单的图形数量规律',
+//                    peopleNum: '54682',
+//                    zan: 'images_version2/dianzan.png',
+//                    zanover: 'images_version2/zanover.png',
+//                    zanNum: '381'
+//                },
+//                {
+//                    type: 'challenge',
+//                    title: '挑战百分百',
+//                    peopleNum: '54682',
+//                    zan: 'images_version2/dianzan.png',
+//                    zanover: 'images_version2/zanover.png',
+//                    zanNum: '381'
+//                }
+//            ],
+//            head_title: [
+//                {
+//                    type: 'headTitle',
+//                    name: '放纵不羁名垂青史的竹林七贤'
+//                }
+//            ],
+//            text_appreciate: [
+//                {
+//                    type: 'textAppreciate',
+//                    content: '陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
+//                    source: ' ——【南朝】刘义庆《世说新语·任诞》',
+//                }
+//            ],
+//            content_text: [
+//                {
+//                    type: 'contentText',
+//                    content: '魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？',
+//                }
+//            ],
+//            content_image: [
+//                {
+//                    type: 'contentImage',
+//                    href: 'images_version2/video1.png'
+//                }
+//            ],
+//            content_video: [
+//                {
+//                    type: 'contentVideo',
+//                    storePath: '',
+//                    cover: 'images_version2/video3.png'
+//                }
+//            ],
+//            challenge_num: [
+//                {
+//                    type: 'challengeNum',
+//                    order: '一'
+//                }
+//            ],
+//            title_math_details: [
+//                {
+//                    type: 'titleMathDetails',
+//                    name: '火柴竟是运动迷'
+//                }
+//            ],
+//            challenge_period: [
+//                {
+//                    type: 'challengePeriod',
+//                    content: '欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。'
+//                }
+//            ],
+//            explain_content: [
+//                {
+//                    type: 'explainContent',
+//                    explainContent: '今天，我们来学习加减法运算。',
+//                    href: 'images_version2/math4.png',
+//                    content: '在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
+//                }
+//            ],
+//            english_details: [
+//                {
+//                    type: 'englishDetails',
+//                    bookImg: 'images_version2/yingyu1.png',
+//                    bookName: 'My Family',
+//                    summary: '学习爸爸、妈妈、哥哥、姐姐等亲属称容词,如，mother，grandma等'
+//                }
+//            ],
+//            english_content: [
+//                {
+//                    type: 'englishContent',
+//                    img: 'img/eng_mo.png'
+//                }
+//            ],
+//        }
 </script>
 <script>
     /*
@@ -942,7 +974,7 @@
                                 dataType: "json",
                                 success: function (pop) {
                                     state.volumes.popuped = pop.popup;
-                                    state.volumes.popuped = false;
+                                  //  state.volumes.popuped = false;
 
                                     history.pushState(null, null, '/content2.html#volumes')
                                     state.volumes.changeId(subjectId)
@@ -1076,7 +1108,7 @@
 //                            }
                             proc({
                                 data: value.low,
-                                containerId: 'low2',
+                                containerId: 'low',
                                 alterTemplates: [
                                     {type: 'old', templateId: 'volumes-old-template'},
                                     {type: 'new', templateId: 'volumes-new-template'},
@@ -1084,7 +1116,7 @@
                             })
                             proc({
                                 data: value.high,
-                                containerId: 'high2',
+                                containerId: 'high',
                                 alterTemplates: [
                                     {type: 'old', templateId: 'volumes-old-template'},
                                     {type: 'new', templateId: 'volumes-new-template'},
@@ -1092,6 +1124,46 @@
                             })
 
                             var subjectId = 2;
+                            state.volumes.popups(subjectId);
+
+                            break
+                        case 3:
+                        case '3':
+                            proc({
+                                containerId: 'volumes',
+                                data: {},
+                                templateId: 'english-structure'
+                            })
+
+                            var value = state.volumes.value
+                            proc({
+                                containerId: 'popup',
+                                data: {},
+                                templateId: 'cover-template'
+                            })
+
+//                            for (var i = 0; i < value.low.length; ++i) {
+//                                state.volume.value = value.low[i]
+//                                value.low[i].newCount = state.volume.calcNew()
+//                            }
+                            proc({
+                                data: value.low,
+                                containerId: 'low',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-english-old-template'},
+                                    {type: 'new', templateId: 'volumes-english-new-template'},
+                                ]
+                            })
+                            proc({
+                                data: value.high,
+                                containerId: 'high',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-english-old-template'},
+                                    {type: 'new', templateId: 'volumes-english-new-template'},
+                                ]
+                            })
+
+                            var subjectId = 3;
                             state.volumes.popups(subjectId);
 
                             break
@@ -1176,7 +1248,7 @@
                                             } else {
                                                 kps[i].type = 'normalNew'
                                             }
-                                            v.knowledgePoints.unshift(kps[i])
+                                          v.knowledgePoints.unshift(kps[i]);
                                         } else {
                                             if (kps[i].type) {
                                                 kps[i].type += 'Old'
@@ -1201,6 +1273,23 @@
             },
             value: null,
             show: function () {
+                var getGrade = function (gradeValue) {
+                    var result = ''
+                    if(state.volumes.parentId =='1' ){
+                        if (gradeValue == 20) {
+                            result = '1-2年级'
+                        } else if (gradeValue == 21) {
+                            result = '3-6年级'
+                        }
+                    }else if(state.volumes.parentId == '2'){
+                        if (gradeValue == 20) {
+                            result = '1-3年级'
+                        } else if (gradeValue == 21) {
+                            result = '4-6年级'
+                        }
+                    }
+                    return result
+                }
                 $('#knowledgePoints').html("");
                 switch (state.volumes.parentId) {
                     case 1:
@@ -1212,19 +1301,22 @@
                         })
 
                         var value = state.knowledgePoints.value
+                        value.grade = getGrade(value.grade)
                         proc({
                             templateId: 'book-infor-template',
                             data: value,
-                            containerId: 'volumeTitle'
+                            containerId: 'book_infor'
                         })
                         proc({
                             data: value.knowledgePoints,
-                            containerId: 'knowledge-point',
+                            containerId: 'chapter_section',
                             alterTemplates: [
                                 {type: 'normalNew', templateId: 'chapter-new-template'},
                                 {type: 'normalOld', templateId: 'chapter-old-template'},
                             ]
                         })
+
+
                         break
                     case 2:
                     case '2':
@@ -1234,14 +1326,15 @@
                             templateId: 'math-catalog'
                         })
                         var value = state.knowledgePoints.value
+                        value.grade = getGrade(value.grade)
                         proc({
                             templateId: 'book-infor-template',
                             data: value,
-                            containerId: 'volumeTitle'
+                            containerId: 'book_infor'
                         })
                         proc({
                             data: value.knowledgePoints,
-                            containerId: 'knowledge-point',
+                            containerId: 'chapter_section',
                             alterTemplates: [
                                 {type: 'normalNew', templateId: 'chapter-new-template'},
                                 {type: 'normalOld', templateId: 'chapter-old-template'},
@@ -1341,6 +1434,7 @@
                                     dataType: "json",
                                     success: function (like) {
                                         state.knowledgePoint.value.liked = like.like
+                                        //state.knowledgePoints.value.liked=state.knowledgePoint.value.liked
                                         state.knowledgePoint.value.contents = data
                                         for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
                                             $.ajax({
@@ -1715,6 +1809,59 @@
 
                                 break
                         }
+                    case 3:
+                    case "3":
+                        proc({
+                            containerId: 'knowledgePoint',
+                            data: {},
+                            templateId: 'english-template'
+                        })
+
+                        state.knowledgePoint.interaction = document.getElementById('interaction');
+                        state.knowledgePoint.comments = document.getElementById('comments');
+
+                        // 写留言---------
+                        var createComment = document.getElementById('createComment');
+                        var panel = document.getElementById('commentPanl');
+                        var btn = document.getElementById('submitBtn');
+                        var commentContent = document.getElementById('textarea');
+                        var commentContainer = document.getElementById('comments');
+                        commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                        var value = state.knowledgePoint.value;
+
+                        proc({
+                            templateId: 'book_infor_english',
+                            data: value,
+                            containerId: 'english-envelope-template'
+                        });
+
+//                        proc({
+//                            templateId: 'origin-template',
+//                            data: value.contents.quotes,
+//                            containerId: 'english-envelope-template'
+//                        });
+
+                        proc({
+                            data: value.contents.contents,
+                            containerId: 'content',
+                            alterTemplates: [
+                                {type: 'image', templateId: 'english-content-template'},
+                            ]
+                        });
+
+
+                        //  interaction-likes
+                        var container = state.knowledgePoint.interaction;
+                        var iconName = '.icon';
+                        var likeTemplate = 'interaction-like-template';
+                        var unlikeTemplate = 'interaction-unlike-template';
+                        var apiUrl = 'api/knowledge-points/';
+                        likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                        //comments-likes;
+                        state.knowledgePoint.renderComments()
+                        break
                 }
             },
             getById: function (id) {
@@ -1729,6 +1876,9 @@
                                 break
                             }
                         }
+                        if (isFind) {
+                            break
+                        }
                     }
                     if (isFind) {
                         break
@@ -1740,6 +1890,9 @@
                                 isFind = true
                                 break
                             }
+                        }
+                        if (isFind) {
+                            break
                         }
                     }
                     if (isFind) {
