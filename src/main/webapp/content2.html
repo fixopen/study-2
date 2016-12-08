@@ -24,7 +24,7 @@
 </head>
 <body>
 
-<article id="volumes" ><!--课程封皮--></article>
+<article id="volumes"><!--课程封皮--></article>
 <article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
 <article id="knowledgePoint" style="display: none;"></article>
 
@@ -88,7 +88,7 @@
     <div class="wrap noBackg">
         <div class="bao_dul">
             <ul class="grade_nav_english">
-                <li class="grade_main active"  data-grade="low">
+                <li class="grade_main active" data-grade="low">
                     <a href="#low" data-toggle="tab" data-grade="low">Happy Reading AA</a>
                 </li>
                 <li class="grade_main" data-grade="high">
@@ -111,14 +111,14 @@
     <li>
         <a class="textbook" href="javascript:void(0)">
             <span class="textbook_num" id="newCount">1</span>
-            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
+            <img src="${bookCover}" data-id="${id}" data-name="${title}" data-article="knowledgePoints" alt="">
         </a>
     </li>
 </template>
 <template id="volumes-old-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
-            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
+            <img src="${bookCover}" data-id="${id}" data-name="${title}" data-article="knowledgePoints" alt="">
         </a>
     </li>
 </template>
@@ -126,14 +126,14 @@
     <li>
         <a class="textbook" href="javascript:void(0)">
             <span class="textbook_num" id="newCount">1</span>
-            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoint" alt="">
+            <img src="${bookCover}" data-id="${id}" data-name="${title}" data-article="knowledgePoint" alt="">
         </a>
     </li>
 </template>
 <template id="volumes-english-old-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
-            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoint" alt="">
+            <img src="${bookCover}" data-id="${id}" data-name="${title}" data-article="knowledgePoint" alt="">
         </a>
     </li>
 </template>
@@ -201,7 +201,23 @@
 <template id="title-pack-up-template">
     <p class="mltop_xiaoBiao">${title}</p>
 </template>
-<template id="chapter-new-template">
+<template id="chapter-new-like-template">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-new-unlike-template">
     <li class="neir_li">
         <img class="shang_new" src="images_version2/muluNew.png" alt="">
         <div class="neir_lidiv">
@@ -211,6 +227,20 @@
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
                 <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-old-like-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
                 <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
@@ -218,7 +248,7 @@
         </div>
     </li>
 </template>
-<template id="chapter-old-template">
+<template id="chapter-old-unlike-template">
     <li class="neir_li">
         <div class="neir_lidiv">
             <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
@@ -227,6 +257,21 @@
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
                 <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-new-like-challenge">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
                 <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
@@ -234,9 +279,24 @@
         </div>
     </li>
 </template>
-<template id="chapter-new-challenge">
+<template id="chapter-new-unlike-challenge">
     <li class="neir_li">
         <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-old-like-challenge">
+    <li class="neir_li">
         <div class="neir_lidiv">
             <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
         </div>
@@ -251,7 +311,7 @@
         </div>
     </li>
 </template>
-<template id="chapter-old-challenge">
+<template id="chapter-old-unlike-challenge">
     <li class="neir_li">
         <div class="neir_lidiv">
             <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
@@ -269,7 +329,7 @@
 </template>
 <!----------------------------------detail-structure----------------------------->
 <template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个--><!--语文-课程详情-->
-    <div class="wrap" >
+    <div class="wrap">
         <section class="head-title" id="knowledgePointTitle">
         </section>
         <section class="rain-main">
@@ -311,8 +371,8 @@
         <div class="rain-main">
             <!--lead-->
             <section class="challenge">
-                <div id="challenge"></div>
-                赶紧开始吧！
+                <div id="challenge" class="challenge-font"></div>
+                <!--赶紧开始吧！-->
             </section>
             <!--最强讲解-->
             <div class="module_math">
@@ -321,8 +381,8 @@
                     最强讲解<span>ZUI QIANG JIANG JIE</span>
                 </section>
                 <section>
-                    <div id="content1" class="explain_content"></div>
-                    <div id="video1"></div>
+                    <div id="content" class="explain_content"></div>
+                    <div id="video"></div>
                 </section>
             </div>
             <!--最强大脑-->
@@ -345,7 +405,7 @@
             </div>
 
             <!--readlike-->
-            <section class="content-bg lixi_Nomar" id="interaction"></section>
+            <section class="content-bg" id="interaction"></section>
         </div>
         <!--message-->
         <section class="mulu_bottom">
@@ -363,7 +423,7 @@
 <template id="mathtest-template"><!--X学习-数学-课程详情-挑战百分百-->
     <div class="wrap">
         <div class="catalog_pack_up" style="display:block">
-            <div class="mltop_main" id="pack_up_title"></div>
+            <div class="mltop_main" id="pack-up-title"></div>
             <img class="juchi" src="images_version2/juchi.png" alt="">
         </div>
         <div class="rain-main">
@@ -372,6 +432,21 @@
                 </ul>
             </div>
         </div>
+        <!--readlike-->
+        <div class="read-course">
+            <section class="content-bg" id="interaction"></section>
+        </div>
+        <!--message-->
+        <section class="mulu_bottom test-mess">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+                </div>
+            </div>
+            <section id="comments"></section>
+        </section>
     </div>
 </template>
 <template id="english-template"><!--英语-课程详情-->
@@ -475,9 +550,8 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <!--<img class="ul01_imgzan" src="img/zan-over.png" alt="" id="icon">-->
+                <!--<img class="icon" src="img/zan-over.png" alt="" id="icon">-->
                 <span class="icon">已点</span>
-                <!--<span class="favour">已点</span>-->
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -493,9 +567,8 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <!--<img class="ul01_imgzan" src="img/zan.png" alt="" id="icon">-->
+                <!--<img class="icon" src="img/zan.png" alt="" id="icon">-->
                 <span class="icon">未点</span>
-                <!--<span class="dislike"></span>-->
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -574,9 +647,8 @@
 </template>
 <template id="content-m-image-template">
     <div>
-        <p>${explainContent}</p>
-        <img class="muld_images" src="${href}" alt="">
-        <p class="mulu_dp math_color">
+        <img class="math_01" src="${href}" alt="">
+        <p class="content-font math_color">
             ${content}
         </p>
     </div>
@@ -608,6 +680,10 @@
         <img class="ceshi_ti1" src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
     </li>
+</template>
+<!--mathtest-->
+<template id="title-template">
+    <h3 class="test-title">${name}</h3>
 </template>
 <!--english-->
 <template id="english-envelope-template">
@@ -747,152 +823,6 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-//    $(function () {
-//        var data = {
-//            low: [
-//                {
-//                    type: 'new',
-//                    img: 'images_version2/yuwen_mulu1.png'
-//                },
-//                {
-//                    type: 'old',
-//                    img: 'images_version2/yuwen_mulu2.png'
-//                },
-//                {
-//                    type: 'expect',
-//                    img: 'images_version2/yuwen_mulu0.png'
-//                }
-//            ],
-//            high: [
-//                {
-//                    type: 'new',
-//                    img: 'images_version2/yuwen_mulu2.png'
-//                },
-//                {
-//                    type: 'old',
-//                    img: 'images_version2/yuwen_mulu1.png'
-//                },
-//                {
-//                    type: 'expect',
-//                    img: 'images_version2/yuwen_mulu0.png'
-//                }
-//            ],
-//            bookInfor: [
-//                {
-//                    type: 'bookinfor',
-//                    bookImg: 'images_version2/shuxue1.png',
-//                    bookName: '钟表喊你吃饭啦',
-//                    grade: '1-3年级',
-//                    chapterNum: '12'
-//                }
-//            ],
-//            packUpTitle: [
-//                {
-//                    type: 'packUp',
-//                    title: '钟表喊你吃饭啦'
-//                }
-//            ],
-//            chapter_section: [
-//                {
-//                    type: 'new',
-//                    title: '加与减',
-//                    peopleNum: '54682',
-//                    zan: 'images_version2/dianzan.png',
-//                    zanover: 'images_version2/zanover.png',
-//                    zanNum: '381'
-//                },
-//                {
-//                    type: 'old',
-//                    title: '简单的图形数量规律',
-//                    peopleNum: '54682',
-//                    zan: 'images_version2/dianzan.png',
-//                    zanover: 'images_version2/zanover.png',
-//                    zanNum: '381'
-//                },
-//                {
-//                    type: 'challenge',
-//                    title: '挑战百分百',
-//                    peopleNum: '54682',
-//                    zan: 'images_version2/dianzan.png',
-//                    zanover: 'images_version2/zanover.png',
-//                    zanNum: '381'
-//                }
-//            ],
-//            head_title: [
-//                {
-//                    type: 'headTitle',
-//                    name: '放纵不羁名垂青史的竹林七贤'
-//                }
-//            ],
-//            text_appreciate: [
-//                {
-//                    type: 'textAppreciate',
-//                    content: '陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
-//                    source: ' ——【南朝】刘义庆《世说新语·任诞》',
-//                }
-//            ],
-//            content_text: [
-//                {
-//                    type: 'contentText',
-//                    content: '魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？',
-//                }
-//            ],
-//            content_image: [
-//                {
-//                    type: 'contentImage',
-//                    href: 'images_version2/video1.png'
-//                }
-//            ],
-//            content_video: [
-//                {
-//                    type: 'contentVideo',
-//                    storePath: '',
-//                    cover: 'images_version2/video3.png'
-//                }
-//            ],
-//            challenge_num: [
-//                {
-//                    type: 'challengeNum',
-//                    order: '一'
-//                }
-//            ],
-//            title_math_details: [
-//                {
-//                    type: 'titleMathDetails',
-//                    name: '火柴竟是运动迷'
-//                }
-//            ],
-//            challenge_period: [
-//                {
-//                    type: 'challengePeriod',
-//                    content: '欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。'
-//                }
-//            ],
-//            explain_content: [
-//                {
-//                    type: 'explainContent',
-//                    explainContent: '今天，我们来学习加减法运算。',
-//                    href: 'images_version2/math4.png',
-//                    content: '在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
-//                }
-//            ],
-//            english_details: [
-//                {
-//                    type: 'englishDetails',
-//                    bookImg: 'images_version2/yingyu1.png',
-//                    bookName: 'My Family',
-//                    summary: '学习爸爸、妈妈、哥哥、姐姐等亲属称容词,如，mother，grandma等'
-//                }
-//            ],
-//            english_content: [
-//                {
-//                    type: 'englishContent',
-//                    img: 'img/eng_mo.png'
-//                }
-//            ],
-//        }
-</script>
-<script>
     /*
      *  [
      *     {
@@ -960,13 +890,70 @@
                             }
                             for (var i = 0; i < subjects.length; ++i) {
                                 var newVolume = {
-                                    name: '期待新书',
+                                    title: '期待新书',
                                     bookCover: 'images_version2/yuwen_mulu0.png',
-                                    type: 'old'
+                                    type: 'old',
+                                    knowledgePoints: []
                                 }
                                 subjects[i].low.push(newVolume);
                                 subjects[i].high.push(newVolume);
                             }
+//                            $.ajax({
+//                                type: 'GET',
+//                                //  url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
+//                                url: '/api/knowledge-points',
+//                                dataType: 'json',
+//                                success: function (kps) {
+//                                    var isNew = function (now, kp) {
+//                                        var result = false
+//                                        if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+//                                            result = true
+//                                        }
+//                                        return result
+//                                    }
+////                                var newLength=function(kp){
+////                                    var num=0;
+////                                    if(kp.type == 'normalNew'){
+////                                        num++;
+////                                    }
+////                                    return num;
+////                                }
+//                                    var now = new Date()
+//                                    for (var i = 0; i < kps.length; ++i) {
+//                                        var v = state.volume.getById(kps[i].volumeId)//state.knowledgePoints.value
+//                                        if (v) {
+//                                            //console.log(v.knowledgePoints)
+//                                            var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
+//                                            if (lastKp) {
+//                                                lastKp.nextId = kps[i].id
+//                                                kps[i].previousId = lastKp.id
+//                                            }
+//
+//                                            kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
+//                                            if (isNew(now, kps[i])) {
+//                                                if (kps[i].type) {
+//                                                    kps[i].type += 'New'
+//                                                } else {
+//                                                    kps[i].type = 'normalNew'
+//                                                }
+//                                                v.knowledgePoints.unshift(kps[i])
+//                                            } else {
+//                                                if (kps[i].type) {
+//                                                    kps[i].type += 'Old'
+//                                                } else {
+//                                                    kps[i].type = 'normalOld'
+//                                                }
+//                                                v.knowledgePoints.push(kps[i])
+//                                            }
+//                                        } else {
+//                                            //console.log(kps[i])
+//                                        }
+//                                    }
+//                                    state.knowledgePoints.show()
+//                                },
+//                                error: function (r) {
+//                                }
+//                            })
                             var subjectId = g.getUrlParameter('subjectId')
                             $.ajax({
                                 type: "get",
@@ -974,7 +961,7 @@
                                 dataType: "json",
                                 success: function (pop) {
                                     state.volumes.popuped = pop.popup;
-                                  //  state.volumes.popuped = false;
+                                    //  state.volumes.popuped = false;
 
                                     history.pushState(null, null, '/content2.html#volumes')
                                     state.volumes.changeId(subjectId)
@@ -1007,8 +994,16 @@
 
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article;
-                switchTo(id);
-                state[id].changeId(e.target.dataset.id)
+                var name = e.target.dataset.name;
+                if (name == "期待新书") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.returnValue = false;
+                    e.cancelBubble = true;
+                } else {
+                    switchTo(id);
+                    state[id].changeId(e.target.dataset.id)
+                }
             })
 
             $(document).on('shown.bs.tab', '.grade-main', function (e) {
@@ -1248,7 +1243,7 @@
                                             } else {
                                                 kps[i].type = 'normalNew'
                                             }
-                                          v.knowledgePoints.unshift(kps[i]);
+                                            v.knowledgePoints.unshift(kps[i]);
                                         } else {
                                             if (kps[i].type) {
                                                 kps[i].type += 'Old'
@@ -1269,19 +1264,20 @@
                     } else {
                         state.knowledgePoints.show()
                     }
+//                    state.knowledgePoints.show()
                 }
             },
             value: null,
             show: function () {
                 var getGrade = function (gradeValue) {
                     var result = ''
-                    if(state.volumes.parentId =='1' ){
+                    if (state.volumes.parentId == '1') {
                         if (gradeValue == 20) {
                             result = '1-2年级'
                         } else if (gradeValue == 21) {
                             result = '3-6年级'
                         }
-                    }else if(state.volumes.parentId == '2'){
+                    } else if (state.volumes.parentId == '2') {
                         if (gradeValue == 20) {
                             result = '1-3年级'
                         } else if (gradeValue == 21) {
@@ -1444,7 +1440,7 @@
                                                 async: false,
                                                 success: function (like) {
                                                     state.knowledgePoint.value.contents.comments[s].liked = like.like;
-                                                    state.knowledgePoint.show()
+//                                                    state.knowledgePoint.show()
                                                 }
                                             })
                                         }
@@ -1693,7 +1689,7 @@
 
                                 proc({
                                     data: value.contents.contents,
-                                    containerId: 'content1',
+                                    containerId: 'content',
                                     alterTemplates: [
                                         {type: 'text', templateId: 'content-text-template'},
                                         {type: 'imageText', templateId: 'content-m-image-template'}
@@ -1703,7 +1699,7 @@
                                 proc({
                                     templateId: 'video-template',
                                     data: value.contents.video,
-                                    containerId: 'video1'
+                                    containerId: 'video'
                                 });
 
                                 //data.problems
@@ -1780,21 +1776,22 @@
                                 proc({
                                     templateId: 'title-template',
                                     data: value,
-                                    containerId: 'title'
+                                    containerId: 'pack-up-title'
                                 });
 
                                 proc({
-                                    templateId: 'question-template',
+                                    templateId: 'strongest-brain-template',
                                     data: value.contents.problems,
-                                    containerId: 'question',
+                                    containerId: 'strongest-brain',
                                     secondBind: [
                                         {
                                             extPoint: 'options',
                                             dataFieldName: 'options',
-                                            templateId: 'question-option-template'
+                                            templateId: 'strongest-brain-option-template'
                                         }
                                     ]
                                 });
+
 
                                 //  interaction-likes
                                 var container = state.knowledgePoint.interaction;
@@ -1809,6 +1806,7 @@
 
                                 break
                         }
+                        break
                     case 3:
                     case "3":
                         proc({

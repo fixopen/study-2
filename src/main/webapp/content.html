@@ -664,6 +664,62 @@
                                     //console.log(vs[i])
                                 }
                             }
+//                            $.ajax({
+//                                type: 'GET',
+//                              //  url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
+//                                url: '/api/knowledge-points',
+//                                dataType: 'json',
+//                                success: function (kps) {
+//                                    var isNew = function (now, kp) {
+//                                        var result = false
+//                                        if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+//                                            result = true
+//                                        }
+//                                        return result
+//                                    }
+////                                var newLength=function(kp){
+////                                    var num=0;
+////                                    if(kp.type == 'normalNew'){
+////                                        num++;
+////                                    }
+////                                    return num;
+////                                }
+//                                    var now = new Date()
+//                                    for (var i = 0; i < kps.length; ++i) {
+//                                        var v = state.volume.getById(kps[i].volumeId)//state.knowledgePoints.value
+//                                        if (v) {
+//                                            //console.log(v.knowledgePoints)
+//                                            var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
+//                                            if (lastKp) {
+//                                                lastKp.nextId = kps[i].id
+//                                                kps[i].previousId = lastKp.id
+//                                            }
+//
+//                                            kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
+//                                            if (isNew(now, kps[i])) {
+//                                                if (kps[i].type) {
+//                                                    kps[i].type += 'New'
+//                                                } else {
+//                                                    kps[i].type = 'normalNew'
+//                                                }
+//                                                v.knowledgePoints.unshift(kps[i])
+//                                            } else {
+//                                                if (kps[i].type) {
+//                                                    kps[i].type += 'Old'
+//                                                } else {
+//                                                    kps[i].type = 'normalOld'
+//                                                }
+//                                                v.knowledgePoints.push(kps[i])
+//                                            }
+//                                        } else {
+//                                            //console.log(kps[i])
+//                                        }
+//                                    }
+//                                    state.knowledgePoints.show()
+//                                },
+//                                error: function (r) {
+//                                }
+//                            })
 
                             var subjectId = g.getUrlParameter('subjectId')
                             $.ajax({
@@ -906,6 +962,7 @@
                     } else {
                         state.knowledgePoints.show()
                     }
+//                    state.knowledgePoints.show()
                 }
             },
             value: null,
