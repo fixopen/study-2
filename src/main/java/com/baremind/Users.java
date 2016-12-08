@@ -295,7 +295,10 @@ public class Users {
                         cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
                         Date oneYearAfter = cal.getTime();
                         c.setEndTime(oneYearAfter);
-                        c.setAmount(588L);
+                        c.setAmount(5880L);
+                        if (ac.getCardNo().startsWith("03")) {
+                            c.setAmount(1680L);
+                        }
                         c.setUserId(id);
                         JPAEntry.genericPut(c);
                         result = Response.ok(c).build();
