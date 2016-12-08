@@ -438,10 +438,9 @@
     //var count =0;
   //  var oppid;
     var state = {
-        appId: null,
+        openId: null,
        // duan: null,
         pan: null,
-        wechatuserId:null,
         switchTo: function (id) {
             state.currentArticle.style.display = 'none'
             state.currentArticle = document.getElementById(id)
@@ -449,22 +448,26 @@
             state.currentArticle.style.display = 'block'
             state[id].init()
         },
+        switchToFront: function (id) {
+            state.currentArticle.style.display = 'none'
+            state.currentArticle = document.getElementById(id)
+            state.currentArticle.style.display = 'block'
+            state[id].init()
+        },
         currentArticle: document.getElementById('sign'),
         init: function () {
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId, '/api')
-            appId = g.getUrlParameter("oppid");
-            wechatuserId = g.getUrlParameter("wechatuserId");
-            alert("appId="+appId)
-            alert("wechatuserId="+wechatuserId)
+            openId = g.getUrlParameter("openId");
+            alert("openId="+openId)
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 state.switchTo(id)
             })
-            if (appId != null) {
+            if (openId != null) {
+                state.switchToFront("sign")
+            } else if(sessionId != null) {
                 state.switchTo("user")
-            } else {
-                state.switchTo("sign")
             }
             //  state['sign'].init()
             history.pushState(null, null, '/user.html#user');
@@ -505,7 +508,6 @@
             return result
         },
         sign: {
-
             init: function () {
                 document.getElementById("sign").style.display = "block"
                 var biaoji = 1;
@@ -597,8 +599,8 @@
                             deviceType: deviceType,
                             deviceNo: nub,
                             code:$("#Verification").val(),
-                            openId: g.getUrlParameter('openId'),
-                            wechatuserId:state.wechatuserId,
+                           //openId: g.getUrlParameter('openId'),
+                            openId:state.openId,
                         }
                         var dense = $("#Dense").val();
                         if (dense.length >= 6 && dense.length <= 16) {
@@ -632,8 +634,8 @@
                             deviceType: deviceType,
                             deviceNo: dnub,
                             code:$("#Verification").val(),
-                            openId: g.getUrlParameter('openId'),
-                            wechatuserId:state.wechatuserId,
+                           // openId: g.getUrlParameter('openId'),
+                            openId:state.openId,
                         }
                         send(loginInfo)
                     }
@@ -799,7 +801,8 @@
                         contentType: "application/json; charset=utf-8",
                         success: function (e) {
                             //alert("成功")
-                            history.back();
+//                            switchToFront
+                            state.switchTo('user');
                         },
                         error: function (e) {
                             alert('修改用户信息失败，请刷新以重试')
@@ -823,9 +826,9 @@
         },
         head: {
             init: function () {
-
                 var url = window.location.href;
                 url = url.replace(/[/]/g, ',')
+                gettick();
                 $.ajax({
                     type: "get",
                     url: "/api/public-account/config/" + url,
@@ -849,7 +852,7 @@
                     });
                     wx.error(function (res) {
                         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                        gettick();
+
                         alert("服务器繁忙，请刷新！")
                     });
                     wx.ready(function () {
@@ -985,7 +988,7 @@
                         data.password = document.getElementById('password').value;
                         data.phoneNumber = document.getElementById('phoneNumber').value;
                         data.validCode = document.getElementById('validCode').value;
-                        data.wechatuserId = state.wechatuserId;
+                        data.openId = state.openId;
                         var url = 'api/users/cards'
                         /* if (userId) {
                          url = 'api/users/' + userId + '/cards'
@@ -1000,7 +1003,7 @@
                                 array.push(r.data);
                                 //alert(JSON.stringify(array))
                              //   if(array[0].no.replace())
-                                state.switchTo('gold')
+                                state.switchToFront('gold')
                                 diao();
                                 // state.cards.isCards = false
 

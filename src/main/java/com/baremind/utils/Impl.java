@@ -143,7 +143,7 @@ public class Impl {
     public static <T> Response updateById(String sessionId, Long id, T newData, Class<T> type, BiConsumer<T, T> update, PostProcessor<T> postProcessor) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", Long.parseLong(sessionId));
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
             if (admin.getIsAdministrator()) {
                 result = Response.status(404).build();
                 T existData = JPAEntry.getObject(type, "id", id);

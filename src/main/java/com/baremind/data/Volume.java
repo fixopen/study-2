@@ -27,8 +27,8 @@ public class Volume implements com.baremind.data.Entity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "cover_id")
-    private Long coverId;
+    @Column(name = "image_id")
+    private Long imageId;
 
     @Column(name = "\"order\"")
     private Integer order;
@@ -65,12 +65,12 @@ public class Volume implements com.baremind.data.Entity {
         this.name = title;
     }
 
-    public Long getCoverId() {
-        return coverId;
+    public Long getImageId() {
+        return imageId;
     }
 
-    public void setCoverId(Long imageId) {
-        this.coverId = imageId;
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 
     public Integer getOrder() {
@@ -87,6 +87,7 @@ public class Volume implements com.baremind.data.Entity {
         vm.put("grade", volume.getGrade());
         vm.put("order", volume.getOrder());
         vm.put("subjectId", volume.getSubjectId());
+        vm.put("coverId", volume.getImageId());
         vm.put("name", volume.getName());
         vm.put("type", "old");
         EntityManager em = JPAEntry.getEntityManager();

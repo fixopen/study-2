@@ -48,15 +48,6 @@ public class Sessions {
         private String deviceNo;
         private String openId;
         private String code;
-        private Long wechatuserId;
-
-        public Long getWechatuserId() {
-            return wechatuserId;
-        }
-
-        public void setWechatuserId(Long wechatuserId) {
-            this.wechatuserId = wechatuserId;
-        }
 
         public String getCode() {
             return code;
@@ -216,8 +207,10 @@ public class Sessions {
                 JPAEntry.genericPost(device);
             }
             Session session = PublicAccounts.putSession(now, user.getId(), device.getId());
-            telephone.setLogonCount(0l);
-            JPAEntry.genericPut(telephone);
+            if(telephone !=null) {
+                telephone.setLogonCount(0l);
+                JPAEntry.genericPut(telephone);
+            }
             result = Response.ok(session)
                     .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                     .build();
