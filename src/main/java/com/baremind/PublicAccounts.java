@@ -1038,15 +1038,18 @@ public class PublicAccounts {
     @Produces(MediaType.TEXT_HTML)
     public Response user(@Context HttpServletRequest request, @QueryParam("code") String code) {
         Response result = null;
+        System.out.println("===================开始==========================");
         Map<String, Object> tokenInfo = getTokenByCode(code);
         User user = null;
         String openId = (String) tokenInfo.get("openid");
         WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
+        System.out.println("根据openId得到这个微信用户"+new Gson().toJson(wechatUser));
         if (wechatUser == null) {
             wechatUser = new WechatUser();
             wechatUser.setId(IdGenerator.getNewId());
             fillWechatUserByTokenInfo(wechatUser, tokenInfo);
             WechatUserInfo userInfo = getUserInfo((String) tokenInfo.get("access_token"), openId);
+            System.out.println("根据openId得不到这个微信用户这是新的="+new Gson().toJson(userInfo));
             if (userInfo != null) {
                 fillWechatUserByUserInfo(wechatUser, userInfo);
                 EntityManager em = JPAEntry.getNewEntityManager();
@@ -1057,6 +1060,7 @@ public class PublicAccounts {
             }
         } else {
             user = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+            System.out.println("根据openId得到这个微信用户的userId查到那个user"+new Gson().toJson(user));
             fillWechatUserByTokenInfo(wechatUser, tokenInfo);
             EntityManager em = JPAEntry.getNewEntityManager();
             em.getTransaction().begin();
@@ -1067,18 +1071,24 @@ public class PublicAccounts {
 
         Session s = null;
         if (user != null) {
+            System.out.println("根据openId得到这个微信用户的userId查到那个user不等于NULL");
             Cookie[] cookies = request.getCookies();
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("sessionId")) {
+                    System.out.println("根据openId得到这个微信用户的userId查到那个user返回sessionId");
                     s = getSession(cookie.getValue());
+                    System.out.println("sessionId============================================"+s.getIdentity());
                     break;
                 }
             }
         }
         try {
             if (s == null) {
+                System.out.println("openId="+openId);
                 result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?openId=" + openId)).build();
             } else {
+                System.out.println("sessionId="+s.getIdentity());
+                System.out.println("wechatuserId="+wechatUser.getId());
                 result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId=" + s.getIdentity()+"?wechatuserId="+wechatUser.getId())).build();
             }
         } catch (URISyntaxException e) {

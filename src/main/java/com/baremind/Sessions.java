@@ -5,7 +5,9 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -46,14 +48,14 @@ public class Sessions {
         private String deviceNo;
         private String openId;
         private String code;
-        private String ip;
+        private Long wechatuserId;
 
-        public String getIp() {
-            return ip;
+        public Long getWechatuserId() {
+            return wechatuserId;
         }
 
-        public void setIp(String ip) {
-            this.ip = ip;
+        public void setWechatuserId(Long wechatuserId) {
+            this.wechatuserId = wechatuserId;
         }
 
         public String getCode() {
@@ -127,13 +129,13 @@ public class Sessions {
         return user;
     }
 
-    private Response loginImpl(LoginInfo loginInfo) {
+    private Response loginImpl(LoginInfo loginInfo,String ip) {
         Response result = Response.status(404).build();
         Date now = new Date();
         User user = null;
         Map<String, Object> conditions = new HashMap<>();
         Map<String, Object> filter = new HashMap<>();
-
+        User telephone = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
         switch (loginInfo.getType()) {
             case "validationCode":
                 conditions.put("phoneNumber", loginInfo.getInfo());
@@ -156,7 +158,7 @@ public class Sessions {
                 }
                 break;
             case "telephone":
-                User telephone = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
+
                 if(telephone != null){
                     if(telephone.getLogonCount() <= 5){
                         conditions.put("telephone", loginInfo.getInfo());
@@ -172,15 +174,15 @@ public class Sessions {
                             return  result;//用户名或密码错误
                         }
                     }else
-                        if(telephone.getLogonCount() > 5 && loginInfo.getCode() == null) {
+                        if(telephone.getLogonCount() > 5 && loginInfo.getCode() == "") {
                         return  result = Response.status(410).build();//登录次数超过五次
                     }else
-                        if(telephone.getLogonCount() > 5 && loginInfo.getCode() != null) {
+                        if(telephone.getLogonCount() > 5 && loginInfo.getCode() != "") {
                             conditions.put("telephone", loginInfo.getInfo());
                             conditions.put("password", loginInfo.getKey());
                             user = JPAEntry.getObject(User.class, conditions);
-                            filter.put("ip", loginInfo.getIp());
-                            filter.put("code", loginInfo.getCode());
+                            filter.put("phoneNumber", ip);
+                            filter.put("validCode", loginInfo.getCode());
                             ValidationCode validationCode = JPAEntry.getObject(ValidationCode.class, filter);
                             if (user == null) {
                                 return result;//用户名或密码错误
@@ -192,8 +194,6 @@ public class Sessions {
                 }else{
                      return  result = Response.status(412).build();//手机没有激活
                 }
-
-
                 break;
             case "name":
                 conditions.put("loginName", loginInfo.getInfo());
@@ -216,6 +216,8 @@ public class Sessions {
                 JPAEntry.genericPost(device);
             }
             Session session = PublicAccounts.putSession(now, user.getId(), device.getId());
+            telephone.setLogonCount(0l);
+            JPAEntry.genericPut(telephone);
             result = Response.ok(session)
                     .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                     .build();
@@ -230,15 +232,15 @@ public class Sessions {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response recreate(LoginInfo loginInfo) {
-        return loginImpl(loginInfo);
+    public Response recreate(@Context HttpServletRequest request,LoginInfo loginInfo) {
+        return loginImpl(loginInfo,request.getRemoteAddr());
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(LoginInfo loginInfo) {
-        return loginImpl(loginInfo);
+        return loginImpl(loginInfo,null);
     }
 
     private static class Updater implements BiConsumer<Session, Session> {

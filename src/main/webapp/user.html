@@ -48,7 +48,7 @@
                     <li class="mine_zuli">
                         <span class="mine_leftsp">密码</span>
                         <input class="mine_rightip" type="password" id="Dense" placeholder="请输入6-16位密码">
-                        <a class="eye" href="#"></a>
+                        <!--<a class="eye" href="#"></a>-->
                         <i class="errorTs" id="errorpassword1">
                             <!--密码错误-->
                         </i>
@@ -56,6 +56,7 @@
                     <li class="mine_zuli zuli_yzm" style="display: none;" id="tu">
                         <span class="mine_leftsp">验证码</span>
                         <input class="mine_rightip" type="password" id="Verification" placeholder="请输入验证码">
+                        <img src="" id="tuxing" class="yanZma" >
                         <button class="yanZma" id="huan">点击换一张</button>
                         <i class="errorTs">
                             <!--验证码错误-->
@@ -440,6 +441,7 @@
         appId: null,
        // duan: null,
         pan: null,
+        wechatuserId:null,
         switchTo: function (id) {
             state.currentArticle.style.display = 'none'
             state.currentArticle = document.getElementById(id)
@@ -452,7 +454,9 @@
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId, '/api')
             appId = g.getUrlParameter("oppid");
-            alert(appId)
+            wechatuserId = g.getUrlParameter("wechatuserId");
+            alert("appId="+appId)
+            alert("wechatuserId="+wechatuserId)
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 state.switchTo(id)
@@ -516,6 +520,11 @@
                     document.getElementById("username").style.display = "block";
                     document.getElementById("short").style.display = "none";
                     biaoji = 1;
+                })
+
+                var hu = document.getElementById("huan");
+                hu.addEventListener('click', function (e) {
+                    state.sign.huan();
                 })
                 var deviceType;
                 var fapassword = document.getElementById('fapassword');
@@ -587,7 +596,9 @@
                             type: "telephone",
                             deviceType: deviceType,
                             deviceNo: nub,
+                            code:$("#Verification").val(),
                             openId: g.getUrlParameter('openId'),
+                            wechatuserId:state.wechatuserId,
                         }
                         var dense = $("#Dense").val();
                         if (dense.length >= 6 && dense.length <= 16) {
@@ -620,7 +631,9 @@
                             type: "validationCode",
                             deviceType: deviceType,
                             deviceNo: dnub,
+                            code:$("#Verification").val(),
                             openId: g.getUrlParameter('openId'),
+                            wechatuserId:state.wechatuserId,
                         }
                         send(loginInfo)
                     }
@@ -636,6 +649,7 @@
                             success: function (a) {
                                 alert("登录成功")
                                 state.switchTo('user')
+                                history.length(0)
                             },
                             error: function (e) {
                                 switch (e.status){
@@ -650,6 +664,7 @@
                                         break;
                                     case 410:
                                         //超过五次了
+                                        state.sign.huan();
                                         document.getElementById("tu").style.display="block"
                                         document.getElementById("zhanghaoerror").innerHTML = "错误次数超过五次，请输入验证码！"
                                         break;
@@ -666,7 +681,15 @@
                 })
             },
             huan: function () {
-                
+                $.ajax({
+                    type:"get",
+                    url:"api/medias/validation-picture",
+                    dataType:"json",
+                    success:function (e) {
+                        alert(e)
+                        document.getElementById("tuxing").src="e"
+                    }
+                })
             }
 
         },
@@ -962,6 +985,7 @@
                         data.password = document.getElementById('password').value;
                         data.phoneNumber = document.getElementById('phoneNumber').value;
                         data.validCode = document.getElementById('validCode').value;
+                        data.wechatuserId = state.wechatuserId;
                         var url = 'api/users/cards'
                         /* if (userId) {
                          url = 'api/users/' + userId + '/cards'

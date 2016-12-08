@@ -651,6 +651,15 @@ public class Users {
         private String password;
         private String phoneNumber;
         private String validCode;
+        private Long wechatuserId;
+
+        public Long getWechatuserId() {
+            return wechatuserId;
+        }
+
+        public void setWechatuserId(Long wechatuserId) {
+            this.wechatuserId = wechatuserId;
+        }
 
         String getCardNo() {
             return cardNo;
@@ -908,16 +917,18 @@ public class Users {
                                 c.setEndTime(oneYearAfter);
                                 c.setAmount(588L);
                                 User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                                if (user == null) {
+                                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", ac.getWechatuserId());
+                                if (user == null && wechatUser != null) {
                                     user = new User();
                                     user.setId(IdGenerator.getNewId());
                                     user.setTelephone(ac.getPhoneNumber());
                                     user.setLoginName(ac.getPhoneNumber());
                                     user.setCreateTime(now);
                                     user.setUpdateTime(now);
-                                    user.setName("");
-                                    user.setSex(0);
+                                    user.setName(wechatUser.getNickname());
+                                    user.setSex(wechatUser.getSex());
                                     user.setAmount(0l);
+                                    user.setHead(wechatUser.getHead());
                                     JPAEntry.genericPost(user);
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
