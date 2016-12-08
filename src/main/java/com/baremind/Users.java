@@ -314,7 +314,10 @@ public class Users {
                                     Date oneYearAfter = cal.getTime();
 
                                     c.setEndTime(oneYearAfter);
-                                    c.setAmount(588.0);
+                                    c.setAmount(5880L);
+                                    if (ac.getCardNo().startsWith("03")) {
+                                        c.setAmount(1680L);
+                                    }
                                     User users = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                                     if (users == null) {
                                         user = new User();
