@@ -3,6 +3,7 @@ package com.baremind.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public interface PostProcessor<T> {
         if (accept != null) {
             filtered = filter(entities, accept);
         }
-        return filtered.stream().map(this::convert).collect(Collectors.toList());
+        return filtered.stream().map(this::convert).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     Map<String, Object> convert(T entity);

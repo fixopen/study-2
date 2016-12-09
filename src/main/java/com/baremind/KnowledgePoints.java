@@ -8,6 +8,7 @@ import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -29,19 +30,25 @@ public class KnowledgePoints {
         for (KnowledgePoint ri : r) {
             ids.add(ri.getId().toString());
         }
+        List<KnowledgePoint.ContentStats> x = new ArrayList<>();
+        KnowledgePoint.ContentStats v = new KnowledgePoint.ContentStats();
+        v.setId(100L);
+        v.setType("problem");
+        v.setCount(3L);
+        x.add(v);
         EntityManager em = JPAEntry.getEntityManager();
-        String contentCountQuery = "SELECT knowledge_point_id, object_type, count(*) FROM knowledge_point_content_maps WHERE knowledge_point_id IN (" + Resources.join(ids) + ") GROUP BY knowledge_point_id, object_type";
-        TypedQuery<KnowledgePoint.ContentStats> cq = (TypedQuery<KnowledgePoint.ContentStats>)em.createNativeQuery(contentCountQuery, KnowledgePoint.ContentStats.class);
-        List<KnowledgePoint.ContentStats> contentStats = cq.getResultList();
-        String likeCountQuery = "SELECT object_id, count(*) FROM logs WHERE object_type = 'knowledge-point' AND object_id IN (" + Resources.join(ids) + ") AND action = 'like' GROUP BY object_id";
-        TypedQuery<KnowledgePoint.BaseStats> lq = (TypedQuery<KnowledgePoint.BaseStats>)em.createNativeQuery(likeCountQuery, KnowledgePoint.BaseStats.class);
-        List<KnowledgePoint.BaseStats> likeStats = lq.getResultList();
-        String readCountQuery = "SELECT object_id, count(*) FROM logs WHERE object_type = 'knowledge-point' AND object_id IN (" + Resources.join(ids) + ") AND action = 'read' GROUP BY object_id";
-        TypedQuery<KnowledgePoint.BaseStats> rq = (TypedQuery<KnowledgePoint.BaseStats>)em.createNativeQuery(readCountQuery, KnowledgePoint.BaseStats.class);
-        List<KnowledgePoint.BaseStats> readStats = lq.getResultList();
-        String likedQuery = "SELECT object_id, count(*) FROM logs WHERE object_type = 'knowledge-point' AND object_id IN (" + Resources.join(ids) + ") AND action = 'read' AND user_id = " + JPAEntry.getLoginId(sessionId).toString() + " GROUP BY object_id";
-        TypedQuery<KnowledgePoint.BaseStats> ldq = (TypedQuery<KnowledgePoint.BaseStats>)em.createNativeQuery(likedQuery, KnowledgePoint.BaseStats.class);
-        List<KnowledgePoint.BaseStats> likedStats = ldq.getResultList();
+        String contentCountQuery = "SELECT m.knowledgePointId, m.type, count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId IN (" + Resources.join(ids) + ") GROUP BY m.knowledgePointId, m.type";
+        Query cq = em.createQuery(contentCountQuery, KnowledgePoint.ContentStats.class);
+        final List<Object[]> contentStats = cq.getResultList();
+        String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
+        Query lq = em.createQuery(likeCountQuery, KnowledgePoint.BaseStats.class);
+        final List<Object[]> likeStats = lq.getResultList();
+        String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
+        Query rq = em.createQuery(readCountQuery, KnowledgePoint.BaseStats.class);
+        final List<Object[]> readStats = lq.getResultList();
+        String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginId(userId).toString() + " GROUP BY l.objectId";
+        Query ldq = em.createQuery(likedQuery, KnowledgePoint.BaseStats.class);
+        final List<Object[]> likedStats = ldq.getResultList();
 
         Map<String, String> orders = new HashMap<>();
         orders.put("order", "ASC");
