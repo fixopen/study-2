@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 @Path("users")
 public class Users {
@@ -614,10 +616,14 @@ public class Users {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             result = Response.status(404).build();
-            List<User> teachers = JPAEntry.getList(User.class, "id", "IN (SELECT s.teacherId FROM Scheduler s)");
+            EntityManager em = JPAEntry.getEntityManager();
+            String contentCountQuery = "SELECT s.teacherId FROM Scheduler s";
+            TypedQuery<Long> cq = em.createQuery(contentCountQuery, Long.TYPE);
+            final List<Long> teacherIds = cq.getResultList();
+            final List<String> teacherIdsString = teacherIds.stream().map(Object::toString).collect(Collectors.toList());
+            List<User> teachers = Resources.getList(em, "id", teacherIdsString, User.class);
             if (!teachers.isEmpty()) {
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                result = Response.ok(gson.toJson(teachers)).build();
+                result = Impl.finalResult(teachers, null, null);
             }
         }
         return result;

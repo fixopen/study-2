@@ -3,7 +3,6 @@ package com.baremind.data;
 import com.baremind.Logs;
 import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
-import com.sun.xml.internal.rngom.parse.host.Base;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -280,8 +279,8 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         List<Video> videoObjects = getList(em, videoIds, Video.class);
 
         List<Problem> problemObjects = getList(em, problemIds, Problem.class);
-        List<ProblemOption> problemOptionObjects = Resources.getListByColumn(em, "problemId", problemIds, ProblemOption.class);
-        List<ProblemStandardAnswer> problemStandardAnswerObjects = Resources.getListByColumn(em, "problemId", problemIds, ProblemStandardAnswer.class);
+        List<ProblemOption> problemOptionObjects = Resources.getList(em, "problemId", problemIds, ProblemOption.class);
+        List<ProblemStandardAnswer> problemStandardAnswerObjects = Resources.getList(em, "problemId", problemIds, ProblemStandardAnswer.class);
 
         List<ImageText> imageTextObject = getList(em, imageTextIds, ImageText.class);
 
