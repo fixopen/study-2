@@ -45,9 +45,9 @@ public class KnowledgePoints {
 
         Map<String, String> orders = new HashMap<>();
         orders.put("order", "ASC");
-        final Date now = new Date();
-        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats, now, yesterday), null);
+//        final Date now = new Date();
+//        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats), null);
 
 //        Map<String, String> orders = new HashMap<>();
 //        orders.put("order", "ASC");

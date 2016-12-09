@@ -147,7 +147,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         }
     }
 
-    public static Map<String, Object> convertToMap(KnowledgePoint kp, List<BaseStats> likeCount, List<BaseStats> likedCount, List<BaseStats> readCount, List<ContentStats> contentType, Date now, Date yesterday) {
+    public static Map<String, Object> convertToMap(KnowledgePoint kp, List<BaseStats> likeCount, List<BaseStats> likedCount, List<BaseStats> readCount, List<ContentStats> contentType) {
         Map<String, Object> kpm = new HashMap<>();
         kpm.put("id", kp.getId());
         kpm.put("volumeId", kp.getVolumeId());
