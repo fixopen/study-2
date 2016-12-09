@@ -32,6 +32,8 @@
         <class>com.baremind.data.PinyinText</class>
         <class>com.baremind.data.AudioRecord</class>
         <class>com.baremind.data.Book</class>
+        <class>com.baremind.data.KnowledgePoint.ContentStats</class>
+        <class>com.baremind.data.KnowledgePoint.BaseStats</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://139.129.214.229:5432/study"/>
