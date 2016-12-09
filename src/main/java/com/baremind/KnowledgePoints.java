@@ -3,12 +3,16 @@ package com.baremind;
 import com.baremind.data.*;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
@@ -17,6 +21,57 @@ import java.util.function.Predicate;
 
 @Path("knowledge-points")
 public class KnowledgePoints {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@Context HttpServletRequest req, @CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+        req.getRemoteAddr();
+        List<KnowledgePoint> r = JPAEntry.getList(KnowledgePoint.class, CharacterEncodingFilter.getFilters(filter));
+        List<String> ids = new ArrayList<>();
+        for (KnowledgePoint ri : r) {
+            ids.add(ri.getId().toString());
+        }
+        List<KnowledgePoint.ContentStats> x = new ArrayList<>();
+        KnowledgePoint.ContentStats v = new KnowledgePoint.ContentStats();
+        v.setId(100L);
+        v.setType("problem");
+        v.setCount(3L);
+        x.add(v);
+        EntityManager em = JPAEntry.getEntityManager();
+        String contentCountQuery = "SELECT m.knowledgePointId, m.type, count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId IN (" + Resources.join(ids) + ") GROUP BY m.knowledgePointId, m.type";
+        Query cq = em.createQuery(contentCountQuery, KnowledgePoint.ContentStats.class);
+        final List<Object[]> contentStats = cq.getResultList();
+        String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
+        Query lq = em.createQuery(likeCountQuery, KnowledgePoint.BaseStats.class);
+        final List<Object[]> likeStats = lq.getResultList();
+        String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
+        Query rq = em.createQuery(readCountQuery, KnowledgePoint.BaseStats.class);
+        final List<Object[]> readStats = lq.getResultList();
+        String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginId(userId).toString() + " GROUP BY l.objectId";
+        Query ldq = em.createQuery(likedQuery, KnowledgePoint.BaseStats.class);
+        final List<Object[]> likedStats = ldq.getResultList();
+
+        Map<String, String> orders = new HashMap<>();
+        orders.put("order", "ASC");
+//        final Date now = new Date();
+//        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        return Impl.get(userId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats), null);
+
+//        Map<String, String> orders = new HashMap<>();
+//        orders.put("order", "ASC");
+//        final Date now = new Date();
+//        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+//        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, JPAEntry.getLoginId(sessionId), now, yesterday), (knowledgePoint) -> {
+//            boolean result = true;
+//            EntityManager em = JPAEntry.getEntityManager();
+//            String stats = "SELECT COUNT(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + knowledgePoint.getId().toString();
+//            TypedQuery<Long> q = em.createQuery(stats, Long.class);
+//            Long c = q.getSingleResult();
+//            if (c == 0L) {
+//                result = false;
+//            }
+//            return result;
+//        });
+    }
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
         for (T textItem : container) {
@@ -375,7 +430,7 @@ public class KnowledgePoints {
         return result;
     }
 
-    @GET //根据条件查询
+   /* @GET //根据条件查询
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKnowledgePoints(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
@@ -406,7 +461,7 @@ public class KnowledgePoints {
         }
         return result;
     }
-
+*/
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
