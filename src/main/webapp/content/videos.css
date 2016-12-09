@@ -822,8 +822,8 @@ li.active > a.tab_toggle {
 }
 
 .waiting {
-    width: 100%;
-    height: 100%;
+    /*width: 100%;*/
+    /*height: 100%;*/
     background: url('../img/backG.png') 0 0 no-repeat;
     background-size: 100% 100%;
 }

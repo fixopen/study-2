@@ -90,7 +90,7 @@
 </head>
 
 <body>
-<article style="display: none;" id="main">
+<article id="main">
     <div class="tan"></div>
     <div class="window1"><!-- 有此卡扣豆提醒 -->
         <a class="windowClose" href="#"></a>
@@ -131,12 +131,12 @@
             <!-- Nav tabs -->
             <div class="tab_div">
                 <ul role="tablist" class="tab_switch  nav nav-tabs">
-                    <li class="tab_swli active " role="presentation">
+                    <li class="tab_swli  " role="presentation" id="chineseZero">
                         <a class="tab_toggle" href="#zero" role="tab" data-toggle="tab">语文
                             <span class="tab_swlispan">(<i id="Cc"></i>)</span>
                         </a>
                     </li>
-                    <li role="presentation" class="tab_swli tab_swlino">
+                    <li role="presentation" class="tab_swli tab_swlino" id="mathOne">
                         <a class="tab_toggle" href="#one" role="tab" data-toggle="tab">数学
                             <span class="tab_swlispan">(<i id="Mc"></i>)</span>
                         </a>
@@ -145,7 +145,7 @@
             </div>
 
             <!-- Tab panes -->
-            <div role="tabpanel" class="nei_rong tab-pane active" id="zero">
+            <div role="tabpanel" class="nei_rong tab-pane" id="zero">
                 <div class="tab-zhibo">
                     <div id="zeroPlaying"></div>
                     <div id="zeroFuture"></div>
@@ -169,8 +169,32 @@
         </div>
     </div>
 </article>
-<article id="passed" class="noBackg">
-    <div class="tan"></div>
+<article id="passed" style="display: none;" class="noBackg">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1"><!-- 有此卡扣豆提醒 -->
+        <a class="windowClose" href="#"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
+            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="#">确定</a>
+            </p>
+        </div>
+    </div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="#"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt">您还没有数学卡</p>
+            <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">20</span>金豆吗？</p>
+            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="#">确定</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="#">买数学卡</a>
+            </p>
+        </div>
+    </div>
     <div class="wrap">
         <div class="tiao_jian">
             <div class="tiaoj_TJ01 selectDiv">
@@ -178,7 +202,7 @@
                     <span>科目</span>
                     <img src="../img/xiala.png" alt="">
                 </div>
-                <ul class="xiala_ul" id="subject" style="display: block">
+                <ul class="xiala_ul" id="subject">
                     <li class="xiala_li">全部<img src="images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
@@ -277,8 +301,8 @@
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -291,7 +315,7 @@
         <div class="course-intro">
             <div class="course_xiaqing">
                 <div class="xiaq_div">
-                    <p>${gaishu}</p>
+                    <p>${outline}</p>
                     <div class="course_detail detail" data-detail="${id}">详情
                         <img src="images/xiala.png" alt="">
                         <img src="images/xiala_sq.png" alt="">
@@ -301,7 +325,7 @@
             <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
-                    <span>${preparation}</span>
+                    <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
                     <img src="images/abc.png" alt="">
@@ -333,8 +357,8 @@
                 <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -347,7 +371,7 @@
         <div class="course-intro">
             <div class="course_xiaqing">
                 <div class="xiaq_div">
-                    <p>${gaishu}</p>
+                    <p>${outline}</p>
                     <div class="course_detail detail" data-detail="${id}">详情
                         <img src="images/xiala.png" alt="">
                         <img src="images/xiala_sq.png" alt="">
@@ -357,7 +381,7 @@
             <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
-                    <span>${preperation}</span>
+                    <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
                     <img src="images/abc.png" alt="">
@@ -387,8 +411,8 @@
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div2 shuxue_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -401,7 +425,7 @@
         <div class="course-intro">
             <div class="course_xiaqing">
                 <div class="xiaq_div">
-                    <p>${gaishu}</p>
+                    <p>${outline}</p>
                     <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
                         <img src="images/xiala_sx.png" alt="">
                         <img src="images/xiala_sqsx.png" alt="">
@@ -411,7 +435,7 @@
             <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
-                    <span>${preparation}</span>
+                    <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
                     <img src="images/abc.png" alt="">
@@ -443,8 +467,8 @@
                 <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div2 shuxue_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -457,7 +481,7 @@
         <div class="course-intro">
             <div class="course_xiaqing">
                 <div class="xiaq_div">
-                    <p>${gaishu}</p>
+                    <p>${outline}</p>
                     <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
                         <img src="images/xiala_sx.png" alt="">
                         <img src="images/xiala_sqsx.png" alt="">
@@ -468,7 +492,7 @@
 
                 <div class="keqian_zb">
                     课前准备：
-                    <span>${preperation}</span>
+                    <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
                     <img src="images/abc.png" alt="">
@@ -495,12 +519,12 @@
 <template id="chinese-template">
     <li class="all_uli">
         <div class="all_liplay">
-            <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="zuo_jindou"><span>150</span>金豆</div>
+            <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
+                <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -508,12 +532,12 @@
                     <span class="yuwen_riqi">${startTime}</span>
                 </p>
                 <span class="yuwen_a"></span>
-            </a>
+            </div>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
                 <div class="xiaq_div">
-                    <p>${xiaotitle}</p>
+                    <p>${outline}</p>
                     <div class="course_detail passed-detail" data-detail="${id}">详情
                         <img src="/images/xiala.png" alt="">
                         <img src="/images/xiala_sq.png" alt="">
@@ -523,7 +547,7 @@
             <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
-                    <span>笔记本、铅笔、橡皮、圆珠笔、课本</span>
+                    <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
                     <img src="/images/abc.png" alt="">
@@ -548,12 +572,12 @@
 <template id="math-template">
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
-            <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="zuo_jindou"><span>150</span>金豆</div>
+            <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
+                <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">数学</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -561,12 +585,12 @@
                     <span class="yuwen_riqi">${startTime}</span>
                 </p>
                 <span class="yuwen_a"></span>
-            </a>
+            </div>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
                 <div class="xiaq_div">
-                    <p>${description}</p>
+                    <p>${outline}</p>
                     <div class="course_detail shuxue_Btn passed-detail" data-detail="${id}">详情
                         <img src="/images/xiala_sx.png" alt="">
                         <img src="/images/xiala_sqsx.png" alt="">
@@ -576,7 +600,7 @@
             <div class="course-detail" data-identity="${id}">
                 <div class="keqian_zb">
                     课前准备：
-                    <span>笔记本、铅笔、橡皮、圆珠笔、课本</span>
+                    <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
                     <img src="/images/abc.png" alt="">
@@ -639,8 +663,7 @@
                 <div class="course_dianzan">
                     <p class="course_xqpsee"><span>${number}</span>人观看过</p>
                     <a href="javascript:void(0)" class="course_xqpzan">
-                        <img class="dianzanImg" src="images/details/dianzan.png" alt="">
-                        <img class="dianzanImg cur" src="images/details/zanover.png" alt="">
+                        <img class="dianzanImg" id="icon" alt="">
                         赞
                         <span class="xqpZan">${count}</span>
                     </a>
@@ -778,7 +801,11 @@
             }
 
             $(document).on('click', '[data-article]', function (e) {
-                var id = e.target.dataset.article
+                var element = e.target
+                var id = element.dataset.article
+                if (element.dataset.id) {
+                    state[id].id = element.dataset.id
+                }
                 switchTo(id)
             })
 
@@ -900,11 +927,22 @@
                                     }
                                     var oneFirst = whoFirst()
                                     if (oneFirst) {
-                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
-                                        $('#subjects').find('a[href="#one"]').addClass('cur')
-                                        $('#subjects').find('a[href="#zero"]').removeClass('cur')
+//                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                                        $('#mathOne').addClass('active')
+                                        $('#chineseZero').removeClass('active')
+                                        $('#one').addClass('active')
+                                        $('#zero').removeClass('active')
                                     }
-
+                                    function div1Show() {
+                                        var div1 = document.getElementById("div1");
+                                        div1.style.display = "";
+                                    }
+                                    function div2Show() {
+                                        var div1 = document.getElementById("div1");
+                                        var div2 = document.getElementById("div2");
+                                        div1.style.display = "none";
+                                        div2.style.display = "";
+                                    }
                                     setInterval(function () {
                                         state.main.refreshState(0)
                                         state.main.refreshState(1)
@@ -1291,52 +1329,121 @@
 ////                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
 ////                }
 //            }
+            findById: function (id) {
+                var result = null;
+                for (var i = 0; i < passed.length; ++i) {
+                    if (passed[i].id == id) {
+                        result = passed[i]
+                        break
+                    }
+                }
+                return result
+            }
         },
-
         futureNote: {
             init: function () {
             }
         },
         videoDetail: {
-            isInit: false,
+            id: null,
             init: function () {
-                if (!state.videoDetail.isInit) {
-//                    $.ajax({
-//                        type: 'get',
-//                        url: ''
-//                    })
-                    var data = [{
+
+                var c = document.getElementById('live-details-video')
+                c.innerHTML = ''
+                //state.videoDetail.findById(state.videoDetail.id).innerHTML = ''
+                proc({
+                    container: c,
+                    data: state.passed.findById(state.videoDetail.id),
+                    templateId: 'live-video-template'
+                })
+
+
+//                // GET /knowledge-points/.../is-self-like
+//                var id = g.getUrlParameter("id")
+//                $.ajax({
+//                    type: "get",
+//                    url: 'api/knowledge-points/' + id + '/is-self-like',
+//                    dataType: "json",
+//                    success: function (like) {
+//                        var liked = like.like
+//                        var icon = document.getElementById('icon');
+//                        if (liked) {
+//                            icon.setAttribute('src', 'images/details/zanover.png');
+//                        } else {
+//                            icon.setAttribute('src', 'images/details/dianzan.png');
+//                        }
+//                        icon.addEventListener('click', function (e) {
+//                            if (liked) {
+//                                $.ajax({
+//                                    type: "put",
+//                                    url: '/api/knowledge-points/' + id + '/unlike',
+//                                    data: JSON.stringify({}),
+//                                    dataType: "json",
+//                                    contentType: "application/json; charset=utf-8",
+//                                    success: function (unlike) {
+//                                        icon.setAttribute('src', 'images/details/dianzan.png');
+//                                        data.interaction.likeCount
+//                                        e.target.nextElementSibling.textContent = data.interaction.likeCount
+//                                        liked = false;
+//                                    }
+//                                })
+//                            } else {
+//                                $.ajax({
+//                                    type: "put",
+//                                    url: '/api/knowledge-points/' + id + '/like',
+//                                    data: JSON.stringify({}),
+//                                    dataType: "json",
+//                                    contentType: "application/json; charset=utf-8",
+//                                    success: function (like) {
+//                                        icon.setAttribute('src', 'images/details/zanover.png');
+//                                        ++data.interaction.likeCount;
+//                                        e.target.nextElementSibling.textContent = data.interaction.likeCount
+//                                        liked = true;
+//                                    }
+//                                })
+//                            }
+//                        }, false)
+//                    },
+//                    error: function (unlike) {
+//                        //liked = false
+//                    }
+//                })
+                //'/api/comments?filter={"objectType":"scheduler","objectId":' + state.videoDetail.id + '}'
+                //'/api/schedulers/' + state.videoDetail.id + '/comments'
+                var comments = [
+//                        {
+//                            name: '张三',
+//                            time: '2016-12-06',
+//                            content: '黑河市个地方官'
+//                        },
+//                        {
+//                            name: '张三',
+//                            time: '2016-12-06',
+//                            content: '黑河市个地方官'
+//                        },
+//                        {
+//                            name: '张三',
+//                            time: '2016-12-06',
+//                            content: '黑河市个地方官'
+//                        },
+//                        {
+//                            name: '张三',
+//                            time: '2016-12-06',
+//                            content: '黑河市个地方官'
+//                        },
+                    {
                         name: '张三',
                         time: '2016-12-06',
                         content: '黑河市个地方官'
-                    },
-                        {
-                            name: '张三',
-                            time: '2016-12-06',
-                            content: '黑河市个地方官'
-                        },
-                        {
-                            name: '张三',
-                            time: '2016-12-06',
-                            content: '黑河市个地方官'
-                        },
-                        {
-                            name: '张三',
-                            time: '2016-12-06',
-                            content: '黑河市个地方官'
-                        },
-                        {
-                            name: '张三',
-                            time: '2016-12-06',
-                            content: '黑河市个地方官'
-                        }]
-                    proc({
-                        containerId: 'comment-area',
-                        data: data,
-                        templateId: 'video-comment-template'
-                    })
-                    state.videoDetail.isInit = true
-                }
+                    }
+                ]
+                var comment = document.getElementById('comment-area')
+                comment.innerHTML = ''
+                proc({
+                    container: comment,
+                    data: comments,
+                    templateId: 'video-comment-template'
+                })
             }
         },
         scheduler: {
