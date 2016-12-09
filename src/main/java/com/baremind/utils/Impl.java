@@ -48,9 +48,9 @@ public class Impl {
         return result;
     }
 
-    public static <T> Response get(String sessionId, String filter, Map<String, String> orders, Class<T> type, PostProcessor<T> postProcessor, Predicate<T> accept) {
+    public static <T> Response get(String userId, String filter, Map<String, String> orders, Class<T> type, PostProcessor<T> postProcessor, Predicate<T> accept) {
         Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        if (JPAEntry.isLogining(userId)) {
             result = Response.status(404).build();
             final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
             if (filterObject != null) {

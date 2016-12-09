@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javax.persistence.Entity;
 /**
  * Created by lenovo on 2016/8/18.
  */
@@ -147,7 +147,7 @@ public class KnowledgePoint {
             kpm.put("readCount", readCount);
         }
         String type = "normal";
-        String query = "SELECT m.objectType FROM KnowledgePointContentMap m GROUP BY m.objectType";
+        String query = "SELECT m.type FROM KnowledgePointContentMap m GROUP BY m.type";
         TypedQuery<String> pq = em.createQuery(query, String.class);
         List<String> sl = pq.getResultList();
         if (sl.size() == 1) {
