@@ -9,7 +9,9 @@ import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
@@ -18,27 +20,49 @@ import java.util.function.Predicate;
 
 @Path("knowledge-points")
 public class KnowledgePoints {
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
+        req.getRemoteAddr();
+        List<KnowledgePoint> r = JPAEntry.getList(KnowledgePoint.class, CharacterEncodingFilter.getFilters(filter));
+        List<String> ids = new ArrayList<>();
+        for (KnowledgePoint ri : r) {
+            ids.add(ri.getId().toString());
+        }
+        EntityManager em = JPAEntry.getEntityManager();
+        String contentCountQuery = "SELECT knowledge_point_id, object_type, count(*) FROM knowledge_point_content_maps WHERE knowledge_point_id IN (" + Resources.join(ids) + ") GROUP BY knowledge_point_id, object_type";
+        TypedQuery<KnowledgePoint.ContentStats> cq = (TypedQuery<KnowledgePoint.ContentStats>)em.createNativeQuery(contentCountQuery, KnowledgePoint.ContentStats.class);
+        List<KnowledgePoint.ContentStats> contentStats = cq.getResultList();
+        String likeCountQuery = "SELECT object_id, count(*) FROM logs WHERE object_type = 'knowledge-point' AND object_id IN (" + Resources.join(ids) + ") AND action = 'like' GROUP BY object_id";
+        TypedQuery<KnowledgePoint.BaseStats> lq = (TypedQuery<KnowledgePoint.BaseStats>)em.createNativeQuery(likeCountQuery, KnowledgePoint.BaseStats.class);
+        List<KnowledgePoint.BaseStats> likeStats = lq.getResultList();
+        String readCountQuery = "SELECT object_id, count(*) FROM logs WHERE object_type = 'knowledge-point' AND object_id IN (" + Resources.join(ids) + ") AND action = 'read' GROUP BY object_id";
+        TypedQuery<KnowledgePoint.BaseStats> rq = (TypedQuery<KnowledgePoint.BaseStats>)em.createNativeQuery(readCountQuery, KnowledgePoint.BaseStats.class);
+        List<KnowledgePoint.BaseStats> readStats = lq.getResultList();
+        String likedQuery = "SELECT object_id, count(*) FROM logs WHERE object_type = 'knowledge-point' AND object_id IN (" + Resources.join(ids) + ") AND action = 'read' AND user_id = " + JPAEntry.getLoginId(sessionId).toString() + " GROUP BY object_id";
+        TypedQuery<KnowledgePoint.BaseStats> ldq = (TypedQuery<KnowledgePoint.BaseStats>)em.createNativeQuery(likedQuery, KnowledgePoint.BaseStats.class);
+        List<KnowledgePoint.BaseStats> likedStats = ldq.getResultList();
+
         Map<String, String> orders = new HashMap<>();
         orders.put("order", "ASC");
-        final Date now = new Date();
-        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-        return Impl.get(userId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, now, yesterday), (knowledgePoint) -> {
-            boolean result = true;
-            EntityManager em = JPAEntry.getEntityManager();
-            String stats = "SELECT COUNT(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + knowledgePoint.getId().toString();
-            TypedQuery<Long> q = em.createQuery(stats, Long.class);
-            Long c = q.getSingleResult();
-            if (c == 0L) {
-                result = false;
-            }
-            return result;
-        });
-    }
+//        final Date now = new Date();
+//        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
 
+//        Map<String, String> orders = new HashMap<>();
+//        orders.put("order", "ASC");
+//        final Date now = new Date();
+//        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+//        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, JPAEntry.getLoginId(sessionId), now, yesterday), (knowledgePoint) -> {
+//            boolean result = true;
+//            EntityManager em = JPAEntry.getEntityManager();
+//            String stats = "SELECT COUNT(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + knowledgePoint.getId().toString();
+//            TypedQuery<Long> q = em.createQuery(stats, Long.class);
+//            Long c = q.getSingleResult();
+//            if (c == 0L) {
+//                result = false;
+//            }
+//            return result;
+//        });
+    }
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
         for (T textItem : container) {
