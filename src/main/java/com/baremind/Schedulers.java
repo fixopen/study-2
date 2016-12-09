@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.Log;
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.Condition;
@@ -7,14 +8,13 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sun.activation.registries.LogSupport;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -405,6 +405,7 @@ public class Schedulers {
 
 
             Map<String, String> orders = new HashMap<>();
+            Map<String,Object> map = new HashMap<>();
             orders.put("startTime", "DESC");
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
             ArrayList<Scheduler> featured = new ArrayList<>();
@@ -419,7 +420,15 @@ public class Schedulers {
                     if (now.before(scheduler.getEndTime())) {
                         playing.add(scheduler);
                     } else {
+                        map.put("id",scheduler.getId());
+                        map.put("grade",scheduler.getGrade());
+                        map.put("id",scheduler.getId());
+                        map.put("id",scheduler.getId());
+                        map.put("id",scheduler.getId());
+                        map.put("id",scheduler.getId());
+                        map.put("id",scheduler.getId());
                         passed.add(scheduler);
+
                     }
                 }
             }
@@ -433,6 +442,105 @@ public class Schedulers {
             r = Response.ok(gson.toJson(result)).build();
         }
         return r;
+    }
+
+    @PUT
+    @Path("{id}/like")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response like(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Log log = Logs.insert(Long.parseLong(userId), "playback", id, "like");
+            result = Response.ok(new Gson().toJson(log)).build();
+        }
+        return result;
+    }
+
+    @PUT
+    @Path("{id}/unlike")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unlike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Long count = Logs.deleteLike(Long.parseLong(userId), "playback", id);
+            result = Response.ok("{\"count\":" + count.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/like-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLikeCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Long likeCount = Logs.getStatsCount("playback", id, "like");
+            result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/is-self-like")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSelfLike(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(userId)) {
+            Boolean has = Logs.has(Long.parseLong(userId), "playback", id, "like");
+            result = Response.ok("{\"like\":" + has.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/read-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReadCount(@CookieParam("userId") String userId, @PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+            if (JPAEntry.isLogining(userId)) {
+            Long readCount = Logs.getStatsCount("playback", id, "read");
+            result = Response.ok("{\"count\":" + readCount.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("one/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("userId") String userId,@PathParam("id") Long id) {
+        Response result = Response.status(401).build();
+        Map map = new HashMap();
+        if (JPAEntry.isLogining(userId)) {
+            Logs.insert(userId,"playback",id,"read");
+            Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
+            map.put("id",scheduler.getId());
+            map.put("grade",scheduler.getGrade());
+            map.put("cdnLink",scheduler.getCdnLink());
+            map.put("cover",scheduler.getCover());
+            map.put("day",scheduler.getDay());
+            map.put("description",scheduler.getDescription());
+            map.put("duraction",scheduler.getDuration());
+            map.put("year",scheduler.getYear());
+            map.put("week",scheduler.getWeek());
+            map.put("title",scheduler.getTitle());
+            map.put("teacher",scheduler.getTeacher());
+            map.put("subjectId",scheduler.getSubjectId());
+            map.put("startTime",scheduler.getStartTime());
+            map.put("endtime",scheduler.getEndTime());
+
+            map.put("outline",scheduler.getOutline());
+            map.put("prepare",scheduler.getPrepare());
+            map.put("generalization",scheduler.getGeneralization());
+
+            map.put("readCount",getReadCount(userId,scheduler.getId()));
+            map.put("likeCount",getLikeCount(userId,scheduler.getId()));
+            map.put("commit",Logs.getLogsCount(userId,"playback",scheduler.getId(),"comments"));
+            map.put("teacherdescription",scheduler.getTeacherDescription());
+            result = Response.ok(map).build();
+        }
+        return result;
     }
 
     @GET //获取classroom-key

@@ -65,10 +65,12 @@ public class Logs {
         return getLogsCount(userId, "knowledge-point", id, "like");
     }
 
+
+
     @GET
     @Path("{objectType}/{objectId}/{action}/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLogsCount(@CookieParam("userId") String userId, @PathParam("objectType") String objectType, @PathParam("objectId") Long objectId, @PathParam("action") String action) {
+    public static Response getLogsCount(@CookieParam("userId") String userId, @PathParam("objectType") String objectType, @PathParam("objectId") Long objectId, @PathParam("action") String action) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(userId)) {
             Long count = getStatsCount(objectType, objectId, action);
