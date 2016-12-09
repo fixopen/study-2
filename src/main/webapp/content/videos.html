@@ -169,95 +169,53 @@
         </div>
     </div>
 </article>
-<article id="passed" style="display: none;" class="noBackg">
-    <!--<input class="souSuo clearfix" type="text" id="text" name="keyword" onkeydown="entersearch()"-->
-           <!--placeholder="请输入科目、老师、年级 关键词搜索">-->
-    <!--<div class="tan" style="display: block;"></div>-->
-    <!--<div class="window1">&lt;!&ndash; 有此卡扣豆提醒 &ndash;&gt;-->
-    <!--<a class="windowClose" href="#"></a>-->
-    <!--<div class="win_neir koudou_win">-->
-    <!--<p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>-->
-    <!--<p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>-->
-    <!--<p class="neir_pBtn kou_dou">-->
-    <!--<a class="p_btn" href="#">确定</a>-->
-    <!--</p>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;-->
-    <!--<a class="windowClose" href="#"></a>-->
-    <!--<div class="win_neir koudou_win">-->
-    <!--<p class="neir_ptxt">您还没有数学卡</p>-->
-    <!--<p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">20</span>金豆吗？</p>-->
-    <!--<p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>-->
-    <!--<p class="neir_pBtn kou_dou">-->
-    <!--<a class="p_btn" href="#">确定</a>-->
-    <!--</p>-->
-    <!--<p class="neir_pBtn2">-->
-    <!--<a class="p_buyka" href="#">买数学卡</a>-->
-    <!--</p>-->
-    <!--</div>-->
-    <!--</div>-->
-    <div class="wrap"></div>
-    <div class="tiao_jian">
-        <div class="tiaoj_TJ01">
-            <div class="tiaoj_1span" id="subjectSelect">
-                <span>科目</span>
-                <img src="../img/xiala.png" alt="">
+<article id="passed"  style="display: none;" class="noBackg">
+    <div class="tan"></div>
+    <div class="wrap">
+        <div class="tiao_jian">
+            <div class="tiaoj_TJ01 selectDiv">
+                <div class="tiaoj_1span" id="subjectSelect">
+                    <span>科目</span>
+                    <img src="../img/xiala.png" alt="">
+                </div>
+                <ul class="xiala_ul" id="subject" style="display: block">
+                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                </ul>
             </div>
-            <ul class="xiala_ul" id="subject"></ul>
-        </div>
-        <div class="tiaoj_TJ02">
-            <div class="tiaoj_2span" id="teacherSelect">
-                <span>老师</span>
-                <img src="../img/xiala.png" alt="">
+            <div class="tiaoj_TJ02 selectDiv">
+                <div class="tiaoj_2span" id="teacherSelect">
+                    <span>老师</span>
+                    <img src="../img/xiala.png" alt="">
+                </div>
+                <ul class="xiala_ul" id="teacher">
+                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                </ul>
             </div>
-            <ul class="xiala_ul" id="teacher"></ul>
-        </div>
-        <div class="tiaoj_TJ03" id="gradeeSelect">
-            <div class="tiaoj_3span">
-                <span>年级</span>
-                <img src="../img/xiala.png" alt="">
+            <div class="tiaoj_TJ03 selectDiv" id="gradeeSelect">
+                <div class="tiaoj_3span">
+                    <span>年级</span>
+                    <img src="../img/xiala.png" alt="">
+                </div>
+                <ul class="xiala_ul" id="grade">
+                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                </ul>
             </div>
-            <ul class="xiala_ul" id="grade"></ul>
-        </div>
-        <div class="tiaoj_TJ04" id="dateSelect">
-            <div class="tiaoj_4span">
-                <span>日期</span>
-                <img src="../img/xiala.png" alt="">
+            <div class="tiaoj_TJ04 selectDiv" id="dateSelect">
+                <div class="tiaoj_4span">
+                    <span>日期</span>
+                    <img src="../img/xiala.png" alt="">
+                </div>
+                <ul class="xiala_ul" id="date">
+                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                </ul>
             </div>
-            <ul class="xiala_ul" id="date"></ul>
         </div>
-    </div>
-    <ul class="tiaoj_jieG">
-        <li class="jieG_li">
-            <span>语文</span>
-            <a href="javascript:void(0)">
-                <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
-            </a>
-        </li>
-        <li class="jieG_li">
-            <span>刘志超</span>
-            <a href="javascript:void(0)">
-                <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
-            </a>
-        </li>
-        <li class="jieG_li">
-            <span>一年级</span>
-            <a href="javascript:void(0)">
-                <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
-            </a>
-        </li>
-        <li class="jieG_li">
-            <span>2016年12月12日</span>
-            <a href="javascript:void(0)">
-                <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
-            </a>
-        </li>
-    </ul>
-    <div class="rain-main noPadd">
-        <ul id="video"></ul>
-        <div class="bottom_txt">
-            <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
+        <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
+        <div class="rain-main noPadd">
+            <ul id="video"></ul>
+            <div class="bottom_txt">
+                <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
+            </div>
         </div>
     </div>
 </article>
@@ -506,7 +464,7 @@
                     </div>
                 </div>
             </div>
-            <div class="course-detail"data-identity="${id}">
+            <div class="course-detail" data-identity="${id}">
 
                 <div class="keqian_zb">
                     课前准备：
@@ -538,7 +496,7 @@
     <li class="all_uli">
         <div class="all_liplay">
             <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="yuwen_div0"><span>150</span>金豆</div>
+                <div class="zuo_jindou"><span>150</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
                     <h3 class="yuwen_h3">${title}</h3>
@@ -555,7 +513,7 @@
         <div class="course-intro">
             <div class="course_xiaqing">
                 <div class="xiaq_div">
-                    <p>${title}</p>
+                    <p>${xiaotitle}</p>
                     <div class="course_detail passed-detail" data-detail="${id}">详情
                         <img src="/images/xiala.png" alt="">
                         <img src="/images/xiala_sq.png" alt="">
@@ -582,7 +540,7 @@
                     <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${startTime}</p>
+                <p>${lineTime}</p>
             </div>
         </div>
     </li>
@@ -591,7 +549,7 @@
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
             <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="yuwen_div0"><span>150</span>金豆</div>
+                <div class="zuo_jindou"><span>150</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">数学</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
                     <h3 class="yuwen_h3">${title}</h3>
@@ -641,26 +599,30 @@
     </li>
 </template>
 <template id="subject-template">
-    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
     <li class="xiala_li">
-        <span data-id="${id}" data-type="subject">${name}</span>
+        <span data-id="${id}" data-type="subject">${subject}</span>
     </li>
 </template>
 <template id="teacher-template">
-    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
     <li class="xiala_li">
         <span data-type="teacher">${teacher}</span>
     </li>
 </template>
 <template id="grade-template">
-    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
     <li class="xiala_li">
         <span data-type="grade">${grade}</span>
     </li>
 </template>
 <template id="date-template">
-    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
     <li class="xiala_li"></li>
+</template>
+<template id="selected-entries">
+    <li class="jieG_li">
+        <span>${selectedTxt}</span>
+        <a href="javascript:void(0)">
+            <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
+        </a>
+    </li>
 </template>
 
 
@@ -669,30 +631,9 @@
 <template id="live-video-template">
     <div>
         <div class="live-details-videoPlay">
-            <a class="all_aBtn" href="javascript:void(0)">
-                <div class="live-details-videoHei"></div>
-                <div class="live-details-videoBtn"></div>
-                <div class="live-details-videoTxt">${title}</div>
-                <div class="live-details-bottomHei"></div>
-                <div class="live-details-videoSpeed">
-                    <div class="live-details-speedPlay"></div>
-                    <div class="live-details-speedTime">
-                        <span class="live-details-speedZero">00:00</span>
-                        <p class="live-details-speedStrip">
-                            <span class="live-details-speedSpot"></span>
-                        </p>
-                        <span class="live-details-speedZero">${videoTime}</span>
-                    </div>
-                    <div class="live-details-enlargeBtn"></div>
-                </div>
-
-                <div class="live-details-label">${subject}</div>
-                <div class="live-details-chinaDiv live-details-chinese">
-                    <h3 class="live-details-chinaDivh3">${headTitle}</h3>
-                    <p class="live-details-chinaDivp">${introductions}</p>
-                </div>
-                <span class="live-details-teacher">—${teacher}</span>
-            </a>
+            <video src=""></video>
+            <div class="live-details-label">语文</div>
+            <div class="live-details-videoTxt">语文作文与写作手法</div>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
@@ -1078,9 +1019,9 @@
                     })
 
                     $(document).on('click', '[data-type="subject"]', function (e) {
-                        //hide subjects
+//hide subjects
                         state.passed.subject.style.display = 'none'
-                        //change subjectSelect
+//change subjectSelect
                         var s = document.getElementById('subjectSelect')
                         s.textContent = e.target.textContent
                         s.dataset.id = e.target.dataset.id
@@ -1088,7 +1029,7 @@
                         if (!state.containTeacher(sub, t.textContent)) {
                             state.passed.teacherSelect.textContent = '老师'
                         }
-                        //change teachers container
+//change teachers container
                         state.passed.teacher.innerHTML = ''
                         proc({
                             container: state.passed.teacher,
@@ -1096,14 +1037,14 @@
                             templateId: 'teacher-template'
                         })
 
-                        //if need {
-                        // change gradeSelect
-                        //}
+//if need {
+// change gradeSelect
+//}
                         if (!state.containGrade(sub, g.textContent)) {
                             state.passed.gradeSelect.textContent = '年级'
                         }
 
-                        //change grades container
+//change grades container
                         state.passed.grade.innerHTML = ''
                         proc({
                             container: state.passed.grade,
@@ -1111,9 +1052,9 @@
                             templateId: 'grade-template'
                         })
 
-                        //filter data
+//filter data
                         var d = state.passed.search()
-                        //refill the content
+//refill the content
                         state.passed.content.innerHTML = ''
                         proc({
                             container: state.passed.content,
@@ -1124,9 +1065,9 @@
 
 
                     $(document).on('click', '[data-type="teacher"]', function (e) {
-                        //hide teachers
+//hide teachers
                         state.passed.teacher.style.display = 'none'
-                        // change teacherSelect
+// change teacherSelect
                         var s = document.getElementById('teacherSelect')
                         s.textContent = e.target.textContent
                         s.dataset.id = e.target.dataset.id
@@ -1136,9 +1077,9 @@
                         if (!state.containTeacher(sub, t.textContent)) {
                             state.passed.teacherSelect.textContent = '老师'
                         }
-                        //filter data
+//filter data
                         var d = state.passed.search()
-                        //refill the content
+//refill the content
                         state.passed.content.innerHTML = ''
                         proc({
                             container: state.passed.content,
@@ -1148,9 +1089,9 @@
                     })
 
                     $(document).on('click', '[data-type="grade"]', function (e) {
-                        //hide grade
+//hide grade
                         state.passed.grade.style.display = 'none'
-                        // change gradeSelect
+// change gradeSelect
                         var s = document.getElementById('gradeSelect')
                         s.textContent = e.target.textContent
                         s.dataset.id = e.target.dataset.id
@@ -1160,9 +1101,9 @@
                         if (!state.containTeacher(sub, t.textContent)) {
                             state.passed.teacherSelect.textContent = '老师'
                         }
-                        //filter data
+//filter data
                         var d = state.passed.search()
-                        //refill the content
+//refill the content
                         state.passed.content.innerHTML = ''
                         proc({
                             container: state.passed.content,
@@ -1170,7 +1111,25 @@
                             templateId: ''
                         })
                     })
-
+//                    function xialaTap() { //下拉选项
+//                        $(".selectDiv").each(function (index, el) {
+//                            $(this).tap(function () {
+//                                if ($(this).children(".xiala_ul").is(":visible")) {
+//                                    $('.tan').hide();
+//                                    $('.tan').css("z-index", "9999");
+//                                    $(".xiala_ul").hide();
+//                                    $(".xiala_ul").eq(index).hide();
+//                                } else {
+//                                    $('.tan').show();
+//                                    $('.tan').css("z-index", "99");
+//                                    $(".xiala_ul").hide();
+//                                    $(".xiala_ul").eq(index).show();
+//                                }
+//                            });
+//                        });
+//                    }
+//
+//                    xialaTap();
                     var now = Date.now()
 //*******************************getPassed*****************************
                     $.ajax({
@@ -1203,7 +1162,6 @@
                                     {type: 'math', templateId: 'math-template'}
                                 ]
                             });
-                            allxqTap(); //all课程详情
                         }
                     })
 //********************************getTeacher*****************************
@@ -1217,7 +1175,7 @@
                                 url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
                                 success: function (t1s) {
                                     subjects[1].teachers = t1s
-                                    //fill to teachers choice
+//fill to teachers choice
                                     var teachers = []
                                     for (var i = 0; i < t0s.length; ++i) {
                                         teachers.push({teacher: t0s[i]})
@@ -1245,7 +1203,7 @@
                                 url: '/api/schedulers/grades?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[1].id})),
                                 success: function (g1s) {
                                     subjects[1].grades = g1s
-                                    //fill to grades choice
+//fill to grades choice
                                     var grades = []
                                     for (var i = 0; i < g0s.length; ++i) {
                                         grades.push({grade: g0s[i]})
@@ -1273,7 +1231,6 @@
                     }, false)
 
                     state.passed.isInit = true
-//                    xialaTap()
                 }
             },
             search: function () {
@@ -1281,7 +1238,7 @@
                 var s = document.getElementById('subjectSelect')
                 var t = document.getElementById('teacherSelect')
                 var g = document.getElementById('gradeSelect')
-                //filter the passed data via the filter element state
+//filter the passed data via the filter element state
 //                var subject, teacher, grade, date
                 for (var i = 0; i < passed.length; ++i) {
                     var pass = true
