@@ -657,7 +657,6 @@ li.active > a.tab_toggle {
 .live-details-videoPlay{
     width: 100%;
     height: 10.9375rem;
-    background-color: #ffbc3c;
     position: relative;
 }
 .live-details-videoPlay video{
