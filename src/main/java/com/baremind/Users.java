@@ -917,9 +917,10 @@ public class Users {
                                 c.setEndTime(oneYearAfter);
                                 c.setAmount(588L);
                                 User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "open_id", ac.getOpenId());
+                                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", ac.getOpenId());
                                 if (user == null && wechatUser != null) {
                                     user = new User();
+
                                     user.setId(IdGenerator.getNewId());
                                     user.setTelephone(ac.getPhoneNumber());
                                     user.setLoginName(ac.getPhoneNumber());
@@ -929,6 +930,8 @@ public class Users {
                                     user.setSex(wechatUser.getSex());
                                     user.setAmount(0l);
                                     user.setHead(wechatUser.getHead());
+                                    wechatUser.setUserId(user.getId());
+                                    JPAEntry.genericPut(wechatUser);
                                     JPAEntry.genericPost(user);
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);

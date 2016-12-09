@@ -1076,13 +1076,15 @@ public class PublicAccounts {
             System.out.println("request=================="+request);
             System.out.println("request.getCookies()=================="+request.getCookies());
             System.out.println("cookies=================="+cookies);
-            for (Cookie cookie : cookies) {
-                System.out.println("cookie.getName()=================="+cookie.getName());
-                if (cookie.getName().equals("sessionId")) {
-                    System.out.println("根据openId得到这个微信用户的userId查到那个user返回sessionId"+cookie.getValue());
-                    s = getSession(cookie.getValue());
-                    System.out.println("sessionId============================================"+s);
-                    break;
+            if(cookies != null) {
+                for (Cookie cookie : cookies) {
+                    System.out.println("cookie.getName()==================" + cookie.getName());
+                    if (cookie.getName().equals("sessionId")) {
+                        System.out.println("根据openId得到这个微信用户的userId查到那个user返回sessionId" + cookie.getValue());
+                        s = getSession(cookie.getValue());
+                        System.out.println("sessionId============================================" + s);
+                        break;
+                    }
                 }
             }
         }

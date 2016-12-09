@@ -174,7 +174,7 @@
     <div class="wrap">
         <!-- main -->
         <ul class="changePassword_ul_css">
-            <li class="changePassword_li_css public_li_css">
+            <li class="changePassword_li_css public_li_css" id="yuan" style="display: none">
                 <span class="public_span_css changePassword_interval_width_css">原密码</span>
                 <input class="firstActiveCard_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
             </li>
@@ -436,9 +436,9 @@
     //var duan;
     var array = [];
     //var count =0;
-  //  var oppid;
+    var openId;
     var state = {
-        openId: null,
+        //openId: null,
        // duan: null,
         pan: null,
         switchTo: function (id) {
@@ -459,7 +459,7 @@
             sessionId = g.getUrlParameter('sessionId')
             g.setCookie('sessionId', sessionId, '/api')
             openId = g.getUrlParameter("openId");
-            alert("openId="+openId)
+//            alert("openId="+openId)
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 state.switchTo(id)
@@ -600,7 +600,7 @@
                             deviceNo: nub,
                             code:$("#Verification").val(),
                            //openId: g.getUrlParameter('openId'),
-                            openId:state.openId,
+                            openId:openId,
                         }
                         var dense = $("#Dense").val();
                         if (dense.length >= 6 && dense.length <= 16) {
@@ -635,7 +635,7 @@
                             deviceNo: dnub,
                             code:$("#Verification").val(),
                            // openId: g.getUrlParameter('openId'),
-                            openId:state.openId,
+                            openId:openId,
                         }
                         send(loginInfo)
                     }
@@ -651,7 +651,7 @@
                             success: function (a) {
                                 alert("登录成功")
                                 state.switchTo('user')
-                                history.length(0)
+                                state.switchTo('info')
                             },
                             error: function (e) {
                                 switch (e.status){
@@ -988,7 +988,7 @@
                         data.password = document.getElementById('password').value;
                         data.phoneNumber = document.getElementById('phoneNumber').value;
                         data.validCode = document.getElementById('validCode').value;
-                        data.openId = state.openId;
+                        data.openId = openId;
                         var url = 'api/users/cards'
                         /* if (userId) {
                          url = 'api/users/' + userId + '/cards'
@@ -1147,6 +1147,7 @@
         },
         settings: {
             init: function () {
+
                 var i;
                 var j;
                 var x;
@@ -1196,7 +1197,11 @@
                         i = 1;
                     }
                 }
+                if(user.password == null){
 
+                }else{
+                    document.getElementById("yuan").style.display="block"
+                }
                 var pwdSave = document.getElementById("pwd_save");
                 var quxiao = document.getElementById("quxiao");
                 quxiao.addEventListener('click', function () {
