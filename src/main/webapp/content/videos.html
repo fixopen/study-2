@@ -91,32 +91,33 @@
 
 <body>
 <article id="main">
-    <div class="tan"></div>
-    <div class="window1"><!-- 有此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
+    <div id="div1">
+        <div class="tan"></div>
+        <div class="window1"><!-- 有此卡扣豆提醒 -->
+            <a class="windowClose" href="#"></a>
+            <div class="win_neir koudou_win">
+                <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
+                <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+                <p class="neir_pBtn kou_dou">
+                    <a class="p_btn" href="#" onclick="div2show()">确定</a>
+                </p>
+            </div>
+        </div>
+        <div class="window1"><!-- 无此卡扣豆提醒 -->
+            <a class="windowClose" href="#"></a>
+            <div class="win_neir koudou_win">
+                <p class="neir_ptxt">您还没有数学卡</p>
+                <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">150</span>金豆吗？</p>
+                <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+                <p class="neir_pBtn kou_dou">
+                    <a class="p_btn" href="#">确定</a>
+                </p>
+                <p class="neir_pBtn2">
+                    <a class="p_buyka" href="#">买数学卡</a>
+                </p>
+            </div>
         </div>
     </div>
-    <div class="window1"><!-- 无此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">您还没有数学卡</p>
-            <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">150</span>金豆吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="#">买数学卡</a>
-            </p>
-        </div>
-    </div>
-
 
     <div class="wrap">
         <div class="rain-main  noPadd">
@@ -170,7 +171,7 @@
     </div>
 </article>
 <article id="passed" style="display: none;" class="noBackg">
-    <div class="tan" style="display: block;"></div>
+    <div class="tan" style="display: none;"></div>
     <div class="window1"><!-- 有此卡扣豆提醒 -->
         <a class="windowClose" href="#"></a>
         <div class="win_neir koudou_win">
@@ -181,7 +182,7 @@
             </p>
         </div>
     </div>
-    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+    <div class="window1" style="display: none;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="#"></a>
         <div class="win_neir koudou_win">
             <p class="neir_ptxt">您还没有数学卡</p>
@@ -235,7 +236,7 @@
             </div>
         </div>
         <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
-        <div class="rain-main noPadd">
+        <div class="rain-main video-passed-textTop">
             <ul id="video"></ul>
             <div class="bottom_txt">
                 <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
@@ -296,7 +297,7 @@
 <!--********************************main***********************-->
 <template id="chinese-playing-template">
     <div class="all_uli">
-        <div class="all_liplay">
+        <div class="all_liplay" onclick="div1Show()">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
@@ -518,9 +519,9 @@
 <!--***********************************passed*****************************************-->
 <template id="chinese-template">
     <li class="all_uli">
-        <div class="all_liplay">
+        <div class="all_liplay" onclick="div3Show()">
             <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
-                <div class="yuwen_div0"><span>150</span>金豆</div>
+                <div class="leftJinDou"><span>150</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
                     <h3 class="yuwen_h3">${generalization}</h3>
@@ -564,7 +565,7 @@
                     <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${lineTime}</p>
+                <p>${startTime}</p>
             </div>
         </div>
     </li>
@@ -573,7 +574,7 @@
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
             <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
-                <div class="yuwen_div0"><span>150</span>金豆</div>
+                <div class="leftJinDou"><span>150</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">数学</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
                     <h3 class="yuwen_h3">${generalization}</h3>
@@ -654,7 +655,7 @@
 <template id="live-video-template">
     <div>
         <div class="live-details-videoPlay">
-            <video src=""></video>
+            <video src="${cdnLink}"></video>
             <div class="live-details-label">语文</div>
             <div class="live-details-videoTxt">语文作文与写作手法</div>
         </div>
@@ -935,14 +936,16 @@
                                     }
                                     function div1Show() {
                                         var div1 = document.getElementById("div1");
-                                        div1.style.display = "";
+                                        div1.style.display = "block";
                                     }
+
                                     function div2Show() {
                                         var div1 = document.getElementById("div1");
                                         var div2 = document.getElementById("div2");
                                         div1.style.display = "none";
                                         div2.style.display = "";
                                     }
+
                                     setInterval(function () {
                                         state.main.refreshState(0)
                                         state.main.refreshState(1)
@@ -1272,6 +1275,18 @@
                             })
                         }
                     })
+
+                    function div3Show() {
+                        var div1 = document.getElementById("div3");
+                        div1.style.display = "block";
+                    }
+
+                    function div2Show() {
+                        var div1 = document.getElementById("div1");
+                        var div2 = document.getElementById("div2");
+                        div1.style.display = "none";
+                        div2.style.display = "";
+                    }
 
                     var s = document.getElementById('subjectSelect')
                     s.addEventListener('click', function (e) {

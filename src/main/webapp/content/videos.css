@@ -169,6 +169,24 @@ li.active > a.tab_toggle {
     right: 0.3125rem;
     z-index: 4;
 }
+.leftJinDou{
+    display: inline-block;
+    overflow: hidden;
+    color: #fff;
+    font-size: 0.9375rem;
+    font-family: "苹方";
+    padding: 0 0.625rem;
+    height: 1.375rem;
+    line-height: 1.375rem;
+    text-align: center;
+    border: 1px solid #fff;
+    border-radius: 0.3125rem;
+    background: url('images/jindou.png') 0 0 repeat-x;
+    position: absolute;
+    top: 0.3125rem;
+    left: 0.3125rem;
+    z-index: 4;
+}
 .zuo_jindou {
     display: inline-block;
     overflow: hidden;
@@ -589,6 +607,7 @@ li.active > a.tab_toggle {
     top: 3.125rem;
     left: 0;
     z-index: 100;
+    display: none;
 }
 .jieG_li{
     display: inline-block;
@@ -611,6 +630,10 @@ li.active > a.tab_toggle {
     font-size: 1.0rem;
     text-align: center;
     margin-bottom: 1.0rem;
+}
+.video-passed-textTop{
+    padding: 0;
+    padding-top: 3.125rem;
 }
 /* 往期回放视频详情start */
 .live-details{
@@ -661,7 +684,6 @@ li.active > a.tab_toggle {
 .live-details-videoPlay{
     width: 100%;
     height: 10.9375rem;
-    background-color: #ffbc3c;
     position: relative;
 }
 .live-details-videoPlay video{
