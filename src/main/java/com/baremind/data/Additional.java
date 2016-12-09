@@ -39,8 +39,8 @@ public class Additional implements com.baremind.data.Entity {
         return objectType;
     }
 
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
+    public void setObjectType(String tableName) {
+        this.objectType = tableName;
     }
 
     public Long getObjectId() {

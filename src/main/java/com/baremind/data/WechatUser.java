@@ -25,7 +25,6 @@ public class WechatUser implements com.baremind.data.Entity {
     @Column(name = "refresh_token")
     private String refreshToken;
 
-
     @Column(name = "expiry")
     private Date expiry;
 
@@ -73,7 +72,6 @@ public class WechatUser implements com.baremind.data.Entity {
 
     @Column(name = "group_id")
     private int groupId;
-
 
     public String getLanguage() {
         return language;
@@ -218,6 +216,14 @@ public class WechatUser implements com.baremind.data.Entity {
     public void setHead(String head) {
         this.head = head;
     }
+
+//    public String[] getPrivilege() {
+//        return privilege;
+//    }
+//
+//    public void setPrivilege(String[] privilege) {
+//        this.privilege = privilege;
+//    }
 
     public String getInfo() {
         return info;

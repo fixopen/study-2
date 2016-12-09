@@ -1,7 +1,6 @@
 package com.baremind;
 
 
-import com.baremind.data.Image;
 import com.baremind.data.ImageText;
 import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
@@ -114,24 +113,32 @@ public class ImageTexts {
                     FileOutputStream w = new FileOutputStream(file);
                     CharacterEncodingFilter.saveFile(w, inputStream);
 
-                    Image image = new Image();
-                    image.setId(IdGenerator.getNewId());
-                    image.setExt(postfix);
-                    image.setMimeType(contentType);
-                    image.setName(fileName);
-                    image.setSize(p.getSize());
-                    String virtualPath = Properties.getProperty("testvirtualpath") + fileName;
-                    image.setStorePath(virtualPath);
+//                    Image image = new Image();
+//                    image.setId(IdGenerator.getNewId());
+//                    image.setExt(postfix);
+//                    image.setMimeType(contentType);
+//                    image.setName(fileName);
+//                    image.setSize(p.getSize());
+//                    String virtualPath = Properties.getProperty("testvirtualpath") + fileName;
+//                    image.setStorePath(virtualPath);
+//
+//                    ImageText imageText = new ImageText();
+//                    imageText.setId(IdGenerator.getNewId());
+//                    imageText.setImageId(image.getId());
+//                    String content = request.getParameter("content");
+//                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
+//                    ImageText imageText = new ImageText();
+//                    imageText.setId(IdGenerator.getNewId());
+//                    imageText.setExt(postfix);
+//                    imageText.setMimeType(contentType);
+//                    imageText.setName(fileName);
+//                    imageText.setSize(p.getSize());
+//                    String virtualPath = Properties.getPropertyValue("testvirtualpath") + fileName;
+//                    imageText.setStorePath(virtualPath);
+//                    imageText.setContent(content);
+//                    JPAEntry.genericPost(imageText);
 
-                    ImageText imageText = new ImageText();
-                    imageText.setId(IdGenerator.getNewId());
-                    imageText.setImageId(image.getId());
-                    String content = request.getParameter("content");
-                    content = new String(content.getBytes("ISO-8859-1"), "UTF-8");
-                    imageText.setContent(content);
-                    JPAEntry.genericPost(imageText);
-
-                    result = Response.ok(new Gson().toJson(imageText)).build();
+//                    result = Response.ok(new Gson().toJson(imageText)).build();
                 } else {
                     result = Response.status(415).build();
                     //上传图片的格式不正确

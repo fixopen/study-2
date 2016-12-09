@@ -77,4 +77,6 @@ public class Media implements com.baremind.data.Entity {
     public void setStorePath(String storePath) {
         this.storePath = storePath;
     }
+
+
 }

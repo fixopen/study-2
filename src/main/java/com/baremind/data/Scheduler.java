@@ -1,18 +1,22 @@
 package com.baremind.data;
 
 
+import com.baremind.utils.JPAEntry;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/8/18.
  */
 @Entity
 @Table(name = "schedulers")
-public class Scheduler implements com.baremind.data.Entity {
+public class Scheduler implements com.baremind.data.Entity, Resource {
     @Id
     @Column(name = "id")
     private Long id;
@@ -56,14 +60,11 @@ public class Scheduler implements com.baremind.data.Entity {
     @Column(name = "teacher_id")
     private Long teacherId;
 
-
     @Column(name = "price")
     private Long price;
 
-
     @Column(name = "discount")
     private Double discount;
-
 
     public Long getPrice() {
         return price;
@@ -129,6 +130,7 @@ public class Scheduler implements com.baremind.data.Entity {
         this.endTime = endTime;
     }
 
+    @Override
     public Long getSubjectId() {
         return subjectId;
     }
@@ -191,5 +193,41 @@ public class Scheduler implements com.baremind.data.Entity {
 
     public void setTeacherId(Long teacherId) {
         this.teacherId = teacherId;
+    }
+
+    public static Map<String, Object> convertToMap(Scheduler scheduler) {
+        Map<String, Object> schedulerMap = new HashMap<>();
+        schedulerMap.put("id", scheduler.getId());
+        schedulerMap.put("year", scheduler.getYear());
+        schedulerMap.put("week", scheduler.getWeek());
+        schedulerMap.put("day", scheduler.getDay());
+        schedulerMap.put("startTime", scheduler.getStartTime());
+        schedulerMap.put("endTime", scheduler.getEndTime());
+        schedulerMap.put("subjectId", scheduler.getSubjectId());
+        schedulerMap.put("grade", scheduler.getGrade());
+        schedulerMap.put("name", scheduler.getName());
+        Image cover = JPAEntry.getObject(Image.class, "id", scheduler.getCoverId());
+        if (cover != null) {
+            schedulerMap.put("cover", cover.getStorePath());
+        }
+        return schedulerMap;
+    }
+
+    @Override
+    public Long getAmount() {
+        return (long)(price * discount);
+    }
+
+    @Override
+    public void setAmount(Long a) {
+        //do nothing
+    }
+
+    @Override
+    public Map<String, Object> getContent() {
+        Map<String, Object> schedulerMap = new HashMap<>();
+        schedulerMap.put("contentLink", getContentLink());
+        schedulerMap.put("directLink", getDirectLink());
+        return schedulerMap;
     }
 }

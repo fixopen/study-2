@@ -44,4 +44,6 @@ public class Subject implements com.baremind.data.Entity {
     public void setName(String name) {
         this.name = name;
     }
+
+
 }

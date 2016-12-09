@@ -41,7 +41,7 @@ public class ProblemStandardAnswer implements com.baremind.data.Entity {
         return index;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setIndex(Integer name) {
+        this.index = name;
     }
 }

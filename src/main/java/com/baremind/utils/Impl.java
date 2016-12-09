@@ -37,17 +37,6 @@ public class Impl {
         return result;
     }
 
-    public static <T> Response finalResult(T entity, PostProcessor<T> postProcessor) {
-        Response result;
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        if (postProcessor != null) {
-            result = Response.ok(gson.toJson(postProcessor.convert(entity))).build();
-        } else {
-            result = Response.ok(gson.toJson(entity)).build();
-        }
-        return result;
-    }
-
     public static <T> Response get(String sessionId, String filter, Map<String, String> orders, Class<T> type, PostProcessor<T> postProcessor, Predicate<T> accept) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
@@ -86,6 +75,26 @@ public class Impl {
                     }
                 });
             }
+            result = get(sessionId, filterObject, orders, type, postProcessor, accept);
+        }
+        return result;
+    }
+
+    private static <T> Response finalResult(T entity, PostProcessor<T> postProcessor) {
+        Response result;
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        if (postProcessor != null) {
+            result = Response.ok(gson.toJson(postProcessor.convert(entity))).build();
+        } else {
+            result = Response.ok(gson.toJson(entity)).build();
+        }
+        return result;
+    }
+
+    public static <T> Response get(String sessionId, Map<String, Object> filterObject, Map<String, String> orders, Class<T> type, PostProcessor<T> postProcessor, Predicate<T> accept) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            result = Response.status(404).build();
             List<T> entities = JPAEntry.getList(type, filterObject, orders);
             if (!entities.isEmpty()) {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();

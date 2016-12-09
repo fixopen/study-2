@@ -23,32 +23,16 @@ import java.util.*;
 @Path("schedulers")
 public class Schedulers {
     @GET
-    @Path("{objectId}/{objectType}/schedulers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter, @PathParam("objectId") Long objectId, @PathParam("objectType") String objectType) {
-        Response result = Response.status(401).build();
-        String guan = Users.guan(JPAEntry.getLoginId(sessionId), objectId, objectType);
-        switch (guan) {
-            case "200":
-                Map<String, String> orders = new HashMap<>();
-                orders.put("startTime", "DESC");
-                //@@group data
-                return Impl.get(sessionId, filter, orders, Scheduler.class, null, null);
-            case "403":
-                result = Response.status(403).build();
-                break;
-            case "408":
-                result = Response.status(408).build();
-                break;
-        }
-        return result;
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, Scheduler.class, Scheduler::convertToMap, null);
     }
 
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        return Impl.getById(sessionId, id, Scheduler.class, null);
+        return Impl.getById(sessionId, id, Scheduler.class, Scheduler::convertToMap);
     }
 
     @POST
@@ -190,7 +174,7 @@ public class Schedulers {
         return result;
     }
 
-    @GET //根据科目查询老师
+    @GET //查询老师
     @Path("teachers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTeacher(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
@@ -206,7 +190,7 @@ public class Schedulers {
         return result;
     }
 
-    @GET //根据科目查询年级
+    @GET //查询年级
     @Path("grades")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGrades(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
@@ -222,7 +206,7 @@ public class Schedulers {
         return result;
     }
 
-    @GET //根据周查询课表
+    @GET //根据keywords查询课表
     @Path("keywords/{keywords}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByKeywords(@CookieParam("sessionId") String sessionId, @PathParam("keywords") String keywords) {
@@ -261,18 +245,10 @@ public class Schedulers {
     @Path("years/{year}/weeks/{week}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWeekScheduler(@CookieParam("sessionId") String sessionId, @PathParam("year") Integer year, @PathParam("week") Integer week) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Map<String, Object> filterObject = new HashMap<>(2);
-            filterObject.put("year", year);
-            filterObject.put("week", week);
-
-            List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject);
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
-            result = Response.ok(gson.toJson(schedulers)).build();
-        }
-        return result;
+        Map<String, Object> filterObject = new HashMap<>(2);
+        filterObject.put("year", year);
+        filterObject.put("week", week);
+        return Impl.get(sessionId, filterObject, null, Scheduler.class, Scheduler::convertToMap, null);
     }
 
     @GET //获取classroom-key

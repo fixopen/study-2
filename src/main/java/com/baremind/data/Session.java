@@ -78,4 +78,6 @@ public class Session implements com.baremind.data.Entity {
     public void setIp(String ip) {
         this.ip = ip;
     }
+
+
 }

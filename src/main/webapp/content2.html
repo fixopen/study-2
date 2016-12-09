@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小雨知时</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/volume.css">
+    <link rel="stylesheet" href="css/content_version2.css">
+    <link rel="stylesheet" href="css/knowledgepoints.css">
+    <link rel="stylesheet" href="css/knowledgepoints-content.css">
+    <link rel="stylesheet" href="css/math-detail.css">
+    <link rel="stylesheet" href="css/chinese-detail.css">
+    <link rel="stylesheet" href="css/english-detail.css">
+
+</head>
+<body>
+
+<article id="volumes" style="display: none;"><!--课程封皮--></article>
+<article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
+<article id="knowledgePoint">
+
+</article>
+
+<!--------------------------volumes--------------------------->
+<template id="chinese-structure"><!--课程封皮：学习-语文-->
+    <div>
+        <div id="popup">
+        </div>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav">
+                    <li class="grade_main active" data-grade="low">
+                        <a href="#low" data-toggle="tab" data-grade="low">1-2年级</a>
+                    </li>
+                    <li class="grade_main" data-grade="high">
+                        <a href="#high" data-toggle="tab" data-grade="high">3-6年级</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="rain-main">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="math-structure"><!--课程封皮：学习-数学-->
+    <div>
+        <div id="popup">
+        </div>
+        <div class="wrap noBackg">
+            <div class="bao_dul">
+                <ul class="grade_nav_math">
+                    <li class="grade_main active" data-grade="low">
+                        <a href="#low2" data-toggle="tab" data-grade="low">1-3年级</a>
+                    </li>
+                    <li class="grade_main" data-grade="high">
+                        <a href="#high2" data-toggle="tab" data-grade="high">4-6年级</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="rain-main">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                    </ol>
+                    <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+<template id="english-structure"><!--课程封皮：学习-英语-->
+    <div class="wrap noBackg">
+        <div class="bao_dul">
+            <ul class="grade_nav_english">
+                <li class="grade_main active">
+                    <a href="#low2" data-toggle="tab">Happy Reading AA</a>
+                </li>
+                <li class="grade_main">
+                    <a href="#high2" data-toggle="tab">My first phonics Book</a>
+                </li>
+            </ul>
+        </div>
+        <div class="rain-main">
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <ol role="tabpanel" class="tab-pane active volumes_bg" id="low2">
+                </ol>
+                <ol role="tabpanel" class="tab-pane volumes_bg" id="high2">
+                </ol>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="volumes-new-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <span class="textbook_num" id="newCount">1</span>
+            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
+        </a>
+    </li>
+</template>
+<template id="volumes-old-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <img src="${bookCover}" data-id="${id}" data-article="knowledgePoints" alt="">
+        </a>
+    </li>
+</template>
+<template id="volumes-chinese-expect-template">
+    <li>
+        <a class="textbook" href="javascript:void(0)">
+            <img src="${bookCover}" alt="">
+        </a>
+    </li>
+</template>
+<!------------------------------knowledgepoints----------------------------->
+<template id="math-catalog"><!--数学-目录-->
+    <div class="wrap">
+        <div class="catalog">
+            <div class="mltop_main" id="book_infor"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main catalog_list">
+            <div>
+                <ul class="each_chapter" id="chapter_section1"></ul>
+                <ul class="each_chapter" id="chapter_section2"></ul>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="book-infor-template">
+    <div>
+        <div class="mltop_left">
+            <img src="${bookCover}" alt="">
+        </div>
+        <div class="mltop_right">
+            <p class="mltop_biao">${title}</p>
+            <p class="mltop_xinxi">
+                <span>年        级：</span>
+                <span>${grade}</span>
+            </p>
+            <p class="mltop_xinxi">
+                <span>章        数：</span>
+                <span>${knowledgePointCount}篇</span>
+            </p>
+        </div>
+    </div>
+</template>
+<template id="title-pack-up-template">
+    <p class="mltop_xiaoBiao">${title}</p>
+</template>
+<template id="chapter-new-template">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="javascript:;">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-old-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi" href="javascript:;">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-challenge">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <a class="neir_pzi neir_tianZ" href="javascript:;">${title}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${peopleNum}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="${zan}" alt="">
+                <img class="dianzanImg cur" src="${zanover}" alt="">
+                赞
+                <span>${zanNum}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chinese-catalog"><!--语文-目录-->
+    <div class="wrap">
+        <div class="catalog chinese_catalog">
+            <div class="mltop_main" id="book_infor"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up chinese_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main catalog_list">
+            <!--<div class="mulu_div">-->
+            <!--<ul class="cont_sul" id="chapter_section2"></ul>-->
+            <div class="chinese_catalog_list">
+                <ul class="each_chapter" id="chapter_section2"></ul>
+            </div>
+        </div>
+    </div>
+</template>
+<!----------------------------------detail-structure----------------------------->
+<template id="chinese-template"> <!--注意--><!--template 里面的元素只能是一个--><!--语文-课程详情-->
+    <div class="" wrap>
+        <section class="head-title" id="knowledgePointTitle">
+        </section>
+        <section class="rain-main">
+            <div class="details_show youKuang">
+                <section>
+                    <section class="origin-title">选文赏析<span>XUAN WEN SHANG XI</span></section>
+                    <section id="origin"></section>
+                </section>
+            </div>
+            <section class="content-bg" id="content"></section>
+            <section class="content-bg" id="video"></section>
+
+            <section class="exercise">
+                <h3 class="break_through">闯关练习<span>CHAUNG GUAN LIAN XI</span></h3>
+                <ul id="problems" classs="ul-style">
+                </ul>
+            </section>
+            <section class="content-bg" id="interaction"></section>
+        </section>
+        <section class="mulu_bottom">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+                </div>
+            </div>
+            <section id="comments"></section>
+        </section>
+    </div>
+</template>
+<template id="math-template"><!--数学-课程详情-->
+    <div class="wrap">
+        <section class="title_math_details">
+            <span class="dare"> 挑战<span id="title1"></span></span>
+            <h3 class="title_module" id="title2"></h3>
+        </section>
+        <!--section-->
+        <div class="rain-main">
+            <!--lead-->
+            <section class="challenge">
+                <div id="challenge"></div>
+                赶紧开始吧！
+            </section>
+            <!--最强讲解-->
+            <div class="module_math">
+                <section class="xuanwen">
+                    <span class="icon_img1"></span>
+                    最强讲解<span>ZUI QIANG JIANG JIE</span>
+                </section>
+                <section>
+                    <div id="content1" class="explain_content"></div>
+                    <div id="video1"></div>
+                </section>
+            </div>
+            <!--最强大脑-->
+            <div class="module_math">
+                <section class="xuanwen">
+                    <span class="icon_img2"></span>
+                    最强大脑<span>ZUI QIANG DA NAO</span>
+                </section>
+                <ul class="ul-style" id="strongest-brain"></ul>
+
+                <!--脑力大PK-->
+                <section class="brain_pk">脑力大PK
+                    <span>NAO LI DA PK</span>
+                </section>
+                <ul class="ul-style" id="pk"></ul>
+
+                <!--智慧结晶-->
+                <p class="zongjie_p">将你的智慧结晶写在这里吧。</p>
+                <textarea class="zongjie_txt" name="" id="" cols="" rows=""></textarea>
+            </div>
+
+            <!--readlike-->
+            <section class="content-bg lixi_Nomar" id="interaction"></section>
+        </div>
+        <!--message-->
+        <section class="mulu_bottom">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+                </div>
+            </div>
+            <section id="comments"></section>
+        </section>
+    </div>
+</template>
+<template id="mathtest-template"><!--X学习-数学-课程详情-挑战百分百-->
+    <div class="wrap">
+        <div class="catalog_pack_up" style="display:block">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main">
+            <div class="challenge_percenter">
+                <ul class="ul-style" id="strongest-brain">
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="english-template"><!--英语-课程详情-->
+    <div class="wrap">
+        <div class="catalog english_catalog">
+            <div class="mltop_main" id="book_infor_english"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="catalog_pack_up english_pack_up">
+            <div class="mltop_main" id="pack_up_title"></div>
+            <img class="juchi" src="images_version2/juchi.png" alt="">
+        </div>
+        <div class="rain-main english_top">
+            <section id="english_content"></section>
+
+            <!--readlike-->
+            <section class="content-bg lixi_Nomar" id="interaction"></section>
+        </div>
+        <section class="mulu_bottom">
+            <div class="muluBn_top" id="message">
+                <button id="createComment" type="button" class="comment-btn">写留言</button>
+                <div id="commentPanl" style="display: none">
+                    <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                    <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+                </div>
+            </div>
+            <section id="comments"></section>
+        </section>
+    </div>
+</template>
+<!-----------------------------knowledgepoint-content---------------------------->
+<!--chinese-->
+<template id="knowledge-point-title-template">
+    <span>${name}</span>
+</template>
+<template id="origin-template">
+    <p class="content-font">${content}<span>${source}</span></p>
+</template>
+<template id="content-text-template">
+    <p class="paragraph">${content}</p>
+</template>
+<template id="content-c-image-template">
+    <div class="details_show">
+        <img class="content-img" src="${href}" alt="${description}">
+    </div>
+</template>
+<template id="video-template">
+    <div class="details_show">
+        <a href="${storePath}">
+            <img src="${cover}"/>
+        </a>
+    </div>
+</template>
+<template id="problem-option-template">
+    <li class="mld_daanLi">
+        <span class="daan_quan">${title}</span>
+        <input class="daana" name="daan3" type="radio">${name}
+    </li>
+</template>
+<template id="problem-checkbox-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span class="mld_liImg_">${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+    </li>
+</template>
+<template id="problem-radio-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span class="mld_liImg">${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+    </li>
+</template>
+<template id="problem-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span>${type}</span>
+            ${title}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+    </li>
+</template>
+<template id="interaction-like-template"><!--已点赞-->
+    <div>
+        <ul class="ul01_flet">
+            <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+            <li>
+                <span class="favour">已点</span>
+                <span class="ul01_count">${likeCount}</span>
+            </li>
+        </ul>
+        <ul class="ul01_riht">
+            <li class="ul01_fli"><span class="ul01_aBtn" data-article="knowledgePoint"
+                                       data-id="${previousId}">上一节课</span></li>
+            <li><span class="ul01_aBtn" data-article="knowledgePoint" data-id="${nextId}">下一节课</span></li>
+        </ul>
+    </div>
+</template>
+<template id="interaction-unlike-template"><!--未点赞-->
+    <div>
+        <ul class="ul01_flet">
+            <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+            <li>
+                <span class="dislike"></span>
+                <span class="ul01_count">${likeCount}</span>
+            </li>
+        </ul>
+        <ul class="ul01_riht">
+            <li class="ul01_fli"><span class="ul01_aBtn" data-article="knowledgePoint"
+                                       data-id="${previousId}">上一节课</span></li>
+            <li><span class="ul01_aBtn" data-article="knowledgePoint" data-id="${nextId}">下一节课</span></li>
+        </ul>
+    </div>
+</template>
+<template id="comment-like-template">
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${userAvatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${userName}</div>
+                    <div class="litop_friht" data-id="${id}" data-liked="${liked}">
+                        <!--<img class="ul01_imgzan_" src="img/zan-over.png" alt="">-->
+                        <span class="like-icon">已点</span>
+                        <span class="ul01_count">${likeCount}</span>
+                    </div>
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${createTime}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</template>
+<template id="comment-unlike-template">
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${userAvatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${userName}</div>
+                    <div class="litop_friht" data-id="${id}">
+                        <!--<img class="ul01_imgzan_" src="img/zan.png" alt="">-->
+                        <span class="like-icon">未点</span>
+                        <span class="ul01_count">${likeCount}</span>
+                    </div>
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${createTime}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</template>
+<template id="trueImage">
+    <img src="img/true.png" alt="">
+</template>
+<template id="falseImage">
+    <img src="img/error.png" alt="">
+</template>
+<!--math-->
+<template id="title1-template">
+    <span>${order}</span>
+</template>
+<template id="title2-template">
+    <span>${name}</span>
+</template>
+<template id="challenge-template">
+    <span>${content}</span>
+</template>
+<template id="content-m-image-template">
+    <div>
+        <p>${explainContent}</p>
+        <img class="muld_images" src="${href}" alt="">
+        <p class="mulu_dp math_color">
+            ${content}
+        </p>
+    </div>
+</template>
+<template id="strongest-brain-option-template">
+    <li class="mld_daanLi">
+        <span class="daan_quan">${title}</span>
+        <input type="radio" class="daana" name="daan3">${name}
+        <!--<input type="radio" id="daan_s3A" class="daana" name="daan1">-->
+        <img src="${optionImagePath}" class="option" alt="">
+        <!--<label for="daan_s3A">${name}</label>-->
+    </li>
+</template>
+<template id="strongest-brain-template">
+    <li class="mld_Ulli">
+        <div class="addimg" data-type="${type}">${title}</div>
+        <img src="${storePath}" alt="">
+        <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+        <div class="baoBtn" data-id="${id}">
+            <!--<a class="btnTrue" href="#">查看答案</a>-->
+            <span class="btnTrue">查看答案</span>
+        </div>
+        <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
+    </li>
+</template>
+<template id="pk-template">
+    <li class="mld_Ulli">
+        <div>${title}</div>
+        <img class="ceshi_ti1" src="${storePath}" alt="">
+        <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
+    </li>
+</template>
+<!--english-->
+<template id="english-envelope-template">
+    <div>
+        <div class="mltop_left">
+            <img src="${bookImg}" alt="">
+        </div>
+        <div class="mltop_right">
+            <p class="mltop_biao">${bookName}</p>
+            <p class="mltop_xinxi">
+                <span class="xinxi_left">概要：</span>
+                <span class="xinxi_right">${summary}</span>
+            </p>
+        </div>
+    </div>
+</template>
+<template id="english-content-template">
+    <div class="english_page">
+        <img class="muld_images" src="${img}" alt="">
+    </div>
+</template>
+<!-----------------------------dialog---------------------------->
+<template id="cover-template"><!-- 学习-更新通知 -->
+    <div>
+        <div class="tan"></div>
+        <div class="update_notify">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="detail_content">
+                    <span>每个工作日10:00<br>会有一堂新的课程上线，</span><br>不要错过哦！
+                </p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">知道了</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-member-template"><!-- 非会员 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="member_content">会员才可以观看视频呦！</p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">成为会员</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-overdue-template"><!--学习卡过期弹窗-->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="member_content">您的学习卡已过期！</p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">购买新卡</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-deduct-bean-template"><!-- 扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <p class="deduct_bean">确定要扣<span class="ptxt_span">1</span>金豆<br>观看本视频吗？</p>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
+                </p>
+                <p class="btn_line">
+                    <a class="got_it_btn" href="javascript:;">确定</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-no-card-template"><!-- 语文-无此卡扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <div class="deduct_math_bean">
+                    您还没有语文卡<br>确定要扣数学卡<span class="ptxt_span">1</span>金豆吗？
+                </div>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
+                </p>
+                <div>
+                    <a class="confirm_btn" href="javascript:;"><span>确定</span></a>
+                    <a class="buy_card" href="javascript:;">买语文卡</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="cover-math-no-card-template"><!-- 数学-无此卡扣豆提醒 -->
+    <div>
+        <div class="tan" style="display: block;"></div>
+        <div class="update_notify" style="display: block;">
+            <a class="close_window_btn" href="javascript:;"></a>
+            <div class="notify_content">
+                <div class="deduct_math_bean">
+                    您还没有数学卡<br>确定要扣语文卡<span class="ptxt_span">1</span>金豆吗？
+                </div>
+                <p class="next_no_prompt">
+                    <label for="no_prompt"><input class="no_prompt_check" name="" type="checkbox"
+                                                  id="no_prompt">下次不提醒</label>
+                </p>
+                <div>
+                    <a class="confirm_btn" href="javascript:;"><span>确定</span></a>
+                    <a class="buy_card" href="javascript:;">买数学卡</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<!--<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>-->
+<!--<dialog>您的卡片已过期，请重新购买！</dialog>-->
+<!--<dialog>您的卡片只可观看***，<br>观看其他内容请购买相应卡片！</dialog>-->
+<!--<dialog>还剩24雨点不够观看啦，请充值！</dialog>-->
+<!--<dialog>雨点所剩不多，请尽快充值哦！</dialog>-->
+
+<script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/bootstrap/bootstrap.min.js"></script>
+<script src="/util.js"></script>
+<script src="/basic.js"></script>
+<script>
+    $(function () {
+        var data = {
+            low: [
+                {
+                    type: 'new',
+                    img: 'images_version2/yuwen_mulu1.png'
+                },
+                {
+                    type: 'old',
+                    img: 'images_version2/yuwen_mulu2.png'
+                },
+                {
+                    type: 'expect',
+                    img: 'images_version2/yuwen_mulu0.png'
+                }
+            ],
+            high: [
+                {
+                    type: 'new',
+                    img: 'images_version2/yuwen_mulu2.png'
+                },
+                {
+                    type: 'old',
+                    img: 'images_version2/yuwen_mulu1.png'
+                },
+                {
+                    type: 'expect',
+                    img: 'images_version2/yuwen_mulu0.png'
+                }
+            ],
+            bookInfor: [
+                {
+                    type: 'bookinfor',
+                    bookImg: 'images_version2/shuxue1.png',
+                    bookName: '钟表喊你吃饭啦',
+                    grade: '1-3年级',
+                    chapterNum: '12'
+                }
+            ],
+            packUpTitle: [
+                {
+                    type: 'packUp',
+                    title: '钟表喊你吃饭啦'
+                }
+            ],
+            chapter_section: [
+                {
+                    type: 'new',
+                    title: '加与减',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
+                },
+                {
+                    type: 'old',
+                    title: '简单的图形数量规律',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
+                },
+                {
+                    type: 'challenge',
+                    title: '挑战百分百',
+                    peopleNum: '54682',
+                    zan: 'images_version2/dianzan.png',
+                    zanover: 'images_version2/zanover.png',
+                    zanNum: '381'
+                }
+            ],
+            head_title: [
+                {
+                    type: 'headTitle',
+                    name: '放纵不羁名垂青史的竹林七贤'
+                }
+            ],
+            text_appreciate: [
+                {
+                    type: 'textAppreciate',
+                    content: '陈留阮籍、谯国嵇康、河内山涛，三人年皆相比，康年少亚之。预此契者：沛国刘伶、陈留阮咸、河内向秀、琅邪王戎。七人常集于竹林之下，肆意酣畅，故世谓“竹林七贤”。',
+                    source: ' ——【南朝】刘义庆《世说新语·任诞》',
+                }
+            ],
+            content_text: [
+                {
+                    type: 'contentText',
+                    content: '魏晋时期，是一个有太多动荡，太多危机的时期，长久的战乱，阴毒的政治，都使得离别、死亡成为太轻易的事，这些生离和死别，使得当时的知识分子们深刻地意识到生命的短暂和可贵，那么，如何在乱世中、在挣扎里，将生命活得珍重而绚烂呢？',
+                }
+            ],
+            content_image: [
+                {
+                    type: 'contentImage',
+                    href: 'images_version2/video1.png'
+                }
+            ],
+            content_video: [
+                {
+                    type: 'contentVideo',
+                    storePath: '',
+                    cover: 'images_version2/video3.png'
+                }
+            ],
+            challenge_num: [
+                {
+                    type: 'challengeNum',
+                    order: '一'
+                }
+            ],
+            title_math_details: [
+                {
+                    type: 'titleMathDetails',
+                    name: '火柴竟是运动迷'
+                }
+            ],
+            challenge_period: [
+                {
+                    type: 'challengePeriod',
+                    content: '欢迎你加入直播数学战队，本期你将要挑战的是“掌握用凑十法计算20以内的加减法”。'
+                }
+            ],
+            explain_content: [
+                {
+                    type: 'explainContent',
+                    explainContent: '今天，我们来学习加减法运算。',
+                    href: 'images_version2/math4.png',
+                    content: '在20以内的加法计算中，估计你最喜欢10了，因为10加几就等于几，如10+1=11……如果所有的加法计算都像这样，那就太简单了，但这是不可能的啊。哈哈……'
+                }
+            ],
+            english_details: [
+                {
+                    type: 'englishDetails',
+                    bookImg: 'images_version2/yingyu1.png',
+                    bookName: 'My Family',
+                    summary: '学习爸爸、妈妈、哥哥、姐姐等亲属称容词,如，mother，grandma等'
+                }
+            ],
+            english_content: [
+                {
+                    type: 'englishContent',
+                    img: 'img/eng_mo.png'
+                }
+            ],
+        }
+</script>
+<script>
+    /*
+     *  [
+     *     {
+     *       id:...
+     *       name: ...
+     *       low:[
+     *           {
+     *               id: ..
+     *               name: ...
+     *               cover: ...
+     *               knowledgePoints: [
+     *                   {
+     *                       id:
+     *                       name: ...
+     *                       oldOrNew:...
+     *                       ...
+     *                       contents: {
+     *                       }
+     *                   }
+     *                   ...
+     *               ]
+     *           }
+     *           ...
+     *       ],
+     *       high: [
+     *
+     *       ]
+     *   }
+     *  ....
+     *  ]
+     */
+    var subjects = []
+
+    var state = {
+        currentArticle: document.getElementById('volumes'),
+        init: function () {
+            var userId = g.getUrlParameter('userid')
+            g.setCookie('userId', userId)
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/subjects',
+                dataType: 'json',
+                success: function (ss) {
+                    subjects = ss
+                    for (var i = 0; i < subjects.length; ++i) {
+                        subjects[i].low = [];
+                        subjects[i].high = [];
+                    }
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/volumes',
+                        dataType: 'json',
+                        success: function (vs) {
+                            for (var i = 0; i < vs.length; ++i) {
+                                vs[i].knowledgePoints = []
+                                var s = state.subject.getById(vs[i].subjectId)
+                                if (s) {
+                                    var gn = state.grade.getNameByValue(vs[i].grade)
+                                    s[gn].push(vs[i])
+                                } else {
+                                    //console.log(vs[i])
+                                }
+                            }
+                            for (var i = 0; i < subjects.length; ++i) {
+                                var newVolume = {
+                                    name: '期待新书',
+                                    bookCover: 'images_version2/yuwen_mulu0.png',
+                                    type: 'old'
+                                }
+                                subjects[i].low.push(newVolume);
+                                subjects[i].high.push(newVolume);
+                            }
+                            var subjectId = g.getUrlParameter('subjectId')
+                            $.ajax({
+                                type: "get",
+                                url: '/api/subjects/' + subjectId + '/popup',
+                                dataType: "json",
+                                success: function (pop) {
+                                    state.volumes.popuped = pop.popup;
+                                    state.volumes.popuped = false;
+
+                                    history.pushState(null, null, '/content2.html#volumes')
+                                    state.volumes.changeId(subjectId)
+
+                                    //state.volumes.subjectId = subjectId
+                                    //state['volumes'].init()
+
+                                    $(document).on('click', '.like-icon', function (e) {
+                                        var commentId = e.target.parentNode.dataset.id
+                                        state.knowledgePoint.process(commentId)
+                                    })
+                                }
+                            });
+                        },
+                        error: function (r) {
+                        }
+                    })
+                },
+                error: function (r) {
+                }
+            })
+
+            var switchTo = function (id) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/content2.html#' + id)
+                state[id].init()
+            }
+
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article;
+                switchTo(id);
+                state[id].changeId(e.target.dataset.id)
+            })
+
+            $(document).on('shown.bs.tab', '.grade-main', function (e) {
+                state.volumes.grade = e.target.dataset.grade
+                //$(e.target).tab('show')
+            })
+
+            window.addEventListener('hashchange', function (e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            }, false)
+        },
+
+        volumes: {
+            isChanged: true,
+            grade: 'low',
+            parentId: 0,
+            init: function () {
+                state.volumes.value = state.subject.getById(state.volumes.parentId)
+                state.volumes.show()
+            },
+            changeId: function (subjectId) {
+                if (state.volumes.parentId != subjectId) {
+                    state.volumes.parentId = subjectId;
+                    state.volumes.value = state.subject.getById(state.volumes.parentId);
+                    state.volumes.isChanged = true;
+                    state.volumes.show();
+                }
+            },
+            value: null,
+            show: function () {
+                if (state.volumes.isChanged) {
+                    $('#volumes').html("");
+
+                    switch (state.volumes.parentId) {
+                        case 1:
+                        case "1":
+                            proc({
+                                containerId: 'volumes',
+                                data: {},
+                                templateId: 'chinese-structure'
+                            })
+
+                            var value = state.volumes.value;
+
+                            proc({
+                                containerId: 'popup',
+                                data: {},
+                                templateId: 'cover-template'
+                            })
+
+//                            for (var i = 0; i < value.low.length; ++i) {
+//                                state.volume.value = value.low[i]
+//                                value.low[i].newCount = state.volume.calcNew()
+//                            }
+                            proc({
+                                data: value.low,
+                                containerId: 'low',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
+                                ]
+                            })
+
+                            proc({
+                                data: value.high,
+                                containerId: 'high',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
+                                ]
+                            })
+
+                            var subjectId = 1;
+                            state.volumes.popups(subjectId);
+
+                            break
+                        case 2:
+                        case '2':
+                            proc({
+                                containerId: 'volumes',
+                                data: {},
+                                templateId: 'math-structure'
+                            })
+
+                            var value = state.volumes.value
+                            proc({
+                                containerId: 'popup',
+                                data: {},
+                                templateId: 'cover-template'
+                            })
+
+//                            for (var i = 0; i < value.low.length; ++i) {
+//                                state.volume.value = value.low[i]
+//                                value.low[i].newCount = state.volume.calcNew()
+//                            }
+                            proc({
+                                data: value.low,
+                                containerId: 'low2',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
+                                ]
+                            })
+                            proc({
+                                data: value.high,
+                                containerId: 'high2',
+                                alterTemplates: [
+                                    {type: 'old', templateId: 'volumes-old-template'},
+                                    {type: 'new', templateId: 'volumes-new-template'},
+                                ]
+                            })
+
+                            var subjectId = 2;
+                            state.volumes.popups(subjectId);
+
+                            break
+                    }
+                    state.volumes.isChanged = false
+                }
+            },
+            newClass: function () {
+                $('.tan').slideDown();
+                $('.update_notify').slideDown();
+                $(".tan,.update_notify").bind('touchmove', function (event) {
+                    event.preventDefault();
+                });
+                $(".update_notify").click(function () {
+                    $(this).slideUp();
+                    $(".tan").slideUp();
+                });
+            },
+            popups: function (subjectId) {
+                if (!state.volumes.popuped) {
+                    state.volumes.newClass();//课程更新弹窗
+                    $.ajax({
+                        type: "post",
+                        url: '/api/subjects/' + subjectId,
+                        data: JSON.stringify({}),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function () {
+                        }
+                    })
+                }
+            }
+        },
+        knowledgePoints: {
+            isChanged: false,
+            parentId: null,
+            init: function () {
+                if (state.knowledgePoints.isChanged) {
+                    state.knowledgePoints.show()
+                    state.knowledgePoints.isChanged = false
+                }
+            },
+            changeId: function (volumeId) {
+                if (state.knowledgePoints.parentId != volumeId) {
+                    state.knowledgePoints.parentId = volumeId
+                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId)
+                    if (state.knowledgePoints.value.knowledgePoints.length == 0) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
+                            dataType: 'json',
+                            success: function (kps) {
+                                var isNew = function (now, kp) {
+                                    var result = false
+                                    if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+                                        result = true
+                                    }
+                                    return result
+                                }
+//                                var newLength=function(kp){
+//                                    var num=0;
+//                                    if(kp.type == 'normalNew'){
+//                                        num++;
+//                                    }
+//                                    return num;
+//                                }
+                                var now = new Date()
+                                for (var i = 0; i < kps.length; ++i) {
+                                    var v = state.knowledgePoints.value //state.volume.getById(kps[i].volumeId)
+                                    if (v) {
+                                        //console.log(v.knowledgePoints)
+                                        var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
+                                        if (lastKp) {
+                                            lastKp.nextId = kps[i].id
+                                            kps[i].previousId = lastKp.id
+                                        }
+
+                                        kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
+                                        if (isNew(now, kps[i])) {
+                                            if (kps[i].type) {
+                                                kps[i].type += 'New'
+                                            } else {
+                                                kps[i].type = 'normalNew'
+                                            }
+                                            v.knowledgePoints.unshift(kps[i])
+                                        } else {
+                                            if (kps[i].type) {
+                                                kps[i].type += 'Old'
+                                            } else {
+                                                kps[i].type = 'normalOld'
+                                            }
+                                            v.knowledgePoints.push(kps[i])
+                                        }
+                                    } else {
+                                        //console.log(kps[i])
+                                    }
+                                }
+                                state.knowledgePoints.show()
+                            },
+                            error: function (r) {
+                            }
+                        })
+                    } else {
+                        state.knowledgePoints.show()
+                    }
+                }
+            },
+            value: null,
+            show: function () {
+                $('#knowledgePoints').html("");
+                switch (state.volumes.parentId) {
+                    case 1:
+                    case "1":
+                        proc({
+                            containerId: 'knowledgePoints',
+                            data: {},
+                            templateId: 'chinese-catalog'
+                        })
+
+                        var value = state.knowledgePoints.value
+                        proc({
+                            templateId: 'book-infor-template',
+                            data: value,
+                            containerId: 'volumeTitle'
+                        })
+                        proc({
+                            data: value.knowledgePoints,
+                            containerId: 'knowledge-point',
+                            alterTemplates: [
+                                {type: 'normalNew', templateId: 'chapter-new-template'},
+                                {type: 'normalOld', templateId: 'chapter-old-template'},
+                            ]
+                        })
+                        break
+                    case 2:
+                    case '2':
+                        proc({
+                            containerId: 'knowledgePoints',
+                            data: {},
+                            templateId: 'math-catalog'
+                        })
+                        var value = state.knowledgePoints.value
+                        proc({
+                            templateId: 'book-infor-template',
+                            data: value,
+                            containerId: 'volumeTitle'
+                        })
+                        proc({
+                            data: value.knowledgePoints,
+                            containerId: 'knowledge-point',
+                            alterTemplates: [
+                                {type: 'normalNew', templateId: 'chapter-new-template'},
+                                {type: 'normalOld', templateId: 'chapter-old-template'},
+                                {type: 'pkOld', templateId: 'chapter-old-challenge'},
+                                {type: 'pkNew', templateId: 'chapter-new-challenge'},
+                            ]
+                        })
+                        break
+                }
+            }
+        },
+        knowledgePoint: {
+            init: function () {
+                var falseImage = getTemplate('falseImage');
+                var trueImage = getTemplate('trueImage');
+                $(document).on('click', '.mld_daanLi', function (e) {
+                    var elm = e.currentTarget
+                    if (state.volumes.parentId == 1) {
+                        var problemType = elm.parentNode.previousElementSibling.firstElementChild.textContent
+                    } else if (state.volumes.parentId == 2) {
+                        var problemType = elm.parentNode.previousElementSibling.previousElementSibling.dataset.type;
+                    }
+                    var titleElement = elm.children[1]
+                    switch (problemType) {
+                        case '多选题':
+                            if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected == true) {
+                                titleElement.dataset.selected = false;
+
+                                titleElement.previousElementSibling.removeClass('daanLi_nowBai');
+                                elm.removeClass('daanLi_now');
+                            } else {
+                                titleElement.dataset.selected = true;
+
+                                titleElement.previousElementSibling.addClass('daanLi_nowBai');
+                                elm.addClass('daanLi_now');
+                            }
+                            break
+                        case '单选题':
+                            var optionsContainer = elm.parentNode;
+                            for (var i = 0; i < optionsContainer.children.length; ++i) {
+                                var option = optionsContainer.children[i];
+                                if (option.children[1].dataset.selected == 'true') {
+                                    option.children[1].dataset.selected = false;
+                                    option.children[1].previousElementSibling.removeClass('daanLi_nowBai');
+                                    option.children[1].parentNode.removeClass('daanLi_now');
+                                }
+                            }
+                            titleElement.dataset.selected = true;
+                            titleElement.previousElementSibling.addClass('daanLi_nowBai');
+                            elm.addClass('daanLi_now');
+                            break
+                    }
+                })
+                $(document).on('click', '.btnTrue', function (e) {
+                    var optionsContainer = e.target.parentNode.previousElementSibling
+                    for (var i = 0; i < optionsContainer.children.length; ++i) {
+                        var option = optionsContainer.children[i];
+                        var problem = state.knowledgePoint.findProblem(optionsContainer.dataset.id);
+                        if (state.knowledgePoint.compareAnswer(i, problem.standardAnswers)) {
+                            option.addClass('daanLi_true');
+                            option.firstElementChild.innerHTML = ''
+                            option.firstElementChild.removeClass('daanLi_nowBai');
+                            option.firstElementChild.appendChild(trueImage.cloneNode(true))
+                        }
+                        if (option.children[1].dataset.selected == 'true' || option.children[1].dataset.selected == true) {
+                            if (!state.knowledgePoint.compareAnswer(i, problem.standardAnswers)) {
+                                option.addClass('daanLi_error');
+                                option.firstElementChild.innerHTML = ''
+                                option.firstElementChild.removeClass('daanLi_nowBai');
+                                option.firstElementChild.appendChild(falseImage.cloneNode(true))
+                            }
+                        }
+                    }
+                })
+            },
+            parentId: 0,
+            changeId: function (knowledgePointId) {
+                if (state.knowledgePoint.parentId != knowledgePointId) {
+                    state.knowledgePoint.parentId = knowledgePointId
+                    state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.parentId)
+                    if (!state.knowledgePoint.value.contents) {
+                        $.ajax({
+                            type: 'get',
+                            url: 'api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
+                            dataType: 'json',
+                            success: function (data) {
+                                //  选项ABCD
+                                for (var i = 0; i < data.problems.length; ++i) {
+                                    var p = data.problems[i];
+                                    for (var j = 0; j < p.options.length; ++j) {
+                                        p.options[j].title = String.fromCharCode(65 + j);
+                                    }
+                                }
+                                $.ajax({
+                                    type: "get",
+                                    url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/is-self-like',
+                                    dataType: "json",
+                                    success: function (like) {
+                                        state.knowledgePoint.value.liked = like.like
+                                        state.knowledgePoint.value.contents = data
+                                        for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
+                                            $.ajax({
+                                                type: "get",
+                                                url: '/api/comments/' + state.knowledgePoint.value.contents.comments[s].id + '/is-self-like',
+                                                dataType: "json",
+                                                async: false,
+                                                success: function (like) {
+                                                    state.knowledgePoint.value.contents.comments[s].liked = like.like;
+                                                    state.knowledgePoint.show()
+                                                }
+                                            })
+                                        }
+                                        state.knowledgePoint.show()
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        state.knowledgePoint.show()
+                    }
+                }
+            },
+            value: null,
+            interaction: null,
+            comments: null,
+            findCommentById: function (commentId) {
+                var result = null
+                for (var i = 0; i < state.knowledgePoint.value.contents.comments.length; ++i) {
+                    if (state.knowledgePoint.value.contents.comments[i].id == commentId) {
+                        result = state.knowledgePoint.value.contents.comments[i]
+                        break
+                    }
+                }
+                return result
+            },
+            unlike: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/unlike',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            like: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/like',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            process: function (commentId) {
+                var comment = state.knowledgePoint.findCommentById(commentId)
+                if (comment.liked) {
+                    comment.liked = false
+                    comment.likeCount--
+                    state.knowledgePoint.unlike('/api/comments/', comment.id)
+                } else {
+                    comment.liked = true
+                    comment.likeCount++
+                    state.knowledgePoint.like('/api/comments/', comment.id)
+                }
+                state.knowledgePoint.renderComments()
+            },
+            renderComments: function () {
+                state.knowledgePoint.comments.innerHTML = ''
+                for (var i = 0; i < state.knowledgePoint.value.contents.comments.length; ++i) {
+                    if (state.knowledgePoint.value.contents.comments[i].liked) {
+                        proc({
+                            container: state.knowledgePoint.comments,
+                            data: state.knowledgePoint.value.contents.comments[i],
+                            templateId: 'comment-like-template'
+                        })
+                    } else {
+                        proc({
+                            container: state.knowledgePoint.comments,
+                            data: state.knowledgePoint.value.contents.comments[i],
+                            templateId: 'comment-unlike-template'
+                        })
+                    }
+                }
+            },
+            show: function () {
+                $('#knowledgePoint').html("");
+
+                //留言
+                var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
+                    toggleButton.addEventListener('click', function (e) {
+                        $(commentContentPanel).toggle()
+                    }, false)
+                    submitButton.addEventListener('click', function (e) {
+                        state.knowledgePoint.submit(e.target, commentContent, function (c) {
+                            state.knowledgePoint.value.contents.comments.push(c)
+                            commentsContainer.innerHTML = ''
+                            proc({
+                                data: state.knowledgePoint.value.contents.comments,
+                                container: comments,
+                                templateId: 'comment-unlike-template'
+                            })
+                        })
+                    }, false)
+                };
+
+                var likeProc = function (container, data, iconName, likeTemplate, unlikeTemplate, apiUrl) {
+//                  container.innerHTML = '';
+                    if (data.liked) {
+                        proc({
+                            container: container,
+                            data: data,
+                            templateId: likeTemplate
+                        })
+                        var button = container.querySelector(iconName)
+                        button.addEventListener('click', function (e) {
+                            state.knowledgePoint.unlike(apiUrl, data.id)
+                            data.likeCount--
+                            data.liked = false
+                            container.innerHTML = '';
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                        }, false)
+                    } else {
+                        proc({
+                            container: container,
+                            data: data,
+                            templateId: unlikeTemplate
+                        })
+                        var button = container.querySelector(iconName)
+                        button.addEventListener('click', function (e) {
+                            state.knowledgePoint.like(apiUrl, data.id)
+                            data.likeCount++
+                            data.liked = true
+                            container.innerHTML = '';
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                        }, false)
+                    }
+                    state.knowledgePoints.isChanged = true
+                }
+
+                switch (state.volumes.parentId) {
+                    case 1:
+                    case "1":
+                        proc({
+                            containerId: 'knowledgePoint',
+                            data: {},
+                            templateId: 'chinese-template'
+                        })
+
+                        state.knowledgePoint.interaction = document.getElementById('interaction');
+                        state.knowledgePoint.comments = document.getElementById('comments');
+
+                        // 写留言---------
+                        var createComment = document.getElementById('createComment');
+                        var panel = document.getElementById('commentPanl');
+                        var btn = document.getElementById('submitBtn');
+                        var commentContent = document.getElementById('textarea');
+                        var commentContainer = document.getElementById('comments');
+                        commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                        var value = state.knowledgePoint.value;
+
+                        proc({
+                            templateId: 'knowledge-point-title-template',
+                            data: value,
+                            containerId: 'knowledgePointTitle'
+                        });
+
+                        proc({
+                            templateId: 'origin-template',
+                            data: value.contents.quotes,
+                            containerId: 'origin'
+                        });
+
+                        proc({
+                            data: value.contents.contents,
+                            containerId: 'content',
+                            alterTemplates: [
+                                {type: 'text', templateId: 'content-text-template'},
+                                {type: 'image', templateId: 'content-c-image-template'},
+                                {type: 'imageText', templateId: 'content-image-text-template'},
+                            ]
+                        });
+
+                        proc({
+                            templateId: 'video-template',
+                            data: value.contents.video,
+                            containerId: 'video'
+                        });
+
+                        proc({
+//                            templateId: 'problem-template',
+                            alterTemplates: [
+                                {type: '单选题', templateId: 'problem-radio-template'},
+                                {type: '多选题', templateId: 'problem-checkbox-template'}
+                            ],
+                            data: value.contents.problems,
+                            containerId: 'problems',
+                            secondBind: {
+                                extPoint: 'options',
+                                dataFieldName: 'options',
+                                templateId: 'problem-option-template'
+                            }
+                        });
+
+                        //  interaction-likes
+                        var container = state.knowledgePoint.interaction;
+                        var iconName = '.icon';
+                        var likeTemplate = 'interaction-like-template';
+                        var unlikeTemplate = 'interaction-unlike-template';
+                        var apiUrl = 'api/knowledge-points/';
+                        likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                        //comments-likes;
+                        state.knowledgePoint.renderComments()
+                        break
+                    case 2:
+                    case '2':
+                        switch (state.knowledgePoint.value.type) {
+                            case 'normalNew':
+                            case 'normalOld':
+                                proc({
+                                    containerId: 'knowledgePoint',
+                                    data: {},
+                                    templateId: 'math-template'
+                                })
+                                state.knowledgePoint.interaction = document.getElementById('interaction');
+                                state.knowledgePoint.comments = document.getElementById('comments');
+
+                                // 写留言---------
+                                var createComment = document.getElementById('createComment');
+                                var panel = document.getElementById('commentPanl');
+                                var btn = document.getElementById('submitBtn');
+                                var commentContent = document.getElementById('textarea');
+                                var commentContainer = document.getElementById('comments');
+                                commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                                var value = state.knowledgePoint.value;
+
+                                proc({
+                                    templateId: 'title1-template',
+                                    data: value,
+                                    containerId: 'title1'
+                                });
+                                proc({
+                                    templateId: 'title2-template',
+                                    data: value,
+                                    containerId: 'title2'
+                                });
+
+                                proc({
+                                    templateId: 'challenge-template',
+                                    data: value.contents.quotes,
+                                    containerId: 'challenge'
+                                });
+
+                                proc({
+                                    data: value.contents.contents,
+                                    containerId: 'content1',
+                                    alterTemplates: [
+                                        {type: 'text', templateId: 'content-text-template'},
+                                        {type: 'imageText', templateId: 'content-m-image-template'}
+                                    ]
+                                });
+
+                                proc({
+                                    templateId: 'video-template',
+                                    data: value.contents.video,
+                                    containerId: 'video1'
+                                });
+
+                                //data.problems
+                                var ps = []
+                                for (var i = 0; i < value.contents.problems.length; ++i) {
+                                    ps[i] = value.contents.problems[i]
+                                }
+                                var pk = null
+                                var strongestBrains = []
+                                if (ps.length > 0) {
+                                    pk = ps[ps.length - 1]
+                                    ps.pop()
+                                    strongestBrains = ps
+                                }
+
+                                proc({
+                                    templateId: 'pk-template',
+                                    data: pk,
+                                    containerId: 'pk',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'strongest-brain-option-template'
+                                        }
+                                    ]
+                                });
+                                proc({
+                                    templateId: 'strongest-brain-template',
+                                    data: strongestBrains,
+                                    containerId: 'strongest-brain',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'strongest-brain-option-template'
+                                        }
+                                    ]
+                                });
+
+                                //  interaction-likes
+                                var container = state.knowledgePoint.interaction;
+                                var iconName = '.icon';
+                                var likeTemplate = 'interaction-like-template';
+                                var unlikeTemplate = 'interaction-unlike-template';
+                                var apiUrl = 'api/knowledge-points/';
+                                likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                                //comments-likes;
+                                state.knowledgePoint.renderComments()
+
+                                break
+                            case 'pkNew':
+                            case 'pkOld':
+                                proc({
+                                    containerId: 'knowledgePoint',
+                                    data: {},
+                                    templateId: 'mathtest-template'
+                                });
+
+                                state.knowledgePoint.interaction = document.getElementById('interaction');
+                                state.knowledgePoint.comments = document.getElementById('comments');
+
+                                // 写留言---------
+                                var createComment = document.getElementById('createComment');
+                                var panel = document.getElementById('commentPanl');
+                                var btn = document.getElementById('submitBtn');
+                                var commentContent = document.getElementById('textarea');
+                                var commentContainer = document.getElementById('comments');
+                                commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                                var value = state.knowledgePoint.value;
+
+                                proc({
+                                    templateId: 'title-template',
+                                    data: value,
+                                    containerId: 'title'
+                                });
+
+                                proc({
+                                    templateId: 'question-template',
+                                    data: value.contents.problems,
+                                    containerId: 'question',
+                                    secondBind: [
+                                        {
+                                            extPoint: 'options',
+                                            dataFieldName: 'options',
+                                            templateId: 'question-option-template'
+                                        }
+                                    ]
+                                });
+
+                                //  interaction-likes
+                                var container = state.knowledgePoint.interaction;
+                                var iconName = '.icon';
+                                var likeTemplate = 'interaction-like-template';
+                                var unlikeTemplate = 'interaction-unlike-template';
+                                var apiUrl = 'api/knowledge-points/';
+                                likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+                                //comments-likes;
+                                state.knowledgePoint.renderComments()
+
+                                break
+                        }
+                }
+            },
+            getById: function (id) {
+                var result = null
+                var isFind = false
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].low.length; ++j) {
+                        for (var k = 0; k < subjects[i].low[j].knowledgePoints.length; ++k) {
+                            if (subjects[i].low[j].knowledgePoints[k].id == id) {
+                                result = subjects[i].low[j].knowledgePoints[k]
+                                isFind = true
+                                break
+                            }
+                        }
+                    }
+                    if (isFind) {
+                        break
+                    }
+                    for (var j = 0; j < subjects[i].high.length; ++j) {
+                        for (var k = 0; k < subjects[i].high[j].knowledgePoints.length; ++k) {
+                            if (subjects[i].high[j].knowledgePoints[k].id == id) {
+                                result = subjects[i].high[j].knowledgePoints[k]
+                                isFind = true
+                                break
+                            }
+                        }
+                    }
+                    if (isFind) {
+                        break
+                    }
+                }
+                return result
+            },
+            findProblem: function (problemId) {
+                var problem = null
+                for (var i = 0; i < state.knowledgePoint.value.contents.problems.length; ++i) {
+                    if (state.knowledgePoint.value.contents.problems[i].id == problemId) {
+                        problem = state.knowledgePoint.value.contents.problems[i]
+                        break
+                    }
+                }
+                return problem
+            },
+            compareAnswer: function (index, standardAnswers) {
+                var finded = false
+                for (var j = 0; j < standardAnswers.length; ++j) {
+                    if (index == standardAnswers[j].name) {
+                        finded = true
+                        break
+                    }
+                }
+                return finded
+            },
+            submit: function (submitButton, commentContent, callback) {
+                submitButton.style.color = '#f5f5f5';
+                var value = commentContent.value;
+                if (value.length < 1) {
+                    return false;
+                }
+                commentContent.value = '';
+                $.ajax({
+                    type: "post",
+                    url: "/api/comments",
+                    data: JSON.stringify({
+                        objectType: 'knowledge-point',
+                        objectId: state.knowledgePoint.value.id,
+                        content: value
+                    }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        callback(data)
+                    }
+                })
+            }
+        },
+        subject: {
+            index: 0,
+            value: null,
+            getById: function (id) {
+                var result = null
+                for (var i = 0; i < subjects.length; ++i) {
+                    if (subjects[i].id == id) {
+                        result = subjects[i]
+                        break
+                    }
+                }
+                return result
+            }
+        },
+        grade: {
+            index: 0,
+            value: 20,
+            name: 'low',
+            getNameByValue: function (v) {
+                var result = 'low'
+                if (v == 21) {
+                    result = 'high'
+                }
+                return result
+            }
+        },
+        volume: {
+            index: 0,
+            value: null,
+            maxOrder: 1,
+            getById: function (id) {
+                var result = null
+                var finded = false
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].low.length; ++j) {
+                        if (subjects[i].low[j].id == id) {
+                            result = subjects[i].low[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                    for (var j = 0; j < subjects[i].high.length; ++j) {
+                        if (subjects[i].high[j].id == id) {
+                            result = subjects[i].high[j]
+                            finded = true
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                }
+                return result
+            },
+            calcNew: function () {
+                var newCount = 0
+                for (var i = 0; i < state.volume.value.knowledgePoints.length; ++i) {
+                    if (state.volume.value.knowledgePoints[i].type == 'normalNew') {
+                        newCount++
+                    }
+                }
+                return newCount
+            }
+        }
+    }
+    state.init()
+</script>
+</body>
+</html>
