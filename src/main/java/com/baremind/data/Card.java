@@ -39,7 +39,7 @@ public class Card {
     private Long subject;
 
     @Column(name = "amount")
-    private Double amount;
+    private Long amount;
 
     public Long getId() {
         return id;
@@ -105,11 +105,11 @@ public class Card {
         this.subject = subject;
     }
 
-    public Double getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 }

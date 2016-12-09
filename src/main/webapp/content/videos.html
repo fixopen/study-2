@@ -122,11 +122,11 @@
         <div class="rain-main  noPadd">
             <div class="kebiao_tou" id="schedulerEntry" data-article="scheduler">
                 <div class="tou_left">
-                    <span class="left_kebiao">本周课程表</span>
+                    <span class="left_kebiao" data-article="scheduler">本周课程表</span>
                     <br>
-                    <span>Ben Zhou Ke Cheng Biao</span>
+                    <span data-article="scheduler">Ben Zhou Ke Cheng Biao</span>
                 </div>
-                <div class="tou_right"></div>
+                <div class="tou_right" data-article="scheduler"></div>
             </div>
             <!-- Nav tabs -->
             <div class="tab_div">
@@ -169,7 +169,7 @@
         </div>
     </div>
 </article>
-<article id="passed"  style="display: none;" class="noBackg">
+<article id="passed" style="display: none;" class="noBackg">
     <div class="tan"></div>
     <div class="wrap">
         <div class="tiao_jian">
@@ -627,13 +627,39 @@
 
 
 <!--*****************************video*****************************-->
-
 <template id="live-video-template">
     <div>
         <div class="live-details-videoPlay">
+            <<<<<<< HEAD
             <video src=""></video>
             <div class="live-details-label">语文</div>
             <div class="live-details-videoTxt">语文作文与写作手法</div>
+            =======
+            <a class="all_aBtn" href="video.html?src=${cdnLink}">
+                <div class="live-details-videoHei"></div>
+                <div class="live-details-videoBtn"></div>
+                <div class="live-details-videoTxt">${title}</div>
+                <div class="live-details-bottomHei"></div>
+                <div class="live-details-videoSpeed">
+                    <div class="live-details-speedPlay"></div>
+                    <div class="live-details-speedTime">
+                        <span class="live-details-speedZero">00:00</span>
+                        <p class="live-details-speedStrip">
+                            <span class="live-details-speedSpot"></span>
+                        </p>
+                        <span class="live-details-speedZero">${videoTime}</span>
+                    </div>
+                    <div class="live-details-enlargeBtn"></div>
+                </div>
+
+                <div class="live-details-label">${subject}</div>
+                <div class="live-details-chinaDiv live-details-chinese">
+                    <h3 class="live-details-chinaDivh3">${headTitle}</h3>
+                    <p class="live-details-chinaDivp">${introductions}</p>
+                </div>
+                <span class="live-details-teacher">—${teacher}</span>
+            </a>
+            >>>>>>> b70c80dc8a4b7a3672e686af3f27690cc50022b9
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
@@ -756,7 +782,6 @@
         init: function () {
 //            var userId = g.getUrlParameter('userid')
 //            g.setCookie('userId', userId)
-
             $.ajax({
                 type: 'get',
                 url: '/api/subjects',
@@ -818,6 +843,14 @@
                 if (!state.main.isInit) {
                     $(document).on('click', '.detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
+                        if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
+                            $(this).children('img').eq(0).hide();
+                            $(this).children('img').eq(1).show();
+                        }
+                        else {
+                            $(this).children('img').eq(1).hide();
+                            $(this).children('img').eq(0).show();
+                        }
                     })
 
                     var now = Date.now()
@@ -1016,6 +1049,14 @@
                 if (!state.passed.isInit) {
                     $(document).on('click', '.passed-detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
+                        if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
+                            $(this).children('img').eq(0).hide();
+                            $(this).children('img').eq(1).show();
+                        }
+                        else {
+                            $(this).children('img').eq(1).hide();
+                            $(this).children('img').eq(0).show();
+                        }
                     })
 
                     $(document).on('click', '[data-type="subject"]', function (e) {
