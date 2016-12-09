@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 public class KnowledgePoints {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@Context HttpServletRequest req, @CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
         req.getRemoteAddr();
         List<KnowledgePoint> r = JPAEntry.getList(KnowledgePoint.class, CharacterEncodingFilter.getFilters(filter));
         List<String> ids = new ArrayList<>();
@@ -46,6 +47,7 @@ public class KnowledgePoints {
         orders.put("order", "ASC");
 //        final Date now = new Date();
 //        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        return Impl.get(userId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats), null);
 
 //        Map<String, String> orders = new HashMap<>();
 //        orders.put("order", "ASC");
