@@ -17,6 +17,27 @@ import java.util.function.Predicate;
 
 @Path("knowledge-points")
 public class KnowledgePoints {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        Map<String, String> orders = new HashMap<>();
+        orders.put("order", "ASC");
+        final Date now = new Date();
+        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, now, yesterday), (knowledgePoint) -> {
+            boolean result = true;
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT COUNT(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + knowledgePoint.getId().toString();
+            TypedQuery<Long> q = em.createQuery(stats, Long.class);
+            Long c = q.getSingleResult();
+            if (c == 0L) {
+                result = false;
+            }
+            return result;
+        });
+    }
+
     private <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
         for (T textItem : container) {
