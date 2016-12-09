@@ -566,16 +566,20 @@ li.active > a.tab_toggle {
     border: 1px solid #e5e5e5;
     border-radius: 0.3125rem;
 }
-.xiala_li.cur{
-    border: 1px solid #ff8067;
-    position: relative;
-}
-.xiala_li.cur img{
+.xiala_li img{
     width: 1.125rem;
     height: 1.15625rem;
     position: absolute;
     bottom: 0;
     right: 0;
+    display: none;
+}
+.xiala_li.cur{
+    border: 1px solid #ff8067;
+    position: relative;
+}
+.xiala_li.cur img{
+    display: block;
 }
 .tiaoj_jieG{
     width: 100%;

@@ -90,7 +90,7 @@
 </head>
 
 <body>
-<article id="main">
+<article style="display: none;" id="main">
     <div class="tan"></div>
     <div class="window1"><!-- 有此卡扣豆提醒 -->
         <a class="windowClose" href="#"></a>
@@ -169,7 +169,7 @@
         </div>
     </div>
 </article>
-<article id="passed" style="display: none;" class="noBackg">
+<article id="passed" class="noBackg">
     <div class="tan"></div>
     <div class="wrap">
         <div class="tiao_jian">
@@ -179,7 +179,7 @@
                     <img src="../img/xiala.png" alt="">
                 </div>
                 <ul class="xiala_ul" id="subject" style="display: block">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li">全部<img src="images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
             <div class="tiaoj_TJ02 selectDiv">
@@ -600,17 +600,17 @@
 </template>
 <template id="subject-template">
     <li class="xiala_li">
-        <span data-id="${id}" data-type="subject">${subject}</span>
+        <span data-id="${id}" data-type="subject">${subject}</span><img src="images/zbwq_zhong.png" alt="">
     </li>
 </template>
 <template id="teacher-template">
     <li class="xiala_li">
-        <span data-type="teacher">${teacher}</span>
+        <span data-type="teacher">${teacher}</span><img src="images/zbwq_zhong.png" alt="">
     </li>
 </template>
 <template id="grade-template">
     <li class="xiala_li">
-        <span data-type="grade">${grade}</span>
+        <span data-type="grade">${grade}</span><img src="images/zbwq_zhong.png" alt="">
     </li>
 </template>
 <template id="date-template">
@@ -630,36 +630,9 @@
 <template id="live-video-template">
     <div>
         <div class="live-details-videoPlay">
-            <<<<<<< HEAD
             <video src=""></video>
             <div class="live-details-label">语文</div>
             <div class="live-details-videoTxt">语文作文与写作手法</div>
-            =======
-            <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="live-details-videoHei"></div>
-                <div class="live-details-videoBtn"></div>
-                <div class="live-details-videoTxt">${title}</div>
-                <div class="live-details-bottomHei"></div>
-                <div class="live-details-videoSpeed">
-                    <div class="live-details-speedPlay"></div>
-                    <div class="live-details-speedTime">
-                        <span class="live-details-speedZero">00:00</span>
-                        <p class="live-details-speedStrip">
-                            <span class="live-details-speedSpot"></span>
-                        </p>
-                        <span class="live-details-speedZero">${videoTime}</span>
-                    </div>
-                    <div class="live-details-enlargeBtn"></div>
-                </div>
-
-                <div class="live-details-label">${subject}</div>
-                <div class="live-details-chinaDiv live-details-chinese">
-                    <h3 class="live-details-chinaDivh3">${headTitle}</h3>
-                    <p class="live-details-chinaDivp">${introductions}</p>
-                </div>
-                <span class="live-details-teacher">—${teacher}</span>
-            </a>
-            >>>>>>> b70c80dc8a4b7a3672e686af3f27690cc50022b9
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
