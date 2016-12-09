@@ -23,9 +23,10 @@ public class Transactions {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Transaction entity) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Long userId = JPAEntry.getLoginId(sessionId);
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            User user = JPAEntry.getLoginUser(sessionId);
+            Long userId = user.getId();
             result = Response.status(409).build(); //source error
             entity.setId(IdGenerator.getNewId());
             entity.setUserId(userId);
@@ -80,13 +81,6 @@ public class Transactions {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.getById(sessionId, id, Transaction.class, null);
-            }
-        }
-        return result;
+        return Impl.getById(sessionId, id, Transaction.class, null);
     }
 }

@@ -33,7 +33,7 @@ public class Volumes {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Volume entity) {
-        return Impl.create(sessionId, entity, null);
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
@@ -71,8 +71,8 @@ public class Volumes {
     @Path("{id}/knowledge-points")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKnowledgePointsByVolumeId(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             result = Response.status(404).build();
             Map<String, Object> conditions = new HashMap<>();
             conditions.put("volumeId", id);

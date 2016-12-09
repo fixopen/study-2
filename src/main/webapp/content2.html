@@ -892,6 +892,28 @@
      *  ....
      *  ]
      */
+
+    var knowledgePoints = [
+        [{}, ..., {}],
+        [{}, ..., {}],
+        [{}, ..., {}]
+    ]
+
+    var segment = function (knowledgePoints) {
+        var result = []
+        var currentSegment = 0
+        for (var i = 0; i < knowledgePoints.length; ++i) {
+            if (!result[currentSegment]) {
+                result[currentSegment] = []
+            }
+            result[currentSegment].push(knowledgePoints[i])
+            if (knowledgePoints[i].type == 'pk') {
+                currentSegment++
+            }
+        }
+        return result
+    }
+
     var subjects = []
 
     var state = {

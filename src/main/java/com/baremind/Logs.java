@@ -1,7 +1,6 @@
 package com.baremind;
 
 import com.baremind.data.Log;
-import com.baremind.data.User;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
@@ -34,9 +33,15 @@ public class Logs {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Log entity) {
-        entity.setUserId(Long.parseLong(sessionId));
-        entity.setCreateTime(new Date());
-        return Impl.create(sessionId, entity, null);
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
+            entity.setId(IdGenerator.getNewId());
+            entity.setUserId(Long.parseLong(sessionId));
+            entity.setCreateTime(new Date());
+            JPAEntry.genericPost(entity);
+            result = Impl.finalResult(entity, null);
+        }
+        return result;
     }
 
     @PUT //根据id修改
@@ -44,46 +49,32 @@ public class Logs {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Log newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, Log.class, (exist, log) -> {
-                    String objectType = log.getObjectType();
-                    if (objectType != null) {
-                        exist.setObjectType(objectType);
-                    }
-                    Long userId = log.getUserId();
-                    if (userId != null) {
-                        exist.setUserId(userId);
-                    }
-
-                    Date createTime = log.getCreateTime();
-                    if (createTime != null) {
-                        exist.setCreateTime(createTime);
-                    }
-
-                    Long objectId = log.getObjectId();
-                    if (objectId != null) {
-                        exist.setObjectId(objectId);
-                    }
-                }, null);
+        return Impl.updateById(sessionId, id, newData, Log.class, (exist, log) -> {
+            String objectType = log.getObjectType();
+            if (objectType != null) {
+                exist.setObjectType(objectType);
             }
-        }
-        return result;
+            Long userId = log.getUserId();
+            if (userId != null) {
+                exist.setUserId(userId);
+            }
+
+            Date createTime = log.getCreateTime();
+            if (createTime != null) {
+                exist.setCreateTime(createTime);
+            }
+
+            Long objectId = log.getObjectId();
+            if (objectId != null) {
+                exist.setObjectId(objectId);
+            }
+        }, null);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, Log.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, Log.class);
     }
 
     public static Log insert(Long userId, String objectType, Long objectId, String action) {
@@ -99,7 +90,7 @@ public class Logs {
     }
 
     public static Log insert(String sessionId, String objectType, Long objectId, String action) {
-        return insert(JPAEntry.getLoginId(sessionId), objectType, objectId, action);
+        return insert(JPAEntry.getLoginUser(sessionId).getId(), objectType, objectId, action);
     }
 
     static Long deleteLike(Long userId, String objectType, Long objectId) {
@@ -122,8 +113,8 @@ public class Logs {
     @Path("{objectType}/{objectId}/{action}/count")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLogsCount(@CookieParam("sessionId") String sessionId, @PathParam("objectType") String objectType, @PathParam("objectId") Long objectId, @PathParam("action") String action) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
             Long count = getStatsCount(objectType, objectId, action);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }

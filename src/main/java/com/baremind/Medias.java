@@ -2,7 +2,6 @@ package com.baremind;
 
 import com.baremind.data.Image;
 import com.baremind.data.Media;
-import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
@@ -46,14 +45,7 @@ public class Medias {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Media entity) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.create(sessionId, entity, null);
-            }
-        }
-        return result;
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
@@ -61,62 +53,46 @@ public class Medias {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Media newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, Media.class, (exist, media) -> {
-                    String ext = media.getExt();
-                    if (ext != null) {
-                        exist.setExt(ext);
-                    }
-
-                    String mimeType = media.getMimeType();
-                    if (mimeType != null) {
-                        exist.setMimeType(mimeType);
-                    }
-
-                    String name = media.getName();
-                    if (name != null) {
-                        exist.setName(name);
-                    }
-
-                    Long size = media.getSize();
-                    if (size != null) {
-                        exist.setSize(size);
-                    }
-
-                    String storePath = media.getStorePath();
-                    if (storePath != null) {
-                        exist.setStorePath(storePath);
-                    }
-                }, null);
+        return Impl.updateById(sessionId, id, newData, Media.class, (exist, media) -> {
+            String ext = media.getExt();
+            if (ext != null) {
+                exist.setExt(ext);
             }
-        }
-        return result;
+
+            String mimeType = media.getMimeType();
+            if (mimeType != null) {
+                exist.setMimeType(mimeType);
+            }
+
+            String name = media.getName();
+            if (name != null) {
+                exist.setName(name);
+            }
+
+            Long size = media.getSize();
+            if (size != null) {
+                exist.setSize(size);
+            }
+
+            String storePath = media.getStorePath();
+            if (storePath != null) {
+                exist.setStorePath(storePath);
+            }
+        }, null);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, Media.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, Media.class);
     }
 
     @DELETE
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     public Response deleteContentById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
                 Media m = JPAEntry.getObject(Media.class, "id", id);
                 String physicalPath = Properties.getProperty("physicalPath");
 //                String p = physicalPath + m.getStorePath();
@@ -132,7 +108,6 @@ public class Medias {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
         }
         return result;
     }
@@ -305,8 +280,8 @@ public class Medias {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadMedia(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
             try {
                 Part p = request.getPart("file");
                 String contentType = p.getContentType();
