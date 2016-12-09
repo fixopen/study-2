@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>小雨知时</title>
+    <title>小雨知时2</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
           id="viewport"/>
@@ -13,9 +13,9 @@
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/volume.css">
+    <!--<link rel="stylesheet" href="css/volume.css">-->
     <link rel="stylesheet" href="css/content_version2.css">
-    <link rel="stylesheet" href="css/knowledgepoints.css">
+    <!--<link rel="stylesheet" href="css/knowledgepoints.css">-->
     <link rel="stylesheet" href="css/knowledgepoints-content.css">
     <link rel="stylesheet" href="css/math-detail.css">
     <link rel="stylesheet" href="css/chinese-detail.css">
@@ -155,12 +155,13 @@
             <div class="mltop_main" id="pack_up_title"></div>
             <img class="juchi" src="images_version2/juchi.png" alt="">
         </div>
-        <div class="rain-main catalog_list">
-            <div>
-                <ul class="each_chapter" id="chapter_section"></ul>
-                <!--<ul class="each_chapter" id="chapter_section2"></ul>-->
-            </div>
+        <div class="rain-main catalog_list" id="chapter-section">
         </div>
+    </div>
+</template>
+<template id="chapter">
+    <div>
+        <ul class="each_chapter" data-identity="${index}"></ul>
     </div>
 </template>
 <template id="chinese-catalog"><!--语文-目录-->
@@ -175,7 +176,7 @@
         </div>
         <div class="rain-main catalog_list">
             <div class="chinese_catalog_list">
-                <ul class="each_chapter" id="chapter_section"></ul>
+                <ul class="each_chapter" id="chapter-section"></ul>
             </div>
         </div>
     </div>
@@ -210,7 +211,7 @@
         <div class="neir_ridiv">
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -241,7 +242,7 @@
         <div class="neir_ridiv">
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -272,7 +273,7 @@
         <div class="neir_ridiv">
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -303,8 +304,7 @@
         <div class="neir_ridiv">
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -320,7 +320,6 @@
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
                 <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -811,13 +810,6 @@
     </div>
 </template>
 
-
-<!--<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>-->
-<!--<dialog>您的卡片已过期，请重新购买！</dialog>-->
-<!--<dialog>您的卡片只可观看***，<br>观看其他内容请购买相应卡片！</dialog>-->
-<!--<dialog>还剩24雨点不够观看啦，请充值！</dialog>-->
-<!--<dialog>雨点所剩不多，请尽快充值哦！</dialog>-->
-
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/bootstrap/bootstrap.min.js"></script>
 <script src="/util.js"></script>
@@ -1218,13 +1210,7 @@
                                     }
                                     return result
                                 }
-//                                var newLength=function(kp){
-//                                    var num=0;
-//                                    if(kp.type == 'normalNew'){
-//                                        num++;
-//                                    }
-//                                    return num;
-//                                }
+
                                 var now = new Date()
                                 for (var i = 0; i < kps.length; ++i) {
                                     var v = state.knowledgePoints.value //state.volume.getById(kps[i].volumeId)
@@ -1286,6 +1272,20 @@
                     }
                     return result
                 }
+                var segment = function (knowledgePoints) {
+                    var result = []
+                    var currentSegment = 0
+                    for (var i = 0; i < knowledgePoints.length; ++i) {
+                        if (!result[currentSegment]) {
+                            result[currentSegment] = []
+                        }
+                        result[currentSegment].push(knowledgePoints[i])
+                        if (knowledgePoints[i].type == 'pkOld' || knowledgePoints[i].type == 'pkNew') {
+                            currentSegment++
+                        }
+                    }
+                    return result
+                }
                 $('#knowledgePoints').html("");
                 switch (state.volumes.parentId) {
                     case 1:
@@ -1305,13 +1305,12 @@
                         })
                         proc({
                             data: value.knowledgePoints,
-                            containerId: 'chapter_section',
+                            containerId: 'chapter-section',
                             alterTemplates: [
-                                {type: 'normalNew', templateId: 'chapter-new-template'},
-                                {type: 'normalOld', templateId: 'chapter-old-template'},
+                                {type: 'normalNew', templateId: 'chapter-new-like-template'},
+                                {type: 'normalOld', templateId: 'chapter-old-unlike-template'},
                             ]
                         })
-
 
                         break
                     case 2:
@@ -1321,6 +1320,7 @@
                             data: {},
                             templateId: 'math-catalog'
                         })
+
                         var value = state.knowledgePoints.value
                         value.grade = getGrade(value.grade)
                         proc({
@@ -1328,16 +1328,31 @@
                             data: value,
                             containerId: 'book_infor'
                         })
+
+                        value.knowledgePoints = segment(value.knowledgePoints);
+                        for (var i = 0; i < value.knowledgePoints.length; ++i) {
+                            value.knowledgePoints[i].index = i
+                        }
                         proc({
+                            templateId: 'chapter',
                             data: value.knowledgePoints,
-                            containerId: 'chapter_section',
-                            alterTemplates: [
-                                {type: 'normalNew', templateId: 'chapter-new-template'},
-                                {type: 'normalOld', templateId: 'chapter-old-template'},
-                                {type: 'pkOld', templateId: 'chapter-old-challenge'},
-                                {type: 'pkNew', templateId: 'chapter-new-challenge'},
-                            ]
+                            containerId: 'chapter-section'
                         })
+                        var chapters = document.getElementById('chapter-section').querySelectorAll('[data-identity]')
+                        for (var i = 0; i < chapters.length; ++i) {
+                            var c = chapters[i]
+                            proc({
+                                container: c,
+                                data: value.knowledgePoints[i],
+                                alterTemplates: [
+                                    {type: 'normalNew', templateId: 'chapter-new-like-template'},
+                                    {type: 'normalOld', templateId: 'chapter-old-unlike-template'},
+                                    {type: 'pkOld', templateId: 'chapter-old-like-challenge'},
+                                    {type: 'pkNew', templateId: 'chapter-new-unlike-challenge'},
+                                ]
+                            })
+                        }
+
                         break
                 }
             }
@@ -1622,7 +1637,6 @@
                         });
 
                         proc({
-//                            templateId: 'problem-template',
                             alterTemplates: [
                                 {type: '单选题', templateId: 'problem-radio-template'},
                                 {type: '多选题', templateId: 'problem-checkbox-template'}
