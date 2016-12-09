@@ -5,11 +5,16 @@ import com.baremind.data.Session;
 import com.baremind.data.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
@@ -41,7 +46,7 @@ public class Impl {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
             result = Response.status(404).build();
-            final Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            final Map<String, Object> filterObject = getFilters(filter);
             if (filterObject != null) {
                 filterObject.forEach((key, value) -> {
                     if (value instanceof String) {
@@ -236,6 +241,20 @@ public class Impl {
             long count = JPAEntry.genericDelete(User.class, "identity", sessionId);
             if (count > 0) {
                 result = Response.ok().build();
+            }
+        }
+        return result;
+    }
+
+    public static Map<String, Object> getFilters(String filter) {
+        Map<String, Object> result = null;
+        if (!Objects.equals(filter, "")) {
+            try {
+                String rawFilter = URLDecoder.decode(filter, StandardCharsets.UTF_8.toString());
+                result = new Gson().fromJson(rawFilter, new TypeToken<Map<String, Object>>() {
+                }.getType());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
         return result;

@@ -2,11 +2,9 @@ package com.baremind;
 
 import com.baremind.data.Scheduler;
 import com.baremind.data.User;
-import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -180,7 +178,7 @@ public class Schedulers {
     public Response getTeacher(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            Map<String, Object> filterObject = Impl.getFilters(filter);
             EntityManager em = JPAEntry.getEntityManager();
             String stats = "SELECT l.teacher FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.teacher";
             TypedQuery<String> q = em.createQuery(stats, String.class);
@@ -196,7 +194,7 @@ public class Schedulers {
     public Response getGrades(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
         Response result = Response.status(401).build();
         if (JPAEntry.isLogining(sessionId)) {
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
+            Map<String, Object> filterObject = Impl.getFilters(filter);
             EntityManager em = JPAEntry.getEntityManager();
             String stats = "SELECT l.grade FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.grade";
             TypedQuery<Long> q = em.createQuery(stats, Long.class);

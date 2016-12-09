@@ -3,7 +3,6 @@ package com.baremind;
 import com.baremind.data.KnowledgePoint;
 import com.baremind.data.Log;
 import com.baremind.data.User;
-import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
@@ -24,7 +23,7 @@ public class KnowledgePoints {
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@Context HttpServletRequest req, @CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         req.getRemoteAddr();
-        List<KnowledgePoint> r = JPAEntry.getList(KnowledgePoint.class, CharacterEncodingFilter.getFilters(filter));
+        List<KnowledgePoint> r = JPAEntry.getList(KnowledgePoint.class, Impl.getFilters(filter));
         List<String> ids = new ArrayList<>();
         for (KnowledgePoint ri : r) {
             ids.add(ri.getId().toString());
@@ -45,8 +44,6 @@ public class KnowledgePoints {
 
         Map<String, String> orders = new HashMap<>();
         orders.put("order", "ASC");
-//        final Date now = new Date();
-//        final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
         return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats), null);
 
 //        Map<String, String> orders = new HashMap<>();
@@ -136,27 +133,6 @@ public class KnowledgePoints {
             }
         }
         return result;
-    }
-
-    static List<Map<String, Object>> toMaps(Long userId, List<KnowledgePoint> knowledgePoints) {
-        List<Map<String, Object>> kpsm = new ArrayList<>(knowledgePoints.size());
-        Date now = new Date();
-        Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-        for (KnowledgePoint kp : knowledgePoints) {
-            String statsContent = "SELECT count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId = " + kp.getId().toString();
-            EntityManager em = JPAEntry.getEntityManager();
-            TypedQuery<Long> cq = em.createQuery(statsContent, Long.class);
-            List<Long> qc = cq.getResultList();
-            if (qc.size() == 1) {
-                Long c = qc.get(0);
-                if (c == 0) {
-                    continue;
-                }
-            }
-            Map<String, Object> kpm = KnowledgePoint.convertToMap(kp, userId, now, yesterday);
-            kpsm.add(kpm);
-        }
-        return kpsm;
     }
 
     @PUT
