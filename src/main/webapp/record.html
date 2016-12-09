@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的学习记录</title>
+
+	<!-- 禁止拉伸和全屏设置 -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="screen-orientation" content="portrait">
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/record.css">
+
+</head>
+<body>
+	<article id="study-record"><!-- 我的学习记录 --></article>
+	<article id="studied-course"><!-- 学习记录-学过的课程 --></article>
+	<article id="finished-question"><!-- 学习记录-做过的题 --></article>
+
+	<!-- =====================record======================= -->
+	<template id="record-template">
+		<div class="wrap youBackg">
+			<div class="study-record">
+				<div class="study_text">
+					<span class="chi"></span>
+					<span class="abc"></span>
+					<ul class="study-record-ul">
+						<li class="study-record-li cur">
+							<a class="study_lia" href="javascript:void(0)">
+								<div class="study_lidiv">
+									<span class="srul_size48 srul_zbo">看过的直播</span>
+									<br>
+									<span class="srul_size42">READ  LIVE</span>
+								</div>
+								<span class="you srul_zbotu"></span>
+							</a>
+						</li>
+						<li class="study-record-li">
+							<a class="study_lia" href="javascript:void(0)">
+								<div class="study_lidiv">
+									<span class="srul_size48 srul_kec">学过的课程</span>
+									<br>
+									<span class="srul_size42">LEARNED  LESSONS</span>
+								</div>
+								<span class="you srul_kectu"></span>
+							</a>
+						</li>
+						<li class="study-record-li">
+							<a class="study_lia" href="javascript:void(0)">
+								<div class="study_lidiv">
+									<span class="srul_size48 srul_zan">做过的题</span>
+									<br>
+									<span class="srul_size42">DONE</span>
+								</div>
+								<span class="you srul_zantu"></span>
+							</a>
+						</li>
+					</ul>
+					<img class="bottomImg" src="images/car.png" alt="">
+				</div>
+			</div>
+		</div>
+	</template>
+	<!-- =====================studied-course======================= -->
+	<template id="studied-course-template"><!-- 学习记录-学过的课程 -->
+		<div class="wrap">
+	        <div class="header" id="studied_head"></div>
+	        <div class="tab_div">
+	            <ul class="tab_switch">
+	                <li class="tab_swli active">
+	                	<a href="#record_chinese" data-toggle="tab">语文 <span class="tab_swlispan" id="studied_chinese_num"></span></a>
+	                </li>
+	                <li class="tab_swli tab_swlino">
+	                	<a href="#record_math" data-toggle='tab'>数学 <span class="tab_swlispan" id="studied_math_num"></span></a>
+	                </li>
+	            </ul>
+	        </div>
+	        <div class="mine_zilo">
+	            <div class="tab-pane mine_table active" id="record_chinese">
+	                <ul id="studied_chinese_book"></ul>
+	            </div>
+	            <div class="tab-pane mine_table" id="record_math">
+	            	<ul id="studied_math_book"></ul>
+	            </div>
+	        </div>
+	    </div>
+	</template>
+	<template id="studied-course-top"><!-- 学过课程顶部 -->
+		<div>
+			<div class="header_l">
+                <span class="l_one">当前级别</span><br>
+                <span class="l_two"><i class="l_twoshu">${level}</i></span>
+            </div>
+            <div class="header_r">
+                <span class="r_one">共学过课程</span><br>
+                <span class="r_two"><i class="r_twoshu">${num1}</i>个</span>
+            </div>
+            <p class="header_cen">距离下个级别还差<span>${num2}</span>个课程</p>
+		</div>
+	</template>
+	<template id="studied-chinese-num"><!-- 学过的语文的数量 -->
+		<i>(${num1})</i>
+	</template>
+	<template id="studied-math-num"><!-- 学过的数学的数量 -->
+		<i>(${num2})</i>
+	</template>
+	<template id="studied-book-template"><!-- 学过的课本 -->
+		<li class="all_uli">
+            <div class="uli_divT">
+            	<img src="${img}" alt="">
+	            <div class="uli_divTdiv">
+	                <div class="book_name">${name}</div>
+	                <span class="uli_divTspan">共<i>${total_num}</i>篇，看过<i>${num}</i>篇</span>
+	            </div>
+            </div>
+            <ul class="all_erul" data-ext-point="book-title-list"></ul>
+        </li>
+	</template>
+	<template id="book-title-list-template"><!-- 课本篇章列表 -->
+		<li class="all_lifen">
+            <div class="lifen_div">
+                <span class="biaoti_left">${title}</span>
+                <span class="biaoti_right">${date}</span>
+            </div>
+        </li>
+	</template>
+	<!-- =====================finished-question======================= -->
+	<template id="finished-question-template">
+		<div class="wrap">
+			<div class="header" id="finished_question_head"></div>
+	        <div class="tab_div">
+	            <ul class="tab_switch">
+	                <li class="tab_swli active">
+	                	<a href="#question_chinese" data-toggle="tab">语文 <span class="tab_swlispan" id="studied_chinese_num"></span></a>
+	                </li>
+	                <li class="tab_swli tab_swlino">
+	                	<a href="#question_math" data-toggle='tab'>数学 <span class="tab_swlispan" id="studied_math_num"></span></a>
+	                </li>
+	            </ul>
+	        </div>
+	        <div class="mine_zilo">
+	            <div class="tab-pane mine_table active" id="question_chinese">
+	                <ul id="question_chinese_book"></ul>
+	            </div>
+	            <div class="tab-pane mine_table" id="question_math">
+	                <ul id="question_math_book"></ul>
+	            </div>
+	        </div>
+		</div>
+	</template>
+	<template id="finished-question-top"><!-- 做过的题的顶部 -->
+		<div>
+			<div class="header_l">
+                <span class="l_one">当前级别</span><br>
+                <span class="l_two"><i class="l_twoshu">${level}</i></span>
+            </div>
+            <div class="header_r">
+                <span class="r_one">共做过的题</span><br>
+                <span class="r_two"><i class="r_twoshu">${num1}</i>个</span>
+            </div>
+            <p class="header_cen">距离下个级别还差<span>${num2}</span>道题</p>
+		</div>
+	</template>
+	<template id="question-book-template"><!-- 每本书中做过的题 -->	
+        <li class="all_uli">
+            <div class="uli_divT">
+                <img src="${img}" alt="">
+                <div class="uli_divTdiv">
+                    <div class="book_name">${name}</div>
+                    <span class="uli_divTspan">共<i>${total_num}</i>篇，看过<i>${num}</i>篇</span>
+                </div>
+            </div>
+            <ul class="mld_xiaoUl" data-ext-point="aa"></ul>
+        </li>               
+	</template>
+	<template id="question-option-list"><!-- 选项列表 -->
+		<li class="mld_Ulli">
+            <div>
+                <span class="mld_tihao">${id}</span>
+                <span class="mld_timu">
+                    <img class="mld_liImg" src="${optionImg}" alt="">${title}
+                </span>
+            </div>
+            <ul class="mld_daanUl">
+                <li class="daanLi_true">
+                    <div class="daan_zuo">
+                        <span class="daan_quan daan_true">A<img src="${right_img}" alt=""></span>
+                    </div>
+                    <div class="daan_you">
+                        <input type="radio" id="daan_yA" class="daana" name="daan1">
+                        <label for="daan_yA">${question_content_A}</label>
+                    </div>
+                </li>
+                <li>
+                    <div class="daan_zuo">
+                        <span class="daan_quan">B</span>
+                    </div>
+                    <div class="daan_you">
+                        <input type="radio" id="daan_yB" class="daana" name="daan1">
+                        <label for="daan_yB">${question_content_B}</label>
+                    </div>
+                </li>
+                <li>
+                    <div class="daan_zuo">
+                        <span class="daan_quan">C</span>
+                    </div>
+                    <div class="daan_you">
+                        <input type="radio" id="daan_yC" class="daana" name="daan1">
+                        <label for="daan_yC">${question_content_C}</label>
+                    </div>
+                </li>
+                <li class="daanLi_error">
+                    <div class="daan_zuo">
+                        <span class="daan_quan daan_error">D<img src="${error_img}" alt=""></span>
+                    </div>
+                    <div class="daan_you">
+                        <input type="radio" id="daan_yD" class="daana" name="daan1">
+                        <label for="daan_yD">${question_content_D}</label>
+                    </div>
+                </li>
+            </ul>
+        </li>
+	</template>
+
+
+	<script type="text/javascript" src="jquery/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript" src="basic.js"></script>
+	<script type="text/javascript">
+		var data = {
+			study_level:[
+				{
+					level:'学水',
+					num1:'70',
+					num2:'10'
+				}
+			],
+			study_num1:[
+				{
+					num1:'2',
+				}
+			],
+			study_num2:[
+				{
+					num2:'1',
+				}
+			],
+			book_info: [
+                {
+                	type:'chinese',
+                   	img:'images/yuwen_mulu1.png',
+					name:'哈哈，这些奇葩的作家',
+					total_num:'12',
+					num:'4',
+                    chapter_name: [
+                    	{title: '一生钟情于神鬼之事的干宝',date:'2016-11-16'},
+                    	{title: '越放纵不拘越名垂青史的竹林七贤',date:'2016-11-16'},
+                    	{title: '一生钟情于神鬼之事的干宝',date:'2016-11-16'},
+                    	{title: '一生钟情于神鬼之事的干宝',date:'2016-11-16'}
+                    ],
+                  
+                },
+                {
+                	type:'chinese',
+                   	img:'images/yuwen_mulu1.png',
+					name:'哈哈，这些奇葩的作家',
+					total_num:'12',
+					num:'4',
+                    chapter_name: [
+                    	{title: '一生钟情于神鬼之事的干宝',date:'2016-11-16'},
+                    	{title: '越放纵不拘越名垂青史的竹林七贤',date:'2016-11-16'},
+                    	{title: '一生钟情于神鬼之事的干宝',date:'2016-11-16'},
+                    	{title: '一生钟情于神鬼之事的干宝',date:'2016-11-16'}
+                    ],
+                  
+                },
+                {	
+                	type:'math',
+                    img:'images/shuxue1.png',
+					name:'哈哈，这些奇葩的作家',
+					total_num:'12',
+					num:'4',
+                    chapter_name: [
+                    	{title: '加与减',date:'2016-11-16'},
+                    	{title: '简单的图形数量规律',date:'2016-11-16'},
+                    	{title: '简单的图形规律',date:'2016-11-16'},
+                    	{title: '图形位置变化规律',date:'2016-11-16'}
+                    ],
+                }
+            ],
+            finished_level:[
+            	{
+            		level:'学水',
+					num1:'70',
+					num2:'100'
+            	}
+            ],
+            question:[
+            	{
+            		type:'chinese',
+            		img:'images/yuwen_mulu1.png',
+            		name:'哈哈，这些奇葩的作家',
+            		total_num:'13212',
+            		num:'1212',
+            		question_list:[
+            			{
+            				id:'1.',
+            				optionImg:'img/danx.png',
+            				title:'《搜神记》被定义为一本什么小说？',
+            				right_img:'img/true.png',
+            				question_content_A:'神魔小说',
+            				question_content_B:'神魔小说',
+            				question_content_C:'神魔小说',
+            				error_img:'img/error.png',
+            				question_content_D:'神魔小说',
+            			}
+            		]
+            	},
+            	{
+            		type:'math',
+            		img:'images/yuwen_mulu1.png',
+            		name:'哈哈，这些奇葩的作家',
+            		total_num:'13212',
+            		num:'1212',
+            		question_list:[
+            			{
+            				id:'1.',
+            				optionImg:'img/danx.png',
+            				title:'《搜神记》被定义为一本什么小说？',
+            				right_img:'img/true.png',
+            				question_content_A:'神魔小说',
+            				question_content_B:'神魔小说',
+            				question_content_C:'神魔小说',
+            				error_img:'img/error.png',
+            				question_content_D:'神魔小说',
+            			}
+            		]
+            	},
+            	{
+            		type:'math',
+            		img:'images/yuwen_mulu1.png',
+            		name:'哈哈，这些奇葩的作家',
+            		total_num:'13212',
+            		num:'1212',
+            		question_list:[
+            			{
+            				id:'1.',
+            				optionImg:'img/danx.png',
+            				title:'《搜神记》被定义为一本什么小说？',
+            				right_img:'img/true.png',
+            				question_content_A:'神魔小说',
+            				question_content_B:'神魔小说',
+            				question_content_C:'神魔小说',
+            				error_img:'img/error.png',
+            				question_content_D:'神魔小说',
+            			}
+            		]
+            	}
+            ],
+		}
+
+		proc({  //学过课程头部
+			templateId:'studied-course-top',
+			data:data.study_level,
+			containerId:'studied_head'
+		})
+		proc({ //学过的语文的数量
+			templateId:'studied-chinese-num',
+			data:data.study_num1,
+			containerId:'studied_chinese_num'
+		})
+		proc({ //学过的数学的数量
+			templateId:'studied-math-num',
+			data:data.study_num2,
+			containerId:'studied_math_num'
+		})
+		proc({ //学过的语文课本
+			data:data.book_info,
+			containerId:'studied_chinese_book',
+			secondBind:{
+				extPoint: 'book-title-list',
+                dataFieldName: 'chapter_name',
+                templateId: 'book-title-list-template'
+			},
+			alterTemplates:[
+				{type:'chinese',templateId:'studied-book-template'},
+			]
+		})
+		proc({ //学过的数学课本
+			data:data.book_info,
+			containerId:'studied_math_book',
+			secondBind:{
+				extPoint: 'book-title-list',
+                dataFieldName: 'chapter_name',
+                templateId: 'book-title-list-template'
+			},
+			alterTemplates:[
+				{type:'math',templateId:'studied-book-template'},
+			]
+		})
+		proc({  //做过的题的头部
+			templateId:'finished-question-top',
+			data:data.finished_level,
+			containerId:'finished_question_head'
+		})
+		proc({ //语文-做过的题的内容
+			data:data.question,
+			containerId:'question_chinese_book',
+			secondBind:{
+				extPoint: 'aa',
+                dataFieldName: 'question_list',
+                templateId: 'question-option-list'
+			},
+			alterTemplates:[
+				{type:'chinese',templateId:'question-book-template'},
+			]
+		})
+		proc({ //数学-做过的题的内容
+			data:data.question,
+			containerId:'question_math_book',
+			secondBind:{
+				extPoint: 'aa',
+                dataFieldName: 'question_list',
+                templateId: 'question-option-list'
+			},
+			alterTemplates:[
+				{type:'math',templateId:'question-book-template'},
+			]
+		})
+	</script>
+</body>
+</html>

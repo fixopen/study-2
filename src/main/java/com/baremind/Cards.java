@@ -212,7 +212,7 @@ public class Cards {
                     existcard.setUserId(userId);
                 }
 
-                Double amount = existcard.getAmount();
+                Long amount = existcard.getAmount();
                 if (amount != null) {
                     existcard.setAmount(amount);
                 }
