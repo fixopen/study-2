@@ -110,7 +110,7 @@
 <template id="volumes-new-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
-            <span class="textbook_num" id="newCount">1</span>
+            <span class="textbook_num">${newCount}</span>
             <img src="${bookCover}" data-id="${id}" data-name="${title}" data-article="knowledgePoints" alt="">
         </a>
     </li>
@@ -890,62 +890,59 @@
                                 subjects[i].low.push(newVolume);
                                 subjects[i].high.push(newVolume);
                             }
-//                            $.ajax({
-//                                type: 'GET',
-//                                //  url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
-//                                url: '/api/knowledge-points',
-//                                dataType: 'json',
-//                                success: function (kps) {
-//                                    var isNew = function (now, kp) {
-//                                        var result = false
-//                                        if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
-//                                            result = true
-//                                        }
-//                                        return result
-//                                    }
-////                                var newLength=function(kp){
-////                                    var num=0;
-////                                    if(kp.type == 'normalNew'){
-////                                        num++;
-////                                    }
-////                                    return num;
-////                                }
-//                                    var now = new Date()
-//                                    for (var i = 0; i < kps.length; ++i) {
-//                                        var v = state.volume.getById(kps[i].volumeId)//state.knowledgePoints.value
-//                                        if (v) {
-//                                            //console.log(v.knowledgePoints)
-//                                            var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
-//                                            if (lastKp) {
-//                                                lastKp.nextId = kps[i].id
-//                                                kps[i].previousId = lastKp.id
-//                                            }
-//
-//                                            kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
-//                                            if (isNew(now, kps[i])) {
-//                                                if (kps[i].type) {
-//                                                    kps[i].type += 'New'
-//                                                } else {
-//                                                    kps[i].type = 'normalNew'
-//                                                }
-//                                                v.knowledgePoints.unshift(kps[i])
-//                                            } else {
-//                                                if (kps[i].type) {
-//                                                    kps[i].type += 'Old'
-//                                                } else {
-//                                                    kps[i].type = 'normalOld'
-//                                                }
-//                                                v.knowledgePoints.push(kps[i])
-//                                            }
-//                                        } else {
-//                                            //console.log(kps[i])
-//                                        }
-//                                    }
-//                                    state.knowledgePoints.show()
-//                                },
-//                                error: function (r) {
-//                                }
-//                            })
+                            $.ajax({
+                                type: 'GET',
+                                url: '/api/knowledge-points',
+                                dataType: 'json',
+                                success: function (kps) {
+                                    var isNew = function (now, kp) {
+                                        var result = false
+                                        if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+                                            result = true
+                                        }
+                                        return result
+                                    }
+                                    var now = new Date()
+                                    for (var i = 0; i < kps.length; ++i) {
+                                        var v = state.volume.getById(kps[i].volumeId)//state.knowledgePoints.value
+                                        if (v) {
+                                            //console.log(v.knowledgePoints)
+                                            var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
+                                            if (lastKp) {
+                                                lastKp.nextId = kps[i].id
+                                                kps[i].previousId = lastKp.id
+                                            }
+
+                                            kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
+                                            if (isNew(now, kps[i])) {
+                                                if (kps[i].type) {
+                                                    kps[i].type += 'New'
+                                                } else {
+                                                    kps[i].type = 'normalNew'
+                                                }
+                                                v.knowledgePoints.unshift(kps[i])
+                                            } else {
+                                                if (kps[i].type) {
+                                                    kps[i].type += 'Old'
+                                                } else {
+                                                    kps[i].type = 'normalOld'
+                                                }
+                                                v.knowledgePoints.push(kps[i])
+                                            }
+                                            if (kps[i].liked == true) {
+                                                kps[i].type += 'Like';
+                                            } else if (kps[i].liked == false) {
+                                                kps[i].type += 'Unlike';
+                                            }
+                                        } else {
+                                            //console.log(kps[i])
+                                        }
+                                    }
+                                    state.knowledgePoints.show()
+                                },
+                                error: function (r) {
+                                }
+                            })
                             var subjectId = g.getUrlParameter('subjectId')
                             $.ajax({
                                 type: "get",
@@ -1048,10 +1045,10 @@
                                 templateId: 'cover-template'
                             })
 
-//                            for (var i = 0; i < value.low.length; ++i) {
-//                                state.volume.value = value.low[i]
-//                                value.low[i].newCount = state.volume.calcNew()
-//                            }
+                            for (var i = 0; i < value.low.length; ++i) {
+                                state.volume.value = value.low[i]
+                                value.low[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.low,
                                 containerId: 'low',
@@ -1060,7 +1057,10 @@
                                     {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
-
+                            for (var i = 0; i < value.high.length; ++i) {
+                                state.volume.value = value.high[i]
+                                value.high[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.high,
                                 containerId: 'high',
@@ -1089,10 +1089,10 @@
                                 templateId: 'cover-template'
                             })
 
-//                            for (var i = 0; i < value.low.length; ++i) {
-//                                state.volume.value = value.low[i]
-//                                value.low[i].newCount = state.volume.calcNew()
-//                            }
+                            for (var i = 0; i < value.low.length; ++i) {
+                                state.volume.value = value.low[i]
+                                value.low[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.low,
                                 containerId: 'low',
@@ -1101,6 +1101,10 @@
                                     {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
+                            for (var i = 0; i < value.high.length; ++i) {
+                                state.volume.value = value.high[i]
+                                value.high[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.high,
                                 containerId: 'high',
@@ -1129,10 +1133,10 @@
                                 templateId: 'cover-template'
                             })
 
-//                            for (var i = 0; i < value.low.length; ++i) {
-//                                state.volume.value = value.low[i]
-//                                value.low[i].newCount = state.volume.calcNew()
-//                            }
+                            for (var i = 0; i < value.low.length; ++i) {
+                                state.volume.value = value.low[i]
+                                value.low[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.low,
                                 containerId: 'low',
@@ -1141,6 +1145,10 @@
                                     {type: 'new', templateId: 'volumes-english-new-template'},
                                 ]
                             })
+                            for (var i = 0; i < value.high.length; ++i) {
+                                state.volume.value = value.high[i]
+                                value.high[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.high,
                                 containerId: 'high',
@@ -1196,64 +1204,12 @@
             changeId: function (volumeId) {
                 if (state.knowledgePoints.parentId != volumeId) {
                     state.knowledgePoints.parentId = volumeId
-                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId)
-                    if (state.knowledgePoints.value.knowledgePoints.length == 0) {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
-                            dataType: 'json',
-                            success: function (kps) {
-                                var isNew = function (now, kp) {
-                                    var result = false
-                                    if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
-                                        result = true
-                                    }
-                                    return result
-                                }
-
-                                var now = new Date()
-                                for (var i = 0; i < kps.length; ++i) {
-                                    var v = state.knowledgePoints.value //state.volume.getById(kps[i].volumeId)
-                                    if (v) {
-                                        //console.log(v.knowledgePoints)
-                                        var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
-                                        if (lastKp) {
-                                            lastKp.nextId = kps[i].id
-                                            kps[i].previousId = lastKp.id
-                                        }
-
-                                        kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
-                                        if (isNew(now, kps[i])) {
-                                            if (kps[i].type) {
-                                                kps[i].type += 'New'
-                                            } else {
-                                                kps[i].type = 'normalNew'
-                                            }
-                                            v.knowledgePoints.unshift(kps[i]);
-                                        } else {
-                                            if (kps[i].type) {
-                                                kps[i].type += 'Old'
-                                            } else {
-                                                kps[i].type = 'normalOld'
-                                            }
-                                            v.knowledgePoints.push(kps[i])
-                                        }
-                                    } else {
-                                        //console.log(kps[i])
-                                    }
-                                }
-                                state.knowledgePoints.show()
-                            },
-                            error: function (r) {
-                            }
-                        })
-                    } else {
-                        state.knowledgePoints.show()
-                    }
-//                    state.knowledgePoints.show()
+                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId);
+                    state.knowledgePoints.show()
                 }
             },
             value: null,
+            index: 0,
             show: function () {
                 var getGrade = function (gradeValue) {
                     var result = ''
@@ -1280,7 +1236,8 @@
                             result[currentSegment] = []
                         }
                         result[currentSegment].push(knowledgePoints[i])
-                        if (knowledgePoints[i].type == 'pkOld' || knowledgePoints[i].type == 'pkNew') {
+                        if (knowledgePoints[i].type == 'pkOldLike' || knowledgePoints[i].type == 'pkNewLike' ||
+                                knowledgePoints[i].type == 'pkOldUnlike' || knowledgePoints[i].type == 'pkNewUnlike') {
                             currentSegment++
                         }
                     }
@@ -1297,7 +1254,9 @@
                         })
 
                         var value = state.knowledgePoints.value
-                        value.grade = getGrade(value.grade)
+                        if (value.grade == 20 || value.grade == 21) {
+                            value.grade = getGrade(value.grade)
+                        }
                         proc({
                             templateId: 'book-infor-template',
                             data: value,
@@ -1307,8 +1266,10 @@
                             data: value.knowledgePoints,
                             containerId: 'chapter-section',
                             alterTemplates: [
-                                {type: 'normalNew', templateId: 'chapter-new-like-template'},
-                                {type: 'normalOld', templateId: 'chapter-old-unlike-template'},
+                                {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
+                                {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
+                                {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
+                                {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
                             ]
                         })
 
@@ -1322,14 +1283,19 @@
                         })
 
                         var value = state.knowledgePoints.value
-                        value.grade = getGrade(value.grade)
+                        if (value.grade == 20 || value.grade == 21) {
+                            value.grade = getGrade(value.grade)
+                        }
                         proc({
                             templateId: 'book-infor-template',
                             data: value,
                             containerId: 'book_infor'
                         })
 
-                        value.knowledgePoints = segment(value.knowledgePoints);
+                        if (state.knowledgePoints.index == 0) {
+                            value.knowledgePoints = segment(value.knowledgePoints);
+                            state.knowledgePoints.index++
+                        }
                         for (var i = 0; i < value.knowledgePoints.length; ++i) {
                             value.knowledgePoints[i].index = i
                         }
@@ -1345,10 +1311,14 @@
                                 container: c,
                                 data: value.knowledgePoints[i],
                                 alterTemplates: [
-                                    {type: 'normalNew', templateId: 'chapter-new-like-template'},
-                                    {type: 'normalOld', templateId: 'chapter-old-unlike-template'},
-                                    {type: 'pkOld', templateId: 'chapter-old-like-challenge'},
-                                    {type: 'pkNew', templateId: 'chapter-new-unlike-challenge'},
+                                    {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
+                                    {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
+                                    {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
+                                    {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
+                                    {type: 'pkOldLike', templateId: 'chapter-old-like-challenge'},
+                                    {type: 'pkOldUnlike', templateId: 'chapter-old-unlike-challenge'},
+                                    {type: 'pkNewLike', templateId: 'chapter-new-like-challenge'},
+                                    {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
                                 ]
                             })
                         }
@@ -1664,8 +1634,10 @@
                     case 2:
                     case '2':
                         switch (state.knowledgePoint.value.type) {
-                            case 'normalNew':
-                            case 'normalOld':
+                            case 'normalNewLike':
+                            case 'normalNewUnlike':
+                            case 'normalOldLike':
+                            case 'normalOldUnlike':
                                 proc({
                                     containerId: 'knowledgePoint',
                                     data: {},
@@ -1766,8 +1738,10 @@
                                 state.knowledgePoint.renderComments()
 
                                 break
-                            case 'pkNew':
-                            case 'pkOld':
+                            case 'pkNewLike':
+                            case 'pkNewUnlike':
+                            case 'pkOldLike':
+                            case 'pkOldUnlike':
                                 proc({
                                     containerId: 'knowledgePoint',
                                     data: {},
@@ -1882,10 +1856,20 @@
                 for (var i = 0; i < subjects.length; ++i) {
                     for (var j = 0; j < subjects[i].low.length; ++j) {
                         for (var k = 0; k < subjects[i].low[j].knowledgePoints.length; ++k) {
-                            if (subjects[i].low[j].knowledgePoints[k].id == id) {
-                                result = subjects[i].low[j].knowledgePoints[k]
-                                isFind = true
-                                break
+                            if (subjects[i].low[j].knowledgePoints[k].id) {
+                                if (subjects[i].low[j].knowledgePoints[k].id == id) {
+                                    result = subjects[i].low[j].knowledgePoints[k]
+                                    isFind = true
+                                    break
+                                }
+                            } else {
+                                for (var s = 0; s < subjects[i].low[j].knowledgePoints[k].length; ++s) {
+                                    if (subjects[i].low[j].knowledgePoints[k][s].id == id) {
+                                        result = subjects[i].low[j].knowledgePoints[k][s]
+                                        isFind = true
+                                        break
+                                    }
+                                }
                             }
                         }
                         if (isFind) {
@@ -1897,10 +1881,20 @@
                     }
                     for (var j = 0; j < subjects[i].high.length; ++j) {
                         for (var k = 0; k < subjects[i].high[j].knowledgePoints.length; ++k) {
-                            if (subjects[i].high[j].knowledgePoints[k].id == id) {
-                                result = subjects[i].high[j].knowledgePoints[k]
-                                isFind = true
-                                break
+                            if (subjects[i].high[j].knowledgePoints[k].id) {
+                                if (subjects[i].high[j].knowledgePoints[k].id == id) {
+                                    result = subjects[i].high[j].knowledgePoints[k]
+                                    isFind = true
+                                    break
+                                }
+                            } else {
+                                for (var s = 0; s < subjects[i].high[j].knowledgePoints[k].length; ++s) {
+                                    if (subjects[i].high[j].knowledgePoints[k][s].id == id) {
+                                        result = subjects[i].high[j].knowledgePoints[k][s]
+                                        isFind = true
+                                        break
+                                    }
+                                }
                             }
                         }
                         if (isFind) {
@@ -1996,6 +1990,9 @@
                             finded = true
                             break
                         }
+                        if (finded) {
+                            break
+                        }
                     }
                     if (finded) {
                         break
@@ -2004,6 +2001,9 @@
                         if (subjects[i].high[j].id == id) {
                             result = subjects[i].high[j]
                             finded = true
+                            break
+                        }
+                        if (finded) {
                             break
                         }
                     }
@@ -2016,7 +2016,10 @@
             calcNew: function () {
                 var newCount = 0
                 for (var i = 0; i < state.volume.value.knowledgePoints.length; ++i) {
-                    if (state.volume.value.knowledgePoints[i].type == 'normalNew') {
+                    if (state.volume.value.knowledgePoints[i].type == 'normalNewUnlike' ||
+                            state.volume.value.knowledgePoints[i].type == 'pkNewUnlike' ||
+                            state.volume.value.knowledgePoints[i].type == 'normalNewLike' ||
+                            state.volume.value.knowledgePoints[i].type == 'pkNewLike') {
                         newCount++
                     }
                 }
