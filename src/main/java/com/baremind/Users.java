@@ -149,6 +149,55 @@ public class Users {
         return result;
     }
 
+    public static class updatePassword{
+        public String yearpassword;
+        public String oldpassword;
+
+
+        public String getYearpassword() {
+            return yearpassword;
+        }
+
+        public void setYearpassword(String yearpassword) {
+            this.yearpassword = yearpassword;
+        }
+
+        public String getOldpassword() {
+            return oldpassword;
+        }
+
+        public void setOldpassword(String oldpassword) {
+            this.oldpassword = oldpassword;
+        }
+
+    }
+
+    @PUT //根据id修改
+    @Path("updatePassword")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateBy(@CookieParam("sessionId") String sessionId,  updatePassword password) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            String oldpassword = password.getOldpassword();
+            String yearpassword = password.getYearpassword();
+            String adminPassword = admin.getPassword();
+            if (adminPassword == null && oldpassword == null || adminPassword.equals(oldpassword)) {
+                if(yearpassword.length() >=6 && yearpassword.length() <=16){
+                    admin.setPassword(yearpassword);
+                    JPAEntry.genericPut(admin);
+                    result = Response.ok(admin).build();
+                }else {
+                    result = Response.status(405).build();
+                }
+            }else {
+                result = Response.status(404).build();
+            }
+        }
+        return result;
+    }
+
     @PUT //根据token修改
     @Path("self")
     @Consumes(MediaType.APPLICATION_JSON)

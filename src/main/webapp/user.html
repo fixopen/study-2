@@ -456,8 +456,6 @@
         },
         currentArticle: document.getElementById('sign'),
         init: function () {
-            sessionId = g.getUrlParameter('sessionId')
-            g.setCookie('sessionId', sessionId, '/api')
             openId = g.getUrlParameter("openId");
 //            alert("openId="+openId)
             $(document).on('click', '[data-article]', function (e) {
@@ -465,7 +463,7 @@
                 state.switchTo(id)
             })
             if (openId != null) {
-                state.switchToFront("sign")
+                state.switchTo("sign")
             } else if(sessionId != null) {
                 state.switchTo("user")
             }
@@ -1147,46 +1145,22 @@
         },
         settings: {
             init: function () {
-
                 var i;
                 var j;
                 var x;
                 var p1 = document.getElementById("newpwd1");
                 p1.addEventListener('blur', function () {
-                    validatePWD1(newpwd1, error);
+                    var pwd1 = $("#newpwd1").val();
+                    if (pwd1.length >= 6 && pwd1.length <= 16) {
+                        document.getElementById("error").innerHTML = ""
+                        j = 1;
+                    } else {
+                        document.getElementById("error").innerHTML = "请输入6-16位密码"
+                        j = 0;
+                    }
                 })
                 var p2 = document.getElementById("newpwd2");
                 p2.addEventListener('blur', function () {
-                    validatePWD2();
-                })
-                var p3 = document.getElementById("oldpwd");
-                p3.addEventListener('blur', function () {
-                    validatePWD3(oldpwd, error);
-                })
-
-                function validatePWD1(id, error) {
-                    var pwd1 = $("#" + id + "").val();
-                    if (pwd1.length >= 6 && pwd1.length <= 16) {
-                        document.getElementById("" + error + "").innerHTML = ""
-                        j = 1;
-                    } else {
-                        document.getElementById("" + error + "").innerHTML = "请输入6-16位密码"
-                        j = 0;
-                    }
-                }
-
-                function validatePWD3(id, error) {
-                    var pwd3 = $("#" + id + "").val();
-                    if (pwd3.length >= 6 && pwd3.length <= 16) {
-                        document.getElementById("" + error + "").innerHTML = ""
-                        x = 1;
-                    } else {
-                        document.getElementById("" + error + "").innerHTML = "请输入6-16位密码"
-                        x = 0;
-                    }
-                }
-
-                function validatePWD2() {
                     var pwd1 = $("#newpwd1").val();
                     var pwd2 = $("#newpwd2").val();
                     if (pwd1 != pwd2) {
@@ -1196,11 +1170,59 @@
                         document.getElementById("error").innerHTML = ""
                         i = 1;
                     }
-                }
-                if(user.password == null){
+                })
+                var p3 = document.getElementById("oldpwd");
+                p3.addEventListener('blur', function () {
+                    var pwd3 = $("#oldpwd").val();
+                    if (pwd3.length >= 6 && pwd3.length <= 16) {
+                        document.getElementById("error").innerHTML = ""
+                        x = 1;
+                    } else {
+                        document.getElementById("error").innerHTML = "请输入6-16位密码"
+                        x = 0;
+                    }
+                })
 
+                /*function validatePWD1() {
+                    var pwd1 = $("#newpwd1").val();
+                    if (pwd1.length >= 6 && pwd1.length <= 16) {
+                        document.getElementById("error").innerHTML = ""
+                        j = 1;
+                    } else {
+                        document.getElementById("error").innerHTML = "请输入6-16位密码"
+                        j = 0;
+                    }
+                }*/
+
+               /* function validatePWD3(id, error) {
+                    var pwd3 = $("#oldpwd").val();
+                    if (pwd3.length >= 6 && pwd3.length <= 16) {
+                        document.getElementById("error").innerHTML = ""
+                        x = 1;
+                    } else {
+                        document.getElementById("error").innerHTML = "请输入6-16位密码"
+                        x = 0;
+                    }
+                }
+*/
+                /*function validatePWD2() {
+                    var pwd1 = $("#newpwd1").val();
+                    var pwd2 = $("#newpwd2").val();
+                    if (pwd1 != pwd2) {
+                        document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
+                        i = 0;
+                    } else {
+                        document.getElementById("error").innerHTML = ""
+                        i = 1;
+                    }
+                }*/
+                if(user.password == null){
+                    j = 1
+                    x = 1
                 }else{
                     document.getElementById("yuan").style.display="block"
+                    j = 0
+                    x = 0
                 }
                 var pwdSave = document.getElementById("pwd_save");
                 var quxiao = document.getElementById("quxiao");
@@ -1209,42 +1231,42 @@
                 })
                 pwdSave.addEventListener('click', function () {
                     if (i == 1 && j == 1 && x == 1) {
-                        var filter = {
-                            password: $("#oldpwd").val()
+                        var old = $("#oldpwd").val();
+                        if(old == ""){
+                            old = null
+                        }
+                        var data = {
+                            oldpassword: old,
+                            yearpassword: $("#newpwd2").val(),
                         }
                         $.ajax({
-                            type: 'get',
-                            url: "/api/users?filter=" + JSON.stringify(filter),
+                            type: "put",
+                            url: "/api/users/updatePassword",
+                            data: JSON.stringify(data),
                             dataType: "json",
-                            success: function (e) {
-                                //alert("原密码正确")
-                                var data = {
-                                    password: $("#newpwd2").val()
-                                }
-                                $.ajax({
-                                    type: "put",
-                                    url: "/api/users/" + sessionId,
-                                    data: JSON.stringify(data),
-                                    dataType: "json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (a) {
-                                        alert("修改密码成功")
-                                        history.back();
-                                    },
-                                    error: function (a) {
-                                        alert(JSON.stringify(a))
-                                    }
-                                })
+                            contentType: "application/json; charset=utf-8",
+                            success: function (a) {
+                                document.getElementById("error").innerHTML = "修改密码成功"
+                                a.data = user
+                                j = 0
+                                x = 0
+                                state.switchToFront('user')
+                                state.switchTo('settings')
                             },
-                            error: function (e) {
-                                document.getElementById("error").innerHTML = "原密码错误，请重新输入"
+                            error: function (a) {
+                                //switch a.struts
+                                switch (a.status){
+                                    case 404:
+                                        document.getElementById("error").innerHTML = "原密码有误，请重新输入！"
+                                        break;
+                                    case 405:
+                                        document.getElementById("error").innerHTML = "新密码不符合要求，请重新输入！"
+                                        break;
+                                }
                             }
                         })
                     }
                 }, false);
-                /* function back() {
-                 history.back();
-                 }*/
             }
         },
         help: {
