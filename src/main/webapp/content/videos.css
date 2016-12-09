@@ -612,6 +612,10 @@ li.active > a.tab_toggle {
     text-align: center;
     margin-bottom: 1.0rem;
 }
+.video-passed-textTop{
+    padding: 0;
+    padding-top: 3.125rem;
+}
 /* 往期回放视频详情start */
 .live-details{
     padding: 0;
@@ -661,7 +665,6 @@ li.active > a.tab_toggle {
 .live-details-videoPlay{
     width: 100%;
     height: 10.9375rem;
-    background-color: #ffbc3c;
     position: relative;
 }
 .live-details-videoPlay video{
