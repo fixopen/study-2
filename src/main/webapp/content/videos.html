@@ -255,8 +255,8 @@
                 </div>
             </div>
             <div class="liveDetails-message">
-                <input class="liveDetails-messageTxt" type="text" placeholder="留言">
-                <a class="liveDetails-messageBtn" href="javascript:void(0)">发送</a>
+                <input class="liveDetails-messageTxt" type="text" placeholder="留言" id="textarea">
+                <button class="liveDetails-messageBtn" id="btn">发送</button>
             </div>
         </div>
     </div>
@@ -655,9 +655,9 @@
 <template id="live-video-template">
     <div>
         <div class="live-details-videoPlay">
-            <video src="${cdnLink}"></video>
-            <div class="live-details-label">语文</div>
-            <div class="live-details-videoTxt">语文作文与写作手法</div>
+            <video src="${cdnLink}" controls="controls" autoplay="autoplay"></video>
+            <div class="live-details-label">${subject}</div>
+            <div class="live-details-videoTxt">${title}</div>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
@@ -1362,103 +1362,109 @@
         videoDetail: {
             id: null,
             init: function () {
-
                 var c = document.getElementById('live-details-video')
                 c.innerHTML = ''
-                //state.videoDetail.findById(state.videoDetail.id).innerHTML = ''
                 proc({
                     container: c,
                     data: state.passed.findById(state.videoDetail.id),
                     templateId: 'live-video-template'
                 })
-
-
-//                // GET /knowledge-points/.../is-self-like
-//                var id = g.getUrlParameter("id")
-//                $.ajax({
-//                    type: "get",
-//                    url: 'api/knowledge-points/' + id + '/is-self-like',
-//                    dataType: "json",
-//                    success: function (like) {
-//                        var liked = like.like
-//                        var icon = document.getElementById('icon');
-//                        if (liked) {
-//                            icon.setAttribute('src', 'images/details/zanover.png');
-//                        } else {
-//                            icon.setAttribute('src', 'images/details/dianzan.png');
-//                        }
-//                        icon.addEventListener('click', function (e) {
-//                            if (liked) {
-//                                $.ajax({
-//                                    type: "put",
-//                                    url: '/api/knowledge-points/' + id + '/unlike',
-//                                    data: JSON.stringify({}),
-//                                    dataType: "json",
-//                                    contentType: "application/json; charset=utf-8",
-//                                    success: function (unlike) {
-//                                        icon.setAttribute('src', 'images/details/dianzan.png');
-//                                        data.interaction.likeCount
-//                                        e.target.nextElementSibling.textContent = data.interaction.likeCount
-//                                        liked = false;
-//                                    }
-//                                })
-//                            } else {
-//                                $.ajax({
-//                                    type: "put",
-//                                    url: '/api/knowledge-points/' + id + '/like',
-//                                    data: JSON.stringify({}),
-//                                    dataType: "json",
-//                                    contentType: "application/json; charset=utf-8",
-//                                    success: function (like) {
-//                                        icon.setAttribute('src', 'images/details/zanover.png');
-//                                        ++data.interaction.likeCount;
-//                                        e.target.nextElementSibling.textContent = data.interaction.likeCount
-//                                        liked = true;
-//                                    }
-//                                })
-//                            }
-//                        }, false)
-//                    },
-//                    error: function (unlike) {
-//                        //liked = false
-//                    }
-//                })
-                //'/api/comments?filter={"objectType":"scheduler","objectId":' + state.videoDetail.id + '}'
-                //'/api/schedulers/' + state.videoDetail.id + '/comments'
-                var comments = [
-//                        {
-//                            name: '张三',
-//                            time: '2016-12-06',
-//                            content: '黑河市个地方官'
-//                        },
-//                        {
-//                            name: '张三',
-//                            time: '2016-12-06',
-//                            content: '黑河市个地方官'
-//                        },
-//                        {
-//                            name: '张三',
-//                            time: '2016-12-06',
-//                            content: '黑河市个地方官'
-//                        },
-//                        {
-//                            name: '张三',
-//                            time: '2016-12-06',
-//                            content: '黑河市个地方官'
-//                        },
-                    {
-                        name: '张三',
-                        time: '2016-12-06',
-                        content: '黑河市个地方官'
+                //***********************************like***************************************
+                // GET /knowledge-points/.../is-self-like
+                var id = g.getUrlParameter("id")
+                $.ajax({
+                    type: "get",
+                    url: 'api/playback/' + id + '/is-self-like',
+                    dataType: "json",
+                    success: function (like) {
+                        var liked = like.like
+                        var icon = document.getElementById('icon');
+                        if (liked) {
+                            icon.setAttribute('src', 'images/details/zanover.png');
+                        } else {
+                            icon.setAttribute('src', 'images/details/dianzan.png');
+                        }
+                        icon.addEventListener('click', function (e) {
+                            if (liked) {
+                                $.ajax({
+                                    type: "put",
+                                    url: '/api/schedulers/' + state.videoDetail.id + '/unlike',
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (unlike) {
+                                        icon.setAttribute('src', 'images/details/dianzan.png');
+                                        data.interaction.likeCount
+                                        e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                        liked = false;
+                                    }
+                                })
+                            } else {
+                                $.ajax({
+                                    type: "put",
+                                    url: '/api/schedulers/' + state.videoDetail.id + '/like',
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (like) {
+                                        icon.setAttribute('src', 'images/details/zanover.png');
+                                        ++data.interaction.likeCount;
+                                        e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                        liked = true;
+                                    }
+                                })
+                            }
+                        }, false)
+                    },
+                    error: function (unlike) {
+                        //liked = false
                     }
-                ]
-                var comment = document.getElementById('comment-area')
-                comment.innerHTML = ''
-                proc({
-                    container: comment,
-                    data: comments,
-                    templateId: 'video-comment-template'
                 })
+
+                //*************************comments**************************
+                var btn = document.getElementById('btn');
+                btn.addEventListener('click', submit, false);
+                function submit(e) {
+                    var textarea = document.getElementById('textarea');
+                    var value = textarea.value;
+                    if (value.length < 1) {
+                        return false;
+                    }
+                    textarea.value = '';
+                    e.target.style.color = '#f5f5f5';
+                    // e.target.style.backgroundColor = '#3e8f3e';
+                    $.ajax({
+                        type: "post",
+                        url: "/api/schedulers/' + state.videoDetail.id + '/comments",
+                        data: JSON.stringify({
+                            objectType: 'knowledge-point',
+                            content: value
+                        }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (comments) {
+                            location.reload();
+                            var comment = document.getElementById('comment-area')
+                            comment.innerHTML = ''
+                            proc({
+                                container: comment,
+                                data: comments,
+                                templateId: 'video-comment-template'
+                            })
+                        }
+                    })
+                }
+
+//                '/api/comments?filter={"objectType":"scheduler","objectId":' + state.videoDetail.id + '}'
+//                '/api/schedulers/' + state.videoDetail.id + '/comments'
+//                var comments = [
+//                    {
+//                        name: '张三',
+//                        time: '2016-12-06',
+//                        content: '黑河市个地方官'
+//                    }
+//                ]
+
             }
         },
         scheduler: {
