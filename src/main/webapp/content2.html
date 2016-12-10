@@ -1263,6 +1263,11 @@
                             containerId: 'book_infor'
                         })
                         proc({
+                            templateId: 'title-pack-up-template',
+                            data: value,
+                            containerId: 'pack_up_title'
+                        })
+                        proc({
                             data: value.knowledgePoints,
                             containerId: 'chapter-section',
                             alterTemplates: [
@@ -1283,6 +1288,15 @@
                         })
 
                         var value = state.knowledgePoints.value
+
+                        for (var i = 0; i < value.knowledgePoints.length; ++i) {
+                            if (value.knowledgePoints[i].type != 'pkNewLike' &&
+                                    value.knowledgePoints[i].type !== 'pkOldLike' &&
+                                    value.knowledgePoints[i].type !== 'pkNewUnlike' &&
+                                    value.knowledgePoints[i].type !== 'pkOldUnlike') {
+                                value.knowledgePoints[i].order = i + 1;
+                            }
+                        }
                         if (value.grade == 20 || value.grade == 21) {
                             value.grade = getGrade(value.grade)
                         }
@@ -1291,12 +1305,16 @@
                             data: value,
                             containerId: 'book_infor'
                         })
-
-                        if (state.knowledgePoints.index == 0) {
+                        proc({
+                            templateId: 'title-pack-up-template',
+                            data: value,
+                            containerId: 'pack_up_title'
+                        })
+                        if (!value.isSegment) {
                             value.knowledgePoints = segment(value.knowledgePoints);
-                            state.knowledgePoints.index++
-
+                            value.isSegment = 1
                         }
+
                         for (var i = 0; i < value.knowledgePoints.length; ++i) {
                             value.knowledgePoints[i].index = i
                         }
