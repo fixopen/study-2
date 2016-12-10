@@ -1090,12 +1090,13 @@ public class PublicAccounts {
         }
         try {
             if (s == null) {
-                System.out.println("openId="+openId);
-                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?openId=" + openId)).build();
+                System.out.println("wechatUserId="+wechatUser.getId());
+                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId())).build();
             } else {
                 System.out.println("sessionId="+s.getIdentity());
                 System.out.println("wechatuserId="+wechatUser.getId());
-                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId=" + s.getIdentity()+"?wechatuserId="+wechatUser.getId())).build();
+                //?sessionId=" + s.getIdentity()+"?wechatuserId="+wechatUser.getId()
+                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId="+s.getIdentity())).build();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();

@@ -69,7 +69,7 @@
                 <ul class="mine_zUl">
                     <li class="mine_zuli">
                         <span class="mine_leftsp">账号</span>
-                        <input class="mine_rightip" type="number" id="duanNumber" placeholder="请输入已激活手机号">
+                        <input class="mine_rightip" type="number" id="duanNumber" placeholder="请输入手机号">
                     </li>
                     <li class="mine_zuli">
                         <span class="mine_leftsp">密码</span>
@@ -436,7 +436,7 @@
     //var duan;
     var array = [];
     //var count =0;
-    var openId;
+    var wechatUserId;
     var state = {
         //openId: null,
        // duan: null,
@@ -456,19 +456,22 @@
         },
         currentArticle: document.getElementById('sign'),
         init: function () {
-            openId = g.getUrlParameter("openId");
+            wechatUserId = g.getUrlParameter("wechatUserId");
+            sessionId = g.getUrlParameter("sessionId");
 //            alert("openId="+openId)
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 state.switchTo(id)
             })
-            if (openId != null) {
+            if (wechatUserId != null) {
                 state.switchTo("sign")
+                history.pushState(null, null, '/user.html#sign');
             } else if(sessionId != null) {
                 state.switchTo("user")
+                history.pushState(null, null, '/user.html#user');
             }
             //  state['sign'].init()
-            history.pushState(null, null, '/user.html#user');
+
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
@@ -598,7 +601,7 @@
                             deviceNo: nub,
                             code:$("#Verification").val(),
                            //openId: g.getUrlParameter('openId'),
-                            openId:openId,
+                            wechatUserId:wechatUserId,
                         }
                         var dense = $("#Dense").val();
                         if (dense.length >= 6 && dense.length <= 16) {
@@ -633,7 +636,7 @@
                             deviceNo: dnub,
                             code:$("#Verification").val(),
                            // openId: g.getUrlParameter('openId'),
-                            openId:openId,
+                            wechatUserId:wechatUserId,
                         }
                         send(loginInfo)
                     }
@@ -647,7 +650,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (a) {
-                                alert("登录成功")
+               //                 alert("登录成功")
                                 state.switchTo('user')
                                 state.switchTo('info')
                             },
@@ -986,7 +989,7 @@
                         data.password = document.getElementById('password').value;
                         data.phoneNumber = document.getElementById('phoneNumber').value;
                         data.validCode = document.getElementById('validCode').value;
-                        data.openId = openId;
+                        data.openId = wechatUserId;
                         var url = 'api/users/cards'
                         /* if (userId) {
                          url = 'api/users/' + userId + '/cards'

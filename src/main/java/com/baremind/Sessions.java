@@ -46,7 +46,7 @@ public class Sessions {
         private String key;
         private String deviceType;
         private String deviceNo;
-        private String openId;
+        private String wechatUserId;
         private String code;
 
         public String getCode() {
@@ -97,12 +97,12 @@ public class Sessions {
             this.deviceNo = deviceNo;
         }
 
-        String getOpenId() {
-            return openId;
+        public String getWechatUserId() {
+            return wechatUserId;
         }
 
-        public void setOpenId(String openId) {
-            this.openId = openId;
+        public void setWechatUserId(String wechatUserId) {
+            this.wechatUserId = wechatUserId;
         }
     }
 
@@ -140,7 +140,7 @@ public class Sessions {
                         user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
                         if (user == null) {
                             //create user via openId
-                            WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
+                            WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", loginInfo.getWechatUserId());
                             user = insertUser(now, loginInfo.getInfo(), wechatUser);
                         }
                     }else{
@@ -149,7 +149,6 @@ public class Sessions {
                 }
                 break;
             case "telephone":
-
                 if(telephone != null){
                     if(telephone.getLogonCount() <= 5){
                         conditions.put("telephone", loginInfo.getInfo());
@@ -194,8 +193,8 @@ public class Sessions {
         }
         if (user != null) {
             Map<String, Object> deviceConditions = new HashMap<>();
-            conditions.put("platform", loginInfo.getDeviceType());
-            conditions.put("platformIdentity", loginInfo.getDeviceNo());
+            deviceConditions.put("platform", loginInfo.getDeviceType());
+            deviceConditions.put("platformIdentity", loginInfo.getDeviceNo());
             Device device = JPAEntry.getObject(Device.class, deviceConditions);
             if (device == null) {
                 device = new Device();
