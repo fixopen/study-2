@@ -9,6 +9,9 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
     <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="myUser/Popup.css">
+    <link rel="stylesheet" href="myUser/global.css">
+
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
@@ -938,32 +941,32 @@
                                             //console.log(kps[i])
                                         }
                                     }
-                                    state.knowledgePoints.show()
+                                  //  state.knowledgePoints.show()
+                                    var subjectId = g.getUrlParameter('subjectId')
+                                    $.ajax({
+                                        type: "get",
+                                        url: '/api/subjects/' + subjectId + '/popup',
+                                        dataType: "json",
+                                        success: function (pop) {
+                                            state.volumes.popuped = pop.popup;
+                                            //  state.volumes.popuped = false;
+
+                                            history.pushState(null, null, '/content2.html#volumes')
+                                            state.volumes.changeId(subjectId)
+
+                                            //state.volumes.subjectId = subjectId
+                                            //state['volumes'].init()
+
+                                            $(document).on('click', '.like-icon', function (e) {
+                                                var commentId = e.target.parentNode.dataset.id
+                                                state.knowledgePoint.process(commentId)
+                                            })
+                                        }
+                                    });
                                 },
                                 error: function (r) {
                                 }
                             })
-                            var subjectId = g.getUrlParameter('subjectId')
-                            $.ajax({
-                                type: "get",
-                                url: '/api/subjects/' + subjectId + '/popup',
-                                dataType: "json",
-                                success: function (pop) {
-                                    state.volumes.popuped = pop.popup;
-                                    //  state.volumes.popuped = false;
-
-                                    history.pushState(null, null, '/content2.html#volumes')
-                                    state.volumes.changeId(subjectId)
-
-                                    //state.volumes.subjectId = subjectId
-                                    //state['volumes'].init()
-
-                                    $(document).on('click', '.like-icon', function (e) {
-                                        var commentId = e.target.parentNode.dataset.id
-                                        state.knowledgePoint.process(commentId)
-                                    })
-                                }
-                            });
                         },
                         error: function (r) {
                         }
@@ -1243,6 +1246,22 @@
                     }
                     return result
                 }
+                var pageTopChange = function () {
+                    var scrollTop = $(this).scrollTop();
+                    var catalog = $(".catalog");
+                    var catalog_pack_up = $(".catalog_pack_up");
+                    var catalog_list = $(".catalog_list");
+                    if(scrollTop != 0){
+                        catalog.hide();
+                        catalog_pack_up.show();
+                        catalog_list .css({"top":"2.75rem"});
+                    }else{
+                        catalog.show();
+                        catalog_pack_up.hide();
+                        catalog_list.css({"top":"8.75rem"});
+                    }
+                }
+
                 $('#knowledgePoints').html("");
                 switch (state.volumes.parentId) {
                     case 1:
@@ -1277,7 +1296,7 @@
                                 {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
                             ]
                         })
-
+                        $(".wrap").scroll(pageTopChange);
                         break
                     case 2:
                     case '2':
@@ -1342,6 +1361,7 @@
                             })
                         }
 
+                        $(".wrap").scroll(pageTopChange);
                         break
                 }
             }
@@ -1640,6 +1660,11 @@
                             data: value.contents.video,
                             containerId: 'video'
                         });
+
+                        var video = document.getElementById('video');
+                        video.addEventListener('click', function (e) {
+                            xiao(value.id,'knowledge-point');
+                        },false)
 
                         proc({
                             alterTemplates: [
@@ -2064,5 +2089,9 @@
     }
     state.init()
 </script>
+<script type="text/javascript">
+
+</script>
+
 </body>
 </html>
