@@ -206,10 +206,10 @@
 <template id="title-pack-up-template">
     <p class="mltop_xiaoBiao">${title}</p>
 </template>
-<template id="chapter-free-new-like-template">
+<template id="chapter-free-old-like-template">
     <li class="neir_li">
-        <img class="free" src="img/free.png" alt="">
         <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
             <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
         </div>
         <div class="neir_ridiv">
@@ -222,10 +222,10 @@
         </div>
     </li>
 </template>
-<template id="chapter-free-new-unlike-template">
+<template id="chapter-free-old-unlike-template">
     <li class="neir_li">
-        <img class="free" src="img/free.png" alt="">
         <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
             <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
         </div>
         <div class="neir_ridiv">
@@ -1034,9 +1034,8 @@
 <script src="/basic.js"></script>
 
 
-
 <script>
-//    -----------------------------------------------------------弹窗js开始
+    //    -----------------------------------------------------------弹窗js开始
     var sale_info;
     var cards;
     var userAmount;
@@ -1063,13 +1062,13 @@
                 userAmount = e.user_amount;
                 price = e.price;
                 ke = e.subject;
-                tan(cards, ke, objectType,objectId)
+                tan(cards, ke, objectType, objectId)
                 // turnOutPage(cards);
             }
         })
     }
     //第二步根据自己的卡和价格资源弹窗
-    function tan(cards, subject, objectType,objectId) {
+    function tan(cards, subject, objectType, objectId) {
         for (var i = 0; i < cards.length; i++) {
             var a = cards[i].subjectId
             if (cards[i].subjectId == subject && cards[i].amount >= price) {
@@ -1092,21 +1091,21 @@
         if (biao != 1) {
             for (var i = 0; i < cards.length; i++) {
                 var a = cards[i].subjectId
-                var money = parseInt(userAmount) + 0 + parseInt( cards[i].amount);
+                var money = parseInt(userAmount) + 0 + parseInt(cards[i].amount);
                 var mp = "false";
-                if(money > price || money == price){
+                if (money > price || money == price) {
                     mp = "true";
                 }
-                if (cards[i].subjectId == subject && cards[i].amount < price && biao != 1 ) {
+                if (cards[i].subjectId == subject && cards[i].amount < price && biao != 1) {
                     //第三步：你有这个科目下的卡&&卡余额<资源价格:弹出2床
                     var subject_card = transformation(a);
                     var object_Type = transformationType(objectType);
                     d.getElementById("p12").innerHTML = "" + object_Type + "需要" + price + "金豆";
                     d.getElementById("p22").innerHTML = "您的" + subject_card + "卡余额不足";
                     d.getElementById("a12").innerHTML = "充值";
-                    if(mp == "true"){
+                    if (mp == "true") {
                         d.getElementById("a22").innerHTML = "转入";
-                    }else if(mp == "false"){
+                    } else if (mp == "false") {
                         d.getElementById("a22").innerHTML = "";
                     }
 
@@ -1145,10 +1144,10 @@
             for (var i = 0; i < cards.length; i++) {
                 var a = cards[i].subjectId
                 // var iYear=parseInt(iYear);
-                var money = parseInt(userAmount) + 0 + parseInt( cards[i].amount);
+                var money = parseInt(userAmount) + 0 + parseInt(cards[i].amount);
                 var am = parseInt(cards[i].amount)
                 var mp = "false";
-                if(money > price || money == price){
+                if (money > price || money == price) {
                     mp = "true";
                 }
                 if (cards[i].subjectId != subject && am < price && biao != 1) {
@@ -1163,9 +1162,9 @@
                     d.getElementById("p14").innerHTML = "您没有" + object_card + "卡";
                     d.getElementById("p24").innerHTML = "您的" + subject_card + "卡余额不足";
                     d.getElementById("a14").innerHTML = "充值";
-                    if(mp == "true"){
+                    if (mp == "true") {
                         d.getElementById("a24").innerHTML = "转入";
-                    }else if(mp == "false"){
+                    } else if (mp == "false") {
                         d.getElementById("a24").innerHTML = "";
                     }
                     d.getElementById("4").style.display = "block"
@@ -1181,15 +1180,14 @@
     //第三步确认购买||确认转入||确认充值
     function atom(sourceId, sourceType, object_Id, object_Type, count, money, none) {
         var result;
-        if(money == null && count == null){
-            filter  = { // 充值rechargeFilter
+        if (money == null && count == null) {
+            filter = { // 充值rechargeFilter
                 sourceType: sourceType,
                 objectId: objectId,
                 objectType: objectType,
                 money: money
             }
-        }else
-        if(count == null){
+        } else if (count == null) {
             filter = { //转账transferFilter
                 sourceId: sourceId,
                 sourceType: sourceType,
@@ -1197,8 +1195,7 @@
                 objectType: object_Type,
                 money: money
             }
-        }else
-        if(money == null){
+        } else if (money == null) {
             filter = { // 购买purchaseFilter
                 sourceId: sourceId,
                 sourceType: sourceType,
@@ -1217,16 +1214,16 @@
             contentType: "application/json; charset=utf-8",
             success: function (e) {
                 alert("成功")
-                if(none == 1){
+                if (none == 1) {
                     document.getElementById("1").style.display = "none"
                 }
-                if(none == 2){
+                if (none == 2) {
                     document.getElementById("2").style.display = "none"
                 }
-                if(none == 3){
+                if (none == 3) {
                     document.getElementById("3").style.display = "none"
                 }
-                if(none == 4){
+                if (none == 4) {
                     document.getElementById("4").style.display = "none"
                 }
             },
@@ -1255,14 +1252,14 @@
     purchase1.addEventListener('click', function (e) {
         alert("购买1")
 //                    sourceId, sourceType, objectId, objectType, count, money
-        atom(card.id,"card",object_Id,object_Types,count,null,1);
+        atom(card.id, "card", object_Id, object_Types, count, null, 1);
     })
 
     var purchase2 = document.getElementById("a13")
     purchase2.addEventListener('click', function (e) {
         alert("购买2")
 //                    sourceId, sourceType, objectId, objectType, count, money
-        atom(card.id,"card",object_Id,object_Types,count,null,3);
+        atom(card.id, "card", object_Id, object_Types, count, null, 3);
     })
     var recharge1 = document.getElementById("a21")
     recharge1.addEventListener('click', function (e) {
@@ -1271,7 +1268,7 @@
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
         //d.getElementById("c").style.display="block";
-        rechargePage(cards,"c")
+        rechargePage(cards, "c")
     })
 
     var recharge2 = document.getElementById("a12")
@@ -1281,7 +1278,7 @@
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
         // d.getElementById("c").style.display="block";
-        rechargePage(cards,'c')
+        rechargePage(cards, 'c')
     })
 
     var recharge3 = document.getElementById("a23")
@@ -1291,7 +1288,7 @@
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
         // d.getElementById("c").style.display="block";
-        rechargePage(cards,'c')
+        rechargePage(cards, 'c')
     })
 
     var recharge4 = document.getElementById("a14")
@@ -1301,14 +1298,14 @@
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
         //  d.getElementById("c").style.display="block";
-        rechargePage(cards,'c')
+        rechargePage(cards, 'c')
     })
 
     var turnOut1 = document.getElementById("a22")
     turnOut1.addEventListener('click', function (e) {
         alert("转入1")
         d.getElementById("2").style.display = "none"
-        turnOutPage(cards,"z")
+        turnOutPage(cards, "z")
         //d.getElementById("1").style.display = "none"
         // d.getElementById("c").style.display="block";
     })
@@ -1317,13 +1314,13 @@
     turnOut2.addEventListener('click', function (e) {
         alert("转入2")
         d.getElementById("4").style.display = "none"
-        turnOutPage(cards,"z")
+        turnOutPage(cards, "z")
         //d.getElementById("1").style.display = "none"
         //d.getElementById("c").style.display="block";
     })
 
     var z = d.getElementById("z")
-    z.addEventListener('click',function (e) {
+    z.addEventListener('click', function (e) {
         document.getElementById("c").style.display = "none"
         turnOutPage(cards)
     })
@@ -1373,17 +1370,16 @@
         }
         return result;
     }
-    function duo(id,T) {
+    function duo(id, T) {
         var w = 1;
         w = id;
         var arrList = new Array;
         for (var i = 0; i < cards.length; i++) {
-            if(cards[i].id == id){
+            if (cards[i].id == id) {
                 arrList.push(cards[i]);
-                if(T == "z"){
+                if (T == "z") {
                     dan(arrList)
-                }else
-                if(T == "c"){
+                } else if (T == "c") {
                     rechargePagedan(arrList)
                 }
             }
@@ -1422,12 +1418,12 @@
         var submitTransfer = document.getElementById("submitTransfer")
         submitTransfer.addEventListener('click', function (e) {
             //userAmount(transfer[0].id, $("#Number").val())
-            atom("96520767275011","user",transfer[0].id,"card",null,$("#Number").val())
+            atom("96520767275011", "user", transfer[0].id, "card", null, $("#Number").val())
             d.getElementById("selectOneCard").style.display = "none"
 
         })
     }
-    function turnOutPage(cards,T) {
+    function turnOutPage(cards, T) {
         if (cards.length > 1) {
             for (var i = 0; i < cards.length; i++) {
                 if (cards[i].subjectId == 1) {
@@ -1460,7 +1456,7 @@
                 /*  setTimeout(function () {
 
                  }, 1000)*/
-                duo(id,T)
+                duo(id, T)
                 //     document.getElementById(id).src = "";
                 //duo(id)
             })
@@ -1473,7 +1469,7 @@
     }
 
 
-    function rechargePage(cards,T) {
+    function rechargePage(cards, T) {
         if (cards.length > 1) {
             for (var i = 0; i < cards.length; i++) {
                 if (cards[i].subjectId == 1) {
@@ -1505,7 +1501,7 @@
                 /*  setTimeout(function () {
 
                  }, 1000)*/
-                duo(id,T)
+                duo(id, T)
                 //duo(id)
             })
             // alert("到多个卡选择页面")
@@ -1521,12 +1517,12 @@
             cards[0].amount = "0"
         }
         d.getElementById("selectCard").style.display = "none"
-        d.getElementById("name").innerHTML = ""+cards[0].no+""
-        d.getElementById("usermoney").innerHTML = ""+cards[0].amount+""
+        d.getElementById("name").innerHTML = "" + cards[0].no + ""
+        d.getElementById("usermoney").innerHTML = "" + cards[0].amount + ""
         d.getElementById("c").style.display = "block"
     }
 
-//    --------------------------------------------------------------弹窗js开始
+    //    --------------------------------------------------------------弹窗js开始
     /*
      *  [
      *     {
@@ -1650,7 +1646,7 @@
                                             //console.log(kps[i])
                                         }
                                     }
-                                  //  state.knowledgePoints.show()
+
                                     var subjectId = g.getUrlParameter('subjectId')
                                     $.ajax({
                                         type: "get",
@@ -1709,7 +1705,6 @@
 
             $(document).on('shown.bs.tab', '.grade-main', function (e) {
                 state.volumes.grade = e.target.dataset.grade
-                //$(e.target).tab('show')
             })
 
             window.addEventListener('hashchange', function (e) {
@@ -1955,38 +1950,89 @@
                     }
                     return result
                 }
-//                var pageTopChange = function () {
-//                    var scrollTop = $(this).scrollTop();
-//                    var catalog = $(".catalog");
-//                    var catalog_pack_up = $(".catalog_pack_up");
-//                    var catalog_list = $(".catalog_list");
-//                    if(scrollTop != 0){
-//                        catalog.hide();
-//                        catalog_pack_up.show();
-//                        catalog_list .css({"top":"2.75rem"});
-//                    }else{
-//                        catalog.show();
-//                        catalog_pack_up.hide();
-//                        catalog_list.css({"top":"8.75rem"});
-//                    }
-//                }
                 var pageTopChange = function () {
-                    var mainHeight1 = $(window).height()-(parseInt($(".catalog").height())+20);
-                    var mainHeight2 = $(window).height()-(parseInt($(".catalog_pack_up").height())+20);
-                    $(".catalog_list").css("height",mainHeight1);
+                    var mainHeight1 = $(window).height() - (parseInt($(".catalog").height()) + 10);
+                    var mainHeight2 = $(window).height() - (parseInt($(".catalog_pack_up").height()) + 10);
+                    $(".catalog_list").css({"height": mainHeight1});
+                    var containHeight = 0;
 
-                    $(".catalog_list").scroll(function(event) {
-                        var scrollTopOrigin = $(".catalog_list").scrollTop();
-                        if(scrollTopOrigin!=0){
-                            $(".catalog").stop().slideUp('fast');
-                            $(".catalog_pack_up").stop().slideDown('fast');
-                            $(".catalog_list").css({"height":mainHeight2,"top":"2.75rem"});
-                        }else{
-                            $(".catalog").stop().slideDown('fast');
-                            $(".catalog_pack_up").stop().slideUp('fast');
-                            $(".catalog_list").css({"height":mainHeight1,"top":"8.75rem"});
-                        }
+                    $(".catalog_list>div").each(function (index, el) {
+                        containHeight += parseInt($(this).height());
                     });
+
+                    //返回角度
+                    function GetSlideAngle(dx, dy) {
+                        return Math.atan2(dy, dx) * 180 / Math.PI;
+                    }
+
+                    //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
+                    function GetSlideDirection(startX, startY, endX, endY) {
+                        var dy = startY - endY;
+                        var dx = endX - startX;
+                        var result = 0;
+
+                        //如果滑动距离太短
+                        if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+                            return result;
+                        }
+                        var angle = GetSlideAngle(dx, dy);
+                        if (angle >= -45 && angle < 45) {
+                            result = 4;
+                        } else if (angle >= 45 && angle < 135) {
+                            result = 1;
+                        } else if (angle >= -135 && angle < -45) {
+                            result = 2;
+                        }
+                        else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+                            result = 3;
+                        }
+                        return result;
+                    }
+
+                    //滑动处理
+                    var startX, startY;
+                    document.addEventListener('touchstart', function (ev) {
+                        startX = ev.touches[0].pageX;
+                        startY = ev.touches[0].pageY;
+                    }, false);
+                    document.addEventListener('touchend', function (ev) {
+                        var endX, endY;
+                        endX = ev.changedTouches[0].pageX;
+                        endY = ev.changedTouches[0].pageY;
+                        var direction = GetSlideDirection(startX, startY, endX, endY);
+                        switch (direction) {
+                            case 0:
+                                // alert("没滑动");
+                                break;
+                            case 1:
+                                if (containHeight > mainHeight1) {
+                                    $(".catalog").stop().slideUp('fast');
+                                    $(".catalog_pack_up").stop().slideDown('fast');
+                                    $(".catalog_list").css({"height": mainHeight2, "top": "3.75rem"});
+                                }
+                                break;
+                            case 2:
+                            function userSlideDown() {
+                                $(".catalog").stop().slideDown('fast');
+                                $(".catalog_pack_up").stop().slideUp('fast');
+                                $(".catalog_list").css({"height": mainHeight1, "top": "8.75rem"});
+                            }
+
+                                if (containHeight <= $(".catalog_list").height() && $(".catalog_pack_up").is(":visible")) {
+                                    userSlideDown();
+                                } else {
+                                    $(".catalog_list").scroll(function () {
+                                        var scrollTop = $(".catalog_list").scrollTop();
+                                        if (scrollTop == 0) {
+                                            userSlideDown();
+                                        }
+                                    })
+                                }
+                                break;
+
+                            default:
+                        }
+                    }, false);
                 }
                 $('#knowledgePoints').html("");
                 switch (state.volumes.parentId) {
@@ -2022,77 +2068,9 @@
                                 {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
                             ]
                         })
-                        //pageTopChange();
-                        var mainHeight1 = $(window).height()-(parseInt($(".catalog").height())+10);
-                        var mainHeight2 = $(window).height()-(parseInt($(".catalog_pack_up").height())+10);
-                        $(".catalog_list").css({"height":mainHeight1});
-                        var containHeight = $(".catalog_list>div").height();
 
-                        //返回角度
-                        function GetSlideAngle(dx, dy) {
-                            return Math.atan2(dy, dx) * 180 / Math.PI;
-                        }
+                        pageTopChange();
 
-                        //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
-                          function GetSlideDirection(startX, startY, endX, endY) {
-                        var dy = startY - endY;
-                        var dx = endX - startX;
-                        var result = 0;
-
-                        //如果滑动距离太短
-                        if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
-                            return result;
-                        }
-                        var angle = GetSlideAngle(dx, dy);
-                        if (angle >= -45 && angle < 45) {
-                            result = 4;
-                        } else if (angle >= 45 && angle < 135) {
-                            result = 1;
-                        } else if (angle >= -135 && angle < -45) {
-                            result = 2;
-                        }
-                        else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-                            result = 3;
-                        }
-                        return result;
-                    }
-
-                        //滑动处理
-                        var startX, startY;
-                        document.addEventListener('touchstart', function (ev) {
-                            startX = ev.touches[0].pageX;
-                            startY = ev.touches[0].pageY;
-                        }, false);
-                        document.addEventListener('touchend', function (ev) {
-                            var endX, endY;
-                            endX = ev.changedTouches[0].pageX;
-                            endY = ev.changedTouches[0].pageY;
-                            var direction = GetSlideDirection(startX, startY, endX, endY);
-                            switch (direction) {
-                                case 0:
-                                    // alert("没滑动");
-                                    break;
-                                case 1:
-                                    if (containHeight > mainHeight1) {
-                                        $(".catalog").stop().slideUp('fast');
-                                        $(".catalog_pack_up").stop().slideDown('fast');
-                                        $(".catalog_list").css({"height":mainHeight2,"top":"3.75rem"});
-                                    }
-                                    break;
-                                case 2:
-                                    $(".catalog_list").scroll(function() {
-                                        var scrollTop = $(".catalog_list").scrollTop();
-                                        console.log(scrollTop);
-                                        if (scrollTop == 0) {
-                                            $(".catalog").stop().slideDown('fast');
-                                            $(".catalog_pack_up").stop().slideUp('fast');
-                                            $(".catalog_list").css({"height":mainHeight1,"top":"8.75rem"});
-                                        }
-                                    });
-                                    break;
-                                default:
-                            }
-                        }, false);
                         break
                     case 2:
                     case '2':
@@ -2138,6 +2116,7 @@
                             data: value.knowledgePoints,
                             containerId: 'chapter-section'
                         })
+
                         var chapters = document.getElementById('chapter-section').querySelectorAll('[data-identity]')
                         for (var i = 0; i < chapters.length; ++i) {
                             var c = chapters[i]
@@ -2157,79 +2136,8 @@
                             })
                         }
 
-                       // pageTopChange();
-                        //pageTopChange();
-                        var mainHeight1 = $(window).height()-(parseInt($(".catalog").height())+10);
-                        var mainHeight2 = $(window).height()-(parseInt($(".catalog_pack_up").height())+10);
-                        $(".catalog_list").css({"height":mainHeight1});
-                        var containHeight = $(".catalog_list>div").height();
+                        pageTopChange();
 
-                        //返回角度
-                    function GetSlideAngle(dx, dy) {
-                        return Math.atan2(dy, dx) * 180 / Math.PI;
-                    }
-
-                        //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
-                    function GetSlideDirection(startX, startY, endX, endY) {
-                        var dy = startY - endY;
-                        var dx = endX - startX;
-                        var result = 0;
-
-                        //如果滑动距离太短
-                        if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
-                            return result;
-                        }
-                        var angle = GetSlideAngle(dx, dy);
-                        if (angle >= -45 && angle < 45) {
-                            result = 4;
-                        } else if (angle >= 45 && angle < 135) {
-                            result = 1;
-                        } else if (angle >= -135 && angle < -45) {
-                            result = 2;
-                        }
-                        else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-                            result = 3;
-                        }
-                        return result;
-                    }
-
-                        //滑动处理
-                        var startX, startY;
-                        document.addEventListener('touchstart', function (ev) {
-                            startX = ev.touches[0].pageX;
-                            startY = ev.touches[0].pageY;
-                        }, false);
-                        document.addEventListener('touchend', function (ev) {
-                            var endX, endY;
-                            endX = ev.changedTouches[0].pageX;
-                            endY = ev.changedTouches[0].pageY;
-                            var direction = GetSlideDirection(startX, startY, endX, endY);
-                            switch (direction) {
-                                case 0:
-                                    // alert("没滑动");
-                                    break;
-                                case 1:
-                                    alert('向上'+containHeight+"  "+mainHeight1)
-                                    if (containHeight > mainHeight1) {
-                                        $(".catalog").stop().slideUp('fast');
-                                        $(".catalog_pack_up").stop().slideDown('fast');
-                                        $(".catalog_list").css({"height":mainHeight2,"top":"3.75rem"});
-                                    }
-                                    break;
-                                case 2:
-                                    alert('向下'+containHeight+"  "+mainHeight1)
-                                    $(".catalog_list").scroll(function() {
-                                        var scrollTop = $(".catalog_list").scrollTop();
-                                        if (scrollTop == 0) {
-                                            $(".catalog").stop().slideDown('fast');
-                                            $(".catalog_pack_up").stop().slideUp('fast');
-                                            $(".catalog_list").css({"height":mainHeight1,"top":"8.75rem"});
-                                        }
-                                    });
-                                    break;
-                                default:
-                            }
-                        }, false);
                         break
                 }
             }
@@ -2482,6 +2390,7 @@
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
+                        xiao(state.knowledgePoint.value.id, 'knowledge-point');
                         proc({
                             containerId: 'knowledgePoint',
                             data: {},
@@ -2529,10 +2438,10 @@
                             containerId: 'video'
                         });
 
-                        var video = document.getElementById('video');
-                        video.addEventListener('click', function (e) {
-                            xiao(value.id,'knowledge-point');
-                        },false)
+//                        var video = document.getElementById('video');
+//                        video.addEventListener('click', function (e) {
+//                            xiao(value.id,'knowledge-point');
+//                        },false)
 
                         proc({
                             alterTemplates: [
@@ -2566,6 +2475,7 @@
                             case 'normalNewUnlike':
                             case 'normalOldLike':
                             case 'normalOldUnlike':
+                                xiao(state.knowledgePoint.value.id, 'knowledge-point');
                                 proc({
                                     containerId: 'knowledgePoint',
                                     data: {},
@@ -2616,10 +2526,10 @@
                                     containerId: 'video'
                                 });
 
-                                var video = document.getElementById('video');
-                                video.addEventListener('click', function (e) {
-                                    xiao(value.id,'knowledge-point');
-                                },false)
+//                                var video = document.getElementById('video');
+//                                video.addEventListener('click', function (e) {
+//                                    xiao(value.id,'knowledge-point');
+//                                },false)
 
                                 //data.problems
                                 var ps = []
@@ -2962,77 +2872,5 @@
     }
     state.init()
 </script>
-<script type="text/javascript">
-    var mainHeight1 = $(window).height()-(parseInt($(".mulu_top").height())+10);
-    var mainHeight2 = $(window).height()-(parseInt($(".mulu_suoLv").height())+10);
-    $(".ml_botmain").css({"height":mainHeight1});
-    var containHeight = $(".ml_botmain>div").height();
-
-    //返回角度
-    function GetSlideAngle(dx, dy) {
-        return Math.atan2(dy, dx) * 180 / Math.PI;
-    }
-
-    //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
-    function GetSlideDirection(startX, startY, endX, endY) {
-        var dy = startY - endY;
-        var dx = endX - startX;
-        var result = 0;
-
-        //如果滑动距离太短
-        if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
-            return result;
-        }
-        var angle = GetSlideAngle(dx, dy);
-        if (angle >= -45 && angle < 45) {
-            result = 4;
-        } else if (angle >= 45 && angle < 135) {
-            result = 1;
-        } else if (angle >= -135 && angle < -45) {
-            result = 2;
-        }
-        else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-            result = 3;
-        }
-        return result;
-    }
-
-    //滑动处理
-    var startX, startY;
-    document.addEventListener('touchstart', function (ev) {
-        startX = ev.touches[0].pageX;
-        startY = ev.touches[0].pageY;
-    }, false);
-    document.addEventListener('touchend', function (ev) {
-        var endX, endY;
-        endX = ev.changedTouches[0].pageX;
-        endY = ev.changedTouches[0].pageY;
-        var direction = GetSlideDirection(startX, startY, endX, endY);
-        switch (direction) {
-            case 0:
-               // alert("没滑动");
-                break;
-            case 1:
-                if (containHeight > mainHeight1) {
-                    $(".mulu_top").stop().slideUp('fast');
-                    $(".mulu_suoLv").stop().slideDown('fast');
-                    $(".ml_botmain").css({"height":mainHeight2,"top":"3.75rem"});
-                }
-                break;
-            case 2:
-                $(".ml_botmain").scroll(function() {
-                    var scrollTop = $(".ml_botmain").scrollTop();
-                    if (scrollTop == 0) {
-                        $(".mulu_top").stop().slideDown('fast');
-                        $(".mulu_suoLv").stop().slideUp('fast');
-                        $(".ml_botmain").css({"height":mainHeight1,"top":"8.75rem"});
-                    }
-                });
-                break;
-            default:
-        }
-    }, false);
-</script>
-
 </body>
 </html>
