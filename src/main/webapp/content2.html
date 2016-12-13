@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="css/math-detail.css">
     <link rel="stylesheet" href="css/chinese-detail.css">
     <link rel="stylesheet" href="css/english-detail.css">
+    <link rel="stylesheet" href="css/catalog.css">
 
 </head>
 <body>
@@ -149,7 +150,7 @@
 </template>
 <!------------------------------knowledgepoints----------------------------->
 <template id="math-catalog"><!--数学-目录-->
-    <div class="wrap">
+    <div class="catalog_wrap">
         <div class="catalog">
             <div class="mltop_main" id="book_infor"></div>
             <img class="juchi" src="images_version2/juchi.png" alt="">
@@ -1246,21 +1247,21 @@
                     }
                     return result
                 }
-                var pageTopChange = function () {
-                    var scrollTop = $(this).scrollTop();
-                    var catalog = $(".catalog");
-                    var catalog_pack_up = $(".catalog_pack_up");
-                    var catalog_list = $(".catalog_list");
-                    if(scrollTop != 0){
-                        catalog.hide();
-                        catalog_pack_up.show();
-                        catalog_list .css({"top":"2.75rem"});
-                    }else{
-                        catalog.show();
-                        catalog_pack_up.hide();
-                        catalog_list.css({"top":"8.75rem"});
-                    }
-                }
+//                var pageTopChange = function () {
+//                    var scrollTop = $(this).scrollTop();
+//                    var catalog = $(".catalog");
+//                    var catalog_pack_up = $(".catalog_pack_up");
+//                    var catalog_list = $(".catalog_list");
+//                    if(scrollTop != 0){
+//                        catalog.hide();
+//                        catalog_pack_up.show();
+//                        catalog_list .css({"top":"2.75rem"});
+//                    }else{
+//                        catalog.show();
+//                        catalog_pack_up.hide();
+//                        catalog_list.css({"top":"8.75rem"});
+//                    }
+//                }
 
                 $('#knowledgePoints').html("");
                 switch (state.volumes.parentId) {
@@ -1296,7 +1297,23 @@
                                 {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
                             ]
                         })
-                        $(".wrap").scroll(pageTopChange);
+
+                        var mainHeight1 = $(window).height()-(parseInt($(".catalog").height())+20);
+                        var mainHeight2 = $(window).height()-(parseInt($(".catalog_pack_up").height())+20);
+                        $(".catalog_list").css("height",mainHeight1);
+
+                        $(".catalog_list").scroll(function(event) {
+                            var scrollTopOrigin = $(".catalog_list").scrollTop();
+                            if(scrollTopOrigin!=0){
+                                $(".catalog").stop().slideUp('fast');
+                                $(".catalog_pack_up").stop().slideDown('fast');
+                                $(".catalog_list").css({"height":mainHeight2,"top":"2.75rem"});
+                            }else{
+                                $(".catalog").stop().slideDown('fast');
+                                $(".catalog_pack_up").stop().slideUp('fast');
+                                $(".catalog_list").css({"height":mainHeight1,"top":"8.75rem"});
+                            }
+                        });
                         break
                     case 2:
                     case '2':
@@ -1361,7 +1378,22 @@
                             })
                         }
 
-                        $(".wrap").scroll(pageTopChange);
+                        var mainHeight1 = $(window).height()-(parseInt($(".catalog").height())+20);
+                        var mainHeight2 = $(window).height()-(parseInt($(".catalog_pack_up").height())+20);
+                        $(".catalog_list").css("height",mainHeight1);
+
+                        $(".catalog_list").scroll(function(event) {
+                            var scrollTopOrigin = $(".catalog_list").scrollTop();
+                            if(scrollTopOrigin!=0){
+                                $(".catalog").stop().slideUp('fast');
+                                $(".catalog_pack_up").stop().slideDown('fast');
+                                $(".catalog_list").css({"height":mainHeight2,"top":"2.75rem"});
+                            }else{
+                                $(".catalog").stop().slideDown('fast');
+                                $(".catalog_pack_up").stop().slideUp('fast');
+                                $(".catalog_list").css({"height":mainHeight1,"top":"8.75rem"});
+                            }
+                        });
                         break
                 }
             }
@@ -2089,9 +2121,26 @@
     }
     state.init()
 </script>
-<script type="text/javascript">
+<!--<script type="text/javascript">-->
+    <!--var mainHeight1 = $(window).height()-(parseInt($(".mulu_top").height())+20);-->
+    <!--var mainHeight2 = $(window).height()-(parseInt($(".mulu_suoLv").height())+20);-->
+    <!--$(".ml_botmain").css("height",mainHeight1);-->
 
-</script>
+
+    <!--$(".ml_botmain").scroll(function(event) {-->
+        <!--var scrollTopOrigin = $(".ml_botmain").scrollTop();-->
+        <!--if(scrollTopOrigin!=0){-->
+            <!--$(".mulu_top").stop().slideUp('fast');-->
+            <!--$(".mulu_suoLv").stop().slideDown('fast');-->
+            <!--$(".ml_botmain").css({"height":mainHeight2,"top":"2.75rem"});-->
+        <!--}else{-->
+            <!--$(".mulu_top").stop().slideDown('fast');-->
+            <!--$(".mulu_suoLv").stop().slideUp('fast');-->
+            <!--$(".ml_botmain").css({"height":mainHeight1,"top":"8.75rem"});-->
+        <!--}-->
+    <!--});-->
+<!--</script>-->
+
 
 </body>
 </html>
