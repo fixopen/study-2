@@ -313,3 +313,9 @@
 .chinese_catalog_list .course_xqpsee{
     margin: 0;
 }
+.free{
+    display: inline-block;
+    width: 1.875rem;
+    height: 1.0rem;
+    vertical-align: middle;
+}

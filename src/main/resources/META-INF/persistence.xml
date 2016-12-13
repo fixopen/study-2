@@ -32,6 +32,8 @@
         <class>com.baremind.data.PinyinText</class>
         <class>com.baremind.data.AudioRecord</class>
         <class>com.baremind.data.Book</class>
+        <class>com.baremind.data.Consumption</class>
+        <class>com.baremind.data.Transaction</class>
         <class>com.baremind.data.KnowledgePoint.ContentStats</class>
         <class>com.baremind.data.KnowledgePoint.BaseStats</class>
         <properties>
