@@ -1227,6 +1227,7 @@
                     $(document).on('click', ".xiala_li", function (e) {
 //                        $(e).addClass("cur").siblings().removeClass("cur");
                         $(e.currentTarget).addClass('cur').siblings('.xiala_li').removeClass('cur');
+                        $('.tan').hide();
                         $(e.currentTarget).parent(".xiala_ul").hide();
                         $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
                     });
