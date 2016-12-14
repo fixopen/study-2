@@ -1,0 +1,321 @@
+/* @Author:zhaoxq*/
+
+/*学习-语文*/
+.noBackg{
+    background: #fff;
+}
+.bao_dul{
+    width: 100%;
+    height: 5.0625rem;
+    background: url("../images_version2/muluBG1.png") 0 0 no-repeat;
+    background-size: 100% 5.0625rem;
+    margin-bottom: 0.9375rem;
+}
+.grade_nav,.grade_nav_math,.grade_nav_english{
+    width: 94%;
+    margin: 0 auto;
+    position: relative;
+    top: 0.9375rem;
+    border: 1px solid #ffbc3c;
+    border-radius: 0.3125rem;
+    overflow: hidden;
+}
+.grade_nav_math{
+    border-color:#39b4fa;
+}
+.grade_nav_english{
+    border-color:#ff8067;
+}
+.grade_main{
+    float: left;
+    font-size:1.125rem;
+    width: 50%;
+    height: 2.6875rem;
+    line-height: 2.6875rem;
+    text-align: center;
+    letter-spacing: 0.3225rem;
+}
+.grade_main a{
+    font-family: "苹方";
+    color: #444;
+}
+.grade_main.active,.grade_main.active a{
+    color: #fff;
+    background-color:#ffbc3c;
+}
+.grade_nav_math .grade_main.active,.grade_nav_math .grade_main.active a{
+    color:#fff;
+    background-color: #39b4fa;
+}
+.grade_nav_english .grade_main.active,.grade_nav_english .grade_main.active a{
+    color:#fff;
+    background-color: #ff8067;
+}
+.grade_nav_english .grade_main{
+    font-size: 1.0rem;
+    letter-spacing: 0;
+}
+.volumes_bg{
+    width: 100%;
+    margin: 0 auto;
+    display: none;
+}
+.volumes_bg.active{
+    display: block;
+}
+.volumes_bg li{
+    display: inline-block;
+    width: 32%;
+    text-align: center;
+}
+.textbook{
+    display: inline-block;
+    text-align: center;
+    margin: 0.46875rem;
+    position: relative;
+}
+.textbook_num{
+    display: inline-block;
+    color: #fff;
+    font-size: 0.8125rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    text-align: center;
+    background-color: #ff0000;
+    border-radius: 50%;
+    position: absolute;
+    top: -0.3125rem;
+    left: -0.3125rem;
+}
+.textbook img{
+    width: 6.1875rem;
+    border: 3px solid #fff;
+    box-shadow: 0.5px 0.5px 10px #909090;
+}
+
+/*弹窗：X学习-更新通知*/
+.update_notify{
+    width: 16.90625rem;
+    height: 25.3125rem;
+    text-align: center;
+    background: url("../images_version2/window1.png") 0 0 no-repeat;
+    background-size: 16.90625rem 25.3125rem;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10000;
+    display: none;
+}
+.close_window_btn {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    background: url(../images/close.png) center no-repeat;
+    background-size: 0.75rem 0.75rem;
+    position: absolute;
+    top: 13rem;
+    right: 1rem;
+}
+.notify_content{
+    color: #444;
+    font-size: 1.0625rem;
+    width: 84%;
+    position: absolute;
+    top: 15rem;
+    left: 2.5625rem;
+}
+.detail_content{
+    color: #ff6c00;
+    font-size: 1.105rem;
+    font-weight: bold;
+}
+.detail_content span {
+    display: inline-block;
+    color: #ff6c00;
+    font-size: 0.9375rem;
+    font-weight: bold;
+    margin-bottom: 0.625rem;
+}
+.btn_line {
+    display: inline-block;
+    width: 7.0625rem;
+    height: 1.875rem;
+    background-color: #ffde24;
+    border-radius: 0.3125rem;
+    margin: 0 auto;
+}
+.got_it_btn {
+    display: inline-block;
+    font-size: 1.0rem;
+    font-weight: bold;
+    width: 7.0625rem;
+    height: 1.875rem;
+    line-height: 1.875rem;
+    text-align: center;
+    background: -webkit-linear-gradient(top,#bc8c07,#6d2f00);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/*X学习-数学-目录*/
+.catalog{
+    width: 100%;
+    height: 8.75rem;
+    background: url('../images_version2/muluBG.png') 0 0 no-repeat;
+    background-size: 100% 8.75rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+.chinese_catalog{
+    background: url("../images_version2/chinese-catalog.png") 0 0 no-repeat;
+    background-size: 100% 8.75rem;
+}
+.catalog_pack_up{
+    width: 100%;
+    height: 3.125rem;
+    background: url('../images_version2/mulusqBG.png') 0 0 no-repeat;
+    background-size: 100% 3.125rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: none;
+}
+.chinese_pack_up{
+    background: url('../images_version2/chinese-catalog-sq.png') 0 0 no-repeat;
+    background-size: 100% 3.125rem;
+}
+.mltop_xiaoBiao{
+    display: inline-block;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    line-height: 1.71875rem;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.juchi{
+    width: 100%;
+    height: 0.46875rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.mltop_main{
+    height: 8.71875rem;
+    padding: 0.625rem 0.9375rem 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.mltop_left{
+    float: left;
+}
+.mltop_left img{
+    width: 6.1875rem;
+    margin-right: 1.25rem;
+    vertical-align: top;
+    border: 3px solid #fff;
+}
+.mltop_biao{
+    display: inline-block;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin: 1.25rem 0 0.625rem 0;
+}
+.mltop_xinxi{
+    color: #fff;
+    font-size: 0.8125rem;
+    margin-top: 0.3125rem;
+}
+.catalog_list{
+    position: relative;
+    top: 8.75rem;
+}
+.each_chapter{
+    border: 1px solid #fecf50;
+    border-radius: 0.3125rem;
+    margin-bottom: 0.625rem;
+    background-color: #fff;
+}
+.neir_li{
+    padding: 0 0.9375rem;
+    margin-bottom: 0.625rem;
+    border-top: 1px solid #f1f1f1;
+    position: relative;
+}
+.neir_li:first-child{
+    border: none;
+}
+.neir_lidiv{
+    margin-top: 0.8125rem;
+}
+.neir_pzi{
+    font-size: 1.0rem;
+    font-family: "苹方";
+}
+.neir_tianZ{
+    color: #ff8067;
+    font-weight: bold;
+}
+.neir_ridiv{
+    line-height: 2.0rem;
+}
+.course_xqpsee{
+    display: inline-block;
+    color: #aaa;
+    font-size: 0.8125rem;
+    padding-left: 1.5625rem;
+    background: url('../img/liulan.png') 0 center no-repeat;
+    background-size: 1.21875rem 0.84375rem;
+}
+.course_xqpzan{
+    display: inline-block;
+    float: right;
+    color: #aaa;
+    font-size: 0.8125rem;
+}
+.dianzanImg{
+    display: inline-block;
+    width: 1.125rem;
+    height: 1.0rem;
+    vertical-align: middle;
+}
+.dianzanImg.cur{
+    display: none;
+}
+.shang_new{
+    width: 2.59375rem;
+    height: 2.5625rem;
+    position: absolute;
+    top: -0.8125rem;
+    right: 0;
+}
+
+/*X学习-语文-目录*/
+.chinese_catalog_list{
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.3125rem;
+    margin-bottom: 0.625rem;
+}
+.chinese_catalog_list .each_chapter{
+    border:0;
+}
+.chinese_catalog_list .course_xqpsee{
+    margin: 0;
+}
+.free{
+    display: inline-block;
+    width: 1.875rem;
+    height: 1.0rem;
+    vertical-align: middle;
+}

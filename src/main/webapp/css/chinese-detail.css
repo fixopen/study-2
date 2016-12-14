@@ -1,0 +1,194 @@
+/* @Author:zhaoxq*/
+a {
+    color: #444;
+}
+
+.head-title {
+    color: #fff;
+    width: 100%;
+    height: 3.125rem;
+    line-height: 3.125rem;
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: bold;
+    background: url("../images_version2/biaotiBG.png") 0 0 no-repeat;
+    background-size: 100% 3.125rem;
+    padding: 0 0.625rem;
+    margin: 0 0 0.9375rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.details_show {
+    width: 100%;
+    margin: 0 auto;
+    line-height: 1.875rem;
+}
+
+.youKuang {
+    color: #24cbd1;
+    font-size: 0.9375rem;
+    padding: 0.625rem;
+    border-radius: 0.3125rem;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.youKuang .paragraph {
+    padding-top: 0;
+}
+
+.origin-title {
+    position: relative;
+    top: -1.5rem;
+    left: -1rem;
+    margin: 0;
+    padding: 1.75rem 0 0 4.125rem;
+    width: 100%;
+    height: 4.53125rem;
+    color: #ff9e36;
+    font-size: 1.125rem;
+    font-weight: bold;
+    background: url("../images_version2/yuwenGirl.png") 0 0 no-repeat;
+    -webkit-background-size: 3.0rem 4.53125rem;
+    background-size: 3.0rem 4.53125rem;
+    box-sizing: border-box;
+}
+
+.origin-title span {
+    color: #b1b1b1;
+    font-size: 0.9375rem;
+    font-weight: 100;
+    margin-left: 0.625rem;
+}
+
+.content-font, .paragraph {
+    width: 100%;
+    margin: 0 0 1rem;
+    line-height: 1.875rem;
+    font-size: 0.9375rem;
+    text-indent: 2em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.paragraph {
+    padding-top: 1.25rem;
+}
+
+.content-font span, .paragraph span {
+    display: block;
+    text-align: right;
+}
+
+.muld_images {
+    width: 100%;
+}
+
+/* 闯关练习 */
+.exercise {
+    padding: 0.625rem;
+    margin: 1.0rem auto 0;
+    width: 100%;
+    border-radius: 0.3125rem;
+    line-height: 1.875rem;
+    background-color: #fff;
+    box-sizing: border-box;
+    position: relative;
+    top: -1.25rem;
+}
+
+.break_through {
+    position: relative;
+    top: -1.5rem;
+    left: -1.2rem;
+    margin: 0;
+    padding: 1.6875rem 0 0 4.125rem;
+    height: 4.09375rem;
+    color: #ff9e36;
+    font-size: 1.125rem;
+    font-weight: bold;
+    background: url("../images_version2/yuwenBoy.png") 0 0 no-repeat;
+    background-size: 3.3125rem 4.09375rem;
+    box-sizing: border-box;
+}
+
+.break_through span {
+    color: #b1b1b1;
+    font-size: 0.9375rem;
+    font-weight: 100;
+    margin-left: 0.625rem;
+}
+
+/*X学习-语文-课程详情-非会员弹窗*/
+.member_content {
+    padding: 1.0rem 0;
+    color: #ff6c00;
+    font-size: 1.105rem;
+    font-weight: bold;
+}
+
+/*X学习-语文-课程详情-扣豆提醒*/
+.deduct_bean {
+    color: #ff6c00;
+    font-size: 1.105rem;
+    font-weight: bold;
+}
+
+.no_prompt_check {
+    position: relative;
+    top: 0.125rem;
+    margin: 0 0.3125rem 0 0 !important;
+}
+
+.next_no_prompt {
+    color: #888;
+    font-size: 0.8125rem;
+    margin-top: 0.625rem;
+}
+
+.next_no_prompt label {
+    font-weight: normal;
+}
+
+/*X学习-语文-课程详情-扣豆提醒1*/
+.deduct_math_bean {
+    padding-top: 1.2rem;
+    color: #ff6c00;
+    font-size: 1.105rem;
+    font-weight: bold;
+}
+
+.confirm_btn {
+    display: inline-block;
+    font-size: 1.0rem;
+    font-weight: bold;
+    width: 7.0625rem;
+    height: 1.875rem;
+    line-height: 1.875rem;
+    text-align: center;
+    background-color: #ffde24;
+    border-radius: 0.3125rem;
+}
+
+.confirm_btn span {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background: -webkit-linear-gradient(top, #bc8c07, #6d2f00);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.buy_card {
+    display: inline-block;
+    color: #39b4fa;
+    font-size: 0.8125rem;
+    font-weight: bold;
+    margin-left: 0.625rem;
+    height: 1.875rem;
+    line-height: 1.875rem;
+}
