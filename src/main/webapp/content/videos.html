@@ -87,7 +87,7 @@
             border-top: 1px solid #ea875f;
         }
         .pika-lendar td{
-            font-size: 1.5rem;
+            font-size: 1rem;
         }
         .pika-lendar table{
             margin: 10px 0;
@@ -209,41 +209,33 @@
     </div>
     <div class="wrap">
         <div class="tiao_jian">
-            <div class="tiaoj_TJ01 selectDiv">
-                <div class="tiaoj_1span" id="subjectSelect">
-                    <span>科目</span>
-                    <img class="img_item1 cur" src="../img/xiala.png" alt="">
-                    <img class="img_item2" src="../img/xiala_sq.png" alt="">
+            <div class="tiaoj_TJ">
+                <div class="tiaoj_span" id="subjectSelect">
+                    <span class="filter_item">科目</span>
                 </div>
                 <ul class="xiala_ul" id="subject">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
-            <div class="tiaoj_TJ02 selectDiv">
-                <div class="tiaoj_2span" id="teacherSelect">
-                    <span>老师</span>
-                    <img class="img_item1 cur" src="../img/xiala.png" alt="">
-                    <img class="img_item2" src="../img/xiala_sq.png" alt="">
+            <div class="tiaoj_TJ">
+                <div class="tiaoj_span" id="teacherSelect">
+                    <span class="filter_item">老师</span>
                 </div>
                 <ul class="xiala_ul" id="teacher">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
-            <div class="tiaoj_TJ03 selectDiv" id="gradeeSelect">
-                <div class="tiaoj_3span">
-                    <span>年级</span>
-                    <img class="img_item1 cur" src="../img/xiala.png" alt="">
-                    <img class="img_item2" src="../img/xiala_sq.png" alt="">
+            <div class="tiaoj_TJ" id="gradeeSelect">
+                <div class="tiaoj_span">
+                    <span class="filter_item">年级</span>
                 </div>
                 <ul class="xiala_ul" id="grade">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
-            <div class="tiaoj_TJ04 selectDiv" id="dateSelect">
-                <div class="tiaoj_4span" id="datePicker">
-                    <span>日期</span>
-                    <img class="img_item1 cur" src="../img/xiala.png" alt="">
-                    <img class="img_item2" src="../img/xiala_sq.png" alt="">
+            <div class="tiaoj_TJ" id="dateSelect">
+                <div class="tiaoj_span" id="datePicker">
+                    <span class="filter_item">日期</span>
                 </div>
                 <div class="xiala_ul" id="date"></div>
             </div>
@@ -1188,28 +1180,45 @@
                         })
                     })
 
-                    $(document).on('click', ".selectDiv", function (e) {
-                        if ($(e.currentTarget).children(".xiala_ul").is(":visible")) {
-                            $('.tan').hide();
-                            $('.tan').css("z-index", "9999");
-                            $(".xiala_ul").hide();
-                            $(e.currentTarget).children(".xiala_ul").hide();
-                            $(".img_item1").addClass("cur");
-                            $(".img_item2").removeClass("cur");
-                        } else {
-                            $('.tan').show();
-                            $('.tan').css("z-index", "99");
-                            $(".xiala_ul").hide();
-                            $(e.currentTarget).children(".xiala_ul").show();
-                            $(".img_item1").addClass("cur")
-                            e.currentTarget.querySelector('.img_item1').removeClass("cur");
-                            $(".img_item2").removeClass("cur")
-                            e.currentTarget.querySelector('.img_item2').addClass("cur");
-                        }
-                    });
+                    $(document).on('click', ".tiaoj_span", function (e) {
+                            if($(e.currentTarget).hasClass('cur')){
+                                $(e.currentTarget).removeClass('cur');
+                                $('.tan').hide();
+                                $('.tan').css("z-index", "9999");
+                                $(".xiala_ul").hide();
+                                $(e.currentTarget).siblings(".xiala_ul").hide();
+                            }else{
+                                $(".tiaoj_span").removeClass('cur');
+                                $(e.currentTarget).addClass('cur');
+                                $('.tan').show();
+                                $('.tan').css("z-index", "99");
+                                $(".xiala_ul").hide();
+                                $(e.currentTarget).siblings(".xiala_ul").show();
+                            }
+                        });
+//                        if ($(e.currentTarget).children(".xiala_ul").is(":visible")) {
+//                            $('.tan').hide();
+//                            $('.tan').css("z-index", "9999");
+//                            $(".xiala_ul").hide();
+//                            $(e.currentTarget).children(".xiala_ul").hide();
+//                            $(".img_item1").addClass("cur");
+//                            $(".img_item2").removeClass("cur");
+//                        } else {
+//                            $('.tan').show();
+//                            $('.tan').css("z-index", "99");
+//                            $(".xiala_ul").hide();
+//                            $(e.currentTarget).children(".xiala_ul").show();
+//                            $(".img_item1").addClass("cur")
+//                            e.currentTarget.querySelector('.img_item1').removeClass("cur");
+//                            $(".img_item2").removeClass("cur")
+//                            e.currentTarget.querySelector('.img_item2').addClass("cur");
+//                        }
 
                     $(document).on('click', ".xiala_li", function (e) {
-                        $(e).addClass("cur").siblings().removeClass("cur");
+//                        $(e).addClass("cur").siblings().removeClass("cur");
+                        $(e.currentTarget).addClass('cur').siblings('.xiala_li').removeClass('cur');
+                        $(e.currentTarget).parent(".xiala_ul").hide();
+                        $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
                     });
 
                     $(document).on('click', ".shipin", function (e) {
