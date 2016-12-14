@@ -2,114 +2,100 @@ package com.baremind;
 
 import com.baremind.data.*;
 import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.*;
-
-import static com.baremind.KnowledgePoints.knowledgePointContent;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by fixopen on 2/12/2016.
  */
 @Path("resources")
 public class Resources {
-    private static Object getResource(String type, Long id, String sessionId) {
-        Object result = null;
-        switch (type) {
-            case "knowledgePoint":
-                String s = knowledgePointContent(id, sessionId);
-                result = s;
-                break;
-            case "video":
-                Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
-                result = scheduler.getContentLink();
-                break;
-            case "liveVideo":
-                Scheduler object = JPAEntry.getObject(Scheduler.class, "id", id);
-                result = object.getDirectLink();
-                break;
+    static String join(List<String> ids) {
+        String result = "";
+        boolean isFirst = true;
+        for (String id : ids) {
+            if (!isFirst) {
+                result += ", ";
+            }
+            result += id;
+            isFirst = false;
         }
         return result;
     }
 
-    public static Object getAmount(Long id, String type) {
-        Object result = null;
-        Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
-        switch (type) {
-            case "knowledgePoint":
-                KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
-                result = knowledgePoint.getPrice();
-                break;
-            case "video":
-                    if(scheduler.getContentLink() !=null){
-                        result = scheduler.getPrice();
-                    }
-                break;
-            case "liveVideo":
+    public static <T> List<T> getList(EntityManager em, List<String> ids, Class<T> type) {
+        return getListByColumn(em, "id", ids, type);
+    }
 
-                result = scheduler.getPrice();
-                break;
+    public static <T> List<T> getListByColumn(EntityManager em, String columnName, List<String> ids, Class<T> type) {
+        List<T> result = null;
+        if (!ids.isEmpty()) {
+            String query = "SELECT o FROM " + type.getSimpleName() + " o WHERE o." + columnName + " IN ( " + join(ids) + " )";
+            TypedQuery<T> pq = em.createQuery(query, type);
+            result = pq.getResultList();
         }
         return result;
     }
 
-    public static Object getSubject(Long id, String type) {
-        Object result = null;
-        Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
-        switch (type) {
-            case "knowledgePoint":
-                KnowledgePoint knowledgePoint = JPAEntry.getObject(KnowledgePoint.class, "id", id);
-                //result = knowledgePoint.getSubjectId();
+    public static <T> T findItem(List<T> container, Predicate<T> p) {
+        T result = null;
+        for (T item : container) {
+            if (p.test(item)) {
+                result = item;
                 break;
-            case "video":
-                if(scheduler.getContentLink() !=null){
-                    result = scheduler.getSubjectId();
-                }
-                break;
-            case "liveVideo":
-
-                result = scheduler.getSubjectId();
-                break;
+            }
         }
         return result;
     }
 
+    public static <T> List<T> findItems(List<T> container, Predicate<T> p) {
+        return container.stream().filter(p).collect(Collectors.toList());
+    }
 
+    static Resource getByTypeAndId(String type, Long id) {
+        Resource result = null;
+        switch (type) {
+            case "knowledgePoint":
+                result = JPAEntry.getObject(KnowledgePoint.class, "id", id);
+                break;
+            case "video":
+                result = JPAEntry.getObject(Scheduler.class, "id", id);
+                break;
+            case "liveVideo":
+                result = JPAEntry.getObject(Scheduler.class, "id", id);
+                break;
+        }
+        return result;
 
-    /*@GET
+    }
+
+    @GET
     @Path("{type}/{id}/sale-info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSaleInfo(@CookieParam("sessionId") String sessionId,  @PathParam("type") String type, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Object resource = getResource(type, id, sessionId);
-            result = Response.ok(resource).build();
-        }
-        return result;
-    }*/
-
-    @GET
-    @Path("{id}/{type}/info")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getInfo(@CookieParam("sessionId") String sessionId, @PathParam("type") String type, @PathParam("id") Long id){
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            Object amount = getAmount(id,type);
-            Object subject = getSubject(id,type);
-            Long userId = JPAEntry.getLoginId(sessionId);
-            User user = JPAEntry.getObject(User.class, "id", userId);
-//            List<Card> cards = JPAEntry.getList(Card.class, "userId", userId);
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             Map<String, Object> r = new HashMap<>();
-            r.put("price", amount);
-            r.put("subject", subject);
+            Resource resource = getByTypeAndId(type, id);
+            r.put("price", resource.getAmount());
+            r.put("subjectId", resource.getSubjectId());
+            User user = JPAEntry.getLoginUser(sessionId);
             r.put("user_amount", user.getAmount());
-            List<Card> cards = JPAEntry.getList(Card.class, "userId", userId);
+            List<Card> cards = JPAEntry.getList(Card.class, "userId", user.getId());
             r.put("cards", cards);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             result = Response.ok(gson.toJson(r)).build();
@@ -121,12 +107,12 @@ public class Resources {
     @Path("{type}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId,  @PathParam("type") String type, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             result = Response.status(403).build();
-            Long userId = JPAEntry.getLoginId(sessionId);
+            User user = JPAEntry.getLoginUser(sessionId);
             Map<String, Object> filter = new HashMap<>();
-            filter.put("userId", userId);
+            filter.put("userId", user.getId());
             filter.put("objectType", type);
             filter.put("objectId", id);
             List<Transaction> ts = JPAEntry.getList(Transaction.class, filter);
@@ -157,17 +143,19 @@ public class Resources {
                     }
                 }
 
-                Consumption consumption = new Consumption();
-                consumption.setId(IdGenerator.getNewId());
-                consumption.setUserId(userId);
-                consumption.setObjectId(id);
-                consumption.setObjectType(type);
-                consumption.setTimestamp(new Date());
-                consumption.setTransactionId(findTransaction.getId());
-                JPAEntry.genericPost(consumption);
-
-                Object resource = getResource(type, id,sessionId);
-                result = Response.ok(resource).build();
+                Resource s = getByTypeAndId(type, id);
+                if (s != null) {
+                    Consumption consumption = new Consumption();
+                    consumption.setId(IdGenerator.getNewId());
+                    consumption.setUserId(user.getId());
+                    consumption.setObjectId(id);
+                    consumption.setObjectType(type);
+                    consumption.setTimestamp(new Date());
+                    consumption.setTransactionId(findTransaction.getId());
+                    JPAEntry.genericPost(consumption);
+                    JPAEntry.log(user.getId(), "read", type, id);
+                    result = Response.ok(s.getContent()).build();
+                }
             }
         }
         return result;

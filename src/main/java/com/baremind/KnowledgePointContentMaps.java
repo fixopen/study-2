@@ -1,8 +1,7 @@
 package com.baremind;
 
-import com.baremind.data.*;
+import com.baremind.data.KnowledgePointContentMap;
 import com.baremind.utils.Impl;
-import com.baremind.utils.JPAEntry;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -30,14 +29,7 @@ public class KnowledgePointContentMaps {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, KnowledgePointContentMap entity) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.create(sessionId, entity, null);
-            }
-        }
-        return result;
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
@@ -45,46 +37,32 @@ public class KnowledgePointContentMaps {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, KnowledgePointContentMap newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, KnowledgePointContentMap.class, (exist, knowledgePointContentMap) -> {
-                    Long knowledgePointId = knowledgePointContentMap.getKnowledgePointId();
-                    if (knowledgePointId != null) {
-                        exist.setKnowledgePointId(knowledgePointId);
-                    }
-
-                    String type = knowledgePointContentMap.getObjectType();
-                    if (type != null) {
-                        exist.setObjectType(type);
-                    }
-
-                    Long objectId = knowledgePointContentMap.getObjectId();
-                    if (objectId != null) {
-                        exist.setObjectId(objectId);
-                    }
-
-                    int order = knowledgePointContentMap.getOrder();
-                    if (order != 0) {
-                        exist.setOrder(order);
-                    }
-                }, null);
+        return Impl.updateById(sessionId, id, newData, KnowledgePointContentMap.class, (exist, knowledgePointContentMap) -> {
+            Long knowledgePointId = knowledgePointContentMap.getKnowledgePointId();
+            if (knowledgePointId != null) {
+                exist.setKnowledgePointId(knowledgePointId);
             }
-        }
-        return result;
+
+            String type = knowledgePointContentMap.getObjectType();
+            if (type != null) {
+                exist.setObjectType(type);
+            }
+
+            Long objectId = knowledgePointContentMap.getObjectId();
+            if (objectId != null) {
+                exist.setObjectId(objectId);
+            }
+
+            int order = knowledgePointContentMap.getOrder();
+            if (order != 0) {
+                exist.setOrder(order);
+            }
+        }, null);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, KnowledgePointContentMap.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, KnowledgePointContentMap.class);
     }
 }

@@ -5,11 +5,9 @@ import com.baremind.data.Session;
 import com.baremind.data.User;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Created by fixopen on 18/8/15.
@@ -174,7 +172,7 @@ public class JPAEntry {
         em.close();
     }
 
-    public static long genericDelete(Class type, String name, Object value) {
+    static long genericDelete(Class type, String name, Object value) {
         Map<String, Object> conditions = new HashMap<>();
         conditions.put(name, value);
         return genericDelete(type, conditions);
@@ -193,63 +191,72 @@ public class JPAEntry {
         return result;
     }
 
-    private static Session getSession(String sessionId) {
+    static Session getSession(String sessionId) {
         return getObject(Session.class, "identity", sessionId);
     }
 
-    public static boolean isLogining(Long userId) {
-        final Map<String, Boolean> r = new HashMap<>();
-        r.put("value", false);
-        isLogining(userId, a -> {
-            a.setLastOperationTime(new Date());
-            genericPut(a);
-            r.put("value", true);
-        });
-        return r.get("value");
-    }
+//    public static boolean isLogining(Long userId) {
+//        final Map<String, Boolean> r = new HashMap<>();
+//        r.put("value", false);
+//        isLogining(userId, a -> {
+//            a.setLastOperationTime(new Date());
+//            genericPut(a);
+//            r.put("value", true);
+//        });
+//        return r.get("value");
+//    }
+//
+//    public static void isLogining(Long userId, Consumer<Session> touchFunction) {
+//        User u = getObject(User.class, "id", userId);
+//        if (u != null) {
+//            Session s = getObject(Session.class, "userId", userId);
+//            if (s != null) {
+//                touchFunction.accept(s);
+//            }
+//        }
+//    }
+//
+//    public static boolean isLogining(String sessionId) {
+//        final Map<String, Boolean> r = new HashMap<>();
+//        r.put("value", false);
+//        isLogining(sessionId, a -> {
+//            a.setLastOperationTime(new Date());
+//            genericPut(a);
+//            r.put("value", true);
+//        });
+//        return r.get("value");
+//    }
+//
+//    public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
+//        Session s = getSession(sessionId);
+//        if (s != null) {
+//            touchFunction.accept(s);
+//        }
+//    }
+//
+//    public static Long getLoginId(String sessionId) {
+//        final Map<String, Long> r = new HashMap<>();
+//        r.put("value", 0L);
+//        isLogining(sessionId, a -> {
+//            a.setLastOperationTime(new Date());
+//            genericPut(a);
+//            r.put("value", a.getUserId());
+//        });
+//        return r.get("value");
+//    }
 
-    public static void isLogining(Long userId, Consumer<Session> touchFunction) {
-        User u = getObject(User.class, "id", userId);
-        if (u != null) {
-            Session s = getObject(Session.class, "userId", userId);
-            if (s != null) {
-                touchFunction.accept(s);
-            }
+    public static User getLoginUser(String sessionId) {
+        User user = null;
+        Session session = getSession(sessionId);
+        if (session != null) {
+            //session.setLastOperationTime(new Date());
+            //entityManager.merge(session);
+            user = JPAEntry.getObject(User.class, "id", session.getUserId());
         }
-    }
-
-    public static boolean isLogining(String sessionId) {
-        final Map<String, Boolean> r = new HashMap<>();
-        r.put("value", false);
-        isLogining(sessionId, a -> {
-            a.setLastOperationTime(new Date());
-            genericPut(a);
-            r.put("value", true);
-        });
-        return r.get("value");
-    }
-
-    public static void isLogining(String sessionId, Consumer<Session> touchFunction) {
-        Session s = getSession(sessionId);
-        if (s != null) {
-            touchFunction.accept(s);
-        }
-    }
-
-    public static Long getLoginId(String sessionId) {
-        final Map<String, Long> r = new HashMap<>();
-        r.put("value", 0L);
-        isLogining(sessionId, a -> {
-            a.setLastOperationTime(new Date());
-            genericPut(a);
-            r.put("value", a.getUserId());
-        });
-        return r.get("value");
+        return user;
     }
 
     public static void log(Long userId, String action, String objectType, Long objectId) {
         Logs.insert(userId, objectType, objectId, action);
     }
-
-
 }

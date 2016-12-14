@@ -2,9 +2,7 @@ package com.baremind;
 
 import com.baremind.data.Log;
 import com.baremind.data.Subject;
-import com.baremind.data.User;
 import com.baremind.utils.Impl;
-import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -30,14 +28,7 @@ public class Subjects {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Subject entity) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.create(sessionId, entity, null);
-            }
-        }
-        return result;
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
@@ -45,36 +36,22 @@ public class Subjects {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Subject newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, Subject.class, (exist, subject) -> {
-                    String no = subject.getNo();
-                    if (no != null) {
-                        exist.setNo(no);
-                    }
-                    String name = subject.getName();
-                    if (name != null) {
-                        exist.setName(name);
-                    }
-                }, null);
+        return Impl.updateById(sessionId, id, newData, Subject.class, (exist, subject) -> {
+            String no = subject.getNo();
+            if (no != null) {
+                exist.setNo(no);
             }
-        }
-        return result;
+            String name = subject.getName();
+            if (name != null) {
+                exist.setName(name);
+            }
+        }, null);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, Subject.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, Subject.class);
     }
 
     @POST
@@ -82,8 +59,8 @@ public class Subjects {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response subjectPopup(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             Log log = Logs.insert(Long.parseLong(sessionId), "subject", id, "popup");
             result = Response.ok(new Gson().toJson(log)).build();
         }
@@ -93,9 +70,9 @@ public class Subjects {
     @GET
     @Path("{id}/popup")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPopup(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+    public Response isPopup(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             Long popCount = Logs.getUserStatsCount(Long.parseLong(sessionId), "subject", id, "popup");
             Boolean r = false;
             if (popCount > 0) {

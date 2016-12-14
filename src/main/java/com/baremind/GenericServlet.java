@@ -37,7 +37,7 @@ public class GenericServlet {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public <T extends Entity> Response create(@CookieParam("sessionId") String sessionId, T entity) {
-        return Impl.create(sessionId, entity, null);
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改

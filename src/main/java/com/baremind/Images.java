@@ -1,9 +1,7 @@
 package com.baremind;
 
 import com.baremind.data.Image;
-import com.baremind.data.User;
 import com.baremind.utils.Impl;
-import com.baremind.utils.JPAEntry;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,14 +26,7 @@ public class Images {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Image entity) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.create(sessionId, entity, null);
-            }
-        }
-        return result;
+        return Impl.create(sessionId, entity, null,null);
     }
 
     @PUT //根据id修改
@@ -43,56 +34,42 @@ public class Images {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Image newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, Image.class, (exist, image) -> {
-                    String ext = image.getExt();
-                    if (ext != null) {
-                        exist.setName(ext);
-                    }
-
-                    Integer mainColor = image.getMainColor();
-                    if (mainColor != null) {
-                        exist.getMainColor();
-                    }
-
-                    String mimeType = image.getMimeType();
-                    if (mimeType != null) {
-                        exist.setMimeType(mimeType);
-                    }
-
-                    Long size = image.getSize();
-                    if (size != null) {
-                        exist.setSize(size);
-                    }
-
-                    String storePath = image.getStorePath();
-                    if (storePath != null) {
-                        exist.setStorePath(storePath);
-                    }
-
-                    String name = image.getName();
-                    if (name != null) {
-                        exist.setName(name);
-                    }
-                }, null);
+        return Impl.updateById(sessionId, id, newData, Image.class, (exist, image) -> {
+            String ext = image.getExt();
+            if (ext != null) {
+                exist.setName(ext);
             }
-        }
-        return result;
+
+            Integer mainColor = image.getMainColor();
+            if (mainColor != null) {
+                exist.getMainColor();
+            }
+
+            String mimeType = image.getMimeType();
+            if (mimeType != null) {
+                exist.setMimeType(mimeType);
+            }
+
+            Long size = image.getSize();
+            if (size != null) {
+                exist.setSize(size);
+            }
+
+            String storePath = image.getStorePath();
+            if (storePath != null) {
+                exist.setStorePath(storePath);
+            }
+
+            String name = image.getName();
+            if (name != null) {
+                exist.setName(name);
+            }
+        }, null);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, Image.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, Image.class);
     }
 }

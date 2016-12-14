@@ -1,7 +1,6 @@
 package com.baremind;
 
 import com.baremind.data.Property;
-import com.baremind.data.User;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
@@ -29,14 +28,7 @@ public class Properties {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Property entity) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.create(sessionId, entity, null);
-            }
-        }
-        return result;
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
@@ -44,37 +36,23 @@ public class Properties {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Property newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, Property.class, (exist, property) -> {
-                    String name = property.getName();
-                    if (name != null) {
-                        exist.setName(name);
-                    }
-
-                    String value = property.getValue();
-                    if (value != null) {
-                        exist.setValue(value);
-                    }
-                }, null);
+        return Impl.updateById(sessionId, id, newData, Property.class, (exist, property) -> {
+            String name = property.getName();
+            if (name != null) {
+                exist.setName(name);
             }
-        }
-        return result;
+
+            String value = property.getValue();
+            if (value != null) {
+                exist.setValue(value);
+            }
+        }, null);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, Property.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, Property.class);
     }
 
     @PUT

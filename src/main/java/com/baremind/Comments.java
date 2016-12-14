@@ -30,11 +30,13 @@ public class Comments {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Comment entity) {
-        entity.setUserId(JPAEntry.getLoginId(sessionId));
-        Date now = new Date();
-        entity.setCreateTime(now);
-        entity.setUpdateTime(now);
-        return Impl.create(sessionId, entity, null);
+        return Impl.create(sessionId, entity, (comment) -> {
+            comment.setUserId(JPAEntry.getLoginUser(sessionId).getId());
+            Date now = new Date();
+            comment.setCreateTime(now);
+            comment.setUpdateTime(now);
+            return comment;
+        }, null);
     }
 
     @PUT //根据id修改
@@ -84,8 +86,8 @@ public class Comments {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             Log log = Logs.insert(Long.parseLong(sessionId), "comment", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
@@ -97,8 +99,8 @@ public class Comments {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             Long count = Logs.deleteLike(Long.parseLong(sessionId), "comment", id);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
@@ -109,8 +111,8 @@ public class Comments {
     @Path("{id}/like-count")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             Long likeCount = Logs.getStatsCount("comment", id, "like");
             result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
         }
@@ -121,8 +123,8 @@ public class Comments {
     @Path("{id}/is-self-like")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             Boolean has = Logs.has(Long.parseLong(sessionId), "comment", id, "like");
             result = Response.ok("{\"like\":" + has.toString() + "}").build();
         }

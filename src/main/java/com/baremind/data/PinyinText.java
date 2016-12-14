@@ -23,6 +23,7 @@ public class PinyinText implements com.baremind.data.Entity {
     @Column(name = "content")
     private String content;
 
+
     public Long getId() {
         return id;
     }

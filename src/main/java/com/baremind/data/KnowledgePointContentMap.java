@@ -24,7 +24,6 @@ public class KnowledgePointContentMap implements com.baremind.data.Entity {
     @Column(name = "object_id")
     private Long objectId;
 
-
     @Column(name = "\"order\"")
     private int order;
 
@@ -48,8 +47,8 @@ public class KnowledgePointContentMap implements com.baremind.data.Entity {
         return objectType;
     }
 
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
+    public void setObjectType(String type) {
+        this.objectType = type;
     }
 
     public Long getObjectId() {

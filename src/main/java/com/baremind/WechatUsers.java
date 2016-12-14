@@ -31,7 +31,7 @@ public class WechatUsers {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, WechatUser entity) {
-        return Impl.create(sessionId, entity, null);
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
