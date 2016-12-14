@@ -294,8 +294,8 @@
 <article id="futureNote" style="display: none;" class="futureWrap">
     <div class="waiting">
         <img src="../img/backG.png" alt="">
-        <p class="waitTime">&{startTime}开讲</p>
-        <a class="goBack" href="#"></a>
+        <p class="waitTime"></p>
+        <span class="goBack" data-article="main"></span>
     </div>
 </article>
 
@@ -359,7 +359,7 @@
     <div class="all_uli">
         <div class="all_liplay">
             <div class="futureNoteEntry" class="all_aBtn">
-                <span class="daibo_ceng ceng_yuwen" data-article="futureNote"></span>
+                <span class="daibo_ceng ceng_yuwen" data-article="futureNote" data-id="${id}"></span>
                 <span class="bofang daibo"></span>
                 <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
@@ -469,7 +469,7 @@
     <div class="all_uli">
         <div class="all_liplay shuxue_play">
             <div class="futureNoteEntry" class="all_aBtn">
-                <span class="daibo_ceng" data-article="futureNote"></span>
+                <span class="daibo_ceng" data-article="futureNote" data-id="${id}"></span>
                 <span class="bofang daibo"></span>
                 <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
@@ -941,7 +941,7 @@
                                         $('#chineseZero').removeClass('active')
                                         $('#one').addClass('active')
                                         $('#zero').removeClass('active')
-                                    }else{
+                                    } else {
                                         $('#chineseZero').addClass('active')
                                         $('#mathOne').removeClass('active')
                                         $('#zero').addClass('active')
@@ -1045,14 +1045,24 @@
                         break
                 }
             },
-
+            findById: function (id) {
+                var result = null;
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].futures.length; ++j) {
+                        if (subjects[i].futures[j].id == id) {
+                            result = subjects[i].futures[j]
+                            break
+                        }
+                    }
+                    if (result) {
+                        break
+                    }
+                }
+                return result
+            },
             schedulerEntry: document.getElementById('schedulerEntry'),
             passedEntry: document.getElementById('passedEntry'),
             futureNoteEntry: document.getElementsByClassName('futureNoteEntry'),
-//            keywords: document.getElementById('keywords'),
-//            search: function () {
-//                //filter the playing and future data via the filter element state
-//            }
         },
 
         passed: {
@@ -1179,17 +1189,17 @@
                         })
                     })
 
-                    $(document).on('click', ".selectDiv", function (index,e) {
+                    $(document).on('click', ".selectDiv", function (index, e) {
                         if ($(e).children(".xiala_ul").is(":visible")) {
                             $('.tan').hide();
-                            $('.tan').css("z-index","9999");
+                            $('.tan').css("z-index", "9999");
                             $(".xiala_ul").hide();
                             $(".xiala_ul").eq(index).hide();
                             $(".img_item1").addClass("cur");
                             $(".img_item2").removeClass("cur");
-                        }else{
+                        } else {
                             $('.tan').show();
-                            $('.tan').css("z-index","99");
+                            $('.tan').css("z-index", "99");
                             $(".xiala_ul").hide();
                             $(".xiala_ul").eq(index).show();
                             $(".img_item1").addClass("cur").eq(index).removeClass("cur");
@@ -1333,7 +1343,7 @@
                 var picker = new Pikaday({
                     field: document.getElementById('datePicker'),
                     format: 'D MMM YYYY',
-                    onSelect: function() {
+                    onSelect: function () {
                         console.log(this.getMoment().format('Do MMMM YYYY'));
                     }
                 });
@@ -1390,7 +1400,10 @@
 
         futureNote: {
             init: function () {
-            }
+                var t = state.main.findById(state.futureNote.id).year +'-'+state.main.findById(state.futureNote.id).month+'-'+state.main.findById(state.futureNote.id).day+' '+state.main.findById(state.futureNote.id).hour+':'+state.main.findById(state.futureNote.id).minute+':'+state.main.findById(state.futureNote.id).second+'开讲';
+                var e = document.getElementsByClassName('waitTime')
+                e[0].innerHTML = t
+            },
         },
 
         videoDetail: {
@@ -1584,9 +1597,7 @@
 
                     state.scheduler.isInit = true
                 }
-            }
-
-            ,
+            },
             now: new Date(),
             year: null,
             week: null,
