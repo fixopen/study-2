@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 @Path("users")
 public class Users {
@@ -138,6 +140,55 @@ public class Users {
         return Impl.updateById(sessionId, id, newData, User.class, new Updater(), null);
     }
 
+    public static class updatePassword{
+        public String yearpassword;
+        public String oldpassword;
+
+
+        public String getYearpassword() {
+            return yearpassword;
+        }
+
+        public void setYearpassword(String yearpassword) {
+            this.yearpassword = yearpassword;
+        }
+
+        public String getOldpassword() {
+            return oldpassword;
+        }
+
+        public void setOldpassword(String oldpassword) {
+            this.oldpassword = oldpassword;
+        }
+
+    }
+
+    @PUT //设置密码
+    @Path("updatePassword")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateBy(@CookieParam("sessionId") String sessionId,  updatePassword password) {
+        Response result = Response.status(401).build();
+        if (JPAEntry.isLogining(sessionId)) {
+            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+            String oldpassword = password.getOldpassword();
+            String yearpassword = password.getYearpassword();
+            String adminPassword = admin.getPassword();
+            if (adminPassword == null && oldpassword == null || adminPassword.equals(oldpassword)) {
+                if(yearpassword.length() >=6 && yearpassword.length() <=16){
+                    admin.setPassword(yearpassword);
+                    JPAEntry.genericPut(admin);
+                    result = Response.ok(admin).build();
+                }else {
+                    result = Response.status(405).build();
+                }
+            }else {
+                result = Response.status(404).build();
+            }
+        }
+        return result;
+    }
+
     @PUT //根据token修改
     @Path("self")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -195,6 +246,15 @@ public class Users {
         private String password;
         private String phoneNumber;
         private String validCode;
+        private String wechatUserId;
+
+        public String getWechatUserId() {
+            return wechatUserId;
+        }
+
+        public void setWechatUserId(String wechatUserId) {
+            this.wechatUserId = wechatUserId;
+        }
 
         String getCardNo() {
             return cardNo;
@@ -324,6 +384,47 @@ public class Users {
     }
 
     @POST
+    @Path("simplify-card")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response simplifyCard(@CookieParam("sessionId") String sessionId,ActiveCard ac) {
+        Response result = Response.status(412).build();
+        User user = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+        Date now = new Date();
+        if(user.getTelephone() != null){
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("no", ac.getCardNo());
+            condition.put("password", ac.getPassword());
+            List<Card> cs = JPAEntry.getList(Card.class, condition);
+            switch (cs.size()) {
+                case 0:
+                    result = Response.status(404).build();
+                    break;
+                case 1:
+                    Card c = cs.get(0);
+                    if (c.getActiveTime() == null) {
+                        c.setUserId(user.getId());
+                        c.setActiveTime(now);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(now);
+                        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+                        Date oneYearAfter = cal.getTime();
+                        c.setEndTime(oneYearAfter);
+                        c.setAmount(5880L);
+                        if (ac.getCardNo().startsWith("03")) {
+                            c.setAmount(1680L);
+                        }
+                        JPAEntry.genericPut(c);
+                        result = Response.ok(c).build();
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+        return  result;
+    }
+    @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -358,17 +459,26 @@ public class Users {
                                 cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
                                 Date oneYearAfter = cal.getTime();
                                 c.setEndTime(oneYearAfter);
-                                c.setAmount(588L);
+                                c.setAmount(5880L);
+                                if (ac.getCardNo().startsWith("03")) {
+                                    c.setAmount(1680L);
+                                }
                                 User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                                if (user == null) {
+                                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", ac.getWechatUserId());
+                                if (user == null && wechatUser != null) {
                                     user = new User();
+
                                     user.setId(IdGenerator.getNewId());
                                     user.setTelephone(ac.getPhoneNumber());
                                     user.setLoginName(ac.getPhoneNumber());
                                     user.setCreateTime(now);
                                     user.setUpdateTime(now);
-                                    user.setName("");
-                                    user.setSex(0);
+                                    user.setName(wechatUser.getNickname());
+                                    user.setSex(wechatUser.getSex());
+                                    user.setAmount(0l);
+                                    user.setHead(wechatUser.getHead());
+                                    wechatUser.setUserId(user.getId());
+                                    JPAEntry.genericPut(wechatUser);
                                     JPAEntry.genericPost(user);
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);
@@ -614,10 +724,14 @@ public class Users {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             result = Response.status(404).build();
-            List<User> teachers = JPAEntry.getList(User.class, "id", "IN (SELECT s.teacherId FROM Scheduler s)");
+            EntityManager em = JPAEntry.getEntityManager();
+            String contentCountQuery = "SELECT s.teacherId FROM Scheduler s";
+            TypedQuery<Long> cq = em.createQuery(contentCountQuery, Long.TYPE);
+            final List<Long> teacherIds = cq.getResultList();
+            final List<String> teacherIdsString = teacherIds.stream().map(Object::toString).collect(Collectors.toList());
+            List<User> teachers = Resources.getList(em, "id", teacherIdsString, User.class);
             if (!teachers.isEmpty()) {
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                result = Response.ok(gson.toJson(teachers)).build();
+                result = Impl.finalResult(teachers, null, null);
             }
         }
         return result;
@@ -635,4 +749,49 @@ public class Users {
         }
         return result;
     }
+
+
+    /*@POST
+    @Path("phone/Verification")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getv(ActiveCard activeCard) {
+        Response result = result = Response.status(404).build();
+        Map<String, Object> validationCodeConditions = new HashMap<>();
+        validationCodeConditions.put("phoneNumber", activeCard.getPhoneNumber());
+        validationCodeConditions.put("validCode", activeCard.getValidCode());
+        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+        Map<String, Object> validationCode = new HashMap<>();
+        validationCode.put("telephone", activeCard.getPhoneNumber());
+        if (!validationCodes.isEmpty()) {
+            Date now = new Date();
+            Date sendTime = validationCodes.get(0).getTimestamp();
+            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                List<User> users = JPAEntry.getList(User.class, validationCode);
+                if (!users.isEmpty()) {
+                    Session session = PublicAccounts.putSession(now, users.get(0).getId());
+                    result = Response.ok()
+                            .cookie(new NewCookie("userId", users.get(0).getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .build();
+                } else {
+                    User user = new User();
+                    user.setId(IdGenerator.getNewId());
+                    user.setCreateTime(now);
+                    user.setTelephone(activeCard.getPhoneNumber());
+                    user.setUpdateTime(now);
+                    user.setName("");
+                    user.setSex(0l);
+                    JPAEntry.genericPost(user);
+                    Session session = PublicAccounts.putSession(now, user.getId());
+                    result = Response.ok()
+                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                            .build();
+                }
+            } else {
+                result = Response.status(405).build();
+            }
+        }
+        return result;
+    }*/
 }

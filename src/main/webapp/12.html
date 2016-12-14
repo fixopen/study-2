@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="myUser/css/common.css">
+    <link rel="stylesheet" href="myUser/css/global.css">
+    <link rel="stylesheet" href="myUser/css/Popup.css">
+    <link rel="stylesheet" href="myUser/css/user.css">
+    <script src="jquery/jquery-3.1.1.min.js"></script>
+
+</head>
+<body>
+<!--<article id="cards" >
+    <div class="wrap">
+        <div class="headercard">
+            <div class="headercard_l">
+                <span class="l_one">总持卡数</span><br>
+                <span class="l_two"><i class="l_twoshu" id="total"></i>张</span><br>
+                <a class="l_three" href="javascript:void(0)">增加新卡</a>
+            </div>
+            <div class="headercard_r">
+                <span class="r_one">金豆不足</span><br>
+                <span class="r_two"><i class="r_twoshu" id="insufficient"></i>张</span><br>
+                <a class="r_three" href="javascript:void(0)">充 值</a>
+            </div>
+        </div>
+        <div class="tab_div">
+            <ul class="tab_switch2">
+                <li class="tab_swli2 cur" id="clickchinese">语文
+                    <span class="tab_swlispan">(<i id="chinese"></i>)</span>
+
+                <li class="tab_swli2" id="clickmath">数学
+                    <span class="tab_swlispan">(<i id="mathematics"></i>)</span>
+
+            </ul>
+        </div>
+        <div class="mine_table" style="display: none" id="nochinese">
+            <div class="table_NOul">
+                <p class="noul_p1">
+                    <img src="myUser/image/facejk.png" height="24" width="76"/>
+                    没有学习卡哦！
+                </p>
+                <p class="noul_p2">
+                    马上购买开始学习吧！<br>
+                    在线购买享受<span class="noulp_sapn">7折</span>优惠
+                </p>
+                <a class="noul_p3" href="javascript:void(0)">购 买</a>
+            </div>
+        </div>
+        <div id="chinesecards"></div>
+        <div class="mine_table" style="display: none" id="nomathematics">
+            <div class="table_NOul">
+                <p class="noul_p1">
+                    <img src="myUser/image/facejk.png" height="24" width="76"/>
+                    没有学习卡哦！
+                </p>
+                <p class="noul_p2">
+                    马上购买开始学习吧！<br>
+                    在线购买享受<span class="noulp_sapn">7折</span>优惠
+                </p>
+                <a class="noul_p3" href="javascript:void(0)">购 买</a>
+            </div>
+        </div>
+        <div id="mathecards"></div>
+    </div>
+</article>
+<template id="card-template">
+    <div class="mine_zilo">
+        <div class="mine_table cur">
+            <ul class="table_ul">
+                <li class="table_ulLi tLi_diff">
+                    卡号 <span>${no}</span>
+                </li>
+                <li class="table_ulLi">
+                    <span class="tLi_span">激活时间</span>
+                    <span>${activeTime}</span>
+                </li>
+                <li class="table_ulLi">
+                    <span class="tLi_span">剩余金豆</span>
+                    <span>${amount}</span>
+                </li>
+                <li class="table_ulLi">
+                    <span class="tLi_span">有效期</span>
+                    <span>${endTime}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>-->
+<div class="tan" id="cardtan"></div>
+<div class="window1"><!-- 弹窗 -->
+    <button class="windowClose" style="cursor:pointer" id="close"></button>
+    <div class="win_neir">
+        <p class="neir_ptxt">已成功填加！</p>
+        <p class="neir_pBtn">
+            <button class="p_btn" style="cursor:pointer" id="ok">知道了</button>
+        </p>
+    </div>
+</div>
+<div class="wrap">
+    <div class="mine_zilo">
+        <ul class="mine_zUl">
+            <li class="acardmine_zuli">
+                <span class="mine_leftsp">卡号</span>
+                <input class="mine_rightip" id="cardNumber" type="number" placeholder="请输入卡号">
+            </li>
+            <li class="acardmine_zuli">
+                <span class="mine_leftsp">密码</span>
+                <input class="mine_rightip" id="cardPassword" type="password" placeholder="请输入密码">
+            </li>
+        </ul>
+        <button class="bottom_btn" style="cursor:pointer" id="createCard">填  加</button>
+    </div>
+</div>
+<script>
+    $(".bottom_btn").each(function(index, el) {
+        $(this).tap(function() {
+            $('.tan').show();
+            $('.window1').eq(0).show();
+        });
+    });
+    $(".p_btn").each(function(index, el) {
+        $(this).tap(function() {
+            $('.tan').hide();
+            $('.window1').eq(0).hide();
+        });
+    });
+    // 弹窗关闭按钮
+    $(".windowClose").each(function(index, el) {
+        $(this).tap(function() {
+            $('.tan').hide();
+            $('.window1').eq(0).hide();
+        });
+    });
+//document.getElementById("cardtan").style.display="block"
+  /*  var cards = [];
+    $.ajax({
+        type: 'get',
+        url: '/api/users/self/cards',
+        dataType: 'json',
+        success: function (cs) {
+            cards = cs
+            cards.chinese = []
+            cards.mathematics = []
+            cards.insufficient = []
+            for (var i = 0; i < cs.length; ++i) {
+                cards = cs
+                for (var i = 0; i < cs.length; ++i) {
+                    if (cs[i].subjectId == 1) {
+                        cards.chinese.push(cs[i])
+                    } else if (cs[i].subjectId == 2) {
+                        cards.mathematics.push(cs[i])
+                    } else if (cs[i].amount < 150) {
+                        cards.insufficient.push(cs[i])
+                    }
+                }
+
+            }
+
+            if (cs) {
+                cards.count = cs.length
+            } else {
+                cards = []
+                cards.count = 0
+            }
+            if (cards.insufficient) {
+                cards.insufficient.count = cards.insufficient.length
+            } else {
+                cards.insufficient = []
+                cards.insufficient.count = 0
+            }
+            if (cards.chinese) {
+                cards.chinese.count = cards.chinese.length
+            }
+            else {
+                cards.chinese = []
+                cards.chinese.count = 0
+            }
+            if (cards.mathematics) {
+                cards.mathematics.count = cards.mathematics.length
+            } else {
+                cards.mathematics = []
+                cards.mathematics.count = 0
+            }
+            document.getElementById("total").innerHTML = cards.count
+            document.getElementById("insufficient").innerHTML = cards.insufficient.count
+            document.getElementById("chinese").innerHTML = cards.chinese.count
+            document.getElementById("mathematics").innerHTML = cards.mathematics.count
+            if (cards.chinese.count != 0) {
+                proc({
+                    containerId: 'chinesecards',
+                    data:cards.chinese,
+                    templateId: 'card-template'
+                })
+            } else {
+                document.getElementById("nochinese").style.display = "block"
+            }
+        }
+
+
+
+
+    })
+    var clickchinese = document.getElementById("clickchinese");
+    clickchinese.addEventListener('click',function (e) {
+        document.getElementById("mathecards").style.display="none"
+        document.getElementById("nomathematics").style.display = "none"
+        if (cards.chinese.count != 0) {
+            proc({
+                containerId: 'chinesecards',
+                data: cards.chinese,
+                templateId: 'card-template'
+            })
+        } else {
+            document.getElementById("nochinese").style.display = "block"
+        }
+    })
+    //mathecards chinesecards
+    var clickmath = document.getElementById("clickmath");
+    clickmath.addEventListener('click',function (e) {
+        document.getElementById("chinesecards").style.display="none"
+        document.getElementById("nochinese").style.display = "none"
+        if (cards.mathematics.count != 0) {
+            proc({
+                containerId: 'mathecards',
+                data: cards.mathematics,
+                templateId: 'card-template'
+            })
+        } else {
+            document.getElementById("nomathematics").style.display = "block"
+        }
+    })*/
+</script>
+</body>
+</html>

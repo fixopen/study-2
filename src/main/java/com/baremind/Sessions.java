@@ -5,7 +5,9 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -41,7 +43,16 @@ public class Sessions {
         private String key;
         private String deviceType;
         private String deviceNo;
-        private String openId;
+        private String wechatUserId;
+        private String code;
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
 
         public String getType() {
             return type;
@@ -83,12 +94,12 @@ public class Sessions {
             this.deviceNo = deviceNo;
         }
 
-        String getOpenId() {
-            return openId;
+        public String getWechatUserId() {
+            return wechatUserId;
         }
 
-        public void setOpenId(String openId) {
-            this.openId = openId;
+        public void setWechatUserId(String wechatUserId) {
+            this.wechatUserId = wechatUserId;
         }
     }
 
@@ -106,11 +117,13 @@ public class Sessions {
         return user;
     }
 
-    private Response loginImpl(LoginInfo loginInfo) {
+    private Response loginImpl(LoginInfo loginInfo,String ip) {
         Response result = Response.status(404).build();
         Date now = new Date();
         User user = null;
         Map<String, Object> conditions = new HashMap<>();
+        Map<String, Object> filter = new HashMap<>();
+        User telephone = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
         switch (loginInfo.getType()) {
             case "validationCode":
                 conditions.put("phoneNumber", loginInfo.getInfo());
@@ -118,26 +131,55 @@ public class Sessions {
                 List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, conditions);
 
                 if (!validationCodes.isEmpty()) {
-                    result = Response.status(405).build();
+
                     Date sendTime = validationCodes.get(0).getTimestamp();
                     if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
                         user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
                         if (user == null) {
                             //create user via openId
-                            WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
+                            WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", loginInfo.getWechatUserId());
                             user = insertUser(now, loginInfo.getInfo(), wechatUser);
                         }
+                    }else{
+                        return result = Response.status(405).build();
                     }
                 }
                 break;
             case "telephone":
-                conditions.put("telephone", loginInfo.getInfo());
-                conditions.put("password", loginInfo.getKey());
-                user = JPAEntry.getObject(User.class, conditions);
-                if (user == null) {
-                    //create user via openId
-                    WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
-                    user = insertUser(now, loginInfo.getInfo(), wechatUser);
+                if(telephone != null){
+                    if(telephone.getLogonCount() <= 5){
+                        conditions.put("telephone", loginInfo.getInfo());
+                        conditions.put("password", loginInfo.getKey());
+                        user = JPAEntry.getObject(User.class, conditions);
+
+                        if (user == null) {
+                            //create user via openId
+                           /* WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
+                            user = insertUser(now, loginInfo.getInfo(), wechatUser);*/
+                            telephone.setLogonCount(telephone.getLogonCount() + 1l);
+                            JPAEntry.genericPut(telephone);
+                            return  result;//用户名或密码错误
+                        }
+                    }else
+                        if(telephone.getLogonCount() > 5 && loginInfo.getCode() == "") {
+                        return  result = Response.status(410).build();//登录次数超过五次
+                    }else
+                        if(telephone.getLogonCount() > 5 && loginInfo.getCode() != "") {
+                            conditions.put("telephone", loginInfo.getInfo());
+                            conditions.put("password", loginInfo.getKey());
+                            user = JPAEntry.getObject(User.class, conditions);
+                            filter.put("phoneNumber", ip);
+                            filter.put("validCode", loginInfo.getCode());
+                            ValidationCode validationCode = JPAEntry.getObject(ValidationCode.class, filter);
+                            if (user == null) {
+                                return result;//用户名或密码错误
+                            }
+                            if (validationCode == null) {
+                                return result = Response.status(407).build();//验证码错误
+                            }
+                        }
+                }else{
+                     return  result = Response.status(412).build();//手机没有激活
                 }
                 break;
             case "name":
@@ -146,42 +188,53 @@ public class Sessions {
                 user = JPAEntry.getObject(User.class, conditions);
                 break;
         }
+        if(telephone !=null) {
+            telephone.setLogonCount(0l);
+            JPAEntry.genericPut(telephone);
+            Session session = resultCook(user.getId(), loginInfo.getDeviceType(), loginInfo.getDeviceNo(), now);
+            result =  Response.ok(session)
+                    .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                    .build();
+        }else{
+            result = Response.status(406).build();//手机号或密码错误
+        }
+        return result;
+    }
+
+    static Session resultCook(Long userId, String deviceType, String deviceNo, Date now){
+        Session session = null;
+        User user = JPAEntry.getObject(User.class, "id", userId);
         if (user != null) {
             Map<String, Object> deviceConditions = new HashMap<>();
-            conditions.put("platform", loginInfo.getDeviceType());
-            conditions.put("platformIdentity", loginInfo.getDeviceNo());
+            deviceConditions.put("platform", deviceType);
+            deviceConditions.put("platformIdentity", deviceNo);
             Device device = JPAEntry.getObject(Device.class, deviceConditions);
             if (device == null) {
                 device = new Device();
                 device.setId(IdGenerator.getNewId());
-                device.setPlatform(loginInfo.getDeviceType());
-                device.setPlatformIdentity(loginInfo.getDeviceNo());
+                device.setPlatform(deviceType);
+                device.setPlatformIdentity(deviceNo);
                 device.setPlatformNotificationToken("");
                 device.setUserId(user.getId());
                 JPAEntry.genericPost(device);
             }
-            Session session = PublicAccounts.putSession(now, user.getId(), device.getId());
-            result = Response.ok(session)
-                    .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                    .build();
+            session = PublicAccounts.putSession(now, user.getId(), device.getId());
         }
-
-        return result;
+        return session;
     }
-
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response recreate(LoginInfo loginInfo) {
-        return loginImpl(loginInfo);
+    public Response recreate(@Context HttpServletRequest request,LoginInfo loginInfo) {
+        return loginImpl(loginInfo,request.getRemoteAddr());
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(LoginInfo loginInfo) {
-        return loginImpl(loginInfo);
+        return loginImpl(loginInfo,null);
     }
 
     private static class Updater implements BiConsumer<Session, Session> {

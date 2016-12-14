@@ -38,10 +38,10 @@ public class Resources {
     }
 
     public static <T> List<T> getList(EntityManager em, List<String> ids, Class<T> type) {
-        return getListByColumn(em, "id", ids, type);
+        return getList(em, "id", ids, type);
     }
 
-    public static <T> List<T> getListByColumn(EntityManager em, String columnName, List<String> ids, Class<T> type) {
+    public static <T> List<T> getList(EntityManager em, String columnName, List<String> ids, Class<T> type) {
         List<T> result = null;
         if (!ids.isEmpty()) {
             String query = "SELECT o FROM " + type.getSimpleName() + " o WHERE o." + columnName + " IN ( " + join(ids) + " )";
