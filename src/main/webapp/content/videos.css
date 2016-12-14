@@ -683,16 +683,14 @@ li.active > a.tab_toggle {
 }
 .live-details-videoPlay{
     width: 100%;
-    height: 10.9375rem;
+    height: 17.375rem;
     position: relative;
 }
 .live-details-videoPlay video{
     width: 100%;
-    height: 10.9375rem;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2;
 }
 .live-details-label{
     display: inline-block;

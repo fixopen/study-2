@@ -2,24 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>小雨知时</title>
+    <title>小雨知时2</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
     <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="myUser/Popup.css">
+    <link rel="stylesheet" href="myUser/global.css">
+
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/volume.css">
+    <!--<link rel="stylesheet" href="css/volume.css">-->
     <link rel="stylesheet" href="css/content_version2.css">
-    <link rel="stylesheet" href="css/knowledgepoints.css">
+    <!--<link rel="stylesheet" href="css/knowledgepoints.css">-->
     <link rel="stylesheet" href="css/knowledgepoints-content.css">
     <link rel="stylesheet" href="css/math-detail.css">
     <link rel="stylesheet" href="css/chinese-detail.css">
     <link rel="stylesheet" href="css/english-detail.css">
+    <link rel="stylesheet" href="css/catalog.css">
 
 </head>
 <body>
@@ -110,7 +114,7 @@
 <template id="volumes-new-template">
     <li>
         <a class="textbook" href="javascript:void(0)">
-            <span class="textbook_num" id="newCount">1</span>
+            <span class="textbook_num">${newCount}</span>
             <img src="${bookCover}" data-id="${id}" data-name="${title}" data-article="knowledgePoints" alt="">
         </a>
     </li>
@@ -146,7 +150,7 @@
 </template>
 <!------------------------------knowledgepoints----------------------------->
 <template id="math-catalog"><!--数学-目录-->
-    <div class="wrap">
+    <div class="catalog_wrap">
         <div class="catalog">
             <div class="mltop_main" id="book_infor"></div>
             <img class="juchi" src="images_version2/juchi.png" alt="">
@@ -155,16 +159,17 @@
             <div class="mltop_main" id="pack_up_title"></div>
             <img class="juchi" src="images_version2/juchi.png" alt="">
         </div>
-        <div class="rain-main catalog_list">
-            <div>
-                <ul class="each_chapter" id="chapter_section"></ul>
-                <!--<ul class="each_chapter" id="chapter_section2"></ul>-->
-            </div>
+        <div class="rain-main catalog_list" id="chapter-section">
         </div>
     </div>
 </template>
+<template id="chapter">
+    <div>
+        <ul class="each_chapter" data-identity="${index}"></ul>
+    </div>
+</template>
 <template id="chinese-catalog"><!--语文-目录-->
-    <div class="wrap">
+    <div class="catalog_wrap">
         <div class="catalog chinese_catalog">
             <div class="mltop_main" id="book_infor"></div>
             <img class="juchi" src="images_version2/juchi.png" alt="">
@@ -175,7 +180,7 @@
         </div>
         <div class="rain-main catalog_list">
             <div class="chinese_catalog_list">
-                <ul class="each_chapter" id="chapter_section"></ul>
+                <ul class="each_chapter" id="chapter-section"></ul>
             </div>
         </div>
     </div>
@@ -201,6 +206,38 @@
 <template id="title-pack-up-template">
     <p class="mltop_xiaoBiao">${title}</p>
 </template>
+<template id="chapter-free-old-like-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
+            <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-free-old-unlike-template">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
+            <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
 <template id="chapter-new-like-template">
     <li class="neir_li">
         <img class="shang_new" src="images_version2/muluNew.png" alt="">
@@ -210,7 +247,7 @@
         <div class="neir_ridiv">
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -241,7 +278,7 @@
         <div class="neir_ridiv">
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -272,7 +309,7 @@
         <div class="neir_ridiv">
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -303,8 +340,7 @@
         <div class="neir_ridiv">
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
-                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -320,7 +356,6 @@
             <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
             <a href="javascript:void(0)" class="course_xqpzan">
                 <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
-                <img class="dianzanImg cur" src="images_version2/zanover.png" alt="">
                 赞
                 <span>${likeCount}</span>
             </a>
@@ -340,7 +375,7 @@
                 </section>
             </div>
             <section class="content-bg" id="content"></section>
-            <section class="content-bg" id="video"></section>
+            <section class="content-bg" id="video">视频</section>
 
             <section class="exercise">
                 <h3 class="break_through">闯关练习<span>CHAUNG GUAN LIAN XI</span></h3>
@@ -811,18 +846,683 @@
     </div>
 </template>
 
+<!----------------------------------------------------------------- 弹窗开始 -->
+<article id="selectCard" style="display: none">
 
-<!--<dialog>成为会员才可继续观看视频哟！成为会员才可继续观看视频哟！</dialog>-->
-<!--<dialog>您的卡片已过期，请重新购买！</dialog>-->
-<!--<dialog>您的卡片只可观看***，<br>观看其他内容请购买相应卡片！</dialog>-->
-<!--<dialog>还剩24雨点不够观看啦，请充值！</dialog>-->
-<!--<dialog>雨点所剩不多，请尽快充值哦！</dialog>-->
+</article>
+<article id="selectOneCard" style="display: none">
+
+</article>
+<template id="selectCard-template">
+    <div class="wrap">
+        <ul class="mine_baodiv">
+            <li>
+                <a class="mine_zuli" href="#" data-id="${id}">
+                    <img class="mine_img1" src="${image}" alt="">
+                    <div class="mine_leftdiv">
+                        <span class="mine_leftsp">${subjectId}</span>
+                        <span class="mine_leftsp">${no}</span>
+                        <br>
+                        <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
+                    </div>
+                    <img src="" id="${id}" src="" class="mine_img2"/>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</template>
+<template id="selectOneCard-template">
+    <div class="wrap">
+        <ul class="mine_baodiv">
+            <li>
+                <a class="mine_zuli" href="javascript:void(0)">
+                    <img class="mine_img1" src="myUser/image/keBiao.png" alt="">
+                    <div class="mine_leftdiv">
+                        <span class="mine_leftsp">${subjectId}</span>
+                        <span class="mine_leftsp">${no}</span>
+                        <br>
+                        <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul class="mine_baodiv">
+            <li class="mine_liname">
+                <div class="mine_leftdiv">
+                    <p class="mine_zhaunc">转出金豆数量</p>
+                    <span class="mine_leftsp">金豆：</span>
+                    <input class="mine_zhauncIn" type="text" id="Number">
+                </div>
+            </li>
+        </ul>
+        <p class="turnOut_note">
+            最多可转出到卡
+            <span class="note_number" id="tishi"></span>
+        </p>
+        <div class="zhaunc_btn">
+            <a class="zhaunc_a" href="#" id="submitTransfer">确认转出</a>
+
+        </div>
+    </div>
+</template>
+<div id="1" style="display: none">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close1"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p11">直播需要150个金豆</p>
+            <p class="neir_ptxt" id="p21">确认要扣语文卡150个金豆吗？</p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p31"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a11">确认</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a21">充值</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div id="2" style="display: none">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close2"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p12">直播需要150个金豆</p>
+            <p class="neir_ptxt" id="p22">您的语文卡余额不足</p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p32"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a12">充值</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a22">转入</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div id="3" style="display: none">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close3"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p13">您没有语文卡</p>
+            <p class="neir_ptxt" id="p23">确认要扣除数学卡150个金豆</p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p33"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a13">确认</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a23">充值</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div id="4" style="display: none">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close4"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p14">您没有语文卡</p>
+            <p class="neir_ptxt" id="p24">您的数学卡余额不足</p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p34"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a14">充值</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a24">转入</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="wrap" id="c" style="display: none">
+    <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+    <a class="mine_zuli" href="javascript:void(0)" id="z">
+        <img src="myUser/image/keBiao.png" alt="">
+        <div class="mine_leftdiv">
+            <span class="mine_leftsp" id="name"></span>
+            <!-- <span class="mine_leftsp">5487965452</span> -->
+            <br>
+            <span class="uli_span">余<i class="uli_spani" id="usermoney"></i>金豆</span>
+        </div>
+    </a>
+    <div class="charge-main">
+        <!-- charge-area -->
+        <p class="main_ptxt">1元=10金豆</p>
+        <ul class="rain-drop-ul">
+            <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+        </ul>
+        <div class="srinput_div">
+            <span class="srinput_span">其他金额：</span>
+            <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+        </div>
+        <div class="count_div">小计：
+            <span>￥<i class="count_spani1">15</i></span>
+        </div>
+    </div>
+    <div class="count_div">合计：
+        <span>￥<i class="count_spani2">10.50</i></span>
+        <br>
+        <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
+    </div>
+    <!-- pay-btn -->
+    <div class="pay_btn">
+        <div class="wechat-btn">
+            <span class="wechat-span"></span>
+            微信支付
+        </div>
+        <div class="alipay-btn">
+            <span class="alipay-span"></span>
+            支付宝支付
+        </div>
+    </div>
+</div>
+
+<!-------------------------------------------------------------------------- 弹窗结束-->
 
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/bootstrap/bootstrap.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
+
+
 <script>
+    //    -----------------------------------------------------------弹窗js开始
+    var sale_info;
+    var cards;
+    var userAmount;
+    var price;
+    var d = document;
+    var biao;
+    var ji;
+    var transfer;
+    var count = 1;
+    var object_Id;
+    var object_Types;
+    var card;
+    var ke;
+    xiao(2, "video")//点击知识点后
+    //第一步得到自己账户多少钱，自己的所有的卡，资源价格
+    function xiao(objectId, objectType) {
+        $.ajax({
+            type: "get",
+            url: "/api/resources/" + objectId + "/" + objectType + "/info",
+            dataType: "json",
+            success: function (e) {
+                sale_info = e;
+                cards = e.cards;
+                userAmount = e.user_amount;
+                price = e.price;
+                ke = e.subject;
+                tan(cards, ke, objectType, objectId)
+                // turnOutPage(cards);
+            }
+        })
+    }
+    //第二步根据自己的卡和价格资源弹窗
+    function tan(cards, subject, objectType, objectId) {
+        for (var i = 0; i < cards.length; i++) {
+            var a = cards[i].subjectId
+            if (cards[i].subjectId == subject && cards[i].amount >= price) {
+                //第二步：你有这个科目下的卡&&卡余额>资源价格:弹出1床
+                var subject_card = transformation(a);
+                var object_Type = transformationType(objectType);
+                d.getElementById("p11").innerHTML = "" + object_Type + "需要" + price + "金豆";
+                d.getElementById("p21").innerHTML = "确认要扣" + subject_card + "卡" + price + "金豆吗？";
+                d.getElementById("a11").innerHTML = "确认";
+                d.getElementById("a21").innerHTML = "充值";
+                d.getElementById("1").style.display = "block"
+                biao = 1
+                card = cards[i];
+                object_Id = objectId;
+                object_Types = objectType;
+                break;
+
+            }
+        }
+        if (biao != 1) {
+            for (var i = 0; i < cards.length; i++) {
+                var a = cards[i].subjectId
+                var money = parseInt(userAmount) + 0 + parseInt(cards[i].amount);
+                var mp = "false";
+                if (money > price || money == price) {
+                    mp = "true";
+                }
+                if (cards[i].subjectId == subject && cards[i].amount < price && biao != 1) {
+                    //第三步：你有这个科目下的卡&&卡余额<资源价格:弹出2床
+                    var subject_card = transformation(a);
+                    var object_Type = transformationType(objectType);
+                    d.getElementById("p12").innerHTML = "" + object_Type + "需要" + price + "金豆";
+                    d.getElementById("p22").innerHTML = "您的" + subject_card + "卡余额不足";
+                    d.getElementById("a12").innerHTML = "充值";
+                    if (mp == "true") {
+                        d.getElementById("a22").innerHTML = "转入";
+                    } else if (mp == "false") {
+                        d.getElementById("a22").innerHTML = "";
+                    }
+
+                    d.getElementById("2").style.display = "block"
+                    biao = 1;
+                    break;
+                }
+            }
+        }
+        if (biao != 1) {
+            for (var i = 0; i < cards.length; i++) {
+                var a = cards[i].subjectId
+                if (cards[i].subjectId != subject && cards[i].amount >= price && biao != 1) {
+                    //第二步：你有其他科目下的卡&&卡余额>资源价格:弹出3床
+                    var subject_card = transformation(a);
+                    if (a == 1) {
+                        var object_card = transformation(2);
+                    } else if (a == 2) {
+                        var object_card = transformation(1);
+                    }
+                    var object_Type = transformationType(objectType);
+                    d.getElementById("p13").innerHTML = "您没有" + object_card + "卡";
+                    d.getElementById("p23").innerHTML = "确认要扣" + subject_card + "卡" + price + "金豆吗？";
+                    d.getElementById("a13").innerHTML = "确认";
+                    d.getElementById("a23").innerHTML = "充值";
+                    d.getElementById("3").style.display = "block"
+                    biao = 1;
+                    card = cards[i];
+                    object_Id = objectId;
+                    object_Types = objectType;
+                    break;
+                }
+            }
+        }
+        if (biao != 1) {
+            for (var i = 0; i < cards.length; i++) {
+                var a = cards[i].subjectId
+                // var iYear=parseInt(iYear);
+                var money = parseInt(userAmount) + 0 + parseInt(cards[i].amount);
+                var am = parseInt(cards[i].amount)
+                var mp = "false";
+                if (money > price || money == price) {
+                    mp = "true";
+                }
+                if (cards[i].subjectId != subject && am < price && biao != 1) {
+                    //第二步：你有其他科目下的卡&&卡余额<资源价格:弹出4床
+                    var subject_card = transformation(a);
+                    if (a == 1) {
+                        var object_card = transformation(2);
+                    } else if (a == 2) {
+                        var object_card = transformation(1);
+                    }
+                    var object_Type = transformationType(objectType);
+                    d.getElementById("p14").innerHTML = "您没有" + object_card + "卡";
+                    d.getElementById("p24").innerHTML = "您的" + subject_card + "卡余额不足";
+                    d.getElementById("a14").innerHTML = "充值";
+                    if (mp == "true") {
+                        d.getElementById("a24").innerHTML = "转入";
+                    } else if (mp == "false") {
+                        d.getElementById("a24").innerHTML = "";
+                    }
+                    d.getElementById("4").style.display = "block"
+                    biao = 1;
+                    break;
+                }
+            }
+        }
+        biao = 0;
+    }
+
+    var filter = {}
+    //第三步确认购买||确认转入||确认充值
+    function atom(sourceId, sourceType, object_Id, object_Type, count, money, none) {
+        var result;
+        if (money == null && count == null) {
+            filter = { // 充值rechargeFilter
+                sourceType: sourceType,
+                objectId: objectId,
+                objectType: objectType,
+                money: money
+            }
+        } else if (count == null) {
+            filter = { //转账transferFilter
+                sourceId: sourceId,
+                sourceType: sourceType,
+                objectId: object_Id,
+                objectType: object_Type,
+                money: money
+            }
+        } else if (money == null) {
+            filter = { // 购买purchaseFilter
+                sourceId: sourceId,
+                sourceType: sourceType,
+                objectId: object_Id,
+                objectType: object_Type,
+                count: count
+            }
+        }
+
+
+        $.ajax({
+            type: "post",
+            url: "/api/transactions",
+            dataType: "json",
+            data: JSON.stringify(filter),
+            contentType: "application/json; charset=utf-8",
+            success: function (e) {
+                alert("成功")
+                if (none == 1) {
+                    document.getElementById("1").style.display = "none"
+                }
+                if (none == 2) {
+                    document.getElementById("2").style.display = "none"
+                }
+                if (none == 3) {
+                    document.getElementById("3").style.display = "none"
+                }
+                if (none == 4) {
+                    document.getElementById("4").style.display = "none"
+                }
+            },
+            error: function (e) {
+                result = e;
+                alert(JSON.stringify(e))
+                switch (JSON.stringify(e.status)) {
+                    case "408":
+                        alert("余额不足")
+                        break;
+                    case "200":
+                        alert("成功")
+                        break;
+                }
+            }
+        })
+        return result;
+    }
+    /*  //关闭弹窗
+     var close = document.getElementsByClassName("close")
+     close.addEventListener('click', function (e) {
+     clo(e.target.dataset.id)
+     })*/
+
+    var purchase1 = document.getElementById("a11")
+    purchase1.addEventListener('click', function (e) {
+        alert("购买1")
+//                    sourceId, sourceType, objectId, objectType, count, money
+        atom(card.id, "card", object_Id, object_Types, count, null, 1);
+    })
+
+    var purchase2 = document.getElementById("a13")
+    purchase2.addEventListener('click', function (e) {
+        alert("购买2")
+//                    sourceId, sourceType, objectId, objectType, count, money
+        atom(card.id, "card", object_Id, object_Types, count, null, 3);
+    })
+    var recharge1 = document.getElementById("a21")
+    recharge1.addEventListener('click', function (e) {
+        alert("充值1")
+        d.getElementById("1").style.display = "none"
+        //turnOutPage(cards)
+        //d.getElementById("1").style.display = "none"
+        //d.getElementById("c").style.display="block";
+        rechargePage(cards, "c")
+    })
+
+    var recharge2 = document.getElementById("a12")
+    recharge2.addEventListener('click', function (e) {
+        alert("充值2")
+        d.getElementById("2").style.display = "none"
+        //turnOutPage(cards)
+        //d.getElementById("1").style.display = "none"
+        // d.getElementById("c").style.display="block";
+        rechargePage(cards, 'c')
+    })
+
+    var recharge3 = document.getElementById("a23")
+    recharge3.addEventListener('click', function (e) {
+        alert("充值3")
+        d.getElementById("3").style.display = "none"
+        //turnOutPage(cards)
+        //d.getElementById("1").style.display = "none"
+        // d.getElementById("c").style.display="block";
+        rechargePage(cards, 'c')
+    })
+
+    var recharge4 = document.getElementById("a14")
+    recharge4.addEventListener('click', function (e) {
+        alert("充值4")
+        d.getElementById("4").style.display = "none"
+        //turnOutPage(cards)
+        //d.getElementById("1").style.display = "none"
+        //  d.getElementById("c").style.display="block";
+        rechargePage(cards, 'c')
+    })
+
+    var turnOut1 = document.getElementById("a22")
+    turnOut1.addEventListener('click', function (e) {
+        alert("转入1")
+        d.getElementById("2").style.display = "none"
+        turnOutPage(cards, "z")
+        //d.getElementById("1").style.display = "none"
+        // d.getElementById("c").style.display="block";
+    })
+
+    var turnOut2 = document.getElementById("a24")
+    turnOut2.addEventListener('click', function (e) {
+        alert("转入2")
+        d.getElementById("4").style.display = "none"
+        turnOutPage(cards, "z")
+        //d.getElementById("1").style.display = "none"
+        //d.getElementById("c").style.display="block";
+    })
+
+    var z = d.getElementById("z")
+    z.addEventListener('click', function (e) {
+        document.getElementById("c").style.display = "none"
+        turnOutPage(cards)
+    })
+
+    var close1 = document.getElementById("close1")
+    close1.addEventListener('click', function (e) {
+        document.getElementById("1").style.display = "none"
+    })
+    var close2 = document.getElementById("close2")
+    close2.addEventListener('click', function (e) {
+        document.getElementById("2").style.display = "none"
+    })
+    var close3 = document.getElementById("close3")
+    close1.addEventListener('click', function (e) {
+        document.getElementById("3").style.display = "none"
+    })
+    var close4 = document.getElementById("close4")
+    close1.addEventListener('click', function (e) {
+        document.getElementById("4").style.display = "none"
+    })
+    /*
+     function clo(id) {
+     document.getElementById(id).style.display = "none"
+     }*/
+
+    function transformation(sex) {
+        var result;
+        if (sex == 1) {
+            result = "语文"
+        }
+        if (sex == 2) {
+            result = "数学"
+        }
+        return result;
+    }
+
+    function transformationType(objectType) {
+        var result;
+        if (objectType == "knowledgePoint") {
+            result = "知识点"
+        }
+        if (objectType == "liveVideo") {
+            result = "直播"
+        }
+        if (objectType == "video") {
+            result = "回放"
+        }
+        return result;
+    }
+    function duo(id, T) {
+        var w = 1;
+        w = id;
+        var arrList = new Array;
+        for (var i = 0; i < cards.length; i++) {
+            if (cards[i].id == id) {
+                arrList.push(cards[i]);
+                if (T == "z") {
+                    dan(arrList)
+                } else if (T == "c") {
+                    rechargePagedan(arrList)
+                }
+            }
+        }
+        /*$.ajax({
+         type: "get",
+         url: "/api/cards/" + w,
+         dataType: "json",
+         success: function (e) {
+         var arrList = new Array();
+
+
+
+         }
+         })*/
+    }
+    function dan(cards) {
+        var a = cards[0].subjectId
+        cards[0].subjectId = transformation(a)
+        if (cards[0].amount == 0) {
+            cards[0].amount = "0"
+        }
+        proc({
+            containerId: 'selectOneCard',
+            data: cards,
+            templateId: 'selectOneCard-template'
+        })
+        transfer = cards;
+        d.getElementById("selectCard").style.display = "none"
+//            document.getElementById("knowledgePoints").style.display = "none"
+        d.getElementById("tishi").innerHTML = "" + userAmount + " 金豆"
+
+
+        d.getElementById("1").style.display = "none"
+        d.getElementById("selectOneCard").style.display = "block"
+        var submitTransfer = document.getElementById("submitTransfer")
+        submitTransfer.addEventListener('click', function (e) {
+            //userAmount(transfer[0].id, $("#Number").val())
+            atom("96520767275011", "user", transfer[0].id, "card", null, $("#Number").val())
+            d.getElementById("selectOneCard").style.display = "none"
+
+        })
+    }
+    function turnOutPage(cards, T) {
+        if (cards.length > 1) {
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].subjectId == 1) {
+                    cards[i].image = "keBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                if (cards[i].subjectId == 2) {
+                    cards[i].image = "mathBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                cards[i].subjectId = transformation(cards[i].subjectId)
+                if (cards[i].amount == 0) {
+                    cards[i].amount = "0"
+                }
+            }
+            proc({
+                containerId: 'selectCard',
+                data: cards,
+                templateId: 'selectCard-template'
+            })
+            //  document.getElementById("1").style.display = "none"
+
+            d.getElementById("selectCard").style.display = "block"
+
+            $('.mine_zuli').on('click', function (e) {
+                var id = e.target.dataset.id
+                //  var id = e.target.dataset.id
+
+                //  document.getElementById(id).src = "true.png";
+                /*  setTimeout(function () {
+
+                 }, 1000)*/
+                duo(id, T)
+                //     document.getElementById(id).src = "";
+                //duo(id)
+            })
+            // alert("到多个卡选择页面")
+        } else if (cards.length == 1) {
+            dan(cards);
+        }
+
+
+    }
+
+
+    function rechargePage(cards, T) {
+        if (cards.length > 1) {
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].subjectId == 1) {
+                    cards[i].image = "keBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                if (cards[i].subjectId == 2) {
+                    cards[i].image = "mathBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                cards[i].subjectId = transformation(cards[i].subjectId)
+                if (cards[i].amount == 0) {
+                    cards[i].amount = "0"
+                }
+            }
+            proc({
+                containerId: 'selectCard',
+                data: cards,
+                templateId: 'selectCard-template'
+            })
+            //  document.getElementById("1").style.display = "none"
+
+            d.getElementById("selectCard").style.display = "block"
+
+            $('.mine_zuli').on('click', function (e) {
+                var id = e.target.dataset.id
+                //  document.getElementById(id).src = " ";
+                //  document.getElementById(id).src = "true.png";
+                /*  setTimeout(function () {
+
+                 }, 1000)*/
+                duo(id, T)
+                //duo(id)
+            })
+            // alert("到多个卡选择页面")
+        } else if (cards.length == 1) {
+            rechargePagedan(cards);
+        }
+    }
+
+    function rechargePagedan(cards) {
+        var a = cards[0].subjectId
+        cards[0].subjectId = transformation(a)
+        if (cards[0].amount == 0) {
+            cards[0].amount = "0"
+        }
+        d.getElementById("selectCard").style.display = "none"
+        d.getElementById("name").innerHTML = "" + cards[0].no + ""
+        d.getElementById("usermoney").innerHTML = "" + cards[0].amount + ""
+        d.getElementById("c").style.display = "block"
+    }
+
+    //    --------------------------------------------------------------弹窗js开始
     /*
      *  [
      *     {
@@ -898,83 +1598,80 @@
                                 subjects[i].low.push(newVolume);
                                 subjects[i].high.push(newVolume);
                             }
-//                            $.ajax({
-//                                type: 'GET',
-//                                //  url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
-//                                url: '/api/knowledge-points',
-//                                dataType: 'json',
-//                                success: function (kps) {
-//                                    var isNew = function (now, kp) {
-//                                        var result = false
-//                                        if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
-//                                            result = true
-//                                        }
-//                                        return result
-//                                    }
-////                                var newLength=function(kp){
-////                                    var num=0;
-////                                    if(kp.type == 'normalNew'){
-////                                        num++;
-////                                    }
-////                                    return num;
-////                                }
-//                                    var now = new Date()
-//                                    for (var i = 0; i < kps.length; ++i) {
-//                                        var v = state.volume.getById(kps[i].volumeId)//state.knowledgePoints.value
-//                                        if (v) {
-//                                            //console.log(v.knowledgePoints)
-//                                            var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
-//                                            if (lastKp) {
-//                                                lastKp.nextId = kps[i].id
-//                                                kps[i].previousId = lastKp.id
-//                                            }
-//
-//                                            kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
-//                                            if (isNew(now, kps[i])) {
-//                                                if (kps[i].type) {
-//                                                    kps[i].type += 'New'
-//                                                } else {
-//                                                    kps[i].type = 'normalNew'
-//                                                }
-//                                                v.knowledgePoints.unshift(kps[i])
-//                                            } else {
-//                                                if (kps[i].type) {
-//                                                    kps[i].type += 'Old'
-//                                                } else {
-//                                                    kps[i].type = 'normalOld'
-//                                                }
-//                                                v.knowledgePoints.push(kps[i])
-//                                            }
-//                                        } else {
-//                                            //console.log(kps[i])
-//                                        }
-//                                    }
-//                                    state.knowledgePoints.show()
-//                                },
-//                                error: function (r) {
-//                                }
-//                            })
-                            var subjectId = g.getUrlParameter('subjectId')
                             $.ajax({
-                                type: "get",
-                                url: '/api/subjects/' + subjectId + '/popup',
-                                dataType: "json",
-                                success: function (pop) {
-                                    state.volumes.popuped = pop.popup;
-                                    //  state.volumes.popuped = false;
+                                type: 'GET',
+                                url: '/api/knowledge-points',
+                                dataType: 'json',
+                                success: function (kps) {
+                                    var isNew = function (now, kp) {
+                                        var result = false
+                                        if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
+                                            result = true
+                                        }
+                                        return result
+                                    }
+                                    var now = new Date()
+                                    for (var i = 0; i < kps.length; ++i) {
+                                        var v = state.volume.getById(kps[i].volumeId)//state.knowledgePoints.value
+                                        if (v) {
+                                            //console.log(v.knowledgePoints)
+                                            var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
+                                            if (lastKp) {
+                                                lastKp.nextId = kps[i].id
+                                                kps[i].previousId = lastKp.id
+                                            }
 
-                                    history.pushState(null, null, '/content2.html#volumes')
-                                    state.volumes.changeId(subjectId)
+                                            kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
+                                            if (isNew(now, kps[i])) {
+                                                if (kps[i].type) {
+                                                    kps[i].type += 'New'
+                                                } else {
+                                                    kps[i].type = 'normalNew'
+                                                }
+                                                v.knowledgePoints.unshift(kps[i])
+                                            } else {
+                                                if (kps[i].type) {
+                                                    kps[i].type += 'Old'
+                                                } else {
+                                                    kps[i].type = 'normalOld'
+                                                }
+                                                v.knowledgePoints.push(kps[i])
+                                            }
+                                            if (kps[i].liked == true) {
+                                                kps[i].type += 'Like';
+                                            } else if (kps[i].liked == false) {
+                                                kps[i].type += 'Unlike';
+                                            }
+                                        } else {
+                                            //console.log(kps[i])
+                                        }
+                                    }
 
-                                    //state.volumes.subjectId = subjectId
-                                    //state['volumes'].init()
+                                    var subjectId = g.getUrlParameter('subjectId')
+                                    $.ajax({
+                                        type: "get",
+                                        url: '/api/subjects/' + subjectId + '/popup',
+                                        dataType: "json",
+                                        success: function (pop) {
+                                            state.volumes.popuped = pop.popup;
+                                            //  state.volumes.popuped = false;
 
-                                    $(document).on('click', '.like-icon', function (e) {
-                                        var commentId = e.target.parentNode.dataset.id
-                                        state.knowledgePoint.process(commentId)
-                                    })
+                                            history.pushState(null, null, '/content2.html#volumes')
+                                            state.volumes.changeId(subjectId)
+
+                                            //state.volumes.subjectId = subjectId
+                                            //state['volumes'].init()
+
+                                            $(document).on('click', '.like-icon', function (e) {
+                                                var commentId = e.target.parentNode.dataset.id
+                                                state.knowledgePoint.process(commentId)
+                                            })
+                                        }
+                                    });
+                                },
+                                error: function (r) {
                                 }
-                            });
+                            })
                         },
                         error: function (r) {
                         }
@@ -1008,7 +1705,6 @@
 
             $(document).on('shown.bs.tab', '.grade-main', function (e) {
                 state.volumes.grade = e.target.dataset.grade
-                //$(e.target).tab('show')
             })
 
             window.addEventListener('hashchange', function (e) {
@@ -1056,10 +1752,10 @@
                                 templateId: 'cover-template'
                             })
 
-//                            for (var i = 0; i < value.low.length; ++i) {
-//                                state.volume.value = value.low[i]
-//                                value.low[i].newCount = state.volume.calcNew()
-//                            }
+                            for (var i = 0; i < value.low.length; ++i) {
+                                state.volume.value = value.low[i]
+                                value.low[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.low,
                                 containerId: 'low',
@@ -1068,7 +1764,10 @@
                                     {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
-
+                            for (var i = 0; i < value.high.length; ++i) {
+                                state.volume.value = value.high[i]
+                                value.high[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.high,
                                 containerId: 'high',
@@ -1097,10 +1796,10 @@
                                 templateId: 'cover-template'
                             })
 
-//                            for (var i = 0; i < value.low.length; ++i) {
-//                                state.volume.value = value.low[i]
-//                                value.low[i].newCount = state.volume.calcNew()
-//                            }
+                            for (var i = 0; i < value.low.length; ++i) {
+                                state.volume.value = value.low[i]
+                                value.low[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.low,
                                 containerId: 'low',
@@ -1109,6 +1808,10 @@
                                     {type: 'new', templateId: 'volumes-new-template'},
                                 ]
                             })
+                            for (var i = 0; i < value.high.length; ++i) {
+                                state.volume.value = value.high[i]
+                                value.high[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.high,
                                 containerId: 'high',
@@ -1137,10 +1840,10 @@
                                 templateId: 'cover-template'
                             })
 
-//                            for (var i = 0; i < value.low.length; ++i) {
-//                                state.volume.value = value.low[i]
-//                                value.low[i].newCount = state.volume.calcNew()
-//                            }
+                            for (var i = 0; i < value.low.length; ++i) {
+                                state.volume.value = value.low[i]
+                                value.low[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.low,
                                 containerId: 'low',
@@ -1149,6 +1852,10 @@
                                     {type: 'new', templateId: 'volumes-english-new-template'},
                                 ]
                             })
+                            for (var i = 0; i < value.high.length; ++i) {
+                                state.volume.value = value.high[i]
+                                value.high[i].newCount = state.volume.calcNew()
+                            }
                             proc({
                                 data: value.high,
                                 containerId: 'high',
@@ -1204,70 +1911,12 @@
             changeId: function (volumeId) {
                 if (state.knowledgePoints.parentId != volumeId) {
                     state.knowledgePoints.parentId = volumeId
-                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId)
-                    if (state.knowledgePoints.value.knowledgePoints.length == 0) {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/api/volumes/' + state.knowledgePoints.parentId + '/knowledge-points',
-                            dataType: 'json',
-                            success: function (kps) {
-                                var isNew = function (now, kp) {
-                                    var result = false
-                                    if (+kp.showTime + 24 * 60 * 60 * 1000 > +now) {
-                                        result = true
-                                    }
-                                    return result
-                                }
-//                                var newLength=function(kp){
-//                                    var num=0;
-//                                    if(kp.type == 'normalNew'){
-//                                        num++;
-//                                    }
-//                                    return num;
-//                                }
-                                var now = new Date()
-                                for (var i = 0; i < kps.length; ++i) {
-                                    var v = state.knowledgePoints.value //state.volume.getById(kps[i].volumeId)
-                                    if (v) {
-                                        //console.log(v.knowledgePoints)
-                                        var lastKp = v.knowledgePoints[v.knowledgePoints.length - 1]
-                                        if (lastKp) {
-                                            lastKp.nextId = kps[i].id
-                                            kps[i].previousId = lastKp.id
-                                        }
-
-                                        kps[i].showTime = Date.parse(kps[i].showTime.replace(/-/g, '/'))
-                                        if (isNew(now, kps[i])) {
-                                            if (kps[i].type) {
-                                                kps[i].type += 'New'
-                                            } else {
-                                                kps[i].type = 'normalNew'
-                                            }
-                                            v.knowledgePoints.unshift(kps[i]);
-                                        } else {
-                                            if (kps[i].type) {
-                                                kps[i].type += 'Old'
-                                            } else {
-                                                kps[i].type = 'normalOld'
-                                            }
-                                            v.knowledgePoints.push(kps[i])
-                                        }
-                                    } else {
-                                        //console.log(kps[i])
-                                    }
-                                }
-                                state.knowledgePoints.show()
-                            },
-                            error: function (r) {
-                            }
-                        })
-                    } else {
-                        state.knowledgePoints.show()
-                    }
-//                    state.knowledgePoints.show()
+                    state.knowledgePoints.value = state.volume.getById(state.knowledgePoints.parentId);
+                    state.knowledgePoints.show()
                 }
             },
             value: null,
+            index: 0,
             show: function () {
                 var getGrade = function (gradeValue) {
                     var result = ''
@@ -1286,6 +1935,105 @@
                     }
                     return result
                 }
+                var segment = function (knowledgePoints) {
+                    var result = []
+                    var currentSegment = 0
+                    for (var i = 0; i < knowledgePoints.length; ++i) {
+                        if (!result[currentSegment]) {
+                            result[currentSegment] = []
+                        }
+                        result[currentSegment].push(knowledgePoints[i])
+                        if (knowledgePoints[i].type == 'pkOldLike' || knowledgePoints[i].type == 'pkNewLike' ||
+                                knowledgePoints[i].type == 'pkOldUnlike' || knowledgePoints[i].type == 'pkNewUnlike') {
+                            currentSegment++
+                        }
+                    }
+                    return result
+                }
+                var pageTopChange = function () {
+                    var mainHeight1 = $(window).height() - (parseInt($(".catalog").height()) + 10);
+                    var mainHeight2 = $(window).height() - (parseInt($(".catalog_pack_up").height()) + 10);
+                    $(".catalog_list").css({"height": mainHeight1});
+                    var containHeight = 0;
+
+                    $(".catalog_list>div").each(function (index, el) {
+                        containHeight += parseInt($(this).height());
+                    });
+
+                    //返回角度
+                    function GetSlideAngle(dx, dy) {
+                        return Math.atan2(dy, dx) * 180 / Math.PI;
+                    }
+
+                    //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
+                    function GetSlideDirection(startX, startY, endX, endY) {
+                        var dy = startY - endY;
+                        var dx = endX - startX;
+                        var result = 0;
+
+                        //如果滑动距离太短
+                        if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+                            return result;
+                        }
+                        var angle = GetSlideAngle(dx, dy);
+                        if (angle >= -45 && angle < 45) {
+                            result = 4;
+                        } else if (angle >= 45 && angle < 135) {
+                            result = 1;
+                        } else if (angle >= -135 && angle < -45) {
+                            result = 2;
+                        }
+                        else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+                            result = 3;
+                        }
+                        return result;
+                    }
+
+                    //滑动处理
+                    var startX, startY;
+                    document.addEventListener('touchstart', function (ev) {
+                        startX = ev.touches[0].pageX;
+                        startY = ev.touches[0].pageY;
+                    }, false);
+                    document.addEventListener('touchend', function (ev) {
+                        var endX, endY;
+                        endX = ev.changedTouches[0].pageX;
+                        endY = ev.changedTouches[0].pageY;
+                        var direction = GetSlideDirection(startX, startY, endX, endY);
+                        switch (direction) {
+                            case 0:
+                                // alert("没滑动");
+                                break;
+                            case 1:
+                                if (containHeight > mainHeight1) {
+                                    $(".catalog").stop().slideUp('fast');
+                                    $(".catalog_pack_up").stop().slideDown('fast');
+                                    $(".catalog_list").css({"height": mainHeight2, "top": "3.75rem"});
+                                }
+                                break;
+                            case 2:
+                            function userSlideDown() {
+                                $(".catalog").stop().slideDown('fast');
+                                $(".catalog_pack_up").stop().slideUp('fast');
+                                $(".catalog_list").css({"height": mainHeight1, "top": "8.75rem"});
+                            }
+
+                                if (containHeight <= $(".catalog_list").height() && $(".catalog_pack_up").is(":visible")) {
+                                    userSlideDown();
+                                } else {
+                                    $(".catalog_list").scroll(function () {
+                                        var scrollTop = $(".catalog_list").scrollTop();
+                                        if (scrollTop == 0) {
+                                            userSlideDown();
+                                        }
+                                    })
+                                }
+                                break;
+
+                            default:
+                        }
+                    }, false);
+                }
                 $('#knowledgePoints').html("");
                 switch (state.volumes.parentId) {
                     case 1:
@@ -1297,21 +2045,31 @@
                         })
 
                         var value = state.knowledgePoints.value
-                        value.grade = getGrade(value.grade)
+                        if (value.grade == 20 || value.grade == 21) {
+                            value.grade = getGrade(value.grade)
+                        }
                         proc({
                             templateId: 'book-infor-template',
                             data: value,
                             containerId: 'book_infor'
                         })
                         proc({
+                            templateId: 'title-pack-up-template',
+                            data: value,
+                            containerId: 'pack_up_title'
+                        })
+                        proc({
                             data: value.knowledgePoints,
-                            containerId: 'chapter_section',
+                            containerId: 'chapter-section',
                             alterTemplates: [
-                                {type: 'normalNew', templateId: 'chapter-new-template'},
-                                {type: 'normalOld', templateId: 'chapter-old-template'},
+                                {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
+                                {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
+                                {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
+                                {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
                             ]
                         })
 
+                        pageTopChange();
 
                         break
                     case 2:
@@ -1321,23 +2079,65 @@
                             data: {},
                             templateId: 'math-catalog'
                         })
+
                         var value = state.knowledgePoints.value
-                        value.grade = getGrade(value.grade)
+
+                        for (var i = 0; i < value.knowledgePoints.length; ++i) {
+                            if (value.knowledgePoints[i].type != 'pkNewLike' &&
+                                    value.knowledgePoints[i].type !== 'pkOldLike' &&
+                                    value.knowledgePoints[i].type !== 'pkNewUnlike' &&
+                                    value.knowledgePoints[i].type !== 'pkOldUnlike') {
+                                value.knowledgePoints[i].order = i + 1;
+                            }
+                        }
+                        if (value.grade == 20 || value.grade == 21) {
+                            value.grade = getGrade(value.grade)
+                        }
                         proc({
                             templateId: 'book-infor-template',
                             data: value,
                             containerId: 'book_infor'
                         })
                         proc({
-                            data: value.knowledgePoints,
-                            containerId: 'chapter_section',
-                            alterTemplates: [
-                                {type: 'normalNew', templateId: 'chapter-new-template'},
-                                {type: 'normalOld', templateId: 'chapter-old-template'},
-                                {type: 'pkOld', templateId: 'chapter-old-challenge'},
-                                {type: 'pkNew', templateId: 'chapter-new-challenge'},
-                            ]
+                            templateId: 'title-pack-up-template',
+                            data: value,
+                            containerId: 'pack_up_title'
                         })
+                        if (!value.isSegment) {
+                            value.knowledgePoints = segment(value.knowledgePoints);
+                            value.isSegment = 1
+                        }
+
+                        for (var i = 0; i < value.knowledgePoints.length; ++i) {
+                            value.knowledgePoints[i].index = i
+                        }
+                        proc({
+                            templateId: 'chapter',
+                            data: value.knowledgePoints,
+                            containerId: 'chapter-section'
+                        })
+
+                        var chapters = document.getElementById('chapter-section').querySelectorAll('[data-identity]')
+                        for (var i = 0; i < chapters.length; ++i) {
+                            var c = chapters[i]
+                            proc({
+                                container: c,
+                                data: value.knowledgePoints[i],
+                                alterTemplates: [
+                                    {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
+                                    {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
+                                    {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
+                                    {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
+                                    {type: 'pkOldLike', templateId: 'chapter-old-like-challenge'},
+                                    {type: 'pkOldUnlike', templateId: 'chapter-old-unlike-challenge'},
+                                    {type: 'pkNewLike', templateId: 'chapter-new-like-challenge'},
+                                    {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
+                                ]
+                            })
+                        }
+
+                        pageTopChange();
+
                         break
                 }
             }
@@ -1483,6 +2283,7 @@
                     data: JSON.stringify({}),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
+
                 })
             },
             process: function (commentId) {
@@ -1519,6 +2320,7 @@
             show: function () {
                 $('#knowledgePoint').html("");
 
+
                 //留言
                 var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
                     toggleButton.addEventListener('click', function (e) {
@@ -1548,8 +2350,15 @@
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
                             state.knowledgePoint.unlike(apiUrl, data.id)
-                            data.likeCount--
-                            data.liked = false
+                            data.likeCount--;
+                            data.liked = false;
+                            if (data.type.substring(0, 2) == "no") {
+                                data.type = data.type.slice(0, 9);
+                                data.type += 'Unlike'
+                            } else if (data.type.substring(0, 2) == "pk") {
+                                data.type = data.type.slice(0, 5);
+                                data.type += 'Unlike'
+                            }
                             container.innerHTML = '';
                             likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
                         }, false)
@@ -1562,8 +2371,15 @@
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
                             state.knowledgePoint.like(apiUrl, data.id)
-                            data.likeCount++
-                            data.liked = true
+                            data.likeCount++;
+                            data.liked = true;
+                            if (data.type.substring(0, 2) == "no") {
+                                data.type = data.type.slice(0, 9);
+                                data.type += 'Like';
+                            } else if (data.type.substring(0, 2) == "pk") {
+                                data.type = data.type.slice(0, 5);
+                                data.type += 'Like';
+                            }
                             container.innerHTML = '';
                             likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
                         }, false)
@@ -1574,6 +2390,7 @@
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
+                        xiao(state.knowledgePoint.value.id, 'knowledge-point');
                         proc({
                             containerId: 'knowledgePoint',
                             data: {},
@@ -1621,8 +2438,12 @@
                             containerId: 'video'
                         });
 
+//                        var video = document.getElementById('video');
+//                        video.addEventListener('click', function (e) {
+//                            xiao(value.id,'knowledge-point');
+//                        },false)
+
                         proc({
-//                            templateId: 'problem-template',
                             alterTemplates: [
                                 {type: '单选题', templateId: 'problem-radio-template'},
                                 {type: '多选题', templateId: 'problem-checkbox-template'}
@@ -1650,8 +2471,11 @@
                     case 2:
                     case '2':
                         switch (state.knowledgePoint.value.type) {
-                            case 'normalNew':
-                            case 'normalOld':
+                            case 'normalNewLike':
+                            case 'normalNewUnlike':
+                            case 'normalOldLike':
+                            case 'normalOldUnlike':
+                                xiao(state.knowledgePoint.value.id, 'knowledge-point');
                                 proc({
                                     containerId: 'knowledgePoint',
                                     data: {},
@@ -1701,6 +2525,11 @@
                                     data: value.contents.video,
                                     containerId: 'video'
                                 });
+
+//                                var video = document.getElementById('video');
+//                                video.addEventListener('click', function (e) {
+//                                    xiao(value.id,'knowledge-point');
+//                                },false)
 
                                 //data.problems
                                 var ps = []
@@ -1752,8 +2581,10 @@
                                 state.knowledgePoint.renderComments()
 
                                 break
-                            case 'pkNew':
-                            case 'pkOld':
+                            case 'pkNewLike':
+                            case 'pkNewUnlike':
+                            case 'pkOldLike':
+                            case 'pkOldUnlike':
                                 proc({
                                     containerId: 'knowledgePoint',
                                     data: {},
@@ -1868,10 +2699,20 @@
                 for (var i = 0; i < subjects.length; ++i) {
                     for (var j = 0; j < subjects[i].low.length; ++j) {
                         for (var k = 0; k < subjects[i].low[j].knowledgePoints.length; ++k) {
-                            if (subjects[i].low[j].knowledgePoints[k].id == id) {
-                                result = subjects[i].low[j].knowledgePoints[k]
-                                isFind = true
-                                break
+                            if (subjects[i].low[j].knowledgePoints[k].id) {
+                                if (subjects[i].low[j].knowledgePoints[k].id == id) {
+                                    result = subjects[i].low[j].knowledgePoints[k]
+                                    isFind = true
+                                    break
+                                }
+                            } else {
+                                for (var s = 0; s < subjects[i].low[j].knowledgePoints[k].length; ++s) {
+                                    if (subjects[i].low[j].knowledgePoints[k][s].id == id) {
+                                        result = subjects[i].low[j].knowledgePoints[k][s]
+                                        isFind = true
+                                        break
+                                    }
+                                }
                             }
                         }
                         if (isFind) {
@@ -1883,10 +2724,20 @@
                     }
                     for (var j = 0; j < subjects[i].high.length; ++j) {
                         for (var k = 0; k < subjects[i].high[j].knowledgePoints.length; ++k) {
-                            if (subjects[i].high[j].knowledgePoints[k].id == id) {
-                                result = subjects[i].high[j].knowledgePoints[k]
-                                isFind = true
-                                break
+                            if (subjects[i].high[j].knowledgePoints[k].id) {
+                                if (subjects[i].high[j].knowledgePoints[k].id == id) {
+                                    result = subjects[i].high[j].knowledgePoints[k]
+                                    isFind = true
+                                    break
+                                }
+                            } else {
+                                for (var s = 0; s < subjects[i].high[j].knowledgePoints[k].length; ++s) {
+                                    if (subjects[i].high[j].knowledgePoints[k][s].id == id) {
+                                        result = subjects[i].high[j].knowledgePoints[k][s]
+                                        isFind = true
+                                        break
+                                    }
+                                }
                             }
                         }
                         if (isFind) {
@@ -1982,6 +2833,9 @@
                             finded = true
                             break
                         }
+                        if (finded) {
+                            break
+                        }
                     }
                     if (finded) {
                         break
@@ -1990,6 +2844,9 @@
                         if (subjects[i].high[j].id == id) {
                             result = subjects[i].high[j]
                             finded = true
+                            break
+                        }
+                        if (finded) {
                             break
                         }
                     }
@@ -2002,7 +2859,10 @@
             calcNew: function () {
                 var newCount = 0
                 for (var i = 0; i < state.volume.value.knowledgePoints.length; ++i) {
-                    if (state.volume.value.knowledgePoints[i].type == 'normalNew') {
+                    if (state.volume.value.knowledgePoints[i].type == 'normalNewUnlike' ||
+                            state.volume.value.knowledgePoints[i].type == 'pkNewUnlike' ||
+                            state.volume.value.knowledgePoints[i].type == 'normalNewLike' ||
+                            state.volume.value.knowledgePoints[i].type == 'pkNewLike') {
                         newCount++
                     }
                 }

@@ -198,6 +198,7 @@ public class KnowledgePoint {
         kpm.put("name", kp.getTitle());
         Date showTime = kp.getShowTime();
         kpm.put("showTime", showTime);
+        kpm.put("order", kp.getOrder());
         Long lc = find(likeCount, kp.getId());
         kpm.put("likeCount", lc);
         kpm.put("readCount", find(readCount, kp.getId()));
@@ -229,7 +230,7 @@ public class KnowledgePoint {
         kpm.put("volumeId", kp.getVolumeId());
         kpm.put("name", kp.getTitle());
         kpm.put("showTime", kp.getShowTime());
-
+        kpm.put("order", kp.getOrder());
         kpm.put("likeCount", 0);
         Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");
         if (likeCount != null) {
