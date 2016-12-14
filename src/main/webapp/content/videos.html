@@ -86,6 +86,17 @@
         .data :nth-child(even) {
             border-top: 1px solid #ea875f;
         }
+        .pika-lendar td{
+            font-size: 1.5rem;
+        }
+        .pika-lendar table{
+            margin: 10px 0;
+        }
+        .pika-button{
+            color: #aaa;
+            background-color: #fff;
+            padding: 10px 16px;
+        }
     </style>
 </head>
 
@@ -205,7 +216,7 @@
                     <img class="img_item2" src="../img/xiala_sq.png" alt="">
                 </div>
                 <ul class="xiala_ul" id="subject">
-                    <li class="xiala_li">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
             <div class="tiaoj_TJ02 selectDiv">
@@ -234,9 +245,7 @@
                     <img class="img_item1 cur" src="../img/xiala.png" alt="">
                     <img class="img_item2" src="../img/xiala_sq.png" alt="">
                 </div>
-                <ul class="xiala_ul" id="date">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
-                </ul>
+                <div class="xiala_ul" id="date"></div>
             </div>
         </div>
         <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
@@ -1189,21 +1198,23 @@
                         })
                     })
 
-                    $(document).on('click', ".selectDiv", function (index, e) {
-                        if ($(e).children(".xiala_ul").is(":visible")) {
+                    $(document).on('click', ".selectDiv", function (e) {
+                        if ($(e.currentTarget).children(".xiala_ul").is(":visible")) {
                             $('.tan').hide();
                             $('.tan').css("z-index", "9999");
                             $(".xiala_ul").hide();
-                            $(".xiala_ul").eq(index).hide();
+                            $(e.currentTarget).children(".xiala_ul").hide();
                             $(".img_item1").addClass("cur");
                             $(".img_item2").removeClass("cur");
                         } else {
                             $('.tan').show();
                             $('.tan').css("z-index", "99");
                             $(".xiala_ul").hide();
-                            $(".xiala_ul").eq(index).show();
-                            $(".img_item1").addClass("cur").eq(index).removeClass("cur");
-                            $(".img_item2").removeClass("cur").eq(index).addClass("cur");
+                            $(e.currentTarget).children(".xiala_ul").show();
+                            $(".img_item1").addClass("cur")
+                            e.currentTarget.querySelector('.img_item1').removeClass("cur");
+                            $(".img_item2").removeClass("cur")
+                            e.currentTarget.querySelector('.img_item2').addClass("cur");
                         }
                     });
 
@@ -1348,8 +1359,8 @@
                     }
                 });
 
-                var hei1 = document.getElementsByClassName('tiao_jian').height()
-                var hei2 = document.getElementsByClassName('tiaoj_jieG').height()
+                var hei1 = document.getElementsByClassName('tiao_jian').height();
+                var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
                 document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
             },
             search: function () {
