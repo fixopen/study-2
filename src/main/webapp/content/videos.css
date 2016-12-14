@@ -68,11 +68,6 @@
     border-right: none;
 }
 
-.cur {
-    color: #fff;
-    background-color: #24cbd1;
-}
-
 a.tab_toggle {
     color: #444;
     font-family: "苹方 中等";
@@ -555,6 +550,11 @@ li.active > a.tab_toggle {
     display: inline-block;
     width:0.90625rem;
     height:0.5rem;
+    display: none;
+}
+.tiaoj_1span img.cur,.tiaoj_2span img.cur,.tiaoj_3span img.cur,.tiaoj_4span img.cur{
+    display: block;
+    display: inline-block;
 }
 .tiaoj_4span{
     border-right: none;
@@ -683,11 +683,12 @@ li.active > a.tab_toggle {
 }
 .live-details-videoPlay{
     width: 100%;
-    height: 17.375rem;
+    height: 12rem;
     position: relative;
 }
 .live-details-videoPlay video{
     width: 100%;
+    height:inherit;
     position: absolute;
     top: 0;
     left: 0;
@@ -749,7 +750,7 @@ li.active > a.tab_toggle {
     margin-left: 0.3125rem;
 }
 .liveDetails-comment{
-    height: 56%;
+    height: 55%;
     background-color: #fff;
     border-top: 1px solid #e5e5e5;
     border-bottom: 1px solid #e5e5e5;
@@ -828,7 +829,7 @@ li.active > a.tab_toggle {
 }
 @media screen and (min-width: 768px) {
     .liveDetails-comment{
-        height: 72%;
+        height: 70%;
     }
     .liveDetails-messageTxt{
         width: 86%;
