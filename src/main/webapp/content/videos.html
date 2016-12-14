@@ -201,7 +201,8 @@
             <div class="tiaoj_TJ01 selectDiv">
                 <div class="tiaoj_1span" id="subjectSelect">
                     <span>科目</span>
-                    <img src="../img/xiala.png" alt="">
+                    <img class="img_item1 cur" src="../img/xiala.png" alt="">
+                    <img class="img_item2" src="../img/xiala_sq.png" alt="">
                 </div>
                 <ul class="xiala_ul" id="subject">
                     <li class="xiala_li">全部<img src="images/zbwq_zhong.png" alt=""></li>
@@ -210,7 +211,8 @@
             <div class="tiaoj_TJ02 selectDiv">
                 <div class="tiaoj_2span" id="teacherSelect">
                     <span>老师</span>
-                    <img src="../img/xiala.png" alt="">
+                    <img class="img_item1 cur" src="../img/xiala.png" alt="">
+                    <img class="img_item2" src="../img/xiala_sq.png" alt="">
                 </div>
                 <ul class="xiala_ul" id="teacher">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
@@ -219,16 +221,18 @@
             <div class="tiaoj_TJ03 selectDiv" id="gradeeSelect">
                 <div class="tiaoj_3span">
                     <span>年级</span>
-                    <img src="../img/xiala.png" alt="">
+                    <img class="img_item1 cur" src="../img/xiala.png" alt="">
+                    <img class="img_item2" src="../img/xiala_sq.png" alt="">
                 </div>
                 <ul class="xiala_ul" id="grade">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
             <div class="tiaoj_TJ04 selectDiv" id="dateSelect">
-                <div class="tiaoj_4span">
+                <div class="tiaoj_4span" id="datePicker">
                     <span>日期</span>
-                    <img src="../img/xiala.png" alt="">
+                    <img class="img_item1 cur" src="../img/xiala.png" alt="">
+                    <img class="img_item2" src="../img/xiala_sq.png" alt="">
                 </div>
                 <ul class="xiala_ul" id="date">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
@@ -630,7 +634,8 @@
 </template>
 <template id="teacher-template">
     <li class="xiala_li">
-        <span data-type="teacher">${teacher}</span><img src="images/zbwq_zhong.png" alt="">
+        <span data-type="teacher">${teacher}</span>
+        <img src="images/zbwq_zhong.png" alt="">
     </li>
 </template>
 <template id="grade-template">
@@ -709,6 +714,7 @@
 <script src="/moment/moment.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
+<script src="/js/pikaday.js"></script>
 <script>
     //[{..., teachers: [], grades: [], playings: [], futures: [], ...}, ...]
     var subjects = []
@@ -779,6 +785,7 @@
         init: function () {
 //            var userId = g.getUrlParameter('userid')
 //            g.setCookie('userId', userId)
+
             $.ajax({
                 type: 'get',
                 url: '/api/subjects',
@@ -802,8 +809,8 @@
             }
 
             $(document).on('click', '[data-article]', function (e) {
-                var element = e.target
-                var id = element.dataset.article
+                var element = e.target;
+                var id = element.dataset.article;
                 if (element.dataset.id) {
                     state[id].id = element.dataset.id
                 }
@@ -815,9 +822,8 @@
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
             }, false)
-
-//            switchTo('videoDetail')
         },
+
         main: {
             zeroFuture: {
                 container: document.getElementById('zeroFuture'),
@@ -933,6 +939,11 @@
                                         $('#chineseZero').removeClass('active')
                                         $('#one').addClass('active')
                                         $('#zero').removeClass('active')
+                                    }else{
+                                        $('#chineseZero').addClass('active')
+                                        $('#mathOne').removeClass('active')
+                                        $('#zero').addClass('active')
+                                        $('#one').removeClass('active')
                                     }
                                     function div1Show() {
                                         var div1 = document.getElementById("div1");
@@ -954,7 +965,6 @@
                             })
                         }
                     })
-
                     state.main.isInit = true
                 }
             },
@@ -1042,6 +1052,7 @@
 //                //filter the playing and future data via the filter element state
 //            }
         },
+
         passed: {
             zeroPassed: {
                 container: document.getElementById('video'),
@@ -1074,9 +1085,9 @@
                     })
 
                     $(document).on('click', '[data-type="subject"]', function (e) {
-//hide subjects
+                        //hide subjects
                         state.passed.subject.style.display = 'none'
-//change subjectSelect
+                        //change subjectSelect
                         var s = document.getElementById('subjectSelect')
                         s.textContent = e.target.textContent
                         s.dataset.id = e.target.dataset.id
@@ -1084,7 +1095,7 @@
                         if (!state.containTeacher(sub, t.textContent)) {
                             state.passed.teacherSelect.textContent = '老师'
                         }
-//change teachers container
+                        //change teachers container
                         state.passed.teacher.innerHTML = ''
                         proc({
                             container: state.passed.teacher,
@@ -1092,9 +1103,9 @@
                             templateId: 'teacher-template'
                         })
 
-//if need {
-// change gradeSelect
-//}
+                        //if need {
+                        // change gradeSelect
+                        //}
                         if (!state.containGrade(sub, g.textContent)) {
                             state.passed.gradeSelect.textContent = '年级'
                         }
@@ -1117,7 +1128,6 @@
                             templateId: ''
                         })
                     })
-
 
                     $(document).on('click', '[data-type="teacher"]', function (e) {
 //hide teachers
@@ -1166,25 +1176,45 @@
                             templateId: ''
                         })
                     })
-//                    function xialaTap() { //下拉选项
-//                        $(".selectDiv").each(function (index, el) {
-//                            $(this).tap(function () {
-//                                if ($(this).children(".xiala_ul").is(":visible")) {
-//                                    $('.tan').hide();
-//                                    $('.tan').css("z-index", "9999");
-//                                    $(".xiala_ul").hide();
-//                                    $(".xiala_ul").eq(index).hide();
-//                                } else {
-//                                    $('.tan').show();
-//                                    $('.tan').css("z-index", "99");
-//                                    $(".xiala_ul").hide();
-//                                    $(".xiala_ul").eq(index).show();
-//                                }
-//                            });
-//                        });
-//                    }
-//
-//                    xialaTap();
+
+                    $(document).on('click', ".selectDiv", function (index,e) {
+                        if ($(e).children(".xiala_ul").is(":visible")) {
+                            $('.tan').hide();
+                            $('.tan').css("z-index","9999");
+                            $(".xiala_ul").hide();
+                            $(".xiala_ul").eq(index).hide();
+                            $(".img_item1").addClass("cur");
+                            $(".img_item2").removeClass("cur");
+                        }else{
+                            $('.tan').show();
+                            $('.tan').css("z-index","99");
+                            $(".xiala_ul").hide();
+                            $(".xiala_ul").eq(index).show();
+                            $(".img_item1").addClass("cur").eq(index).removeClass("cur");
+                            $(".img_item2").removeClass("cur").eq(index).addClass("cur");
+                        }
+                    });
+
+                    $(document).on('click', ".xiala_li", function (e) {
+                        $(e).addClass("cur").siblings().removeClass("cur");
+                    });
+
+                    $(document).on('click', ".shipin", function (e) {
+                        $('.tan').show();
+                        $('.window1').eq(0).show();
+                    });
+
+                    $(document).on('click', ".p_btn", function (e) {
+                        $('.tan').hide();
+                        $('.window1').hide();
+                    });
+
+                    // 弹窗关闭按钮
+                    $(document).on('click', ".windowClose", function (e) {
+                        $('.tan').hide();
+                        $('.window1').hide();
+                    })
+
                     var now = Date.now()
 //*******************************getPassed*****************************
                     $.ajax({
@@ -1275,7 +1305,6 @@
                             })
                         }
                     })
-
                     function div3Show() {
                         var div1 = document.getElementById("div3");
                         div1.style.display = "block";
@@ -1296,9 +1325,20 @@
                             state.passed.subject.style.display = 'block'
                         }
                     }, false)
-
                     state.passed.isInit = true
                 }
+
+                var picker = new Pikaday({
+                    field: document.getElementById('datePicker'),
+                    format: 'D MMM YYYY',
+                    onSelect: function() {
+                        console.log(this.getMoment().format('Do MMMM YYYY'));
+                    }
+                });
+
+                var hei1 = document.getElementsByClassName('tiao_jian').height()
+                var hei2 = document.getElementsByClassName('tiaoj_jieG').height()
+                document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
             },
             search: function () {
                 var result = []
@@ -1334,16 +1374,6 @@
                 }
                 return result
             },
-//            teacherChoice: document.getElementById('teacherChoice'),
-//            gradeChoice: document.getElementById('gradeChoice'),
-//            onePassed: {
-//                container: document.getElementById(''),
-//                template: document.getElementById(''),
-//                data: null,
-////                show: function () {
-////                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
-////                }
-//            }
             findById: function (id) {
                 var result = null;
                 for (var i = 0; i < passed.length; ++i) {
@@ -1355,10 +1385,12 @@
                 return result
             }
         },
+
         futureNote: {
             init: function () {
             }
         },
+
         videoDetail: {
             id: null,
             init: function () {
@@ -1369,104 +1401,110 @@
                     data: state.passed.findById(state.videoDetail.id),
                     templateId: 'live-video-template'
                 })
-                //***********************************like***************************************
-                // GET /knowledge-points/.../is-self-like
-                var id = g.getUrlParameter("id")
                 $.ajax({
-                    type: "get",
-                    url: 'api/playback/' + id + '/is-self-like',
-                    dataType: "json",
-                    success: function (like) {
-                        var liked = like.like
-                        var icon = document.getElementById('icon');
-                        if (liked) {
-                            icon.setAttribute('src', 'images/details/zanover.png');
-                        } else {
-                            icon.setAttribute('src', 'images/details/dianzan.png');
-                        }
-                        icon.addEventListener('click', function (e) {
-                            if (liked) {
-                                $.ajax({
-                                    type: "put",
-                                    url: '/api/schedulers/' + state.videoDetail.id + '/unlike',
-                                    data: JSON.stringify({}),
-                                    dataType: "json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (unlike) {
-                                        icon.setAttribute('src', 'images/details/dianzan.png');
-                                        data.interaction.likeCount
-                                        e.target.nextElementSibling.textContent = data.interaction.likeCount
-                                        liked = false;
+                    type: 'get',
+                    url: 'api/one/' + state.videoDetail.id,
+                    dataType: 'json',
+                    success: function (data) {
+                        //***********************************like***************************************
+                        // GET /knowledge-points/.../is-self-like
+                        //var id = g.getUrlParameter("id")
+                        $.ajax({
+                            type: "get",
+                            url: 'api/playback/' + state.videoDetail.id + '/is-self-like',
+                            dataType: "json",
+                            success: function (like) {
+                                var liked = like.like
+                                var icon = document.getElementById('icon');
+                                if (liked) {
+                                    icon.setAttribute('src', 'images/details/zanover.png');
+                                } else {
+                                    icon.setAttribute('src', 'images/details/dianzan.png');
+                                }
+                                icon.addEventListener('click', function (e) {
+                                    if (liked) {
+                                        $.ajax({
+                                            type: "put",
+                                            url: '/api/schedulers/' + state.videoDetail.id + '/unlike',
+                                            data: JSON.stringify({}),
+                                            dataType: "json",
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (unlike) {
+                                                icon.setAttribute('src', 'images/details/dianzan.png');
+                                                data.interaction.likeCount
+                                                e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                                liked = false;
+                                            }
+                                        })
+                                    } else {
+                                        $.ajax({
+                                            type: "put",
+                                            url: '/api/schedulers/' + state.videoDetail.id + '/like',
+                                            data: JSON.stringify({}),
+                                            dataType: "json",
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (like) {
+                                                icon.setAttribute('src', 'images/details/zanover.png');
+                                                ++data.interaction.likeCount;
+                                                e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                                liked = true;
+                                            }
+                                        })
                                     }
-                                })
-                            } else {
-                                $.ajax({
-                                    type: "put",
-                                    url: '/api/schedulers/' + state.videoDetail.id + '/like',
-                                    data: JSON.stringify({}),
-                                    dataType: "json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (like) {
-                                        icon.setAttribute('src', 'images/details/zanover.png');
-                                        ++data.interaction.likeCount;
-                                        e.target.nextElementSibling.textContent = data.interaction.likeCount
-                                        liked = true;
-                                    }
-                                })
+                                }, false)
+                            },
+                            error: function (unlike) {
+                                //liked = false
                             }
-                        }, false)
-                    },
-                    error: function (unlike) {
-                        //liked = false
-                    }
-                })
+                        })
 
-                //*************************comments**************************
-                var btn = document.getElementById('btn');
-                btn.addEventListener('click', submit, false);
-                function submit(e) {
-                    var textarea = document.getElementById('textarea');
-                    var value = textarea.value;
-                    if (value.length < 1) {
-                        return false;
-                    }
-                    textarea.value = '';
-                    e.target.style.color = '#f5f5f5';
-                    // e.target.style.backgroundColor = '#3e8f3e';
-                    $.ajax({
-                        type: "post",
-                        url: "/api/schedulers/' + state.videoDetail.id + '/comments",
-                        data: JSON.stringify({
-                            objectType: 'knowledge-point',
-                            content: value
-                        }),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (comments) {
-                            location.reload();
-                            var comment = document.getElementById('comment-area')
-                            comment.innerHTML = ''
-                            proc({
-                                container: comment,
-                                data: comments,
-                                templateId: 'video-comment-template'
+                        //*************************comments**************************
+                        var btn = document.getElementById('btn');
+                        btn.addEventListener('click', submit, false);
+                        function submit(e) {
+                            var textarea = document.getElementById('textarea');
+                            var value = textarea.value;
+                            if (value.length < 1) {
+                                return false;
+                            }
+                            textarea.value = '';
+                            e.target.style.color = '#f5f5f5';
+                            // e.target.style.backgroundColor = '#3e8f3e';
+                            $.ajax({
+                                type: "post",
+                                url: "/api/comments",
+                                data: JSON.stringify({
+                                    objectType: 'playback',
+                                    objectId: state.videoDetail.id,
+                                    content: value
+                                }),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (comments) {
+                                    location.reload();
+                                    var comment = document.getElementById('comment-area')
+                                    comment.innerHTML = ''
+                                }
                             })
                         }
-                    })
-                }
 
 //                '/api/comments?filter={"objectType":"scheduler","objectId":' + state.videoDetail.id + '}'
 //                '/api/schedulers/' + state.videoDetail.id + '/comments'
-//                var comments = [
-//                    {
-//                        name: '张三',
-//                        time: '2016-12-06',
-//                        content: '黑河市个地方官'
-//                    }
-//                ]
-
+                        proc({
+                            containerId: 'comment-area',
+                            data: data,
+                            templateId: 'live-video-template'
+                        })
+                        proc({
+                            containerId: 'comment-area',
+                            data: data,
+                            templateId: 'live-video-template'
+                        })
+                    }
+                })
             }
         },
+
         scheduler: {
             isInit: false,
             init: function () {
@@ -1544,14 +1582,15 @@
 
                     state.scheduler.isInit = true
                 }
-            },
+            }
+
+            ,
             now: new Date(),
             year: null,
             week: null,
             weekDay: null,
             weekElement: document.getElementById("week")
-        },
-
+        }
     }
 
     state.init()
