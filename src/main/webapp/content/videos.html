@@ -234,9 +234,7 @@
                     <img class="img_item1 cur" src="../img/xiala.png" alt="">
                     <img class="img_item2" src="../img/xiala_sq.png" alt="">
                 </div>
-                <ul class="xiala_ul" id="date">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
-                </ul>
+                <div class="xiala_ul" id="date"></div>
             </div>
         </div>
         <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
@@ -939,7 +937,7 @@
                                         $('#chineseZero').removeClass('active')
                                         $('#one').addClass('active')
                                         $('#zero').removeClass('active')
-                                    }else{
+                                    } else {
                                         $('#chineseZero').addClass('active')
                                         $('#mathOne').removeClass('active')
                                         $('#zero').addClass('active')
@@ -1177,17 +1175,17 @@
                         })
                     })
 
-                    $(document).on('click', ".selectDiv", function (index,e) {
+                    $(document).on('click', ".selectDiv", function (index, e) {
                         if ($(e).children(".xiala_ul").is(":visible")) {
                             $('.tan').hide();
-                            $('.tan').css("z-index","9999");
+                            $('.tan').css("z-index", "9999");
                             $(".xiala_ul").hide();
                             $(".xiala_ul").eq(index).hide();
                             $(".img_item1").addClass("cur");
                             $(".img_item2").removeClass("cur");
-                        }else{
+                        } else {
                             $('.tan').show();
-                            $('.tan').css("z-index","99");
+                            $('.tan').css("z-index", "99");
                             $(".xiala_ul").hide();
                             $(".xiala_ul").eq(index).show();
                             $(".img_item1").addClass("cur").eq(index).removeClass("cur");
@@ -1331,7 +1329,7 @@
                 var picker = new Pikaday({
                     field: document.getElementById('datePicker'),
                     format: 'D MMM YYYY',
-                    onSelect: function() {
+                    onSelect: function () {
                         console.log(this.getMoment().format('Do MMMM YYYY'));
                     }
                 });
