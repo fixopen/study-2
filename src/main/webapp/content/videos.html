@@ -86,13 +86,16 @@
         .data :nth-child(even) {
             border-top: 1px solid #ea875f;
         }
-        .pika-lendar td{
+
+        .pika-lendar td {
             font-size: 1.5rem;
         }
-        .pika-lendar table{
+
+        .pika-lendar table {
             margin: 10px 0;
         }
-        .pika-button{
+
+        .pika-button {
             color: #aaa;
             background-color: #fff;
             padding: 10px 16px;
@@ -1411,7 +1414,7 @@
 
         futureNote: {
             init: function () {
-                var t = state.main.findById(state.futureNote.id).year +'-'+state.main.findById(state.futureNote.id).month+'-'+state.main.findById(state.futureNote.id).day+' '+state.main.findById(state.futureNote.id).hour+':'+state.main.findById(state.futureNote.id).minute+':'+state.main.findById(state.futureNote.id).second+'开讲';
+                var t = state.main.findById(state.futureNote.id).year + '-' + state.main.findById(state.futureNote.id).month + '-' + state.main.findById(state.futureNote.id).day + ' ' + state.main.findById(state.futureNote.id).hour + ':' + state.main.findById(state.futureNote.id).minute + ':' + state.main.findById(state.futureNote.id).second + '开讲';
                 var e = document.getElementsByClassName('waitTime')
                 e[0].innerHTML = t
             },
@@ -1521,11 +1524,11 @@
                             data: data,
                             templateId: 'live-video-template'
                         })
-                        proc({
-                            containerId: 'comment-area',
-                            data: data,
-                            templateId: 'live-video-template'
-                        })
+//                        proc({
+//                            containerId: 'comment-area',
+//                            data: data,
+//                            templateId: 'live-video-template'
+//                        })
                     }
                 })
             }
