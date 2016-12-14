@@ -135,6 +135,22 @@ CREATE TABLE comments (
 ALTER TABLE comments OWNER TO postgres;
 
 --
+-- Name: consumptions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE consumptions (
+  id bigint NOT NULL,
+  user_id bigint,
+  "timestamp" timestamp with time zone,
+  object_type name,
+  object_id bigint,
+  transaction_id bigint
+);
+
+
+ALTER TABLE consumptions OWNER TO postgres;
+
+--
 -- Name: devices; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -214,7 +230,7 @@ CREATE TABLE knowledge_points (
     volume_id bigint,
     name character varying(64),
     "order" integer,
-    show_time timestamp without time zone
+    show_time timestamp without time zone,
     price bigint,
     discount double precision
 );
@@ -335,15 +351,16 @@ CREATE TABLE schedulers (
     subject_id bigint,
     grade integer,
     name character varying(64),
+    abstraction character varying(64),
+    outline character varying(64),
+    description text,
+    prepare text,
     cover_id bigint,
     content_link character varying(256),
     direct_link character varying(256),
-    description text,
-    teacher_id bigint
+    teacher_id bigint,
     price bigint,
     discount double precision
---     teacher character varying(64),
---     teacher_description text
 );
 
 
@@ -401,6 +418,25 @@ CREATE TABLE texts (
 
 
 ALTER TABLE texts OWNER TO postgres;
+
+--
+-- Name: transactions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE transactions (
+  id bigint NOT NULL,
+  user_id bigint,
+  "timestamp" timestamp with time zone,
+  source_id bigint,
+  source_type text,
+  money bigint,
+  object_id bigint,
+  object_type text,
+  count bigint
+);
+
+
+ALTER TABLE transactions OWNER TO postgres;
 
 --
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
