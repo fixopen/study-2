@@ -1086,6 +1086,14 @@ public class PublicAccounts {
                         break;
                     }
                 }
+            }else{
+                // Session userId = JPAEntry.getObject(Session.class, "userId", wechatUser.getUserId());
+                if( wechatUser.getUserId() != null) {
+                    System.out.println("==================cook是空的==================根据openid查询sessionId");
+                    Session session = Sessions.resultCook(wechatUser.getUserId(), "WeChat", openId, new Date());
+                    System.out.println("==================weChat=================根据openid查询sessionId===+============"+session);
+                    s = session;
+                }
             }
         }
         try {
@@ -1094,8 +1102,6 @@ public class PublicAccounts {
                 result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId())).build();
             } else {
                 System.out.println("sessionId="+s.getIdentity());
-                System.out.println("wechatuserId="+wechatUser.getId());
-                //?sessionId=" + s.getIdentity()+"?wechatuserId="+wechatUser.getId()
                 result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId="+s.getIdentity())).build();
             }
         } catch (URISyntaxException e) {

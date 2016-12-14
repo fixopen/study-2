@@ -172,7 +172,7 @@ public class Users {
 
     }
 
-    @PUT //根据id修改
+    @PUT //设置密码
     @Path("updatePassword")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -404,6 +404,47 @@ public class Users {
     }
 
     @POST
+    @Path("simplify-card")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response simplifyCard(@CookieParam("sessionId") String sessionId,ActiveCard ac) {
+        Response result = Response.status(412).build();
+        User user = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+        Date now = new Date();
+        if(user.getTelephone() != null){
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("no", ac.getCardNo());
+            condition.put("password", ac.getPassword());
+            List<Card> cs = JPAEntry.getList(Card.class, condition);
+            switch (cs.size()) {
+                case 0:
+                    result = Response.status(404).build();
+                    break;
+                case 1:
+                    Card c = cs.get(0);
+                    if (c.getActiveTime() == null) {
+                        c.setUserId(user.getId());
+                        c.setActiveTime(now);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(now);
+                        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+                        Date oneYearAfter = cal.getTime();
+                        c.setEndTime(oneYearAfter);
+                        c.setAmount(5880L);
+                        if (ac.getCardNo().startsWith("03")) {
+                            c.setAmount(1680L);
+                        }
+                        JPAEntry.genericPut(c);
+                        result = Response.ok(c).build();
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+        return  result;
+    }
+    @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -438,7 +479,10 @@ public class Users {
                                 cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
                                 Date oneYearAfter = cal.getTime();
                                 c.setEndTime(oneYearAfter);
-                                c.setAmount(588L);
+                                c.setAmount(5880L);
+                                if (ac.getCardNo().startsWith("03")) {
+                                    c.setAmount(1680L);
+                                }
                                 User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                                 WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", ac.getWechatUserId());
                                 if (user == null && wechatUser != null) {
