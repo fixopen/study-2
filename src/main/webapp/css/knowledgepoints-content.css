@@ -84,6 +84,10 @@ a {
     overflow: hidden;
 }
 
+.challenge-font {
+    padding-right: 3rem;
+}
+
 .challenge-left {
     float: left;
     width: 1.9375rem;
@@ -132,7 +136,7 @@ a {
     color: #fe6568;
     text-indent: 2em;
     position: relative;
-    top: -1.25rem;
+    /*top: -1.25rem;*/
 }
 
 /* 闯关练习 */
@@ -592,10 +596,10 @@ li.mld_Ulli {
 
 /*!* 答案 *!*/
 /*.daana {*/
-    /*width: 100%;*/
-    /*min-height: 1.5625rem;*/
-    /*position: absolute;*/
-    /*top: 0.46875rem;*/
-    /*left: 0;*/
-    /*z-index: -1;*/
+/*width: 100%;*/
+/*min-height: 1.5625rem;*/
+/*position: absolute;*/
+/*top: 0.46875rem;*/
+/*left: 0;*/
+/*z-index: -1;*/
 /*}*/

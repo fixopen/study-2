@@ -2,8 +2,7 @@ package com.baremind;
 
 import com.baremind.data.Image;
 import com.baremind.data.Media;
-import com.baremind.data.User;
-import com.baremind.data.ValidationCode;
+
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
@@ -19,12 +18,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
+import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.Date;
@@ -50,14 +46,7 @@ public class Medias {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Media entity) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.create(sessionId, entity, null);
-            }
-        }
-        return result;
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
@@ -65,62 +54,46 @@ public class Medias {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Media newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, Media.class, (exist, media) -> {
-                    String ext = media.getExt();
-                    if (ext != null) {
-                        exist.setExt(ext);
-                    }
-
-                    String mimeType = media.getMimeType();
-                    if (mimeType != null) {
-                        exist.setMimeType(mimeType);
-                    }
-
-                    String name = media.getName();
-                    if (name != null) {
-                        exist.setName(name);
-                    }
-
-                    Long size = media.getSize();
-                    if (size != null) {
-                        exist.setSize(size);
-                    }
-
-                    String storePath = media.getStorePath();
-                    if (storePath != null) {
-                        exist.setStorePath(storePath);
-                    }
-                }, null);
+        return Impl.updateById(sessionId, id, newData, Media.class, (exist, media) -> {
+            String ext = media.getExt();
+            if (ext != null) {
+                exist.setExt(ext);
             }
-        }
-        return result;
+
+            String mimeType = media.getMimeType();
+            if (mimeType != null) {
+                exist.setMimeType(mimeType);
+            }
+
+            String name = media.getName();
+            if (name != null) {
+                exist.setName(name);
+            }
+
+            Long size = media.getSize();
+            if (size != null) {
+                exist.setSize(size);
+            }
+
+            String storePath = media.getStorePath();
+            if (storePath != null) {
+                exist.setStorePath(storePath);
+            }
+        }, null);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, Media.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, Media.class);
     }
 
     @DELETE
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     public Response deleteContentById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
                 Media m = JPAEntry.getObject(Media.class, "id", id);
                 String physicalPath = Properties.getProperty("physicalPath");
 //                String p = physicalPath + m.getStorePath();
@@ -136,18 +109,19 @@ public class Medias {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
         }
         return result;
     }
 
     private static Random random = new Random();
 
+    static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+
     private static int rand(int min, int max) {
         return random.nextInt(max - min) + min;
     }
 
-    @GET //根据条件查询
+    @GET
     @Path("validation-picture")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getValidationPicture(@Context HttpServletRequest request) throws IOException {
@@ -177,24 +151,137 @@ public class Medias {
         ImageIO.write(img, "png", file);
         String virtualPath = Properties.getProperty("graphical2");
         String path = virtualPath + validationCode + ".png";
-
-       /* System.out.println("IP地址========================"+ request.getRemoteAddr());
-        System.out.println("验证码========================"+ validationCode);*/
-        ValidationCode code = new ValidationCode();
-        code.setId(IdGenerator.getNewId());
-        code.setTimestamp(new Date());
-        code.setValidCode(validationCode);
-        code.setPhoneNumber(request.getRemoteAddr());
-        JPAEntry.genericPost(code);
         return Response.ok(new Gson().toJson(path)).build();
     }
+
+    public static void outputImage(int width, int height, OutputStream os, String code) throws IOException {
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = image.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(Color.white);
+        g2.fillRect(0, 0, width, height);
+
+        //绘制干扰线
+//        g2.setColor(getRandColor(160, 200));// 设置线条的颜色
+//        for (int i = 0; i < 20; i++) {
+//            int x0 = random.nextInt(width - 1);
+//            int y0 = random.nextInt(height - 1);
+//            int x1 = random.nextInt(6) + 1;
+//            int y1 = random.nextInt(12) + 1;
+//            g2.drawLine(x0, y0, x0 + x1 + 40, y0 + y1 + 20);
+//        }
+
+        //添加噪点
+//        float yawpRate = 0.05f;// 噪声率
+//        int area = (int) (yawpRate * width * height);
+//        for (int i = 0; i < area; i++) {
+//            int x = random.nextInt(width);
+//            int y = random.nextInt(height);
+//            int rgb = getRandomIntColor();
+//            image.setRGB(x, y, rgb);
+//        }
+
+//        Color c = getRandColor(200, 250);
+//        shear(g2, width, height, c);// 使图片扭曲
+
+        g2.setColor(getRandColor(100, 160));
+        int fontSize = height - 4;
+        Font font = new Font("Algerian", Font.ITALIC, fontSize);
+        g2.setFont(font);
+        int verifySize = code.length();
+        char[] chars = code.toCharArray();
+        for (int i = 0; i < verifySize; i++) {
+            AffineTransform affine = new AffineTransform();
+            affine.setToRotation(Math.PI / 4 * random.nextDouble() * (random.nextBoolean() ? 1 : -1), (width / verifySize) * i + fontSize / 2, height / 2);
+            g2.setTransform(affine);
+            g2.drawChars(chars, i, 1, ((width - 10) / verifySize) * i + 5, height / 2 + fontSize / 2 - 10);
+        }
+
+        g2.dispose();
+        ImageIO.write(image, "jpg", os);
+    }
+
+    private static Color getRandColor(int start, int end) {
+        if (start > 255)
+            start = 255;
+        if (end > 255)
+            end = 255;
+        int r = start + random.nextInt(end - start);
+        int g = start + random.nextInt(end - start);
+        int b = start + random.nextInt(end - start);
+        return new Color(r, g, b);
+    }
+
+//    private static int getRandomIntColor() {
+//        int[] rgb = getRandomRgb();
+//        int color = 0;
+//        for (int c : rgb) {
+//            color = color << 8;
+//            color = color | c;
+//        }
+//        return color;
+//    }
+
+//    private static int[] getRandomRgb() {
+//        int[] rgb = new int[3];
+//        for (int i = 0; i < 3; i++) {
+//            rgb[i] = random.nextInt(255);
+//        }
+//        return rgb;
+//    }
+
+//    private static void shear(Graphics g, int width, int height, Color color) {
+//        shearX(g, width, height, color);
+//        shearY(g, width, height, color);
+//    }
+
+//    private static void shearX(Graphics g, int width, int height, Color color) {
+//        int period = random.nextInt(2);
+//
+//        boolean borderGap = true;
+//        int frames = 1;
+//        int phase = random.nextInt(2);
+//
+//        for (int i = 0; i < height; i++) {
+//            double d = (double) (period >> 1)
+//                * Math.sin((double) i / (double) period
+//                + (6.2831853071795862D * (double) phase)
+//                / (double) frames);
+//            g.copyArea(0, i, width, 1, (int) d, 0);
+//            if (borderGap) {
+//                g.setColor(color);
+//                g.drawLine((int) d, i, 0, i);
+//                g.drawLine((int) d + width, i, width, i);
+//            }
+//        }
+//    }
+
+//    private static void shearY(Graphics g, int width, int height, Color color) {
+//        int period = random.nextInt(40) + 10; // 50;
+//
+//        boolean borderGap = true;
+//        int frames = 20;
+//        int phase = 7;
+//        for (int i = 0; i < width; i++) {
+//            double d = (double) (period >> 1)
+//                * Math.sin((double) i / (double) period
+//                + (6.2831853071795862D * (double) phase)
+//                / (double) frames);
+//            g.copyArea(i, 0, 1, height, 0, (int) d);
+//            if (borderGap) {
+//                g.setColor(color);
+//                g.drawLine(i, (int) d, i, 0);
+//                g.drawLine(i, (int) d + height, i, height);
+//            }
+//        }
+//    }
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadMedia(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
             try {
                 Part p = request.getPart("file");
                 String contentType = p.getContentType();
@@ -203,8 +290,8 @@ public class Medias {
                 String postfix = contentType.substring(contentType.lastIndexOf("/") + 1);
                 if (!Objects.equals(postfix, "jpeg") || !Objects.equals(postfix, "gif") || !Objects.equals(postfix, "ai") || !Objects.equals(postfix, "png")) {
                     String fileName = now + "." + postfix;
-                    String pyshicalpath = Properties.getProperty("physicalpath");
-                    String uploadedFileLocation = pyshicalpath + fileName;
+                    String physicalPath = Properties.getProperty("physicalpath");
+                    String uploadedFileLocation = physicalPath + fileName;
 
                     File file = new File(uploadedFileLocation);
                     FileOutputStream w = new FileOutputStream(file);

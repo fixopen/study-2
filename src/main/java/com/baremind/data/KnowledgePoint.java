@@ -3,7 +3,10 @@ package com.baremind.data;
 import com.baremind.Logs;
 import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
+<<<<<<< HEAD
 //import com.sun.xml.internal.rngom.parse.host.Base;
+=======
+>>>>>>> origin/devel
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -96,80 +99,44 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         showTime = show;
     }
 
-    public static class ContentStats {
-        Long id;
-        String type;
-        Long count;
-
-        public Long getId() {
-            return id;
+    private static Long findItem(List<Object[]> container, Long id) {
+        Long result = null;
+        for (Object[] item : container) {
+            if (((Long)item[0]).longValue() == id.longValue()) {
+                result = (Long)item[1];
+                break;
+            }
         }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public Long getCount() {
-            return count;
-        }
-
-        public void setCount(Long count) {
-            this.count = count;
-        }
+        return result;
     }
 
-    public static class BaseStats {
-        Long id;
-        Long count;
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public Long getCount() {
-            return count;
-        }
-
-        public void setCount(Long count) {
-            this.count = count;
-        }
+    private static List<Object[]> findItems(List<Object[]> container, Long id) {
+        return container.stream().filter((item) -> ((Long)item[0]).longValue() == id.longValue()).collect(Collectors.toList());
     }
 
-    public static Map<String, Object> convertToMap(KnowledgePoint kp, List<BaseStats> likeCount, List<BaseStats> likedCount, List<BaseStats> readCount, List<ContentStats> contentType) {
+    public static Map<String, Object> convertToMap(KnowledgePoint kp, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, List<Object[]> contentType) {
         Map<String, Object> kpm = new HashMap<>();
         kpm.put("id", kp.getId());
         kpm.put("volumeId", kp.getVolumeId());
         kpm.put("name", kp.getName());
         Date showTime = kp.getShowTime();
         kpm.put("showTime", showTime);
-        kpm.put("likeCount", Resources.findItem(likeCount, (BaseStats stats) -> stats.getId().longValue() == kp.getId().longValue()));
-        kpm.put("readCount", Resources.findItem(readCount, (BaseStats stats) -> stats.getId().longValue() == kp.getId().longValue()));
-        kpm.put("liked", Resources.findItem(likedCount, (BaseStats stats) -> stats.getId().longValue() == kp.getId().longValue()) != null);
-        List<ContentStats> stats = Resources.findItems(contentType, (ContentStats s) -> s.getId().longValue() == kp.getId().longValue());
+        kpm.put("likeCount", findItem(likeCount, kp.getId()));
+        kpm.put("readCount", findItem(readCount, kp.getId()));
+        kpm.put("liked", findItem(likedCount, kp.getId()) != null);
+        List<Object[]> stats = findItems(contentType, kp.getId());
         kpm.put("type", "pk");
-        for (ContentStats s : stats) {
-            if (!s.getType().equals("problem")) {
-                if (s.getCount() > 0L) {
+        for (Object[] s : stats) {
+            if (!s[1].equals("problem")) {
+                if ((Long)s[2] > 0L) {
                     kpm.put("type", "normal");
                     break;
                 }
             }
         }
         long total = 0L;
-        for (ContentStats s : stats) {
-            total += s.getCount();
+        for (Object[] s : stats) {
+            total += (Long)s[2];
         }
         if (total == 0L) {
             kpm = null;
@@ -316,8 +283,8 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         List<Video> videoObjects = getList(em, videoIds, Video.class);
 
         List<Problem> problemObjects = getList(em, problemIds, Problem.class);
-        List<ProblemOption> problemOptionObjects = Resources.getListByColumn(em, "problemId", problemIds, ProblemOption.class);
-        List<ProblemStandardAnswer> problemStandardAnswerObjects = Resources.getListByColumn(em, "problemId", problemIds, ProblemStandardAnswer.class);
+        List<ProblemOption> problemOptionObjects = Resources.getList(em, "problemId", problemIds, ProblemOption.class);
+        List<ProblemStandardAnswer> problemStandardAnswerObjects = Resources.getList(em, "problemId", problemIds, ProblemStandardAnswer.class);
 
         List<ImageText> imageTextObject = getList(em, imageTextIds, ImageText.class);
 

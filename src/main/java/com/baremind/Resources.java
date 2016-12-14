@@ -2,6 +2,7 @@ package com.baremind;
 
 import com.baremind.data.*;
 import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,8 +12,12 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by fixopen on 2/12/2016.
@@ -33,10 +38,10 @@ public class Resources {
     }
 
     public static <T> List<T> getList(EntityManager em, List<String> ids, Class<T> type) {
-        return getListByColumn(em, "id", ids, type);
+        return getList(em, "id", ids, type);
     }
 
-    public static <T> List<T> getListByColumn(EntityManager em, String columnName, List<String> ids, Class<T> type) {
+    public static <T> List<T> getList(EntityManager em, String columnName, List<String> ids, Class<T> type) {
         List<T> result = null;
         if (!ids.isEmpty()) {
             String query = "SELECT o FROM " + type.getSimpleName() + " o WHERE o." + columnName + " IN ( " + join(ids) + " )";
@@ -48,9 +53,9 @@ public class Resources {
 
     public static <T> T findItem(List<T> container, Predicate<T> p) {
         T result = null;
-        for (T textItem : container) {
-            if (p.test(textItem)) {
-                result = textItem;
+        for (T item : container) {
+            if (p.test(item)) {
+                result = item;
                 break;
             }
         }
@@ -58,13 +63,7 @@ public class Resources {
     }
 
     public static <T> List<T> findItems(List<T> container, Predicate<T> p) {
-        List<T> result = new ArrayList<>();
-        for (T textItem : container) {
-            if (p.test(textItem)) {
-                result.add(textItem);
-            }
-        }
-        return result;
+        return container.stream().filter(p).collect(Collectors.toList());
     }
 
     static Resource getByTypeAndId(String type, Long id) {
@@ -88,16 +87,15 @@ public class Resources {
     @Path("{type}/{id}/sale-info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSaleInfo(@CookieParam("sessionId") String sessionId,  @PathParam("type") String type, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             Map<String, Object> r = new HashMap<>();
             Resource resource = getByTypeAndId(type, id);
             r.put("price", resource.getAmount());
             r.put("subjectId", resource.getSubjectId());
-            Long userId = JPAEntry.getLoginId(sessionId);
-            User user = JPAEntry.getObject(User.class, "id", userId);
+            User user = JPAEntry.getLoginUser(sessionId);
             r.put("user_amount", user.getAmount());
-            List<Card> cards = JPAEntry.getList(Card.class, "userId", userId);
+            List<Card> cards = JPAEntry.getList(Card.class, "userId", user.getId());
             r.put("cards", cards);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             result = Response.ok(gson.toJson(r)).build();
@@ -109,12 +107,12 @@ public class Resources {
     @Path("{type}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId,  @PathParam("type") String type, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             result = Response.status(403).build();
-            Long userId = JPAEntry.getLoginId(sessionId);
+            User user = JPAEntry.getLoginUser(sessionId);
             Map<String, Object> filter = new HashMap<>();
-            filter.put("userId", userId);
+            filter.put("userId", user.getId());
             filter.put("objectType", type);
             filter.put("objectId", id);
             List<Transaction> ts = JPAEntry.getList(Transaction.class, filter);
@@ -149,13 +147,13 @@ public class Resources {
                 if (s != null) {
                     Consumption consumption = new Consumption();
                     consumption.setId(IdGenerator.getNewId());
-                    consumption.setUserId(userId);
+                    consumption.setUserId(user.getId());
                     consumption.setObjectId(id);
                     consumption.setObjectType(type);
                     consumption.setTimestamp(new Date());
                     consumption.setTransactionId(findTransaction.getId());
                     JPAEntry.genericPost(consumption);
-                    JPAEntry.log(userId, "read", type, id);
+                    JPAEntry.log(user.getId(), "read", type, id);
                     result = Response.ok(s.getContent()).build();
                 }
             }

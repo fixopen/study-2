@@ -1,7 +1,6 @@
 package com.baremind;
 
 import com.baremind.data.Card;
-import com.baremind.data.User;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
@@ -42,14 +41,7 @@ public class Cards {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Card entity) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.create(sessionId, entity, null);
-            }
-        }
-        return result;
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
@@ -57,67 +49,53 @@ public class Cards {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Card newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, Card.class, (exist, card) -> {
-                    String duration = card.getDuration();
-                    if (duration != null) {
-                        exist.setDuration(duration);
-                    }
-
-                    Date activeTime = card.getActiveTime();
-                    if (activeTime != null) {
-                        exist.getActiveTime();
-                    }
-
-                    Date endTime = card.getEndTime();
-                    if (endTime != null) {
-                        exist.setEndTime(endTime);
-                    }
-
-                    String no = card.getNo();
-                    if (no != null) {
-                        exist.setNo(no);
-                    }
-
-                    String password = card.getPassword();
-                    if (password != null) {
-                        exist.setPassword(password);
-                    }
-
-                    Long subject = card.getSubjectId();
-                    if (subject != null) {
-                        exist.setSubjectId(subject);
-                    }
-
-                    Long userId = card.getUserId();
-                    if (userId != null) {
-                        exist.setUserId(userId);
-                    }
-
-                    Long amount = card.getAmount();
-                    if (amount != null) {
-                        exist.setAmount(amount);
-                    }
-                }, null);
+        return Impl.updateById(sessionId, id, newData, Card.class,(exist, card) -> {
+            String duration = card.getDuration();
+            if (duration != null) {
+                exist.setDuration(duration);
             }
-        }
-        return result;
+
+            Date activeTime = card.getActiveTime();
+            if (activeTime != null) {
+                exist.getActiveTime();
+            }
+
+            Date endTime = card.getEndTime();
+            if (endTime != null) {
+                exist.setEndTime(endTime);
+            }
+
+            String no = card.getNo();
+            if (no != null) {
+                exist.setNo(no);
+            }
+
+            String password = card.getPassword();
+            if (password != null) {
+                exist.setPassword(password);
+            }
+
+            Long subject = card.getSubjectId();
+            if (subject != null) {
+                exist.setSubjectId(subject);
+            }
+
+            Long userId = card.getUserId();
+            if (userId != null) {
+                exist.setUserId(userId);
+            }
+
+            Long amount = card.getAmount();
+            if (amount != null) {
+                exist.setAmount(amount);
+            }
+        }, null);
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, Card.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, Card.class);
     }
 
     private static final String[] serials = new String[]{"1"};
@@ -127,8 +105,8 @@ public class Cards {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cardsGenerator(@CookieParam("sessionId") String sessionId, @PathParam("subjectNo") String subjectNo, @PathParam("grade") String grade, byte[] contents) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
             try {
                 Map<String, Object> q = new Gson().fromJson(new String(contents, StandardCharsets.UTF_8.toString()), new TypeToken<Map<String, Object>>() {
                 }.getType());
@@ -155,8 +133,8 @@ public class Cards {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadCards(@Context HttpServletRequest request, @CookieParam("sessionId") String sessionId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
             try {
                 Part p = request.getPart("file");
                 InputStream inputStream = p.getInputStream();
@@ -182,8 +160,8 @@ public class Cards {
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "text/csv"})
     public Response importCardsViaBareContent(@CookieParam("sessionId") String sessionId, byte[] contents) {
         String uploadedFileLocation = "tempFilename.csv";
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
             CharacterEncodingFilter.writeToFile(contents, uploadedFileLocation);
             parseAndInsert(uploadedFileLocation);
             result = Response.ok("{\"state\":\"ok\"}").build();

@@ -23,12 +23,9 @@ public class Sessions {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.getById(sessionId, id, Session.class, null);
-            }
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
+            result = Impl.genericQueryIdProcessor(id, Session.class, null);
         }
         return result;
     }
@@ -271,14 +268,7 @@ public class Sessions {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Session newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, Session.class, new Updater(), null);
-            }
-        }
-        return result;
+        return Impl.updateById(sessionId, id, newData, Session.class, new Updater(), null);
     }
 
     @PUT //根据token修改
@@ -292,14 +282,7 @@ public class Sessions {
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, Session.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, Session.class);
     }
 
     @DELETE

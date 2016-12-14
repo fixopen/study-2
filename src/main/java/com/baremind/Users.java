@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 @Path("users")
 public class Users {
@@ -23,11 +25,12 @@ public class Users {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.getById(sessionId, id, User.class, null);
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
+            result = Response.status(404).build();
+            User user = JPAEntry.getObject(User.class, "id", id);
+            if (user != null) {
+                result = Impl.finalResult(user, null);
             }
         }
         return result;
@@ -44,17 +47,12 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, User entity) {
-        Response result = Response.status(401).build();
-        Date now = new Date();
-        entity.setCreateTime(now);
-        entity.setUpdateTime(now);
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.create(sessionId, entity, null);
-            }
-        }
-        return result;
+        return Impl.create(sessionId, entity, (user) -> {
+            Date now = new Date();
+            user.setCreateTime(now);
+            user.setUpdateTime(now);
+            return user;
+        }, null);
     }
 
     private static class Updater implements BiConsumer<User, User> {
@@ -139,14 +137,7 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, User newData) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.updateById(sessionId, id, newData, User.class, new Updater(), null);
-            }
-        }
-        return result;
+        return Impl.updateById(sessionId, id, newData, User.class, new Updater(), null);
     }
 
     public static class updatePassword{
@@ -209,14 +200,7 @@ public class Users {
     @DELETE
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            if (admin != null && admin.getIsAdministrator()) {
-                result = Impl.deleteById(sessionId, id, User.class);
-            }
-        }
-        return result;
+        return Impl.deleteById(sessionId, id, User.class);
     }
 
     @DELETE
@@ -229,9 +213,8 @@ public class Users {
     @Path("{id}/cards")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCards(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-        if (admin != null && admin.getIsAdministrator()) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
             result = Response.status(404).build();
             List<Card> cards = JPAEntry.getList(Card.class, "userId", id);
             if (!cards.isEmpty()) {
@@ -246,10 +229,10 @@ public class Users {
     @Path("self/cards")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSelfCards(@CookieParam("sessionId") String sessionId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             result = Response.status(404).build();
-            List<Card> cards = JPAEntry.getList(Card.class, "userId", JPAEntry.getLoginId(sessionId));
+            List<Card> cards = JPAEntry.getList(Card.class, "userId", JPAEntry.getLoginUser(sessionId).getId());
             if (!cards.isEmpty()) {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 result = Response.ok(gson.toJson(cards)).build();
@@ -380,12 +363,8 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, ActiveCard ac) {
-        //Random rand = new Random();
-        //Long logId = rand.nextLong();
-        //Logs.insert(id, "log", logId, "start");
-        Response result = Response.status(404).build();
-        User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-        if (admin != null && admin.getIsAdministrator()) {
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
             result = activeCardImpl(id, ac);
         }
         return result;
@@ -396,11 +375,12 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-        //Random rand = new Random();
-        //Long logId = rand.nextLong();
-        //Logs.insert(id, "log", logId, "start");
-        Long userId = JPAEntry.getLoginId(sessionId);
-        return activeCardImpl(userId, ac);
+        Response result = Impl.validationAdmin(sessionId);
+        if (result.getStatus() == 202) {
+            User user = JPAEntry.getLoginUser(sessionId);
+            result = activeCardImpl(user.getId(), ac);
+        }
+        return result;
     }
 
     @POST
@@ -741,13 +721,17 @@ public class Users {
     @Path("teachers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTeachers(@CookieParam("sessionId") String sessionId) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             result = Response.status(404).build();
-            List<User> teachers = JPAEntry.getList(User.class, "id", "IN ()");
+            EntityManager em = JPAEntry.getEntityManager();
+            String contentCountQuery = "SELECT s.teacherId FROM Scheduler s";
+            TypedQuery<Long> cq = em.createQuery(contentCountQuery, Long.TYPE);
+            final List<Long> teacherIds = cq.getResultList();
+            final List<String> teacherIdsString = teacherIds.stream().map(Object::toString).collect(Collectors.toList());
+            List<User> teachers = Resources.getList(em, "id", teacherIdsString, User.class);
             if (!teachers.isEmpty()) {
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                result = Response.ok(gson.toJson(teachers)).build();
+                result = Impl.finalResult(teachers, null, null);
             }
         }
         return result;
@@ -764,7 +748,6 @@ public class Users {
                 break;
         }
         return result;
-
     }
 
 

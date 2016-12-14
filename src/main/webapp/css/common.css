@@ -164,6 +164,7 @@ table {
     color: #ff6c00;
     font-size: 1.105rem;
     font-weight: bold;
+    margin: 0;
 }
 
 .neir_ptxt span {
@@ -185,13 +186,14 @@ span.ptxt_span {
 .neir_ptiX {
     color: #888;
     font-size: 0.8125rem;
+    margin: 0;
     margin-top: 0.625rem;
 }
 
 .neir_ptiX input {
     -webkit-appearance: checkbox !important;
     appearance: checkbox !important;
-    vertical-align: middle;
+    vertical-align: top;
     margin-right: 0.15625rem;
 }
 
