@@ -218,18 +218,18 @@ public class Scheduler {
         schedulerMap.put("abstraction", scheduler.getAbstraction());
         schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
-        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
-        if (cover != null) {
-            schedulerMap.put("cover", cover.getStorePath());
-        }
-        User teacher = Resources.findItem(teachers, item -> item.getId() == scheduler.getTeacherId());
-        if (teacher != null) {
-            schedulerMap.put("teacher", teacher.getName());
-            schedulerMap.put("teacherDescription", teacher.getDescription());
-        }
-        schedulerMap.put("price", scheduler.getPrice());
-        schedulerMap.put("discount", scheduler.getDiscount());
-        //schedulerMap.put("price", scheduler.getAmount());
+//        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
+//        if (cover != null) {
+//            schedulerMap.put("cover", cover.getStorePath());
+//        }
+//        User teacher = Resources.findItem(teachers, item -> item.getId() == scheduler.getTeacherId());
+//        if (teacher != null) {
+//            schedulerMap.put("teacher", teacher.getName());
+//            schedulerMap.put("teacherDescription", teacher.getDescription());
+//        }
+//        schedulerMap.put("price", scheduler.getPrice());
+//        schedulerMap.put("discount", scheduler.getDiscount());
+//        //schedulerMap.put("price", scheduler.getAmount());
         schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
         schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
         schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != null);
