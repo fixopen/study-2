@@ -117,7 +117,7 @@ span.ptxt_span{
     line-height: 1.875rem;
 }
 
-/*@Author: zhaoxq*/
+/*!*@Author: zhaoxq*!*/
 .mine_baodiv{
     margin-top: 1.25rem;
 }
@@ -140,11 +140,11 @@ span.ptxt_span{
 }
 .mine_img2{
     float: right;
-   /* width: 1.125rem;
-    height: 0.8125rem;*/
+    width: 1.125rem;
+    height: 0.8125rem;
     vertical-align: top;
     margin-top: 2.0rem;
-    /* display: none;*/
+     display: none;
 }
 .mine_img2.cur{
     display: block;
@@ -214,8 +214,8 @@ span.ptxt_span{
 .note_number{
     margin: 0 0.3125rem;
 }
-
-/*@Author: zhaoxq*/
+/*
+!*@Author: zhaoxq*!
 .charge-explain{
     background-color: #ff8067;
     text-align: center;
@@ -232,11 +232,11 @@ span.ptxt_span{
     border-bottom: 1px solid #e5e5e5;
     background-color: #fff;
 }
-/*.main_ptxt{
+!*.main_ptxt{
     color: #aaa;
     font-size: 0.8125rem;
     padding: 0.9375rem 0;
-}*/
+}*!
 .mine_zuli{
     display: block;
     color: #444;
@@ -274,7 +274,7 @@ span.ptxt_span{
 }
 .uli_spani{
     margin: 0 0.3125rem;
-}
+}*/
 
 /* charge-area */
 .rain-drop-ul{

@@ -25,7 +25,7 @@ public class Users {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Impl.validationAdmin(sessionId);
+        Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             result = Response.status(404).build();
             User user = JPAEntry.getObject(User.class, "id", id);
@@ -313,7 +313,6 @@ public class Users {
         return result;
     }
 
-    @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

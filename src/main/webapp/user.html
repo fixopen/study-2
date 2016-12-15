@@ -264,9 +264,133 @@
     <!--</div>-->
 </article>
 <article id="head" style="display: none;"></article>
-<article id="consumes" style="display: none;"></article>
+<article id="consumes" style="display: none;">
+    <div class="wrap">
+        <div class="balance_jine">
+            <div class="balance_top">
+                <div class="baltop_div1"></div>
+                <div class="baltop_div2">
+                    <p class="baldiv2_p0">账号余额</p>
+                    <p class="baldiv2_p1"><span class="baldiv2_p1span" id="yu"></span>(金豆)</p>
+                    <p class="baldiv2_p2">
+                        <button class="recharge" style="cursor:hand" id="zhichong">
+                            <img src="myUser/image/recharge.png" alt="">
+                            充值
+                        </button>
+                        <button class="turnout" style="cursor:hand" id="zhuanchu">
+                            <img src="myUser/image/turnout.png" alt="">
+                            转出
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="balance_zilo">
+            <img src="myUser/image/hotqiu.png" alt="">
+            <ul class="balance_zUl">
+                <li class="balance_zuli balancezuli_tou">消费记录</li>
+                <div id="balance"></div>
+            </ul>
+        </div>
+    </div>
+</article>
+<article id="selectCard" style="display: none">
+    <div class="wrap" id="to">
+        <ul class="xuanze_baodiv">
+            <li id="account">
+            </li>
+            <li id="oneCard">
+            </li>
+        </ul>
+    </div>
+    <div id="rechargepage" style="display: none">
+        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+        <li class="mine_zuli"  id="z" style="cursor: hand">
+            <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
+            <div class="xuanze_leftdiv">
+                <span class="xuanze_leftsp" id="name"></span>
+                <span class="xuanze_leftsp" id="no"></span>
+                <br>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
+            </div>
+        </li>
+        <div class="charge-main">
+            <!-- charge-area -->
+            <p class="main_ptxt">1元=10金豆</p>
+            <ul class="rain-drop-ul">
+                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+            </ul>
+            <div class="srinput_div">
+                <span class="srinput_span">其他金额：</span>
+                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+            </div>
+            <div class="count_div">小计：
+                <span>￥<i class="count_spani1">15</i></span>
+            </div>
+        </div>
+        <div class="count_div">合计：
+            <span>￥<i class="count_spani2">10.50</i></span>
+            <br>
+            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
+        </div>
+        <!-- pay-btn -->
+        <div class="pay_btn">
+            <div class="wechat-btn">
+                <span class="wechat-span"></span>
+                微信支付
+            </div>
+            <div class="alipay-btn">
+                <span class="alipay-span"></span>
+                支付宝支付
+            </div>
+        </div>
+    </div>
+</article>
 <article id="recharge" style="display: none">
+    <div id="converted">
 
+    </div>
+    <div id="selectOneCard" style="display: none">
+        <div class="wrap">
+            <ul class="mine_baodiv">
+                <li>
+                    <a class="xuanze_zuli" href="javascript:void(0)">
+                        <img class="xuanze_img1" src="" alt="" id="image" >
+                        <div class="xuanze_leftdiv" id="cardid">
+                            <span class="xuanze_leftsp" id="zs"></span>
+                            <span class="xuanze_leftsp" id="zn"></span>
+                            <br>
+                            <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="za"></i>金豆</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="mine_baodiv">
+                <li class="mine_liname">
+                    <div class="mine_leftdiv">
+                        <p class="mine_zhaunc">转出金豆数量</p>
+                        <span class="mine_leftsp">金豆：</span>
+                        <input class="mine_zhauncIn" type="text" id="convertedNumber">
+                    </div>
+                </li>
+            </ul>
+            <p class="turnOut_note">
+                最多可转出到卡
+                <span class="note_number" id="tishi">
+
+                </span>
+                金豆
+            </p>
+            <div class="zhaunc_btn">
+                <button class="zhaunc_a" style="cursor: hand" id="submitTransfer">确认转出</button>
+            </div>
+        </div>
+    </div>
 </article>
 <!--<article id="recharge" style="display: none;"></article>-->
 <article id="study" style="display: none;"></article>
@@ -435,6 +559,7 @@
     </div>
 </article>
 
+
 <template id="user-template">
     <!--<div class="user_div_css">-->
     <ul class="public_ul_css">
@@ -468,7 +593,7 @@
         </li>
         <br/>
         <li>
-            <ul class="user_li_css public_li_css">账户余额</ul>
+            <ul class="user_li_css public_li_css" data-article="consumes">账户余额</ul>
         </li>
         <li>
             <ul class="user_li_css public_li_css" data-article="selectCard">充值</ul>
@@ -552,10 +677,10 @@
     </div>
 </template>
 <template id="consume-template">
-    <li>
-        <p>${time}</p>
-        <p>${direction}</p>
-        <p><span>${amount}</span>金豆</p>
+    <li class="balance_zuli">
+        <p class="balance_leftsp">${timestamp}</p>
+        <p class="balance_center">${action}</p>
+        <p class="balance_rightip"><span>${money}</span>金豆</p>
     </li>
 </template>
 <template id="study-template">
@@ -580,63 +705,6 @@
 <template id="recharge-template">
 
 </template>
-<article id="selectCard" style="display: none">
-    <div class="wrap" id="to">
-        <ul class="xuanze_baodiv">
-            <li id="account">
-            </li>
-            <li id="oneCard">
-            </li>
-        </ul>
-    </div>
-    <div id="rechargepage" style="display: none">
-        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
-        <li class="mine_zuli"  id="z" style="cursor: hand">
-            <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
-            <div class="xuanze_leftdiv">
-                <span class="xuanze_leftsp" id="name"></span>
-                <span class="xuanze_leftsp" id="no"></span>
-                <br>
-                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
-            </div>
-        </li>
-        <div class="charge-main">
-            <!-- charge-area -->
-            <p class="main_ptxt">1元=10金豆</p>
-            <ul class="rain-drop-ul">
-                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
-            </ul>
-            <div class="srinput_div">
-                <span class="srinput_span">其他金额：</span>
-                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
-            </div>
-            <div class="count_div">小计：
-                <span>￥<i class="count_spani1">15</i></span>
-            </div>
-        </div>
-        <div class="count_div">合计：
-            <span>￥<i class="count_spani2">10.50</i></span>
-            <br>
-            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
-        </div>
-        <!-- pay-btn -->
-        <div class="pay_btn">
-            <div class="wechat-btn">
-                <span class="wechat-span"></span>
-                微信支付
-            </div>
-            <div class="alipay-btn">
-                <span class="alipay-span"></span>
-                支付宝支付
-            </div>
-        </div>
-    </div>
-</article>
 <template id="selectCard-template">
     <div>
         <ul class="xuanze_zuli" data-id="${id}" data-amount="${amount}" data-subject="${subjectId}" data-img="${image}" data-no="${no}" style="cursor:hand">
@@ -664,6 +732,7 @@
         </ul>
     </div>
 </template>
+
 <!-- 引入js -->
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <!--<script type="text/javascript" src="/zepto/zepto.min.js"></script>-->
@@ -796,8 +865,9 @@
                     templateId: 'selectCard-template'
                 })
             } else if (T == "z") {
+                document.getElementById("converted").innerHTML=""
                 proc({
-                    containerId: 'oneCard',
+                    containerId: 'converted',
                     data: cards,
                     templateId: 'selectCard-template'
                 })
@@ -817,8 +887,15 @@
         },
         switchRecharge(id,amount,no,subject,name,img, T){
             if (T == "z") {
-                alert(id)
-                alert("转账")
+                document.getElementById("converted").innerHTML=""
+
+                document.getElementById("za").innerHTML=amount
+                document.getElementById("tishi").innerHTML=user.amount
+                document.getElementById("zn").innerHTML=no
+                document.getElementById("zs").innerHTML=subject
+                $("#cardid").val(id)
+                document.getElementById("image").src=img
+                document.getElementById("selectOneCard").style.display="block"
             } else if (T == "c") {
                 if(id == user.id){
                     document.getElementById("name").innerHTML=name
@@ -836,6 +913,45 @@
                 document.getElementById("rechargepage").style.display="block"
             }
         },
+        atom(sourceId, sourceType, object_Id, object_Type, count, money) {
+        var result;
+       if (count == null) {
+            filter = { //转账transferFilter
+                sourceId: sourceId,
+                sourceType: sourceType,
+                objectId: object_Id,
+                objectType: object_Type,
+                money: money
+            }
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/api/transactions",
+            dataType: "json",
+            data: JSON.stringify(filter),
+            contentType: "application/json; charset=utf-8",
+            success: function (e) {
+                user.amount = user.amount - $("#convertedNumber").val()
+                user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
+                state.switchToFront('consumes')
+            },
+            error: function (e) {
+                result = e;
+                alert(JSON.stringify(e))
+                switch (JSON.stringify(e.status)) {
+                    case "408":
+                        alert("余额不足")
+                        break;
+                    case "200":
+                        user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
+                        state.switchToFront('consumes')
+                        break;
+                }
+            }
+        })
+        return result;
+    },
         sign: {
             init: function () {
                 document.getElementById("sign").style.display = "block"
@@ -1153,6 +1269,10 @@
                     chongzhi.addEventListener('click', function (e) {
                         state.switchTo('selectCard')
                     })
+                    var zhichong = document.getElementById("zhichong");
+                    zhichong.addEventListener('click', function (e) {
+                        state.switchTo('selectCard')
+                    })
                 } else {
                     document.getElementById("user").innerHTML = ""
                     proc({
@@ -1371,89 +1491,9 @@
                     state.rechargePage(user.cards, 'c')
                 }
                 state.cards.isCards = true
-                /*function rechargePage(cards, T) {
-                    document.getElementById("to").style.display="block"
-                    document.getElementById("rechargepage").style.display="none"
-                    $("#to").val(T)
-                    document.getElementById("oneCard").innerHTML = ""
-                    document.getElementById("account").innerHTML = ""
-                    for (var i = 0; i < cards.length; i++) {
-                        if (cards[i].subjectId == 1 || cards[i].subjectId == "语文") {
-                            cards[i].image = "keBiao.png"
-                        }
-                        if (cards[i].subjectId == 2 || cards[i].subjectId == "数学") {
-                            cards[i].image = "mathBiao.png"
-                        }
-                        if(cards[i].subjectId == 1 || cards[i].subjectId == 2){
-                            cards[i].subjectId = state.getSubjectNameById(cards[i].subjectId)
-                        }
-                        if (cards[i].amount == 0) {
-                            cards[i].amount = "0"
-                        }
-                    }
-                    if (T == "c") {
-                        var ua = user.amount
-                        if (ua == 0) {
-                            ua = "0"
-                        }
-                        var uc = {
-                            id: user.id,
-                            amount: ua,
-                            name: "账户",
-                            image: "yueBiao.png",
-                        }
-                        //selectCard userCard recharge-template
-                        proc({
-                            containerId: 'account',
-                            data: uc,
-                            templateId: 'userCard-template'
-                        })
-                        proc({
-                            containerId: 'oneCard',
-                            data: cards,
-                            templateId: 'selectCard-template'
-                        })
-                    } else if (T == "z") {
-                        proc({
-                            containerId: 'oneCard',
-                            data: cards,
-                            templateId: 'selectCard-template'
-                        })
-                    }
-                    $('.xuanze_zuli').on('click', function (e) {
-                        document.getElementById("to").style.display = "block"
-                        var element = e.target
-                        var id = element.dataset.id;
-                        var amount = element.dataset.amount;
-                        var no = element.dataset.no;
-                        var subject = element.dataset.subject;
-                        var name = element.dataset.name;
-                        tiao(id,amount,no,subject,name, $("#to").val())
-                    })
-
-                }
-
-                function tiao(id,amount,no,subject,name, T) {
-                    if (T == "z") {
-                        alert(id)
-                        alert("转账")
-                    } else if (T == "c") {
-                        if(id == user.id){
-                            document.getElementById("name").innerHTML=name
-                            document.getElementById("money").innerHTML=amount
-                        }else{
-                            document.getElementById("name").innerHTML=subject
-                            document.getElementById("no").innerHTML=no
-                            document.getElementById("money").innerHTML=amount
-                        }
-                        document.getElementById("to").style.display="none"
-                        document.getElementById("rechargepage").style.display="block"
-                    }
-                }*/
             },
 
         },
-
         gold: {
             init: function () {
                 document.getElementById("")
@@ -1461,6 +1501,69 @@
         },
         consumes: {
             init: function () {
+                document.getElementById("yu").innerHTML=user.amount
+                if (!state.consumes.isCards) {
+                    if (!user.consumes) {
+                        $.ajax({
+                            type:"get",
+                            url:"/api/transactions/self",
+                            dataType:"json",
+                            success:function (e) {
+                                for (var i = 0; i < e.length; ++i) {
+                                    if(e[i].count == 0 && e[i].sourceId != null){
+                                        e[i].action = "转账"
+                                    }else if(e[i].count == 0 && e[i].sourceId == null){
+                                        e[i].action = "充值"
+                                    }
+                                    e[i].timestamp = e[i].timestamp.substr(0,10)
+                                }
+                                user.consumes = e
+                                proc({
+                                    containerId: 'balance',
+                                    data: user.consumes,
+                                    templateId: 'consume-template'
+                                })
+                                var zhuanchu = document.getElementById("zhuanchu");
+                                zhuanchu.addEventListener('click', function (e) {
+                                    state.switchTo("recharge")
+                                })
+                            }
+                        })
+                    }
+                }else{
+                    document.getElementById("balance").innerHTML = ""
+                    proc({
+                        containerId: 'balance',
+                        data: user.consumes,
+                        templateId: 'consume-template'
+                    })
+                }
+                state.consumes.isCards = true
+
+            }
+        },
+        recharge: {
+            init: function () {
+                if (!state.cards.isCards) {
+                    if (!user.cards) {
+                        $.ajax({
+                            type: 'get',
+                            url: '/api/users/self/cards',
+                            dataType: 'json',
+                            success: function (cs) {
+                                user.cards = cs
+                                state.rechargePage(cs, 'z')
+                            }
+                        })
+                        var submitTransfer = document.getElementById("submitTransfer")
+                        submitTransfer.addEventListener('click', function (e) {
+                            state.atom(user.id,"user",$("#cardid").val(),"card",null,$("#convertedNumber").val())
+                        })
+                    }
+                } else {
+                    state.rechargePage(user.cards, 'z')
+                }
+                state.cards.isCards = true
             }
         },
         head: {
