@@ -1,6 +1,7 @@
 package com.baremind.data;
 
 
+import com.baremind.Logs;
 import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
 
@@ -219,7 +220,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.discount = discount;
     }
 
-    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers) {
+    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount) {
         Map<String, Object> schedulerMap = new HashMap<>();
         schedulerMap.put("id", scheduler.getId());
         schedulerMap.put("year", scheduler.getYear());
@@ -233,11 +234,11 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("abstraction", scheduler.getAbstraction());
         schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
-        Image cover = Resources.findItem(covers, (item) -> item.getId() == scheduler.getCoverId());
+        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
         if (cover != null) {
             schedulerMap.put("cover", cover.getStorePath());
         }
-        User teacher = Resources.findItem(teachers, (item) -> item.getId() == scheduler.getTeacherId());
+        User teacher = Resources.findItem(teachers, item -> item.getId() == scheduler.getTeacherId());
         if (teacher != null) {
             schedulerMap.put("teacher", teacher.getName());
             schedulerMap.put("teacherDescription", teacher.getDescription());
@@ -245,10 +246,13 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("price", scheduler.getPrice());
         schedulerMap.put("discount", scheduler.getDiscount());
         //schedulerMap.put("price", scheduler.getAmount());
+        schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
+        schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
+        schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != null);
         return schedulerMap;
     }
 
-    public static Map<String, Object> convertToMap(Scheduler scheduler) {
+    public static Map<String, Object> convertToMap(Scheduler scheduler, Long userId) {
         Map<String, Object> schedulerMap = new HashMap<>();
         schedulerMap.put("id", scheduler.getId());
         schedulerMap.put("year", scheduler.getYear());
@@ -274,6 +278,17 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("price", scheduler.getPrice());
         schedulerMap.put("discount", scheduler.getDiscount());
         //schedulerMap.put("price", scheduler.getAmount());
+        schedulerMap.put("likeCount", 0);
+        Long likeCount = Logs.getStatsCount("knowledge-point", scheduler.getId(), "like");
+        if (likeCount != null) {
+            schedulerMap.put("likeCount", likeCount);
+        }
+        schedulerMap.put("liked", Logs.has(userId, "knowledge-point", scheduler.getId(), "like"));
+        schedulerMap.put("readCount", 0);
+        Long readCount = Logs.getStatsCount("knowledge-point", scheduler.getId(), "read");
+        if (readCount != null) {
+            schedulerMap.put("readCount", readCount);
+        }
         return schedulerMap;
     }
 

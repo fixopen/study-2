@@ -98,21 +98,6 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         showTime = show;
     }
 
-    private static Long findItem(List<Object[]> container, Long id) {
-        Long result = null;
-        for (Object[] item : container) {
-            if (((Long)item[0]).longValue() == id.longValue()) {
-                result = (Long)item[1];
-                break;
-            }
-        }
-        return result;
-    }
-
-    private static List<Object[]> findItems(List<Object[]> container, Long id) {
-        return container.stream().filter((item) -> ((Long)item[0]).longValue() == id.longValue()).collect(Collectors.toList());
-    }
-
     public static Map<String, Object> convertToMap(KnowledgePoint kp, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, List<Object[]> contentType) {
         Map<String, Object> kpm = new HashMap<>();
         kpm.put("id", kp.getId());
@@ -120,10 +105,10 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         kpm.put("name", kp.getName());
         Date showTime = kp.getShowTime();
         kpm.put("showTime", showTime);
-        kpm.put("likeCount", findItem(likeCount, kp.getId()));
-        kpm.put("readCount", findItem(readCount, kp.getId()));
-        kpm.put("liked", findItem(likedCount, kp.getId()) != null);
-        List<Object[]> stats = findItems(contentType, kp.getId());
+        kpm.put("likeCount", Resources.findUntypedItem(likeCount, kp.getId()));
+        kpm.put("readCount", Resources.findUntypedItem(readCount, kp.getId()));
+        kpm.put("liked", Resources.findUntypedItem(likedCount, kp.getId()) != null);
+        List<Object[]> stats = Resources.findUntypedItems(contentType, kp.getId());
         kpm.put("type", "pk");
         for (Object[] s : stats) {
             if (!s[1].equals("problem")) {
