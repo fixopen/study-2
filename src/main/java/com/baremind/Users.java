@@ -200,14 +200,6 @@ public class Users {
         private String validCode;
         private String wechatUserId;
 
-        public String getWechatUserId() {
-            return wechatUserId;
-        }
-
-        public void setWechatUserId(String wechatUserId) {
-            this.wechatUserId = wechatUserId;
-        }
-
         String getCardNo() {
             return cardNo;
         }
@@ -238,6 +230,14 @@ public class Users {
 
         public void setValidCode(String validCode) {
             this.validCode = validCode;
+        }
+
+        public String getWechatUserId() {
+            return wechatUserId;
+        }
+
+        public void setWechatUserId(String wechatUserId) {
+            this.wechatUserId = wechatUserId;
         }
     }
 
@@ -319,81 +319,99 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response firstActiveCard(ActiveCard ac) {
         Response result = Response.status(412).build();
-        Map<String, Object> validationCodeConditions = new HashMap<>();
-        validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
-        validationCodeConditions.put("validCode", ac.getValidCode());
-        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
-        switch (validationCodes.size()) {
-            case 0:
-                result = Response.status(401).build();
-                break;
-            case 1:
-                Date now = new Date();
-                Date sendTime = validationCodes.get(0).getTimestamp();
-                if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                    Map<String, Object> condition = new HashMap<>();
-                    condition.put("no", ac.getCardNo());
-                    condition.put("password", ac.getPassword());
-                    List<Card> cs = JPAEntry.getList(Card.class, condition);
-                    switch (cs.size()) {
-                        case 0:
-                            result = Response.status(404).build();
-                            break;
-                        case 1:
-                            Card c = cs.get(0);
-                            if (c.getActiveTime() == null) {
-                                c.setActiveTime(now);
-                                Calendar cal = Calendar.getInstance();
-                                cal.setTime(now);
-                                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
-                                Date oneYearAfter = cal.getTime();
-                                c.setEndTime(oneYearAfter);
-                                c.setAmount(5880L);
-                                if (ac.getCardNo().startsWith("03")) {
-                                    c.setAmount(1680L);
-                                }
-                                User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", ac.getWechatUserId());
-                                if (user == null && wechatUser != null) {
-                                    user = new User();
-
-                                    user.setId(IdGenerator.getNewId());
-                                    user.setTelephone(ac.getPhoneNumber());
-                                    user.setLoginName(ac.getPhoneNumber());
-                                    user.setCreateTime(now);
-                                    user.setUpdateTime(now);
-                                    user.setName(wechatUser.getNickname());
-                                    user.setSex(wechatUser.getSex());
-                                    user.setAmount(0l);
-                                    user.setHead(wechatUser.getHead());
-                                    wechatUser.setUserId(user.getId());
-                                    JPAEntry.genericPut(wechatUser);
-                                    JPAEntry.genericPost(user);
-                                    c.setUserId(user.getId());
-                                    JPAEntry.genericPut(c);
-                                } else {
-                                    c.setUserId(user.getId());
-                                    JPAEntry.genericPut(c);
-                                }
-                                Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
-                                result = Response.ok(c)
-                                    //.cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                    .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                    .build();
-                            } else {
-                                result = Response.status(405).build();
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
+        WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", ac.getWechatUserId());
+        if (wechatUser != null) {
+            Map<String, Object> validationCodeConditions = new HashMap<>();
+            validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
+            validationCodeConditions.put("validCode", ac.getValidCode());
+            List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
+            switch (validationCodes.size()) {
+                case 0:
+                    result = Response.status(401).build();
+                    break;
+                case 1:
                     result = Response.status(410).build();
-                }
-                break;
-            default:
-                result = Response.status(520).build();
-                break;
+                    Date now = new Date();
+                    Date sendTime = validationCodes.get(0).getTimestamp();
+                    if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                        boolean isPassed = true;
+                        User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
+                        User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+                        if (user == null) {
+                            if (linkedUser != null) {
+                                if (linkedUser.getTelephone() == null) {
+                                    linkedUser.setTelephone(ac.getPassword());
+                                    user = linkedUser;
+                                } else {
+                                    isPassed = false;
+                                }
+                            } else {
+                                user = new User();
+                                user.setId(IdGenerator.getNewId());
+                                user.setTelephone(ac.getPhoneNumber());
+                                user.setLoginName(ac.getPhoneNumber());
+                                user.setCreateTime(now);
+                                user.setUpdateTime(now);
+                                user.setName(wechatUser.getNickname());
+                                user.setSex(wechatUser.getSex());
+                                user.setAmount(0L);
+                                user.setHead(wechatUser.getHead());
+                                wechatUser.setUserId(user.getId());
+                            }
+                        } else {
+                            if (linkedUser == null) {
+                                wechatUser.setUserId(user.getId());
+                            } else {
+                                if (user.getId() != wechatUser.getUserId()) {
+                                    isPassed = false;
+                                }
+                            }
+                        }
+
+                        result = Response.status(403).build();
+                        if (isPassed) {
+                            Map<String, Object> condition = new HashMap<>();
+                            condition.put("no", ac.getCardNo());
+                            condition.put("password", ac.getPassword());
+                            List<Card> cs = JPAEntry.getList(Card.class, condition);
+                            switch (cs.size()) {
+                                case 0:
+                                    result = Response.status(404).build();
+                                    break;
+                                case 1:
+                                    result = Response.status(405).build();
+                                    Card c = cs.get(0);
+                                    if (c.getActiveTime() == null) {
+                                        c.setActiveTime(now);
+                                        Calendar cal = Calendar.getInstance();
+                                        cal.setTime(now);
+                                        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+                                        Date oneYearAfter = cal.getTime();
+                                        c.setEndTime(oneYearAfter);
+                                        c.setAmount(5880L);
+                                        if (ac.getCardNo().startsWith("03")) {
+                                            c.setAmount(1680L);
+                                        }
+                                        c.setUserId(user.getId());
+                                        JPAEntry.genericPut(c);
+                                        Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
+                                        result = Response.ok(c)
+                                            //.cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                            .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                            .build();
+                                    }
+                                    break;
+                                default:
+                                    result = Response.status(501).build();
+                                    break;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    result = Response.status(520).build();
+                    break;
+            }
         }
         return result;
     }
