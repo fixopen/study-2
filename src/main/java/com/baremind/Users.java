@@ -625,14 +625,14 @@ public class Users {
         return result;
     }
 
-    static TransferObject getByTypeAndId(String type, Long id) {
+    static TransferObject getByTypeAndId(EntityManager em, String type, Long id) {
         TransferObject result = null;
         switch (type) {
             case "user":
-                result = JPAEntry.getObject(User.class, "id", id);
+                result = JPAEntry.getObject(em, User.class, "id", id);
                 break;
             case "card":
-                result = JPAEntry.getObject(Card.class, "id", id);
+                result = JPAEntry.getObject(em, Card.class, "id", id);
                 break;
         }
         return result;

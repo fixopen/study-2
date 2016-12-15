@@ -42,6 +42,12 @@ public class JPAEntry {
         return getObject(type, condition);
     }
 
+    public static <T> T getObject(EntityManager em, Class<T> type, String fieldName, Object fieldValue) {
+        HashMap<String, Object> condition = new HashMap<>(1);
+        condition.put(fieldName, fieldValue);
+        return getObject(em, type, condition);
+    }
+
     public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
         EntityManager em = getEntityManager();
         return getObject(em, type, conditions);
