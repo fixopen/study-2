@@ -268,10 +268,13 @@ public class Scheduler {
         schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
         schedulerMap.put("prepare", scheduler.getPrepare());
+        schedulerMap.put("cover", scheduler.getCover());
 //        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
 //        if (cover != null) {
 //            schedulerMap.put("cover", cover.getStorePath());
 //        }
+        schedulerMap.put("teacher", scheduler.getTeacher());
+        schedulerMap.put("teacherDescription", scheduler.getTeacherDescription());
 //        User teacher = Resources.findItem(teachers, item -> item.getId() == scheduler.getTeacherId());
 //        if (teacher != null) {
 //            schedulerMap.put("teacher", teacher.getName());
