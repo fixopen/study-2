@@ -6,12 +6,15 @@ import com.baremind.data.User;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
+import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by fixopen on 2/12/2016.
@@ -48,7 +51,6 @@ public class Transactions {
                     result = Response.status(408).build(); //amount error
                     TransferObject src = Users.getByTypeAndId(entity.getSourceType(), entity.getSourceId());
                     if (src.getAmount() >= entity.getMoney()) {
-                        em.getTransaction().begin();
                         TransferObject dst = Users.getByTypeAndId(entity.getObjectType(), entity.getObjectId());
                         dst.setAmount(dst.getAmount() + entity.getMoney());
                         em.merge(dst);
@@ -63,7 +65,7 @@ public class Transactions {
                 TransferObject resource = Resources.getByTypeAndId(entity.getObjectType(), entity.getObjectId());
                 TransferObject src = Users.getByTypeAndId(entity.getSourceType(), entity.getSourceId());
                 result = Response.status(408).build(); //amount error
-                if (resource.getAmount() == entity.getMoney() && src.getAmount() > entity.getMoney()) {
+                if (resource.getAmount().equals(entity.getMoney()) && src.getAmount() > entity.getMoney()) {
                     src.setAmount(src.getAmount() - entity.getMoney());
                     em.merge(src);
                     em.persist(entity);
@@ -82,5 +84,22 @@ public class Transactions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         return Impl.getById(sessionId, id, Transaction.class, null);
+    }
+
+    @GET //根据sessionid查询
+    @Path("self")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            result = Response.status(404).build();
+
+
+            List<Transaction> list = JPAEntry.getList(Transaction.class, "userId", JPAEntry.getLoginUser(sessionId).getId());
+            if (list != null) {
+                result = Impl.finalResult(list,null);
+            }
+        }
+        return result;
     }
 }

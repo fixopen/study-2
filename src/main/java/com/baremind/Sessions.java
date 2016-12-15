@@ -123,46 +123,45 @@ public class Sessions {
         User user = null;
         Map<String, Object> conditions = new HashMap<>();
         Map<String, Object> filter = new HashMap<>();
-        User telephone = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
+//        User telephone = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
         switch (loginInfo.getType()) {
             case "validationCode":
                 conditions.put("phoneNumber", loginInfo.getInfo());
                 conditions.put("validCode", loginInfo.getKey());
                 List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, conditions);
-
                 if (!validationCodes.isEmpty()) {
-
                     Date sendTime = validationCodes.get(0).getTimestamp();
                     if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
                         user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
-                        if (user == null) {
+                        /*if (user == null) {
                             //create user via openId
                             WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", loginInfo.getWechatUserId());
                             user = insertUser(now, loginInfo.getInfo(), wechatUser);
-                        }
+                        }*/
                     }else{
                         return result = Response.status(405).build();
                     }
                 }
                 break;
             case "telephone":
+                User telephone = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
                 if(telephone != null){
                     if(telephone.getLogonCount() <= 5){
                         conditions.put("telephone", loginInfo.getInfo());
                         conditions.put("password", loginInfo.getKey());
                         user = JPAEntry.getObject(User.class, conditions);
 
-                        if (user == null) {
+                        /*if (user == null) {
                             //create user via openId
-                           /* WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
-                            user = insertUser(now, loginInfo.getInfo(), wechatUser);*/
+                           *//* WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
+                            user = insertUser(now, loginInfo.getInfo(), wechatUser);*//*
                             telephone.setLogonCount(telephone.getLogonCount() + 1l);
                             JPAEntry.genericPut(telephone);
-                            return  result;//用户名或密码错误
-                        }
+                              result = Response.status(408).build();//用户名或密码错误
+                        }*/
                     }else
                         if(telephone.getLogonCount() > 5 && loginInfo.getCode() == "") {
-                        return  result = Response.status(410).build();//登录次数超过五次
+                          result = Response.status(410).build();//登录次数超过五次
                     }else
                         if(telephone.getLogonCount() > 5 && loginInfo.getCode() != "") {
                             conditions.put("telephone", loginInfo.getInfo());
@@ -172,14 +171,14 @@ public class Sessions {
                             filter.put("validCode", loginInfo.getCode());
                             ValidationCode validationCode = JPAEntry.getObject(ValidationCode.class, filter);
                             if (user == null) {
-                                return result;//用户名或密码错误
+                                 /*result = Response.status(408).build();*/
                             }
                             if (validationCode == null) {
-                                return result = Response.status(407).build();//验证码错误
+                                 result = Response.status(407).build();//验证码错误
                             }
                         }
                 }else{
-                     return  result = Response.status(412).build();//手机没有激活
+                        result = Response.status(412).build();//手机没有激活
                 }
                 break;
             case "name":
@@ -188,10 +187,10 @@ public class Sessions {
                 user = JPAEntry.getObject(User.class, conditions);
                 break;
         }
-        if(telephone !=null) {
-            telephone.setLogonCount(0l);
-            JPAEntry.genericPut(telephone);
-            Session session = resultCook(user.getId(), loginInfo.getDeviceType(), loginInfo.getDeviceNo(), now);
+        if(user !=null) {
+            user.setLogonCount(0l);
+            JPAEntry.genericPut(user);
+            Session session = resultCook(user, loginInfo.getDeviceType(), loginInfo.getDeviceNo(), now);
             result =  Response.ok(session)
                     .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                     .build();
@@ -201,9 +200,8 @@ public class Sessions {
         return result;
     }
 
-    static Session resultCook(Long userId, String deviceType, String deviceNo, Date now){
+    static Session resultCook(User user, String deviceType, String deviceNo, Date now){
         Session session = null;
-        User user = JPAEntry.getObject(User.class, "id", userId);
         if (user != null) {
             Map<String, Object> deviceConditions = new HashMap<>();
             deviceConditions.put("platform", deviceType);

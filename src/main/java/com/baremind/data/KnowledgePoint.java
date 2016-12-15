@@ -3,10 +3,6 @@ package com.baremind.data;
 import com.baremind.Logs;
 import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
-<<<<<<< HEAD
-//import com.sun.xml.internal.rngom.parse.host.Base;
-=======
->>>>>>> origin/devel
 
 import javax.persistence.*;
 import javax.persistence.Entity;

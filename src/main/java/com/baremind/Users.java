@@ -25,7 +25,7 @@ public class Users {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Impl.validationAdmin(sessionId);
+        Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             result = Response.status(404).build();
             User user = JPAEntry.getObject(User.class, "id", id);
@@ -161,32 +161,6 @@ public class Users {
             this.oldpassword = oldpassword;
         }
 
-    }
-
-    @PUT //设置密码
-    @Path("updatePassword")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBy(@CookieParam("sessionId") String sessionId,  updatePassword password) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(sessionId)) {
-            User admin = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
-            String oldpassword = password.getOldpassword();
-            String yearpassword = password.getYearpassword();
-            String adminPassword = admin.getPassword();
-            if (adminPassword == null && oldpassword == null || adminPassword.equals(oldpassword)) {
-                if(yearpassword.length() >=6 && yearpassword.length() <=16){
-                    admin.setPassword(yearpassword);
-                    JPAEntry.genericPut(admin);
-                    result = Response.ok(admin).build();
-                }else {
-                    result = Response.status(405).build();
-                }
-            }else {
-                result = Response.status(404).build();
-            }
-        }
-        return result;
     }
 
     @PUT //根据token修改
@@ -389,7 +363,7 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response simplifyCard(@CookieParam("sessionId") String sessionId,ActiveCard ac) {
         Response result = Response.status(412).build();
-        User user = JPAEntry.getObject(User.class, "id", JPAEntry.getLoginId(sessionId));
+        User user = JPAEntry.getLoginUser(sessionId);
         Date now = new Date();
         if(user.getTelephone() != null){
             Map<String, Object> condition = new HashMap<>();

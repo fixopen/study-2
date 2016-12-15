@@ -1090,7 +1090,7 @@ public class PublicAccounts {
                 // Session userId = JPAEntry.getObject(Session.class, "userId", wechatUser.getUserId());
                 if( wechatUser.getUserId() != null) {
                     System.out.println("==================cook是空的==================根据openid查询sessionId");
-                    Session session = Sessions.resultCook(wechatUser.getUserId(), "WeChat", openId, new Date());
+                    Session session = Sessions.resultCook(user, "WeChat", openId, new Date());
                     System.out.println("==================weChat=================根据openid查询sessionId===+============"+session);
                     s = session;
                 }
