@@ -247,10 +247,11 @@ public class Scheduler {
         schedulerMap.put("endTime", scheduler.getEndTime());
         schedulerMap.put("subjectId", scheduler.getSubjectId());
         schedulerMap.put("grade", scheduler.getGrade());
-        schedulerMap.put("name", scheduler.getName());
-        schedulerMap.put("abstraction", scheduler.getAbstraction());
+        schedulerMap.put("title", scheduler.getTitle());
+        schedulerMap.put("abstraction", scheduler.getGeneralization());
         schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
+        schedulerMap.put("prepare", scheduler.getPrepare());
 //        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
 //        if (cover != null) {
 //            schedulerMap.put("cover", cover.getStorePath());
