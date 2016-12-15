@@ -69,7 +69,7 @@ public class JPAEntry {
                 if (item.getValue() instanceof Condition) {
                     op = ((Condition) item.getValue()).getOp();
                 }
-                jpql += "a." + item.getKey() + op + " :" + item.getKey();
+                jpql += "a." + item.getKey() + " " + op + " :" + item.getKey();
             }
         }
         try {
