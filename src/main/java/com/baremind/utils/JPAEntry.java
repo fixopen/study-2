@@ -69,7 +69,7 @@ public class JPAEntry {
                 if (item.getValue() instanceof Condition) {
                     op = ((Condition) item.getValue()).getOp();
                 }
-                jpql += "a." + item.getKey() + op + " :" + item.getKey();
+                jpql += "a." + item.getKey() + " " + op + " :" + item.getKey();
             }
         }
         try {
@@ -206,7 +206,7 @@ public class JPAEntry {
         return result;
     }
 
-    static Session getSession(String sessionId) {
+    public static Session getSession(String sessionId) {
         return getObject(Session.class, "identity", sessionId);
     }
 

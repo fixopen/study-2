@@ -103,6 +103,9 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         kpm.put("name", kp.getName());
         Date showTime = kp.getShowTime();
         kpm.put("showTime", showTime);
+        kpm.put("price", kp.getPrice());
+        kpm.put("discount", kp.getDiscount());
+
         kpm.put("likeCount", Resources.findUntypedItem(likeCount, kp.getId()));
         kpm.put("readCount", Resources.findUntypedItem(readCount, kp.getId()));
         kpm.put("liked", Resources.findUntypedItem(likedCount, kp.getId()) != null);
@@ -132,6 +135,8 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         kpm.put("volumeId", kp.getVolumeId());
         kpm.put("name", kp.getName());
         kpm.put("showTime", kp.getShowTime());
+        kpm.put("price", kp.getPrice());
+        kpm.put("discount", kp.getDiscount());
 
         kpm.put("likeCount", 0);
         Long likeCount = Logs.getStatsCount("knowledge-point", kp.getId(), "like");

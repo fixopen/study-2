@@ -57,6 +57,9 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "prepare")
+    private String prepare;
+
     @Column(name = "cover_id")
     private Long coverId;
 
@@ -170,6 +173,14 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPrepare() {
+        return prepare;
+    }
+
+    public void setPrepare(String prepare) {
+        this.prepare = prepare;
     }
 
     public Long getCoverId() {

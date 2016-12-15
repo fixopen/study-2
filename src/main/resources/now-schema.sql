@@ -474,7 +474,7 @@ ALTER TABLE users OWNER TO postgres;
 
 CREATE TABLE validation_codes (
     id bigint NOT NULL,
-    phone_number character varying(16),
+    phone_number character varying(32),
     valid_code character varying(10),
     "timestamp" timestamp with time zone
 );

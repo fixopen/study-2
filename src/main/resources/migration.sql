@@ -43,6 +43,7 @@ alter table schedulers add column price bigint;
 alter table schedulers add column discount double precision;
 alter table subjects add column no name;
 alter table users rename column location to address;
+alter table validation_codes alter column phone_number type CHARACTER VARYING(32);
 alter table videos rename column cover to cover_id;
 alter table volumes rename column title to name;
 alter table volumes add column cover_id bigint;
