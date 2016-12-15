@@ -762,7 +762,7 @@
     //var duan;
     var array = [];
     //var count =0;
-    var wechatUserId;
+    var wechatUserId = null;
     var state = {
         //openId: null,
         // duan: null,
@@ -996,7 +996,7 @@
                 var signSubmit = document.getElementById("signSubmit");
                 signSubmit.addEventListener('click', function (e) {
                     var browser = {
-                        versions: function () {
+                        versions: (function () {
                             var u = navigator.userAgent, app = navigator.appVersion;
                             var yng =
                             {//移动终端浏览器版本信息
@@ -1040,7 +1040,7 @@
                                 }
                             }
                             return yng;
-                        }(),
+                        })()
                         // language: (navigator.browserLanguage || navigator.language).toLowerCase()
                     }
                     // alert(deviceType)
@@ -1743,7 +1743,7 @@
                         data.password = document.getElementById('password').value;
                         data.phoneNumber = document.getElementById('phoneNumber').value;
                         data.validCode = document.getElementById('validCode').value;
-                        data.openId = wechatUserId;
+                        data.wechatUserId = wechatUserId;
                         var url = 'api/users/cards'
                         /* if (userId) {
                          url = 'api/users/' + userId + '/cards'
