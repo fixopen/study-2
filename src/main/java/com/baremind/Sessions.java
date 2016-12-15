@@ -203,21 +203,8 @@ public class Sessions {
                     }
                     break;
             }
-            if (user != null) {
-                Map<String, Object> deviceConditions = new HashMap<>();
-                conditions.put("platform", loginInfo.getDeviceType());
-                conditions.put("platformIdentity", loginInfo.getDeviceNo());
-                Device device = JPAEntry.getObject(Device.class, deviceConditions);
-                if (device == null) {
-                    device = new Device();
-                    device.setId(IdGenerator.getNewId());
-                    device.setPlatform(loginInfo.getDeviceType());
-                    device.setPlatformIdentity(loginInfo.getDeviceNo());
-                    device.setPlatformNotificationToken("");
-                    device.setUserId(user.getId());
-                    JPAEntry.genericPost(device);
-                }
-                Session session = PublicAccounts.putSession(now, user.getId(), device.getId());
+            Session session = resultCook(user, loginInfo.getDeviceType(), loginInfo.getDeviceNo(), now);
+            if (session != null) {
                 result = Response.ok(session)
                     .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                     .build();
@@ -226,6 +213,26 @@ public class Sessions {
         return result;
     }
 
+    static Session resultCook(User user, String deviceType, String deviceNo, Date now) {
+        Session session = null;
+        if (user != null) {
+            Map<String, Object> deviceConditions = new HashMap<>();
+            deviceConditions.put("platform", deviceType);
+            deviceConditions.put("platformIdentity", deviceNo);
+            Device device = JPAEntry.getObject(Device.class, deviceConditions);
+            if (device == null) {
+                device = new Device();
+                device.setId(IdGenerator.getNewId());
+                device.setPlatform(deviceType);
+                device.setPlatformIdentity(deviceNo);
+                device.setPlatformNotificationToken("");
+                device.setUserId(user.getId());
+                JPAEntry.genericPost(device);
+            }
+            session = PublicAccounts.putSession(now, user.getId(), device.getId());
+        }
+        return session;
+    }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)

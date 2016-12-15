@@ -197,6 +197,15 @@ public class Users {
         private String password;
         private String phoneNumber;
         private String validCode;
+        private String wechatUserId;
+
+        public String getWechatUserId() {
+            return wechatUserId;
+        }
+
+        public void setWechatUserId(String wechatUserId) {
+            this.wechatUserId = wechatUserId;
+        }
 
         String getCardNo() {
             return cardNo;
@@ -245,29 +254,7 @@ public class Users {
                     result = Response.status(404).build();
                     break;
                 case 1:
-                    String phoneNumber = user.getTelephone();
                     //Logs.insert(id, "log", logId, "card exists");
-                    User telephoneUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
-                    if (telephoneUser != null && telephoneUser.getId().longValue() != id.longValue()) {
-                        WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
-                        WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", telephoneUser.getId());
-                        if (wechatUser.getOpenId().equals(errorWechatUser.getOpenId())) {
-                            List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", id);
-                            EntityManager em = JPAEntry.getNewEntityManager();
-                            em.getTransaction().begin();
-                            for (Card card : bindedCards) {
-                                card.setUserId(id);
-                                em.merge(card);
-                            }
-                            em.remove(errorWechatUser);
-                            em.remove(telephoneUser);
-                            em.getTransaction().commit();
-                            em.close();
-                            Logs.insert(telephoneUser.getId(), "move-card", telephoneUser.getId(), phoneNumber);
-                        }
-                    }
-                    user.setTelephone(phoneNumber);
-                    JPAEntry.genericPut(user);
                     Card c = cs.get(0);
                     if (c.getActiveTime() == null) {
                         //Logs.insert(id, "log", logId, "card success");
@@ -317,7 +304,7 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-        Response result = Impl.validationAdmin(sessionId);
+        Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             User user = JPAEntry.getLoginUser(sessionId);
             result = activeCardImpl(user.getId(), ac);
@@ -360,17 +347,26 @@ public class Users {
                                 cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
                                 Date oneYearAfter = cal.getTime();
                                 c.setEndTime(oneYearAfter);
-                                c.setAmount(588L);
+                                c.setAmount(5880L);
+                                if (ac.getCardNo().startsWith("03")) {
+                                    c.setAmount(1680L);
+                                }
                                 User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                                if (user == null) {
+                                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", ac.getWechatUserId());
+                                if (user == null && wechatUser != null) {
                                     user = new User();
+
                                     user.setId(IdGenerator.getNewId());
                                     user.setTelephone(ac.getPhoneNumber());
                                     user.setLoginName(ac.getPhoneNumber());
                                     user.setCreateTime(now);
                                     user.setUpdateTime(now);
-                                    user.setName("");
-                                    user.setSex(0);
+                                    user.setName(wechatUser.getNickname());
+                                    user.setSex(wechatUser.getSex());
+                                    user.setAmount(0l);
+                                    user.setHead(wechatUser.getHead());
+                                    wechatUser.setUserId(user.getId());
+                                    JPAEntry.genericPut(wechatUser);
                                     JPAEntry.genericPost(user);
                                     c.setUserId(user.getId());
                                     JPAEntry.genericPut(c);

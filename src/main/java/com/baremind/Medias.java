@@ -2,6 +2,7 @@ package com.baremind;
 
 import com.baremind.data.Image;
 import com.baremind.data.Media;
+
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
@@ -123,7 +124,7 @@ public class Medias {
     @GET
     @Path("validation-picture")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getValidationPicture() throws IOException {
+    public Response getValidationPicture(@Context HttpServletRequest request) throws IOException {
         int w = 120;
         int h = 50;
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -144,13 +145,12 @@ public class Medias {
             g.setColor(new Color(rand(50, 180), rand(50, 180), rand(50, 180)));
             g.drawLine(rand(0, w), rand(0, h), rand(0, w), rand(0, h));
         }
-        String physicalPath = "/Users/fixopen/IdeaProjects/study/target/study/images/";
-        String fileName = physicalPath + validationCode + ".png";
+        String graphical1 = Properties.getProperty("graphical1");
+        String fileName = graphical1 + validationCode + ".png";
         File file = new File(fileName);
         ImageIO.write(img, "png", file);
-        String virtualPath = "/images/";
+        String virtualPath = Properties.getProperty("graphical2");
         String path = virtualPath + validationCode + ".png";
-        //@@record to validation_codes table replace record to images table
         return Response.ok(new Gson().toJson(path)).build();
     }
 

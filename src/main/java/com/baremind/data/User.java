@@ -73,6 +73,17 @@ public class User implements com.baremind.data.Entity, TransferObject {
     @Column(name = "update_time")
     private Date updateTime;
 
+    @Column(name = "logon_count")
+    private Long logonCount;
+
+    public Long getLogonCount() {
+        return logonCount;
+    }
+
+    public void setLogonCount(Long logonCount) {
+        this.logonCount = logonCount;
+    }
+
     public String getSite() {
         return site;
     }
