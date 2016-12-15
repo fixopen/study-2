@@ -13,8 +13,6 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -407,6 +405,7 @@ public class Schedulers {
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
+
             ArrayList<Scheduler> featured = new ArrayList<>();
             ArrayList<Scheduler> playing = new ArrayList<>();
             ArrayList<Scheduler> passed = new ArrayList<>();

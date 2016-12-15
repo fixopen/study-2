@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -199,5 +202,37 @@ public class Scheduler {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount) {
+        Map<String, Object> schedulerMap = new HashMap<>();
+        schedulerMap.put("id", scheduler.getId());
+        schedulerMap.put("year", scheduler.getYear());
+        schedulerMap.put("week", scheduler.getWeek());
+        schedulerMap.put("day", scheduler.getDay());
+        schedulerMap.put("startTime", scheduler.getStartTime());
+        schedulerMap.put("endTime", scheduler.getEndTime());
+        schedulerMap.put("subjectId", scheduler.getSubjectId());
+        schedulerMap.put("grade", scheduler.getGrade());
+        schedulerMap.put("name", scheduler.getName());
+        schedulerMap.put("abstraction", scheduler.getAbstraction());
+        schedulerMap.put("outline", scheduler.getOutline());
+        schedulerMap.put("description", scheduler.getDescription());
+        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
+        if (cover != null) {
+            schedulerMap.put("cover", cover.getStorePath());
+        }
+        User teacher = Resources.findItem(teachers, item -> item.getId() == scheduler.getTeacherId());
+        if (teacher != null) {
+            schedulerMap.put("teacher", teacher.getName());
+            schedulerMap.put("teacherDescription", teacher.getDescription());
+        }
+        schedulerMap.put("price", scheduler.getPrice());
+        schedulerMap.put("discount", scheduler.getDiscount());
+        //schedulerMap.put("price", scheduler.getAmount());
+        schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
+        schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
+        schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != null);
+        return schedulerMap;
     }
 }
