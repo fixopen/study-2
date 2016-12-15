@@ -279,13 +279,13 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("discount", scheduler.getDiscount());
         //schedulerMap.put("price", scheduler.getAmount());
         schedulerMap.put("likeCount", 0);
-        Long likeCount = Logs.getStatsCount("knowledge-point", scheduler.getId(), "like");
+        Long likeCount = Logs.getStatsCount("scheduler", scheduler.getId(), "like");
         if (likeCount != null) {
             schedulerMap.put("likeCount", likeCount);
         }
-        schedulerMap.put("liked", Logs.has(userId, "knowledge-point", scheduler.getId(), "like"));
+        schedulerMap.put("liked", Logs.has(userId, "scheduler", scheduler.getId(), "like"));
         schedulerMap.put("readCount", 0);
-        Long readCount = Logs.getStatsCount("knowledge-point", scheduler.getId(), "read");
+        Long readCount = Logs.getStatsCount("scheduler", scheduler.getId(), "read");
         if (readCount != null) {
             schedulerMap.put("readCount", readCount);
         }
