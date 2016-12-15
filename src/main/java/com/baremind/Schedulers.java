@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.Comment;
 import com.baremind.data.Log;
 import com.baremind.data.Scheduler;
 import com.baremind.utils.CharacterEncodingFilter;
@@ -534,9 +535,13 @@ public class Schedulers {
             map.put("prepare",scheduler.getPrepare());
             map.put("generalization",scheduler.getGeneralization());
 
-            map.put("readCount",getReadCount(userId,scheduler.getId()));
-            map.put("likeCount",getLikeCount(userId,scheduler.getId()));
-            map.put("commit",Logs.getLogsCount(userId,"playback",scheduler.getId(),"comments"));
+            map.put("readCount",Logs.getStatsCount("playback", id, "read"));
+            map.put("likeCount",Logs.getStatsCount("playback", id, "like"));
+            map.put("liked", Logs.has(Long.parseLong(userId), "playback", id, "like"));
+            Map<String, Object> cc = new HashMap<>();
+            cc.put("objectType", "playback");
+            cc.put("objectId", id);
+            map.put("comments",JPAEntry.getList(Comment.class, cc));
             map.put("teacherdescription",scheduler.getTeacherDescription());
             result = Response.ok(map).build();
         }

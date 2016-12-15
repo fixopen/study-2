@@ -86,14 +86,8 @@
         .data :nth-child(even) {
             border-top: 1px solid #ea875f;
         }
-<<<<<<< HEAD
-
-        .pika-lendar td {
-            font-size: 1.5rem;
-=======
         .pika-lendar td{
             font-size: 1rem;
->>>>>>> 5db4942fa3b4a52a490a30fc83b9332725f02913
         }
 
         .pika-lendar table {
@@ -221,24 +215,28 @@
                 <div class="tiaoj_span" id="subjectSelect">
                     <span class="filter_item">科目</span>
                 </div>
-                <ul class="xiala_ul" id="subject">
+                <ul class="xiala_ul">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li">语文<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li">数学<img src="images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
             <div class="tiaoj_TJ">
                 <div class="tiaoj_span" id="teacherSelect">
                     <span class="filter_item">老师</span>
                 </div>
-                <ul class="xiala_ul" id="teacher">
+                <ul class="xiala_ul">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <span id="teacher"></span>
                 </ul>
             </div>
             <div class="tiaoj_TJ" id="gradeeSelect">
                 <div class="tiaoj_span">
                     <span class="filter_item">年级</span>
                 </div>
-                <ul class="xiala_ul" id="grade">
+                <ul class="xiala_ul">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <span  id="grade"></span>
                 </ul>
             </div>
             <div class="tiaoj_TJ" id="dateSelect">
@@ -638,15 +636,9 @@
         </div>
     </li>
 </template>
-<template id="subject-template">
-    <li class="xiala_li">
-        <span data-id="${id}" data-type="subject">${subject}</span><img src="images/zbwq_zhong.png" alt="">
-    </li>
-</template>
 <template id="teacher-template">
     <li class="xiala_li">
-        <span data-type="teacher">${teacher}</span>
-        <img src="images/zbwq_zhong.png" alt="">
+        <span data-type="teacher">${teacher}</span><img src="images/zbwq_zhong.png" alt="">
     </li>
 </template>
 <template id="grade-template">
@@ -672,17 +664,17 @@
     <div>
         <div class="live-details-videoPlay">
             <video src="${cdnLink}" controls="controls" autoplay="autoplay"></video>
-            <div class="live-details-label">${subject}</div>
+            <div class="live-details-label" id="bookMark"></div>
             <div class="live-details-videoTxt">${title}</div>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
                 <div class="course_dianzan">
-                    <p class="course_xqpsee"><span>${number}</span>人观看过</p>
+                    <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
                     <a href="javascript:void(0)" class="course_xqpzan">
                         <img class="dianzanImg" id="icon" alt="">
                         赞
-                        <span class="xqpZan">${count}</span>
+                        <span class="xqpZan">${likeCount}</span>
                     </a>
                 </div>
             </div>
@@ -692,7 +684,7 @@
 <template id="video-comment-template">
     <li class="liveDetails-li">
         <span class="liveDetails-name">${name}</span>
-        <span class="liveDetails-time">${time}</span>
+        <span class="liveDetails-time">${create_time}</span>
         <p class="liveDetails-txt">${content}</p>
     </li>
 </template>
@@ -730,6 +722,7 @@
     //[{..., teachers: [], grades: [], playings: [], futures: [], ...}, ...]
     var subjects = []
 
+    //[{id: .., ..., liked: true, likeCount: 3, readCount: 8, comments: [{ sdfsa }, ...], ...}, ...]
     var passed = []
 
     var courseTable = [
@@ -1303,6 +1296,7 @@
                                     subjects[1].teachers = t1s
 //fill to teachers choice
                                     var teachers = []
+//                                    teachers.concat(t0s, t1s)
                                     for (var i = 0; i < t0s.length; ++i) {
                                         teachers.push({teacher: t0s[i]})
                                     }
@@ -1312,7 +1306,7 @@
                                     proc({
                                         containerId: 'teacher',
                                         data: teachers,
-                                        template: 'teacher-template'
+                                        templateId: 'teacher-template'
                                     })
                                 }
                             })
@@ -1339,24 +1333,24 @@
                                     }
                                     proc({
                                         containerId: 'grade',
-                                        data: grades,
-                                        template: 'grade-template'
+                                        data: getGrade(grades),
+                                        templateId: 'grade-template'
                                     })
                                 }
                             })
                         }
                     })
-                    function div3Show() {
-                        var div1 = document.getElementById("div3");
-                        div1.style.display = "block";
-                    }
-
-                    function div2Show() {
-                        var div1 = document.getElementById("div1");
-                        var div2 = document.getElementById("div2");
-                        div1.style.display = "none";
-                        div2.style.display = "";
-                    }
+//                    function div3Show() {
+//                        var div1 = document.getElementById("div3");
+//                        div1.style.display = "block";
+//                    }
+//
+//                    function div2Show() {
+//                        var div1 = document.getElementById("div1");
+//                        var div2 = document.getElementById("div2");
+//                        div1.style.display = "none";
+//                        div2.style.display = "";
+//                    }
 
                     var s = document.getElementById('subjectSelect')
                     s.addEventListener('click', function (e) {
@@ -1438,69 +1432,54 @@
         videoDetail: {
             id: null,
             init: function () {
-                var c = document.getElementById('live-details-video')
-                c.innerHTML = ''
+                var l = document.getElementById('live-details-video')
+                l.innerHTML = ''
                 proc({
-                    container: c,
+                    container: l,
                     data: state.passed.findById(state.videoDetail.id),
                     templateId: 'live-video-template'
                 })
                 $.ajax({
                     type: 'get',
-                    url: 'api/one/' + state.videoDetail.id,
+                    url: 'api/schedulers/one/' + state.videoDetail.id,
                     dataType: 'json',
                     success: function (data) {
-                        //***********************************like***************************************
-                        // GET /knowledge-points/.../is-self-like
-                        //var id = g.getUrlParameter("id")
-                        $.ajax({
-                            type: "get",
-                            url: 'api/playback/' + state.videoDetail.id + '/is-self-like',
-                            dataType: "json",
-                            success: function (like) {
-                                var liked = like.like
-                                var icon = document.getElementById('icon');
-                                if (liked) {
-                                    icon.setAttribute('src', 'images/details/zanover.png');
-                                } else {
-                                    icon.setAttribute('src', 'images/details/dianzan.png');
-                                }
-                                icon.addEventListener('click', function (e) {
-                                    if (liked) {
-                                        $.ajax({
-                                            type: "put",
-                                            url: '/api/schedulers/' + state.videoDetail.id + '/unlike',
-                                            data: JSON.stringify({}),
-                                            dataType: "json",
-                                            contentType: "application/json; charset=utf-8",
-                                            success: function (unlike) {
-                                                icon.setAttribute('src', 'images/details/dianzan.png');
-                                                data.interaction.likeCount
-                                                e.target.nextElementSibling.textContent = data.interaction.likeCount
-                                                liked = false;
-                                            }
-                                        })
-                                    } else {
-                                        $.ajax({
-                                            type: "put",
-                                            url: '/api/schedulers/' + state.videoDetail.id + '/like',
-                                            data: JSON.stringify({}),
-                                            dataType: "json",
-                                            contentType: "application/json; charset=utf-8",
-                                            success: function (like) {
-                                                icon.setAttribute('src', 'images/details/zanover.png');
-                                                ++data.interaction.likeCount;
-                                                e.target.nextElementSibling.textContent = data.interaction.likeCount
-                                                liked = true;
-                                            }
-                                        })
+                        if (data.liked) {
+                            icon.setAttribute('src', 'images/details/zanover.png');
+                        } else {
+                            icon.setAttribute('src', 'images/details/dianzan.png');
+                        }
+                        icon.addEventListener('click', function (e) {
+                            if (data.liked) {
+                                $.ajax({
+                                    type: "put",
+                                    url: '/api/schedulers/' + state.videoDetail.id + '/unlike',
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (unlike) {
+                                        icon.setAttribute('src', 'images/details/dianzan.png');
+                                        data.likeCount--
+                                        e.target.nextElementSibling.textContent = data.likeCount
+                                        data.liked = false;
                                     }
-                                }, false)
-                            },
-                            error: function (unlike) {
-                                //liked = false
+                                })
+                            } else {
+                                $.ajax({
+                                    type: "put",
+                                    url: '/api/schedulers/' + state.videoDetail.id + '/like',
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (like) {
+                                        icon.setAttribute('src', 'images/details/zanover.png');
+                                        ++data.likeCount;
+                                        e.target.nextElementSibling.textContent = data.likeCount
+                                        data.liked = true;
+                                    }
+                                })
                             }
-                        })
+                        }, false)
 
                         //*************************comments**************************
                         var btn = document.getElementById('btn');
@@ -1524,29 +1503,27 @@
                                 }),
                                 dataType: "json",
                                 contentType: "application/json; charset=utf-8",
-                                success: function (comments) {
+                                success: function (comment) {
+                                    data.comments.push(comment)
                                     location.reload();
-                                    var comment = document.getElementById('comment-area')
-                                    comment.innerHTML = ''
+                                    var c = document.getElementById('comment-area')
+                                    c.innerHTML = ''
+                                    proc({
+                                        container: c,
+                                        data: data.comments,
+                                        templateId: 'video-comment-template'
+                                    })
                                 }
                             })
                         }
-
-//                '/api/comments?filter={"objectType":"scheduler","objectId":' + state.videoDetail.id + '}'
-//                '/api/schedulers/' + state.videoDetail.id + '/comments'
                         proc({
                             containerId: 'comment-area',
-                            data: data,
-                            templateId: 'live-video-template'
+                            data: data.comments,
+                            templateId: 'video-comment-template'
                         })
-//                        proc({
-//                            containerId: 'comment-area',
-//                            data: data,
-//                            templateId: 'live-video-template'
-//                        })
                     }
                 })
-            }
+            },
         },
 
         scheduler: {
