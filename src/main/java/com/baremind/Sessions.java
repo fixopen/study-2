@@ -5,7 +5,9 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -41,7 +43,8 @@ public class Sessions {
         private String key;
         private String deviceType;
         private String deviceNo;
-        private String openId;
+        private String wechatUserId;
+        private String code;
 
         public String getType() {
             return type;
@@ -83,12 +86,20 @@ public class Sessions {
             this.deviceNo = deviceNo;
         }
 
-        String getOpenId() {
-            return openId;
+        public String getWechatUserId() {
+            return wechatUserId;
         }
 
-        public void setOpenId(String openId) {
-            this.openId = openId;
+        public void setWechatUserId(String wechatUserId) {
+            this.wechatUserId = wechatUserId;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
         }
     }
 
@@ -100,72 +111,118 @@ public class Sessions {
         user.setTelephone(telephone);
         user.setIsAdministrator(false);
         user.setSite("http://www.xiaoyuzhishi.com");
-        user.setAmount(0l);
+        user.setAmount(0L);
         PublicAccounts.fillUserByWechatUser(user, wechatUser);
         JPAEntry.genericPost(user);
         return user;
     }
 
-    private Response loginImpl(LoginInfo loginInfo) {
-        Response result = Response.status(404).build();
-        Date now = new Date();
-        User user = null;
-        Map<String, Object> conditions = new HashMap<>();
-        switch (loginInfo.getType()) {
-            case "validationCode":
-                conditions.put("phoneNumber", loginInfo.getInfo());
-                conditions.put("validCode", loginInfo.getKey());
-                List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, conditions);
+    private void loginFailure(String ipAddr) {
+        ValidationCode count = JPAEntry.getObject(ValidationCode.class, "phoneNumber", ipAddr + "-count");
+        if (count != null) {
+            Long currentCount = Long.parseLong(count.getValidCode()) + 1L;
+            count.setValidCode(currentCount.toString());
+            JPAEntry.genericPut(count);
+        } else {
+            count = new ValidationCode();
+            count.setId(IdGenerator.getNewId());
+            count.setValidCode(ipAddr + "-count");
+            count.setValidCode("1");
+            count.setTimestamp(new Date());
+            JPAEntry.genericPost(count);
+        }
+    }
 
-                if (!validationCodes.isEmpty()) {
-                    result = Response.status(405).build();
-                    Date sendTime = validationCodes.get(0).getTimestamp();
-                    if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                        user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
-                        if (user == null) {
-                            //create user via openId
-                            WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
-                            user = insertUser(now, loginInfo.getInfo(), wechatUser);
+    private Response loginImpl(String ipAddr, LoginInfo loginInfo) {
+        Response result = Response.status(404).build();
+        boolean isPass = true;
+        ValidationCode loginFailureCount = JPAEntry.getObject(ValidationCode.class, "phoneNumber", ipAddr + "-count");
+        if (loginFailureCount != null) {
+            String count = loginFailureCount.getValidCode();
+            if (Long.parseLong(count) > 5L) {
+                String code = loginInfo.getCode();
+                if (code == null) {
+                    isPass = false;
+                } else {
+                    ValidationCode pictureValidationCode = JPAEntry.getObject(ValidationCode.class, "phoneNumber", ipAddr);
+                    if (pictureValidationCode == null) {
+                        isPass = false;
+                    } else {
+                        if (!pictureValidationCode.getValidCode().equals(code)) {
+                            isPass = false;
                         }
+                        JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", ipAddr);
                     }
                 }
-                break;
-            case "telephone":
-                conditions.put("telephone", loginInfo.getInfo());
-                conditions.put("password", loginInfo.getKey());
-                user = JPAEntry.getObject(User.class, conditions);
-                if (user == null) {
-                    //create user via openId
-                    WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", loginInfo.getOpenId());
-                    user = insertUser(now, loginInfo.getInfo(), wechatUser);
-                }
-                break;
-            case "name":
-                conditions.put("loginName", loginInfo.getInfo());
-                conditions.put("password", loginInfo.getKey());
-                user = JPAEntry.getObject(User.class, conditions);
-                break;
-        }
-        if (user != null) {
-            Map<String, Object> deviceConditions = new HashMap<>();
-            conditions.put("platform", loginInfo.getDeviceType());
-            conditions.put("platformIdentity", loginInfo.getDeviceNo());
-            Device device = JPAEntry.getObject(Device.class, deviceConditions);
-            if (device == null) {
-                device = new Device();
-                device.setId(IdGenerator.getNewId());
-                device.setPlatform(loginInfo.getDeviceType());
-                device.setPlatformIdentity(loginInfo.getDeviceNo());
-                device.setPlatformNotificationToken("");
-                device.setUserId(user.getId());
-                JPAEntry.genericPost(device);
             }
-            Session session = PublicAccounts.putSession(now, user.getId(), device.getId());
-            result = Response.ok(session)
+        }
+        if (isPass) {
+            Date now = new Date();
+            User user = null;
+            Map<String, Object> conditions = new HashMap<>();
+            switch (loginInfo.getType()) {
+                case "validationCode":
+                    conditions.put("phoneNumber", loginInfo.getInfo());
+                    conditions.put("validCode", loginInfo.getKey());
+                    List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, conditions);
+
+                    if (!validationCodes.isEmpty()) {
+                        result = Response.status(405).build();
+                        Date sendTime = validationCodes.get(0).getTimestamp();
+                        if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                            user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
+                        }
+                        JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", loginInfo.getInfo());
+                    }
+                    if (user == null) {
+                        //WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", loginInfo.getWechatUserId());
+                        //user = insertUser(now, loginInfo.getInfo(), wechatUser);
+                        loginFailure(ipAddr);
+                    } else {
+                        JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", ipAddr + "-count");
+                    }
+                    break;
+                case "telephone":
+                    conditions.put("telephone", loginInfo.getInfo());
+                    conditions.put("password", loginInfo.getKey());
+                    user = JPAEntry.getObject(User.class, conditions);
+                    if (user == null) {
+                        loginFailure(ipAddr);
+                    } else {
+                        JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", ipAddr + "-count");
+                    }
+                    break;
+                case "name":
+                    conditions.put("loginName", loginInfo.getInfo());
+                    conditions.put("password", loginInfo.getKey());
+                    user = JPAEntry.getObject(User.class, conditions);
+                    if (user == null) {
+                        loginFailure(ipAddr);
+                    } else {
+                        JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", ipAddr + "-count");
+                    }
+                    break;
+            }
+            if (user != null) {
+                Map<String, Object> deviceConditions = new HashMap<>();
+                conditions.put("platform", loginInfo.getDeviceType());
+                conditions.put("platformIdentity", loginInfo.getDeviceNo());
+                Device device = JPAEntry.getObject(Device.class, deviceConditions);
+                if (device == null) {
+                    device = new Device();
+                    device.setId(IdGenerator.getNewId());
+                    device.setPlatform(loginInfo.getDeviceType());
+                    device.setPlatformIdentity(loginInfo.getDeviceNo());
+                    device.setPlatformNotificationToken("");
+                    device.setUserId(user.getId());
+                    JPAEntry.genericPost(device);
+                }
+                Session session = PublicAccounts.putSession(now, user.getId(), device.getId());
+                result = Response.ok(session)
                     .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                     .build();
+            }
         }
-
         return result;
     }
 
@@ -173,15 +230,15 @@ public class Sessions {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response recreate(LoginInfo loginInfo) {
-        return loginImpl(loginInfo);
+    public Response recreate(@Context HttpServletRequest req, LoginInfo loginInfo) {
+        return loginImpl(req.getRemoteAddr(), loginInfo);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(LoginInfo loginInfo) {
-        return loginImpl(loginInfo);
+    public Response create(@Context HttpServletRequest req, LoginInfo loginInfo) {
+        return loginImpl(req.getRemoteAddr(), loginInfo);
     }
 
     private static class Updater implements BiConsumer<Session, Session> {

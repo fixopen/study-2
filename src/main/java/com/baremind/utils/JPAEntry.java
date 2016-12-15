@@ -172,7 +172,7 @@ public class JPAEntry {
         em.close();
     }
 
-    static long genericDelete(Class type, String name, Object value) {
+    public static long genericDelete(Class type, String name, Object value) {
         Map<String, Object> conditions = new HashMap<>();
         conditions.put(name, value);
         return genericDelete(type, conditions);
