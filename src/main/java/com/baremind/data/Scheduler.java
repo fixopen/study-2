@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -237,6 +238,21 @@ public class Scheduler {
         this.day = day;
     }
 
+    public static Long findUntypedItem(List<Object[]> container, Long id) {
+        Long result = null;
+        for (Object[] item : container) {
+            if (((Long)item[0]).longValue() == id.longValue()) {
+                result = (Long)item[1];
+                break;
+            }
+        }
+        return result;
+    }
+
+    public static List<Object[]> findUntypedItems(List<Object[]> container, Long id) {
+        return container.stream().filter((item) -> ((Long)item[0]).longValue() == id.longValue()).collect(Collectors.toList());
+    }
+
     public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount) {
         Map<String, Object> schedulerMap = new HashMap<>();
         schedulerMap.put("id", scheduler.getId());
@@ -264,9 +280,9 @@ public class Scheduler {
 //        schedulerMap.put("price", scheduler.getPrice());
 //        schedulerMap.put("discount", scheduler.getDiscount());
 //        //schedulerMap.put("price", scheduler.getAmount());
-        schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
-        schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
-        schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != null);
+        schedulerMap.put("likeCount", findUntypedItem(likeCount, scheduler.getId()));
+        schedulerMap.put("readCount", findUntypedItem(readCount, scheduler.getId()));
+        schedulerMap.put("liked", findUntypedItem(likedCount, scheduler.getId()) != null);
         return schedulerMap;
     }
 }
