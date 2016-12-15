@@ -140,28 +140,6 @@ public class Users {
         return Impl.updateById(sessionId, id, newData, User.class, new Updater(), null);
     }
 
-    public static class updatePassword{
-        public String yearpassword;
-        public String oldpassword;
-
-
-        public String getYearpassword() {
-            return yearpassword;
-        }
-
-        public void setYearpassword(String yearpassword) {
-            this.yearpassword = yearpassword;
-        }
-
-        public String getOldpassword() {
-            return oldpassword;
-        }
-
-        public void setOldpassword(String oldpassword) {
-            this.oldpassword = oldpassword;
-        }
-
-    }
 
     @PUT //根据token修改
     @Path("self")
@@ -277,29 +255,7 @@ public class Users {
                     result = Response.status(404).build();
                     break;
                 case 1:
-                    String phoneNumber = user.getTelephone();
                     //Logs.insert(id, "log", logId, "card exists");
-                    User telephoneUser = JPAEntry.getObject(User.class, "telephone", phoneNumber);
-                    if (telephoneUser != null && telephoneUser.getId().longValue() != id.longValue()) {
-                        WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "userId", id);
-                        WechatUser errorWechatUser = JPAEntry.getObject(WechatUser.class, "userId", telephoneUser.getId());
-                        if (wechatUser.getOpenId().equals(errorWechatUser.getOpenId())) {
-                            List<Card> bindedCards = JPAEntry.getList(Card.class, "userId", id);
-                            EntityManager em = JPAEntry.getNewEntityManager();
-                            em.getTransaction().begin();
-                            for (Card card : bindedCards) {
-                                card.setUserId(id);
-                                em.merge(card);
-                            }
-                            em.remove(errorWechatUser);
-                            em.remove(telephoneUser);
-                            em.getTransaction().commit();
-                            em.close();
-                            Logs.insert(telephoneUser.getId(), "move-card", telephoneUser.getId(), phoneNumber);
-                        }
-                    }
-                    user.setTelephone(phoneNumber);
-                    JPAEntry.genericPut(user);
                     Card c = cs.get(0);
                     if (c.getActiveTime() == null) {
                         //Logs.insert(id, "log", logId, "card success");
@@ -349,7 +305,7 @@ public class Users {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response activeCard(@CookieParam("sessionId") String sessionId, ActiveCard ac) {
-        Response result = Impl.validationAdmin(sessionId);
+        Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             User user = JPAEntry.getLoginUser(sessionId);
             result = activeCardImpl(user.getId(), ac);
@@ -357,48 +313,6 @@ public class Users {
         return result;
     }
 
-    @POST
-    @Path("simplify-card")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response simplifyCard(@CookieParam("sessionId") String sessionId,ActiveCard ac) {
-        Response result = Response.status(412).build();
-        User user = JPAEntry.getLoginUser(sessionId);
-        Date now = new Date();
-        if(user.getTelephone() != null){
-            Map<String, Object> condition = new HashMap<>();
-            condition.put("no", ac.getCardNo());
-            condition.put("password", ac.getPassword());
-            List<Card> cs = JPAEntry.getList(Card.class, condition);
-            switch (cs.size()) {
-                case 0:
-                    result = Response.status(404).build();
-                    break;
-                case 1:
-                    Card c = cs.get(0);
-                    if (c.getActiveTime() == null) {
-                        c.setUserId(user.getId());
-                        c.setActiveTime(now);
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(now);
-                        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
-                        Date oneYearAfter = cal.getTime();
-                        c.setEndTime(oneYearAfter);
-                        c.setAmount(5880L);
-                        if (ac.getCardNo().startsWith("03")) {
-                            c.setAmount(1680L);
-                        }
-                        JPAEntry.genericPut(c);
-                        result = Response.ok(c).build();
-                        break;
-                    }
-                default:
-                    break;
-            }
-        }
-        return  result;
-    }
-    @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -711,61 +625,16 @@ public class Users {
         return result;
     }
 
-    static TransferObject getByTypeAndId(String type, Long id) {
+    static TransferObject getByTypeAndId(EntityManager em, String type, Long id) {
         TransferObject result = null;
         switch (type) {
             case "user":
-                result = JPAEntry.getObject(User.class, "id", id);
+                result = JPAEntry.getObject(em, User.class, "id", id);
                 break;
             case "card":
-                result = JPAEntry.getObject(Card.class, "id", id);
+                result = JPAEntry.getObject(em, Card.class, "id", id);
                 break;
         }
         return result;
     }
-
-
-    /*@POST
-    @Path("phone/Verification")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getv(ActiveCard activeCard) {
-        Response result = result = Response.status(404).build();
-        Map<String, Object> validationCodeConditions = new HashMap<>();
-        validationCodeConditions.put("phoneNumber", activeCard.getPhoneNumber());
-        validationCodeConditions.put("validCode", activeCard.getValidCode());
-        List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
-        Map<String, Object> validationCode = new HashMap<>();
-        validationCode.put("telephone", activeCard.getPhoneNumber());
-        if (!validationCodes.isEmpty()) {
-            Date now = new Date();
-            Date sendTime = validationCodes.get(0).getTimestamp();
-            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                List<User> users = JPAEntry.getList(User.class, validationCode);
-                if (!users.isEmpty()) {
-                    Session session = PublicAccounts.putSession(now, users.get(0).getId());
-                    result = Response.ok()
-                            .cookie(new NewCookie("userId", users.get(0).getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .build();
-                } else {
-                    User user = new User();
-                    user.setId(IdGenerator.getNewId());
-                    user.setCreateTime(now);
-                    user.setTelephone(activeCard.getPhoneNumber());
-                    user.setUpdateTime(now);
-                    user.setName("");
-                    user.setSex(0l);
-                    JPAEntry.genericPost(user);
-                    Session session = PublicAccounts.putSession(now, user.getId());
-                    result = Response.ok()
-                            .cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                            .build();
-                }
-            } else {
-                result = Response.status(405).build();
-            }
-        }
-        return result;
-    }*/
 }

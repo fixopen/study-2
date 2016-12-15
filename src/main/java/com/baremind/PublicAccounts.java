@@ -1070,30 +1070,27 @@ public class PublicAccounts {
         }
 
         Session s = null;
-        if (user != null) {
-            System.out.println("根据openId得到这个微信用户的userId查到那个user不等于NULL");
-            Cookie[] cookies = request.getCookies();
-            System.out.println("request=================="+request);
-            System.out.println("request.getCookies()=================="+request.getCookies());
-            System.out.println("cookies=================="+cookies);
-            if(cookies != null) {
-                for (Cookie cookie : cookies) {
-                    System.out.println("cookie.getName()==================" + cookie.getName());
-                    if (cookie.getName().equals("sessionId")) {
-                        System.out.println("根据openId得到这个微信用户的userId查到那个user返回sessionId" + cookie.getValue());
-                        s = getSession(cookie.getValue());
-                        System.out.println("sessionId============================================" + s);
-                        break;
-                    }
+        System.out.println("根据openId得到这个微信用户的userId查到那个user不等于NULL");
+        Cookie[] cookies = request.getCookies();
+        System.out.println("request=================="+request);
+        System.out.println("request.getCookies()=================="+request.getCookies());
+        System.out.println("cookies=================="+cookies);
+        if(cookies != null) {
+            for (Cookie cookie : cookies) {
+                System.out.println("cookie.getName()==================" + cookie.getName());
+                if (cookie.getName().equals("sessionId")) {
+                    System.out.println("根据openId得到这个微信用户的userId查到那个user返回sessionId" + cookie.getValue());
+                    s = getSession(cookie.getValue());
+                    System.out.println("sessionId============================================" + s);
+                    break;
                 }
-            }else{
-                // Session userId = JPAEntry.getObject(Session.class, "userId", wechatUser.getUserId());
-                if( wechatUser.getUserId() != null) {
-                    System.out.println("==================cook是空的==================根据openid查询sessionId");
-                    Session session = Sessions.resultCook(user, "WeChat", openId, new Date());
-                    System.out.println("==================weChat=================根据openid查询sessionId===+============"+session);
-                    s = session;
-                }
+            }
+        }else{
+            // Session userId = JPAEntry.getObject(Session.class, "userId", wechatUser.getUserId());
+            if( wechatUser.getUserId() != null) {
+                System.out.println("==================cook是空的==================根据openid查询sessionId");
+                s = Sessions.resultCook(user, "WeChat", openId, new Date());
+                System.out.println("==================weChat=================根据openid查询sessionId===+============"+s);
             }
         }
         try {

@@ -8,9 +8,7 @@ import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
@@ -20,8 +18,7 @@ import java.util.*;
 public class KnowledgePoints {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@Context HttpServletRequest req, @CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        req.getRemoteAddr();
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         List<KnowledgePoint> r = JPAEntry.getList(KnowledgePoint.class, Impl.getFilters(filter));
         List<String> ids = new ArrayList<>();
         for (KnowledgePoint ri : r) {
