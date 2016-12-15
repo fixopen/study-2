@@ -206,7 +206,7 @@ public class JPAEntry {
         return result;
     }
 
-    static Session getSession(String sessionId) {
+    public static Session getSession(String sessionId) {
         return getObject(Session.class, "identity", sessionId);
     }
 

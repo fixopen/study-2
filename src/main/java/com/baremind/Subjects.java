@@ -3,6 +3,7 @@ package com.baremind;
 import com.baremind.data.Log;
 import com.baremind.data.Subject;
 import com.baremind.utils.Impl;
+import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -61,7 +62,7 @@ public class Subjects {
     public Response subjectPopup(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Log log = Logs.insert(Long.parseLong(sessionId), "subject", id, "popup");
+            Log log = Logs.insert(JPAEntry.getSession(sessionId).getUserId(), "subject", id, "popup");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;
@@ -73,7 +74,7 @@ public class Subjects {
     public Response isPopup(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Long popCount = Logs.getUserStatsCount(Long.parseLong(sessionId), "subject", id, "popup");
+            Long popCount = Logs.getUserStatsCount(JPAEntry.getSession(sessionId).getUserId(), "subject", id, "popup");
             Boolean r = false;
             if (popCount > 0) {
                 r = true;
