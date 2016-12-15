@@ -313,6 +313,7 @@ public class Users {
         return result;
     }
 
+    @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
