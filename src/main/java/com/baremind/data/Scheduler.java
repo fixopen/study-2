@@ -1,6 +1,7 @@
 package com.baremind.data;
 
 
+import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +47,15 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "abstraction")
+    private String abstraction;
+
+    @Column(name = "outline")
+    private String outline;
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "cover_id")
     private Long coverId;
 
@@ -54,9 +65,6 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
     @Column(name = "direct_link")
     private String directLink;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "teacher_id")
     private Long teacherId;
 
@@ -65,22 +73,6 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
 
     @Column(name = "discount")
     private Double discount;
-
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
-    public Double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
-    }
 
     public Long getId() {
         return id;
@@ -155,6 +147,30 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.name = name;
     }
 
+    public String getAbstraction() {
+        return abstraction;
+    }
+
+    public void setAbstraction(String abstraction) {
+        this.abstraction = abstraction;
+    }
+
+    public String getOutline() {
+        return outline;
+    }
+
+    public void setOutline(String outline) {
+        this.outline = outline;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Long getCoverId() {
         return coverId;
     }
@@ -179,20 +195,57 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.directLink = directLink;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Long getTeacherId() {
         return teacherId;
     }
 
     public void setTeacherId(Long teacherId) {
         this.teacherId = teacherId;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
+    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers) {
+        Map<String, Object> schedulerMap = new HashMap<>();
+        schedulerMap.put("id", scheduler.getId());
+        schedulerMap.put("year", scheduler.getYear());
+        schedulerMap.put("week", scheduler.getWeek());
+        schedulerMap.put("day", scheduler.getDay());
+        schedulerMap.put("startTime", scheduler.getStartTime());
+        schedulerMap.put("endTime", scheduler.getEndTime());
+        schedulerMap.put("subjectId", scheduler.getSubjectId());
+        schedulerMap.put("grade", scheduler.getGrade());
+        schedulerMap.put("name", scheduler.getName());
+        schedulerMap.put("abstraction", scheduler.getAbstraction());
+        schedulerMap.put("outline", scheduler.getOutline());
+        schedulerMap.put("description", scheduler.getDescription());
+        Image cover = Resources.findItem(covers, (item) -> item.getId() == scheduler.getCoverId());
+        if (cover != null) {
+            schedulerMap.put("cover", cover.getStorePath());
+        }
+        User teacher = Resources.findItem(teachers, (item) -> item.getId() == scheduler.getTeacherId());
+        if (teacher != null) {
+            schedulerMap.put("teacher", teacher.getName());
+            schedulerMap.put("teacherDescription", teacher.getDescription());
+        }
+        schedulerMap.put("price", scheduler.getPrice());
+        schedulerMap.put("discount", scheduler.getDiscount());
+        //schedulerMap.put("price", scheduler.getAmount());
+        return schedulerMap;
     }
 
     public static Map<String, Object> convertToMap(Scheduler scheduler) {
@@ -206,10 +259,21 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("subjectId", scheduler.getSubjectId());
         schedulerMap.put("grade", scheduler.getGrade());
         schedulerMap.put("name", scheduler.getName());
+        schedulerMap.put("abstraction", scheduler.getAbstraction());
+        schedulerMap.put("outline", scheduler.getOutline());
+        schedulerMap.put("description", scheduler.getDescription());
         Image cover = JPAEntry.getObject(Image.class, "id", scheduler.getCoverId());
         if (cover != null) {
             schedulerMap.put("cover", cover.getStorePath());
         }
+        User teacher = JPAEntry.getObject(User.class, "id", scheduler.getTeacherId());
+        if (teacher != null) {
+            schedulerMap.put("teacher", teacher.getName());
+            schedulerMap.put("teacherDescription", teacher.getDescription());
+        }
+        schedulerMap.put("price", scheduler.getPrice());
+        schedulerMap.put("discount", scheduler.getDiscount());
+        //schedulerMap.put("price", scheduler.getAmount());
         return schedulerMap;
     }
 

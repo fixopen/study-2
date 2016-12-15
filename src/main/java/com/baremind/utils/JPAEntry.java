@@ -42,6 +42,12 @@ public class JPAEntry {
         return getObject(type, condition);
     }
 
+    public static <T> T getObject(EntityManager em, Class<T> type, String fieldName, Object fieldValue) {
+        HashMap<String, Object> condition = new HashMap<>(1);
+        condition.put(fieldName, fieldValue);
+        return getObject(em, type, condition);
+    }
+
     public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
         EntityManager em = getEntityManager();
         return getObject(em, type, conditions);
@@ -160,9 +166,9 @@ public class JPAEntry {
         em.close();
     }
 
-    public static void genericPost(EntityManager em, Object o) {
-        em.persist(o);
-    }
+    //public static void genericPost(EntityManager em, Object o) {
+    //    em.persist(o);
+    //}
 
     public static void genericPut(Object o) {
         EntityManager em = JPAEntry.getNewEntityManager();
@@ -172,7 +178,11 @@ public class JPAEntry {
         em.close();
     }
 
-    static long genericDelete(Class type, String name, Object value) {
+    //public static void genericPut(EntityManager em, Object o) {
+    //    em.merge(o);
+    //}
+
+    public static long genericDelete(Class type, String name, Object value) {
         Map<String, Object> conditions = new HashMap<>();
         conditions.put(name, value);
         return genericDelete(type, conditions);
@@ -181,13 +191,18 @@ public class JPAEntry {
     public static long genericDelete(Class type, Map<String, Object> conditions) {
         EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
+        Long result = genericDelete(em, type, conditions);
+        em.getTransaction().commit();
+        em.close();
+        return result;
+    }
+
+    public static long genericDelete(EntityManager em, Class type, Map<String, Object> conditions) {
         List os = JPAEntry.getList(em, type, conditions, null);
         long result = os.size();
         for (Object o : os) {
             em.remove(o);
         }
-        em.getTransaction().commit();
-        em.close();
         return result;
     }
 

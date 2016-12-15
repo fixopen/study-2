@@ -1,6 +1,8 @@
 package com.baremind;
 
+import com.baremind.data.Image;
 import com.baremind.data.Scheduler;
+import com.baremind.data.User;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
@@ -10,10 +12,7 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 //GET /api/schedulers/this-week
@@ -25,7 +24,20 @@ public class Schedulers {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        return Impl.get(sessionId, filter, null, Scheduler.class, Scheduler::convertToMap, null);
+        List<Scheduler> r = JPAEntry.getList(Scheduler.class, Impl.getFilters(filter));
+        List<String> teacherIds = new ArrayList<>();
+        List<String> coverIds = new ArrayList<>();
+        for (Scheduler ri : r) {
+            teacherIds.add(ri.getTeacherId().toString());
+            coverIds.add(ri.getCoverId().toString());
+        }
+        EntityManager em = JPAEntry.getEntityManager();
+        List<User> teachers = Resources.getList(em, teacherIds, User.class);
+        List<Image> covers = Resources.getList(em, coverIds, Image.class);
+
+        Map<String, String> orders = new HashMap<>();
+        orders.put("startTime", "DESC");
+        return Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, teachers, covers), null);
     }
 
     @GET //根据id查询

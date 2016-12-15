@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by fixopen on 2/12/2016.
@@ -36,7 +37,7 @@ public class Transactions {
             em.getTransaction().begin();
             if (entity.getCount() == null) {
                 if (entity.getSourceType() == null) { //recharge
-                    TransferObject dst = Users.getByTypeAndId(entity.getObjectType(), entity.getObjectId());
+                    TransferObject dst = Users.getByTypeAndId(em, entity.getObjectType(), entity.getObjectId());
                     if (dst != null) {
                         dst.setAmount(dst.getAmount() + entity.getMoney());
                         em.merge(dst);
@@ -46,10 +47,9 @@ public class Transactions {
                     }
                 } else { //transfer
                     result = Response.status(408).build(); //amount error
-                    TransferObject src = Users.getByTypeAndId(entity.getSourceType(), entity.getSourceId());
+                    TransferObject src = Users.getByTypeAndId(em, entity.getSourceType(), entity.getSourceId());
                     if (src.getAmount() >= entity.getMoney()) {
-                        em.getTransaction().begin();
-                        TransferObject dst = Users.getByTypeAndId(entity.getObjectType(), entity.getObjectId());
+                        TransferObject dst = Users.getByTypeAndId(em, entity.getObjectType(), entity.getObjectId());
                         dst.setAmount(dst.getAmount() + entity.getMoney());
                         em.merge(dst);
                         src.setAmount(src.getAmount() - entity.getMoney());
@@ -60,10 +60,10 @@ public class Transactions {
                     }
                 }
             } else { //purchase
-                TransferObject resource = Resources.getByTypeAndId(entity.getObjectType(), entity.getObjectId());
-                TransferObject src = Users.getByTypeAndId(entity.getSourceType(), entity.getSourceId());
+                TransferObject resource = Resources.getByTypeAndId(em, entity.getObjectType(), entity.getObjectId());
+                TransferObject src = Users.getByTypeAndId(em, entity.getSourceType(), entity.getSourceId());
                 result = Response.status(408).build(); //amount error
-                if (resource.getAmount() == entity.getMoney() && src.getAmount() > entity.getMoney()) {
+                if (Objects.equals(resource.getAmount(), entity.getMoney()) && src.getAmount() > entity.getMoney()) {
                     src.setAmount(src.getAmount() - entity.getMoney());
                     em.merge(src);
                     em.persist(entity);

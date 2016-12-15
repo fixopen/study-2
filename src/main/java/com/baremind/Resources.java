@@ -66,17 +66,17 @@ public class Resources {
         return container.stream().filter(p).collect(Collectors.toList());
     }
 
-    static Resource getByTypeAndId(String type, Long id) {
+    static Resource getByTypeAndId(EntityManager em, String type, Long id) {
         Resource result = null;
         switch (type) {
             case "knowledgePoint":
-                result = JPAEntry.getObject(KnowledgePoint.class, "id", id);
+                result = JPAEntry.getObject(em, KnowledgePoint.class, "id", id);
                 break;
             case "video":
-                result = JPAEntry.getObject(Scheduler.class, "id", id);
+                result = JPAEntry.getObject(em, Scheduler.class, "id", id);
                 break;
             case "liveVideo":
-                result = JPAEntry.getObject(Scheduler.class, "id", id);
+                result = JPAEntry.getObject(em, Scheduler.class, "id", id);
                 break;
         }
         return result;
@@ -90,7 +90,8 @@ public class Resources {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             Map<String, Object> r = new HashMap<>();
-            Resource resource = getByTypeAndId(type, id);
+            EntityManager em = JPAEntry.getEntityManager();
+            Resource resource = getByTypeAndId(em, type, id);
             r.put("price", resource.getAmount());
             r.put("subjectId", resource.getSubjectId());
             User user = JPAEntry.getLoginUser(sessionId);
@@ -143,7 +144,8 @@ public class Resources {
                     }
                 }
 
-                Resource s = getByTypeAndId(type, id);
+                EntityManager em = JPAEntry.getEntityManager();
+                Resource s = getByTypeAndId(em, type, id);
                 if (s != null) {
                     Consumption consumption = new Consumption();
                     consumption.setId(IdGenerator.getNewId());
