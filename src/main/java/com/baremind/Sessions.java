@@ -38,8 +38,6 @@ public class Sessions {
         return Impl.getSelf(sessionId);
     }
 
-
-
     private static class LoginInfo {
         private String type;
         private String info;
