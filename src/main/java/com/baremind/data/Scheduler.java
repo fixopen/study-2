@@ -50,6 +50,39 @@ public class Scheduler {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "prepare")
+    private String prepare;
+
+    @Column(name = "outline")
+    private String outline;
+
+    @Column(name = "generalization")
+    private String generalization;
+
+    public String getPrepare() {
+        return prepare;
+    }
+
+    public void setPrepare(String prepare) {
+        this.prepare = prepare;
+    }
+
+    public String getOutline() {
+        return outline;
+    }
+
+    public void setOutline(String outline) {
+        this.outline = outline;
+    }
+
+    public String getGeneralization() {
+        return generalization;
+    }
+
+    public void setGeneralization(String generalization) {
+        this.generalization = generalization;
+    }
+
     @Column(name = "cover")
     private String cover;
 

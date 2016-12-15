@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Id;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -313,7 +314,10 @@ public class Users {
                                     Date oneYearAfter = cal.getTime();
 
                                     c.setEndTime(oneYearAfter);
-                                    c.setAmount(588.0);
+                                    c.setAmount(5880L);
+                                    if (ac.getCardNo().startsWith("03")) {
+                                        c.setAmount(1680L);
+                                    }
                                     User users = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                                     if (users == null) {
                                         user = new User();
@@ -382,6 +386,121 @@ public class Users {
         Long logId = rand.nextLong();
         //Logs.insert(id, "log", logId, "start");
         return activeCardImpl(Long.parseLong(userId), ac);
+    }
+
+    public static class Reissue{
+        private String name;
+        private String school;
+        private String grade;
+        private String phone;
+        private String code;
+        private String password;
+        private Long subject;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getSchool() {
+            return school;
+        }
+
+        public void setSchool(String school) {
+            this.school = school;
+        }
+
+        public String getGrade() {
+            return grade;
+        }
+
+        public void setGrade(String grade) {
+            this.grade = grade;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public Long getSubject() {
+            return subject;
+        }
+
+        public void setSubject(Long subject) {
+            this.subject = subject;
+        }
+    }
+
+    @POST
+    @Path("reissue")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response activeCard(@CookieParam("userId") String userId, Reissue reissue) {
+        Response result = Response.status(412).build();
+        Date now = new Date();
+        Card card = JPAEntry.getObject(Card.class, "no", reissue.getCode());
+        User user = JPAEntry.getObject(User.class, "telephone", reissue.getPhone());
+        if(card == null){
+             result = Response.status(404).build();
+        }else
+        if(user == null){
+            Map map = new HashMap();
+            map.put("学校",reissue.getSchool());
+            map.put("班级",reissue.getGrade());
+            map.put("姓名",reissue.getName());
+            JPAEntry.log(Long.valueOf(userId),new Gson().toJson(map),"reissue",Long.valueOf(reissue.getPhone()));
+            SendMessageResult r = sendMessage(reissue.getPhone(), "《小雨知时》" +reissue.getName()+"补办的卡号是"+reissue.getCode()+",密码是"+reissue.getPassword()+"");
+            result = Response.ok().build();
+        }else{
+            String classname = user.getClassname();
+            if (classname != null) {
+                user.setClassname(classname);
+            }
+            String grade = user.getGrade();
+            if (grade != null) {
+                user.setGrade(grade);
+            }
+            String name = user.getName();
+            if (name != null) {
+                user.setName(name);
+            }
+            String school = user.getSchool();
+            if (school != null) {
+                user.setSchool(school);
+            }
+            String telephone = user.getTelephone();
+            if (telephone != null) {
+                user.setTelephone(telephone);
+            }
+            user.setUpdateTime(now);
+            JPAEntry.genericPut(user);
+            SendMessageResult r = sendMessage(reissue.getPhone(), "《小雨知时》" +reissue.getName()+"补办的卡号是"+reissue.getCode()+",密码是"+reissue.getPassword()+"");
+            result = Response.ok().build();
+        }
+        return result;
     }
 
     @POST
@@ -770,10 +889,6 @@ public class Users {
                 if (birthday != null) {
                     existuser.setBirthday(birthday);
                 }
-                String classname = user.getClassname();
-                if (classname != null) {
-                    existuser.setClassname(classname);
-                }
                 String description = user.getDescription();
                 if (description != null) {
                     existuser.setDescription(description);
@@ -781,10 +896,6 @@ public class Users {
                 String email = user.getEmail();
                 if (email != null) {
                     existuser.setEmail(email);
-                }
-                String grade = user.getGrade();
-                if (grade != null) {
-                    existuser.setGrade(grade);
                 }
                 String head = user.getHead();
                 if (head != null) {
@@ -802,29 +913,37 @@ public class Users {
                 if (loginName != null) {
                     existuser.setLoginName(loginName);
                 }
-                String name = user.getName();
-                if (name != null) {
-                    existuser.setName(name);
-                }
                 String password = user.getPassword();
                 if (password != null) {
                     existuser.setPassword(password);
-                }
-                String school = user.getSchool();
-                if (school != null) {
-                    existuser.setSchool(school);
                 }
                 Long sex = user.getSex();
                 if (sex != null) {
                     existuser.setSex(sex);
                 }
-                String telephone = user.getTelephone();
-                if (telephone != null) {
-                    existuser.setTelephone(telephone);
-                }
                 String timezone = user.getTimezone();
                 if (timezone != null) {
                     existuser.setTimezone(timezone);
+                }
+                String classname = user.getClassname();
+                if (classname != null) {
+                    existuser.setClassname(classname);
+                }
+                String grade = user.getGrade();
+                if (grade != null) {
+                    existuser.setGrade(grade);
+                }
+                String name = user.getName();
+                if (name != null) {
+                    existuser.setName(name);
+                }
+                String school = user.getSchool();
+                if (school != null) {
+                    existuser.setSchool(school);
+                }
+                String telephone = user.getTelephone();
+                if (telephone != null) {
+                    existuser.setTelephone(telephone);
                 }
                 Date now = new Date();
                 existuser.setUpdateTime(now);

@@ -84,6 +84,10 @@ a {
     overflow: hidden;
 }
 
+.challenge-font {
+    padding-right: 3rem;
+}
+
 .challenge-left {
     float: left;
     width: 1.9375rem;
@@ -132,7 +136,7 @@ a {
     color: #fe6568;
     text-indent: 2em;
     position: relative;
-    top: -1.25rem;
+    /*top: -1.25rem;*/
 }
 
 /* 闯关练习 */
@@ -223,8 +227,8 @@ li.mld_Ulli {
 }
 
 .zongjie_p {
+    margin: 0.625rem 0 0;
     color: #fe6568;
-    margin-top: 0.625rem;
 }
 
 .zongjie_txt {
@@ -234,19 +238,10 @@ li.mld_Ulli {
     width: 100%;
     line-height: 1rem;
     min-height: 5.0rem;
-    text-indent: 2em;
     padding: 0.625rem 0.3125rem;
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
-
-/*.mld_liImg {*/
-/*width: 2.1875rem;*/
-/*height: 0.9375rem;*/
-/*margin-right: 0.46875rem;*/
-/*position: relative;*/
-/*top: 0.15625rem;*/
-/*}*/
 
 .mld_liImg {
     width: 2.1875rem;
@@ -287,7 +282,6 @@ li.mld_Ulli {
 .daan_error {
     float: left;
     position: relative;
-    /*top: -1.625rem;*/
     top: 0;
     left: 0;
     width: 1.625rem;
@@ -355,10 +349,6 @@ li.mld_Ulli {
 
 .ul01_fli {
     margin-right: 0.9375rem;
-}
-
-.ul01_count {
-    margin-left: 0.3125rem;
 }
 
 .ul01_imgzan {
@@ -606,10 +596,10 @@ li.mld_Ulli {
 
 /*!* 答案 *!*/
 /*.daana {*/
-    /*width: 100%;*/
-    /*min-height: 1.5625rem;*/
-    /*position: absolute;*/
-    /*top: 0.46875rem;*/
-    /*left: 0;*/
-    /*z-index: -1;*/
+/*width: 100%;*/
+/*min-height: 1.5625rem;*/
+/*position: absolute;*/
+/*top: 0.46875rem;*/
+/*left: 0;*/
+/*z-index: -1;*/
 /*}*/

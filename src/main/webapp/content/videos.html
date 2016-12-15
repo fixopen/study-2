@@ -86,57 +86,77 @@
         .data :nth-child(even) {
             border-top: 1px solid #ea875f;
         }
+<<<<<<< HEAD
+
+        .pika-lendar td {
+            font-size: 1.5rem;
+=======
+        .pika-lendar td{
+            font-size: 1rem;
+>>>>>>> 5db4942fa3b4a52a490a30fc83b9332725f02913
+        }
+
+        .pika-lendar table {
+            margin: 10px 0;
+        }
+
+        .pika-button {
+            color: #aaa;
+            background-color: #fff;
+            padding: 10px 16px;
+        }
     </style>
 </head>
 
 <body>
 <article id="main">
-    <div class="tan"></div>
-    <div class="window1"><!-- 有此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
+    <div id="div1">
+        <div class="tan"></div>
+        <div class="window1"><!-- 有此卡扣豆提醒 -->
+            <a class="windowClose" href="#"></a>
+            <div class="win_neir koudou_win">
+                <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
+                <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+                <p class="neir_pBtn kou_dou">
+                    <a class="p_btn" href="#" onclick="div2show()">确定</a>
+                </p>
+            </div>
+        </div>
+        <div class="window1"><!-- 无此卡扣豆提醒 -->
+            <a class="windowClose" href="#"></a>
+            <div class="win_neir koudou_win">
+                <p class="neir_ptxt">您还没有数学卡</p>
+                <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">150</span>金豆吗？</p>
+                <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+                <p class="neir_pBtn kou_dou">
+                    <a class="p_btn" href="#">确定</a>
+                </p>
+                <p class="neir_pBtn2">
+                    <a class="p_buyka" href="#">买数学卡</a>
+                </p>
+            </div>
         </div>
     </div>
-    <div class="window1"><!-- 无此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">您还没有数学卡</p>
-            <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">150</span>金豆吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="#">买数学卡</a>
-            </p>
-        </div>
-    </div>
-
 
     <div class="wrap">
         <div class="rain-main  noPadd">
             <div class="kebiao_tou" id="schedulerEntry" data-article="scheduler">
                 <div class="tou_left">
-                    <span class="left_kebiao">本周课程表</span>
+                    <span class="left_kebiao" data-article="scheduler">本周课程表</span>
                     <br>
-                    <span>Ben Zhou Ke Cheng Biao</span>
+                    <span data-article="scheduler">Ben Zhou Ke Cheng Biao</span>
                 </div>
-                <div class="tou_right"></div>
+                <div class="tou_right" data-article="scheduler"></div>
             </div>
             <!-- Nav tabs -->
             <div class="tab_div">
                 <ul role="tablist" class="tab_switch  nav nav-tabs">
-                    <li class="tab_swli active " role="presentation">
+                    <li class="tab_swli  " role="presentation" id="chineseZero">
                         <a class="tab_toggle" href="#zero" role="tab" data-toggle="tab">语文
                             <span class="tab_swlispan">(<i id="Cc"></i>)</span>
                         </a>
                     </li>
-                    <li role="presentation" class="tab_swli tab_swlino">
+                    <li role="presentation" class="tab_swli tab_swlino" id="mathOne">
                         <a class="tab_toggle" href="#one" role="tab" data-toggle="tab">数学
                             <span class="tab_swlispan">(<i id="Mc"></i>)</span>
                         </a>
@@ -145,7 +165,7 @@
             </div>
 
             <!-- Tab panes -->
-            <div role="tabpanel" class="nei_rong tab-pane active" id="zero">
+            <div role="tabpanel" class="nei_rong tab-pane" id="zero">
                 <div class="tab-zhibo">
                     <div id="zeroPlaying"></div>
                     <div id="zeroFuture"></div>
@@ -169,48 +189,90 @@
         </div>
     </div>
 </article>
-<article id="passed" style="display: none;" class="wrap noBackg">
-    <!--<input class="souSuo clearfix" type="text" id="text"  name="keyword"  onkeydown="entersearch()" placeholder="请输入科目、老师、年级 关键词搜索">-->
-    <div class="tiao_jian">
-        <div class="tiaoj_TJ01 selectDiv">
-            <div class="tiaoj_1span" id="subjectSelect">
-                <span>科目</span>
-                <img src="../img/xiala.png" alt="">
-            </div>
-            <ul class="xiala_ul" id="subject"></ul>
-        </div>
-        <div class="tiaoj_TJ02 selectDiv">
-            <div class="tiaoj_2span" id="teacherSelect">
-                <span>老师</span>
-                <img src="../img/xiala.png" alt="">
-            </div>
-            <ul class="xiala_ul" id="teacher"></ul>
-        </div>
-        <div class="tiaoj_TJ03 selectDiv" id="gradeeSelect">
-            <div class="tiaoj_3span">
-                <span>年级</span>
-                <img src="../img/xiala.png" alt="">
-            </div>
-            <ul class="xiala_ul" id="grade"></ul>
-        </div>
-        <div class="tiaoj_TJ04 selectDiv" id="dateSelect">
-            <div class="tiaoj_4span">
-                <span>日期</span>
-                <img src="../img/xiala.png" alt="">
-            </div>
-            <ul class="xiala_ul" id="date"></ul>
+<article id="passed" style="display: none;" class="noBackg">
+    <div class="tan" style="display: none;"></div>
+    <div class="window1"><!-- 有此卡扣豆提醒 -->
+        <a class="windowClose" href="#"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
+            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="#">确定</a>
+            </p>
         </div>
     </div>
-    <div class="rain-main noPadd">
-        <ul id="video"></ul>
-        <div class="bottom_txt">
-            <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
+    <div class="window1" style="display: none;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="#"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt">您还没有数学卡</p>
+            <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">20</span>金豆吗？</p>
+            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="#">确定</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="#">买数学卡</a>
+            </p>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="tiao_jian">
+            <div class="tiaoj_TJ">
+                <div class="tiaoj_span" id="subjectSelect">
+                    <span class="filter_item">科目</span>
+                </div>
+                <ul class="xiala_ul" id="subject">
+                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                </ul>
+            </div>
+            <div class="tiaoj_TJ">
+                <div class="tiaoj_span" id="teacherSelect">
+                    <span class="filter_item">老师</span>
+                </div>
+                <ul class="xiala_ul" id="teacher">
+                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                </ul>
+            </div>
+            <div class="tiaoj_TJ" id="gradeeSelect">
+                <div class="tiaoj_span">
+                    <span class="filter_item">年级</span>
+                </div>
+                <ul class="xiala_ul" id="grade">
+                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                </ul>
+            </div>
+            <div class="tiaoj_TJ" id="dateSelect">
+                <div class="tiaoj_span" id="datePicker">
+                    <span class="filter_item">日期</span>
+                </div>
+                <div class="xiala_ul" id="date"></div>
+            </div>
+        </div>
+        <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
+        <div class="rain-main video-passed-textTop">
+            <ul id="video"></ul>
+            <div class="bottom_txt">
+                <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
+            </div>
         </div>
     </div>
 </article>
 <article id="videoDetail" style="display: none;">
-    <!--<video id="video-item" src="#" controls autoplay style="width: 100%;height: 100%; margin-left: 11px;"></video>-->
-    <div class="wrap nohuifBackg"></div>
+    <div class="wrap">
+        <div class="rain-main live-details">
+            <div id="live-details-video" class="live-details-video"></div>
+            <div class="liveDetails-comment">
+                <div class="liveDetails-center">
+                    <h3 class="liveDetails-h3">评论</h3>
+                    <ul id="comment-area" class="liveDetails-ul"></ul>
+                </div>
+            </div>
+            <div class="liveDetails-message">
+                <input class="liveDetails-messageTxt" type="text" placeholder="留言" id="textarea">
+                <button class="liveDetails-messageBtn" id="btn">发送</button>
+            </div>
+        </div>
+    </div>
 </article>
 <article id="scheduler" style="display: none;" class="wrap">
     <div class="convenient">
@@ -240,7 +302,9 @@
 </article>
 <article id="futureNote" style="display: none;" class="futureWrap">
     <div class="waiting">
-        <a class="goBack" href="/content/videos.html"></a>
+        <img src="../img/backG.png" alt="">
+        <p class="waitTime"></p>
+        <span class="goBack" data-article="main"></span>
     </div>
 </article>
 
@@ -248,13 +312,13 @@
 <!--********************************main***********************-->
 <template id="chinese-playing-template">
     <div class="all_uli">
-        <div class="all_liplay">
+        <div class="all_liplay" onclick="div1Show()">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -263,39 +327,39 @@
                 </p>
                 <a class="yuwen_a" href="${directLink}"></a>
             </a>
-            <div class="course-intro">
-                <div class="course_xiaqing">
-                    <div class="xiaq_div">
-                        <p>${gaishu}</p>
-                        <div class="course_detail">详情
-                            <img src="images/xiala.png" alt="">
-                            <img src="images/xiala_sq.png" alt="">
-                        </div>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="xiaq_div">
+                    <p>${outline}</p>
+                    <div class="course_detail detail" data-detail="${id}">详情
+                        <img src="images/xiala.png" alt="">
+                        <img src="images/xiala_sq.png" alt="">
                     </div>
                 </div>
-                <div class="course-detail">
-                    <div class="keqian_zb">
-                        课前准备：
-                        <span>${preparation}</span>
-                    </div>
-                    <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p class="tim2">${description}</p>
-
-                    <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2">${teacherDescription}</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
+            </div>
+            <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>${prepare}</span>
                 </div>
+                <h3 class="sml-tit brief1">
+                    <img src="images/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p class="tim2">${description}</p>
+
+                <h3 class="sml-tit brief2">
+                    <img src="images/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2">${teacherDescription}</p>
+
+                <h3 class="sml-tit brief3">
+                    <img src="images/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
             </div>
         </div>
     </div>
@@ -303,14 +367,14 @@
 <template id="chinese-future-template">
     <div class="all_uli">
         <div class="all_liplay">
-            <div class="futureNoteEntry" class="all_aBtn" data-article="futureNote">
-                <span class="daibo_ceng ceng_yuwen"></span>
+            <div class="futureNoteEntry" class="all_aBtn">
+                <span class="daibo_ceng ceng_yuwen" data-article="futureNote" data-id="${id}"></span>
                 <span class="bofang daibo"></span>
                 <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -319,39 +383,39 @@
                 </p>
                 <a class="yuwen_a" href="#"></a>
             </div>
-            <div class="course-intro">
-                <div class="course_xiaqing">
-                    <div class="xiaq_div">
-                        <p style="min-height:30px;">${gaishu}</p>
-                        <div class="course_detail">详情
-                            <img src="images/xiala.png" alt="">
-                            <img src="images/xiala_sq.png" alt="">
-                        </div>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="xiaq_div">
+                    <p>${outline}</p>
+                    <div class="course_detail detail" data-detail="${id}">详情
+                        <img src="images/xiala.png" alt="">
+                        <img src="images/xiala_sq.png" alt="">
                     </div>
                 </div>
-                <div class="course-detail">
-                    <div class="keqian_zb">
-                        课前准备：
-                        <span>${preperation}</span>
-                    </div>
-                    <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p class="tim2">${description}</p>
-
-                    <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2">${teacherDescription}</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
+            </div>
+            <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>${prepare}</span>
                 </div>
+                <h3 class="sml-tit brief1">
+                    <img src="images/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p class="tim2">${description}</p>
+
+                <h3 class="sml-tit brief2">
+                    <img src="images/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2">${teacherDescription}</p>
+
+                <h3 class="sml-tit brief3">
+                    <img src="images/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
             </div>
         </div>
     </div>
@@ -362,9 +426,9 @@
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
-                <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                <div class="yuwen_div2 shuxue_div2">
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -373,54 +437,54 @@
                 </p>
                 <a class="yuwen_a" href="${directLink}"></a>
             </a>
-            <div class="course-intro">
-                <div class="course_xiaqing">
-                    <div class="xiaq_div">
-                        <p>${gaishu}</p>
-                        <div class="course_detail">详情
-                            <img src="images/xiala.png" alt="">
-                            <img src="images/xiala_sq.png" alt="">
-                        </div>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="xiaq_div">
+                    <p>${outline}</p>
+                    <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
+                        <img src="images/xiala_sx.png" alt="">
+                        <img src="images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
-                <div class="course-detail">
-                    <div class="keqian_zb">
-                        课前准备：
-                        <span>${preparation}</span>
-                    </div>
-                    <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p class="tim2">${description}</p>
-
-                    <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2">${teacherDescription}</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
+            </div>
+            <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>${prepare}</span>
                 </div>
+                <h3 class="sml-tit brief1">
+                    <img src="images/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p class="tim2">${description}</p>
+
+                <h3 class="sml-tit brief2">
+                    <img src="images/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2">${teacherDescription}</p>
+
+                <h3 class="sml-tit brief3">
+                    <img src="images/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
             </div>
         </div>
     </div>
 </template>
 <template id="math-future-template">
     <div class="all_uli">
-        <div class="all_liplay">
-            <div class="futureNoteEntry" class="all_aBtn" data-article="futureNote">
-                <span class="daibo_ceng ceng_yuwen"></span>
+        <div class="all_liplay shuxue_play">
+            <div class="futureNoteEntry" class="all_aBtn">
+                <span class="daibo_ceng" data-article="futureNote" data-id="${id}"></span>
                 <span class="bofang daibo"></span>
                 <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
-                <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                <div class="yuwen_div2 shuxue_div2">
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -429,39 +493,40 @@
                 </p>
                 <a class="yuwen_a" href="#"></a>
             </div>
-            <div class="course-intro">
-                <div class="course_xiaqing">
-                    <div class="xiaq_div">
-                        <p style="min-height:30px;">${gaishu}</p>
-                        <div class="course_detail">详情
-                            <img src="images/xiala.png" alt="">
-                            <img src="images/xiala_sq.png" alt="">
-                        </div>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="xiaq_div">
+                    <p>${outline}</p>
+                    <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
+                        <img src="images/xiala_sx.png" alt="">
+                        <img src="images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
-                <div class="course-detail">
-                    <div class="keqian_zb">
-                        课前准备：
-                        <span>${preperation}</span>
-                    </div>
-                    <h3 class="sml-tit brief1">
-                        <img src="images/abc.png" alt="">
-                        课程简介
-                    </h3>
-                    <p class="tim2">${description}</p>
+            </div>
+            <div class="course-detail" data-identity="${id}">
 
-                    <h3 class="sml-tit brief2">
-                        <img src="images/zjr_btn.png" alt="">
-                        主讲人简介
-                    </h3>
-                    <p class="tim2">${teacherDescription}</p>
-
-                    <h3 class="sml-tit brief3">
-                        <img src="images/sxsj_btn.png" alt="">
-                        上线时间
-                    </h3>
-                    <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>${prepare}</span>
                 </div>
+                <h3 class="sml-tit brief1">
+                    <img src="images/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p class="tim2">${description}</p>
+
+                <h3 class="sml-tit brief2">
+                    <img src="images/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2">${teacherDescription}</p>
+
+                <h3 class="sml-tit brief3">
+                    <img src="images/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
             </div>
         </div>
     </div>
@@ -469,49 +534,53 @@
 <!--***********************************passed*****************************************-->
 <template id="chinese-template">
     <li class="all_uli">
-        <div class="all_liplay">
-            <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
+        <div class="all_liplay" onclick="div3Show()">
+            <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
+                <div class="leftJinDou"><span>150</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
+                <p class="yuwen_p2">
+                    <span>${grade}</span>
+                    <span class="yuwen_span">${teacher}</span>
+                    <span class="yuwen_riqi">${startTime}</span>
+                </p>
                 <span class="yuwen_a"></span>
-                <span class="yuwen_span">—${teacher}老师</span>
-            </a>
+            </div>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
-                <div class="xiaq_div">${title}</div>
-                <div>
-                    <span>${grade}</span>
-                    <div class="course_detail detail_Btn" data-detail="${id}">课程详情</div>
+                <div class="xiaq_div">
+                    <p>${outline}</p>
+                    <div class="course_detail passed-detail" data-detail="${id}">详情
+                        <img src="/images/xiala.png" alt="">
+                        <img src="/images/xiala_sq.png" alt="">
+                    </div>
                 </div>
             </div>
             <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>${prepare}</span>
+                </div>
                 <h3 class="sml-tit brief1">
-                    <img src="../img/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
-                <p>${description}</p>
+                <p class="tim2">${description}</p>
                 <h3 class="sml-tit brief2">
-                    <img src="../img/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2"> ${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="../img/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${startTime}</p>
-
-                <h3 class="sml-tit brief4">
-                    <img src="../img/cksc_btn.png" alt="">
-                    课程时长
-                </h3>
-                <p id="duration">30分钟</p>
             </div>
         </div>
     </li>
@@ -519,132 +588,115 @@
 <template id="math-template">
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
-            <a class="all_aBtn" href="video.html?src=${cdnLink}">
-                <div class="yuwen_div0"><span>${goldBean}</span>金豆</div>
+            <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
+                <div class="leftJinDou"><span>150</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">数学</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
-                    <h3 class="yuwen_h3">${title}</h3>
-                    <p class="yuwen_p">${description}</p>
+                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <p class="yuwen_p">${title}</p>
                 </div>
+                <p class="yuwen_p2">
+                    <span>${grade}</span>
+                    <span class="yuwen_span">${teacher}</span>
+                    <span class="yuwen_riqi">${startTime}</span>
+                </p>
                 <span class="yuwen_a"></span>
-                <span class="yuwen_span">—${teacher}老师</span>
-            </a>
+            </div>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
-                <div class="xiaq_div">${title}</div>
-                <div>
-                    <span>${grade}</span>
-                    <div class="course_detail shuxue_Btn detail_Btn" data-detail="${id}">课程详情</div>
+                <div class="xiaq_div">
+                    <p>${outline}</p>
+                    <div class="course_detail shuxue_Btn passed-detail" data-detail="${id}">详情
+                        <img src="/images/xiala_sx.png" alt="">
+                        <img src="/images/xiala_sqsx.png" alt="">
+                    </div>
                 </div>
             </div>
             <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>${prepare}</span>
+                </div>
                 <h3 class="sml-tit brief1">
-                    <img src="../img/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p>${description}</p>
                 <h3 class="sml-tit brief2">
-                    <img src="../img/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2"> ${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="../img/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${startTime}</p>
-
-                <h3 class="sml-tit brief4">
-                    <img src="../img/cksc_btn.png" alt="">
-                    课程时长
-                </h3>
-                <p>30分钟</p>
             </div>
         </div>
     </li>
 </template>
 <template id="subject-template">
     <li class="xiala_li">
-        <span data-id="${id}" data-type="subject">${name}</span>
+        <span data-id="${id}" data-type="subject">${subject}</span><img src="images/zbwq_zhong.png" alt="">
     </li>
 </template>
 <template id="teacher-template">
     <li class="xiala_li">
         <span data-type="teacher">${teacher}</span>
+        <img src="images/zbwq_zhong.png" alt="">
     </li>
 </template>
 <template id="grade-template">
     <li class="xiala_li">
-        <span data-type="grade">${grade}</span>
+        <span data-type="grade">${grade}</span><img src="images/zbwq_zhong.png" alt="">
     </li>
 </template>
 <template id="date-template">
     <li class="xiala_li"></li>
 </template>
+<template id="selected-entries">
+    <li class="jieG_li">
+        <span>${selectedTxt}</span>
+        <a href="javascript:void(0)">
+            <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
+        </a>
+    </li>
+</template>
 
 
 <!--*****************************video*****************************-->
-<!--<tempalte id="video-template" class="rain-main nohuifPadd">-->
-<!--<div class="before_uli">-->
-<!--<div class="before_liplay">-->
-<!--<a class="all_aBtn" href="javascript:void(0)">-->
-<!--<div class="zhezao_top"></div>-->
-<!--<div class="zz_topbtn"></div>-->
-<!--<div class="zz_toptxt">${title}</div>-->
-<!--<div class="zhezao_bottom"></div>-->
-<!--<div class="zzbottom_div">-->
-<!--<div class="zzbom_diva1"></div>-->
-<!--<div class="zzbom_diva2">-->
-<!--<span class="zzbom_span">00:00</span>-->
-<!--<p class="zzbom_div2p">-->
-<!--<span class="zzbom_div2span"></span>-->
-<!--</p>-->
-<!--<span class="zzbom_span">30:00</span>-->
-<!--</div>-->
-<!--<div class="zzbom_diva3"></div>-->
-<!--</div>-->
+<template id="live-video-template">
+    <div>
+        <div class="live-details-videoPlay">
+            <video src="${cdnLink}" controls="controls" autoplay="autoplay"></video>
+            <div class="live-details-label">${subject}</div>
+            <div class="live-details-videoTxt">${title}</div>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="course_dianzan">
+                    <p class="course_xqpsee"><span>${number}</span>人观看过</p>
+                    <a href="javascript:void(0)" class="course_xqpzan">
+                        <img class="dianzanImg" id="icon" alt="">
+                        赞
+                        <span class="xqpZan">${count}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="video-comment-template">
+    <li class="liveDetails-li">
+        <span class="liveDetails-name">${name}</span>
+        <span class="liveDetails-time">${time}</span>
+        <p class="liveDetails-txt">${content}</p>
+    </li>
+</template>
 
-<!--<div class="before_div1">${subject}</div>-->
-<!--<div class="yuwen_div2 yuwen_posin">-->
-<!--<h3 class="yuwen_h3">写人作文</h3>-->
-<!--<p class="yuwen_p">${description}</p>-->
-<!--</div>-->
-<!--<span class="yuwen_span">—${teacher}老师</span>-->
-<!--</a>-->
-<!--</div>-->
-<!--<div class="course-intro">-->
-<!--<div class="course_xiaqing">-->
-<!--<div>-->
-<!--<p class="course_xqpsee"><span>${watchCount}</span>人观看过</p>-->
-<!--<a href="javascript:void(0)" class="course_xqpzan">-->
-<!--<img class="dianzanImg" src="/img/dianzan.png" alt="">-->
-<!--<img class="dianzanImg cur" src="/img/zanover.png" alt="">-->
-<!--赞-->
-<!--<span class="xqpZan">${likeCount}</span>-->
-<!--</a>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="zz_comment">-->
-<!--<div class="zz_center">-->
-<!--<h3 class="zz_plh3">评论</h3>-->
-<!--<ul class="zz_plul">-->
-<!--<li class="zz_plli">-->
-<!--<span class="zz_lispan1">${userName}</span>-->
-<!--<span class="zz_lispan2">${userTime}</span>-->
-<!--<p class="zz_pllip">${comment}</p>-->
-<!--</li>-->
-<!--</ul>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="leave_message">-->
-<!--<input class="message_text" type="text" placeholder="留言">-->
-<!--<a class="message_btn" href="javascript:void(0)">发送</a>-->
-<!--</div>-->
-<!--</tempalte>-->
 
 <!--**********************************scheduler********************************-->
 <template id="day-template">
@@ -673,6 +725,7 @@
 <script src="/moment/moment.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
+<script src="/js/pikaday.js"></script>
 <script>
     //[{..., teachers: [], grades: [], playings: [], futures: [], ...}, ...]
     var subjects = []
@@ -767,9 +820,12 @@
             }
 
             $(document).on('click', '[data-article]', function (e) {
-                var id = e.target.dataset.article
+                var element = e.target;
+                var id = element.dataset.article;
+                if (element.dataset.id) {
+                    state[id].id = element.dataset.id
+                }
                 switchTo(id)
-                state[id].changeId(e.target.dataset.id)
             })
 
             window.addEventListener('hashchange', function (e) {
@@ -778,6 +834,7 @@
                 switchTo(hash)
             }, false)
         },
+
         main: {
             zeroFuture: {
                 container: document.getElementById('zeroFuture'),
@@ -802,12 +859,24 @@
             isInit: false,
             init: function () {
                 if (!state.main.isInit) {
-                    $(document).on('click', '.course-detail-btn', function (e) {
+                    $(document).on('click', '.detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
+                        if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
+                            $(this).children('img').eq(0).hide();
+                            $(this).children('img').eq(1).show();
+                        }
+                        else {
+                            $(this).children('img').eq(1).hide();
+                            $(this).children('img').eq(0).show();
+                        }
                     })
 
                     var now = Date.now()
 
+                    var url = '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
+                                subjectId: subjects[0].id,
+                                endTime: '> ' + now
+                            }))
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
@@ -876,9 +945,27 @@
                                     }
                                     var oneFirst = whoFirst()
                                     if (oneFirst) {
-                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
-                                        $('#subjects').find('a[href="#one"]').addClass('cur')
-                                        $('#subjects').find('a[href="#zero"]').removeClass('cur')
+//                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                                        $('#mathOne').addClass('active')
+                                        $('#chineseZero').removeClass('active')
+                                        $('#one').addClass('active')
+                                        $('#zero').removeClass('active')
+                                    } else {
+                                        $('#chineseZero').addClass('active')
+                                        $('#mathOne').removeClass('active')
+                                        $('#zero').addClass('active')
+                                        $('#one').removeClass('active')
+                                    }
+                                    function div1Show() {
+                                        var div1 = document.getElementById("div1");
+                                        div1.style.display = "block";
+                                    }
+
+                                    function div2Show() {
+                                        var div1 = document.getElementById("div1");
+                                        var div2 = document.getElementById("div2");
+                                        div1.style.display = "none";
+                                        div2.style.display = "";
                                     }
 
                                     setInterval(function () {
@@ -889,7 +976,6 @@
                             })
                         }
                     })
-
                     state.main.isInit = true
                 }
             },
@@ -968,15 +1054,26 @@
                         break
                 }
             },
-
+            findById: function (id) {
+                var result = null;
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].futures.length; ++j) {
+                        if (subjects[i].futures[j].id == id) {
+                            result = subjects[i].futures[j]
+                            break
+                        }
+                    }
+                    if (result) {
+                        break
+                    }
+                }
+                return result
+            },
             schedulerEntry: document.getElementById('schedulerEntry'),
             passedEntry: document.getElementById('passedEntry'),
             futureNoteEntry: document.getElementsByClassName('futureNoteEntry'),
-//            keywords: document.getElementById('keywords'),
-//            search: function () {
-//                //filter the playing and future data via the filter element state
-//            }
         },
+
         passed: {
             zeroPassed: {
                 container: document.getElementById('video'),
@@ -996,11 +1093,19 @@
             isInit: false,
             init: function () {
                 if (!state.passed.isInit) {
-                    $(document).on('click', '.detail_Btn', function (e) {
+                    $(document).on('click', '.passed-detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
+                        if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
+                            $(this).children('img').eq(0).hide();
+                            $(this).children('img').eq(1).show();
+                        }
+                        else {
+                            $(this).children('img').eq(1).hide();
+                            $(this).children('img').eq(0).show();
+                        }
                     })
 
-                    $(document).on('click', '[data-type="subject"]', function(e) {
+                    $(document).on('click', '[data-type="subject"]', function (e) {
                         //hide subjects
                         state.passed.subject.style.display = 'none'
                         //change subjectSelect
@@ -1023,10 +1128,10 @@
                         // change gradeSelect
                         //}
                         if (!state.containGrade(sub, g.textContent)) {
-                            state.passed.gradeChoice.textContent = '年级'
+                            state.passed.gradeSelect.textContent = '年级'
                         }
 
-                        //change grades container
+//change grades container
                         state.passed.grade.innerHTML = ''
                         proc({
                             container: state.passed.grade,
@@ -1034,9 +1139,9 @@
                             templateId: 'grade-template'
                         })
 
-                        //filter data
+//filter data
                         var d = state.passed.search()
-                        //refill the content
+//refill the content
                         state.passed.content.innerHTML = ''
                         proc({
                             container: state.passed.content,
@@ -1045,11 +1150,10 @@
                         })
                     })
 
-
-                    $(document).on('click', '[data-type="teacher"]', function(e) {
-                        //hide teachers
+                    $(document).on('click', '[data-type="teacher"]', function (e) {
+//hide teachers
                         state.passed.teacher.style.display = 'none'
-                        // change teacherSelect
+// change teacherSelect
                         var s = document.getElementById('teacherSelect')
                         s.textContent = e.target.textContent
                         s.dataset.id = e.target.dataset.id
@@ -1059,26 +1163,107 @@
                         if (!state.containTeacher(sub, t.textContent)) {
                             state.passed.teacherSelect.textContent = '老师'
                         }
-                        //filter data
-                        //refill the content
+//filter data
+                        var d = state.passed.search()
+//refill the content
+                        state.passed.content.innerHTML = ''
+                        proc({
+                            container: state.passed.content,
+                            data: d,
+                            templateId: ''
+                        })
                     })
-                    $(document).on('click', '[data-type="grade"]', function (e) {
-                        //hide grade
-                        state.passed.grade.style.display = 'none'
-                        // change gradeSelect
 
-                        //filter data
-                        //refill the content
+                    $(document).on('click', '[data-type="grade"]', function (e) {
+//hide grade
+                        state.passed.grade.style.display = 'none'
+// change gradeSelect
+                        var s = document.getElementById('gradeSelect')
+                        s.textContent = e.target.textContent
+                        s.dataset.id = e.target.dataset.id
+
+                        var sub = state.getSubjectById(e.target.dataset.id)
+
+                        if (!state.containTeacher(sub, t.textContent)) {
+                            state.passed.teacherSelect.textContent = '老师'
+                        }
+//filter data
+                        var d = state.passed.search()
+//refill the content
+                        state.passed.content.innerHTML = ''
+                        proc({
+                            container: state.passed.content,
+                            data: d,
+                            templateId: ''
+                        })
+                    })
+
+                    $(document).on('click', ".tiaoj_span", function (e) {
+                            if($(e.currentTarget).hasClass('cur')){
+                                $(e.currentTarget).removeClass('cur');
+                                $('.tan').hide();
+                                $('.tan').css("z-index", "9999");
+                                $(".xiala_ul").hide();
+                                $(e.currentTarget).siblings(".xiala_ul").hide();
+                            }else{
+                                $(".tiaoj_span").removeClass('cur');
+                                $(e.currentTarget).addClass('cur');
+                                $('.tan').show();
+                                $('.tan').css("z-index", "99");
+                                $(".xiala_ul").hide();
+                                $(e.currentTarget).siblings(".xiala_ul").show();
+                            }
+                        });
+//                        if ($(e.currentTarget).children(".xiala_ul").is(":visible")) {
+//                            $('.tan').hide();
+//                            $('.tan').css("z-index", "9999");
+//                            $(".xiala_ul").hide();
+//                            $(e.currentTarget).children(".xiala_ul").hide();
+//                            $(".img_item1").addClass("cur");
+//                            $(".img_item2").removeClass("cur");
+//                        } else {
+//                            $('.tan').show();
+//                            $('.tan').css("z-index", "99");
+//                            $(".xiala_ul").hide();
+//                            $(e.currentTarget).children(".xiala_ul").show();
+//                            $(".img_item1").addClass("cur")
+//                            e.currentTarget.querySelector('.img_item1').removeClass("cur");
+//                            $(".img_item2").removeClass("cur")
+//                            e.currentTarget.querySelector('.img_item2').addClass("cur");
+//                        }
+
+                    $(document).on('click', ".xiala_li", function (e) {
+//                        $(e).addClass("cur").siblings().removeClass("cur");
+                        $(e.currentTarget).addClass('cur').siblings('.xiala_li').removeClass('cur');
+                        $('.tan').hide();
+                        $(e.currentTarget).parent(".xiala_ul").hide();
+                        $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
+                    });
+
+                    $(document).on('click', ".shipin", function (e) {
+                        $('.tan').show();
+                        $('.window1').eq(0).show();
+                    });
+
+                    $(document).on('click', ".p_btn", function (e) {
+                        $('.tan').hide();
+                        $('.window1').hide();
+                    });
+
+                    // 弹窗关闭按钮
+                    $(document).on('click', ".windowClose", function (e) {
+                        $('.tan').hide();
+                        $('.window1').hide();
                     })
 
                     var now = Date.now()
 //*******************************getPassed*****************************
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers?filter=' + JSON.stringify({
+                        url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
 //                            cdnLink: 'IS NOT NULL',
                             endTime: '< ' + now
-                        }),
+                        })),
                         dataType: 'json',
                         success: function (schedulers) {
                             passed = schedulers[2]
@@ -1103,13 +1288,12 @@
                                     {type: 'math', templateId: 'math-template'}
                                 ]
                             });
-                            allxqTap(); //all课程详情
                         }
                     })
 //********************************getTeacher*****************************
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                        url: '/api/schedulers/teachers?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[0].id})),
                         success: function (t0s) {
                             subjects[0].teachers = t0s
                             $.ajax({
@@ -1117,7 +1301,7 @@
                                 url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
                                 success: function (t1s) {
                                     subjects[1].teachers = t1s
-                                    //fill to teachers choice
+//fill to teachers choice
                                     var teachers = []
                                     for (var i = 0; i < t0s.length; ++i) {
                                         teachers.push({teacher: t0s[i]})
@@ -1137,15 +1321,15 @@
 // **********************************getGrade**************************
                     $.ajax({
                         type: 'get',
-                        url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
+                        url: '/api/schedulers/grades?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[0].id})),
                         success: function (g0s) {
                             subjects[0].grades = g0s
                             $.ajax({
                                 type: 'get',
-                                url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[1].id}),
+                                url: '/api/schedulers/grades?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[1].id})),
                                 success: function (g1s) {
                                     subjects[1].grades = g1s
-                                    //fill to grades choice
+//fill to grades choice
                                     var grades = []
                                     for (var i = 0; i < g0s.length; ++i) {
                                         grades.push({grade: g0s[i]})
@@ -1162,6 +1346,17 @@
                             })
                         }
                     })
+                    function div3Show() {
+                        var div1 = document.getElementById("div3");
+                        div1.style.display = "block";
+                    }
+
+                    function div2Show() {
+                        var div1 = document.getElementById("div1");
+                        var div2 = document.getElementById("div2");
+                        div1.style.display = "none";
+                        div2.style.display = "";
+                    }
 
                     var s = document.getElementById('subjectSelect')
                     s.addEventListener('click', function (e) {
@@ -1171,17 +1366,27 @@
                             state.passed.subject.style.display = 'block'
                         }
                     }, false)
-
                     state.passed.isInit = true
-                    xialaTap()
                 }
+
+                var picker = new Pikaday({
+                    field: document.getElementById('datePicker'),
+                    format: 'D MMM YYYY',
+                    onSelect: function () {
+                        console.log(this.getMoment().format('Do MMMM YYYY'));
+                    }
+                });
+
+                var hei1 = document.getElementsByClassName('tiao_jian').height();
+                var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
+                document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
             },
             search: function () {
                 var result = []
                 var s = document.getElementById('subjectSelect')
                 var t = document.getElementById('teacherSelect')
                 var g = document.getElementById('gradeSelect')
-                //filter the passed data via the filter element state
+//filter the passed data via the filter element state
 //                var subject, teacher, grade, date
                 for (var i = 0; i < passed.length; ++i) {
                     var pass = true
@@ -1210,33 +1415,140 @@
                 }
                 return result
             },
-//            teacherChoice: document.getElementById('teacherChoice'),
-//            gradeChoice: document.getElementById('gradeChoice'),
-//            onePassed: {
-//                container: document.getElementById(''),
-//                template: document.getElementById(''),
-//                data: null,
-////                show: function () {
-////                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')//??????????????????????
-////                }
-//            }
-        },
-        futureNote: {
-            init: function () {
+            findById: function (id) {
+                var result = null;
+                for (var i = 0; i < passed.length; ++i) {
+                    if (passed[i].id == id) {
+                        result = passed[i]
+                        break
+                    }
+                }
+                return result
             }
         },
-//        video: {
-//            isInit: false,
-//            init: function () {
-//                if (!state.video.isInit) {
-//                    $.ajax({
-//                        type: 'get',
-//                        url: ''
-//                    })
-//                    state.video.isInit = true
-//                }
-//            }
-//        },
+
+        futureNote: {
+            init: function () {
+                var t = state.main.findById(state.futureNote.id).year + '-' + state.main.findById(state.futureNote.id).month + '-' + state.main.findById(state.futureNote.id).day + ' ' + state.main.findById(state.futureNote.id).hour + ':' + state.main.findById(state.futureNote.id).minute + ':' + state.main.findById(state.futureNote.id).second + '开讲';
+                var e = document.getElementsByClassName('waitTime')
+                e[0].innerHTML = t
+            },
+        },
+
+        videoDetail: {
+            id: null,
+            init: function () {
+                var c = document.getElementById('live-details-video')
+                c.innerHTML = ''
+                proc({
+                    container: c,
+                    data: state.passed.findById(state.videoDetail.id),
+                    templateId: 'live-video-template'
+                })
+                $.ajax({
+                    type: 'get',
+                    url: 'api/one/' + state.videoDetail.id,
+                    dataType: 'json',
+                    success: function (data) {
+                        //***********************************like***************************************
+                        // GET /knowledge-points/.../is-self-like
+                        //var id = g.getUrlParameter("id")
+                        $.ajax({
+                            type: "get",
+                            url: 'api/playback/' + state.videoDetail.id + '/is-self-like',
+                            dataType: "json",
+                            success: function (like) {
+                                var liked = like.like
+                                var icon = document.getElementById('icon');
+                                if (liked) {
+                                    icon.setAttribute('src', 'images/details/zanover.png');
+                                } else {
+                                    icon.setAttribute('src', 'images/details/dianzan.png');
+                                }
+                                icon.addEventListener('click', function (e) {
+                                    if (liked) {
+                                        $.ajax({
+                                            type: "put",
+                                            url: '/api/schedulers/' + state.videoDetail.id + '/unlike',
+                                            data: JSON.stringify({}),
+                                            dataType: "json",
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (unlike) {
+                                                icon.setAttribute('src', 'images/details/dianzan.png');
+                                                data.interaction.likeCount
+                                                e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                                liked = false;
+                                            }
+                                        })
+                                    } else {
+                                        $.ajax({
+                                            type: "put",
+                                            url: '/api/schedulers/' + state.videoDetail.id + '/like',
+                                            data: JSON.stringify({}),
+                                            dataType: "json",
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (like) {
+                                                icon.setAttribute('src', 'images/details/zanover.png');
+                                                ++data.interaction.likeCount;
+                                                e.target.nextElementSibling.textContent = data.interaction.likeCount
+                                                liked = true;
+                                            }
+                                        })
+                                    }
+                                }, false)
+                            },
+                            error: function (unlike) {
+                                //liked = false
+                            }
+                        })
+
+                        //*************************comments**************************
+                        var btn = document.getElementById('btn');
+                        btn.addEventListener('click', submit, false);
+                        function submit(e) {
+                            var textarea = document.getElementById('textarea');
+                            var value = textarea.value;
+                            if (value.length < 1) {
+                                return false;
+                            }
+                            textarea.value = '';
+                            e.target.style.color = '#f5f5f5';
+                            // e.target.style.backgroundColor = '#3e8f3e';
+                            $.ajax({
+                                type: "post",
+                                url: "/api/comments",
+                                data: JSON.stringify({
+                                    objectType: 'playback',
+                                    objectId: state.videoDetail.id,
+                                    content: value
+                                }),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (comments) {
+                                    location.reload();
+                                    var comment = document.getElementById('comment-area')
+                                    comment.innerHTML = ''
+                                }
+                            })
+                        }
+
+//                '/api/comments?filter={"objectType":"scheduler","objectId":' + state.videoDetail.id + '}'
+//                '/api/schedulers/' + state.videoDetail.id + '/comments'
+                        proc({
+                            containerId: 'comment-area',
+                            data: data,
+                            templateId: 'live-video-template'
+                        })
+//                        proc({
+//                            containerId: 'comment-area',
+//                            data: data,
+//                            templateId: 'live-video-template'
+//                        })
+                    }
+                })
+            }
+        },
+
         scheduler: {
             isInit: false,
             init: function () {
@@ -1320,46 +1632,7 @@
             week: null,
             weekDay: null,
             weekElement: document.getElementById("week")
-        },
-        init: function () {
-//            var userId = g.getUrlParameter('userid')
-//            g.setCookie('userId', userId)
-
-            $.ajax({
-                type: 'get',
-                url: '/api/subjects',
-                dataType: 'json',
-                success: function (ss) {
-                    subjects = ss
-                    state['main'].init()
-                    history.pushState(null, null, '/content/videos.html#main')
-                },
-                error: function (xhr) {
-                    alert('back-end not response, places retry')
-                }
-            })
-
-            var switchTo = function (id) {
-                state.currentArticle.style.display = 'none'
-                state.currentArticle = document.getElementById(id)
-                state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/content/videos.html#' + id)
-                state[id].init()
-            }
-
-            $(document).on('click', '[data-article]', function (e) {
-                var id = e.target.dataset.article
-                switchTo(id)
-                state[id].changeId(e.target.dataset.id)
-            })
-
-            window.addEventListener('hashchange', function (e) {
-                var hashPos = e.newURL.indexOf('#')
-                var hash = e.newURL.substring(hashPos + 1)
-                switchTo(hash)
-            }, false)
         }
-
     }
 
     state.init()
