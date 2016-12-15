@@ -54,9 +54,9 @@ public class Volumes {
             if (subjectId != null) {
                 exist.setSubjectId(subjectId);
             }
-            Long coverId = volume.getImageId();
+            Long coverId = volume.getCoverId();
             if (coverId != null) {
-                exist.setImageId(coverId);
+                exist.setCoverId(coverId);
             }
         }, null);
     }

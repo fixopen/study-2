@@ -66,6 +66,21 @@ public class Resources {
         return container.stream().filter(p).collect(Collectors.toList());
     }
 
+    public static Long findUntypedItem(List<Object[]> container, Long id) {
+        Long result = null;
+        for (Object[] item : container) {
+            if (((Long)item[0]).longValue() == id.longValue()) {
+                result = (Long)item[1];
+                break;
+            }
+        }
+        return result;
+    }
+
+    public static List<Object[]> findUntypedItems(List<Object[]> container, Long id) {
+        return container.stream().filter((item) -> ((Long)item[0]).longValue() == id.longValue()).collect(Collectors.toList());
+    }
+
     static Resource getByTypeAndId(EntityManager em, String type, Long id) {
         Resource result = null;
         switch (type) {
