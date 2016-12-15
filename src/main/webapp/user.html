@@ -427,26 +427,37 @@
 </article>
 <article id="settings" style="display: none;">
     <div class="wrap">
-        <!-- main -->
-
         <div class="changePassword_div_css">
             <ul class="changePassword_ul_css">
                 <li class="firstActiveCard_li_css public_li_css">
-                    <a href="javascript:void(0)" data-article="changePassword">修改密码 <span class="next-btn"></span></a>
+                    <button data-article="changePassword">
+                        密码设置
+                        <span class="next-btn"></span>
+                    </button>
                 </li>
                 <li class="firstActiveCard_li_css public_li_css">
-                    <a href="javascript:void(0)" data-article="info">修改个人信息 <span class="next-btn"></span></a>
+                    <button data-article="changePassword">
+                        手机号修改
+                        <span class="next-btn"></span>
+                    </button>
                 </li>
                 <li class="firstActiveCard_li_css public_li_css">
-                    <a href="javascript:void(0)" data-article="firstActiveCard">添加新卡 <span class="next-btn"></span></a>
+                    <button data-article="changePassword">
+                        微信解绑
+                        <span class="next-btn"></span>
+                    </button>
                 </li>
-                <!--<li class="set-li">
-                    <a href="javascript:void(0)" onclick="back()">返回上一页 <span class="next-btn"></span></a>
-
-                </li>-->
             </ul>
         </div>
-
+    </div>
+    <div class="wrap">
+        <div class="changePassword_div_css">
+            <ul class="changePassword_ul_css">
+                <li class="firstActiveCard_li_css public_li_css">
+                    <button data-article="contactUs">联系我们<span class="next-btn"></span></button>
+                </li>
+            </ul>
+        </div>
     </div>
 </article>
 <article id="help" style="display: none;">
@@ -558,7 +569,9 @@
         </div>
     </div>
 </article>
-
+<article id="contactUs" style="display: none;">
+    <img src="myUser/image/contactUs.jpg" style="width: 100%;height: 100%"/>
+</article>
 
 <template id="user-template">
     <!--<div class="user_div_css">-->
@@ -916,7 +929,7 @@
         atom(sourceId, sourceType, object_Id, object_Type, count, money) {
         var result;
        if (count == null) {
-            filter = { //转账transferFilter
+           var filter = { //转账transferFilter
                 sourceId: sourceId,
                 sourceType: sourceType,
                 objectId: object_Id,
