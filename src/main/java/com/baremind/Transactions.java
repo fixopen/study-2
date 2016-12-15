@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -82,5 +83,22 @@ public class Transactions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         return Impl.getById(sessionId, id, Transaction.class, null);
+    }
+
+    @GET //根据sessionid查询
+    @Path("self")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            result = Response.status(404).build();
+
+
+            List<Transaction> list = JPAEntry.getList(Transaction.class, "userId", JPAEntry.getLoginUser(sessionId).getId());
+            if (list != null) {
+                result = Impl.finalResult(list,null);
+            }
+        }
+        return result;
     }
 }

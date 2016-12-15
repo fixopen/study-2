@@ -967,3 +967,135 @@ canvas{
 .xuanzeuli_spani{
     margin: 0 0.3125rem;
 }
+
+.balance_jine{
+    width: 100%;
+    height: 7.5rem;
+    background-color: #ff8067;
+    position: relative;
+}
+.baltop_div1{
+    width: 81%;
+    height: 5rem;
+    background-color: #fff;
+    border-radius: 0.3125rem;
+    opacity: 0.3;
+    filter: alpha( opacity=30 );
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    z-index: 2;
+}
+.baltop_div2{
+    color: #ff795f;
+    width: 92%;
+    height: 9.21875rem;
+    background-color: #fff;
+    border-radius: 0.3125rem;
+    box-shadow: 0.03125rem 0 0.46875rem #ffd7cf;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    z-index: 3;
+}
+.baldiv2_p0{
+    font-size: 0.9375rem;
+    height: 0.625rem;
+    padding: 0.625rem 0 0 0.625rem;
+}
+.baldiv2_p1{
+    color: #ff795f;
+    font-size: 0.9375rem;
+    text-align: center;
+}
+.baldiv2_p1span{
+    color: #ff795f;
+    font-size: 3.125rem;
+    font-weight: bold;
+}
+.baldiv2_p2{
+    text-align: center;
+}
+.recharge{
+    display: inline-block;
+    color: #fff;
+    font-size: 1.125rem;
+    width: 6.25rem;
+    height: 2.3125rem;
+    line-height: 2.3125rem;
+    text-align: center;
+    background-color: #24cbd1;
+    border-radius: 0.3125rem;
+    margin-right: 1.5625rem;
+}
+.recharge img,.turnout img{
+    width: 1.375rem;
+    height: 1.15625rem;
+    vertical-align: top;
+    padding-top: 0.5625rem;
+    margin-right: 0.3125rem;
+}
+.turnout{
+    display: inline-block;
+    color: #fff;
+    font-size: 1.125rem;
+    width: 6.25rem;
+    height: 2.3125rem;
+    line-height: 2.3125rem;
+    text-align: center;
+    background-color: #ff795f;
+    border-radius: 0.3125rem;
+}
+.balance_zilo{
+    width: 100%;
+    margin: 4rem 0 1.875rem;
+    position: relative;
+}
+.balance_zilo img{
+    width: 2.25rem;
+    height: 2.78125rem;
+    position: absolute;
+    top: -0.625rem;
+    right: 3%;
+}
+.balance_zUl{
+    width: 92%;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.3125rem;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: #fff;
+}
+.balance_zuli{
+    color: #888;
+    font-size: 1.0rem;
+    text-align: center;
+    height: 3.71875rem;
+    line-height: 3.71875rem;
+    margin: 0 0.9375rem;
+    border-bottom: 1px solid #e5e5e5;
+    box-sizing: border-box;
+}
+.balancezuli_tou{
+    text-align: left;
+    color: #444;
+    font-size: 1.125rem;
+}
+.balance_leftsp{
+    display: inline-block;
+    width: 44%;
+    margin-right: 0.625rem;
+}
+.balance_center{
+    display: inline-block;
+    width: 13%;
+}
+.balance_rightip{
+    display: inline-block;
+    width: 35%;
+}
+
