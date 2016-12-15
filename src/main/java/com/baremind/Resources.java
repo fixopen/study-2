@@ -67,7 +67,7 @@ public class Resources {
     }
 
     public static Long findUntypedItem(List<Object[]> container, Long id) {
-        Long result = null;
+        Long result = 0L;
         for (Object[] item : container) {
             if (((Long)item[0]).longValue() == id.longValue()) {
                 result = (Long)item[1];

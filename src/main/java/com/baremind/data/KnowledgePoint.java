@@ -120,9 +120,9 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         for (Object[] s : stats) {
             total += (Long)s[2];
         }
-        if (total == 0L) {
-            kpm = null;
-        }
+//        if (total == 0L) {
+//            kpm = null;
+//        }
         return kpm;
     }
 

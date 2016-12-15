@@ -13,7 +13,7 @@ var bind = function (element, data) {
     if (element) {
         element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
             var result = ''
-            if (data && variable && data[variable]) {
+            if (data && variable && (data[variable] != undefined)) {
                 result = data[variable]
             }
             return result
