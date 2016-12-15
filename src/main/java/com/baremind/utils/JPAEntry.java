@@ -166,9 +166,9 @@ public class JPAEntry {
         em.close();
     }
 
-    public static void genericPost(EntityManager em, Object o) {
-        em.persist(o);
-    }
+    //public static void genericPost(EntityManager em, Object o) {
+    //    em.persist(o);
+    //}
 
     public static void genericPut(Object o) {
         EntityManager em = JPAEntry.getNewEntityManager();
@@ -177,6 +177,10 @@ public class JPAEntry {
         em.getTransaction().commit();
         em.close();
     }
+
+    //public static void genericPut(EntityManager em, Object o) {
+    //    em.merge(o);
+    //}
 
     public static long genericDelete(Class type, String name, Object value) {
         Map<String, Object> conditions = new HashMap<>();
@@ -187,13 +191,18 @@ public class JPAEntry {
     public static long genericDelete(Class type, Map<String, Object> conditions) {
         EntityManager em = JPAEntry.getNewEntityManager();
         em.getTransaction().begin();
+        Long result = genericDelete(em, type, conditions);
+        em.getTransaction().commit();
+        em.close();
+        return result;
+    }
+
+    public static long genericDelete(EntityManager em, Class type, Map<String, Object> conditions) {
         List os = JPAEntry.getList(em, type, conditions, null);
         long result = os.size();
         for (Object o : os) {
             em.remove(o);
         }
-        em.getTransaction().commit();
-        em.close();
         return result;
     }
 

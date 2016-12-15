@@ -5,6 +5,7 @@ import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -118,19 +119,23 @@ public class Sessions {
     }
 
     private void loginFailure(String ipAddr) {
-        ValidationCode count = JPAEntry.getObject(ValidationCode.class, "phoneNumber", ipAddr + "-count");
+        EntityManager em = JPAEntry.getNewEntityManager();
+        em.getTransaction().begin();
+        ValidationCode count = JPAEntry.getObject(em, ValidationCode.class, "phoneNumber", ipAddr + "-count");
         if (count != null) {
             Long currentCount = Long.parseLong(count.getValidCode()) + 1L;
             count.setValidCode(currentCount.toString());
-            JPAEntry.genericPut(count);
+            em.merge(count);
         } else {
             count = new ValidationCode();
             count.setId(IdGenerator.getNewId());
             count.setValidCode(ipAddr + "-count");
             count.setValidCode("1");
             count.setTimestamp(new Date());
-            JPAEntry.genericPost(count);
+            em.persist(count);
         }
+        em.getTransaction().commit();
+        em.close();
     }
 
     private Response loginImpl(String ipAddr, LoginInfo loginInfo) {
