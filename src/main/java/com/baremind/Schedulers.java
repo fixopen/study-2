@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.sun.activation.registries.LogSupport;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -409,6 +410,19 @@ public class Schedulers {
             Map<String,Object> map = new HashMap<>();
             orders.put("startTime", "DESC");
             List<Scheduler> schedulers = JPAEntry.getList(Scheduler.class, filterObject, orders);
+
+            List<String> ids = new ArrayList<>();
+            //List<String> teacherIds = new ArrayList<>();
+            //List<String> coverIds = new ArrayList<>();
+            for (Scheduler ri : schedulers) {
+                ids.add(ri.getId().toString());
+                //teacherIds.add(ri.getTeacherId().toString());
+                //coverIds.add(ri.getCoverId().toString());
+            }
+            EntityManager em = JPAEntry.getEntityManager();
+            //List<User> teachers = Resources.getList(em, teacherIds, User.class);
+            //List<Image> covers = Resources.getList(em, coverIds, Image.class);
+
             ArrayList<Scheduler> featured = new ArrayList<>();
             ArrayList<Scheduler> playing = new ArrayList<>();
             ArrayList<Scheduler> passed = new ArrayList<>();
@@ -433,14 +447,36 @@ public class Schedulers {
                     }
                 }
             }
-            ArrayList<ArrayList<Scheduler>> result = new ArrayList<>();
+            List<List<Scheduler>> result = new ArrayList<>();
             result.add(playing);//正播
             Collections.reverse(featured); // 倒序排列
             result.add(featured); //未播
             result.add(passed);//播过
+
+            String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + KnowledgePoints.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
+            Query lq = em.createQuery(likeCountQuery);
+            final List<Object[]> likeStats = lq.getResultList();
+            String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + KnowledgePoints.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
+            Query rq = em.createQuery(readCountQuery);
+            final List<Object[]> readStats = lq.getResultList();
+            String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + KnowledgePoints.join(ids) + ") AND l.action = 'read' AND l.userId = " + userId + " GROUP BY l.objectId";
+            Query ldq = em.createQuery(likedQuery);
+            final List<Object[]> likedStats = ldq.getResultList();
+
+            List<List<Map<String, Object>>> res = new ArrayList<>();
+
+            for (List<Scheduler> ri : result) {
+                List<Map<String, Object>> rim = new ArrayList<>();
+                for (Scheduler rr : ri) {
+                    rim.add(Scheduler.convertToMap(rr, null, null, likeStats, likedStats, readStats));
+                }
+                res.add(rim);
+            }
+
+
             //Gson gson = new GsonBuilder().registerTypeAdapter(java.sql.Time.class, new TimeTypeAdapter()).create();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            r = Response.ok(gson.toJson(result)).build();
+            r = Response.ok(gson.toJson(res)).build();
         }
         return r;
     }

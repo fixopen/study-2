@@ -93,7 +93,7 @@ public class KnowledgePoints {
         return result;
     }
 
-    private String join(List<String> ids) {
+    static String join(List<String> ids) {
         String result = "";
         boolean isFirst = true;
         for (String id : ids) {

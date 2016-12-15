@@ -41,31 +41,11 @@ public class JPAEntry {
         HashMap<String, Object> condition = new HashMap<>(1);
         condition.put(fieldName, fieldValue);
         return getObject(type, condition);
-//        T result = null;
-//        EntityManager em = getEntityManager();
-//        String jpql = "SELECT a FROM " + type.getSimpleName() + " a WHERE a." + fieldName + " = :variable";
-//        try {
-//            result = em.createQuery(jpql, type)
-//                .setParameter("variable", fieldValue)
-//                .getSingleResult();
-//        } catch (NoResultException e) {
-//            //do noting
-//        } catch (NonUniqueResultException e) {
-//            List<T> t = em.createQuery(jpql, type)
-//                .setParameter("variable", fieldValue)
-//                .getResultList();
-//            result = t.get(0);
-//        }
-//        return result;
     }
 
-    //SELECT a FROM KnowledgePoint a WHERE a.volumeId = :volumeId AND a.showTime < :showTime
-    //setParameter("showTime", v)
     public static <T> T getObject(Class<T> type, Map<String, Object> conditions) {
         T result = null;
-//        Logs.insert(8l, "perf", 32l, new Date().toString());
         EntityManager em = getEntityManager();
-//        Logs.insert(8l, "perf", 32l, new Date().toString());
         String jpql = "SELECT a FROM " + type.getSimpleName() + " a ";
         boolean isFirst = true;
         if (conditions != null) {
@@ -80,7 +60,7 @@ public class JPAEntry {
                 if (item.getValue() instanceof Condition) {
                     op = ((Condition) item.getValue()).getOp();
                 }
-                jpql += "a." + item.getKey() + op + " :" + item.getKey();
+                jpql += "a." + item.getKey() + " " + op + " :" + item.getKey();
             }
         }
         try {
@@ -94,9 +74,7 @@ public class JPAEntry {
                     q.setParameter(item.getKey(), value);
                 }
             }
-//            Logs.insert(8l, "perf", 32l, new Date().toString());
             result = q.getSingleResult();
-//            Logs.insert(8l, "perf", 32l, new Date().toString());
         } catch (NoResultException e) {
             //do noting
         } catch (NonUniqueResultException e) {

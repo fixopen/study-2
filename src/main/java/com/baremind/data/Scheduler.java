@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -232,5 +236,56 @@ public class Scheduler {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public static Long findUntypedItem(List<Object[]> container, Long id) {
+        Long result = null;
+        for (Object[] item : container) {
+            if (((Long)item[0]).longValue() == id.longValue()) {
+                result = (Long)item[1];
+                break;
+            }
+        }
+        return result;
+    }
+
+    public static List<Object[]> findUntypedItems(List<Object[]> container, Long id) {
+        return container.stream().filter((item) -> ((Long)item[0]).longValue() == id.longValue()).collect(Collectors.toList());
+    }
+
+    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount) {
+        Map<String, Object> schedulerMap = new HashMap<>();
+        schedulerMap.put("id", scheduler.getId());
+        schedulerMap.put("year", scheduler.getYear());
+        schedulerMap.put("week", scheduler.getWeek());
+        schedulerMap.put("day", scheduler.getDay());
+        schedulerMap.put("startTime", scheduler.getStartTime());
+        schedulerMap.put("endTime", scheduler.getEndTime());
+        schedulerMap.put("subjectId", scheduler.getSubjectId());
+        schedulerMap.put("grade", scheduler.getGrade());
+        schedulerMap.put("title", scheduler.getTitle());
+        schedulerMap.put("abstraction", scheduler.getGeneralization());
+        schedulerMap.put("outline", scheduler.getOutline());
+        schedulerMap.put("description", scheduler.getDescription());
+        schedulerMap.put("prepare", scheduler.getPrepare());
+        schedulerMap.put("cover", scheduler.getCover());
+//        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
+//        if (cover != null) {
+//            schedulerMap.put("cover", cover.getStorePath());
+//        }
+        schedulerMap.put("teacher", scheduler.getTeacher());
+        schedulerMap.put("teacherDescription", scheduler.getTeacherDescription());
+//        User teacher = Resources.findItem(teachers, item -> item.getId() == scheduler.getTeacherId());
+//        if (teacher != null) {
+//            schedulerMap.put("teacher", teacher.getName());
+//            schedulerMap.put("teacherDescription", teacher.getDescription());
+//        }
+//        schedulerMap.put("price", scheduler.getPrice());
+//        schedulerMap.put("discount", scheduler.getDiscount());
+//        //schedulerMap.put("price", scheduler.getAmount());
+        schedulerMap.put("likeCount", findUntypedItem(likeCount, scheduler.getId()));
+        schedulerMap.put("readCount", findUntypedItem(readCount, scheduler.getId()));
+        schedulerMap.put("liked", findUntypedItem(likedCount, scheduler.getId()) != null);
+        return schedulerMap;
     }
 }
