@@ -131,7 +131,7 @@ public class Sessions {
         } else {
             count = new ValidationCode();
             count.setId(IdGenerator.getNewId());
-            count.setValidCode(ipAddr + "-count");
+            count.setPhoneNumber(ipAddr + "-count");
             count.setValidCode("1");
             count.setTimestamp(new Date());
             em.persist(count);
