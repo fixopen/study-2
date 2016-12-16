@@ -1,6 +1,8 @@
 package com.baremind.data;
 
 
+import com.baremind.Resources;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -239,7 +241,7 @@ public class Scheduler {
     }
 
     public static Long findUntypedItem(List<Object[]> container, Long id) {
-        Long result = null;
+        Long result = 0L;
         for (Object[] item : container) {
             if (((Long)item[0]).longValue() == id.longValue()) {
                 result = (Long)item[1];
@@ -253,7 +255,7 @@ public class Scheduler {
         return container.stream().filter((item) -> ((Long)item[0]).longValue() == id.longValue()).collect(Collectors.toList());
     }
 
-    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount) {
+    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, List<Comment> comments) {
         Map<String, Object> schedulerMap = new HashMap<>();
         schedulerMap.put("id", scheduler.getId());
         schedulerMap.put("year", scheduler.getYear());
@@ -286,6 +288,9 @@ public class Scheduler {
         schedulerMap.put("likeCount", findUntypedItem(likeCount, scheduler.getId()));
         schedulerMap.put("readCount", findUntypedItem(readCount, scheduler.getId()));
         schedulerMap.put("liked", findUntypedItem(likedCount, scheduler.getId()) != null);
+        schedulerMap.put("comments", Resources.findItems(comments, c -> c.getObjectId() == scheduler.getId()));
+        schedulerMap.put("cdnLink", scheduler.getCdnLink());
+        schedulerMap.put("directLink", scheduler.getDirectLink());
         return schedulerMap;
     }
 }

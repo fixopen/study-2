@@ -86,7 +86,8 @@
         .data :nth-child(even) {
             border-top: 1px solid #ea875f;
         }
-        .pika-lendar td{
+
+        .pika-lendar td {
             font-size: 1rem;
         }
 
@@ -796,11 +797,56 @@
                 dataType: 'json',
                 success: function (ss) {
                     subjects = ss
-                    state['main'].init()
-                    history.pushState(null, null, '/content/videos.html#main')
-                },
-                error: function (xhr) {
-                    alert('back-end not response, places retry')
+                    for (var i = 0; i < subjects.length; ++i) {
+                        subjects[i].futures = []
+                        subjects[i].playing = []
+                    }
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers',
+                        dataType: 'json',
+                        success: function (vs) {
+                            for (var i = 0; i < vs.length; ++i) {
+                                for (var j = 0; j < vs[i].length; ++j) {
+                                    vs[i][j].startTime = new Date(Date.parse(vs[i][j].startTime.replace(/-/g, '/')))
+                                    vs[i][j].endTime = new Date(Date.parse(vs[i][j].endTime.replace(/-/g, '/')))
+                                    vs[i][j].grade = state.getGrade(vs[i][j].grade)
+                                    vs[i][j].year = vs[i][j].startTime.getFullYear()
+                                    vs[i][j].month = vs[i][j].startTime.getMonth() + 1
+                                    vs[i][j].day = vs[i][j].startTime.getDate()
+                                    vs[i][j].hour = vs[i][j].startTime.getHours()
+                                    var minute = vs[i][j].startTime.getMinutes()
+                                    if (minute == 0) {
+                                        minute = '00'
+                                    }
+                                    vs[i][j].minute = minute
+                                    var second = vs[i][j].startTime.getSeconds()
+                                    if (second == 0) {
+                                        second = '00'
+                                    }
+                                    vs[i][j].second = second
+                                }
+                            }
+                            for (var i = 0; i < vs[0].length; ++i) {
+                                var s = state.getSubjectById(vs[0][i].subjectId)
+                                if (!s.playing) {
+                                    s.playing = []
+                                }
+                                s.playing.push(vs[0][i])
+                            }
+                            for (var i = 0; i < vs[1].length; ++i) {
+                                var s = state.getSubjectById(vs[1][i].subjectId)
+                                if (!s.futures) {
+                                    s.futures = []
+                                }
+                                s.futures.push(vs[1][i])
+                            }
+                            passed = vs[2]
+
+                            state['main'].init()
+                            history.pushState(null, null, '/content/videos.html#main')
+                        }
+                    })
                 }
             })
 
@@ -864,154 +910,70 @@
                         }
                     })
 
-                    var now = Date.now()
+                    state.main.zeroFuture.data = subjects[0].futures
+                    state.main.zeroPlaying.data = subjects[0].playing
+                    state.main.refreshState(0)
+                    var Cc = document.getElementById('Cc')
+                    Cc.innerHTML = subjects[0].playing.length + subjects[0].futures.length
 
-                    var url = '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
-                                subjectId: subjects[0].id,
-                                endTime: '> ' + now
-                            }))
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
-                            subjectId: subjects[0].id,
-                            endTime: '> ' + now
-                        })),
-                        dataType: 'json',
-                        success: function (zeroSchedulers) {
-                            subjects[0].playing = zeroSchedulers[0]
-                            subjects[0].futures = zeroSchedulers[1]
-                            state.main.adjustData(0)
-                            state.main.zeroFuture.data = subjects[0].futures
-                            state.main.zeroPlaying.data = subjects[0].playing
-                            state.main.refreshState(0)
-                            var Cc = document.getElementById('Cc')
-                            Cc.innerHTML = subjects[0].playing.length + subjects[0].futures.length
-                            $.ajax({
-                                type: 'get',
-                                url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
-                                    subjectId: subjects[1].id,
-                                    endTime: '> ' + now
-                                })),
-                                dataType: 'json',
-                                success: function (oneSchedulers) {
-                                    subjects[1].playing = oneSchedulers[0]
-                                    subjects[1].futures = oneSchedulers[1]
-                                    state.main.adjustData(1)
-                                    state.main.oneFuture.data = subjects[1].futures
-                                    state.main.onePlaying.data = subjects[1].playing
-                                    state.main.refreshState(1)
-                                    var Mc = document.getElementById('Mc')
-                                    Mc.innerHTML = subjects[1].futures.length + subjects[1].playing.length
-                                    var whoFirst = function () {
-                                        var needFuture = true
-                                        var comparePlaying = function () {
-                                            var result = false
-                                            if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
-                                                if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
-                                                    result = true
-                                                }
-                                                needFuture = false
-                                            } else if (subjects[1].playing.length > 0) {
-                                                result = true
-                                                needFuture = false
-                                            } else if (subjects[0].playing.length > 0) {
-                                                needFuture = false
-                                            }
-                                            return result
-                                        }
-                                        var compareFuture = function () {
-                                            var result = false
-                                            if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
-                                                if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
-                                                    result = true
-                                                }
-                                            } else if (subjects[1].futures.length > 0) {
-                                                result = true
-                                            }
-                                            return result
-                                        }
-                                        var result = comparePlaying()
-                                        if (needFuture) {
-                                            result = compareFuture()
-                                        }
-                                        return result
-                                    }
-                                    var oneFirst = whoFirst()
-                                    if (oneFirst) {
-//                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
-                                        $('#mathOne').addClass('active')
-                                        $('#chineseZero').removeClass('active')
-                                        $('#one').addClass('active')
-                                        $('#zero').removeClass('active')
-                                    } else {
-                                        $('#chineseZero').addClass('active')
-                                        $('#mathOne').removeClass('active')
-                                        $('#zero').addClass('active')
-                                        $('#one').removeClass('active')
-                                    }
-                                    function div1Show() {
-                                        var div1 = document.getElementById("div1");
-                                        div1.style.display = "block";
-                                    }
+                    state.main.oneFuture.data = subjects[1].futures
+                    state.main.onePlaying.data = subjects[1].playing
+                    state.main.refreshState(1)
+                    var Mc = document.getElementById('Mc')
+                    Mc.innerHTML = subjects[1].futures.length + subjects[1].playing.length
 
-                                    function div2Show() {
-                                        var div1 = document.getElementById("div1");
-                                        var div2 = document.getElementById("div2");
-                                        div1.style.display = "none";
-                                        div2.style.display = "";
-                                    }
-
-                                    setInterval(function () {
-                                        state.main.refreshState(0)
-                                        state.main.refreshState(1)
-                                    }, 60 * 1000)
+                    var whoFirst = function () {
+                        var needFuture = true
+                        var comparePlaying = function () {
+                            var result = false
+                            if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
+                                if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
+                                    result = true
                                 }
-                            })
+                                needFuture = false
+                            } else if (subjects[1].playing.length > 0) {
+                                result = true
+                                needFuture = false
+                            } else if (subjects[0].playing.length > 0) {
+                                needFuture = false
+                            }
+                            return result
                         }
-                    })
+                        var compareFuture = function () {
+                            var result = false
+                            if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
+                                if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
+                                    result = true
+                                }
+                            } else if (subjects[1].futures.length > 0) {
+                                result = true
+                            }
+                            return result
+                        }
+                        var result = comparePlaying()
+                        if (needFuture) {
+                            result = compareFuture()
+                        }
+                        return result
+                    }
+                    if (whoFirst()) {
+                        $('#mathOne').addClass('active')
+                        $('#chineseZero').removeClass('active')
+                        $('#one').addClass('active')
+                        $('#zero').removeClass('active')
+                    } else {
+                        $('#chineseZero').addClass('active')
+                        $('#mathOne').removeClass('active')
+                        $('#zero').addClass('active')
+                        $('#one').removeClass('active')
+                    }
+
+                    setInterval(function () {
+                        state.main.refreshState(0)
+                        state.main.refreshState(1)
+                    }, 60 * 1000)
+
                     state.main.isInit = true
-                }
-            },
-            adjustData: function (subjectIndex) {
-                for (var i = 0; i < subjects[subjectIndex].playing.length; ++i) {
-                    var item = subjects[subjectIndex].playing[i]
-                    item.grade = state.getGrade(item.grade)
-                    item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
-                    item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
-                    item.year = item.startTime.getFullYear()
-                    item.month = item.startTime.getMonth() + 1
-                    item.day = item.startTime.getDate()
-                    item.hour = item.startTime.getHours()
-                    var minute = item.startTime.getMinutes()
-                    if (minute == 0) {
-                        minute = '00'
-                    }
-                    item.minute = minute
-                    var second = item.startTime.getSeconds()
-                    if (second == 0) {
-                        second = '00'
-                    }
-                    item.second = second
-                }
-                for (var i = 0; i < subjects[subjectIndex].futures.length; ++i) {
-                    var item = subjects[subjectIndex].futures[i]
-                    item.grade = state.getGrade(item.grade)
-                    item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
-                    item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
-                    item.year = item.startTime.getFullYear()
-                    item.month = item.startTime.getMonth() + 1
-                    item.day = item.startTime.getDate()
-                    item.hour = item.startTime.getHours()
-                    var minute = item.startTime.getMinutes()
-                    if (minute == 0) {
-                        minute = '00'
-                    }
-                    item.minute = minute
-                    var second = item.startTime.getSeconds()
-                    if (second == 0) {
-                        second = '00'
-                    }
-                    item.second = second
                 }
             },
             refreshState: function (subjectIndex) {
@@ -1064,7 +1026,7 @@
             },
             schedulerEntry: document.getElementById('schedulerEntry'),
             passedEntry: document.getElementById('passedEntry'),
-            futureNoteEntry: document.getElementsByClassName('futureNoteEntry'),
+            futureNoteEntry: document.getElementsByClassName('futureNoteEntry')
         },
 
         passed: {
@@ -1192,21 +1154,21 @@
                     })
 
                     $(document).on('click', ".tiaoj_span", function (e) {
-                            if($(e.currentTarget).hasClass('cur')){
-                                $(e.currentTarget).removeClass('cur');
-                                $('.tan').hide();
-                                $('.tan').css("z-index", "9999");
-                                $(".xiala_ul").hide();
-                                $(e.currentTarget).siblings(".xiala_ul").hide();
-                            }else{
-                                $(".tiaoj_span").removeClass('cur');
-                                $(e.currentTarget).addClass('cur');
-                                $('.tan').show();
-                                $('.tan').css("z-index", "99");
-                                $(".xiala_ul").hide();
-                                $(e.currentTarget).siblings(".xiala_ul").show();
-                            }
-                        });
+                        if ($(e.currentTarget).hasClass('cur')) {
+                            $(e.currentTarget).removeClass('cur');
+                            $('.tan').hide();
+                            $('.tan').css("z-index", "9999");
+                            $(".xiala_ul").hide();
+                            $(e.currentTarget).siblings(".xiala_ul").hide();
+                        } else {
+                            $(".tiaoj_span").removeClass('cur');
+                            $(e.currentTarget).addClass('cur');
+                            $('.tan').show();
+                            $('.tan').css("z-index", "99");
+                            $(".xiala_ul").hide();
+                            $(e.currentTarget).siblings(".xiala_ul").show();
+                        }
+                    });
 
                     $(document).on('click', ".xiala_li", function (e) {
                         $(e.currentTarget).parents(".xiala_ul").find('.xiala_li').removeClass('cur');
@@ -1231,40 +1193,26 @@
                         $('.window1').hide();
                     })
 
-                    var now = Date.now()
-//*******************************getPassed*****************************
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
-//                            cdnLink: 'IS NOT NULL',
-                            endTime: '< ' + now
-                        })),
-                        dataType: 'json',
-                        success: function (schedulers) {
-                            passed = schedulers[2]
-                            for (var i = 0; i < passed.length; ++i) {
-                                passed[i].grade = state.getGrade(passed[i].grade)
-                                passed[i].type = 'chinese'
-                                if (passed[i].subjectId == 2) {
-                                    passed[i].type = 'math'
-                                }
-                            }
-                            for (var i = 0; i < passed.length; ++i) {
-                                if (!passed[i].cdnLink || passed[i].cdnLink == '') {
-                                    passed.splice(i, 1)
-                                    --i
-                                }
-                            }
-                            proc({
-                                data: passed,
-                                containerId: 'video',
-                                alterTemplates: [
-                                    {type: 'chinese', templateId: 'chinese-template'},
-                                    {type: 'math', templateId: 'math-template'}
-                                ]
-                            });
+                    for (var i = 0; i < passed.length; ++i) {
+                        passed[i].type = 'chinese'
+                        if (passed[i].subjectId == 2) {
+                            passed[i].type = 'math'
                         }
-                    })
+                    }
+                    for (var i = 0; i < passed.length; ++i) {
+                        if (!passed[i].cdnLink || passed[i].cdnLink == '') {
+                            passed.splice(i, 1)
+                            --i
+                        }
+                    }
+                    proc({
+                        data: passed,
+                        containerId: 'video',
+                        alterTemplates: [
+                            {type: 'chinese', templateId: 'chinese-template'},
+                            {type: 'math', templateId: 'math-template'}
+                        ]
+                    });
 //********************************getTeacher*****************************
                     $.ajax({
                         type: 'get',
@@ -1408,104 +1356,100 @@
                 var t = state.main.findById(state.futureNote.id).year + '-' + state.main.findById(state.futureNote.id).month + '-' + state.main.findById(state.futureNote.id).day + ' ' + state.main.findById(state.futureNote.id).hour + ':' + state.main.findById(state.futureNote.id).minute + ':' + state.main.findById(state.futureNote.id).second + '开讲';
                 var e = document.getElementsByClassName('waitTime')
                 e[0].innerHTML = t
-            },
+            }
         },
 
         videoDetail: {
             id: null,
             init: function () {
+                var data = state.passed.findById(state.videoDetail.id)
                 var l = document.getElementById('live-details-video')
                 l.innerHTML = ''
                 proc({
                     container: l,
-                    data: state.passed.findById(state.videoDetail.id),
+                    data: data,
                     templateId: 'live-video-template'
                 })
-                $.ajax({
-                    type: 'get',
-                    url: 'api/schedulers/one/' + state.videoDetail.id,
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.liked) {
-                            icon.setAttribute('src', 'images/details/zanover.png');
-                        } else {
-                            icon.setAttribute('src', 'images/details/dianzan.png');
-                        }
-                        icon.addEventListener('click', function (e) {
-                            if (data.liked) {
-                                $.ajax({
-                                    type: "put",
-                                    url: '/api/schedulers/' + state.videoDetail.id + '/unlike',
-                                    data: JSON.stringify({}),
-                                    dataType: "json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (unlike) {
-                                        icon.setAttribute('src', 'images/details/dianzan.png');
-                                        data.likeCount--
-                                        e.target.nextElementSibling.textContent = data.likeCount
-                                        data.liked = false;
-                                    }
-                                })
-                            } else {
-                                $.ajax({
-                                    type: "put",
-                                    url: '/api/schedulers/' + state.videoDetail.id + '/like',
-                                    data: JSON.stringify({}),
-                                    dataType: "json",
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (like) {
-                                        icon.setAttribute('src', 'images/details/zanover.png');
-                                        ++data.likeCount;
-                                        e.target.nextElementSibling.textContent = data.likeCount
-                                        data.liked = true;
-                                    }
-                                })
-                            }
-                        }, false)
 
-                        //*************************comments**************************
-                        var btn = document.getElementById('btn');
-                        btn.addEventListener('click', submit, false);
-                        function submit(e) {
-                            var textarea = document.getElementById('textarea');
-                            var value = textarea.value;
-                            if (value.length < 1) {
-                                return false;
+                if (data.liked) {
+                    icon.setAttribute('src', 'images/details/zanover.png');
+                } else {
+                    icon.setAttribute('src', 'images/details/dianzan.png');
+                }
+                icon.addEventListener('click', function (e) {
+                    if (data.liked) {
+                        $.ajax({
+                            type: "put",
+                            url: '/api/schedulers/' + state.videoDetail.id + '/unlike',
+                            data: JSON.stringify({}),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (unlike) {
+                                icon.setAttribute('src', 'images/details/dianzan.png');
+                                data.likeCount--
+                                e.target.nextElementSibling.textContent = data.likeCount
+                                data.liked = false;
                             }
-                            textarea.value = '';
-                            e.target.style.color = '#f5f5f5';
-                            // e.target.style.backgroundColor = '#3e8f3e';
-                            $.ajax({
-                                type: "post",
-                                url: "/api/comments",
-                                data: JSON.stringify({
-                                    objectType: 'playback',
-                                    objectId: state.videoDetail.id,
-                                    content: value
-                                }),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function (comment) {
-                                    data.comments.push(comment)
-                                    location.reload();
-                                    var c = document.getElementById('comment-area')
-                                    c.innerHTML = ''
-                                    proc({
-                                        container: c,
-                                        data: data.comments,
-                                        templateId: 'video-comment-template'
-                                    })
-                                }
-                            })
-                        }
-                        proc({
-                            containerId: 'comment-area',
-                            data: data.comments,
-                            templateId: 'video-comment-template'
+                        })
+                    } else {
+                        $.ajax({
+                            type: "put",
+                            url: '/api/schedulers/' + state.videoDetail.id + '/like',
+                            data: JSON.stringify({}),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (like) {
+                                icon.setAttribute('src', 'images/details/zanover.png');
+                                ++data.likeCount;
+                                e.target.nextElementSibling.textContent = data.likeCount
+                                data.liked = true;
+                            }
                         })
                     }
+                }, false)
+
+                //*************************comments**************************
+                var btn = document.getElementById('btn');
+                btn.addEventListener('click', submit, false);
+                function submit(e) {
+                    var textarea = document.getElementById('textarea');
+                    var value = textarea.value;
+                    if (value.length < 1) {
+                        return false;
+                    }
+                    textarea.value = '';
+                    e.target.style.color = '#f5f5f5';
+                    // e.target.style.backgroundColor = '#3e8f3e';
+                    $.ajax({
+                        type: "post",
+                        url: "/api/comments",
+                        data: JSON.stringify({
+                            objectType: 'playback',
+                            objectId: state.videoDetail.id,
+                            content: value
+                        }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (comment) {
+                            data.comments.push(comment)
+                            location.reload();
+                            var c = document.getElementById('comment-area')
+                            c.innerHTML = ''
+                            proc({
+                                container: c,
+                                data: data.comments,
+                                templateId: 'video-comment-template'
+                            })
+                        }
+                    })
+                }
+
+                proc({
+                    containerId: 'comment-area',
+                    data: data.comments,
+                    templateId: 'video-comment-template'
                 })
-            },
+            }
         },
 
         scheduler: {

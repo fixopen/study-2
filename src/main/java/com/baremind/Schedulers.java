@@ -366,6 +366,7 @@ public class Schedulers {
         }
         return result;
     }
+
     @GET //根据条件查询课表
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSchedulers(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
@@ -462,13 +463,13 @@ public class Schedulers {
             String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + KnowledgePoints.join(ids) + ") AND l.action = 'read' AND l.userId = " + userId + " GROUP BY l.objectId";
             Query ldq = em.createQuery(likedQuery);
             final List<Object[]> likedStats = ldq.getResultList();
-
+            List<Comment> comments = Resources.getListByColumn(em, "objectId", ids, Comment.class);
             List<List<Map<String, Object>>> res = new ArrayList<>();
 
             for (List<Scheduler> ri : result) {
                 List<Map<String, Object>> rim = new ArrayList<>();
                 for (Scheduler rr : ri) {
-                    rim.add(Scheduler.convertToMap(rr, null, null, likeStats, likedStats, readStats));
+                    rim.add(Scheduler.convertToMap(rr, null, null, likeStats, likedStats, readStats, comments));
                 }
                 res.add(rim);
             }
