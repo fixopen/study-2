@@ -198,7 +198,7 @@ public class Users {
         private String password;
         private String phoneNumber;
         private String validCode;
-        private String wechatUserId;
+        private Long wechatUserId;
 
         String getCardNo() {
             return cardNo;
@@ -232,11 +232,11 @@ public class Users {
             this.validCode = validCode;
         }
 
-        public String getWechatUserId() {
+        public Long getWechatUserId() {
             return wechatUserId;
         }
 
-        public void setWechatUserId(String wechatUserId) {
+        public void setWechatUserId(Long wechatUserId) {
             this.wechatUserId = wechatUserId;
         }
     }
@@ -341,10 +341,16 @@ public class Users {
                             if (linkedUser != null) {
                                 if (linkedUser.getTelephone() == null) {
                                     linkedUser.setTelephone(ac.getPassword());
+                                    JPAEntry.genericPut(linkedUser);
                                     user = linkedUser;
                                 } else {
                                     isPassed = false;
                                 }
+//                                Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
+                                /*result = Response.ok(c)
+                                        //.cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .build();*/
                             } else {
                                 user = new User();
                                 user.setId(IdGenerator.getNewId());
@@ -357,10 +363,13 @@ public class Users {
                                 user.setAmount(0L);
                                 user.setHead(wechatUser.getHead());
                                 wechatUser.setUserId(user.getId());
+                                JPAEntry.genericPost(user);
+                                JPAEntry.genericPut(wechatUser);
                             }
                         } else {
                             if (linkedUser == null) {
                                 wechatUser.setUserId(user.getId());
+                                JPAEntry.genericPut(wechatUser);
                             } else {
                                 if (user.getId() != wechatUser.getUserId()) {
                                     isPassed = false;
@@ -461,13 +470,13 @@ public class Users {
             String username = "zhibo1";
             String password = "Tch243450";
             Response response = client.target(hostname)
-                .path("/msg/HttpBatchSendSM")
-                .queryParam("account", username)
-                .queryParam("pswd", password)
-                .queryParam("mobile", phoneNumber)
-                .queryParam("msg", validInfo)
-                .queryParam("needstatus", true)
-                .request("text/plain").get();
+                    .path("/msg/HttpBatchSendSM")
+                    .queryParam("account", username)
+                    .queryParam("pswd", password)
+                    .queryParam("mobile", phoneNumber)
+                    .queryParam("msg", validInfo)
+                    .queryParam("needstatus", true)
+                    .request("text/plain").get();
             String responseBody = response.readEntity(String.class);
             if (responseBody.contains("\n")) {
                 String[] lines = responseBody.split("\n");
