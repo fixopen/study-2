@@ -204,8 +204,67 @@
     var futures = []
     var subjects = []
     var state = {
+        pager: function(container, total, pageSize, currentPage, handler) {
+            var pageIndexContainer = document.getElementById(id)
+            pageIndexContainer.innerHTML = ''
+
+            var firstItemTemplate = $('<li class="firstPage"><a href="javascript:void(0)" data-no="${pageNo}">&laquo;</a></li>')[0]
+            var firstItem = g.dataToElement({pageNo: 1}, firstItemTemplate);
+            pageIndexContainer.appendChild(firstItem)
+
+            var itemTemplate = $('<li class="pageItem"><a href="javascript:void(0)" data-no="${pn}">${pageNo}</a></li>')[0]
+            var totalPage = Math.ceil(total / pageSize)
+            var beginPageNo = 1
+            if (currentPage > 5) {
+                if (currentPage > totalPage - 5) {
+                    beginPageNo = totalPage - 10
+                } else {
+                    beginPageNo = currentPage - 5
+                }
+            }
+            if (beginPageNo < 1) {
+                beginPageNo = 1
+            }
+            var endPageNo = beginPageNo + 9
+            for (var i = beginPageNo; i <= Math.min(endPageNo, totalPage); ++i) {
+                var item = g.dataToElement({pageNo: i}, itemTemplate)
+                if (i == currentPage) {
+                    item.className = 'active'
+                }
+                pageIndexContainer.appendChild(item)
+            }
+
+            var lastItemTemplate = $('<li class="lastPage"><a href="javascript:void(0)" data-no="${pageNo}">&raquo;</a></li>')[0]
+            var lastItem = g.dataToElement({pageNo: totalPage}, lastItemTemplate)
+            pageIndexContainer.appendChild(lastItem)
+
+            $(pageIndexContainer).find('a').on('click', function (e) {
+                handler(e.target.dataset.no)
+            })
+        },
         init: function() {
+            var switchTo = function (id) {
+                if (state.currentArticle) {
+                    state.currentArticle.style.display = 'none'
+                }
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/content.html#' + id)
+                state[id].init()
+            }
+
+            var moveTo = function (id) {
+                if (state.currentArticle) {
+                    state.currentArticle.style.display = 'none'
+                }
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block'
+                location.replace('/content.html#' + id)
+                state[id].init()
+            }
+
             var now = Date.now()
+
             var getPassed = function() {
                 $.ajax({
                     type: 'get',
@@ -215,15 +274,12 @@
                         for (var i = 0; i < subjects.length; ++i) {
                             $.ajax({
                                 type: 'get',
-                                url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
-                                    subjectId: subjects[i].id,
-                                    endTime: '< ' + now + '::timestamp'
-                                })),
+                                url: '/api/schedulers',
                                 success: function (d) {
                                     for (var i = 0; i < d.length; ++i) {
                                         var item = d[i]
-                                        item.startTime = Date.parse(item.startTime.replace(/-/g, '/'))
-                                        item.endTime = Date.parse(item.endTime.replace(/-/g, '/'))
+                                        item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
+                                        item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
                                     }
                                     var s = state.getSubjectById(d[0].subjectId)
                                     s.passed = d
@@ -239,6 +295,7 @@
                     }
                 })
             }
+
             $.ajax({
                 type: 'get',
                 url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
@@ -256,6 +313,8 @@
                         }
                     }
                     getPassed()
+
+                    moveTo('main')
                 },
                 error: function(r) {
                     if (r.status == 404) {
@@ -263,7 +322,25 @@
                     }
                 }
             })
+
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article;
+                switchTo(id);
+                state[id].changeId(e.target.dataset.id)
+            })
+
+            $(document).on('shown.bs.tab', '.grade-main', function (e) {
+                state.volumes.grade = e.target.dataset.grade
+                //$(e.target).tab('show')
+            })
+
+            window.addEventListener('hashchange', function (e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            }, false)
         },
+
         getSubjectById: function(id) {
             var result = null;
             for (var i = 0; i < subjects.length; ++i) {
@@ -274,7 +351,12 @@
             }
             return result
         },
-        main: {},
+
+        main: {
+            init: function() {
+                var videos = []
+            }
+        },
         detail: {},
         cover: {},
         content: {}

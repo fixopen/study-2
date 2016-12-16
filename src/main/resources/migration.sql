@@ -5,7 +5,14 @@ alter table answer_records rename column answer to index;
 alter table cards rename column subject to subject_id;
 alter table comments drop column client_id;
 alter table consumptions alter column object_type type name;
+alter table image_texts add column image_id bigint;
 -- split image_texts to image_id and content
+alter table image_texts drop column mime_type;
+alter table image_texts drop column size;
+alter table image_texts drop column name;
+alter table image_texts drop column ext;
+alter table image_texts drop column store_path;
+alter table image_texts drop column main_color;
 alter table knowledge_point_content_maps drop column subject_id;
 alter table knowledge_point_content_maps drop column grade;
 alter table knowledge_point_content_maps drop column volume_id;
