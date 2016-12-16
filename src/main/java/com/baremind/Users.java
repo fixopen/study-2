@@ -198,7 +198,7 @@ public class Users {
         private String password;
         private String phoneNumber;
         private String validCode;
-        private String wechatUserId;
+        private Long wechatUserId;
 
         String getCardNo() {
             return cardNo;
@@ -232,11 +232,11 @@ public class Users {
             this.validCode = validCode;
         }
 
-        public String getWechatUserId() {
+        public Long getWechatUserId() {
             return wechatUserId;
         }
 
-        public void setWechatUserId(String wechatUserId) {
+        public void setWechatUserId(Long wechatUserId) {
             this.wechatUserId = wechatUserId;
         }
     }
@@ -341,6 +341,7 @@ public class Users {
                             if (linkedUser != null) {
                                 if (linkedUser.getTelephone() == null) {
                                     linkedUser.setTelephone(ac.getPassword());
+                                    JPAEntry.genericPut(linkedUser);
                                     user = linkedUser;
                                 } else {
                                     isPassed = false;
@@ -357,10 +358,13 @@ public class Users {
                                 user.setAmount(0L);
                                 user.setHead(wechatUser.getHead());
                                 wechatUser.setUserId(user.getId());
+                                JPAEntry.genericPost(user);
+                                JPAEntry.genericPut(wechatUser);
                             }
                         } else {
                             if (linkedUser == null) {
                                 wechatUser.setUserId(user.getId());
+                                JPAEntry.genericPut(wechatUser);
                             } else {
                                 if (user.getId() != wechatUser.getUserId()) {
                                     isPassed = false;

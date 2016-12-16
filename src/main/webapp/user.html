@@ -1175,6 +1175,9 @@
                                     templateId: 'user-template'
                                 })
                             }
+                            if(user.password == null){
+                                state.switchToFront('')
+                            }
 
                         }
                     })

@@ -182,6 +182,7 @@ public class KnowledgePoints {
             result = Response.status(404).build();
             KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
             if (p != null) {
+                Logs.insert(JPAEntry.getSession(sessionId).getUserId(),"knowledge-point",id,"read");
                 result = Response.ok(new Gson().toJson(p.getContent()), "application/json; charset=utf-8").build();
             }
         }
