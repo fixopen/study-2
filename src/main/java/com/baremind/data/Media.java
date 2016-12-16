@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "medias")
-public class Media {
+public class Media implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -77,4 +77,6 @@ public class Media {
     public void setStorePath(String storePath) {
         this.storePath = storePath;
     }
+
+
 }

@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "logs")
-public class Log {
+public class Log implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -22,11 +22,11 @@ public class Log {
     @Column(name = "object_type")
     private String objectType;
 
-    @Column(name = "object_id")
-    private Long objectId;
-
     @Column(name = "action")
     private String action;
+
+    @Column(name = "object_id")
+    private Long objectId;
 
     @Column(name = "create_time")
     private Date createTime;
@@ -63,19 +63,19 @@ public class Log {
         this.objectId = objectId;
     }
 
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 }

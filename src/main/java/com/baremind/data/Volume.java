@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "volumes")
-public class Volume {
+public class Volume implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -87,6 +87,7 @@ public class Volume {
         vm.put("grade", volume.getGrade());
         vm.put("order", volume.getOrder());
         vm.put("subjectId", volume.getSubjectId());
+        vm.put("coverId", volume.getCoverId());
         vm.put("name", volume.getName());
         vm.put("type", "old");
         EntityManager em = JPAEntry.getEntityManager();

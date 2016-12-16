@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "knowledge_point_content_maps")
-public class KnowledgePointContentMap {
+public class KnowledgePointContentMap implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -47,8 +47,8 @@ public class KnowledgePointContentMap {
         return objectType;
     }
 
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
+    public void setObjectType(String type) {
+        this.objectType = type;
     }
 
     public Long getObjectId() {

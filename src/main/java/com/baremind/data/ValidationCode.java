@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "validation_codes")
-public class ValidationCode {
+public class ValidationCode implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

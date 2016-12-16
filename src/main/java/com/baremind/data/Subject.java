@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "subjects")
-public class Subject {
+public class Subject implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -44,4 +44,6 @@ public class Subject {
     public void setName(String name) {
         this.name = name;
     }
+
+
 }

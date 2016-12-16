@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "devices")
-public class Device {
+public class Device implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -66,4 +66,6 @@ public class Device {
     public void setPlatformNotificationToken(String platformNotificationToken) {
         this.platformNotificationToken = platformNotificationToken;
     }
+
+
 }

@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wechat_users")
-public class WechatUser {
+public class WechatUser implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -27,9 +27,6 @@ public class WechatUser {
 
     @Column(name = "expiry")
     private Date expiry;
-
-    @Column(name = "ref_id")
-    private String refId;
 
     @Column(name = "open_id")
     private String openId;
@@ -156,14 +153,6 @@ public class WechatUser {
         this.expiry = expiry;
     }
 
-    public String getRefId() {
-        return refId;
-    }
-
-    public void setRefId(String refId) {
-        this.refId = refId;
-    }
-
     public String getOpenId() {
         return openId;
     }
@@ -227,6 +216,14 @@ public class WechatUser {
     public void setHead(String head) {
         this.head = head;
     }
+
+//    public String[] getPrivilege() {
+//        return privilege;
+//    }
+//
+//    public void setPrivilege(String[] privilege) {
+//        this.privilege = privilege;
+//    }
 
     public String getInfo() {
         return info;

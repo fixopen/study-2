@@ -13,7 +13,7 @@ var bind = function (element, data) {
     if (element) {
         element.innerHTML = element.innerHTML.replace('%7B', '{').replace('%7D', '}').replace(/\$\{(\w+)\}/g, function (all, variable) {
             var result = ''
-            if (data && variable && data[variable]) {
+            if (data && variable && (data[variable] != undefined)) {
                 result = data[variable]
             }
             return result
@@ -121,4 +121,26 @@ var proc = function (option) {
             }
         }
     }
+}
+
+var login = function(loginName, password) {
+    $.ajax({
+        type: "PUT",
+        url: "/api/sessions",
+        data: JSON.stringify({
+            type: "name",
+            info: loginName,
+            key: password,
+            deviceType: 'web',
+            deviceNo: ''
+        }),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (a) {
+            alert("登录成功")
+        },
+        error: function (e) {
+            alert(JSON.stringify(e))
+        }
+    })
 }

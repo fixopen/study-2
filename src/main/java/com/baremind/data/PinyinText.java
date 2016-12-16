@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "pinyin_texts")
-public class PinyinText {
+public class PinyinText implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -22,6 +22,7 @@ public class PinyinText {
 
     @Column(name = "content")
     private String content;
+
 
     public Long getId() {
         return id;

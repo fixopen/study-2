@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "additionals")
-public class Additional {
+public class Additional implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -39,8 +39,8 @@ public class Additional {
         return objectType;
     }
 
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
+    public void setObjectType(String tableName) {
+        this.objectType = tableName;
     }
 
     public Long getObjectId() {

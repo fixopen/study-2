@@ -1,95 +1,65 @@
 package com.baremind;
 
 import com.baremind.data.Device;
-import com.baremind.utils.CharacterEncodingFilter;
-import com.baremind.utils.IdGenerator;
-import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
+import com.baremind.utils.Impl;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
 
 @Path("devices")
 public class Devices {
-    @POST //添
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createDevice(@CookieParam("userId") String userId, Device device) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            device.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(device);
-            result = Response.ok(device).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getDevices(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Device> devices = JPAEntry.getList(Device.class, filterObject);
-            if (!devices.isEmpty()) {
-                result = Response.ok(new Gson().toJson(devices)).build();
-            }
-        }
-        return result;
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, Device.class, null, null);
     }
 
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getDeviceById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Device device = JPAEntry.getObject(Device.class, "id", id);
-            if (device != null) {
-                result = Response.ok(new Gson().toJson(device)).build();
-            }
-        }
-        return result;
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, Device.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, Device entity) {
+        return Impl.create(sessionId, entity, null, null);
     }
 
     @PUT //根据id修改
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateDevice(@CookieParam("userId") String aUserId, @PathParam("id") Long id, Device device) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(aUserId)) {
-            result = Response.status(404).build();
-            Device existdevice = JPAEntry.getObject(Device.class, "id", id);
-            if (existdevice != null) {
-                String platform = device.getPlatform();
-                if (platform != null) {
-                    existdevice.setPlatform(platform);
-                }
-
-                Long userId = device.getUserId();
-                if (userId != null) {
-                    existdevice.setUserId(userId);
-                }
-
-                String platformIdentity = device.getPlatformIdentity();
-                if (platformIdentity != null) {
-                    existdevice.setPlatformIdentity(platformIdentity);
-                }
-
-                String platformNotificationToken = device.getPlatformNotificationToken();
-                if (platformNotificationToken != null) {
-                    existdevice.setPlatformNotificationToken(platformNotificationToken);
-                }
-                JPAEntry.genericPut(existdevice);
-                result = Response.ok(existdevice).build();
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Device newData) {
+         return Impl.updateById(sessionId, id, newData, Device.class, (exist, device) -> {
+            Long userId = device.getUserId();
+            if (userId != null) {
+                exist.setUserId(userId);
             }
-        }
-        return result;
+
+            String platform = device.getPlatform();
+            if (platform != null) {
+                exist.setPlatform(platform);
+            }
+
+            String platformIdentity = device.getPlatformIdentity();
+            if (platformIdentity != null) {
+                exist.setPlatformIdentity(platformIdentity);
+            }
+
+            String platformNotificationToken = device.getPlatformNotificationToken();
+            if (platformNotificationToken != null) {
+                exist.setPlatformNotificationToken(platformNotificationToken);
+            }
+        }, null);
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.deleteById(sessionId, id, Device.class);
     }
 }

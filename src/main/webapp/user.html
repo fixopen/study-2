@@ -8,350 +8,2077 @@
           id="viewport"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
-    <link rel="stylesheet" href="common.css"/>
+
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="myUser/css/common.css"/>
+    <link rel="stylesheet" href="myUser/css/global.css">
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <link rel="stylesheet" href="myUser/css/user.css">
+    <script src="dao.js"></script>
+    <link rel="stylesheet" href="myUser/css/Popup.css">
 </head>
 <body>
-<article id="user">
-    <dl>
-        <dt>name</dt>
-        <dd><input type="text"></dd>
-        <dt>avatar</dt>
-        <dd><input type="text"></dd>
-        <dt>nickname</dt>
-        <dd><input type="text"></dd>
-        <dt>account</dt>
-        <dd><input type="text"></dd>
-        <dt>password</dt>
-        <dd><input type="text"></dd>
-        <dt>real-name</dt>
-        <dd><input type="text"></dd>
-        <dt>phone</dt>
-        <dd><input type="text"></dd>
-        <dt>sex</dt>
-        <dd><input type="text"></dd>
-        <dt>birthday</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>location(address)</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>school</dt>
-        <dd><input type="text"></dd>
-        <dt>grade</dt>
-        <dd><input type="text"></dd>
-        <dt>class</dt>
-        <dd><input type="text"></dd>
-        <dt>sex</dt>
-        <dd><input type="text"></dd>
-        <dt>cards</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>logs</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>study</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>views</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>likes</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>knowledge</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>payment</dt>
-        <dd><input type="button" value="details"></dd>
-        <dt>help</dt>
-        <dd><input type="button" value="details"></dd>
-    </dl>
-</article>
-<article id="cards" style="display: none;">
-    <ul id="actived-cards"></ul>
-    <button id="recharge">充值</button>
-    <button id="append-card">添加卡</button>
-</article>
-<article id="info" style="display: none;"></article>
-<article id="logs" style="display: none;"></article>
-<article id="consumes" style="display: none;"></article>
-<article id="study" style="display: none;"></article>
-<article id="score" style="display: none;"></article>
-<article id="change-password" style="display: none;"></article>
-<article id="activeCard" style="display: none;">
-    <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
-        <div>
-            <span class="common-font common-line-height title">卡号</span>
-            <input type="text" id="cardNo" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入卡号" required pattern="\d+"/>
+<article id="sign" style="display: none">
+    <div class="wrap">
+        <div class="header">
+            <div class="avatar"></div>
+            <div class="touImg">
+                <img src="myUser/image/login_tou.png" class="avatarImg"/>
+            </div>
+            <ul class="tab_switch">
+                <li class="tab_swli cur">
+                    <a class="tab_mima" href="JavaScript:;" id="pass">密码登录</a>
+                    <span class="now_sanjiao"></span>
+                </li>
+                <li class="tab_swli">
+                    <a class="tab_duanx" href="JavaScript:;" id="shortMessage">短信登录</a>
+                    <span class="now_sanjiao sanJer"></span>
+                </li>
+            </ul>
         </div>
-        <div>
-            <span class="common-font common-line-height title">密码</span>
-            <input type="password" id="password" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入密码" required/>
+        <div class="mine_zilo">
+            <div class="mine_table cur" id="username">
+                <ul class="mine_zUl">
+                    <li class="mine_zuli">
+                        <span class="mine_leftsp">账号</span>
+                        <input class="mine_rightip" type="number" id="Number" placeholder="请输入已激活手机号">
+                        <i class="errorTs" id="errorNumber">
+                            <!--该手机号尚未绑卡激活，请重新输入-->
+                        </i>
+                    </li>
+                    <li class="mine_zuli">
+                        <span class="mine_leftsp">密码</span>
+                        <input class="mine_rightip" type="password" id="Dense" placeholder="请输入6-16位密码">
+                        <!--<a class="eye" href="#"></a>-->
+                        <i class="errorTs" id="errorpassword1">
+                            <!--密码错误-->
+                        </i>
+                    </li>
+                    <li class="mine_zuli zuli_yzm" style="display: none;" id="tu">
+                        <span class="mine_leftsp">验证码</span>
+                        <input class="mine_rightip" type="password" id="Verification" placeholder="请输入验证码">
+                        <img src="" id="tuxing" class="yanZma">
+                        <button class="yanZma" id="huan">点击换一张</button>
+                        <i class="errorTs">
+                            <!--验证码错误-->
+                        </i>
+                    </li>
+                    <span id="zhanghaoerror"></span>
+                </ul>
+            </div>
+            <div class="mine_table" id="short">
+                <ul class="mine_zUl">
+                    <li class="mine_zuli">
+                        <span class="mine_leftsp">账号</span>
+                        <input class="mine_rightip" type="number" id="duanNumber" placeholder="请输入手机号">
+                    </li>
+                    <li class="mine_zuli">
+                        <span class="mine_leftsp">密码</span>
+                        <input class="mine_rightip" type="password" id="duanDense" placeholder="请输入短信密码">
+                        <!--<a class="famima" href="JavaScript:;" id="fapassword">发送密码</a>-->
+                        <input type="button" class="famima" id="fapassword" class="famima" value="发送密码">
+                    </li>
+                </ul>
+                <span class="mine_tishi" id="errorfamima"></span>
+            </div>
+            <div class="bottom_bdiv">
+                <a class="bottom_btn" href="JavaScript:;" id="signSubmit">登 录</a>
+            </div>
+            <div class="bottom_txt" data-article="firstActiveCard"><span class="leftLine">——</span>还没有账号？先去“填加卡号”<span
+                    class="leftLine">——</span></div>
         </div>
-    </section>
-    <div id="tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
-    <input type="button" id="save" class="common-font common-line-height common-border-style save" value="确 认"/>
+    </div>
 </article>
 <article id="firstActiveCard" style="display: none;">
-    <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
-        <div>
-            <span class="common-font common-line-height title">卡号</span>
-            <input type="text" id="first-cardNo" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入卡号" required pattern="\d+"/>
+    <div class="wrap">
+        <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
+            <div class="firstActiveCard_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">卡号</span>
+                <input class="firstActiveCard_input_css" type="text" placeholder="请输入卡号" id="cardNo"
+                       style="height:20px; font-size:18px;"
+                       required pattern="\d+">
+                <!--onkeyup="test()"-->
+            </div>
+            <div class="firstActiveCard_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">密码</span>
+                <input class="firstActiveCard_input_css" type="password" placeholder="请输入密码" id="password"
+                       style="height:20px; font-size:18px;" required>
+            </div>
+            <div class="firstActiveCard_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">手机号</span>
+                <input class="firstActiveCard_input_css" type="tel" id="phoneNumber" placeholder="请输入手机号" required
+                       pattern="\d+"
+                       style="height:20px; width: 115px; font-size:16px;">
+                <input type="button" id="activeCode" style="display: inline-block; font-size:14px;" value="获取验证码"
+                       class="send-btn cur">
+            </div>
+            <div class="firstActiveCard_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">验证码</span>
+                <input class="firstActiveCard_input_css" type="text" placeholder="请输入验证码" id="validCode"
+                       style="height:20px; font-size:18px;" required
+                       pattern="\d{6}">
+            </div>
+        </section>
+        <br/>
+        <div style="font-size: 0.875rem; color: #fe6568; padding-left: 0.875rem; box-sizing: border-box; line-height: 1.375rem;"
+             id="tips">
+            欢迎来到激活卡页面!
         </div>
-        <div>
-            <span class="common-font common-line-height title">密码</span>
-            <input type="password" id="first-password" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入密码" required/>
-        </div>
-        <div>
-            <span class="common-font common-line-height title">手机号</span>
-            <input type="tel" id="phoneNumber" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入手机号" required pattern="\d+"/>
-            <input type="button" id="activeCode" class="common-font common-border-style validButton" value="获取手机验证码"/>
-        </div>
-        <div>
-            <span class="common-font common-line-height title">验证码</span>
-            <input type="text" id="validCode" class="common-font common-line-height common-border-style value"
-                   placeholder="请输入验证码" required pattern="\d{6}"/>
-        </div>
-    </section>
-    <div id="first-tips" class="common-font common-line-height common-border-style tips">欢迎来到激活卡页面!</div>
-    <input type="button" id="first-save" class="common-font common-line-height common-border-style save" value="确 认"/>
-</article>
-<article id="login" style="display: none;">
-    <div>
-        <span class="common-font common-line-height title">手机号</span>
-        <input type="tel" id="login-account" class="common-font common-line-height common-border-style value"
-               placeholder="请输入手机号" required pattern="\d+"/>
-    </div>
-    <div>
-        <span class="common-font common-line-height title">密码</span>
-        <input type="text" id="login-password" class="common-font common-line-height common-border-style value"
-               placeholder="请输入验证码" required pattern="\d{6}"/>
-    </div>
-</article>
-<article id="phone-login" style="display: none;">
-    <div>
-        <span class="common-font common-line-height title">手机号</span>
-        <input type="tel" id="login-phoneNumber" class="common-font common-line-height common-border-style value"
-               placeholder="请输入手机号" required pattern="\d+"/>
-        <input type="button" id="login-activeCode" class="common-font common-border-style validButton" value="获取手机验证码"/>
-    </div>
-    <div>
-        <span class="common-font common-line-height title">验证码</span>
-        <input type="text" id="login-validCode" class="common-font common-line-height common-border-style value"
-               placeholder="请输入验证码" required pattern="\d{6}"/>
+        <br/>
+        <button id="save" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+    margin-right: 5%; background-color: #fe6568; border: none">确 认
+        </button>
+        <br/>
+        <!--  <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+      margin-right: 5%; background-color: #fe6568; border: none">返回上一页
+          </button>-->
     </div>
 </article>
-<article id="settings" style="display: none;"></article>
-<article id="help" style="display: none;"></article>
+
+<article id="gold" style="display: none">
+    <!--<div class="goldwrap"></div>
+    <div class="goldbgImg">
+        <div class="goldcloud1"></div>
+        <div class="goldblue-bg"></div>
+        <div class="goldbtm-img">
+            <a href="javascript:;" onclick="kai()">完善资料</a>
+        </div>
+    </div>
+    <div class="goldcloud2"></div>
+    <div class="goldwords">
+        <div class="goldtac">
+            <img src="myUser/image/gx.png" height="43" width="296" alt=""/><br>
+            <img class="goldtac_erimg"  src="myUser/image/wanshan.png" height="43" width="183" alt=""/><br>
+            <img src="myUser/image/cg.png" height="88" width="457"/>
+        </div>
+    </div>-->
+    <div class="goldwrap"></div>
+    <div class="goldbgImg">
+        <div class="goldcloud1"></div>
+        <div class="goldblue-bg"></div>
+        <div class="goldbtm-img">
+            <a href="JavaScript:;" style="cursor: hand" data-article="info">完善资料</a>
+        </div>
+    </div>
+    <div class="goldcloud2"></div>
+    <div class="goldwords">
+        <div class="goldtac">
+            <img src="images/gx.png" alt=""><br>
+            <img class="goldtac_erimg" src="images/wanshan.png" alt=""><br>
+            <img src="images/cg.png" alt="">
+        </div>
+    </div>
+</article>
+
+<article id="info" style="display: none;"></article>
+<article id="changePassword" style="display: none;">
+    <div class="wrap">
+        <!-- main -->
+        <ul class="changePassword_ul_css">
+            <li class="changePassword_li_css public_li_css" id="yuan" style="display: none">
+                <span class="public_span_css changePassword_interval_width_css">原密码</span>
+                <input class="firstActiveCard_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
+            </li>
+            <li class="changePassword_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">新密码</span>
+                <input class="firstActiveCard_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
+            </li>
+            <li class="changePassword_li_css public_li_css">
+                <span class="public_span_css changePassword_interval_width_css">确认新密码</span>
+                <input class="firstActiveCard_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
+            </li>
+            <div id="error"></div>
+        </ul>
+
+        <div class="changePassword_box_css">
+            <a href="javascript:void(0)" class="changePassword_button_css" id="pwd_save">保 存</a>
+            <a href="javascript:void(0)" id="quxiao" class="changePassword_save_css">取 消</a>
+        </div>
+    </div>
+</article>
+
+<article id="user"></article>
+<article id="nickname" style="display: none">
+
+</article>
+<article id="cards" style="display: none;">
+    <div class="wrap">
+        <div class="headercard">
+            <div class="headercard_l">
+                <span class="l_one">总持卡数</span><br>
+                <span class="l_two"><i class="l_twoshu" id="total"></i>张</span><br>
+                <button style="cursor:pointer" class="l_three" id="addcard">增加新卡</button>
+            </div>
+            <div class="headercard_r">
+                <span class="r_one">金豆不足</span><br>
+                <span class="r_two"><i class="r_twoshu" id="insufficient"></i>张</span><br>
+                <button style="cursor:pointer" class="r_three" id="chongzhi">充值</button>
+            </div>
+        </div>
+        <div class="tab_div">
+            <ul class="tab_switch2">
+                <li class="tab_swli2 cur" id="clickchinese">语文
+                    <span class="tab_swlispan">(<i id="chinese"></i>)</span>
+
+                <li class="tab_swli2" id="clickmath">数学
+                    <span class="tab_swlispan">(<i id="mathematics"></i>)</span>
+
+            </ul>
+        </div>
+
+        <div class="mine_table" style="display: none" id="nochinese">
+            <div class="table_NOul">
+                <p class="noul_p1">
+                    <img src="myUser/image/facejk.png" height="24" width="76"/>
+                    没有学习卡哦！
+                </p>
+                <p class="noul_p2">
+                    请在淘宝店里搜索 “ 铮铮书屋 ”，购买！
+                </p>
+            </div>
+        </div>
+        <div id="chinesecards" style="display: none"></div>
+
+        <div class="mine_table" style="display: none" id="nomathematics">
+            <div class="table_NOul">
+                <p class="noul_p1">
+                    <img src="myUser/image/facejk.png" height="24" width="76"/>
+                    没有学习卡哦！
+                </p>
+                <p class="noul_p2">
+                    请在淘宝店里搜索 “ 铮铮书屋 ”，购买！
+                </p>
+            </div>
+        </div>
+        <div id="mathecards" style="display: none"></div>
+    </div>
+
+
+    <!-- <div id="card"></div>
+     &lt;!&ndash;<div class="card_button_div_css">&ndash;&gt;
+     <a class="card_button_css " href="JavaScript:;">充值</a>
+     <a class="card_button_css card_button_background_css" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>-->
+    <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
+    <!--</div>-->
+    <!--</div>-->
+</article>
+<article id="head" style="display: none;"></article>
+<article id="consumes" style="display: none;">
+    <div class="wrap">
+        <div class="balance_jine">
+            <div class="balance_top">
+                <div class="baltop_div1"></div>
+                <div class="baltop_div2">
+                    <p class="baldiv2_p0">账号余额</p>
+                    <p class="baldiv2_p1"><span class="baldiv2_p1span" id="yu"></span>(金豆)</p>
+                    <p class="baldiv2_p2">
+                        <button class="recharge" style="cursor:hand" id="zhichong">
+                            <img src="myUser/image/recharge.png" alt="">
+                            充值
+                        </button>
+                        <button class="turnout" style="cursor:hand" id="zhuanchu">
+                            <img src="myUser/image/turnout.png" alt="">
+                            转出
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="balance_zilo">
+            <img src="myUser/image/hotqiu.png" alt="">
+            <ul class="balance_zUl">
+                <li class="balance_zuli balancezuli_tou">消费记录</li>
+                <div id="balance"></div>
+            </ul>
+        </div>
+    </div>
+</article>
+<article id="selectCard" style="display: none">
+    <div class="wrap" id="to">
+        <ul class="xuanze_baodiv">
+            <li id="account">
+            </li>
+            <li id="oneCard">
+            </li>
+        </ul>
+    </div>
+    <div id="rechargepage" style="display: none">
+        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+        <li class="mine_zuli"  id="z" style="cursor: hand">
+            <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
+            <div class="xuanze_leftdiv">
+                <span class="xuanze_leftsp" id="name"></span>
+                <span class="xuanze_leftsp" id="no"></span>
+                <br>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
+            </div>
+        </li>
+        <div class="charge-main">
+            <!-- charge-area -->
+            <p class="main_ptxt">1元=10金豆</p>
+            <ul class="rain-drop-ul">
+                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+            </ul>
+            <div class="srinput_div">
+                <span class="srinput_span">其他金额：</span>
+                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+            </div>
+            <div class="count_div">小计：
+                <span>￥<i class="count_spani1">15</i></span>
+            </div>
+        </div>
+        <div class="count_div">合计：
+            <span>￥<i class="count_spani2">10.50</i></span>
+            <br>
+            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
+        </div>
+        <!-- pay-btn -->
+        <div class="pay_btn">
+            <div class="wechat-btn">
+                <span class="wechat-span"></span>
+                微信支付
+            </div>
+            <div class="alipay-btn">
+                <span class="alipay-span"></span>
+                支付宝支付
+            </div>
+        </div>
+    </div>
+</article>
+<article id="recharge" style="display: none">
+    <div id="converted">
+
+    </div>
+    <div id="selectOneCard" style="display: none">
+        <div class="wrap">
+            <ul class="mine_baodiv">
+                <li>
+                    <a class="xuanze_zuli" href="javascript:void(0)">
+                        <img class="xuanze_img1" src="" alt="" id="image" >
+                        <div class="xuanze_leftdiv" id="cardid">
+                            <span class="xuanze_leftsp" id="zs"></span>
+                            <span class="xuanze_leftsp" id="zn"></span>
+                            <br>
+                            <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="za"></i>金豆</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="mine_baodiv">
+                <li class="mine_liname">
+                    <div class="mine_leftdiv">
+                        <p class="mine_zhaunc">转出金豆数量</p>
+                        <span class="mine_leftsp">金豆：</span>
+                        <input class="mine_zhauncIn" type="text" id="convertedNumber">
+                    </div>
+                </li>
+            </ul>
+            <p class="turnOut_note">
+                最多可转出到卡
+                <span class="note_number" id="tishi">
+
+                </span>
+                金豆
+            </p>
+            <div class="zhaunc_btn">
+                <button class="zhaunc_a" style="cursor: hand" id="submitTransfer">确认转出</button>
+            </div>
+        </div>
+    </div>
+</article>
+<!--<article id="recharge" style="display: none;"></article>-->
+<article id="study" style="display: none;"></article>
+<article id="score" style="display: none;"></article>
+<article id="activeCard" style="display: none;">
+    <!-- 弹窗开始 -->
+    <div class="tan" id="cardtan"></div>
+    <div class="window1"><!-- 弹窗 -->
+        <button class="windowClose" style="cursor:pointer" id="close"></button>
+        <div class="win_neir">
+            <p class="neir_ptxt">已成功填加！</p>
+            <p class="neir_pBtn">
+                <button class="p_btn" style="cursor:pointer" id="ok">知道了</button>
+            </p>
+        </div>
+    </div>
+    <!-- 弹窗结束 -->
+    <div class="wrap">
+        <div class="mine_zilo">
+            <ul class="mine_zUl">
+                <li class="acardmine_zuli">
+                    <span class="mine_leftsp">卡号</span>
+                    <input class="mine_rightip" id="cardNumber" type="number" placeholder="请输入卡号">
+                </li>
+                <li class="acardmine_zuli">
+                    <span class="mine_leftsp">密码</span>
+                    <input class="mine_rightip" id="cardPassword" type="password" placeholder="请输入密码">
+                </li>
+            </ul>
+            <i id="createCardError"></i>
+            <button class="bottom_btn" style="cursor:pointer" id="createCard">填 加</button>
+        </div>
+    </div>
+</article>
+<article id="settings" style="display: none;">
+    <div class="wrap">
+        <div class="changePassword_div_css">
+            <ul class="changePassword_ul_css">
+                <li class="firstActiveCard_li_css public_li_css">
+                    <button data-article="changePassword">
+                        密码设置
+                        <span class="next-btn"></span>
+                    </button>
+                </li>
+                <li class="firstActiveCard_li_css public_li_css">
+                    <button data-article="changePassword">
+                        手机号修改
+                        <span class="next-btn"></span>
+                    </button>
+                </li>
+                <li class="firstActiveCard_li_css public_li_css">
+                    <button data-article="changePassword">
+                        微信解绑
+                        <span class="next-btn"></span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="changePassword_div_css">
+            <ul class="changePassword_ul_css">
+                <li class="firstActiveCard_li_css public_li_css">
+                    <button data-article="contactUs">联系我们<span class="next-btn"></span></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</article>
+<article id="help" style="display: none;">
+    <div class="wrap youBackg">
+        <div class="study-record">
+            <div class="study_text">
+                <span class="chi"></span>
+                <span class="abc"></span>
+                <ul class="help_ul">
+                    <li class="help_li liNobor">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            什么时候开始直播？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">小雨直播的时间一般是安排在每周1-周5 “18:00” 开始。具体课程的准确时间请注意查看课表。</p>
+                        </div>
+                    </li>
+                    <li class="help_li">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            怎么找课表？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">①进入小雨知时微信站“公告”菜单，可以看到本周的课表。
+                                <br>
+                                ②可以查看历史消息，也会有课表。</p>
+                        </div>
+                    </li>
+                    <li class="help_li">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            怎么回看直播课录播课程？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">进入小雨知时微信站“直播”菜单，根据需要观看语文和数学的回放课程。</p>
+                        </div>
+                        <div class="help_liImg">
+                            <img src="images/helpImg.png" alt="">
+                        </div>
+                    </li>
+                    <li class="help_li">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            怎么注册卡？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">小雨知时微信站“我的”菜单里面进行卡激活操作。</p>
+                        </div>
+                    </li>
+                    <li class="help_li">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            金豆有什么用？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">小雨平台的金豆是用来在小雨知识平台上进行消费的代金币。 当前小雨知时网站还处在试播阶段。所有项目都免费。
+                                但不久的将来，直播、录播和资料都需要使用金豆资源。请您妥善管理好自己的直播卡，尽快到小雨知时微信站“我的”菜单里面进行卡激活操作。</p>
+                        </div>
+                    </li>
+                    <li class="help_li">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            卡丢了怎么办？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">请向小雨客服提供 “身份证号”、“联系人和手机”、“所购图书的照片”，小雨客服会履行相关补办手续。</p>
+                        </div>
+                    </li>
+                    <li class="help_li">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            手机无法看直播？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">目前针对IOS低于9的版本，会导致一些特殊情况。比如：无法卡注册、无法正常看直播等。</p>
+                        </div>
+                    </li>
+                    <li class="help_li">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            直播课分年级吗？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">直播语文分“低年级“和”高年级”。低年级主要适合1-3年级的小朋友看；高年级主要适合4-6年级的小朋友看。</p>
+                        </div>
+                    </li>
+                    <li class="help_li">
+                        <h3 class="help_lih3">
+                            <span class="wen">问</span>
+                            在哪里买书？
+                        </h3>
+                        <div class="help_lidiv">
+                            <span class="da">答</span>
+                            <p class="help_pTxt">请在淘宝店里搜索 “ 铮铮书屋 ”，购买直播语文、直播数学等相关书籍。</p>
+                        </div>
+                    </li>
+                </ul>
+                <img class="bottomImg" src="images/helpTu.png" alt="">
+            </div>
+        </div>
+    </div>
+</article>
+<article id="contactUs" style="display: none;">
+    <img src="myUser/image/contactUs.jpg" style="width: 100%;height: 100%"/>
+</article>
 
 <template id="user-template">
-    <section>
-        <span>我的头像</span>
-        <img src="${head}" alt="">
-    </section>
-    <section>
-        <span>昵称</span>
-        <input type="text" value="${name}" readonly>
-    </section>
-    <section>
-        <span>账号</span>
-        <input type="text" value="${telephone}" readonly>
-    </section>
-    <section>
-        <a href="#">我的资料</a>
-    </section>
-    <section>
-        <a href="#">我的学习卡</a>
-    </section>
-    <section>
-        <a href="#">设置</a>
-    </section>
-    <section>
-        <a href="#">帮助</a>
-    </section>
+    <!--<div class="user_div_css">-->
+    <ul class="public_ul_css">
+        <li class="user_li_css public_li_css">
+            <ul data-article="head">
+                <span class="public_span_css">我的头像</span>
+                <img class="user_head_css" src="${head}" alt="">
+            </ul>
+
+        </li>
+        <li class="user_li_css public_li_css">
+            <ul data-article="nickname">
+                <span class="public_span_css">昵称</span>
+                <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
+            </ul>
+        </li>
+        <li class="user_li_css public_li_css">
+            <span class="public_span_css">账号</span>
+            <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
+        </li>
+        <li>
+            <ul class="user_li_css public_li_css" data-article="info">个人资料</ul>
+        </li>
+        <br/>
+
+        <li>
+            <ul class="user_li_css public_li_css" data-article="cards">我的学习卡</ul>
+        </li>
+        <li>
+            <ul class="user_li_css public_li_css">学习记录</ul>
+        </li>
+        <br/>
+        <li>
+            <ul class="user_li_css public_li_css" data-article="consumes">账户余额</ul>
+        </li>
+        <li>
+            <ul class="user_li_css public_li_css" data-article="selectCard">充值</ul>
+        </li>
+        <li>
+            <ul class="user_li_css public_li_css">我的积分</ul>
+        </li>
+        <br/>
+        <li class="user_li_css public_li_css" data-article="settings">设置</li>
+        <li class="user_li_css public_li_css" data-article="help">帮助</li>
+    </ul>
+    <!--</div>-->
 </template>
 <template id="info-template">
-    <article>
-        <section>
-            <span>真实姓名</span>
-            <input type="text" placeholder="请输入真实姓名" value="${name}">
-        </section>
-        <section>
-            <span>手机号</span>
-            <input type="tel" value="${telephone}">
-        </section>
-        <section>
-            <span>性别</span>
-            <input type="text" value="${sexName}">
-        </section>
-        <section>
-            <span>出生年月</span>
-            <input type="date" value="${birthday}">
-        </section>
-        <section>
-            <span>收货地址</span>
-            <input type="text" placeholder="请输入收货地址" value="${location}">
-        </section>
-        <section >
-            <span class="mine_leftsp">就读学校</span>
-            <input class="mine_rightip" type="text" value="${school}">
-        </section>
-        <section>
-            <span>所在班级</span>
-            <input type="text" value="${grade} ${classname}">
-        </section>
-    </article>
+    <ul class="public_ul_css">
+        <p class="mine_zP">*为必填项</p>
+        <li class="public_li_css">
+            <span class="imine_leftsp">姓名<i class="xing">*</i></span>
+            <input class="mine_rightip" type="text" placeholder="请输入真实姓名" value="${name}"
+                   id="info_name">
+        </li>
+        <li class="public_li_css">
+            <span class="imine_leftsp readOnly">手机号</span>
+            <input class="mine_rightip mine_rightRu" type="tel" value="${telephone}" readOnly="true"
+                   id="info_telephone">
+        </li>
+        <li class="public_li_css">
+            <span class="imine_leftsp">学校<i class="xing">*</i></span>
+            <input class="mine_rightip mine_rightRu" type="text " value="${school}" id="info_school">
+        </li>
+        <li class="public_li_css">
+            <span class="imine_leftsp">班级<i class="xing">*</i></span>
+            <input class="mine_rightip mine_rightRu" type="text " value="${classname}" id="info_class">
+        </li>
+        <li class="public_li_css">
+            <span class="imine_leftsp">出生年月</span>
+            <input id="date" class="mine_rightip mine_rightRu" type="date" value="${birthday}">
+            <!--value="${birthday}"  placeholder="请选择出生日期" style="height:41px;overflow: hidden;"  style="height:41px;overflow: hidden;"-->
+            <!--<input class="infomine_rightip" type="date" value="${birthday}" placeholder="请选择出生日期" style="height:41px;overflow: hidden;" id="info_birthday">-->
+        </li>
+        <li class="public_li_css">
+            <span class="imine_leftsp">性别</span>
+            <input class="mine_rightip mine_rightRu" type="text" value="${sex}" id="info_sex">
+        </li>
+
+        <!-- <li class="public_li_css">
+             <span class="public_span_css info_interval_width_css">收货地址</span>
+             <input class="info_input_width_css public_input_css" type="text" placeholder="请输入收货地址" value="${location}"
+                    id="info_location">
+         </li>-->
+        <li>
+            <span class="public_span_css info_interval_width_css"></span>
+            <button id="save_info" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
+    margin-right: 5%; background-color: #fe6568; border: none">确 认
+            </button>
+        </li>
+        <p class="mine_zbottomP">小雨承诺将保证您的信息，请放心填写</p>
+    </ul>
 </template>
 <template id="card-template">
-    <article>
-        <section>
-            <span>卡号</span>
-            <span>${no}</span>
-        </section>
-        <section>
-            <span>学习类型</span>
-            <span>${subjectName}</span>
-        </section>
-        <section>
-            <span>激活时间</span>
-            <span>${activeTime}</span>
-        </section>
-        <section>
-            <span>剩余雨点</span>
-            <span>${amount}</span>
-        </section>
-        <section>
-            <span>有效期</span>
-            <span>${endTime}</span>
-        </section>
-    </article>
+    <div class="mine_zilo">
+        <div class="mine_table cur">
+            <ul class="table_ul">
+                <li class="table_ulLi tLi_diff">
+                    卡号 <span>${no}</span>
+                </li>
+                <li class="table_ulLi">
+                    <span class="tLi_span">激活时间</span>
+                    <span>${activeTime}</span>
+                </li>
+                <li class="table_ulLi">
+                    <span class="tLi_span">剩余金豆</span>
+                    <span>${amount}</span>
+                </li>
+                <li class="table_ulLi">
+                    <span class="tLi_span">有效期</span>
+                    <span>${endTime}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
 </template>
 <template id="consume-template">
-    <li>
-        <p>${time}</p>
-        <p>${direction}</p>
-        <p><span>${amount}</span>金豆</p>
+    <li class="balance_zuli">
+        <p class="balance_leftsp">${timestamp}</p>
+        <p class="balance_center">${action}</p>
+        <p class="balance_rightip"><span>${money}</span>金豆</p>
     </li>
 </template>
-<template id="study-template"></template>
+<template id="study-template">
 
-<dialog>添加成功啦！<br>请到我的学习卡里~</dialog>
+</template>
+<template id="nickname-template">
+    <div class="wrap">
+        <div class="mine_zilo">
+            <ul class="mine_zUl">
+                <li class="mine_zuli">
+                    <span class="mine_leftsp">昵称</span>
+                    <input class="mine_rightip" type="text" id="nicknameval" value="${name}">
+                    <a class="chahao" href="JavaScript:;" id="nicehng"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+<template id="settings-template">
 
+</template>
+<template id="recharge-template">
+
+</template>
+<template id="selectCard-template">
+    <div>
+        <ul class="xuanze_zuli" data-id="${id}" data-amount="${amount}" data-subject="${subjectId}" data-img="${image}" data-no="${no}" style="cursor:hand">
+            <img class="xuanze_img1" src="${image}" alt="">
+            <div class="xuanze_leftdiv">
+                <span class="xuanze_leftsp" >${subjectId}</span>
+                <span class="xuanze_leftsp" >${no}</span>
+                <br>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" >${amount}</i>金豆</span>
+            </div>
+            <!--<img src="" id="${id}" src="" class="xuanze_img2"/>-->
+        </ul>
+    </div>
+</template>
+<template id="userCard-template">
+    <div>
+        <ul class="xuanze_zuli" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}" style="cursor:hand">
+            <img class="xuanze_img1" src="${image}" alt="">
+            <div class="xuanze_leftdiv">
+                <span class="xuanze_leftsp" >${name}</span>
+                <span class="xuanze_leftsp"></span>
+                <br>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" >${amount}</i>金豆</span>
+            </div>
+        </ul>
+    </div>
+</template>
+
+<!-- 引入js -->
 <script src="/jquery/jquery-3.1.1.min.js"></script>
+<!--<script type="text/javascript" src="/zepto/zepto.min.js"></script>-->
+<!--<script type="text/javascript" src="/zepto/touch.js"></script>-->
+<!--<script type="text/javascript" src="/zepto/selector.js"></script>-->
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    var user = null
 
+    var user = null;
+    var sessionId;
+    //var userId;
+    // var pan;
+    //var duan;
+    var array = [];
+    //var count =0;
+    var wechatUserId = null;
     var state = {
-        currentArticle: document.getElementById('user'),
+        //openId: null,
+        // duan: null,
+        pan: null,
+        switchTo: function (id) {
+            state.currentArticle.style.display = 'none'
+            state.currentArticle = document.getElementById(id)
+            history.pushState(null, null, '/user.html#' + id)
+            state.currentArticle.style.display = 'block'
+            state[id].init()
+        },
+        switchToFront: function (id) {
+            state.currentArticle.style.display = 'none'
+            state.currentArticle = document.getElementById(id)
+            state.currentArticle.style.display = 'block'
+            state[id].init()
+        },
+        currentArticle: document.getElementById('sign'),
         init: function () {
-            var userId = g.getUrlParameter('userid')
-            g.setCookie('userId', userId)
-
-            var switchTo = function(id) {
-                state.currentArticle.style.display = 'none'
-                state.currentArticle = document.getElementById(id)
-                state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/user.html#' + id)
-                state[id].init()
-            }
-
+            wechatUserId = g.getUrlParameter("wechatUserId");
+            sessionId = g.getUrlParameter("sessionId");
+            g.setCookie("sessionId",sessionId,"/api")
+//            alert("openId="+openId)
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
-                switchTo(id)
+                state.switchTo(id)
             })
+            if (wechatUserId != null) {
+                state.switchTo("sign")
+                history.pushState(null, null, '/user.html#sign');
+            } else if (sessionId != null) {
+                state.switchTo("user")
+                history.pushState(null, null, '/user.html#user');
+            }
+            //  state['sign'].init()
 
-            state['user'].init()
-            history.pushState(null, null, '/user.html#user')
-
-            window.addEventListener('hashchange', function(e) {
+            window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
-                switchTo(hash)
+                state.switchTo(hash)
+            }, false)
+        },
+        getSubjectNameById: function (subjects) {
+            var result = ''
+            if (subjects == 1) {
+                result = "语文"
+            }
+            if (subjects == 2) {
+                result = "数学"
+            }
+            if (subjects == 3) {
+                result = "英语"
+            }
+            return result
+        },
+        getSexNameById: function (sex) {
+            var result = 0
+            if (sex == 1) {
+                result = "男"
+            }
+            if (sex == 2) {
+                result = "女"
+            }
+            if (sex == "男") {
+                result = 1
+            }
+            if (sex == "女") {
+                result = 2
+            }
+
+            return result
+        },
+        rechargePage(cards,T){
+            document.getElementById("to").style.display="block"
+            document.getElementById("rechargepage").style.display="none"
+            $("#to").val(T)
+            document.getElementById("oneCard").innerHTML = ""
+            document.getElementById("account").innerHTML = ""
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].subjectId == 1 || cards[i].subjectId == "语文") {
+                    cards[i].image = "keBiao.png"
+                }
+                if (cards[i].subjectId == 2 || cards[i].subjectId == "数学") {
+                    cards[i].image = "mathBiao.png"
+                }
+                if(cards[i].subjectId == 1 || cards[i].subjectId == 2){
+                    cards[i].subjectId = state.getSubjectNameById(cards[i].subjectId)
+                }
+                if (cards[i].amount == 0) {
+                    cards[i].amount = "0"
+                }
+            }
+            if (T == "c") {
+                var ua = user.amount
+                if (ua == 0) {
+                    ua = "0"
+                }
+                var uc = {
+                    id: user.id,
+                    amount: ua,
+                    name: "账户",
+                    image: "yueBiao.png",
+                }
+                //selectCard userCard recharge-template
+                proc({
+                    containerId: 'account',
+                    data: uc,
+                    templateId: 'userCard-template'
+                })
+                proc({
+                    containerId: 'oneCard',
+                    data: cards,
+                    templateId: 'selectCard-template'
+                })
+            } else if (T == "z") {
+                document.getElementById("converted").innerHTML=""
+                proc({
+                    containerId: 'converted',
+                    data: cards,
+                    templateId: 'selectCard-template'
+                })
+            }
+            $('.xuanze_zuli').on('click', function (e) {
+                document.getElementById("to").style.display = "block"
+                var element = e.target
+                var id = element.dataset.id;
+                var amount = element.dataset.amount;
+                var no = element.dataset.no;
+                var subject = element.dataset.subject;
+                var name = element.dataset.name;
+                var img = element.dataset.img;
+                state.switchRecharge(id,amount,no,subject,name,img, $("#to").val())
             })
+
+        },
+        switchRecharge(id,amount,no,subject,name,img, T){
+            if (T == "z") {
+                document.getElementById("converted").innerHTML=""
+
+                document.getElementById("za").innerHTML=amount
+                document.getElementById("tishi").innerHTML=user.amount
+                document.getElementById("zn").innerHTML=no
+                document.getElementById("zs").innerHTML=subject
+                $("#cardid").val(id)
+                document.getElementById("image").src=img
+                document.getElementById("selectOneCard").style.display="block"
+            } else if (T == "c") {
+                if(id == user.id){
+                    document.getElementById("name").innerHTML=name
+                    document.getElementById("no").innerHTML=""
+                    document.getElementById("money").innerHTML=amount
+                    document.getElementById("src").src=img
+                    src
+                }else{
+                    document.getElementById("name").innerHTML=subject
+                    document.getElementById("no").innerHTML=no
+                    document.getElementById("money").innerHTML=amount
+                    document.getElementById("src").src=img
+                }
+                document.getElementById("to").style.display="none"
+                document.getElementById("rechargepage").style.display="block"
+            }
+        },
+        atom(sourceId, sourceType, object_Id, object_Type, count, money) {
+        var result;
+       if (count == null) {
+           var filter = { //转账transferFilter
+                sourceId: sourceId,
+                sourceType: sourceType,
+                objectId: object_Id,
+                objectType: object_Type,
+                money: money
+            }
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/api/transactions",
+            dataType: "json",
+            data: JSON.stringify(filter),
+            contentType: "application/json; charset=utf-8",
+            success: function (e) {
+                user.amount = user.amount - $("#convertedNumber").val()
+                user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
+                state.switchToFront('consumes')
+            },
+            error: function (e) {
+                result = e;
+                alert(JSON.stringify(e))
+                switch (JSON.stringify(e.status)) {
+                    case "408":
+                        alert("余额不足")
+                        break;
+                    case "200":
+                        user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
+                        state.switchToFront('consumes')
+                        break;
+                }
+            }
+        })
+        return result;
+    },
+        sign: {
+            init: function () {
+                document.getElementById("sign").style.display = "block"
+                var biaoji = 1;
+                var shortMessage = document.getElementById("shortMessage");
+                shortMessage.addEventListener('click', function (e) {
+                    document.getElementById("username").style.display = "none";
+                    document.getElementById("short").style.display = "block";
+                    biaoji = 0;
+                })
+                var pass = document.getElementById("pass");
+                pass.addEventListener('click', function (e) {
+                    document.getElementById("username").style.display = "block";
+                    document.getElementById("short").style.display = "none";
+                    biaoji = 1;
+                })
+
+                var hu = document.getElementById("huan");
+                hu.addEventListener('click', function (e) {
+                    state.sign.huan();
+                })
+                var deviceType;
+                var fapassword = document.getElementById('fapassword');
+                fapassword.addEventListener('click', function () {
+                    //count = 0;
+                    state.firstActiveCard.activeCode(0)
+                }, false);
+
+                var signSubmit = document.getElementById("signSubmit");
+                signSubmit.addEventListener('click', function (e) {
+                    var browser = {
+                        versions: (function () {
+                            var u = navigator.userAgent, app = navigator.appVersion;
+                            var yng =
+                            {//移动终端浏览器版本信息
+                                trident: u.indexOf('Trident') > -1, //IE内核
+                                presto: u.indexOf('Presto') > -1, //opera内核
+                                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                                android: u.indexOf('Android') > -1, //android终端
+                                iPhone: u.indexOf('iPhone') > -1, //是否为iPhone
+                                iPad: u.indexOf('iPad') > -1, //是否iPad
+                                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+                            };
+
+                            if (yng.mobile == true) {
+                                if (yng.ios == true) {
+                                    deviceType = "ios";
+                                }
+                                if (yng.android == true) {
+                                    deviceType = "android";
+                                }
+                                if (yng.iPhone == true) {
+                                    deviceType = "iPhone";
+                                }
+                                if (yng.iPad == true) {
+                                    deviceType = "iPad";
+                                }
+                            } else {
+                                if (yng.trident == true) {
+                                    deviceType = "IE内核";
+                                }
+                                if (yng.presto == true) {
+                                    deviceType = "opera内核";
+                                }
+                                if (yng.webKit == true) {
+                                    deviceType = "苹果/谷歌内核";
+                                }
+                                if (yng.gecko == true) {
+                                    deviceType = "火狐内核";
+                                }
+                            }
+                            return yng;
+                        })()
+                        // language: (navigator.browserLanguage || navigator.language).toLowerCase()
+                    }
+                    // alert(deviceType)
+                    // alert(JSON.stringify(deviceType))
+                    var loginInfo = {};
+                    var nub = $("#Number").val();
+                    var dnub = $("#duanNumber").val();
+
+                    if (biaoji == 1) {
+                        loginInfo = {
+                            info: nub,
+                            key: $("#Dense").val(),
+                            type: "telephone",
+                            deviceType: deviceType,
+                            deviceNo: nub,
+                            code: $("#Verification").val(),
+                            //openId: g.getUrlParameter('openId'),
+                            wechatUserId: wechatUserId,
+                        }
+                        var dense = $("#Dense").val();
+                        if (dense.length >= 6 && dense.length <= 16) {
+                            document.getElementById("errorpassword1").style.display = "none";
+                            document.getElementById("errorpassword1").innerHTML = ""
+                            pan = 0
+                        } else {
+                            document.getElementById("errorpassword1").style.display = "block";
+                            document.getElementById("errorpassword1").innerHTML = "请输入6-16位密码";
+                            pan = 1
+                        }
+
+                        /* var ber = $("#Number").val();
+                         if (ber.length != 11) {
+                         document.getElementById("errorNumber").style.display = "block";
+                         document.getElementById("errorNumber").innerHTML = "请输入正确的手机格式";
+                         duan = 1
+                         } else {
+                         document.getElementById("errorNumber").style.display = "none";
+                         document.getElementById("errorNumber").innerHTML = ""
+                         duan = 0
+                         }*/
+                        if (pan == 0) {
+                            send(loginInfo)
+                        }
+                    } else {
+                        loginInfo = {
+                            info: dnub,
+                            key: $("#duanDense").val(),
+                            type: "validationCode",
+                            deviceType: deviceType,
+                            deviceNo: dnub,
+                            code: $("#Verification").val(),
+                            // openId: g.getUrlParameter('openId'),
+                            wechatUserId: wechatUserId,
+                        }
+                        send(loginInfo)
+                    }
+
+
+                    function send(loginInfo) {
+                        $.ajax({
+                            type: "PUT",
+                            url: "/api/sessions",
+                            data: JSON.stringify(loginInfo),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (a) {
+                                state.switchTo('user')
+                            },
+                            error: function (e) {
+                                switch (e.status) {
+                                    case 406:
+                                        document.getElementById("errorfamima").innerHTML = "手机号或密码错误，请重新输入！"
+                                        break;
+                                    case 405:
+                                        document.getElementById("errorfamima").innerHTML = "密码过期，请重新输入！"
+                                        break;
+                                    case 404:
+                                        document.getElementById("zhanghaoerror").innerHTML = "账号或密码错误，请重新输入！"
+                                        break;
+                                    case 410:
+                                        //超过五次了
+                                        state.sign.huan();
+                                        document.getElementById("tu").style.display = "block"
+                                        document.getElementById("zhanghaoerror").innerHTML = "错误次数超过五次，请输入验证码！"
+                                        break;
+                                    case 412:
+                                        document.getElementById("zhanghaoerror").innerHTML = "手机号未激活 ！"
+                                        break;
+                                    case 407:
+                                        document.getElementById("zhanghaoerror").innerHTML = "验证码错误 ！"
+                                        break;
+                                }
+                            }
+                        })
+                    }
+                })
+            },
+            huan: function () {
+                $.ajax({
+                    type: "get",
+                    url: "api/medias/validation-picture",
+                    dataType: "json",
+                    success: function (e) {
+                        alert(e)
+                        document.getElementById("tuxing").src = "e"
+                    }
+                })
+            }
+
         },
         user: {
-            init: function() {
+            init: function () {
                 if (user == null) {
                     $.ajax({
                         type: 'get',
                         url: '/api/users/self',
                         dataType: 'json',
                         success: function (u) {
-                            user = u
-                            proc({
-                                templateId: state.user.template,
-                                data: user,
-                                container: state.user.container
-                            })
+                            if (u.birthday != null) {
+                                u.birthday = u.birthday.substr(0, 10)
+                            }
+                            if (u.sex != null) {
+                                u.sex = state.getSexNameById(u.sex);
+                            }
+                            if (u.name == null && u.school == null && u.classname == null) {
+                                state.switchTo('info')
+                            } else {
+                                user = u;
+                                proc({
+                                    containerId: 'user',
+                                    data: user,
+                                    templateId: 'user-template'
+                                })
+                            }
+                            if(user.password == null){
+                                state.switchToFront('')
+                            }
+
                         }
                     })
+
+                    var z = document.getElementById("z")
+                    z.addEventListener('click',function (e) {
+                        state.rechargePage(user.cards, 'c')
+                    })
+                    var clickchinese = document.getElementById("clickchinese");
+                    clickchinese.addEventListener('click', function (e) {
+                        if (user.cards.chinese.count > 0) {
+                            nmc.style.display = "none"
+                            mc.style.display = "none"
+                            cc.style.display = "block"
+                        } else {
+                            nmc.style.display = "none"
+                            mc.style.display = "none"
+                            noc.style.display = "block"
+                        }
+                    })
+
+                    var clickmath = document.getElementById("clickmath");
+                    clickmath.addEventListener('click', function (e) {
+                        if (user.cards.mathematics.count > 0) {
+                            cc.style.display = "none"
+                            noc.style.display = "none"
+                            mc.style.display = "block"
+                        } else {
+                            cc.style.display = "none"
+                            noc.style.display = "none"
+                            nmc.style.display = "block"
+                        }
+                    })
+                    var noc = document.getElementById("nochinese")
+                    var cc = document.getElementById("chinesecards")
+                    var nmc = document.getElementById("nomathematics")
+                    var mc = document.getElementById("mathecards")
+
+
+
+                    var addcard = document.getElementById("addcard");
+                    addcard.addEventListener('click', function (e) {
+                        if (user.cards == null) {
+                            state.switchToFront('firstActiveCard')
+                        } else {
+                            state.switchToFront('activeCard')
+                        }
+                    })
+
+                    var createCard = document.getElementById("createCard");
+                    createCard.addEventListener('click', function (e) {
+                        var data = {
+                            cardNo: $("#cardNumber").val(),
+                            password: $("#cardPassword").val(),
+                        }
+                        if ($("#cardNumber").val().length != null && $("#cardPassword").val().length != null) {
+                            $.ajax({
+                                type: "post",
+                                url: "/api/users/simplify-card",
+                                data: JSON.stringify(data),
+                                contentType: 'application/json; charset=utf-8',
+                                dataType: "json",
+                                success: function (e) {
+                                    $("#cardNumber").val("")
+                                    $("#cardPassword").val("")
+                                    user.cards.push(e)
+                                    $('.tan').show();
+                                    $('.window1').eq(0).show();
+
+                                },
+                                error: function (e) {
+                                    var error = document.getElementById("createCardError")
+                                    switch (e.status) {
+                                        case 412:
+                                            error.innerHTML = "不可以重复激活";
+                                            break;
+                                        case 404:
+                                            error.innerHTML = "用户名或密码错误";
+                                            break;
+                                    }
+                                }
+                            })
+                        } else {
+                            alert("不可以是空")
+                        }
+                    })
+                    var ok = document.getElementById("ok")
+                    ok.addEventListener('click', function (e) {
+                        $("#cardNumber").val("")
+                        $("#cardPassword").val("")
+                        $('.tan').hide();
+                        $('.window1').eq(0).hide();
+                        document.getElementById("createCardError").innerHTML=""
+                        state.switchToFront('cards')
+                    })
+                    var close = document.getElementById("close")
+                    close.addEventListener('click', function (e) {
+                        $('.tan').hide();
+                        $('.window1').eq(0).hide();
+                        $("#cardNumber").val("")
+                        $("#cardPassword").val("")
+                        document.getElementById("createCardError").innerHTML=""
+                    })
+                    var chongzhi = document.getElementById("chongzhi");
+                    chongzhi.addEventListener('click', function (e) {
+                        state.switchTo('selectCard')
+                    })
+                    var zhichong = document.getElementById("zhichong");
+                    zhichong.addEventListener('click', function (e) {
+                        state.switchTo('selectCard')
+                    })
                 } else {
+                    document.getElementById("user").innerHTML = ""
                     proc({
-                        templateId: state.user.template,
+                        containerId: 'user',
                         data: user,
-                        container: state.user.container
+                        templateId: 'user-template'
                     })
                 }
             },
-            container: document.getElementById(''),
-            template: getTemplate('')
+
         },
         cards: {
-            init: function() {
-                if (!user.cards) {
+            isCards: false,
+            init: function () {
+                if (!state.cards.isCards) {
+                    if (!user.cards) {
+                        $.ajax({
+                            type: 'get',
+                            url: '/api/users/self/cards',
+                            dataType: 'json',
+                            success: function (cs) {
+                                user.cards = cs
+
+                                bang(cs)
+
+                                proc({
+                                    containerId: 'chinesecards',
+                                    data: user.cards.chinese,
+                                    templateId: 'card-template'
+                                })
+
+                                proc({
+                                    containerId: 'mathecards',
+                                    data: user.cards.mathematics,
+                                    templateId: 'card-template'
+                                })
+                                switchcard()
+                            }
+                        })
+
+                    }
+                } else {
+                    bang(user.cards)
+                    document.getElementById("chinesecards").innerHTML = ""
+                    document.getElementById("mathecards").innerHTML = ""
+                    proc({
+                        containerId: 'chinesecards',
+                        data: user.cards.chinese,
+                        templateId: 'card-template'
+                    })
+
+                    proc({
+                        containerId: 'mathecards',
+                        data: user.cards.mathematics,
+                        templateId: 'card-template'
+                    })
+                    switchcard()
+                }
+                state.cards.isCards = true
+                function switchcard() {
+                    var noc = document.getElementById("nochinese")
+                    var cc = document.getElementById("chinesecards")
+                    var nmc = document.getElementById("nomathematics")
+                    var mc = document.getElementById("mathecards")
+                    if (user.cards.chinese.count > 0 && user.cards.mathematics.count > 0) {
+                        nmc.style.display = "none"
+                        mc.style.display = "none"
+                        cc.style.display = "block"
+                    } else if (user.cards.chinese.count > 0 && user.cards.mathematics.count == 0) {
+                        nmc.style.display = "none"
+                        mc.style.display = "none"
+                        cc.style.display = "block"
+                    } else if (user.cards.mathematics.count > 0 && user.cards.chinese.count == 0) {
+                        cc.style.display = "none"
+                        noc.style.display = "none"
+                        mc.style.display = "block"
+                    } else if (user.cards.mathematics.count == 0 && user.cards.chinese.count == 0) {
+                        nmc.style.display = "none"
+                        mc.style.display = "none"
+                        noc.style.display = "block"
+                    }
+                }
+                function bang(cs) {
+                    user.cards.chinese = []
+                    user.cards.mathematics = []
+                    user.cards.insufficient = []
+                    for (var i = 0; i < cs.length; ++i) {
+                        cs[i].endTime = cs[i].endTime.slice(0, 10)
+                        cs[i].activeTime = cs[i].activeTime.slice(0, 10)
+                        if (cs[i].subjectId == 1 || cs[i].subjectId == "语文") {
+                            user.cards.chinese.push(cs[i])
+                        } else if (cs[i].subjectId == 2 || cs[i].subjectId == "数学") {
+                            user.cards.mathematics.push(cs[i])
+                        } else if (cs[i].amount < 150) {
+                            user.cards.insufficient.push(cs[i])
+                        }
+                    }
+                    if (cs) {
+                        user.cards.count = cs.length
+                    } else {
+                        user.cards = []
+                        user.cards.count = 0
+                    }
+                    if (user.cards.insufficient) {
+                        user.cards.insufficient.count = user.cards.insufficient.length
+                    } else {
+                        user.cards.insufficient = []
+                        user.cards.insufficient.count = 0
+                    }
+                    if (user.cards.chinese) {
+                        user.cards.chinese.count = user.cards.chinese.length
+                    }
+                    else {
+                        user.cards.chinese = []
+                        user.cards.chinese.count = 0
+                    }
+                    if (user.cards.mathematics) {
+                        user.cards.mathematics.count = user.cards.mathematics.length
+                    } else {
+                        user.cards.mathematics = []
+                        user.cards.mathematics.count = 0
+                    }
+                    document.getElementById("total").innerHTML = user.cards.count
+                    document.getElementById("insufficient").innerHTML = user.cards.insufficient.count
+                    document.getElementById("chinese").innerHTML = user.cards.chinese.count
+                    document.getElementById("mathematics").innerHTML = user.cards.mathematics.count
+
+                }
+
+
+            }
+        },
+
+        info: {
+            isInit: false,
+            init: function () {
+                if (!state.info.isInit) {
+                    //document.getElementById("info").innerHTML=""
                     $.ajax({
                         type: 'get',
-                        url: '/api/users/self/cards',
+                        url: '/api/users/self',
                         dataType: 'json',
-                        success: function (cs) {
-                            user.cards = cs
+                        success: function (u) {
+                            if (u.birthday != null) {
+                                u.birthday = u.birthday.substr(0, 10)
+                            }
+                            if (u.sex != null) {
+                                u.sex = state.getSexNameById(u.sex);
+                            }
+                            proc({
+                                containerId: 'info',
+                                data: u,
+                                templateId: 'info-template'
+                            })
+                            var saveInfo1 = document.getElementById('save_info')
+                            saveInfo1.addEventListener('click', function (e) {
+                                saveInfo()
+                            })
+                            state.info.isInit = true
+
                         }
                     })
-                } else {
-                    proc({
-                        templateId: 'card-template',
+
+                }
+
+
+                function saveInfo() {
+                    var se = $("#info_sex").val();
+                    var sex = state.getSexNameById(se);
+                    var b = $("#date").val();
+                    b += "T00:00:00+08:00";
+                    var data = {
+                        name: $("#info_name").val(),
+                        sex: sex,
+                        telephone: $("#info_telephone").val(),
+                        location: $("#info_location").val(),
+                        birthday: b,
+                        school: $("#info_school").val(),
+                        classname: $("#info_class").val(),
+                    }
+//alert(JSON.stringify(data))
+                    $.ajax({
+                        type: "put",
+                        url: "/api/users/self",
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (e) {
+                            //alert("成功")
+//                            switchToFront
+                            state.switchToFront('user');
+                        },
+                        error: function (e) {
+                            alert('修改用户信息失败，请刷新以重试')
+                        }
                     })
                 }
             }
         },
-        info: {
-            init: function() {}
+        selectCard: {
+            init: function () {
+                if (!state.cards.isCards) {
+                    if (!user.cards) {
+                        $.ajax({
+                            type: 'get',
+                            url: '/api/users/self/cards',
+                            dataType: 'json',
+                            success: function (cs) {
+                                user.cards = cs
+                                state.rechargePage(cs, 'c')
+                            }
+                        })
+
+                    }
+                } else {
+                    state.rechargePage(user.cards, 'c')
+                }
+                state.cards.isCards = true
+            },
+
         },
-        logs: {
-            init: function() {}
+        gold: {
+            init: function () {
+                document.getElementById("")
+            },
         },
         consumes: {
-            init: function() {}
+            init: function () {
+                document.getElementById("yu").innerHTML=user.amount
+                if (!state.consumes.isCards) {
+                    if (!user.consumes) {
+                        $.ajax({
+                            type:"get",
+                            url:"/api/transactions/self",
+                            dataType:"json",
+                            success:function (e) {
+                                for (var i = 0; i < e.length; ++i) {
+                                    if(e[i].count == 0 && e[i].sourceId != null){
+                                        e[i].action = "转账"
+                                    }else if(e[i].count == 0 && e[i].sourceId == null){
+                                        e[i].action = "充值"
+                                    }
+                                    e[i].timestamp = e[i].timestamp.substr(0,10)
+                                }
+                                user.consumes = e
+                                proc({
+                                    containerId: 'balance',
+                                    data: user.consumes,
+                                    templateId: 'consume-template'
+                                })
+                                var zhuanchu = document.getElementById("zhuanchu");
+                                zhuanchu.addEventListener('click', function (e) {
+                                    state.switchTo("recharge")
+                                })
+                            }
+                        })
+                    }
+                }else{
+                    document.getElementById("balance").innerHTML = ""
+                    proc({
+                        containerId: 'balance',
+                        data: user.consumes,
+                        templateId: 'consume-template'
+                    })
+                }
+                state.consumes.isCards = true
+
+            }
+        },
+        recharge: {
+            init: function () {
+                if (!state.cards.isCards) {
+                    if (!user.cards) {
+                        $.ajax({
+                            type: 'get',
+                            url: '/api/users/self/cards',
+                            dataType: 'json',
+                            success: function (cs) {
+                                user.cards = cs
+                                state.rechargePage(cs, 'z')
+                            }
+                        })
+                        var submitTransfer = document.getElementById("submitTransfer")
+                        submitTransfer.addEventListener('click', function (e) {
+                            state.atom(user.id,"user",$("#cardid").val(),"card",null,$("#convertedNumber").val())
+                        })
+                    }
+                } else {
+                    state.rechargePage(user.cards, 'z')
+                }
+                state.cards.isCards = true
+            }
+        },
+        head: {
+            init: function () {
+                var url = window.location.href;
+                url = url.replace(/[/]/g, ',')
+                gettick();
+                $.ajax({
+                    type: "get",
+                    url: "/api/public-account/config/" + url,
+                    dataType: "json",
+                    success: function (e) {
+                        alert(JSON.stringify(e));
+                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                    }, error: function (e) {
+                        alert(JSON.stringify(e));
+                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                    }
+                })
+                function wechat(appId, timestamp, nonceStr, signature) {
+                    wx.config({
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: appId, // 必填，公众号的唯一标识
+                        timestamp: timestamp, // 必填，生成签名的时间戳
+                        nonceStr: nonceStr, // 必填，生成签名的随机串
+                        signature: signature,// 必填，签名，见附录1
+                        jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    });
+                    wx.error(function (res) {
+                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+
+                        alert("服务器繁忙，请刷新！")
+                    });
+                    wx.ready(function () {
+                        wx.chooseImage({
+                            count: 1,
+                            needResult: 1,
+                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                            success: function (res) {
+                                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                //上传图片接口
+                                wx.uploadImage({
+                                    localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                                    success: function (res) {
+                                        var mediaId = res.serverId; // 返回图片的服务器端ID
+                                        //alert("返回图片的服务器端ID=="+mediaId)
+                                        libai(mediaId)
+                                    }
+                                });
+                            }
+                        });
+                    })
+                }
+
+                function gettick() {
+                    $.ajax({
+                        type: "get",
+                        url: "/api/public-account/ticket/",
+                        dataType: "json",
+                        success: function (e) {
+                            //alert(JSON.stringify(e))
+                        },
+                        error: function (e) {
+                            //alert(JSON.stringify(e))
+                        }
+                    })
+                }
+
+                /*var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
+                 libai(sdakfjlasf);
+                 function libai(mediaId) {
+                 alert("李白来了" + mediaId)
+                 $.ajax({
+                 type: "GET",
+                 url: "/api/public-account/weChat/Head/" + mediaId,
+                 dataType: "json",
+                 success: function (e) {
+                 alert("成功" + JSON.stringify(e))
+                 user.head=e.head;
+                 state.user.isCards = false
+                 history.back();
+                 },
+                 error: function (e) {
+                 alert(JSON.stringify(e))
+                 }
+                 })
+                 }*/
+            }
         },
         study: {
-            init: function() {}
+            init: function () {
+            }
         },
         score: {
-            init: function() {}
+            init: function () {
+            }
         },
         changePassword: {
-            init: function() {}
+            init: function () {
+            }
         },
         activeCard: {
-            init: function() {}
+            init: function () {
+            }
         },
         firstActiveCard: {
-            init: function() {}
+            // var timeoutId;
+            init: function () {
+                var timeoutId;
+                var cardNo = document.getElementById("cardNo");
+                cardNo.addEventListener('keyup', function (e) {
+                    e.target.value = e.target.value.replace(/\s/g, '').replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, "$1 ");
+                }, false);
+                var ajax = function (method, url, headers, data, postProcess) {
+                    //alert('enter');
+                    var xhr = new XMLHttpRequest();
+                    //alert('new xhr');
+                    xhr.onreadystatechange = function () {
+                        //alert('enter callback');
+                        if (xhr.readyState === 4) {
+                            //alert('xhr state is 4');
+                            var result = {meta: {code: xhr.status, text: xhr.statusText}, data: null};
+                            if (xhr.responseText[0] == '{' || xhr.responseText[0] == '[') {
+                                //alert('xhr success');
+                                result.data = JSON.parse(xhr.responseText);
+                            } else {
+                                //alert('xhr failure');
+                                result.data = xhr.responseText;
+                            }
+                            postProcess(result);
+                        }
+                    }
+                    //alert('set callback');
+                    xhr.open(method, url, false);
+                    //alert('open');
+                    for (var i = 0, c = headers.length; i < c; ++i) {
+                        xhr.setRequestHeader(headers[i].name, headers[i].value);
+                    }
+                    //alert('set headers');
+                    var sendContent = null;
+                    if (data != null) {
+                        sendContent = JSON.stringify(data);
+                    }
+                    xhr.send(sendContent);
+                    //alert('send content');
+                }
+
+                var o = 0
+
+                var save = function (e) {
+                    if (o == 1) {
+                        var tips = document.getElementById("tips");
+                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                        return
+                    }
+                    if (document.getElementById('cardNo').value == "" || document.getElementById('password').value == "" || document.getElementById('phoneNumber').value == "" || document.getElementById('validCode').value == "") {
+                        alert("输入框不能为空")
+                    } else {
+                        var data = {};
+                        var code = document.getElementById('cardNo').value
+                        data.cardNo = code.replace(/\s/ig, '');
+                        data.password = document.getElementById('password').value;
+                        data.phoneNumber = document.getElementById('phoneNumber').value;
+                        data.validCode = document.getElementById('validCode').value;
+                        data.wechatUserId = wechatUserId;
+                        var url = 'api/users/cards'
+                        /* if (userId) {
+                         url = 'api/users/' + userId + '/cards'
+                         }*/
+                        ajax('POST', url, [
+                            {name: 'Content-Type', value: 'application/json'},
+                            {name: 'Accept', value: 'application/json'}
+                        ], data, function (r) {
+                            if (r.meta.code < 400) {
+                                if (sessionId != null) {
+                                    alert("激活成功")
+                                    user.cards.push(r.data)
+                                    state.switchToFront('cards')
+                                } else {
+                                    r.data.subject = state.getSubjectNameById(r.data.subject);
+
+                                    array.push(r.data);
+                                    //alert(JSON.stringify(array))
+                                    //   if(array[0].no.replace())
+                                    state.switchToFront('gold')
+                                    diao();
+                                    // state.cards.isCards = false
+                                }
+                            } else {
+                                //alert('save error');
+                                var tips = document.getElementById("tips");
+                                //alert('get tips');
+                                switch (r.meta.code) {
+                                    case 500:
+                                        tips.innerHTML = "你的手机号跟别人重复啦";
+                                        break;
+                                    case 412:
+                                        tips.innerHTML = "请返回的我的首页";
+                                        break;
+                                    case 520:
+                                        tips.innerHTML = "后台错误520";
+                                        break;
+                                    case 404:
+                                        tips.innerHTML = "卡号或密码错误";
+                                        break;
+                                    case 405:
+                                        tips.innerHTML = "不可以重复激活,请填写新的卡号并激活";
+                                        o = 1;
+                                        break;
+                                    case 401:
+                                        tips.innerHTML = "手机号或验证码错误";
+                                        break;
+                                    case 410:
+                                        tips.innerHTML = "验证码超时";
+                                        break;
+                                    case 200:
+                                        r.data.subject = state.getSubjectNameById(e.subject)
+                                        user.cards.push(r.data);
+                                        alert(user.cards)
+                                        state.cards.isCards = false
+                                        break;
+                                }
+                            }
+                        })
+                        // document.getElementById("gold").style.display="block";
+                    }
+                }
+                //var timeoutId;
+                var enableActive = function (e) {
+                    clearInterval(timeoutId);
+                    var activeCodeButton = document.getElementById('activeCode');
+                    activeCodeButton.disabled = false
+                    activeCodeButton.value = '发送验证码'
+                }
+
+                var activeCodeButton = document.getElementById('activeCode');
+                activeCodeButton.addEventListener('click', function () {
+                    // count = 1;
+                    state.firstActiveCard.activeCode(1)
+                    //state.firstActiveCard.activeCode
+                }, false);
+
+                var saveButton = document.getElementById('save');
+                saveButton.addEventListener('click', save, false);
+
+                var validCode = document.getElementById('validCode')
+
+                validCode.addEventListener('change', enableActive, false)
+
+                var phoneNumber = document.getElementById('phoneNumber')
+                phoneNumber.addEventListener('change', enableActive, false)
+
+                var cardNo = document.getElementById('cardNo')
+                cardNo.addEventListener('change', function (e) {
+                    o = 0
+                }, false)
+            },
+
+            activeCode: function (e) {
+                var timeoutId;
+                var an;
+                var error;
+                //var asfdf = "phoneNumber";
+                if (e == 1) {
+                    var phoneNumber = document.getElementById("phoneNumber").value
+                    an = "activeCode";
+                    error = "tips";
+                } else {
+                    var phoneNumber = document.getElementById("duanNumber").value
+                    an = "fapassword";
+                    error = "errorfamima";
+                }
+                //e = document.getElementById("activeCode")
+                if (phoneNumber != "") {
+                    $.ajax({
+                        type: "get",
+                        url: "/api/users/telephones/" + phoneNumber + "/code",
+                        dataType: "json",
+                        error: function (r) {
+                            var tips = document.getElementById(error);
+                            //alert(JSON.stringify(r))
+                            if (r.status < 400) {
+                                tips.innerHTML = '短信已发送至手机，3分钟内有效'
+                            } else {
+                                tips.innerHTML = '发送失败，请重新获取验证码'
+                            }
+                            var timeoutCount = 180;
+                            var proc = function () {
+                                document.getElementById(an).value = ' (' + timeoutCount + ')  秒后\n重新发送';
+                                --timeoutCount;
+                                document.getElementById(an).disabled = true
+                                if (timeoutCount <= 0) {
+                                    document.getElementById(an).value = ' 重新发送 ';
+                                    clearInterval(timeoutId);
+                                    document.getElementById(an).disabled = false
+                                }
+                            }
+                            timeoutId = setInterval(proc, 1000);
+                        }
+                    })
+                    /*ajax('GET', '/api/users/telephones/' + phoneNumber + '/code', [
+                     {name: 'Accept', value: 'application/json'}
+                     ], null, function (r) {
+                     var tips = document.getElementById("tips")
+                     if (r.meta.code < 400) {
+                     tips.innerHTML = '发送成功，请注意查收'
+                     } else {
+                     tips.innerHTML = '发送失败，请重新获取验证码'
+                     }
+                     })*/
+
+
+                } else {
+                    alert('手机号不能为空')
+                }
+            }
+
         },
         login: {
-            init: function() {}
+            init: function () {
+            }
         },
         phoneLogin: {
-            init: function() {}
+            init: function () {
+            }
         },
         settings: {
-            init: function() {}
+            init: function () {
+                var i;
+                var j;
+                var x;
+                var p1 = document.getElementById("newpwd1");
+                p1.addEventListener('blur', function () {
+                    var pwd1 = $("#newpwd1").val();
+                    if (pwd1.length >= 6 && pwd1.length <= 16) {
+                        document.getElementById("error").innerHTML = ""
+                        j = 1;
+                    } else {
+                        document.getElementById("error").innerHTML = "请输入6-16位密码"
+                        j = 0;
+                    }
+                })
+                var p2 = document.getElementById("newpwd2");
+                p2.addEventListener('blur', function () {
+                    var pwd1 = $("#newpwd1").val();
+                    var pwd2 = $("#newpwd2").val();
+                    if (pwd1 != pwd2) {
+                        document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
+                        i = 0;
+                    } else {
+                        document.getElementById("error").innerHTML = ""
+                        i = 1;
+                    }
+                })
+                var p3 = document.getElementById("oldpwd");
+                p3.addEventListener('blur', function () {
+                    var pwd3 = $("#oldpwd").val();
+                    if (pwd3.length >= 6 && pwd3.length <= 16) {
+                        document.getElementById("error").innerHTML = ""
+                        x = 1;
+                    } else {
+                        document.getElementById("error").innerHTML = "请输入6-16位密码"
+                        x = 0;
+                    }
+                })
+
+                /*function validatePWD1() {
+                 var pwd1 = $("#newpwd1").val();
+                 if (pwd1.length >= 6 && pwd1.length <= 16) {
+                 document.getElementById("error").innerHTML = ""
+                 j = 1;
+                 } else {
+                 document.getElementById("error").innerHTML = "请输入6-16位密码"
+                 j = 0;
+                 }
+                 }*/
+
+                /* function validatePWD3(id, error) {
+                 var pwd3 = $("#oldpwd").val();
+                 if (pwd3.length >= 6 && pwd3.length <= 16) {
+                 document.getElementById("error").innerHTML = ""
+                 x = 1;
+                 } else {
+                 document.getElementById("error").innerHTML = "请输入6-16位密码"
+                 x = 0;
+                 }
+                 }
+                 */
+                /*function validatePWD2() {
+                 var pwd1 = $("#newpwd1").val();
+                 var pwd2 = $("#newpwd2").val();
+                 if (pwd1 != pwd2) {
+                 document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
+                 i = 0;
+                 } else {
+                 document.getElementById("error").innerHTML = ""
+                 i = 1;
+                 }
+                 }*/
+                if (user.password == null) {
+                    j = 1
+                    x = 1
+                } else {
+                    document.getElementById("yuan").style.display = "block"
+                    j = 0
+                    x = 0
+                }
+                var pwdSave = document.getElementById("pwd_save");
+                var quxiao = document.getElementById("quxiao");
+                quxiao.addEventListener('click', function () {
+                    history.back();
+                })
+                pwdSave.addEventListener('click', function () {
+                    if (i == 1 && j == 1 && x == 1) {
+                        var old = $("#oldpwd").val();
+                        if (old == "") {
+                            old = null
+                        }
+                        var data = {
+                            oldpassword: old,
+                            yearpassword: $("#newpwd2").val(),
+                        }
+                        $.ajax({
+                            type: "put",
+                            url: "/api/users/updatePassword",
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (a) {
+                                document.getElementById("error").innerHTML = "修改密码成功"
+                                a.data = user
+                                j = 0
+                                x = 0
+                                state.switchToFront('user')
+                                state.switchTo('settings')
+                            },
+                            error: function (a) {
+                                //switch a.struts
+                                switch (a.status) {
+                                    case 404:
+                                        document.getElementById("error").innerHTML = "原密码有误，请重新输入！"
+                                        break;
+                                    case 405:
+                                        document.getElementById("error").innerHTML = "新密码不符合要求，请重新输入！"
+                                        break;
+                                }
+                            }
+                        })
+                    }
+                }, false);
+            }
         },
         help: {
-            init: function() {}
+            init: function () {
+            }
+        },
+        nickname: {
+            init: function () {
+                // document.getElementById("nicknameval").innerHTML=user.name
+                document.getElementById("nickname").innerHTML = ""
+                proc({
+                    containerId: 'nickname',
+                    data: user,
+                    templateId: 'nickname-template'
+                })
+
+
+                $("#nicehng").on('click', function () {
+                    $("#nicknameval").val("")
+                })
+                $("#nicknameval").blur(function () {
+                    var data = {
+                        name: $("#nicknameval").val()
+                    }
+                    alert("提交")
+                    alert(JSON.stringify(data))
+                    $.ajax({
+                        type: "put",
+                        url: "/api/users/self/",
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: "json",
+                        success: function (e) {
+                            alert("成功")
+                            user = e
+                            state.switchToFront('user')
+                        }
+                    })
+                });
+                //或$("p").blur(fn)
+            }
         }
     }
 
     state.init()
+
+
 </script>
 </body>
 </html>

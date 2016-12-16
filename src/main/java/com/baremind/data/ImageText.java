@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "image_texts")
-public class ImageText {
+public class ImageText implements com.baremind.data.Entity {
     @Id
     @Column(name = "id")
     private Long id;

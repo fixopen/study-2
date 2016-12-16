@@ -6,8 +6,8 @@ import com.baremind.data.Session;
 import com.baremind.data.User;
 import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -17,7 +17,10 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 //import javax.websocket.Endpoint;
 
@@ -26,7 +29,7 @@ import java.util.*;
  */
 @Path("class-rooms")
 public class ClassRooms/* extends Endpoint*/ {
-    private static Long classRoomId = 0l;
+    private static Long classRoomId = 0L;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -47,7 +50,7 @@ public class ClassRooms/* extends Endpoint*/ {
         user.setUpdateTime(now);
         user.setIsAdministrator(false);
         user.setSite("http://www.xiaoyuzhishi.com");
-        user.setAmount(-1.0f);
+        user.setAmount(-1l);
         JPAEntry.genericPost(user);
 
         String nowString = now.toString();
@@ -79,18 +82,18 @@ public class ClassRooms/* extends Endpoint*/ {
     @Path("messages")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postMessage(@CookieParam("userId") String userId, Comment comment) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
+    public Response postMessage(@CookieParam("sessionId") String sessionId, Comment comment) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
             comment.setId(IdGenerator.getNewId());
-            comment.setUserId(JPAEntry.getLoginId(userId));
+            comment.setUserId(JPAEntry.getLoginUser(sessionId).getId());
             comment.setObjectType("class-room");
             comment.setObjectId(classRoomId);
             Date now = new Date();
             comment.setCreateTime(now);
             comment.setUpdateTime(now);
             JPAEntry.genericPost(comment);
-            result = Response.ok(comment).build();
+            result = Impl.finalResult(comment, null);
         }
         return result;
     }
@@ -98,22 +101,13 @@ public class ClassRooms/* extends Endpoint*/ {
     @GET
     @Path("messages") ///since/{timestamp}
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postMessage(@CookieParam("userId") String userId) { //, @PathParam("timestamp") Date timestamp
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = new HashMap<>();
-            filterObject.put("objectType", "class-room");
-            filterObject.put("objectId", classRoomId);
-            //filterObject.put("createTIme", timestamp);
-            Map<String, String> orders = new HashMap<>();
-            orders.put("createTime", "ASC");
-            List<Comment> comments = JPAEntry.getList(Comment.class, filterObject, orders);
-            if (!comments.isEmpty()) {
-                //SELECT name FROM users WHERE id IN (SELECT DISTINCT user_id FROM comments)
-                result = Response.ok(new Gson().toJson(comments)).build();
-            }
-        }
-        return result;
+    public Response getMessage(@CookieParam("sessionId") String sessionId) { //, @PathParam("timestamp") Date timestamp
+        Map<String, Object> filterObject = new HashMap<>();
+        filterObject.put("objectType", "class-room");
+        filterObject.put("objectId", classRoomId);
+        //filterObject.put("createTIme", timestamp);
+        Map<String, String> orders = new HashMap<>();
+        orders.put("createTime", "ASC");
+        return Impl.get(sessionId, filterObject, orders, Comment.class, null, null);
     }
 }

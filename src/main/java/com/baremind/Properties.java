@@ -1,19 +1,60 @@
 package com.baremind;
 
 import com.baremind.data.Property;
-import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
+import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
-import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
 
 @Path("properties")
 public class Properties {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        return Impl.get(sessionId, filter, null, Property.class, null, null);
+    }
+
+    @GET //根据id查询
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.getById(sessionId, id, Property.class, null);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@CookieParam("sessionId") String sessionId, Property entity) {
+        return Impl.create(sessionId, entity, null, null);
+    }
+
+    @PUT //根据id修改
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id, Property newData) {
+        return Impl.updateById(sessionId, id, newData, Property.class, (exist, property) -> {
+            String name = property.getName();
+            if (name != null) {
+                exist.setName(name);
+            }
+
+            String value = property.getValue();
+            if (value != null) {
+                exist.setValue(value);
+            }
+        }, null);
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        return Impl.deleteById(sessionId, id, Property.class);
+    }
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,50 +68,7 @@ public class Properties {
         return Response.ok().build();
     }
 
-    @POST //添
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createProperty(@CookieParam("userId") String userId, Property property) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            property.setId(IdGenerator.getNewId());
-            JPAEntry.genericPost(property);
-            result = Response.ok(property).build();
-        }
-        return result;
-    }
-
-    @GET //根据条件查询
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getProperties(@CookieParam("userId") String userId, @QueryParam("filter") @DefaultValue("") String filter) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Map<String, Object> filterObject = CharacterEncodingFilter.getFilters(filter);
-            List<Property> properties = JPAEntry.getList(Property.class, filterObject);
-            if (!properties.isEmpty()) {
-                result = Response.ok(new Gson().toJson(properties)).build();
-            }
-        }
-        return result;
-    }
-
-    @GET //根据id查询
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getPropertyById(@CookieParam("userId") String userId, @PathParam("id") Long id) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Property property = JPAEntry.getObject(Property.class, "id", id);
-            if (property != null) {
-                result = Response.ok(new Gson().toJson(property)).build();
-            }
-        }
-        return result;
-    }
-
-   public static String getPropertyValue(String name) {
+    static String getProperty(String name) {
         String result = null;
         Property property = JPAEntry.getObject(Property.class, "name", name);
         if (property != null) {
@@ -79,7 +77,7 @@ public class Properties {
         return result;
     }
 
-    public static void setProperty(String name, String value) {
+    static void setProperty(String name, String value) {
         Property property = JPAEntry.getObject(Property.class, "name", name);
         if (property != null) {
             property.setValue(value);
@@ -91,32 +89,5 @@ public class Properties {
             property.setValue(value);
             JPAEntry.genericPost(property);
         }
-    }
-
-    @PUT //根据id修改
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProperty(@CookieParam("userId") String userId, @PathParam("id") Long id, Property property) {
-        Response result = Response.status(401).build();
-        if (JPAEntry.isLogining(userId)) {
-            result = Response.status(404).build();
-            Property existproperty = JPAEntry.getObject(Property.class, "id", id);
-            if (existproperty != null) {
-                String name = property.getName();
-                if (name != null) {
-                    existproperty.setName(name);
-                }
-
-                String value = property.getValue();
-                if (value != null) {
-                    existproperty.setValue(value);
-                }
-
-                JPAEntry.genericPut(existproperty);
-                result = Response.ok(existproperty).build();
-            }
-        }
-        return result;
     }
 }
