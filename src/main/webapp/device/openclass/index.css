@@ -1,0 +1,398 @@
+/*
+* @Author: zhaoxq
+* @Date:   2016-12-14 17:37:15
+* @Last Modified by:   User
+* @Last Modified time: 2016-12-15 17:49:51
+*/
+.bodyColor{
+	background-color: #f4fbed;
+}
+.wrap{
+	padding: 0 35px;
+}
+
+/* logo_section-start */
+.logo_section{
+	padding-top: 27px;
+	height: 100px;
+}
+.logo{
+	display: inline-block;
+	width: 188px;
+	height: 56px;
+	background: url('images/logo.png') no-repeat;
+	text-indent: -999em;
+	overflow: hidden;
+}
+
+/* 今日直播 */
+.today_live{
+	padding: 0 26px;
+	margin-bottom: 35px;
+	border: 1px solid #e5e5e5;
+	background-color: #fff;
+}
+.today_live_title{
+	height: 75px;
+	line-height: 75px;
+	font-size: 24px;
+	color: #444;
+}
+.live_list{
+	overflow: hidden;
+}
+.live_item{
+	float: left;
+	width: 420px;
+	margin-left: 33px;
+}
+.live_item:first-child{
+	margin-left: 0;
+}
+.live_video{
+	position: relative;
+	display: inline-block;
+	width: 420px;
+	height: 194px;
+	background: #ffbc3c url('images/play_btn.png') no-repeat 372px 151px;
+	-webkit-background-size: 32px 32px;
+	background-size: 32px 32px;
+	color: #fff;
+}
+.live_state{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.course_title{
+	margin-bottom: 20px;
+	padding: 50px 0 0 145px;
+	background: url('images/icon_chinese.png') no-repeat 30px 50px;
+	-webkit-background-size: 90px 90px;
+	background-size: 90px 90px;
+	height: 90px;
+}
+.course_big_title{
+	max-width: 200px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-size: 48px;
+	font-weight: bold;
+}
+.course_small_title{
+	max-width: 200px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-size: 18px;
+	color: #fff88c;
+}
+.grade_teacher{
+	margin-left: 23px;
+	font-size: 16px;
+}
+.split_line{
+	position: relative;
+	top: 2px;
+	margin: 0 5px;
+	display: inline-block;
+	width: 1px;
+	height: 13px;
+	background-color: #fff;
+}
+.live_title_section{
+	padding: 10px 0 25px;
+}
+.live_title{
+	display: inline-block;
+	max-width: 275px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-size: 16px;
+	color: #888;
+}
+.title_details,.title_details_math{
+	float: right;
+	margin-right: 5px;
+	padding-right: 23px;
+	display: inline-block;
+	height: 20px;
+	line-height: 20px;
+	background: url('images/arrow.png') no-repeat right center;
+	font-size: 18px;
+	color: #ffbc3c;
+}
+.wait_cover{
+	position: absolute;
+	top: 0;
+	height: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 188, 60, 0.3);
+}
+.bean_time{
+	position: absolute;
+	top: 5px;
+	width: 100%;
+	text-align: right;
+	overflow: hidden;
+}
+.play_time{
+	margin-right: 10px;
+	font-size: 18px;
+	color: #fff;
+}
+
+/* 往期回顾 */
+.review{
+	padding: 0 26px 58px;
+	border: 1px solid #e5e5e5;
+	border-bottom: none;
+	background-color: #fff;
+	overflow: hidden;
+}
+.subject_tab{
+	margin-bottom: 34px;
+	width: 473px;
+	height: 57px;
+	line-height: 57px;
+	border: 1px solid #24cbd1;
+	border-radius: 5px;
+	overflow: hidden;
+}
+.subject_chinese,.subject_math{
+	float: left;
+	width: 236px;
+	font-size: 24px;
+	color: #24cbd1;
+	text-align: center;
+	border-right: 1px solid #24cbd1;
+	cursor: default;
+}
+.subject_math{
+	width: 236px;
+	border-right: none;
+}
+.subject_chinese.cur,.subject_math.cur{
+	background-color: #24cbd1;
+	color: #fff;
+}
+.subject_content{
+	display: none;
+}
+.subject_content.cur{
+	display: block;
+}
+.review_list{
+	overflow: hidden;
+	margin-bottom: 50px;
+}
+.review_math{
+	position: relative;
+    display: inline-block;
+    width: 420px;
+    height: 194px;
+    background: #39b4fa url('images/play_btn.png') no-repeat 372px 151px;
+	-webkit-background-size: 32px 32px;
+	background-size: 32px 32px;
+    color: #fff;
+}
+.review_math .course_title{
+	padding: 40px 0 0 145px;
+	background: url('images/icon_math.png') no-repeat 30px 40px;
+	-webkit-background-size: 90px 90px;
+	background-size: 90px 90px;
+}
+.title_details_math{
+	color: #39b4fa;
+	background: url('images/arrow_math.png') no-repeat right center;
+}
+/* 页码 */
+.page{
+	overflow: hidden;
+	text-align: center;
+}
+.page_num,.page_spot,.page_next{
+	margin-right: 6px;
+	padding: 0 18px;
+	display: inline-block;
+	height: 40px;
+	line-height: 40px;
+	border: 1px solid #24cbd1;
+	border-radius: 5px;
+	font-size: 24px;
+	font-family: Arial;
+	color: #24cbd1;
+}
+.page_num.cur{
+	background-color: #24cbd1;
+	color: #fff;
+}
+.page_spot{
+	margin-right: 0;
+	border: none;
+}
+.page_next{
+	font-size: 18px;
+	font-family: "Microsoft YaHei";
+}
+
+/* =================大屏-直播课程-详情================= */
+.goback{
+	margin-top: 11px;
+	float: right;
+	width: 210px;
+	height: 56px;
+	line-height: 56px;
+	text-align: center;
+	color: #fff;
+	background-color: #ff8067;
+	font-size: 24px;
+	border-radius: 5px;
+}
+.details_content{
+	border: 1px solid #e5e5e5;
+	background-color: #fff;
+}
+.details_inner{
+	margin: 0 auto;
+	padding-top: 32px;
+	width: 1200px;
+}
+.details_video{
+	margin-bottom: 60px;
+	text-align: center;
+}
+.details_video .live_video{
+	width: 620px;
+	height: 285px;
+	background: #ffbc3c url('images/play_btn.png') no-repeat 564px 228px;
+	-webkit-background-size: 43px 43px;
+	background-size: 43px 43px;
+	text-align: left;
+}
+.details_video .course_title{
+	padding: 72px 0 0 245px;
+	height: 160px;
+	background: url('images/icon_chinese.png') no-repeat 76px 77px;
+	-webkit-background-size: 131px 131px;
+	background-size: 131px 131px;
+}
+.details_video .course_big_title{
+	max-width: 288px;
+	font-size: 72px;
+}
+.details_video .course_small_title{
+	max-width: 210px;
+	font-size: 24px;
+}
+.details_video .grade_teacher {
+	font-size: 18px;
+}
+.details_video .live_title{
+	max-width: 600px;
+	font-size: 24px;
+}
+/* 课程介绍部分 */
+.prepared{
+	margin-bottom: 20px;
+	font-size: 14px;
+	color: #ff6c00;
+}
+.prepared_title{
+	margin-bottom: 15px;
+	font-size: 18px;
+	color: #444;
+}
+.prepared_title img{
+	position: relative;
+	top: 5px;
+	margin-right: 5px;
+}
+.breif{
+	margin-bottom: 40px;
+	padding: 0 32px;
+	text-indent: 2em;
+	font-size: 16px;
+	color: #888;
+	line-height: 30px;
+}
+.abstract{
+	margin-bottom: 40px;
+	font-size: 16px;
+	color: #888;
+	line-height: 30px;
+}
+/* =================大屏-直播课程-播放================= */
+.full_screen{
+	position: relative;
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+}
+.subject_video{
+	height: 100%;
+}
+.back_btn{
+	position: absolute;
+	top: 26px;
+	left: 33px;
+	width: 102px;
+	height: 102px;
+	background: url('images/goback.png') no-repeat;
+	z-index: 9;
+}
+.cover_img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #ffbc3c;
+	z-index: 2;
+}
+.video_introduce{
+	position: absolute;
+	top: 234px;
+	left: 50%;
+	margin-left: -869px;
+	padding-left: 510px;
+	width: 1228px;
+	line-height: normal;
+	background: url('images/icon_chinese.png') no-repeat left 35px;
+	text-align: left;
+}
+.big_title{
+	font-size: 230px;
+	font-weight: bold;
+	color: #fff;
+}
+.small_title{
+	font-size: 80px;
+	color: #010101;
+}
+.teacher{
+	padding-top: 130px;
+	text-align: right;
+	font-size: 70px;
+	color: #fff;
+}
+
+/* =================大屏-直播课程-待播================= */
+.wait{
+	padding-top: 110px;
+	background: url('images/wait_bg.png') no-repeat center top;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	text-align: center;
+	color: #ff8067;
+}
+.wait_tip{
+	margin-bottom: 20px;
+	font-size: 46px;
+}
+.start_time{
+	font-size: 28px;
+}
