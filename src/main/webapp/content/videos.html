@@ -236,7 +236,7 @@
                 </div>
                 <ul class="xiala_ul">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
-                    <ul  id="grade"></ul>
+                    <ul id="grade"></ul>
                 </ul>
             </div>
             <div class="tiaoj_TJ" id="dateSelect">
@@ -1207,29 +1207,12 @@
                                 $(e.currentTarget).siblings(".xiala_ul").show();
                             }
                         });
-//                        if ($(e.currentTarget).children(".xiala_ul").is(":visible")) {
-//                            $('.tan').hide();
-//                            $('.tan').css("z-index", "9999");
-//                            $(".xiala_ul").hide();
-//                            $(e.currentTarget).children(".xiala_ul").hide();
-//                            $(".img_item1").addClass("cur");
-//                            $(".img_item2").removeClass("cur");
-//                        } else {
-//                            $('.tan').show();
-//                            $('.tan').css("z-index", "99");
-//                            $(".xiala_ul").hide();
-//                            $(e.currentTarget).children(".xiala_ul").show();
-//                            $(".img_item1").addClass("cur")
-//                            e.currentTarget.querySelector('.img_item1').removeClass("cur");
-//                            $(".img_item2").removeClass("cur")
-//                            e.currentTarget.querySelector('.img_item2').addClass("cur");
-//                        }
-
                     $(document).on('click', ".xiala_li", function (e) {
-//                        $(e).addClass("cur").siblings().removeClass("cur");
-                        $(e.currentTarget).addClass('cur').siblings('.xiala_li').removeClass('cur');
+//                        $(e.currentTarget).addClass('cur').siblings('.xiala_li').removeClass('cur');
+                        $('.xiala_li').removeClass('cur');
+                        $(e.currentTarget).addClass('cur');
                         $('.tan').hide();
-                        $(e.currentTarget).parent(".xiala_ul").hide();
+                        $(e.currentTarget).parents(".xiala_ul").hide();
                         $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
                     });
 
