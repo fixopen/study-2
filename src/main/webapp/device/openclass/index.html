@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>大屏-直播课</title>
+    <link rel="stylesheet" type="text/css" href="base.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
 </head>
-<body>
+<body class="bodyColor">
 <article id="main">
     <h1 class="logo_section">
         <a href="index.html" class="logo" title="小雨知时">小雨知时</a>
     </h1>
     <div class="today_live">
         <h3 class="today_live_title">今日直播</h3>
-        <ul class="live_list"></ul>
+        <ul class="live_list" id="videoContainer"></ul>
     </div>
     <div class="review">
         <h3 class="today_live_title">往期回顾</h3>
-        <ul class="subject_tab"></ul>
+        <ul class="subject_tab" id="subjectTabs"></ul>
         <!-- 语文 -->
         <div class="subject_content cur">
-            <ul class="review_list"></ul>
+            <ul class="review_list" id="chinesePassedContainer"></ul>
             <!-- 页码 -->
             <p class="page">
                 <a href="javascript:;" class="page_next">上一页</a>
@@ -34,7 +36,7 @@
         </div>
         <!-- 数学 -->
         <div class="subject_content">
-            <ul class="review_list"></ul>
+            <ul class="review_list" id="mathPassedContainer"></ul>
             <!-- 页码 -->
             <p class="page">
                 <a href="javascript:;" class="page_next">上一页</a>
@@ -50,161 +52,186 @@
         </div>
     </div>
 </article>
-<article id="detail">
-    <h1 class="logo_section">
-        <a href="index.html" class="logo" title="小雨知时">小雨知时</a>
-        <a href="index.html" class="goback">返回</a>
-    </h1>
-    <div class="details_content">
-        <div class="details_inner">
-            <div class="details_video">
-                <a href="play.html" class="live_video">
-                    <img src="images/live_in.png" alt="" class="live_state">
-                    <div class="bean_time">
-                        <div class="gold_bean"><span>150</span>金豆</div>
-                    </div>
-                    <div class="course_title">
-                        <div class="course_big_title">写人作文</div>
-                        <div class="course_small_title">写作手法+得分技巧</div>
-                    </div>
-                    <div class="grade_teacher">
-                        <span>一年级</span>
-                        <span class="split_line"></span>
-                        <span>刘志超</span>
-                    </div>
-                </a>
-                <div class="live_title_section">
-                    <span class="live_title">语文作文与写作手法语文作文与写作写</span>
-                </div>
-            </div>
-            <!-- 课程介绍部分 -->
-            <p class="prepared">课前准备：笔记本、铅笔、橡皮、圆珠笔、课本</p>
-            <p class="prepared_title">
-                <img src="images/prepared_icon1.png" alt="">
-                <span>课程简介</span>
-            </p>
-            <p class="breif">写人作文是指通过具体的描写，以典型的事例表现人物的品质或特点的文章。写人作文着眼于描写人物，包括人物的外貌特征、言行举止、心理活动等。人物是主要的描写对象，事情是为突出人物的性格特征和思想品质服务的。</p>
-            <p class="prepared_title">
-                <img src="images/prepared_icon2.png" alt="">
-                <span>主讲人简介</span>
-            </p>
-            <p class="abstract">刘志超：2013年供职于中国少年作家班，现任中国少年作家杯征文大赛评委会副主任。</p>
-            <p class="prepared_title">
-                <img src="images/prepared_icon3.png" alt="">
-                <span>上线时间</span>
-            </p>
-            <p class="abstract">2016-10-13 18:30</p>
-        </div>
+<article id="detail" style="display: none">
+    <div class="wrap">
+        <h1 class="logo_section">
+            <a href="index.html" class="logo" title="小雨知时">小雨知时</a>
+            <a href="index.html" class="goback">返回</a>
+        </h1>
+        <div class="details_content" id="detailContainer"></div>
     </div>
 </article>
-<article id="cover"></article>
-<article id="content"></article>
+<article id="content" style="display: none">
+    <div class="full_screen" style="height: 601px; line-height: 601px;">
+        <a href="details.html" class="back_btn"></a>
+        <div id="container"></div>
+    </div>
+</article>
+<article id="wait" style="display: none">
+    <div class="wrap">
+        <h1 class="logo_section">
+            <a href="index.html" class="logo" title="小雨知时">小雨知时</a>
+            <a href="index.html" class="goback">返回</a>
+        </h1>
+    </div>
+    <div class="wait">
+        <p class="wait_tip">直播未开始，请耐心等待！</p>
+        <p class="start_time" id="startTime"></p>
+    </div>
+</article>
 
 <template id="live-template">
-    <li class="live_item">
+    <li class="live_item" style="width: 24%; float: left;">
         <a href="play.html" class="live_video">
             <img src="images/live_in.png" alt="" class="live_state">
-            <div class="bean_time">
-                <div class="gold_bean"><span>150</span>金豆</div>
-            </div>
             <div class="course_title">
-                <div class="course_big_title">写人作文</div>
-                <div class="course_small_title">写作手法+得分技巧</div>
+                <div class="course_big_title">${generalization}</div>
+                <div class="course_small_title">${outline}</div>
             </div>
             <div class="grade_teacher">
-                <span>一年级</span>
+                <span>${grade}</span>
                 <span class="split_line"></span>
-                <span>刘志超</span>
+                <span>${teacher}</span>
             </div>
         </a>
         <div class="live_title_section">
-            <span class="live_title">语文作文与写作手法语文作文与写作写</span>
+            <span class="live_title">${title}</span>
             <a href="details.html" class="title_details">详情</a>
         </div>
     </li>
 </template>
 <template id="future-template">
-    <li class="live_item">
+    <li class="live_item" style="width: 24%; float: left;">
         <a href="javascript:;" class="live_video">
             <img src="images/wait.png" alt="" class="live_state">
             <div class="bean_time">
-                <div class="play_time">18:30开讲</div>
-                <div class="gold_bean"><span>150</span>金豆</div>
+                <div class="play_time">${hour}:${minute}开讲</div>
             </div>
             <div class="course_title">
-                <div class="course_big_title">汉字拼音</div>
-                <div class="course_small_title">写作手法+得分技巧</div>
+                <div class="course_big_title">${generalization}</div>
+                <div class="course_small_title">${outline}</div>
             </div>
             <div class="grade_teacher">
-                <span>一年级</span>
+                <span>${grade}</span>
                 <span class="split_line"></span>
-                <span>刘志超</span>
+                <span>${teacher}</span>
             </div>
             <div class="wait_cover"></div>
         </a>
         <div class="live_title_section">
-            <span class="live_title">语文作文与写作手法语文作文与写作写</span>
+            <span class="live_title">${title}</span>
             <a href="javascript:;" class="title_details">详情</a>
         </div>
     </li>
 </template>
 <template id="subject-tab-template">
-    <li class="subject_math">数学(<span>2</span>)</li>
+    <li class="subject_math">${name}(<span>${count}</span>)</li>
 </template>
 <template id="passed-chinese-template">
-    <li class="live_item">
+    <li class="live_item" style="width: 24%; float: left;">
         <a href="javascript:;" class="live_video">
-            <div class="bean_time">
-                <div class="review_gold_bean"><span>20</span>金豆</div>
-            </div>
             <div class="course_title">
-                <div class="course_big_title">写人作文</div>
-                <div class="course_small_title">写作手法+得分技巧</div>
+                <div class="course_big_title">${generalization}</div>
+                <div class="course_small_title">${outline}</div>
             </div>
             <div class="grade_teacher">
-                <span>一年级</span>
+                <span>${grade}</span>
                 <span class="split_line"></span>
-                <span>刘志超</span>
-                <span>2016-11-16</span>
+                <span>${teacher}</span>
+                <span>${year}-${month}-${date}</span>
             </div>
         </a>
         <div class="live_title_section">
-            <span class="live_title">语文作文与写作手法语文作文与写作写</span>
+            <span class="live_title">${title}</span>
             <a href="javascript:;" class="title_details">详情</a>
         </div>
     </li>
 </template>
 <template id="passed-math-template">
-    <li class="live_item">
+    <li class="live_item" style="width: 24%; float: left;">
         <a href="javascript:;" class="review_math">
-            <div class="bean_time">
-                <div class="review_gold_bean"><span>20</span>金豆</div>
-            </div>
             <div class="course_title">
-                <div class="course_big_title">画图推理</div>
-                <div class="course_small_title">加减乘除+寻找规律</div>
+                <div class="course_big_title">${generalization}</div>
+                <div class="course_small_title">${outline}</div>
             </div>
             <div class="grade_teacher">
-                <span>一年级</span>
+                <span>${grade}</span>
                 <span class="split_line"></span>
-                <span>刘志超</span>
-                <span>2016-11-16</span>
+                <span>${teacher}</span>
+                <span>${year}-${month}-${date}</span>
             </div>
         </a>
         <div class="live_title_section">
-            <span class="live_title">掌握用凑十法计算20以内的加减法</span>
+            <span class="live_title">${title}</span>
             <a href="javascript:;" class="title_details_math">详情</a>
         </div>
     </li>
 </template>
 
+<template id="detail-template">
+    <div class="details_inner">
+        <div class="details_video">
+            <a href="play.html" class="live_video">
+                <img src="images/live_in.png" alt="" class="live_state">
+                <div class="course_title">
+                    <div class="course_big_title">${generalization}</div>
+                    <div class="course_small_title">${outline}</div>
+                </div>
+                <div class="grade_teacher">
+                    <span>${grade}</span>
+                    <span class="split_line"></span>
+                    <span>${teacher}</span>
+                </div>
+            </a>
+            <div class="live_title_section">
+                <span class="live_title">${title}</span>
+            </div>
+        </div>
+        <!-- 课程介绍部分 -->
+        <p class="prepared">课前准备：${prepare}</p>
+        <p class="prepared_title">
+            <img src="images/prepared_icon1.png" alt="">
+            <span>课程简介</span>
+        </p>
+        <p class="breif">${description}</p>
+        <p class="prepared_title">
+            <img src="images/prepared_icon2.png" alt="">
+            <span>主讲人简介</span>
+        </p>
+        <p class="abstract">${teacher}：${teacherDescription}</p>
+        <p class="prepared_title">
+            <img src="images/prepared_icon3.png" alt="">
+            <span>上线时间</span>
+        </p>
+        <p class="abstract">${year}-${month}-${date} ${hour}:${minute}</p>
+    </div>
+</template>
+
+<template id="content-template">
+    <div>
+        <div class="cover_img">
+            <div class="video_introduce">
+                <p class="big_title">${generalization}</p>
+                <p class="small_title">${outline}</p>
+                <p class="teacher">—<span>${teacher}</span>老师</p>
+            </div>
+        </div>
+        <video src="${cdnLink}" controls="controls" class="subject_video"></video>
+    </div>
+</template>
+
+<template id="wait-template">
+    <span>${year}-${month}-${date} ${hour}:${minute}:00开讲</span>
+</template>
+
 <script src="/jquery/jquery-3.1.1.min.js"></script>
+<script src="/basic.js"></script>
 <script>
     var lives = []
     var futures = []
     var subjects = []
     var state = {
-        pager: function(container, total, pageSize, currentPage, handler) {
+        pager: function (container, total, pageSize, currentPage, handler) {
             var pageIndexContainer = document.getElementById(id)
             pageIndexContainer.innerHTML = ''
 
@@ -242,7 +269,7 @@
                 handler(e.target.dataset.no)
             })
         },
-        init: function() {
+        init: function () {
             var switchTo = function (id) {
                 if (state.currentArticle) {
                     state.currentArticle.style.display = 'none'
@@ -263,63 +290,50 @@
                 state[id].init()
             }
 
-            var now = Date.now()
-
-            var getPassed = function() {
-                $.ajax({
-                    type: 'get',
-                    url: '/api/subjects',
-                    success: function(s) {
-                        subjects = s
-                        for (var i = 0; i < subjects.length; ++i) {
-                            $.ajax({
-                                type: 'get',
-                                url: '/api/schedulers',
-                                success: function (d) {
-                                    for (var i = 0; i < d.length; ++i) {
-                                        var item = d[i]
-                                        item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
-                                        item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
-                                    }
-                                    var s = state.getSubjectById(d[0].subjectId)
-                                    s.passed = d
-                                }
-                            })
-                        }
-                        for (var i = 0; i < subjects.length; ++i) {
-                            if (!subjects[i].passed) {
-                                subjects.splice(i, 1)
-                                --i
-                            }
-                        }
-                    }
-                })
-            }
-
             $.ajax({
                 type: 'get',
-                url: '/api/schedulers?filter=' + encodeURIComponent(JSON.stringify({
-                    endTime: '> ' + now + '::timestamp'
-                })),
-                success: function(d) {
-                    for (var i = 0; i < d.length; ++i) {
-                        var item = d[i]
-                        item.startTime = Date.parse(item.startTime.replace(/-/g, '/'))
-                        item.endTime = Date.parse(item.endTime.replace(/-/g, '/'))
-                        if (+item.startTime < now) {
-                            lives.push(item)
-                        } else {
-                            futures.push(item)
+                url: '/api/subjects',
+                success: function (s) {
+                    subjects = s
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers',
+                        success: function (d) {
+                            for (var i = 0; i < d.length; ++i) {
+                                for (var j = 0; j < d[i].length; ++j) {
+                                    var item = d[i][j]
+                                    item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
+                                    item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
+                                    item.month = item.startTime.getMonth() + 1
+                                    item.date = item.startTime.getDate()
+                                    item.hour = item.startTime.getHours()
+                                    var minute = item.startTime.getMinutes()
+                                    if (minute == 0) {
+                                        minute = '00'
+                                    }
+                                    item.minute = minute
+                                }
+                            }
+                            lives = d[0]
+                            futures = d[1]
+                            for (var i = 0; i < d[2].length; ++i) {
+                                if (d[2][i].cdnLink && d[2][i].cdnLink != '') {
+                                    var s = state.getSubjectById(d[2][i].subjectId)
+                                    if (!s.passed) {
+                                        s.passed = []
+                                    }
+                                    s.passed.push(d[2][i])
+                                }
+                            }
+                            for (var i = 0; i < subjects.length; ++i) {
+                                if (!subjects[i].passed) {
+                                    subjects.splice(i, 1)
+                                    --i
+                                }
+                            }
+                            moveTo('main')
                         }
-                    }
-                    getPassed()
-
-                    moveTo('main')
-                },
-                error: function(r) {
-                    if (r.status == 404) {
-                        getPassed()
-                    }
+                    })
                 }
             })
 
@@ -341,7 +355,7 @@
             }, false)
         },
 
-        getSubjectById: function(id) {
+        getSubjectById: function (id) {
             var result = null;
             for (var i = 0; i < subjects.length; ++i) {
                 if (subjects[i].id == id) {
@@ -352,14 +366,206 @@
             return result
         },
 
+        getById: function(id) {
+            var result = null
+            var isFind = false
+            for (var i = 0; i < lives.length; ++i) {
+                if (lives[i].id == id) {
+                    result = lives[i]
+                    isFind = true
+                    break
+                }
+            }
+            if (!isFind) {
+                for (var i = 0; i < futures.length; ++i) {
+                    if (futures[i].id == id) {
+                        result = futures[i]
+                        isFind = true
+                        break
+                    }
+                }
+            }
+            if (!isFind) {
+                for (var i = 0; i < subjects.length; ++i) {
+                    for (var j = 0; j < subjects[i].passed.length; ++j) {
+                        if (subjects[i].passed[j].id == id) {
+                            result = subjects[i].passed[j]
+                            isFind = true
+                            break
+                        }
+                    }
+                    if (isFind) {
+                        break
+                    }
+                }
+            }
+            return result
+        },
+
         main: {
-            init: function() {
-                var videos = []
+            container: doc.getElementById('videoContainer'),
+            liveTemplate: getTemplate('live-template'),
+            futureTemplate: getTemplate('future-template'),
+            subjectTabs: doc.getElementById('subjectTabs'),
+            subjectTabTemplate: getTemplate('subject-tab-template'),
+            chinesePassedContainer: doc.getElementById('chinesePassedContainer'),
+            passedChineseTemplate: getTemplate('passed-chinese-template'),
+            mathPassedContainer: doc.getElementById('mathPassedContainer'),
+            passedMathTemplate: getTemplate('passed-math-template'),
+            isInit: false,
+            init: function () {
+                if (!state.main.isInit) {
+                    proc({
+                        container: state.main.container,
+                        template: state.main.liveTemplate,
+                        data: lives
+                    })
+
+                    proc({
+                        container: state.main.container,
+                        template: state.main.futureTemplate,
+                        data: futures
+                    })
+
+                    proc({
+                        container: state.main.subjectTabs,
+                        template: state.main.subjectTabTemplate,
+                        data: subjects
+                    })
+
+                    proc({
+                        container: state.main.chinesePassedContainer,
+                        template: state.main.passedChineseTemplate,
+                        data: subjects[0].passed
+                    })
+
+                    proc({
+                        container: state.main.mathPassedContainer,
+                        template: state.main.passedMathTemplate,
+                        data: subjects[1].passed
+                    })
+
+                    function reviewTab() { // 往期回顾选项卡
+                        var $subjectLi = $(".subject_tab li");
+                        var $subject_content = $(".subject_content");
+                        $subjectLi.each(function (index, el) {
+                            $(this).click(function (event) {
+                                $subjectLi.removeClass('cur').eq(index).addClass('cur');
+                                $subject_content.removeClass('cur').eq(index).addClass('cur');
+                            });
+                        });
+                    }
+
+                    function pageClick() { //点击页码
+                        $(".page_num").each(function (index, el) {
+                            $(this).click(function (event) {
+                                $(this).addClass('cur').siblings('.page_num').removeClass('cur');
+                            });
+                        });
+                    }
+
+                    reviewTab()
+                    pageClick()
+
+                    state.main.isInit = true
+                }
             }
         },
-        detail: {},
-        cover: {},
-        content: {}
+        detail: {
+            container: doc.getElementById('detailContainer'),
+            template: getTemplate('detail-template'),
+            isInit: false,
+            init: function() {
+                if (!state.detail.isInit) {
+                    state.detail.container.innerHTML = ''
+                    proc({
+                        container: state.detail.container,
+                        template: state.detail.template,
+                        data: state.getById(state.detail.id)
+                    })
+                    state.detail.isInit = true
+                }
+            },
+            id: null,
+            changeId: function(id) {
+                if (state.detail.id != id) {
+                    state.detail.id = id
+                    state.detail.isInit = false
+                }
+            }
+        },
+        content: {
+            container: doc.getElementById('container'),
+            template: getTemplate('content-template'),
+            isInit: false,
+            init: function () {
+                if (!state.content.isInit) {
+                    state.content.container.innerHTML = ''
+                    proc({
+                        container: state.content.container,
+                        template: state.content.template,
+                        data: state.getById(state.content.id)
+                    })
+
+                    function screenHeight() { //计算屏幕的高度
+                        $(".full_screen").css({"height": $(window).height(), "line-height": ($(window).height() + "px")});
+                    }
+
+                    function coverImg() { //点击视频封皮
+                        $(".cover_img").click(function (event) {
+                            $(this).stop().hide();
+                            $(".subject_video")[0].play();
+                        });
+                    }
+
+                    screenHeight()
+                    coverImg()
+
+                    state.content.isInit = true
+                }
+            },
+            id: null,
+            changeId: function(id) {
+                if (state.content.id != id) {
+                    state.content.id = id
+                    state.content.isInit = false
+                }
+            }
+        },
+        wait: {
+            container: doc.getElementById('startTime'),
+            template: getTemplate('wait-template'),
+            isInit: false,
+            init: function () {
+                if (!state.wait.isInit) {
+                    state.wait.container.innerHTML = ''
+                    proc({
+                        container: state.wait.container,
+                        template: state.wait.template,
+                        data: state.getById(state.wait.id)
+                    })
+
+                    function waitHeight() { //待播内容的高度
+                        var waitH = $(window).height() - $(".wrap").height() - 110;
+                        $(".wait").css("height", waitH);
+                    }
+
+                    waitHeight(); //待播内容的高度
+                    $(window).resize(function (event) {
+                        waitHeight();
+                    });
+
+                    state.wait.isInit = true
+                }
+            },
+            id: null,
+            changeId: function(id) {
+                if (state.wait.id != id) {
+                    state.wait.id = id
+                    state.wait.isInit = false
+                }
+            }
+        }
     }
 
     state.init()
