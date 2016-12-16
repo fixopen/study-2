@@ -87,12 +87,23 @@
             border-top: 1px solid #ea875f;
         }
 
-        .pika-lendar td {
-            font-size: 1rem;
+        .pika-single {
+            position: absolute!important;
         }
 
+        .pika-lendar {
+            text-align: center;
+        }
         .pika-lendar table {
+            width: 100%;
             margin: 10px 0;
+        }
+        .pika-lendar th {
+            text-align: center;
+        }
+        .pika-lendar td {
+            text-align: center;
+            font-size: 1rem;
         }
 
         .pika-button {
@@ -544,7 +555,7 @@
                 <p class="yuwen_p2">
                     <span>${grade}</span>
                     <span class="yuwen_span">${teacher}</span>
-                    <span class="yuwen_riqi">${startTime}</span>
+                    <span class="yuwen_riqi">${year}-${month}-${day}</span>
                 </p>
                 <span class="yuwen_a"></span>
             </div>
@@ -579,7 +590,7 @@
                     <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${startTime}</p>
+                <p>${year}-${month}-${day}</p>
             </div>
         </div>
     </li>
@@ -597,7 +608,7 @@
                 <p class="yuwen_p2">
                     <span>${grade}</span>
                     <span class="yuwen_span">${teacher}</span>
-                    <span class="yuwen_riqi">${startTime}</span>
+                    <span class="yuwen_riqi">${year}-${month}-${day}</span>
                 </p>
                 <span class="yuwen_a"></span>
             </div>
@@ -632,20 +643,16 @@
                     <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${startTime}</p>
+                <p>${year}-${month}-${day}</p>
             </div>
         </div>
     </li>
 </template>
 <template id="teacher-template">
-    <li class="xiala_li">
-        <span data-type="teacher">${teacher}</span><img src="images/zbwq_zhong.png" alt="">
-    </li>
+    <li class="xiala_li">${teacher}<img src="images/zbwq_zhong.png" alt=""></li>
 </template>
 <template id="grade-template">
-    <li class="xiala_li">
-        <span data-type="grade">${grade}</span><img src="images/zbwq_zhong.png" alt="">
-    </li>
+    <li class="xiala_li">${grade}<img src="images/zbwq_zhong.png" alt=""></li>
 </template>
 <template id="date-template">
     <li class="xiala_li"></li>
@@ -1255,11 +1262,16 @@
 //fill to grades choice
                                     var grades = []
                                     for (var i = 0; i < g0s.length; ++i) {
+                                        g0s[i]=state.getGrade(g0s[i])
                                         grades.push({grade: g0s[i]})
                                     }
                                     for (var i = 0; i < g1s.length; ++i) {
+                                        g1s[i]=state.getGrade(g1s[i])
                                         grades.push({grade: g1s[i]})
                                     }
+//                                    for (var i = 0; i < grades.length; ++i) {
+//                                        grades=state.getGrade(grades[i].grade)
+//                                    }
                                     proc({
                                         containerId: 'grade',
                                         data: grades,
