@@ -1154,22 +1154,21 @@
                     })
 
                     $(document).on('click', ".tiaoj_span", function (e) {
-                        if ($(e.currentTarget).hasClass('cur')) {
-                            $(e.currentTarget).removeClass('cur');
-                            $('.tan').hide();
-                            $('.tan').css("z-index", "9999");
-                            $(".xiala_ul").hide();
-                            $(e.currentTarget).siblings(".xiala_ul").hide();
-                        } else {
-                            $(".tiaoj_span").removeClass('cur');
-                            $(e.currentTarget).addClass('cur');
-                            $('.tan').show();
-                            $('.tan').css("z-index", "99");
-                            $(".xiala_ul").hide();
-                            $(e.currentTarget).siblings(".xiala_ul").show();
-                        }
-                    });
-
+                            if($(e.currentTarget).hasClass('cur')){
+                                $(e.currentTarget).removeClass('cur');
+                                $('.tan').hide();
+                                $('.tan').css("z-index", "9999");
+                                $(".xiala_ul").hide();
+                                $(e.currentTarget).siblings(".xiala_ul").hide();
+                            }else{
+                                $(".tiaoj_span").removeClass('cur');
+                                $(e.currentTarget).addClass('cur');
+                                $('.tan').show();
+                                $('.tan').css("z-index", "99");
+                                $(".xiala_ul").hide();
+                                $(e.currentTarget).siblings(".xiala_ul").show();
+                            }
+                        });
                     $(document).on('click', ".xiala_li", function (e) {
                         $(e.currentTarget).parents(".xiala_ul").find('.xiala_li').removeClass('cur');
                         $(e.currentTarget).addClass('cur');
