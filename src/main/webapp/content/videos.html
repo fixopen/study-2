@@ -251,12 +251,12 @@
                     <ul id="grade" class="xiala_liUl"></ul>
                 </ul>
             </div>
-            <div class="tiaoj_TJ" id="dateSelect">
-                <div class="tiaoj_span" id="datePicker">
-                    <span class="filter_item">日期</span>
-                </div>
-                <div class="xiala_ul" id="date"></div>
-            </div>
+            <!--<div class="tiaoj_TJ" id="dateSelect">-->
+                <!--<div class="tiaoj_span" id="datePicker">-->
+                    <!--<span class="filter_item">日期</span>-->
+                <!--</div>-->
+                <!--<div class="xiala_ul" id="date"></div>-->
+            <!--</div>-->
         </div>
         <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
         <div class="rain-main video-passed-textTop">
@@ -1182,6 +1182,8 @@
                         $('.tan').hide();
                         $(e.currentTarget).parents(".xiala_ul").hide();
                         $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
+                        $('.tiaoj_jieG').show();
+                        alert($(e.currentTarget).text());
                     });
 
                     $(document).on('click', ".shipin", function (e) {
