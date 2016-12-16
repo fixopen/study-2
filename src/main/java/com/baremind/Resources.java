@@ -84,7 +84,7 @@ public class Resources {
     static Resource getByTypeAndId(EntityManager em, String type, Long id) {
         Resource result = null;
         switch (type) {
-            case "knowledgePoint":
+            case "knowledge-point":
                 result = JPAEntry.getObject(em, KnowledgePoint.class, "id", id);
                 break;
             case "video":

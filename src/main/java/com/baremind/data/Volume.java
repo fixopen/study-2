@@ -21,6 +21,10 @@ public class Volume implements com.baremind.data.Entity {
     @Column(name = "subject_id")
     private Long subjectId;
 
+    @Column(name = "knowledge_point_count")
+    private Long knowledgePointCount;
+
+
     @Column(name = "grade")
     private Integer grade;
 
@@ -32,6 +36,14 @@ public class Volume implements com.baremind.data.Entity {
 
     @Column(name = "\"order\"")
     private Integer order;
+
+    public Long getKnowledgePointCount() {
+        return knowledgePointCount;
+    }
+
+    public void setKnowledgePointCount(Long knowledgePointCount) {
+        this.knowledgePointCount = knowledgePointCount;
+    }
 
     public Long getId() {
         return id;
@@ -89,6 +101,7 @@ public class Volume implements com.baremind.data.Entity {
         vm.put("subjectId", volume.getSubjectId());
         vm.put("coverId", volume.getCoverId());
         vm.put("name", volume.getName());
+        vm.put("knowledgePointCount", volume.getKnowledgePointCount());
         vm.put("type", "old");
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.showTime > :yesterday AND l.showTime < :now";

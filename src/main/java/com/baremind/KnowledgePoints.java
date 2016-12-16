@@ -154,7 +154,7 @@ public class KnowledgePoints {
     public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Boolean has = Logs.has(Long.parseLong(sessionId), "knowledge-point", id, "like");
+            Boolean has = Logs.has(JPAEntry.getSession(sessionId).getUserId(), "knowledge-point", id, "like");
             result = Response.ok("{\"like\":" + has.toString() + "}").build();
         }
         return result;
