@@ -8,4 +8,6 @@ import java.util.Map;
 public interface Resource extends TransferObject {
     Long getSubjectId();
     Map<String, Object> getContent();
+
+
 }
