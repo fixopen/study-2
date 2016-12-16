@@ -227,7 +227,7 @@
                 </div>
                 <ul class="xiala_ul">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
-                    <ul id="teacher"></ul>
+                    <ul id="teacher" class="xiala_liUl"></ul>
                 </ul>
             </div>
             <div class="tiaoj_TJ" id="gradeeSelect">
@@ -236,7 +236,7 @@
                 </div>
                 <ul class="xiala_ul">
                     <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
-                    <ul id="grade"></ul>
+                    <ul id="grade" class="xiala_liUl"></ul>
                 </ul>
             </div>
             <div class="tiaoj_TJ" id="dateSelect">
@@ -1145,17 +1145,17 @@
 
                     $(document).on('click', '[data-type="teacher"]', function (e) {
 //hide teachers
-                        state.passed.teacher.style.display = 'none'
+//                        state.passed.teacher.style.display = 'none'
 // change teacherSelect
                         var s = document.getElementById('teacherSelect')
-                        s.textContent = e.target.textContent
+//                        s.textContent = e.target.textContent
                         s.dataset.id = e.target.dataset.id
 
                         var sub = state.getSubjectById(e.target.dataset.id)
 
-                        if (!state.containTeacher(sub, t.textContent)) {
-                            state.passed.teacherSelect.textContent = '老师'
-                        }
+//                        if (!state.containTeacher(sub, t.textContent)) {
+//                            state.passed.teacherSelect.textContent = '老师'
+//                        }
 //filter data
                         var d = state.passed.search()
 //refill the content
@@ -1169,17 +1169,17 @@
 
                     $(document).on('click', '[data-type="grade"]', function (e) {
 //hide grade
-                        state.passed.grade.style.display = 'none'
+//                        state.passed.grade.style.display = 'none'
 // change gradeSelect
                         var s = document.getElementById('gradeSelect')
-                        s.textContent = e.target.textContent
+//                        s.textContent = e.target.textContent
                         s.dataset.id = e.target.dataset.id
 
                         var sub = state.getSubjectById(e.target.dataset.id)
 
-                        if (!state.containTeacher(sub, t.textContent)) {
-                            state.passed.teacherSelect.textContent = '老师'
-                        }
+//                        if (!state.containTeacher(sub, t.textContent)) {
+//                            state.passed.teacherSelect.textContent = '老师'
+//                        }
 //filter data
                         var d = state.passed.search()
 //refill the content
@@ -1208,8 +1208,7 @@
                             }
                         });
                     $(document).on('click', ".xiala_li", function (e) {
-//                        $(e.currentTarget).addClass('cur').siblings('.xiala_li').removeClass('cur');
-                        $('.xiala_li').removeClass('cur');
+                        $(e.currentTarget).parents(".xiala_ul").find('.xiala_li').removeClass('cur');
                         $(e.currentTarget).addClass('cur');
                         $('.tan').hide();
                         $(e.currentTarget).parents(".xiala_ul").hide();
@@ -1225,7 +1224,6 @@
                         $('.tan').hide();
                         $('.window1').hide();
                     });
-
                     // 弹窗关闭按钮
                     $(document).on('click', ".windowClose", function (e) {
                         $('.tan').hide();
@@ -1316,7 +1314,7 @@
                                     }
                                     proc({
                                         containerId: 'grade',
-                                        data: getGrade(grades),
+                                        data: grades,
                                         templateId: 'grade-template'
                                     })
                                 }
