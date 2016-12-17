@@ -34,7 +34,7 @@ public class Video implements com.baremind.data.Entity {
     @Column(name = "store_path")
     private String storePath;
 
-    @Column(name = "cover")
+    @Column(name = "cover_id")
     private Long cover;
 
     @Column(name = "bit_rate")

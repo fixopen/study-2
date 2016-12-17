@@ -2,6 +2,7 @@ package com.baremind.data;
 
 import com.baremind.ProblemOptions;
 import com.baremind.utils.JPAEntry;
+import com.google.gson.Gson;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -86,7 +87,7 @@ public class Problem implements com.baremind.data.Entity {
         }
         List<Map<String, Object>> poms = problemOptions.stream().map(ProblemOption::convertToMap).collect(Collectors.toList());
         pm.put("options", poms);
-        pm.put("standardAnswers", problemStandardAnswers);
+        pm.put("standardAnswers",  new Gson().toJson(problemStandardAnswers));
         pm.put("name", problemItem.getName());
         Image image = JPAEntry.getObject(Image.class, "id", problemItem.getImageId());
         if (image != null) {
