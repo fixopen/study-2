@@ -1740,6 +1740,7 @@
             isInit: false,
             init: function () {
                 if (!state.passed.isInit) {
+                    xiao(objectId, video)
                     $(document).on('click', '.passed-detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                         if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
