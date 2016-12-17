@@ -119,35 +119,6 @@
 
 <body>
 <article id="main">
-
-    <div id="div1">
-        <div class="tan"></div>
-        <div class="window1"><!-- 有此卡扣豆提醒 -->
-            <a class="windowClose" href="#"></a>
-            <div class="win_neir koudou_win">
-                <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
-                <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-                <p class="neir_pBtn kou_dou">
-                    <a class="p_btn" href="#" onclick="div2show()">确定</a>
-                </p>
-            </div>
-        </div>
-        <div class="window1"><!-- 无此卡扣豆提醒 -->
-            <a class="windowClose" href="#"></a>
-            <div class="win_neir koudou_win">
-                <p class="neir_ptxt">您还没有数学卡</p>
-                <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">150</span>金豆吗？</p>
-                <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-                <p class="neir_pBtn kou_dou">
-                    <a class="p_btn" href="#">确定</a>
-                </p>
-                <p class="neir_pBtn2">
-                    <a class="p_buyka" href="#">买数学卡</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
     <div class="wrap">
         <div class="rain-main  noPadd">
             <div class="kebiao_tou" id="schedulerEntry" data-article="scheduler">
@@ -200,31 +171,6 @@
     </div>
 </article>
 <article id="passed" style="display: none;" class="noBackg">
-    <div class="tan" style="display: none;"></div>
-    <div class="window1"><!-- 有此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
-        </div>
-    </div>
-    <div class="window1" style="display: none;"><!-- 无此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">您还没有数学卡</p>
-            <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">20</span>金豆吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="#">买数学卡</a>
-            </p>
-        </div>
-    </div>
     <div class="wrap">
         <div class="tiao_jian">
             <div class="tiaoj_TJ">
@@ -326,7 +272,7 @@
 <!--********************************main***********************-->
 <template id="chinese-playing-template">
     <div class="all_uli">
-        <div class="all_liplay" onclick="div1Show()">
+        <div class="all_liplay" onclick="div1Show()" data-id="${id}">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
@@ -547,9 +493,9 @@
 </template>
 <!--***********************************passed*****************************************-->
 <template id="chinese-template">
-    <li class="all_uli">
-        <div class="all_liplay" onclick="div3Show()">
-            <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
+    <li class="asd all_uli">
+        <div class="all_liplay">
+            <div class="all_aBtn" data-id="${id}" data-article="videoDetail">
                 <div class="leftJinDou"><span>150</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
@@ -1144,13 +1090,13 @@
                             for (var j = 0; j < p.options.length; ++j) {
                                 p.options[j].title = String.fromCharCode(65 + j);
                             }
-                            if(p.standardAnswers.substring(0)=="\"") {
+                            if (p.standardAnswers.substring(0) == "\"") {
                                 //字符串以"开头，去掉"
-                                p.standardAnswers=p.standardAnswers.substr(1,p.standardAnswers.length-1)
+                                p.standardAnswers = p.standardAnswers.substr(1, p.standardAnswers.length - 1)
                             }
-                            if(p.standardAnswers.substring(p.standardAnswers.length-1)=="\"") {
+                            if (p.standardAnswers.substring(p.standardAnswers.length - 1) == "\"") {
                                 //字符串以"结尾，去掉"
-                                p.standardAnswers=p.standardAnswers.substr(0,p.standardAnswers.length-2)
+                                p.standardAnswers = p.standardAnswers.substr(0, p.standardAnswers.length - 2)
                             }
                         }
                         $.ajax({
@@ -1612,6 +1558,7 @@
                 switchTo(id)
             })
 
+
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
@@ -1804,7 +1751,14 @@
                             $(this).children('img').eq(0).show();
                         }
                     })
-
+                    $('.asd').on('click', function (e) {
+                        var element = e.target;
+                        var id = element.dataset.article;
+                        if (element.dataset.id) {
+                            id = element.dataset.id
+                        }
+                        alert("直播ID====="+id)
+                    })
                     $(document).on('click', '[data-type="subject"]', function (e) {
                         //hide subjects
                         state.passed.subject.style.display = 'none'
@@ -1951,12 +1905,12 @@
                             passed[i].type = 'math'
                         }
                     }
-                    for (var i = 0; i < passed.length; ++i) {
-                        if (!passed[i].cdnLink || passed[i].cdnLink == '') {
-                            passed.splice(i, 1)
-                            --i
-                        }
-                    }
+//                    for (var i = 0; i < passed.length; ++i) {
+//                        if (!passed[i].cdnLink || passed[i].cdnLink == '') {
+//                            passed.splice(i, 1)
+//                            --i
+//                        }
+//                    }
                     proc({
                         data: passed,
                         containerId: 'video',
@@ -2124,7 +2078,7 @@
                 })
 
 
-                var icon=document.getElementById(icon)
+                var icon = document.getElementById('icon')
                 if (data.liked) {
                     icon.setAttribute('src', 'images/zanover.png');
                 } else {

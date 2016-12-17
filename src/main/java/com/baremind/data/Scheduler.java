@@ -245,11 +245,11 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
 //        schedulerMap.put("abstraction", scheduler.getAbstraction());
 //        schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
-        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
+       /* Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
         if (cover != null) {
             schedulerMap.put("cover", cover.getStorePath());
-        }
-        User teacher = Resources.findItem(teachers, item -> item.getId() == scheduler.getTeacherId());
+        }*/
+        User teacher = JPAEntry.getObject(User.class,"id",scheduler.getTeacherId());
         if (teacher != null) {
             schedulerMap.put("teacher", teacher.getName());
             schedulerMap.put("teacherDescription", teacher.getDescription());
@@ -277,7 +277,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("name", scheduler.getName());
 //        schedulerMap.put("abstraction", scheduler.getAbstraction());
 //        schedulerMap.put("outline", scheduler.getOutline());
-        schedulerMap.put("description", scheduler.getDescription());
+        /*schedulerMap.put("description", scheduler.getDescription());
         Image cover = JPAEntry.getObject(Image.class, "id", scheduler.getCoverId());
         if (cover != null) {
             schedulerMap.put("cover", cover.getStorePath());
@@ -286,7 +286,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         if (teacher != null) {
             schedulerMap.put("teacher", teacher.getName());
             schedulerMap.put("teacherDescription", teacher.getDescription());
-        }
+        }*/
         schedulerMap.put("price", scheduler.getPrice());
         schedulerMap.put("discount", scheduler.getDiscount());
         //schedulerMap.put("price", scheduler.getAmount());
