@@ -23,34 +23,35 @@ public class Schedulers {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        List<Scheduler> r = JPAEntry.getList(Scheduler.class, Impl.getFilters(filter));
-        List<String> ids = new ArrayList<>();
-        List<String> teacherIds = new ArrayList<>();
-        List<String> coverIds = new ArrayList<>();
-        for (Scheduler ri : r) {
-            ids.add(ri.getId().toString());
-            teacherIds.add(ri.getTeacherId().toString());
-            coverIds.add(ri.getCoverId().toString());
-        }
-        EntityManager em = JPAEntry.getEntityManager();
-        List<User> teachers = Resources.getList(em, teacherIds, User.class);
-        List<Image> covers = Resources.getList(em, coverIds, Image.class);
+            List<Scheduler> r = JPAEntry.getList(Scheduler.class, Impl.getFilters(filter));
+            List<String> ids = new ArrayList<>();
+            List<String> teacherIds = new ArrayList<>();
+            List<String> coverIds = new ArrayList<>();
+            for (Scheduler ri : r) {
+                ids.add(ri.getId().toString());
+                teacherIds.add(ri.getTeacherId().toString());
+                coverIds.add(ri.getCoverId().toString());
+            }
+            EntityManager em = JPAEntry.getEntityManager();
+            List<User> teachers = Resources.getList(em, teacherIds, User.class);
+            List<Image> covers = Resources.getList(em, coverIds, Image.class);
 
-        String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
-        Query lq = em.createQuery(likeCountQuery);
-        final List<Object[]> likeStats = lq.getResultList();
-        String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
-        Query rq = em.createQuery(readCountQuery);
-        final List<Object[]> readStats = lq.getResultList();
-        String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginUser(sessionId).getId().toString() + " GROUP BY l.objectId";
-        Query ldq = em.createQuery(likedQuery);
-        final List<Object[]> likedStats = ldq.getResultList();
+            String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
+            Query lq = em.createQuery(likeCountQuery);
+            final List<Object[]> likeStats = lq.getResultList();
+            String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
+            Query rq = em.createQuery(readCountQuery);
+            final List<Object[]> readStats = lq.getResultList();
+            String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginUser(sessionId).getId().toString() + " GROUP BY l.objectId";
+            Query ldq = em.createQuery(likedQuery);
+            final List<Object[]> likedStats = ldq.getResultList();
 
-        Map<String, String> orders = new HashMap<>();
-        orders.put("startTime", "DESC");
-        return Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, teachers, covers, likeStats, likedStats, readStats), null);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("startTime", "DESC");
+
+            return Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, teachers, covers, likeStats, likedStats, readStats), null);
+
     }
-
     @GET //根据id查询
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
