@@ -1,8 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.Image;
-import com.baremind.data.Scheduler;
-import com.baremind.data.User;
+import com.baremind.data.*;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
@@ -225,6 +223,48 @@ public class Schedulers {
             TypedQuery<Scheduler> q = em.createQuery(stats, Scheduler.class);
             List<Scheduler> schedulers = q.getResultList();
             result = Response.ok(new Gson().toJson(schedulers)).build();
+        }
+        return result;
+    }
+
+
+    @GET
+    @Path("one/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@CookieParam("sessionId") String sessionId,@PathParam("id") Long id) {
+        Response result = Impl.validationUser(sessionId);
+        Map map = new HashMap();
+        if (result.getStatus() == 202) {
+            Session session = JPAEntry.getSession(sessionId);
+            Logs.insert(session.getUserId(),"playback",id,"read");
+            Scheduler scheduler = JPAEntry.getObject(Scheduler.class, "id", id);
+            map.put("id",scheduler.getId());
+            map.put("grade",scheduler.getGrade());
+            map.put("cdnLink",scheduler.getDirectLink());
+            map.put("cover",scheduler.getCoverId());
+            map.put("day",scheduler.getDay());
+            map.put("description",scheduler.getDescription());
+            map.put("year",scheduler.getYear());
+            map.put("week",scheduler.getWeek());
+            map.put("title",scheduler.getName());
+            map.put("teacher",scheduler.getTeacherId());
+            map.put("subjectId",scheduler.getSubjectId());
+            map.put("startTime",scheduler.getStartTime());
+            map.put("endtime",scheduler.getEndTime());
+
+            map.put("outline",scheduler.getOutline());
+            map.put("prepare",scheduler.getPrepare());
+            map.put("generalization",scheduler.getOutline());
+
+            map.put("readCount",Logs.getStatsCount("playback", id, "read"));
+            map.put("likeCount",Logs.getStatsCount("playback", id, "like"));
+            map.put("liked", Logs.has(session.getUserId(), "playback", id, "like"));
+            Map<String, Object> cc = new HashMap<>();
+            cc.put("objectType", "playback");
+            cc.put("objectId", id);
+            map.put("comments",JPAEntry.getList(Comment.class, cc));
+            map.put("teacherdescription",scheduler.getDescription());
+            result = Response.ok(map).build();
         }
         return result;
     }
