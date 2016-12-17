@@ -188,5 +188,18 @@ public class KnowledgePoints {
         }
         return result;
     }
+
+    static String join(List<String> ids) {
+        String result = "";
+        boolean isFirst = true;
+        for (String id : ids) {
+            if (!isFirst) {
+                result += ", ";
+            }
+            result += id;
+            isFirst = false;
+        }
+        return result;
+    }
 }
 

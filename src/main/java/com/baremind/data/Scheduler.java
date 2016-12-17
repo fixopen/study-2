@@ -48,17 +48,17 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "abstraction")
-    private String abstraction;
-
+  /*  @Column(name = "abstraction")
+    private String abstraction;*/
+/*
     @Column(name = "outline")
-    private String outline;
+    private String outline;*/
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "prepare")
-    private String prepare;
+  /*  @Column(name = "prepare")
+    private String prepare;*/
 
     @Column(name = "cover_id")
     private Long coverId;
@@ -151,22 +151,22 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.name = name;
     }
 
-    public String getAbstraction() {
+  /*  public String getAbstraction() {
         return abstraction;
     }
 
     public void setAbstraction(String abstraction) {
         this.abstraction = abstraction;
-    }
+    }*/
 
-    public String getOutline() {
+   /* public String getOutline() {
         return outline;
     }
 
     public void setOutline(String outline) {
         this.outline = outline;
     }
-
+*/
     public String getDescription() {
         return description;
     }
@@ -175,13 +175,13 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.description = description;
     }
 
-    public String getPrepare() {
+  /*  public String getPrepare() {
         return prepare;
     }
 
     public void setPrepare(String prepare) {
         this.prepare = prepare;
-    }
+    }*/
 
     public Long getCoverId() {
         return coverId;
@@ -231,7 +231,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.discount = discount;
     }
 
-    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount) {
+    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount,List<Comment> comments) {
         Map<String, Object> schedulerMap = new HashMap<>();
         schedulerMap.put("id", scheduler.getId());
         schedulerMap.put("year", scheduler.getYear());
@@ -242,8 +242,8 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("subjectId", scheduler.getSubjectId());
         schedulerMap.put("grade", scheduler.getGrade());
         schedulerMap.put("name", scheduler.getName());
-        schedulerMap.put("abstraction", scheduler.getAbstraction());
-        schedulerMap.put("outline", scheduler.getOutline());
+//        schedulerMap.put("abstraction", scheduler.getAbstraction());
+//        schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
         Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
         if (cover != null) {
@@ -259,6 +259,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         //schedulerMap.put("price", scheduler.getAmount());
         schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
         schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
+        schedulerMap.put("comments", Resources.findItems(comments, c -> c.getObjectId() == scheduler.getId()));
         schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != null);
         return schedulerMap;
     }
@@ -274,8 +275,8 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("subjectId", scheduler.getSubjectId());
         schedulerMap.put("grade", scheduler.getGrade());
         schedulerMap.put("name", scheduler.getName());
-        schedulerMap.put("abstraction", scheduler.getAbstraction());
-        schedulerMap.put("outline", scheduler.getOutline());
+//        schedulerMap.put("abstraction", scheduler.getAbstraction());
+//        schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
         Image cover = JPAEntry.getObject(Image.class, "id", scheduler.getCoverId());
         if (cover != null) {
@@ -302,6 +303,12 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         }
         return schedulerMap;
     }
+
+
+
+
+
+
 
     @Override
     public Long getAmount() {
