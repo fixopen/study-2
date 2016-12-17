@@ -1115,14 +1115,14 @@ public class PublicAccounts {
     @Produces(MediaType.TEXT_HTML)
     public Response chinese(@Context HttpServletRequest request, @QueryParam("code") String code) {
         System.out.println("===================语文开始==========================");
-        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/content.html?subject=chinese");
+        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/content.html?subjectId=1");
     }
     @GET
     @Path("math")
     @Produces(MediaType.TEXT_HTML)
     public Response math(@Context HttpServletRequest request, @QueryParam("code") String code) {
         System.out.println("===================数学开始==========================");
-        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/content.html?subject=math");
+        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/content.html?subjectId=2");
     }
 
     @GET
