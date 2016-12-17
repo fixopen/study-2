@@ -2,6 +2,7 @@ package com.baremind;
 
 import com.baremind.data.AnswerRecord;
 import com.baremind.utils.Impl;
+import com.baremind.utils.JPAEntry;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -9,6 +10,7 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.JarEntry;
 
 /**
  * Created by User on 2016/9/27.
@@ -35,6 +37,8 @@ public class AnswerRecords {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, AnswerRecord entity) {
+        entity.setUserId(JPAEntry.getLoginUser(sessionId).getId());
+        entity.setCreateTime(new Date());
         return Impl.create(sessionId, entity, null, null);
     }
 

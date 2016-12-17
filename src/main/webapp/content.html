@@ -9,8 +9,7 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="screen-orientation" content="portrait"/>
     <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="myUser/css/Popup.css">
-    <link rel="stylesheet" href="myUser/css/global.css">
+
 
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="css/global.css">
@@ -22,6 +21,8 @@
     <link rel="stylesheet" href="css/english-detail.css">
     <link rel="stylesheet" href="css/catalog.css">
 
+    <link rel="stylesheet" href="myUser/css/Popup.css">
+    <link rel="stylesheet" href="myUser/css/global.css">
 
 </head>
 <body>
@@ -536,7 +537,7 @@
 </template>
 <template id="problem-option-template">
     <li class="mld_daanLi">
-        <span class="daan_quan">${title}</span>
+        <span class="daan_quan" data-id="${id}">${title}</span>
         <input class="daana" name="daan3" type="radio">${name}
     </li>
 </template>
@@ -1216,20 +1217,20 @@
             data: JSON.stringify(filter),
             contentType: "application/json; charset=utf-8",
             success: function (e) {
-                alert("成功")
+                //  alert("成功")
                 nones(none)
                 na(object_Type, object_Id)
             },
             error: function (e) {
                 result = e;
-                alert(JSON.stringify(e))
+                // alert(JSON.stringify(e))
                 switch (JSON.stringify(e.status)) {
                     case "408":
-                        alert("余额不足")
+                        //     alert("余额不足")
                         nones(none)
                         break;
                     case "200":
-                        alert("成功")
+                        //      alert("成功")
                         nones(none)
                         break;
                 }
@@ -1253,56 +1254,48 @@
     }
     function na(object_Type, objectId) {
         object_Types = object_Type,
-        object_Id = objectId,
-        $.ajax({
-            type: "get",
-            url: "/api/resources/" + object_Types + "/" + object_Id + "",
-            dataType: "json",
-            success: function (e) {
-                alert("成功")
-                alert(JSON.stringify(e))
-                //  选项ABCD
-                for (var i = 0; i < e.problems.length; ++i) {
-                    var p = e.problems[i];
-                    for (var j = 0; j < p.options.length; ++j) {
-                        p.options[j].title = String.fromCharCode(65 + j);
-                    }
-                    if(p.standardAnswers.substring(0)=="\"") {
-                        //字符串以"开头，去掉"
-                        p.standardAnswers=p.standardAnswers.substr(1,p.standardAnswers.length-1)
-                        }
-                    if(p.standardAnswers.substring(p.standardAnswers.length-1)=="\"") {
-                        //字符串以"结尾，去掉"
-                        p.standardAnswers=p.standardAnswers.substr(0,p.standardAnswers.length-2)
-                        }
-                }
+                object_Id = objectId,
                 $.ajax({
                     type: "get",
-                    url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/is-self-like',
+                    url: "/api/resources/" + object_Types + "/" + object_Id + "",
                     dataType: "json",
-                    success: function (like) {
-                        state.knowledgePoint.value.liked = like.like
-                        state.knowledgePoint.value.contents = e
-                        for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
-                            $.ajax({
-                                type: "get",
-                                url: '/api/comments/' + state.knowledgePoint.value.contents.comments[s].id + '/is-self-like',
-                                dataType: "json",
-                                async: false,
-                                success: function (like) {
-                                    state.knowledgePoint.value.contents.comments[s].liked = like.like;
-//                                                    state.knowledgePoint.show()
-                                }
-                            })
+                    success: function (e) {
+                        //  alert("成功")
+                        // alert(JSON.stringify(e))
+                        //  选项ABCD
+                        for (var i = 0; i < e.problems.length; ++i) {
+                            var p = e.problems[i];
+                            for (var j = 0; j < p.options.length; ++j) {
+                                p.options[j].title = String.fromCharCode(65 + j);
+                            }
                         }
-                        state.knowledgePoint.show()
+                        $.ajax({
+                            type: "get",
+                            url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/is-self-like',
+                            dataType: "json",
+                            success: function (like) {
+                                state.knowledgePoint.value.liked = like.like
+                                state.knowledgePoint.value.contents = e
+                                for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: '/api/comments/' + state.knowledgePoint.value.contents.comments[s].id + '/is-self-like',
+                                        dataType: "json",
+                                        async: false,
+                                        success: function (like) {
+                                            state.knowledgePoint.value.contents.comments[s].liked = like.like;
+//                                                    state.knowledgePoint.show()
+                                        }
+                                    })
+                                }
+                                state.knowledgePoint.show()
+                            }
+                        })
+                    },
+                    error: function (e) {
+                        tan(cards, ke, object_Types, object_Id)
                     }
                 })
-            },
-            error: function (e) {
-                tan(cards, ke, object_Types, object_Id)
-            }
-        })
     }
     /*  //关闭弹窗
      var close = document.getElementsByClassName("close")
@@ -1312,7 +1305,7 @@
 
     var purchase1 = document.getElementById("a11")
     purchase1.addEventListener('click', function (e) {
-        alert("购买1")
+        //   alert("购买1")
 //                    sourceId, sourceType, objectId, objectType, count, money
         atom(card.id, "card", object_Id, object_Types, count, price, 1);
 //        sourceId, sourceType, object_Id, object_Type, count, money, none
@@ -1320,13 +1313,13 @@
 
     var purchase2 = document.getElementById("a13")
     purchase2.addEventListener('click', function (e) {
-        alert("购买2")
+        // alert("购买2")
 //                    sourceId, sourceType, objectId, objectType, count, money
         atom(card.id, "card", object_Id, object_Types, count, price, 3);
     })
     var recharge1 = document.getElementById("a21")
     recharge1.addEventListener('click', function (e) {
-        alert("充值1")
+        // alert("充值1")
         d.getElementById("1").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
@@ -1336,7 +1329,7 @@
 
     var recharge2 = document.getElementById("a12")
     recharge2.addEventListener('click', function (e) {
-        alert("充值2")
+        // alert("充值2")
         d.getElementById("2").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
@@ -1346,7 +1339,7 @@
 
     var recharge3 = document.getElementById("a23")
     recharge3.addEventListener('click', function (e) {
-        alert("充值3")
+        //  alert("充值3")
         d.getElementById("3").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
@@ -1356,7 +1349,7 @@
 
     var recharge4 = document.getElementById("a14")
     recharge4.addEventListener('click', function (e) {
-        alert("充值4")
+        //  alert("充值4")
         d.getElementById("4").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
@@ -1366,7 +1359,7 @@
 
     var turnOut1 = document.getElementById("a22")
     turnOut1.addEventListener('click', function (e) {
-        alert("转入1")
+        //  alert("转入1")
         d.getElementById("2").style.display = "none"
         turnOutPage(cards, "z")
         //d.getElementById("1").style.display = "none"
@@ -1375,7 +1368,7 @@
 
     var turnOut2 = document.getElementById("a24")
     turnOut2.addEventListener('click', function (e) {
-        alert("转入2")
+        //   alert("转入2")
         d.getElementById("4").style.display = "none"
         turnOutPage(cards, "z")
         //d.getElementById("1").style.display = "none"
@@ -1527,8 +1520,6 @@
         } else if (cards.length == 1) {
             dan(cards);
         }
-
-
     }
 
 
@@ -1585,6 +1576,25 @@
         d.getElementById("c").style.display = "block"
     }
 
+    function ss(problemId, index) {
+        var data = {
+            problemId: problemId,
+            index: index,
+        }
+        $.ajax({
+            type: "post",
+            url: "/api/answer-records/",
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            success: function (e) {
+                alert(JSON.stringify(e))
+            },
+            error: function (e) {
+                alert(JSON.stringify(e))
+            }
+        })
+    }
     //    --------------------------------------------------------------弹窗js开始
 
     /*
@@ -1627,7 +1637,10 @@
             //var userId = g.getUrlParameter('userid')
             //g.setCookie('userId', userId)
 
-            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
+            var sessionId = g.getUrlParameter('sessionId')
+            g.setCookie('sessionId', sessionId)
+
+//            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
 
             $.ajax({
                 type: 'GET',
@@ -2152,6 +2165,7 @@
             init: function () {
                 var falseImage = getTemplate('falseImage');
                 var trueImage = getTemplate('trueImage');
+                var selectedId;
                 $(document).on('click', '.mld_daanLi', function (e) {
                     var elm = e.currentTarget
                     if (state.volumes.parentId == 1) {
@@ -2160,6 +2174,7 @@
                         var problemType = elm.parentNode.previousElementSibling.previousElementSibling.dataset.type;
                     }
                     var titleElement = elm.children[1]
+                    selectedId = elm.firstElementChild.dataset.id;
                     switch (problemType) {
                         case '多选题':
                             if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected == true) {
@@ -2200,6 +2215,8 @@
                             option.firstElementChild.innerHTML = ''
                             option.firstElementChild.removeClass('daanLi_nowBai');
                             option.firstElementChild.appendChild(trueImage.cloneNode(true))
+                            var selectedIndex = state.knowledgePoint.findIndex(selectedId);
+                            ss(problem.id, selectedIndex)
                         }
                         if (option.children[1].dataset.selected == 'true' || option.children[1].dataset.selected == true) {
                             if (!state.knowledgePoint.compareAnswer(i, problem.standardAnswers)) {
@@ -2207,12 +2224,15 @@
                                 option.firstElementChild.innerHTML = ''
                                 option.firstElementChild.removeClass('daanLi_nowBai');
                                 option.firstElementChild.appendChild(falseImage.cloneNode(true))
+                                var selectedIndex = state.knowledgePoint.findIndex(selectedId);
+                                ss(problem.id, selectedIndex)
                             }
                         }
                     }
                 })
             },
             parentId: 0,
+            isXiao: false,
             changeId: function (knowledgePointId) {
                 if (state.knowledgePoint.parentId != knowledgePointId) {
                     state.knowledgePoint.parentId = knowledgePointId
@@ -2256,6 +2276,7 @@
 //                            }
 //                        })
                         xiao(state.knowledgePoint.value.id, 'knowledge-point');
+//                        state.knowledgePoint.isXiao=true;
                         state.knowledgePoint.show()
                     } else {
                         state.knowledgePoint.show()
@@ -2396,8 +2417,10 @@
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
-
-                      //  xiao(state.knowledgePoint.value.id, 'knowledge-point');
+                        if (state.knowledgePoint.isXiao = false) {
+                            xiao(state.knowledgePoint.value.id, 'knowledge-point');
+                            // state.knowledgePoint.isXiao=false
+                        }
 
                         proc({
                             containerId: 'knowledgePoint',
@@ -2479,7 +2502,7 @@
                             case 'normalOldLike':
                             case 'normalOldUnlike':
 
-                                xiao(state.knowledgePoint.value.id, 'knowledge-point');
+                                //  xiao(state.knowledgePoint.value.id, 'knowledge-point');
 
                                 proc({
                                     containerId: 'knowledgePoint',
@@ -2586,7 +2609,7 @@
                             case 'pkNewUnlike':
                             case 'pkOldLike':
                             case 'pkOldUnlike':
-                                xiao(state.knowledgePoint.value.id, 'knowledge-point');
+                                //  xiao(state.knowledgePoint.value.id, 'knowledge-point');
 
                                 proc({
                                     containerId: 'knowledgePoint',
@@ -2643,7 +2666,7 @@
                         break
                     case 3:
                     case "3":
-                        xiao(state.knowledgePoint.value.id, 'knowledge-point');
+                        //  xiao(state.knowledgePoint.value.id, 'knowledge-point');
 
                         proc({
                             containerId: 'knowledgePoint',
@@ -2773,6 +2796,26 @@
                     }
                 }
                 return problem
+            },
+            findIndex: function (optionsId) {
+                var index = null
+                var finded = false
+                for (var i = 0; i < state.knowledgePoint.value.contents.problems.length; ++i) {
+                    for (var j = 0; i < state.knowledgePoint.value.contents.problems[i].options.length; ++i) {
+                        if (state.knowledgePoint.value.contents.problems[i].options[j].id == optionsId) {
+                            index = state.knowledgePoint.value.contents.problems[i].options[j].order - 1;
+                            finded = true
+                            break
+                        }
+                        if (finded) {
+                            break
+                        }
+                    }
+                    if (finded) {
+                        break
+                    }
+                }
+                return index
             },
             compareAnswer: function (index, standardAnswers) {
                 var finded = false

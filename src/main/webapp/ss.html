@@ -38,6 +38,26 @@
 
 </body>
 <script>
+    ss(11104,0)
+    function ss(problemId,index) {
+        var data={
+            problemId:problemId,
+            index:index,
+        }
+        $.ajax({
+            type:"post",
+            url:"/api/answer-records/",
+            dataType:"json",
+            data:JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            success:function (e) {
+                alert(JSON.stringify(e))
+            },
+            error:function (e) {
+                alert(JSON.stringify(e))
+            }
+        })
+    }
     /*function transfers(sourceId,sourceType,objectId,objectType,count) {
         /!*var filter = {转账
             sourceId:sourceId,

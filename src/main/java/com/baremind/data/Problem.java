@@ -86,8 +86,9 @@ public class Problem implements com.baremind.data.Entity {
             pm.put("type", "单选题");
         }
         List<Map<String, Object>> poms = problemOptions.stream().map(ProblemOption::convertToMap).collect(Collectors.toList());
+        List<Map<String, Object>> pas = problemStandardAnswers.stream().map(ProblemStandardAnswer::convertToMap).collect(Collectors.toList());
         pm.put("options", poms);
-        pm.put("standardAnswers",  new Gson().toJson(problemStandardAnswers));
+        pm.put("standardAnswers",pas);
         pm.put("name", problemItem.getName());
         Image image = JPAEntry.getObject(Image.class, "id", problemItem.getImageId());
         if (image != null) {
