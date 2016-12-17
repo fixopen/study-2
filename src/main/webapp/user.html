@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户信息</title>
+    <title>我的账号</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
           id="viewport"/>
@@ -782,6 +782,7 @@
         },
         currentArticle: document.getElementById('sign'),
         init: function () {
+            alert("没有来吗？");
             wechatUserId = g.getUrlParameter("wechatUserId");
             sessionId = g.getUrlParameter("sessionId");
             g.setCookie("sessionId",sessionId,"/api")
@@ -1153,6 +1154,7 @@
         },
         user: {
             init: function () {
+                alert("到底来没来")
                 if (user == null) {
                     $.ajax({
                         type: 'get',
@@ -1418,7 +1420,6 @@
 
             }
         },
-
         info: {
             isInit: false,
             init: function () {
@@ -1933,7 +1934,7 @@
                         i = 1;
                     }
                 })
-                var p3 = document.getElementById("oldpwd");
+                /*var p3 = document.getElementById("oldpwd");
                 p3.addEventListener('blur', function () {
                     var pwd3 = $("#oldpwd").val();
                     if (pwd3.length >= 6 && pwd3.length <= 16) {
@@ -1943,7 +1944,7 @@
                         document.getElementById("error").innerHTML = "请输入6-16位密码"
                         x = 0;
                     }
-                })
+                })*/
 
                 /*function validatePWD1() {
                  var pwd1 = $("#newpwd1").val();
@@ -1993,12 +1994,7 @@
                 })
                 pwdSave.addEventListener('click', function () {
                     if (i == 1 && j == 1 && x == 1) {
-                        var old = $("#oldpwd").val();
-                        if (old == "") {
-                            old = null
-                        }
                         var data = {
-                            oldpassword: old,
                             yearpassword: $("#newpwd2").val(),
                         }
                         $.ajax({

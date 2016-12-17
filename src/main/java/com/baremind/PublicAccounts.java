@@ -1033,12 +1033,9 @@ public class PublicAccounts {
 //        return result;
 //    }
 
-    @GET
-    @Path("user")
-    @Produces(MediaType.TEXT_HTML)
-    public Response user(@Context HttpServletRequest request, @QueryParam("code") String code) {
-        Response result = null;
-        System.out.println("===================开始==========================");
+    public Response click(Cookie[] cookies, String code, String url){
+        Response result = Response.status(401).build();
+        Session s = null;
         Map<String, Object> tokenInfo = getTokenByCode(code);
         User user = null;
         String openId = (String) tokenInfo.get("openid");
@@ -1069,12 +1066,7 @@ public class PublicAccounts {
             em.close();
         }
 
-        Session s = null;
         System.out.println("根据openId得到这个微信用户的userId查到那个user不等于NULL");
-        Cookie[] cookies = request.getCookies();
-        System.out.println("request=================="+request);
-        System.out.println("request.getCookies()=================="+request.getCookies());
-        System.out.println("cookies=================="+cookies);
         if(cookies != null) {
             for (Cookie cookie : cookies) {
                 System.out.println("cookie.getName()==================" + cookie.getName());
@@ -1086,20 +1078,24 @@ public class PublicAccounts {
                 }
             }
         }else{
-            // Session userId = JPAEntry.getObject(Session.class, "userId", wechatUser.getUserId());
             if( wechatUser.getUserId() != null) {
                 System.out.println("==================cook是空的==================根据openid查询sessionId");
                 s = Sessions.resultCook(user, "WeChat", openId, new Date());
                 System.out.println("==================weChat=================根据openid查询sessionId===+============"+s);
             }
         }
+
         try {
             if (s == null) {
                 System.out.println("wechatUserId="+wechatUser.getId());
                 result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId())).build();
             } else {
-                System.out.println("sessionId="+s.getIdentity());
-                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?sessionId="+s.getIdentity())).build();
+                System.out.println("sessionId=" + s.getIdentity());
+                String a = "?";
+                if (url.contains("?")) {
+                    a = "&";
+                }
+                result = Response.seeOther(new URI(url + a +  "sessionId=" + s.getIdentity())).build();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -1107,71 +1103,35 @@ public class PublicAccounts {
         return result;
     }
 
-//    @GET
-//    @Path("chinese")
-//    @Produces(MediaType.TEXT_HTML)
-//    public Response chinese(@Context HttpServletRequest request, @QueryParam("code") String code) {
-//        Map<String, Object> wu = getTokenByCode(code);
-//        WechatUser wechatUser = convertTokenInfo(wu);
-//
-//        Response result = null;
-//        Date now = new Date();
-//        User user = getOrInsertUserByTokenInfo(now, wechatUser);
-//        if (user != null) {
-//            Long userId = user.getId();
-//            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
-//            try {
-//                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=chinese")).build();
-//            } catch (URISyntaxException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return result;
-//    }
-//
-//    @GET
-//    @Path("math")
-//    @Produces(MediaType.TEXT_HTML)
-//    public Response math(@Context HttpServletRequest request, @QueryParam("code") String code) {
-//        Map<String, Object> wu = getTokenByCode(code);
-//        WechatUser wechatUser = convertTokenInfo(wu);
-//
-//        Response result = null;
-//        Date now = new Date();
-//        User user = getOrInsertUserByTokenInfo(now, wechatUser);
-//        if (user != null) {
-//            Long userId = user.getId();
-//            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
-//            try {
-//                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity() + "&subject=math")).build();
-//            } catch (URISyntaxException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return result;
-//    }
-//
-//    @GET
-//    @Path("video")
-//    @Produces(MediaType.TEXT_HTML)
-//    public Response video(@Context HttpServletRequest request, @QueryParam("code") String code) {
-//        Map<String, Object> wu = getTokenByCode(code);
-//        WechatUser wechatUser = convertTokenInfo(wu);
-//
-//        Response result = null;
-//        Date now = new Date();
-//        User user = getOrInsertUserByTokenInfo(now, wechatUser);
-//        if (user != null) {
-//            Long userId = user.getId();
-//            Session s = putSession(now, userId, 0L); //@@deviceId is temp zero
-//            try {
-//                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/content/videos.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
-//            } catch (URISyntaxException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return result;
-//    }
+    @GET
+    @Path("user")
+    @Produces(MediaType.TEXT_HTML)
+    public Response user(@Context HttpServletRequest request ,@QueryParam("code") String code) {
+        System.out.println("===================我的开始==========================");
+        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/user.html");
+    }
+    @GET
+    @Path("chinese")
+    @Produces(MediaType.TEXT_HTML)
+    public Response chinese(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        System.out.println("===================语文开始==========================");
+        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/content.html?subject=chinese");
+    }
+    @GET
+    @Path("math")
+    @Produces(MediaType.TEXT_HTML)
+    public Response math(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        System.out.println("===================数学开始==========================");
+        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/content.html?subject=math");
+    }
+
+    @GET
+    @Path("video")
+    @Produces(MediaType.TEXT_HTML)
+    public Response video(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        System.out.println("===================直播开始==========================");
+        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/videos.html");
+    }
 
     //获取微信服务器ID
     //public static
