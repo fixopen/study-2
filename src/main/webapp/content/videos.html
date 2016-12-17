@@ -346,8 +346,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail detail" data-detail="${id}">详情
-                        <img src="images/xiala.png" alt="">
-                        <img src="images/xiala_sq.png" alt="">
+                        <img src="../images/xiala.png" alt="">
+                        <img src="../images/xiala_sq.png" alt="">
                     </div>
                 </div>
             </div>
@@ -357,19 +357,19 @@
                     <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="../images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p class="tim2">${description}</p>
 
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="../images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2">${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="../images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
@@ -402,8 +402,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail detail" data-detail="${id}">详情
-                        <img src="images/xiala.png" alt="">
-                        <img src="images/xiala_sq.png" alt="">
+                        <img src="../images/xiala.png" alt="">
+                        <img src="/images/xiala_sq.png" alt="">
                     </div>
                 </div>
             </div>
@@ -413,19 +413,19 @@
                     <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p class="tim2">${description}</p>
 
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2">${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
@@ -456,8 +456,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
-                        <img src="images/xiala_sx.png" alt="">
-                        <img src="images/xiala_sqsx.png" alt="">
+                        <img src="/images/xiala_sx.png" alt="">
+                        <img src="/images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
             </div>
@@ -467,19 +467,19 @@
                     <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p class="tim2">${description}</p>
 
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2">${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
@@ -512,8 +512,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
-                        <img src="images/xiala_sx.png" alt="">
-                        <img src="images/xiala_sqsx.png" alt="">
+                        <img src="/images/xiala_sx.png" alt="">
+                        <img src="/images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
             </div>
@@ -524,19 +524,19 @@
                     <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p class="tim2">${description}</p>
 
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2">${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
@@ -728,7 +728,7 @@
 <script src="/moment/moment.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
-<script src="/js/pikaday.js"></script>
+<!--<script src="/js/pikaday.js"></script>-->
 <script>
     //[{..., teachers: [], grades: [], playings: [], futures: [], ...}, ...]
     var subjects = []
@@ -1388,10 +1388,12 @@
                     templateId: 'live-video-template'
                 })
 
+
+                var icon=document.getElementById(icon)
                 if (data.liked) {
-                    icon.setAttribute('src', 'images/details/zanover.png');
+                    icon.setAttribute('src', 'images/zanover.png');
                 } else {
-                    icon.setAttribute('src', 'images/details/dianzan.png');
+                    icon.setAttribute('src', 'images/dianzan.png');
                 }
                 icon.addEventListener('click', function (e) {
                     if (data.liked) {
@@ -1402,7 +1404,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (unlike) {
-                                icon.setAttribute('src', 'images/details/dianzan.png');
+                                icon.setAttribute('src', 'images/dianzan.png');
                                 data.likeCount--
                                 e.target.nextElementSibling.textContent = data.likeCount
                                 data.liked = false;
@@ -1416,7 +1418,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (like) {
-                                icon.setAttribute('src', 'images/details/zanover.png');
+                                icon.setAttribute('src', 'images/zanover.png');
                                 ++data.likeCount;
                                 e.target.nextElementSibling.textContent = data.likeCount
                                 data.liked = true;
