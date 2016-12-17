@@ -88,19 +88,22 @@
         }
 
         .pika-single {
-            position: absolute!important;
+            position: absolute !important;
         }
 
         .pika-lendar {
             text-align: center;
         }
+
         .pika-lendar table {
             width: 100%;
             margin: 10px 0;
         }
+
         .pika-lendar th {
             text-align: center;
         }
+
         .pika-lendar td {
             text-align: center;
             font-size: 1rem;
@@ -228,9 +231,9 @@
                     <span class="filter_item">科目</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
-                    <li class="xiala_li">语文<img src="images/zbwq_zhong.png" alt=""></li>
-                    <li class="xiala_li">数学<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li">语文<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li">数学<img src="../images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
             <div class="tiaoj_TJ">
@@ -238,7 +241,7 @@
                     <span class="filter_item">老师</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
                     <ul id="teacher" class="xiala_liUl"></ul>
                 </ul>
             </div>
@@ -247,15 +250,15 @@
                     <span class="filter_item">年级</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
                     <ul id="grade" class="xiala_liUl"></ul>
                 </ul>
             </div>
             <!--<div class="tiaoj_TJ" id="dateSelect">-->
-                <!--<div class="tiaoj_span" id="datePicker">-->
-                    <!--<span class="filter_item">日期</span>-->
-                <!--</div>-->
-                <!--<div class="xiala_ul" id="date"></div>-->
+            <!--<div class="tiaoj_span" id="datePicker">-->
+            <!--<span class="filter_item">日期</span>-->
+            <!--</div>-->
+            <!--<div class="xiala_ul" id="date"></div>-->
             <!--</div>-->
         </div>
         <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
@@ -649,10 +652,10 @@
     </li>
 </template>
 <template id="teacher-template">
-    <li class="xiala_li">${teacher}<img src="images/zbwq_zhong.png" alt=""></li>
+    <li class="xiala_li">${teacher}<img src="../images/zbwq_zhong.png" alt=""></li>
 </template>
 <template id="grade-template">
-    <li class="xiala_li">${grade}<img src="images/zbwq_zhong.png" alt=""></li>
+    <li class="xiala_li">${grade}<img src="../images/zbwq_zhong.png" alt=""></li>
 </template>
 <template id="date-template">
     <li class="xiala_li"></li>
@@ -661,7 +664,7 @@
     <li class="jieG_li">
         <span>${selectedTxt}</span>
         <a href="javascript:void(0)">
-            <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
+            <img class="jieG_licha" src="../images/zhong_xiao.png" alt="">
         </a>
     </li>
 </template>
@@ -1161,29 +1164,35 @@
                     })
 
                     $(document).on('click', ".tiaoj_span", function (e) {
-                            if($(e.currentTarget).hasClass('cur')){
-                                $(e.currentTarget).removeClass('cur');
-                                $('.tan').hide();
-                                $('.tan').css("z-index", "9999");
-                                $(".xiala_ul").hide();
-                                $(e.currentTarget).siblings(".xiala_ul").hide();
-                            }else{
-                                $(".tiaoj_span").removeClass('cur');
-                                $(e.currentTarget).addClass('cur');
-                                $('.tan').show();
-                                $('.tan').css("z-index", "99");
-                                $(".xiala_ul").hide();
-                                $(e.currentTarget).siblings(".xiala_ul").show();
-                            }
-                        });
+                        if ($(e.currentTarget).hasClass('cur')) {
+                            $(e.currentTarget).removeClass('cur');
+                            $('.tan').hide();
+                            $('.tan').css("z-index", "9999");
+                            $(".xiala_ul").hide();
+                            $(e.currentTarget).siblings(".xiala_ul").hide();
+                        } else {
+                            $(".tiaoj_span").removeClass('cur');
+                            $(e.currentTarget).addClass('cur');
+                            $('.tan').show();
+                            $('.tan').css("z-index", "99");
+                            $(".xiala_ul").hide();
+                            $(e.currentTarget).siblings(".xiala_ul").show();
+                        }
+                    });
                     $(document).on('click', ".xiala_li", function (e) {
                         $(e.currentTarget).parents(".xiala_ul").find('.xiala_li').removeClass('cur');
                         $(e.currentTarget).addClass('cur');
                         $('.tan').hide();
                         $(e.currentTarget).parents(".xiala_ul").hide();
                         $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
+                        var $tuzhiTr = "<li class='jieG_li'><span></span><a href='javascript:void(0)'><img class='jieG_licha' src='images/zhong_xiao.png' alt=''></a></li>";
                         $('.tiaoj_jieG').show();
-                        alert($(e.currentTarget).text());
+                        $('.tiaoj_jieG').append($tuzhiTr);
+                        $('.tiaoj_jieG').children(".jieG_li").children('span').text($(this).text());
+                        var hei1 = document.getElementsByClassName('tiao_jian').height();
+                        var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
+                        document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
+//                        alert($(e.currentTarget).text());
                     });
 
                     $(document).on('click', ".shipin", function (e) {
@@ -1264,11 +1273,11 @@
 //fill to grades choice
                                     var grades = []
                                     for (var i = 0; i < g0s.length; ++i) {
-                                        g0s[i]=state.getGrade(g0s[i])
+                                        g0s[i] = state.getGrade(g0s[i])
                                         grades.push({grade: g0s[i]})
                                     }
                                     for (var i = 0; i < g1s.length; ++i) {
-                                        g1s[i]=state.getGrade(g1s[i])
+                                        g1s[i] = state.getGrade(g1s[i])
                                         grades.push({grade: g1s[i]})
                                     }
 //                                    for (var i = 0; i < grades.length; ++i) {
@@ -1305,18 +1314,13 @@
                     }, false)
                     state.passed.isInit = true
                 }
-
-                var picker = new Pikaday({
-                    field: document.getElementById('datePicker'),
-                    format: 'D MMM YYYY',
-                    onSelect: function () {
-                        console.log(this.getMoment().format('Do MMMM YYYY'));
-                    }
-                });
-
-                var hei1 = document.getElementsByClassName('tiao_jian').height();
-                var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
-                document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
+//                var picker = new Pikaday({
+//                    field: document.getElementById('datePicker'),
+//                    format: 'D MMM YYYY',
+//                    onSelect: function () {
+//                        console.log(this.getMoment().format('Do MMMM YYYY'));
+//                    }
+//                });
             },
             search: function () {
                 var result = []

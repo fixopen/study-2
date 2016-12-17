@@ -1,5 +1,6 @@
 package com.baremind;
 
+import com.baremind.data.Session;
 import com.baremind.data.Transaction;
 import com.baremind.data.TransferObject;
 import com.baremind.data.User;
@@ -12,7 +13,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -88,16 +89,13 @@ public class Transactions {
     @GET //根据sessionid查询
     @Path("self")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@CookieParam("sessionId") String sessionId) {
-        Response result = Impl.validationUser(sessionId);
-        if (result.getStatus() == 202) {
-            result = Response.status(404).build();
-
-
-            List<Transaction> list = JPAEntry.getList(Transaction.class, "userId", JPAEntry.getLoginUser(sessionId).getId());
-            if (list != null) {
-                result = Impl.finalResult(list,null);
-            }
+    public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
+        Response result = Response.status(401).build();
+        Map<String, Object> filterObject = Impl.getFilters(filter);
+        Session s = JPAEntry.getSession(sessionId);
+        if (s != null) {
+            filterObject.put("userId", s.getUserId());
+            result = Impl.get(sessionId, filterObject, null, Transaction.class, null, null);
         }
         return result;
     }
