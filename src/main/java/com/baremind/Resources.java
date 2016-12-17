@@ -37,6 +37,17 @@ public class Resources {
         return result;
     }
 
+    public static <T> List<T> getListByColumn(EntityManager em, String columnName, List<String> ids, Class<T> type) {
+        List<T> result = null;
+        if (!ids.isEmpty()) {
+            String query = "SELECT o FROM " + type.getSimpleName() + " o WHERE o." + columnName + " IN ( " + join(ids) + " )";
+            TypedQuery<T> pq = em.createQuery(query, type);
+            result = pq.getResultList();
+        }
+        return result;
+    }
+
+
     public static <T> List<T> getList(EntityManager em, List<String> ids, Class<T> type) {
         return getList(em, "id", ids, type);
     }
