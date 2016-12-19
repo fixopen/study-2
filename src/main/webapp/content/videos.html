@@ -88,19 +88,22 @@
         }
 
         .pika-single {
-            position: absolute!important;
+            position: absolute !important;
         }
 
         .pika-lendar {
             text-align: center;
         }
+
         .pika-lendar table {
             width: 100%;
             margin: 10px 0;
         }
+
         .pika-lendar th {
             text-align: center;
         }
+
         .pika-lendar td {
             text-align: center;
             font-size: 1rem;
@@ -116,34 +119,6 @@
 
 <body>
 <article id="main">
-    <div id="div1">
-        <div class="tan"></div>
-        <div class="window1"><!-- 有此卡扣豆提醒 -->
-            <a class="windowClose" href="#"></a>
-            <div class="win_neir koudou_win">
-                <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
-                <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-                <p class="neir_pBtn kou_dou">
-                    <a class="p_btn" href="#" onclick="div2show()">确定</a>
-                </p>
-            </div>
-        </div>
-        <div class="window1"><!-- 无此卡扣豆提醒 -->
-            <a class="windowClose" href="#"></a>
-            <div class="win_neir koudou_win">
-                <p class="neir_ptxt">您还没有数学卡</p>
-                <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">150</span>金豆吗？</p>
-                <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-                <p class="neir_pBtn kou_dou">
-                    <a class="p_btn" href="#">确定</a>
-                </p>
-                <p class="neir_pBtn2">
-                    <a class="p_buyka" href="#">买数学卡</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
     <div class="wrap">
         <div class="rain-main  noPadd">
             <div class="kebiao_tou" id="schedulerEntry" data-article="scheduler">
@@ -196,31 +171,6 @@
     </div>
 </article>
 <article id="passed" style="display: none;" class="noBackg">
-    <div class="tan" style="display: none;"></div>
-    <div class="window1"><!-- 有此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">确定要扣<span class="ptxt_span">150</span>金豆<br>观看本视频吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
-        </div>
-    </div>
-    <div class="window1" style="display: none;"><!-- 无此卡扣豆提醒 -->
-        <a class="windowClose" href="#"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt">您还没有数学卡</p>
-            <p class="neir_ptxt">确定要扣语文卡<span class="ptxt_span">20</span>金豆吗？</p>
-            <p class="neir_ptiX"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="#">确定</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="#">买数学卡</a>
-            </p>
-        </div>
-    </div>
     <div class="wrap">
         <div class="tiao_jian">
             <div class="tiaoj_TJ">
@@ -228,9 +178,9 @@
                     <span class="filter_item">科目</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
-                    <li class="xiala_li">语文<img src="images/zbwq_zhong.png" alt=""></li>
-                    <li class="xiala_li">数学<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li">语文<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li">数学<img src="../images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
             <div class="tiaoj_TJ">
@@ -238,7 +188,7 @@
                     <span class="filter_item">老师</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
                     <ul id="teacher" class="xiala_liUl"></ul>
                 </ul>
             </div>
@@ -247,15 +197,15 @@
                     <span class="filter_item">年级</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
                     <ul id="grade" class="xiala_liUl"></ul>
                 </ul>
             </div>
             <!--<div class="tiaoj_TJ" id="dateSelect">-->
-                <!--<div class="tiaoj_span" id="datePicker">-->
-                    <!--<span class="filter_item">日期</span>-->
-                <!--</div>-->
-                <!--<div class="xiala_ul" id="date"></div>-->
+            <!--<div class="tiaoj_span" id="datePicker">-->
+            <!--<span class="filter_item">日期</span>-->
+            <!--</div>-->
+            <!--<div class="xiala_ul" id="date"></div>-->
             <!--</div>-->
         </div>
         <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
@@ -322,7 +272,7 @@
 <!--********************************main***********************-->
 <template id="chinese-playing-template">
     <div class="all_uli">
-        <div class="all_liplay" onclick="div1Show()">
+        <div class="all_liplay" onclick="div1Show()" data-id="${id}">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
@@ -343,8 +293,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail detail" data-detail="${id}">详情
-                        <img src="images/xiala.png" alt="">
-                        <img src="images/xiala_sq.png" alt="">
+                        <img src="../images/xiala.png" alt="">
+                        <img src="../images/xiala_sq.png" alt="">
                     </div>
                 </div>
             </div>
@@ -354,19 +304,19 @@
                     <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="../images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p class="tim2">${description}</p>
 
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="../images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2">${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="../images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
@@ -399,8 +349,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail detail" data-detail="${id}">详情
-                        <img src="images/xiala.png" alt="">
-                        <img src="images/xiala_sq.png" alt="">
+                        <img src="../images/xiala.png" alt="">
+                        <img src="/images/xiala_sq.png" alt="">
                     </div>
                 </div>
             </div>
@@ -410,19 +360,19 @@
                     <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p class="tim2">${description}</p>
 
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2">${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
@@ -453,8 +403,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
-                        <img src="images/xiala_sx.png" alt="">
-                        <img src="images/xiala_sqsx.png" alt="">
+                        <img src="/images/xiala_sx.png" alt="">
+                        <img src="/images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
             </div>
@@ -464,19 +414,19 @@
                     <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p class="tim2">${description}</p>
 
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2">${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
@@ -509,8 +459,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail shuxue_Btn detail" data-detail="${id}">详情
-                        <img src="images/xiala_sx.png" alt="">
-                        <img src="images/xiala_sqsx.png" alt="">
+                        <img src="/images/xiala_sx.png" alt="">
+                        <img src="/images/xiala_sqsx.png" alt="">
                     </div>
                 </div>
             </div>
@@ -521,19 +471,19 @@
                     <span>${prepare}</span>
                 </div>
                 <h3 class="sml-tit brief1">
-                    <img src="images/abc.png" alt="">
+                    <img src="/images/abc.png" alt="">
                     课程简介
                 </h3>
                 <p class="tim2">${description}</p>
 
                 <h3 class="sml-tit brief2">
-                    <img src="images/zjr_btn.png" alt="">
+                    <img src="/images/zjr_btn.png" alt="">
                     主讲人简介
                 </h3>
                 <p class="tim2">${teacherDescription}</p>
 
                 <h3 class="sml-tit brief3">
-                    <img src="images/sxsj_btn.png" alt="">
+                    <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
                 <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
@@ -543,9 +493,9 @@
 </template>
 <!--***********************************passed*****************************************-->
 <template id="chinese-template">
-    <li class="all_uli">
-        <div class="all_liplay" onclick="div3Show()">
-            <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
+    <li class="asd all_uli">
+        <div class="all_liplay">
+            <div class="all_aBtn" data-id="${id}" data-article="videoDetail">
                 <div class="leftJinDou"><span>150</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
@@ -649,10 +599,10 @@
     </li>
 </template>
 <template id="teacher-template">
-    <li class="xiala_li">${teacher}<img src="images/zbwq_zhong.png" alt=""></li>
+    <li class="xiala_li">${teacher}<img src="../images/zbwq_zhong.png" alt=""></li>
 </template>
 <template id="grade-template">
-    <li class="xiala_li">${grade}<img src="images/zbwq_zhong.png" alt=""></li>
+    <li class="xiala_li">${grade}<img src="../images/zbwq_zhong.png" alt=""></li>
 </template>
 <template id="date-template">
     <li class="xiala_li"></li>
@@ -661,7 +611,7 @@
     <li class="jieG_li">
         <span>${selectedTxt}</span>
         <a href="javascript:void(0)">
-            <img class="jieG_licha" src="images/zhong_xiao.png" alt="">
+            <img class="jieG_licha" src="../images/zhong_xiao.png" alt="">
         </a>
     </li>
 </template>
@@ -719,14 +669,747 @@
     </tr>
 </template>
 
+<!----------------------------------------------------------------- 弹窗开始 -->
+<article id="selectCard" style="display: none">
+
+</article>
+<article id="selectOneCard" style="display: none">
+
+</article>
+<template id="selectCard-template">
+    <div class="wrap">
+        <ul class="mine_baodiv">
+            <li>
+                <a class="mine_zuli" href="#" data-id="${id}">
+                    <img class="mine_img1" src="${image}" alt="">
+                    <div class="mine_leftdiv">
+                        <span class="mine_leftsp">${subjectId}</span>
+                        <span class="mine_leftsp">${no}</span>
+                        <br>
+                        <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
+                    </div>
+                    <img src="" id="${id}" src="" class="mine_img2"/>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</template>
+<template id="selectOneCard-template">
+    <div class="wrap">
+        <ul class="mine_baodiv">
+            <li>
+                <a class="mine_zuli" href="javascript:void(0)">
+                    <img class="mine_img1" src="myUser/image/keBiao.png" alt="">
+                    <div class="mine_leftdiv">
+                        <span class="mine_leftsp">${subjectId}</span>
+                        <span class="mine_leftsp">${no}</span>
+                        <br>
+                        <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul class="mine_baodiv">
+            <li class="mine_liname">
+                <div class="mine_leftdiv">
+                    <p class="mine_zhaunc">转出金豆数量</p>
+                    <span class="mine_leftsp">金豆：</span>
+                    <input class="mine_zhauncIn" type="text" id="Number">
+                </div>
+            </li>
+        </ul>
+        <p class="turnOut_note">
+            最多可转出到卡
+            <span class="note_number" id="tishi"></span>
+        </p>
+        <div class="zhaunc_btn">
+            <a class="zhaunc_a" href="#" id="submitTransfer">确认转出</a>
+
+        </div>
+    </div>
+</template>
+<div id="1" style="display: none">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close1"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p11">直播需要150个金豆</p>
+            <p class="neir_ptxt" id="p21">确认要扣语文卡150个金豆吗？</p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p31"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a11">确认</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a21">充值</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div id="2" style="display: none">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close2"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p12">直播需要150个金豆</p>
+            <p class="neir_ptxt" id="p22">您的语文卡余额不足</p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p32"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a12">充值</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a22">转入</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div id="3" style="display: none">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close3"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p13">您没有语文卡</p>
+            <p class="neir_ptxt" id="p23">确认要扣除数学卡150个金豆</p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p33"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a13">确认</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a23">充值</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div id="4" style="display: none">
+    <div class="tan" style="display: block;"></div>
+    <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+        <a class="windowClose" href="JavaScript:void(0)" id="close4"></a>
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" id="p14">您没有语文卡</p>
+            <p class="neir_ptxt" id="p24">您的数学卡余额不足</p>
+            <!--//<span class="ptxt_span" id="jin"></span>-->
+            <p class="neir_ptiX" id="p34"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou">
+                <a class="p_btn" href="JavaScript:;" id="a14">充值</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" href="JavaScript:;" id="a24">转入</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="wrap" id="c" style="display: none">
+    <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+    <a class="mine_zuli" href="javascript:void(0)" id="z">
+        <img src="myUser/image/keBiao.png" alt="">
+        <div class="mine_leftdiv">
+            <span class="mine_leftsp" id="name"></span>
+            <!-- <span class="mine_leftsp">5487965452</span> -->
+            <br>
+            <span class="uli_span">余<i class="uli_spani" id="usermoney"></i>金豆</span>
+        </div>
+    </a>
+    <div class="charge-main">
+        <!-- charge-area -->
+        <p class="main_ptxt">1元=10金豆</p>
+        <ul class="rain-drop-ul">
+            <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+            <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+        </ul>
+        <div class="srinput_div">
+            <span class="srinput_span">其他金额：</span>
+            <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+        </div>
+        <div class="count_div">小计：
+            <span>￥<i class="count_spani1">15</i></span>
+        </div>
+    </div>
+    <div class="count_div">合计：
+        <span>￥<i class="count_spani2">10.50</i></span>
+        <br>
+        <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
+    </div>
+    <!-- pay-btn -->
+    <div class="pay_btn">
+        <div class="wechat-btn">
+            <span class="wechat-span"></span>
+            微信支付
+        </div>
+        <div class="alipay-btn">
+            <span class="alipay-span"></span>
+            支付宝支付
+        </div>
+    </div>
+</div>
+
+<!-------------------------------------------------------------------------- 弹窗结束-->
+
 
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/bootstrap/bootstrap.min.js"></script>
 <script src="/moment/moment.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
-<script src="/js/pikaday.js"></script>
+<!--<script src="/js/pikaday.js"></script>-->
 <script>
+    //        -----------------------------------------------------------弹窗js开始
+    var sale_info;
+    var cards;
+    var userAmount;
+    var price;
+    var d = document;
+    var biao;
+    var ji;
+    var transfer;
+    var count = 1;
+    var object_Id;
+    var object_Types;
+    var card;
+    var ke;
+
+    //第一步得到自己账户多少钱，自己的所有的卡，资源价格
+    function xiao(objectId, objectType) {
+        $.ajax({
+            type: "get",
+            url: "/api/resources/" + objectType + "/" + objectId + "/sale-info",
+            dataType: "json",
+            success: function (e) {
+                sale_info = e;
+                cards = e.cards;
+                userAmount = e.user_amount;
+                price = e.price;
+                ke = e.subjectId;
+                na(objectType, objectId)
+
+                // turnOutPage(cards);
+            }
+        })
+    }
+    //第二步根据自己的卡和价格资源弹窗
+    function tan(cards, subject, objectType, objectId) {
+        for (var i = 0; i < cards.length; i++) {
+            var a = cards[i].subjectId
+            if (cards[i].subjectId == subject && cards[i].amount >= price) {
+                //第二步：你有这个科目下的卡&&卡余额>资源价格:弹出1床
+                var subject_card = transformation(a);
+                var object_Type = transformationType(objectType);
+                d.getElementById("p11").innerHTML = "" + object_Type + "需要" + price + "金豆";
+                d.getElementById("p21").innerHTML = "确认要扣" + subject_card + "卡" + price + "金豆吗？";
+                d.getElementById("a11").innerHTML = "确认";
+                d.getElementById("a21").innerHTML = "充值";
+                d.getElementById("1").style.display = "block"
+                biao = 1
+                card = cards[i];
+                object_Id = objectId;
+                object_Types = objectType;
+                break;
+
+            }
+        }
+        if (biao != 1) {
+            for (var i = 0; i < cards.length; i++) {
+                var a = cards[i].subjectId
+                var money = parseInt(userAmount) + 0 + parseInt(cards[i].amount);
+                var mp = "false";
+                if (money > price || money == price) {
+                    mp = "true";
+                }
+                if (cards[i].subjectId == subject && cards[i].amount < price && biao != 1) {
+                    //第三步：你有这个科目下的卡&&卡余额<资源价格:弹出2床
+                    var subject_card = transformation(a);
+                    var object_Type = transformationType(objectType);
+                    d.getElementById("p12").innerHTML = "" + object_Type + "需要" + price + "金豆";
+                    d.getElementById("p22").innerHTML = "您的" + subject_card + "卡余额不足";
+                    d.getElementById("a12").innerHTML = "充值";
+                    if (mp == "true") {
+                        d.getElementById("a22").innerHTML = "转入";
+                    } else if (mp == "false") {
+                        d.getElementById("a22").innerHTML = "";
+                    }
+
+                    d.getElementById("2").style.display = "block"
+                    biao = 1;
+                    break;
+                }
+            }
+        }
+        if (biao != 1) {
+            for (var i = 0; i < cards.length; i++) {
+                var a = cards[i].subjectId
+                if (cards[i].subjectId != subject && cards[i].amount >= price && biao != 1) {
+                    //第二步：你有其他科目下的卡&&卡余额>资源价格:弹出3床
+                    var subject_card = transformation(a);
+                    if (a == 1) {
+                        var object_card = transformation(2);
+                    } else if (a == 2) {
+                        var object_card = transformation(1);
+                    }
+                    var object_Type = transformationType(objectType);
+                    d.getElementById("p13").innerHTML = "您没有" + object_card + "卡";
+                    d.getElementById("p23").innerHTML = "确认要扣" + subject_card + "卡" + price + "金豆吗？";
+                    d.getElementById("a13").innerHTML = "确认";
+                    d.getElementById("a23").innerHTML = "充值";
+                    d.getElementById("3").style.display = "block"
+                    biao = 1;
+                    card = cards[i];
+                    object_Id = objectId;
+                    object_Types = objectType;
+                    break;
+                }
+            }
+        }
+        if (biao != 1) {
+            for (var i = 0; i < cards.length; i++) {
+                var a = cards[i].subjectId
+                // var iYear=parseInt(iYear);
+                var money = parseInt(userAmount) + 0 + parseInt(cards[i].amount);
+                var am = parseInt(cards[i].amount)
+                var mp = "false";
+                if (money > price || money == price) {
+                    mp = "true";
+                }
+                if (cards[i].subjectId != subject && am < price && biao != 1) {
+                    //第二步：你有其他科目下的卡&&卡余额<资源价格:弹出4床
+                    var subject_card = transformation(a);
+                    if (a == 1) {
+                        var object_card = transformation(2);
+                    } else if (a == 2) {
+                        var object_card = transformation(1);
+                    }
+                    var object_Type = transformationType(objectType);
+                    d.getElementById("p14").innerHTML = "您没有" + object_card + "卡";
+                    d.getElementById("p24").innerHTML = "您的" + subject_card + "卡余额不足";
+                    d.getElementById("a14").innerHTML = "充值";
+                    if (mp == "true") {
+                        d.getElementById("a24").innerHTML = "转入";
+                    } else if (mp == "false") {
+                        d.getElementById("a24").innerHTML = "";
+                    }
+                    d.getElementById("4").style.display = "block"
+                    biao = 1;
+                    break;
+                }
+            }
+        }
+        biao = 0;
+    }
+
+    var filter = {}
+    //第三步确认购买||确认转入||确认充值
+    function atom(sourceId, sourceType, object_Id, object_Type, count, money, none) {
+        var result;
+        if (money == null && count == null) {
+            filter = { // 充值rechargeFilter
+                sourceType: sourceType,
+                objectId: objectId,
+                objectType: objectType,
+                money: money
+            }
+        } else if (count == null) {
+            filter = { //转账transferFilter
+                sourceId: sourceId,
+                sourceType: sourceType,
+                objectId: object_Id,
+                objectType: object_Type,
+                money: money
+            }
+        } else if (money != null && count != null) {
+            filter = { // 购买purchaseFilter
+                sourceId: sourceId,
+                sourceType: sourceType,
+                objectId: object_Id,
+                objectType: object_Type,
+                count: count,
+                money: money
+            }
+        }
+
+
+        $.ajax({
+            type: "post",
+            url: "/api/transactions",
+            dataType: "json",
+            data: JSON.stringify(filter),
+            contentType: "application/json; charset=utf-8",
+            success: function (e) {
+                alert("成功")
+                nones(none)
+                na(object_Type, object_Id)
+            },
+            error: function (e) {
+                result = e;
+                alert(JSON.stringify(e))
+                switch (JSON.stringify(e.status)) {
+                    case "408":
+                        alert("余额不足")
+                        nones(none)
+                        break;
+                    case "200":
+                        alert("成功")
+                        nones(none)
+                        break;
+                }
+            }
+        })
+        return result;
+        function nones(none) {
+            if (none == 1) {
+                document.getElementById("1").style.display = "none"
+            }
+            if (none == 2) {
+                document.getElementById("2").style.display = "none"
+            }
+            if (none == 3) {
+                document.getElementById("3").style.display = "none"
+            }
+            if (none == 4) {
+                document.getElementById("4").style.display = "none"
+            }
+        }
+    }
+    function na(object_Type, objectId) {
+        object_Types = object_Type,
+                object_Id = objectId,
+                $.ajax({
+                    type: "get",
+                    url: "/api/resources/" + object_Types + "/" + object_Id + "",
+                    dataType: "json",
+                    success: function (e) {
+                        alert("成功")
+                        alert(JSON.stringify(e))
+                        //  选项ABCD
+                        for (var i = 0; i < e.problems.length; ++i) {
+                            var p = e.problems[i];
+                            for (var j = 0; j < p.options.length; ++j) {
+                                p.options[j].title = String.fromCharCode(65 + j);
+                            }
+                            if (p.standardAnswers.substring(0) == "\"") {
+                                //字符串以"开头，去掉"
+                                p.standardAnswers = p.standardAnswers.substr(1, p.standardAnswers.length - 1)
+                            }
+                            if (p.standardAnswers.substring(p.standardAnswers.length - 1) == "\"") {
+                                //字符串以"结尾，去掉"
+                                p.standardAnswers = p.standardAnswers.substr(0, p.standardAnswers.length - 2)
+                            }
+                        }
+                        $.ajax({
+                            type: "get",
+                            url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/is-self-like',
+                            dataType: "json",
+                            success: function (like) {
+                                state.knowledgePoint.value.liked = like.like
+                                state.knowledgePoint.value.contents = e
+                                for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
+                                    $.ajax({
+                                        type: "get",
+                                        url: '/api/comments/' + state.knowledgePoint.value.contents.comments[s].id + '/is-self-like',
+                                        dataType: "json",
+                                        async: false,
+                                        success: function (like) {
+                                            state.knowledgePoint.value.contents.comments[s].liked = like.like;
+//                                                    state.knowledgePoint.show()
+                                        }
+                                    })
+                                }
+                                state.knowledgePoint.show()
+                            }
+                        })
+                    },
+                    error: function (e) {
+                        tan(cards, ke, object_Types, object_Id)
+                    }
+                })
+    }
+    /*  //关闭弹窗
+     var close = document.getElementsByClassName("close")
+     close.addEventListener('click', function (e) {
+     clo(e.target.dataset.id)
+     })*/
+
+    var purchase1 = document.getElementById("a11")
+    purchase1.addEventListener('click', function (e) {
+        alert("购买1")
+//                    sourceId, sourceType, objectId, objectType, count, money
+        atom(card.id, "card", object_Id, object_Types, count, price, 1);
+//        sourceId, sourceType, object_Id, object_Type, count, money, none
+    })
+
+    var purchase2 = document.getElementById("a13")
+    purchase2.addEventListener('click', function (e) {
+        alert("购买2")
+//                    sourceId, sourceType, objectId, objectType, count, money
+        atom(card.id, "card", object_Id, object_Types, count, price, 3);
+    })
+    var recharge1 = document.getElementById("a21")
+    recharge1.addEventListener('click', function (e) {
+        alert("充值1")
+        d.getElementById("1").style.display = "none"
+        //turnOutPage(cards)
+        //d.getElementById("1").style.display = "none"
+        //d.getElementById("c").style.display="block";
+        rechargePage(cards, "c")
+    })
+
+    var recharge2 = document.getElementById("a12")
+    recharge2.addEventListener('click', function (e) {
+        alert("充值2")
+        d.getElementById("2").style.display = "none"
+        //turnOutPage(cards)
+        //d.getElementById("1").style.display = "none"
+        // d.getElementById("c").style.display="block";
+        rechargePage(cards, 'c')
+    })
+
+    var recharge3 = document.getElementById("a23")
+    recharge3.addEventListener('click', function (e) {
+        alert("充值3")
+        d.getElementById("3").style.display = "none"
+        //turnOutPage(cards)
+        //d.getElementById("1").style.display = "none"
+        // d.getElementById("c").style.display="block";
+        rechargePage(cards, 'c')
+    })
+
+    var recharge4 = document.getElementById("a14")
+    recharge4.addEventListener('click', function (e) {
+        alert("充值4")
+        d.getElementById("4").style.display = "none"
+        //turnOutPage(cards)
+        //d.getElementById("1").style.display = "none"
+        //  d.getElementById("c").style.display="block";
+        rechargePage(cards, 'c')
+    })
+
+    var turnOut1 = document.getElementById("a22")
+    turnOut1.addEventListener('click', function (e) {
+        alert("转入1")
+        d.getElementById("2").style.display = "none"
+        turnOutPage(cards, "z")
+        //d.getElementById("1").style.display = "none"
+        // d.getElementById("c").style.display="block";
+    })
+
+    var turnOut2 = document.getElementById("a24")
+    turnOut2.addEventListener('click', function (e) {
+        alert("转入2")
+        d.getElementById("4").style.display = "none"
+        turnOutPage(cards, "z")
+        //d.getElementById("1").style.display = "none"
+        //d.getElementById("c").style.display="block";
+    })
+
+    var z = d.getElementById("z")
+    z.addEventListener('click', function (e) {
+        document.getElementById("c").style.display = "none"
+        turnOutPage(cards)
+    })
+
+    var close1 = document.getElementById("close1")
+    close1.addEventListener('click', function (e) {
+        document.getElementById("1").style.display = "none"
+    })
+    var close2 = document.getElementById("close2")
+    close2.addEventListener('click', function (e) {
+        document.getElementById("2").style.display = "none"
+    })
+    var close3 = document.getElementById("close3")
+    close1.addEventListener('click', function (e) {
+        document.getElementById("3").style.display = "none"
+    })
+    var close4 = document.getElementById("close4")
+    close1.addEventListener('click', function (e) {
+        document.getElementById("4").style.display = "none"
+    })
+    /*
+     function clo(id) {
+     document.getElementById(id).style.display = "none"
+     }*/
+
+    function transformation(sex) {
+        var result;
+        if (sex == 1) {
+            result = "语文"
+        }
+        if (sex == 2) {
+            result = "数学"
+        }
+        return result;
+    }
+
+    function transformationType(objectType) {
+        var result;
+        if (objectType == "knowledge-point") {
+            result = "知识点"
+        }
+        if (objectType == "liveVideo") {
+            result = "直播"
+        }
+        if (objectType == "video") {
+            result = "回放"
+        }
+        return result;
+    }
+    function duo(id, T) {
+        var w = 1;
+        w = id;
+        var arrList = new Array;
+        for (var i = 0; i < cards.length; i++) {
+            if (cards[i].id == id) {
+                arrList.push(cards[i]);
+                if (T == "z") {
+                    dan(arrList)
+                } else if (T == "c") {
+                    rechargePagedan(arrList)
+                }
+            }
+        }
+        /*$.ajax({
+         type: "get",
+         url: "/api/cards/" + w,
+         dataType: "json",
+         success: function (e) {
+         var arrList = new Array();
+
+
+
+         }
+         })*/
+    }
+    function dan(cards) {
+        var a = cards[0].subjectId
+        cards[0].subjectId = transformation(a)
+        if (cards[0].amount == 0) {
+            cards[0].amount = "0"
+        }
+        proc({
+            containerId: 'selectOneCard',
+            data: cards,
+            templateId: 'selectOneCard-template'
+        })
+        transfer = cards;
+        d.getElementById("selectCard").style.display = "none"
+//            document.getElementById("knowledgePoints").style.display = "none"
+        d.getElementById("tishi").innerHTML = "" + userAmount + " 金豆"
+
+
+        d.getElementById("1").style.display = "none"
+        d.getElementById("selectOneCard").style.display = "block"
+        var submitTransfer = document.getElementById("submitTransfer")
+        submitTransfer.addEventListener('click', function (e) {
+            //userAmount(transfer[0].id, $("#Number").val())
+            atom("96520767275011", "user", transfer[0].id, "card", null, $("#Number").val())
+            d.getElementById("selectOneCard").style.display = "none"
+
+        })
+    }
+    function turnOutPage(cards, T) {
+        if (cards.length > 1) {
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].subjectId == 1) {
+                    cards[i].image = "keBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                if (cards[i].subjectId == 2) {
+                    cards[i].image = "mathBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                cards[i].subjectId = transformation(cards[i].subjectId)
+                if (cards[i].amount == 0) {
+                    cards[i].amount = "0"
+                }
+            }
+            proc({
+                containerId: 'selectCard',
+                data: cards,
+                templateId: 'selectCard-template'
+            })
+            //  document.getElementById("1").style.display = "none"
+
+            d.getElementById("selectCard").style.display = "block"
+
+            $('.mine_zuli').on('click', function (e) {
+                var id = e.target.dataset.id
+                //  var id = e.target.dataset.id
+
+                //  document.getElementById(id).src = "true.png";
+                /*  setTimeout(function () {
+
+                 }, 1000)*/
+                duo(id, T)
+                //     document.getElementById(id).src = "";
+                //duo(id)
+            })
+            // alert("到多个卡选择页面")
+        } else if (cards.length == 1) {
+            dan(cards);
+        }
+
+
+    }
+
+
+    function rechargePage(cards, T) {
+        if (cards.length > 1) {
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].subjectId == 1) {
+                    cards[i].image = "keBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                if (cards[i].subjectId == 2) {
+                    cards[i].image = "mathBiao.png"
+                    //.push("image","myUser/image/true.png");
+                }
+                cards[i].subjectId = transformation(cards[i].subjectId)
+                if (cards[i].amount == 0) {
+                    cards[i].amount = "0"
+                }
+            }
+            proc({
+                containerId: 'selectCard',
+                data: cards,
+                templateId: 'selectCard-template'
+            })
+            //  document.getElementById("1").style.display = "none"
+
+            d.getElementById("selectCard").style.display = "block"
+
+            $('.mine_zuli').on('click', function (e) {
+                var id = e.target.dataset.id
+                //  document.getElementById(id).src = " ";
+                //  document.getElementById(id).src = "true.png";
+                /*  setTimeout(function () {
+
+                 }, 1000)*/
+                duo(id, T)
+                //duo(id)
+            })
+            // alert("到多个卡选择页面")
+        } else if (cards.length == 1) {
+            rechargePagedan(cards);
+        }
+    }
+
+    function rechargePagedan(cards) {
+        var a = cards[0].subjectId
+        cards[0].subjectId = transformation(a)
+        if (cards[0].amount == 0) {
+            cards[0].amount = "0"
+        }
+        d.getElementById("selectCard").style.display = "none"
+        d.getElementById("name").innerHTML = "" + cards[0].no + ""
+        d.getElementById("usermoney").innerHTML = "" + cards[0].amount + ""
+        d.getElementById("c").style.display = "block"
+    }
+
+    //    --------------------------------------------------------------弹窗结束
+
     //[{..., teachers: [], grades: [], playings: [], futures: [], ...}, ...]
     var subjects = []
 
@@ -797,6 +1480,7 @@
         init: function () {
 //            var userId = g.getUrlParameter('userid')
 //            g.setCookie('userId', userId)
+            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
 
             $.ajax({
                 type: 'get',
@@ -873,6 +1557,7 @@
                 }
                 switchTo(id)
             })
+
 
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
@@ -1055,6 +1740,7 @@
             isInit: false,
             init: function () {
                 if (!state.passed.isInit) {
+                    xiao(objectId, video)
                     $(document).on('click', '.passed-detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                         if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
@@ -1066,7 +1752,14 @@
                             $(this).children('img').eq(0).show();
                         }
                     })
-
+                    $('.asd').on('click', function (e) {
+                        var element = e.target;
+                        var id = element.dataset.article;
+                        if (element.dataset.id) {
+                            id = element.dataset.id
+                        }
+                        alert("直播ID====="+id)
+                    })
                     $(document).on('click', '[data-type="subject"]', function (e) {
                         //hide subjects
                         state.passed.subject.style.display = 'none'
@@ -1161,29 +1854,35 @@
                     })
 
                     $(document).on('click', ".tiaoj_span", function (e) {
-                            if($(e.currentTarget).hasClass('cur')){
-                                $(e.currentTarget).removeClass('cur');
-                                $('.tan').hide();
-                                $('.tan').css("z-index", "9999");
-                                $(".xiala_ul").hide();
-                                $(e.currentTarget).siblings(".xiala_ul").hide();
-                            }else{
-                                $(".tiaoj_span").removeClass('cur');
-                                $(e.currentTarget).addClass('cur');
-                                $('.tan').show();
-                                $('.tan').css("z-index", "99");
-                                $(".xiala_ul").hide();
-                                $(e.currentTarget).siblings(".xiala_ul").show();
-                            }
-                        });
+                        if ($(e.currentTarget).hasClass('cur')) {
+                            $(e.currentTarget).removeClass('cur');
+                            $('.tan').hide();
+                            $('.tan').css("z-index", "9999");
+                            $(".xiala_ul").hide();
+                            $(e.currentTarget).siblings(".xiala_ul").hide();
+                        } else {
+                            $(".tiaoj_span").removeClass('cur');
+                            $(e.currentTarget).addClass('cur');
+                            $('.tan').show();
+                            $('.tan').css("z-index", "99");
+                            $(".xiala_ul").hide();
+                            $(e.currentTarget).siblings(".xiala_ul").show();
+                        }
+                    });
                     $(document).on('click', ".xiala_li", function (e) {
                         $(e.currentTarget).parents(".xiala_ul").find('.xiala_li').removeClass('cur');
                         $(e.currentTarget).addClass('cur');
                         $('.tan').hide();
                         $(e.currentTarget).parents(".xiala_ul").hide();
                         $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
+                        var $tuzhiTr = "<li class='jieG_li'><span></span><a href='javascript:void(0)'><img class='jieG_licha' src='images/zhong_xiao.png' alt=''></a></li>";
                         $('.tiaoj_jieG').show();
-                        alert($(e.currentTarget).text());
+                        $('.tiaoj_jieG').append($tuzhiTr);
+                        $('.tiaoj_jieG').children(".jieG_li").children('span').text($(this).text());
+                        var hei1 = document.getElementsByClassName('tiao_jian').height();
+                        var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
+                        document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
+//                        alert($(e.currentTarget).text());
                     });
 
                     $(document).on('click', ".shipin", function (e) {
@@ -1207,12 +1906,12 @@
                             passed[i].type = 'math'
                         }
                     }
-                    for (var i = 0; i < passed.length; ++i) {
-                        if (!passed[i].cdnLink || passed[i].cdnLink == '') {
-                            passed.splice(i, 1)
-                            --i
-                        }
-                    }
+//                    for (var i = 0; i < passed.length; ++i) {
+//                        if (!passed[i].cdnLink || passed[i].cdnLink == '') {
+//                            passed.splice(i, 1)
+//                            --i
+//                        }
+//                    }
                     proc({
                         data: passed,
                         containerId: 'video',
@@ -1264,11 +1963,11 @@
 //fill to grades choice
                                     var grades = []
                                     for (var i = 0; i < g0s.length; ++i) {
-                                        g0s[i]=state.getGrade(g0s[i])
+                                        g0s[i] = state.getGrade(g0s[i])
                                         grades.push({grade: g0s[i]})
                                     }
                                     for (var i = 0; i < g1s.length; ++i) {
-                                        g1s[i]=state.getGrade(g1s[i])
+                                        g1s[i] = state.getGrade(g1s[i])
                                         grades.push({grade: g1s[i]})
                                     }
 //                                    for (var i = 0; i < grades.length; ++i) {
@@ -1305,18 +2004,13 @@
                     }, false)
                     state.passed.isInit = true
                 }
-
-                var picker = new Pikaday({
-                    field: document.getElementById('datePicker'),
-                    format: 'D MMM YYYY',
-                    onSelect: function () {
-                        console.log(this.getMoment().format('Do MMMM YYYY'));
-                    }
-                });
-
-                var hei1 = document.getElementsByClassName('tiao_jian').height();
-                var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
-                document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
+//                var picker = new Pikaday({
+//                    field: document.getElementById('datePicker'),
+//                    format: 'D MMM YYYY',
+//                    onSelect: function () {
+//                        console.log(this.getMoment().format('Do MMMM YYYY'));
+//                    }
+//                });
             },
             search: function () {
                 var result = []
@@ -1384,10 +2078,12 @@
                     templateId: 'live-video-template'
                 })
 
+
+                var icon = document.getElementById('icon')
                 if (data.liked) {
-                    icon.setAttribute('src', 'images/details/zanover.png');
+                    icon.setAttribute('src', 'images/zanover.png');
                 } else {
-                    icon.setAttribute('src', 'images/details/dianzan.png');
+                    icon.setAttribute('src', 'images/dianzan.png');
                 }
                 icon.addEventListener('click', function (e) {
                     if (data.liked) {
@@ -1398,7 +2094,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (unlike) {
-                                icon.setAttribute('src', 'images/details/dianzan.png');
+                                icon.setAttribute('src', 'images/dianzan.png');
                                 data.likeCount--
                                 e.target.nextElementSibling.textContent = data.likeCount
                                 data.liked = false;
@@ -1412,7 +2108,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (like) {
-                                icon.setAttribute('src', 'images/details/zanover.png');
+                                icon.setAttribute('src', 'images/zanover.png');
                                 ++data.likeCount;
                                 e.target.nextElementSibling.textContent = data.likeCount
                                 data.liked = true;
