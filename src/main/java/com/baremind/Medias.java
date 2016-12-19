@@ -3,6 +3,7 @@ package com.baremind;
 import com.baremind.data.Image;
 import com.baremind.data.Media;
 
+import com.baremind.data.ValidationCode;
 import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
@@ -143,14 +144,22 @@ public class Medias {
         }
         for (int i = 0; i < 25; i++) {
             g.setColor(new Color(rand(50, 180), rand(50, 180), rand(50, 180)));
-            g.drawLine(rand(0, w), rand(0, h), rand(0, w), rand(0, h));
+//            g.drawLine(rand(0, w), rand(0, h), rand(0, w), rand(0, h));
         }
-        String graphical1 = Properties.getProperty("graphical1");
-        String fileName = graphical1 + validationCode + ".png";
+        ValidationCode code = new ValidationCode();
+        code.setId(IdGenerator.getNewId());
+        code.setPhoneNumber(request.getRemoteAddr());
+        code.setValidCode(validationCode);
+        code.setTimestamp(new Date());
+        JPAEntry.genericPost(code);
+
+        long now = new Date().getTime();
+        String virtualDirectory = Properties.getProperty("testrd");
+        String fileName = virtualDirectory + now + ".png";
         File file = new File(fileName);
         ImageIO.write(img, "png", file);
-        String virtualPath = Properties.getProperty("graphical2");
-        String path = virtualPath + validationCode + ".png";
+        String realDirectory = Properties.getProperty("testvd");
+        String path = realDirectory + now + ".png";
         return Response.ok(new Gson().toJson(path)).build();
     }
 
@@ -184,7 +193,7 @@ public class Medias {
 //        Color c = getRandColor(200, 250);
 //        shear(g2, width, height, c);// 使图片扭曲
 
-        g2.setColor(getRandColor(100, 160));
+//        g2.setColor(getRandColor(100, 160));
         int fontSize = height - 4;
         Font font = new Font("Algerian", Font.ITALIC, fontSize);
         g2.setFont(font);
