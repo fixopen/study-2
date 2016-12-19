@@ -654,9 +654,18 @@
                     state.video.isInit = false
                 }
             },
+            container: doc.getElementById('detailContainer'),
+            template: getTemplate('detail-template'),
             isInit: false,
             init: function () {
                 if (!state.video.isInit) {
+                    state.video.container.innerHTML = ''
+                    proc({
+                        container: state.video.container,
+                        template: state.video.template,
+                        data: state.getById(state.video.id)
+                    })
+                    state.video.isInit = true
                 }
             }
         },
@@ -667,9 +676,17 @@
                     state.futureNote.isInit = false
                 }
             },
+            container: doc.getElementById('startTime'),
+            template: getTemplate('wait-template'),
             isInit: false,
             init: function () {
                 if (!state.futureNote.isInit) {
+                    state.futureNote.container.innerHTML = ''
+                    proc({
+                        container: state.futureNote.container,
+                        template: state.futureNote.template,
+                        data: state.getById(state.futureNote.id)
+                    })
                 }
             }
         },
@@ -691,6 +708,52 @@
                 result = '低年级'
             } else {
                 result = '高年级'
+            }
+            return result
+        },
+        getById: function(id) {
+            var result = null
+            var isFind = false
+            for (var i = 0; i < subjects.length; ++i) {
+                for (var j = 0; j < subjects[i].futures.length; ++j) {
+                    if (subjects[i].futures[j].id == id) {
+                        result = subjects[i].futures[j]
+                        isFind = true
+                        break
+                    }
+                }
+                if (isFind) {
+                    break
+                }
+                for (var j = 0; j < subjects[i].playings.length; ++j) {
+                    if (subjects[i].playings[j].id == id) {
+                        result = subjects[i].playings[j]
+                        isFind = true
+                        break
+                    }
+                }
+                if (isFind) {
+                    break
+                }
+            }
+            if (!isFind) {
+                for (var i = 0; i < passed.length; ++i) {
+                    if (passed[i].id == id) {
+                        result = passed[i]
+                        isFind = true
+                        break
+                    }
+                }
+            }
+            return result
+        },
+        getSubjectById: function (id) {
+            var result = null;
+            for (var i = 0; i < subjects.length; ++i) {
+                if (subjects[i].id == id) {
+                    result = subjects[i]
+                    break
+                }
             }
             return result
         },
@@ -745,6 +808,7 @@
                             var month = monday.getMonth() + 1
                             var m = moment(now)
                             var week = m.week()
+                            state.scheduler.week = week
                             var weekDay = m.day()
                             if (weekDay > 1) {
                                 monday = new Date(now - (weekDay - 1) * 24 * 60 * 60 * 1000)

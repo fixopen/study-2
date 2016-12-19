@@ -3,17 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>小雨知时</title>
-    <script src="jquery/jquery-3.1.1.js"></script>
-    <script src="basic.js"></script>
     <link rel="stylesheet" href="myUser/css/Popup.css">
     <link rel="stylesheet" href="myUser/css/global.css">
-
 </head>
 <body>
-<article id="knowledgePoints">
-
-</article>
-
+<article id="knowledgePoints"></article>
 <template id="knowledgePoint-template">
     <ul class="public_ul_css" id="knowledgePoint">
         <li class="public_li_css">
@@ -44,12 +38,8 @@
 </template>
 <button id="submit">提交</button>
  <!--弹窗开始 -->
-<article id="selectCard" style="display: none">
-
-</article>
-<article id="selectOneCard" style="display: none">
-
-</article>
+<article id="selectCard" style="display: none"></article>
+<article id="selectOneCard" style="display: none"></article>
 <template id="selectCard-template">
     <div class="wrap">
         <ul class="mine_baodiv">
@@ -222,10 +212,33 @@
         </div>
     </div>
 </div>
-
-
 <!--弹窗结束-->
-</body>
+<script src="jquery/jquery-3.1.1.js"></script>
+<script src="basic.js"></script>
+<script>
+    var login = document.getElementById('submit')
+    login.addEventListener('click', function(e){
+        $.ajax({
+            type: 'put',
+            url: '/api/sessions',
+            data: JSON.stringify({
+                type: 'name',
+                info: 'admin',
+                key: 'admin',
+                deviceType: 'web',
+                deviceNo: ''
+            }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function(d) {
+                alert('login success')
+            },
+            error: function(xhr) {
+                alert(xhr.status + ' ' + xhr.statusText)
+            }
+        })
+    }, false)
+</script>
 <script>
     var sale_info;
     var cards;
@@ -254,7 +267,7 @@
                 price = e.price;
                 ke = e.subject;
                 tan(cards, ke, objectType,objectId)
-               // turnOutPage(cards);
+                // turnOutPage(cards);
             }
         })
     }
@@ -334,7 +347,7 @@
         if (biao != 1) {
             for (var i = 0; i < cards.length; i++) {
                 var a = cards[i].subjectId
-               // var iYear=parseInt(iYear);
+                // var iYear=parseInt(iYear);
                 var money = parseInt(userAmount) + 0 + parseInt( cards[i].amount);
                 var am = parseInt(cards[i].amount)
                 var mp = "false";
@@ -388,15 +401,15 @@
                 money: money
             }
         }else
-         if(money == null){
-             filter = { // 购买purchaseFilter
-                 sourceId: sourceId,
-                 sourceType: sourceType,
-                 objectId: object_Id,
-                 objectType: object_Type,
-                 count: count
-             }
-         }
+        if(money == null){
+            filter = { // 购买purchaseFilter
+                sourceId: sourceId,
+                sourceType: sourceType,
+                objectId: object_Id,
+                objectType: object_Type,
+                count: count
+            }
+        }
 
 
         $.ajax({
@@ -470,7 +483,7 @@
         d.getElementById("2").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
-       // d.getElementById("c").style.display="block";
+        // d.getElementById("c").style.display="block";
         rechargePage(cards,'c')
     })
 
@@ -480,7 +493,7 @@
         d.getElementById("3").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
-       // d.getElementById("c").style.display="block";
+        // d.getElementById("c").style.display="block";
         rechargePage(cards,'c')
     })
 
@@ -490,7 +503,7 @@
         d.getElementById("4").style.display = "none"
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
-      //  d.getElementById("c").style.display="block";
+        //  d.getElementById("c").style.display="block";
         rechargePage(cards,'c')
     })
 
@@ -500,7 +513,7 @@
         d.getElementById("2").style.display = "none"
         turnOutPage(cards,"z")
         //d.getElementById("1").style.display = "none"
-       // d.getElementById("c").style.display="block";
+        // d.getElementById("c").style.display="block";
     })
 
     var turnOut2 = document.getElementById("a24")
@@ -512,32 +525,32 @@
         //d.getElementById("c").style.display="block";
     })
 
-     var z = d.getElementById("z")
+    var z = d.getElementById("z")
     z.addEventListener('click',function (e) {
         document.getElementById("c").style.display = "none"
         turnOutPage(cards)
     })
 
-     var close1 = document.getElementById("close1")
-     close1.addEventListener('click', function (e) {
-         document.getElementById("1").style.display = "none"
-     })
+    var close1 = document.getElementById("close1")
+    close1.addEventListener('click', function (e) {
+        document.getElementById("1").style.display = "none"
+    })
     var close2 = document.getElementById("close2")
-     close2.addEventListener('click', function (e) {
-         document.getElementById("2").style.display = "none"
-     })
+    close2.addEventListener('click', function (e) {
+        document.getElementById("2").style.display = "none"
+    })
     var close3 = document.getElementById("close3")
-     close1.addEventListener('click', function (e) {
-         document.getElementById("3").style.display = "none"
-     })
+    close1.addEventListener('click', function (e) {
+        document.getElementById("3").style.display = "none"
+    })
     var close4 = document.getElementById("close4")
-     close1.addEventListener('click', function (e) {
-         document.getElementById("4").style.display = "none"
-     })
+    close1.addEventListener('click', function (e) {
+        document.getElementById("4").style.display = "none"
+    })
     /*
-    function clo(id) {
-        document.getElementById(id).style.display = "none"
-    }*/
+     function clo(id) {
+     document.getElementById(id).style.display = "none"
+     }*/
 
     function transformation(sex) {
         var result;
@@ -684,11 +697,8 @@
         d.getElementById("usermoney").innerHTML = ""+cards[0].amount+""
         d.getElementById("c").style.display = "block"
     }
-
-
 </script>
-&lt;!&ndash;<script>
-
+<script>
     var card_evolution = [];
     var card_evolution_subject = [];
     var cards;
@@ -972,8 +982,6 @@
             })
         }
     }
-
-
-
-</script>&ndash;&gt;
-</html>-->
+</script>
+</body>
+</html>

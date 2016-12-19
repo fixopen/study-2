@@ -283,7 +283,7 @@
                 }
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/content.html#' + id)
+                history.pushState(null, null, '/device/openclass/index.html#' + id)
                 state[id].init()
             }
 
@@ -293,7 +293,7 @@
                 }
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
-                location.replace('/content.html#' + id)
+                location.replace('/device/openclass/index.html#' + id)
                 state[id].init()
             }
 
@@ -346,8 +346,8 @@
 
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article;
-                switchTo(id);
                 state[id].changeId(e.target.dataset.id)
+                switchTo(id);
             })
 
             $(document).on('shown.bs.tab', '.grade-main', function (e) {
