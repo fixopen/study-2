@@ -48,17 +48,17 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
     @Column(name = "name")
     private String name;
 
-  /*  @Column(name = "abstraction")
-    private String abstraction;*/
-/*
-    @Column(name = "outline")
-    private String outline;*/
+//    @Column(name = "abstraction")
+//    private String abstraction;
+//
+//    @Column(name = "outline")
+//    private String outline;
 
     @Column(name = "description")
     private String description;
 
-  /*  @Column(name = "prepare")
-    private String prepare;*/
+//    @Column(name = "prepare")
+//    private String prepare;
 
     @Column(name = "cover_id")
     private Long coverId;
@@ -242,13 +242,13 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("subjectId", scheduler.getSubjectId());
         schedulerMap.put("grade", scheduler.getGrade());
         schedulerMap.put("name", scheduler.getName());
-//        schedulerMap.put("abstraction", scheduler.getAbstraction());
-//        schedulerMap.put("outline", scheduler.getOutline());
+        //schedulerMap.put("abstraction", scheduler.getAbstraction());
+        //schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
-//        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
-//        if (cover != null) {
-//            schedulerMap.put("cover", cover.getStorePath());
-//        }
+        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
+        if (cover != null) {
+            schedulerMap.put("cover", cover.getStorePath());
+        }
         User teacher = JPAEntry.getObject(User.class,"id",scheduler.getTeacherId());
         if (teacher != null) {
             schedulerMap.put("teacher", teacher.getName());

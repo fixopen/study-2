@@ -125,7 +125,9 @@
                     <table style="width: 100%; height: 100%; border: none; border: none; border-spacing: 0; border-collapse: collapse;">
                         <tr style="width: 100%; height: 100%;">
                             <th style="width: 28%; height: 100%;">时间</th>
-                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">授课年级</th>
+                            <th style="width: 24%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
+                                授课年级
+                            </th>
                             <th style="width: 48%; height: 100%;">授课内容</th>
                         </tr>
                     </table>
@@ -342,8 +344,10 @@
 </template>
 <template id="item-template">
     <tr>
-        <td style="width: 28%;">${st}-${et}</td>
-        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">${grade}</td>
+        <td style="width: 28%;">${hour}:${minute}-${endHour}:${endMinute}</td>
+        <td style="width: 24%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
+            ${grade}
+        </td>
         <td style="width: 48%;">${title}</td>
     </tr>
 </template>
@@ -354,10 +358,8 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-
     //{..., teachers: [], grades: [], playings: [], futures: [], ...}
     var subjects = [];
-
 
     var passed = [];
 
@@ -373,135 +375,65 @@
         currentArticle: document.getElementById('main'),
         main: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.main.isInit) {
                     $(document).on('click', '@@', function () {
                         //
                     })
 
-                    var now = Date.now()
+                    state.refreshState(0)
 
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers?filter=' + JSON.stringify({
-                            subjectId: subjects[0].id,
-                            endTime: '> ' + now
-                        }),
-                        dataType: 'json',
-                        success: function (zeroSchedulers) {
-                            subjects[0].playing = zeroSchedulers[0]
-                            subjects[0].futures = zeroSchedulers[1]
-                            state.adjustData(0)
-                            state.zeroFuture.data = subjects[0].futures
-                            state.zeroPlaying.data = subjects[0].playing
-                            state.refreshState(0)
-                            $.ajax({
-                                type: 'get',
-                                url: '/api/schedulers?filter=' + JSON.stringify({
-                                    subjectId: subjects[1].id,
-                                    endTime: '> ' + now
-                                }),
-                                dataType: 'json',
-                                success: function (oneSchedulers) {
-                                    subjects[1].playing = oneSchedulers[0]
-                                    subjects[1].futures = oneSchedulers[1]
-                                    state.adjustData(1)
-                                    state.oneFuture.data = subjects[1].futures
-                                    state.onePlaying.data = subjects[1].playing
-                                    state.refreshState(1)
+                    state.refreshState(1)
 
-                                    var whoFirst = function() {
-                                        var comparePlaying = function() {
-                                            var result = false
-                                            if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
-                                                if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
-                                                    result = true
-                                                }
-                                            } else if (subjects[1].playing.length > 0) {
-                                                result = true
-                                            }
-                                            return result
-                                        }
-
-                                        var compareFuture = function() {
-                                            var result = false
-                                            if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
-                                                if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
-                                                    result = true
-                                                }
-                                            } else if (subjects[1].futures.length > 0) {
-                                                result = true
-                                            }
-                                            return result
-                                        }
-
-                                        var result = comparePlaying()
-                                        if (!result) {
-                                            result = compareFuture()
-                                        }
-
-                                        return result
-                                    }
-
-                                    var oneFirst = whoFirst()
-                                    if (oneFirst) {
-                                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
-                                        //$('#subjects').find('a:first').tab('show') // Select first tab
-                                        //$('#subjects').find('a:last').tab('show') // Select last tab
-                                        //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
-                                    }
-
-                                    setInterval(function () {
-                                        state.refreshState(0)
-                                        state.refreshState(1)
-                                    }, 60 * 1000)
+                    var whoFirst = function () {
+                        var isNeedMore = true
+                        var comparePlaying = function () {
+                            var result = false
+                            if ((subjects[0].playing.length > 0) && (subjects[1].playing.length > 0)) {
+                                if (+subjects[0].playing[0].startTime > +subjects[1].playing[0].startTime) {
+                                    result = true
                                 }
-                            })
+                                isNeedMore = false
+                            } else if (subjects[1].playing.length > 0) {
+                                result = true
+                                isNeedMore = false
+                            }
+                            return result
                         }
-                    })
+
+                        var compareFuture = function () {
+                            var result = false
+                            if ((subjects[0].futures.length > 0) && (subjects[1].futures.length > 0)) {
+                                if (+subjects[0].futures[0].startTime > +subjects[1].futures[0].startTime) {
+                                    result = true
+                                }
+                            } else if (subjects[1].futures.length > 0) {
+                                result = true
+                            }
+                            return result
+                        }
+
+                        var result = comparePlaying()
+                        if (isNeedMore) {
+                            result = compareFuture()
+                        }
+
+                        return result
+                    }
+
+                    if (whoFirst()) {
+                        $('#subjects').find('a[href="#one"]').tab('show') // Select tab by name
+                        //$('#subjects').find('a:first').tab('show') // Select first tab
+                        //$('#subjects').find('a:last').tab('show') // Select last tab
+                        //$('#subjects').find('li:eq(2) a').tab('show') // Select third tab (0-indexed)
+                    }
+
+                    setInterval(function () {
+                        state.refreshState(0)
+                        state.refreshState(1)
+                    }, 60 * 1000)
 
                     state.main.isInit = true
-                }
-            },
-            getGrade: function (gradeValue) {
-                var result = ''
-                if (gradeValue == 1) {
-                    result = '一年级'
-                } else if (gradeValue == 2) {
-                    result = '二年级'
-                } else if (gradeValue == 3) {
-                    result = '三年级'
-                } else if (gradeValue == 4) {
-                    result = '四年级'
-                } else if (gradeValue == 5) {
-                    result = '五年级'
-                } else if (gradeValue == 6) {
-                    result = '六年级'
-                } else if (gradeValue == 20) {
-                    result = '低年级'
-                } else {
-                    result = '高年级'
-                }
-                return result
-            },
-            adjustData: function (subjectIndex) {
-                for (var i = 0; i < subjects[subjectIndex].playing.length; ++i) {
-                    var item = subjects[subjectIndex].playing[i]
-                    item.grade = state.getGrade(item.grade)
-                    item.startTime = Date.parse(item.startTime.replace('-', '/'))
-                    item.endTime = Date.parse(item.endTime.replace('-', '/'))
-                    item.year = item.startTime.getFullYear()
-                    item.month = item.startTime.getMonth() + 1
-                    item.date = item.startTime.getDate()
-                }
-                for (var i = 0; i < subjects[subjectIndex].futures.length; ++i) {
-                    var item = subjects[subjectIndex].playing[i]
-                    item.grade = state.getGrade(item.grade)
-                    item.startTime = Date.parse(item.startTime.replace('-', '/'))
-                    item.endTime = Date.parse(item.endTime.replace('-', '/'))
-                    item.year = item.startTime.getFullYear()
-                    item.month = item.startTime.getMonth() + 1
-                    item.date = item.startTime.getDate()
                 }
             },
             refreshState: function (subjectIndex) {
@@ -522,62 +454,59 @@
                 }
                 switch (subjectIndex) {
                     case 0:
-                        state.zeroFuture.container.innerHTML = ''
-                        proc(state.zeroFuture)
-                        state.zeroPlaying.container.innerHTML = ''
-                        proc(state.zeroPlaying)
+                        state.main.zeroFutureContainer.innerHTML = ''
+                        proc({
+                            container: state.main.zeroFutureContainer,
+                            template: state.main.zeroFutureTemplate,
+                            data: subjects[subjectIndex].futures
+                        })
+                        state.main.zeroPlayingContainer.innerHTML = ''
+                        proc({
+                            container: state.main.zeroPlayingContainer,
+                            template: state.main.zeroPlayingTemplate,
+                            data: subjects[subjectIndex].playings
+                        })
                         break
                     case 1:
-                        state.oneFuture.container.innerHTML = ''
-                        proc(state.oneFuture)
-                        state.onePlaying.container.innerHTML = ''
-                        proc(state.onePlaying)
+                        state.main.oneFutureContainer.innerHTML = ''
+                        proc({
+                            container: state.main.oneFutureContainer,
+                            template: state.main.oneFutureTemplate,
+                            data: subjects[subjectIndex].futures
+                        })
+                        state.main.onePlayingContainer.innerHTML = ''
+                        proc({
+                            container: state.main.onePlayingContainer,
+                            template: state.main.onePlayingTemplate,
+                            data: subjects[subjectIndex].playings
+                        })
                         break
                     default:
                         break
                 }
             },
-            zeroFuture: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null
-            },
-            zeroPlaying: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null
-            },
-            oneFuture: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null
-            },
-            onePlaying: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null
-            },
-            schedulerEntry: document.getElementById('schedulerEntry'),
-            teacherChoice: document.getElementById('teacherChoice'),
-            gradeChoice: document.getElementById('gradeChoice'),
-            keywords: document.getElementById('keywords'),
-            search: function() {
-                //filter the playing and future data via the filter element state
-            }
+            zeroFutureContainer: document.getElementById(''),
+            zeroFutureTemplate: getTemplate(''),
+            zeroPlayingContainer: document.getElementById(''),
+            zeroPlayingTemplate: getTemplate(''),
+            oneFutureContainer: document.getElementById(''),
+            oneFutureTemplate: getTemplate(''),
+            onePlayingContainer: document.getElementById(''),
+            onePlayingTemplate: getTemplate('')
         },
         passed: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.passed.isInit) {
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[0].id}),
-                        success: function(ts) {
+                        success: function (ts) {
                             subjects[0].teachers = ts
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function(ts) {
+                                success: function (ts) {
                                     subjects[1].teachers = ts
                                     //fill to teachers choice
                                 }
@@ -588,12 +517,12 @@
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[0].id}),
-                        success: function(gs) {
+                        success: function (gs) {
                             subjects[0].grades = gs
                             $.ajax({
                                 type: 'get',
                                 url: '/api/schedulers/grades?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function(gs) {
+                                success: function (gs) {
                                     subjects[1].grades = gs
                                     //fill to grades choice
                                 }
@@ -601,22 +530,9 @@
                         }
                     })
 
-                    var now = Date.now()
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers?filter=' + JSON.stringify({
-                            cdnLink: 'IS NOT NULL',
-                            endTime: '< ' + +now
-                        }),
-                        dataType: 'json',
-                        success: function (schedulers) {
-                            passed = schedulers[2]
-                        }
-                    })
-
                     state.passed.isInit = true
 
-                    subject.addEventListener('change', function(e){
+                    subject.addEventListener('change', function (e) {
                         var subjectIndex = 0
 
                         teacher.innerHTML = ''
@@ -641,11 +557,11 @@
                         })
                     }, false)
 
-                    $(subject).on('change', function(e){
+                    $(subject).on('change', function (e) {
                         //
                     })
 
-                    grade.addEventListener('change', function(e){
+                    grade.addEventListener('change', function (e) {
                         var gradeIndex = 0
                         var r = state.passed.search()
 
@@ -657,7 +573,7 @@
                         })
                     }, false)
 
-                    teacher.addEventListener('change', function(e){
+                    teacher.addEventListener('change', function (e) {
                         var teacher = 0
                         var r = state.passed.search()
 
@@ -670,7 +586,11 @@
                     }, false)
                 }
             },
-            search: function() {
+            schedulerEntry: document.getElementById('schedulerEntry'),
+            teacherChoice: document.getElementById('teacherChoice'),
+            gradeChoice: document.getElementById('gradeChoice'),
+            keywords: document.getElementById('keywords'),
+            search: function () {
                 var result = []
                 //filter the passed data via the filter element state
                 var keywords, subject, teacher, grade
@@ -685,103 +605,38 @@
                 }
                 return result
             },
+            zeroContainer: document.getElementById(''),
+            zeroTemplate: getTemplate(''),
+            oneContainer: document.getElementById(''),
+            oneTemplate: getTemplate(''),
             showPassed: function (state, moreId, tips) {
                 proc(state)
                 document.getElementById(moreId).style.display = 'none'
                 var tips = document.getElementById(tips)
                 tips.innerHTML = '没有更多视频，敬请期待'
             },
-            zeroPassed: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null,
-                show: function () {
-                    state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')
-                }
+            showZero: function () {
+                state.showPassed(state.zeroPassed, 'zeroMore', 'zeroTips')
             },
-            onePassed: {
-                container: document.getElementById(''),
-                template: document.getElementById(''),
-                data: null,
-                show: function () {
-                    state.showPassed(state.onePassed, 'oneMore', 'oneTips')
-                }
+            showOne: function () {
+                state.showPassed(state.onePassed, 'oneMore', 'oneTips')
             }
         },
         scheduler: {
             isInit: false,
-            init: function() {
+            init: function () {
                 if (!state.scheduler.isInit) {
-                    state.scheduler.year = state.scheduler.now.getFullYear()
-                    var m = moment(state.scheduler.now)
-                    state.scheduler.week = m.week()
-                    state.scheduler.weekDay = m.day()
                     state.scheduler.weekElement.innerHTML = state.scheduler.week - 41
-
-                    $.ajax({
-                        type: "get",
-                        url: '/api/schedulers/years/' + state.scheduler.year + '/weeks/' + state.scheduler.week,
-                        dataType: "json",
-                        success: function (result) {
-                            var course = result
-                            var monday = state.scheduler.now
-                            if (state.scheduler.weekDay > 1) {
-                                monday = new Date(+state.scheduler.now - (state.scheduler.weekDay - 1) * 24 * 60 * 60 * 1000)
-                            }
-                            for (var i = 0; i < course.length; ++i) {
-                                course[i].st = course[i].startTime.substr(11, 5)
-                                course[i].et = course[i].endTime.substr(11, 5)
-                                course[i].grade = state.getGrade(course[i].grade)
-                                switch (course[i].day) {
-                                    case 1:
-                                        if (courseTable[0].date == '') {
-                                            courseTable[0].date = monday.getFullYear() + '-' + (monday.getMonth() + 1) + '-' + monday.getDate()
-                                        }
-                                        courseTable[0].items.push(course[i])
-                                        break
-                                    case 2:
-                                        if (courseTable[1].date == '') {
-                                            var t = new Date(+monday + 24 * 60 * 60 * 1000)
-                                            courseTable[1].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
-                                        }
-                                        courseTable[1].items.push(course[i])
-                                        break
-                                    case 3:
-                                        if (courseTable[2].date == '') {
-                                            var t = new Date(+monday + 2 * 24 * 60 * 60 * 1000)
-                                            courseTable[2].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
-                                        }
-                                        courseTable[2].items.push(course[i])
-                                        break
-                                    case 4:
-                                        if (courseTable[3].date == '') {
-                                            var t = new Date(+monday + 3 * 24 * 60 * 60 * 1000)
-                                            courseTable[3].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
-                                        }
-                                        courseTable[3].items.push(course[i])
-                                        break
-                                    case 5:
-                                        if (courseTable[4].date == '') {
-                                            var t = new Date(+monday + 4 * 24 * 60 * 60 * 1000)
-                                            courseTable[4].date = t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
-                                        }
-                                        courseTable[4].items.push(course[i])
-                                        break
-                                }
-                            }
-                            proc({
-                                containerId: 'day',
-                                data: courseTable,
-                                templateId: 'day-template',
-                                secondBind: {
-                                    extPoint: 'items',
-                                    dataFieldName: 'items',
-                                    templateId: 'item-template'
-                                }
-                            })
+                    proc({
+                        containerId: 'day',
+                        data: courseTable,
+                        templateId: 'day-template',
+                        secondBind: {
+                            extPoint: 'items',
+                            dataFieldName: 'items',
+                            templateId: 'item-template'
                         }
                     })
-
                     state.scheduler.isInit = true
                 }
             },
@@ -791,43 +646,189 @@
             weekDay: null,
             weekElement: document.getElementById("week")
         },
-        init: function() {
-            var userId = g.getUrlParameter('userid')
-            g.setCookie('userId', userId)
-
-            $.ajax({
-                type: 'get',
-                url: '/api/subjects',
-                dataType: 'json',
-                success: function (ss) {
-                    subjects = ss
-
-                    state['main'].init()
-                    history.pushState(null, null, '/videos.html#main')
-                },
-                error: function (xhr) {
-                    alert('back-end not response, places retry')
+        video: {
+            id: null,
+            changeId: function(id) {
+                if (state.video.id != id) {
+                    state.video.id = id
+                    state.video.isInit = false
                 }
-            })
+            },
+            isInit: false,
+            init: function () {
+                if (!state.video.isInit) {
+                }
+            }
+        },
+        futureNote: {
+            changeId: function(id) {
+                if (state.futureNote.id != id) {
+                    state.futureNote.id = id
+                    state.futureNote.isInit = false
+                }
+            },
+            isInit: false,
+            init: function () {
+                if (!state.futureNote.isInit) {
+                }
+            }
+        },
+        getGrade: function (gradeValue) {
+            var result = ''
+            if (gradeValue == 1) {
+                result = '一年级'
+            } else if (gradeValue == 2) {
+                result = '二年级'
+            } else if (gradeValue == 3) {
+                result = '三年级'
+            } else if (gradeValue == 4) {
+                result = '四年级'
+            } else if (gradeValue == 5) {
+                result = '五年级'
+            } else if (gradeValue == 6) {
+                result = '六年级'
+            } else if (gradeValue == 20) {
+                result = '低年级'
+            } else {
+                result = '高年级'
+            }
+            return result
+        },
+        init: function () {
+            var sessionId = g.getUrlParameter('sessionid')
+            if (sessionId) {
+                g.setCookie('sessionId', sessionId, '/api')
+            }
 
-            var switchTo = function(id) {
-                state.currentArticle.style.display = 'none'
+            var userId = g.getUrlParameter('userid')
+            if (userId) {
+                g.setCookie('userId', userId, '/api')
+            }
+
+            var switchTo = function (id) {
+                if (state.currentArticle) {
+                    state.currentArticle.style.display = 'none'
+                }
                 state.currentArticle = document.getElementById(id)
                 state.currentArticle.style.display = 'block'
                 history.pushState(null, null, '/video.html#' + id)
                 state[id].init()
             }
 
-            $(document).on('click', '[data-article]', function(e) {
+            $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
+                var dataId = e.target.dataset.id
+                if (dataId) {
+                    state[id].changeId(dataId)
+                }
                 switchTo(id)
             })
 
-            window.addEventListener('hashchange', function(e) {
+            window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 switchTo(hash)
             }, false)
+
+            var now = Date.now()
+            $.ajax({
+                type: 'get',
+                url: '/api/subjects',
+                success: function (ss) {
+                    subjects = ss
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/schedulers',
+                        success: function (vs) {
+                            var monday = new Date(now)
+                            var year = monday.getFullYear()
+                            var month = monday.getMonth() + 1
+                            var m = moment(now)
+                            var week = m.week()
+                            var weekDay = m.day()
+                            if (weekDay > 1) {
+                                monday = new Date(now - (weekDay - 1) * 24 * 60 * 60 * 1000)
+                            }
+                            for (var i = 0; i < vs.length; ++i) {
+                                var item = vs[i]
+                                item.grade = state.getGrade(item.grade)
+                                item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
+                                item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
+                                item.year = item.startTime.getFullYear()
+                                item.month = item.startTime.getMonth() + 1
+                                item.date = item.startTime.getDate()
+                                item.hour = item.startTime.getHours()
+                                item.minute = item.startTime.getMinutes()
+                                if (item.minute == 0) {
+                                    item.minute = '00'
+                                }
+                                item.endHour = item.endTime.getHours()
+                                item.endMinute = item.endTime.getMinutes()
+                                if (item.endMinute == 0) {
+                                    item.endMinute = '00'
+                                }
+                                item[i].grade = state.getGrade(item[i].grade)
+                                if (+item.endTime > now) {
+                                    var s = state.getSubjectById(item.subjectId)
+                                    if (+item.startTime > now) {
+                                        if (!s.futures) {
+                                            s.futures = []
+                                        }
+                                        s.futures.push(item)
+                                    } else {
+                                        if (!s.playings) {
+                                            s.playings = []
+                                        }
+                                        s.playings.push(item)
+                                    }
+                                } else {
+                                    passed.push(item)
+                                }
+                                if (item.year == year && item.week == week) {
+                                    switch (item.day) {
+                                        case 1:
+                                            if (courseTable[0].date == '') {
+                                                courseTable[0].date = year + '-' + month + '-' + monday.getDate()
+                                            }
+                                            courseTable[0].items.push(item)
+                                            break
+                                        case 2:
+                                            if (courseTable[1].date == '') {
+                                                var tuesday = new Date(+monday + 24 * 60 * 60 * 1000)
+                                                courseTable[1].date = year + '-' + month + '-' + tuesday.getDate()
+                                            }
+                                            courseTable[1].items.push(item)
+                                            break
+                                        case 3:
+                                            if (courseTable[2].date == '') {
+                                                var wednesday = new Date(+monday + 2 * 24 * 60 * 60 * 1000)
+                                                courseTable[2].date = year + '-' + month + '-' + wednesday.getDate()
+                                            }
+                                            courseTable[2].items.push(item)
+                                            break
+                                        case 4:
+                                            if (courseTable[3].date == '') {
+                                                var thursday = new Date(+monday + 3 * 24 * 60 * 60 * 1000)
+                                                courseTable[3].date = year + '-' + month + '-' + thursday.getDate()
+                                            }
+                                            courseTable[3].items.push(item)
+                                            break
+                                        case 5:
+                                            if (courseTable[4].date == '') {
+                                                var friday = new Date(+monday + 4 * 24 * 60 * 60 * 1000)
+                                                courseTable[4].date = year + '-' + month + '-' + friday.getDate()
+                                            }
+                                            courseTable[4].items.push(item)
+                                            break
+                                    }
+                                }
+                            }
+
+                            switchTo('main')
+                        }
+                    })
+                }
+            })
         }
     }
 
