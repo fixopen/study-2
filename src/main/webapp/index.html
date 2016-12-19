@@ -37,7 +37,7 @@
     </ul>
 </template>
 <button id="submit">提交</button>
- <!--弹窗开始 -->
+<!--弹窗开始 -->
 <article id="selectCard" style="display: none"></article>
 <article id="selectOneCard" style="display: none"></article>
 <template id="selectCard-template">
@@ -57,7 +57,6 @@
             </li>
         </ul>
     </div>
-
 </template>
 <template id="selectOneCard-template">
     <div class="wrap">
@@ -89,23 +88,22 @@
         </p>
         <div class="zhaunc_btn">
             <a class="zhaunc_a" href="#" id="submitTransfer">确认转出</a>
-
         </div>
     </div>
 </template>
-<div class="wrap" id="c" style="display: none">
+<div id="c" class="wrap" style="display: none">
     <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
-    <a class="mine_zuli" href="javascript:void(0)" id="z">
+    <a id="z" class="mine_zuli" href="javascript:void(0)">
         <img src="myUser/image/keBiao.png" alt="">
         <div class="mine_leftdiv">
             <span class="mine_leftsp" id="name"></span>
-            &lt;!&ndash; <span class="mine_leftsp">5487965452</span> &ndash;&gt;
+            <span class="mine_leftsp">5487965452</span>
             <br>
             <span class="uli_span">余<i class="uli_spani" id="usermoney"></i>金豆</span>
         </div>
     </a>
     <div class="charge-main">
-        &lt;!&ndash; charge-area &ndash;&gt;
+        <!-- charge-area -->
         <p class="main_ptxt">1元=10金豆</p>
         <ul class="rain-drop-ul">
             <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
@@ -128,7 +126,7 @@
         <br>
         <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
     </div>
-    &lt;!&ndash; pay-btn &ndash;&gt;
+    <!-- pay-btn -->
     <div class="pay_btn">
         <div class="wechat-btn">
             <span class="wechat-span"></span>
@@ -217,7 +215,7 @@
 <script src="basic.js"></script>
 <script>
     var login = document.getElementById('submit')
-    login.addEventListener('click', function(e){
+    login.addEventListener('click', function (e) {
         $.ajax({
             type: 'put',
             url: '/api/sessions',
@@ -230,10 +228,10 @@
             }),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
-            success: function(d) {
+            success: function (d) {
                 alert('login success')
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 alert(xhr.status + ' ' + xhr.statusText)
             }
         })
@@ -266,13 +264,13 @@
                 userAmount = e.user_amount;
                 price = e.price;
                 ke = e.subject;
-                tan(cards, ke, objectType,objectId)
+                tan(cards, ke, objectType, objectId)
                 // turnOutPage(cards);
             }
         })
     }
     //第二步根据自己的卡和价格资源弹窗
-    function tan(cards, subject, objectType,objectId) {
+    function tan(cards, subject, objectType, objectId) {
         for (var i = 0; i < cards.length; i++) {
             var a = cards[i].subjectId
             if (cards[i].subjectId == subject && cards[i].amount >= price) {
@@ -295,21 +293,21 @@
         if (biao != 1) {
             for (var i = 0; i < cards.length; i++) {
                 var a = cards[i].subjectId
-                var money = parseInt(userAmount) + 0 + parseInt( cards[i].amount);
+                var money = parseInt(userAmount) + 0 + parseInt(cards[i].amount);
                 var mp = "false";
-                if(money > price || money == price){
+                if (money > price || money == price) {
                     mp = "true";
                 }
-                if (cards[i].subjectId == subject && cards[i].amount < price && biao != 1 ) {
+                if (cards[i].subjectId == subject && cards[i].amount < price && biao != 1) {
                     //第三步：你有这个科目下的卡&&卡余额<资源价格:弹出2床
                     var subject_card = transformation(a);
                     var object_Type = transformationType(objectType);
                     d.getElementById("p12").innerHTML = "" + object_Type + "需要" + price + "金豆";
                     d.getElementById("p22").innerHTML = "您的" + subject_card + "卡余额不足";
                     d.getElementById("a12").innerHTML = "充值";
-                    if(mp == "true"){
+                    if (mp == "true") {
                         d.getElementById("a22").innerHTML = "转入";
-                    }else if(mp == "false"){
+                    } else if (mp == "false") {
                         d.getElementById("a22").innerHTML = "";
                     }
 
@@ -348,10 +346,10 @@
             for (var i = 0; i < cards.length; i++) {
                 var a = cards[i].subjectId
                 // var iYear=parseInt(iYear);
-                var money = parseInt(userAmount) + 0 + parseInt( cards[i].amount);
+                var money = parseInt(userAmount) + 0 + parseInt(cards[i].amount);
                 var am = parseInt(cards[i].amount)
                 var mp = "false";
-                if(money > price || money == price){
+                if (money > price || money == price) {
                     mp = "true";
                 }
                 if (cards[i].subjectId != subject && am < price && biao != 1) {
@@ -366,9 +364,9 @@
                     d.getElementById("p14").innerHTML = "您没有" + object_card + "卡";
                     d.getElementById("p24").innerHTML = "您的" + subject_card + "卡余额不足";
                     d.getElementById("a14").innerHTML = "充值";
-                    if(mp == "true"){
+                    if (mp == "true") {
                         d.getElementById("a24").innerHTML = "转入";
-                    }else if(mp == "false"){
+                    } else if (mp == "false") {
                         d.getElementById("a24").innerHTML = "";
                     }
                     d.getElementById("4").style.display = "block"
@@ -384,15 +382,14 @@
     //第三步确认购买||确认转入||确认充值
     function atom(sourceId, sourceType, object_Id, object_Type, count, money, none) {
         var result;
-        if(money == null && count == null){
-            filter  = { // 充值rechargeFilter
+        if (money == null && count == null) {
+            filter = { // 充值rechargeFilter
                 sourceType: sourceType,
                 objectId: objectId,
                 objectType: objectType,
                 money: money
             }
-        }else
-        if(count == null){
+        } else if (count == null) {
             filter = { //转账transferFilter
                 sourceId: sourceId,
                 sourceType: sourceType,
@@ -400,8 +397,7 @@
                 objectType: object_Type,
                 money: money
             }
-        }else
-        if(money == null){
+        } else if (money == null) {
             filter = { // 购买purchaseFilter
                 sourceId: sourceId,
                 sourceType: sourceType,
@@ -420,16 +416,16 @@
             contentType: "application/json; charset=utf-8",
             success: function (e) {
                 alert("成功")
-                if(none == 1){
+                if (none == 1) {
                     document.getElementById("1").style.display = "none"
                 }
-                if(none == 2){
+                if (none == 2) {
                     document.getElementById("2").style.display = "none"
                 }
-                if(none == 3){
+                if (none == 3) {
                     document.getElementById("3").style.display = "none"
                 }
-                if(none == 4){
+                if (none == 4) {
                     document.getElementById("4").style.display = "none"
                 }
             },
@@ -458,14 +454,14 @@
     purchase1.addEventListener('click', function (e) {
         alert("购买1")
 //                    sourceId, sourceType, objectId, objectType, count, money
-        atom(card.id,"card",object_Id,object_Types,count,null,1);
+        atom(card.id, "card", object_Id, object_Types, count, null, 1);
     })
 
     var purchase2 = document.getElementById("a13")
     purchase2.addEventListener('click', function (e) {
         alert("购买2")
 //                    sourceId, sourceType, objectId, objectType, count, money
-        atom(card.id,"card",object_Id,object_Types,count,null,3);
+        atom(card.id, "card", object_Id, object_Types, count, null, 3);
     })
     var recharge1 = document.getElementById("a21")
     recharge1.addEventListener('click', function (e) {
@@ -474,7 +470,7 @@
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
         //d.getElementById("c").style.display="block";
-        rechargePage(cards,"c")
+        rechargePage(cards, "c")
     })
 
     var recharge2 = document.getElementById("a12")
@@ -484,7 +480,7 @@
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
         // d.getElementById("c").style.display="block";
-        rechargePage(cards,'c')
+        rechargePage(cards, 'c')
     })
 
     var recharge3 = document.getElementById("a23")
@@ -494,7 +490,7 @@
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
         // d.getElementById("c").style.display="block";
-        rechargePage(cards,'c')
+        rechargePage(cards, 'c')
     })
 
     var recharge4 = document.getElementById("a14")
@@ -504,14 +500,14 @@
         //turnOutPage(cards)
         //d.getElementById("1").style.display = "none"
         //  d.getElementById("c").style.display="block";
-        rechargePage(cards,'c')
+        rechargePage(cards, 'c')
     })
 
     var turnOut1 = document.getElementById("a22")
     turnOut1.addEventListener('click', function (e) {
         alert("转入1")
         d.getElementById("2").style.display = "none"
-        turnOutPage(cards,"z")
+        turnOutPage(cards, "z")
         //d.getElementById("1").style.display = "none"
         // d.getElementById("c").style.display="block";
     })
@@ -520,13 +516,13 @@
     turnOut2.addEventListener('click', function (e) {
         alert("转入2")
         d.getElementById("4").style.display = "none"
-        turnOutPage(cards,"z")
+        turnOutPage(cards, "z")
         //d.getElementById("1").style.display = "none"
         //d.getElementById("c").style.display="block";
     })
 
     var z = d.getElementById("z")
-    z.addEventListener('click',function (e) {
+    z.addEventListener('click', function (e) {
         document.getElementById("c").style.display = "none"
         turnOutPage(cards)
     })
@@ -547,10 +543,6 @@
     close1.addEventListener('click', function (e) {
         document.getElementById("4").style.display = "none"
     })
-    /*
-     function clo(id) {
-     document.getElementById(id).style.display = "none"
-     }*/
 
     function transformation(sex) {
         var result;
@@ -562,7 +554,6 @@
         }
         return result;
     }
-
     function transformationType(objectType) {
         var result;
         if (objectType == "knowledgePoint") {
@@ -576,17 +567,16 @@
         }
         return result;
     }
-    function duo(id,T) {
+    function duo(id, T) {
         var w = 1;
         w = id;
         var arrList = new Array;
         for (var i = 0; i < cards.length; i++) {
-            if(cards[i].id == id){
+            if (cards[i].id == id) {
                 arrList.push(cards[i]);
-                if(T == "z"){
+                if (T == "z") {
                     dan(arrList)
-                }else
-                if(T == "c"){
+                } else if (T == "c") {
                     rechargePagedan(arrList)
                 }
             }
@@ -614,12 +604,12 @@
         var submitTransfer = document.getElementById("submitTransfer")
         submitTransfer.addEventListener('click', function (e) {
             //userAmount(transfer[0].id, $("#Number").val())
-            atom("96520767275011","user",transfer[0].id,"card",null,$("#Number").val())
+            atom("96520767275011", "user", transfer[0].id, "card", null, $("#Number").val())
             d.getElementById("selectOneCard").style.display = "none"
 
         })
     }
-    function turnOutPage(cards,T) {
+    function turnOutPage(cards, T) {
         if (cards.length > 1) {
             for (var i = 0; i < cards.length; i++) {
                 if (cards[i].subjectId == 1) {
@@ -644,15 +634,13 @@
 
             $('.mine_zuli').on('click', function (e) {
                 var id = e.target.dataset.id
-                duo(id,T)
+                duo(id, T)
             })
         } else if (cards.length == 1) {
             dan(cards);
         }
     }
-
-
-    function rechargePage(cards,T) {
+    function rechargePage(cards, T) {
         if (cards.length > 1) {
             for (var i = 0; i < cards.length; i++) {
                 if (cards[i].subjectId == 1) {
@@ -679,13 +667,12 @@
 
             $('.mine_zuli').on('click', function (e) {
                 var id = e.target.dataset.id
-                duo(id,T)
+                duo(id, T)
             })
         } else if (cards.length == 1) {
             rechargePagedan(cards);
         }
     }
-
     function rechargePagedan(cards) {
         var a = cards[0].subjectId
         cards[0].subjectId = transformation(a)
@@ -693,8 +680,8 @@
             cards[0].amount = "0"
         }
         d.getElementById("selectCard").style.display = "none"
-        d.getElementById("name").innerHTML = ""+cards[0].no+""
-        d.getElementById("usermoney").innerHTML = ""+cards[0].amount+""
+        d.getElementById("name").innerHTML = "" + cards[0].no + ""
+        d.getElementById("usermoney").innerHTML = "" + cards[0].amount + ""
         d.getElementById("c").style.display = "block"
     }
 </script>
@@ -723,7 +710,6 @@
         // alert("来了")
         notice("knowledgePoint", 2, 3);
     }, false)
-
 
     //只要给我你的消费类型如知识点、直播等，返回账户余额、所有的卡号余额和需要消费的金豆数
     function notice(objectType, subjectId, objectId) {
@@ -880,8 +866,6 @@
                 amount: money,
                 subjectId: cardId,
             }
-
-
         }
         $.ajax({
             type: "put",
@@ -898,7 +882,6 @@
                     document.getElementById("knowledgePoints").style.display = "block"
                     notice("knowledgePoint", 2);
                 }
-
             }
         })
     }
@@ -934,7 +917,6 @@
                 setTimeout(function () {
                     duo(id)
                 }, 1000)
-
                 //duo(id)
             })
             // alert("到多个卡选择页面")
@@ -972,7 +954,6 @@
             document.getElementById("selectCard").style.display = "none"
             document.getElementById("knowledgePoints").style.display = "none"
             document.getElementById("tishi").innerHTML = "" + user_amount + " 金豆"
-
 
             document.getElementById("Popup").style.display = "none"
             document.getElementById("selectOneCard").style.display = "block"
