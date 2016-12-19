@@ -1117,7 +1117,7 @@ canvas{
     padding: 0 0.9375rem;
     border-bottom: 1px solid #e5e5e5;
     position: relative;
-    background-image: url('../img/rsanjiao.png');
+    background-image: url('../image/rsanjiao.png');
     background-size: 0.46875rem 0.71875rem;
     background-repeat: no-repeat;
     background-position: 96% center;
@@ -1136,7 +1136,7 @@ canvas{
     width: 100%;
     padding: 0.9375rem;
     box-sizing: border-box;
-    background: url('../img/account-setOur-contentBg1.png') center 0 no-repeat;
+    background: url('../image/account-setOur-contentBg1.png') center 0 no-repeat;
     background-size: 80% 7.4375rem;
 }
 .account-setOur-contentTxt{
@@ -1312,7 +1312,7 @@ canvas{
 .set-unbundling-wechat1 input:checked{
     opacity: 1;
     filter: alpha(opacity=1);
-    background: url(../img/checkedBtn.png) 0 0 no-repeat;
+    background: url(../image/checkedBtn.png) 0 0 no-repeat;
     background-size: 1.4375rem 1.4375rem;
 }
 .set-unbundling-time{
@@ -1344,4 +1344,203 @@ canvas{
     height: 1.4375rem;
     opacity: 0;
     filter: alpha(opacity=0);
+}
+
+.sign_header{
+    width: 100%;
+    height: 13.4375rem;
+    background: url('../image/login_toubg.png') center no-repeat;
+    background-size: 100% 100%;
+}
+.sign_avatar{
+    width: 5.625rem;
+    height: 5.625rem;
+    text-align: center;
+    line-height: 5.625rem;
+    border-radius: 50%;
+    background-color: #fff1d3;
+    opacity: 0.4;
+    position: absolute;
+    top: 8.29%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.sign_touImg{
+    width: 5.625rem;
+    height: 5.625rem;
+    text-align: center;
+    line-height: 5.625rem;
+    border-radius: 50%;
+    position: absolute;
+    top: 8.29%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.sign_avatarImg{
+    width: 4.6875rem;
+    height: 4.6875rem;
+    border-radius: 50%;
+    position: absolute;
+    top: 0.46875rem;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.sign_tab_switch{
+    width: 100%;
+    position: absolute;
+    top: 10.785rem;
+}
+.sign_tab_swli{
+    float: left;
+    font-size: 1.0625rem;
+    width: 49%;
+    text-align: center;
+}
+.sign_tab_mima{
+    display: inline-block;
+    width: 100%;
+    height: 2.125rem;
+    line-height: 2.125rem;
+    color: #fff;
+}
+.sign_tab_duanx{
+    display: inline-block;
+    width: 100%;
+    height: 2.125rem;
+    line-height: 2.125rem;
+    color: #fff;
+}
+.sign_now_sanjiao{
+    display: inline-block;
+    width: 1.125rem;
+    height: 0.46875rem;
+    background: url('../image/login_sanjiao.png') center no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    bottom: -0.6rem;
+    left: 22%;
+    display: none;
+}
+.sign_sanJer{
+    position: absolute;
+    left: 71%;
+}
+.sign_tab_swli.cur .sign_now_sanjiao{
+    display: block;
+}
+.sign_mine_table{
+    margin: 1.90625rem 0.9375rem 2.0625rem 0.9375rem;
+    display: none;
+}
+.sign_mine_table.cur{
+    display: block;
+}
+.sign_mine_zUl{
+    border: 1px solid #e5e5e5;
+    border-bottom: none;
+    border-radius: 0.46875rem;
+    background-color: #fff;
+}
+.sign_mine_zuli{
+    height: 3.71875rem;
+    line-height: 3.71875rem;
+    padding-left: 0.9375rem;
+    border-bottom: 1px solid #e5e5e5;
+    position: relative;
+}
+.sign_zuli_yzm{
+    display: none;
+}
+.sign_mine_leftsp{
+    font-size: 1.0625rem;
+    height: 3.6875rem;
+    line-height: 3.6875rem;
+    padding-right:0.6375rem;
+    border-right: 1px solid #eee;
+}
+.sign_mine_rightip{
+    font-size: 1.0625rem;
+    width: 9.45rem;
+    height: 1.8125rem;
+    margin-left: 0.4375rem;
+}
+.sign_eye{
+    display: inline-block;
+    width: 1.4375rem;
+    height: 1.0rem;
+    background: url('../image/login_eye.png') center no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 1.257rem;
+    right: 0.3125rem;
+}
+.sign_yanZma{
+    display: inline-block;
+    color: #444;
+    font-size: 0.8125rem;
+    width: 4.625rem;
+    height: 1.625rem;
+    /*background: url('../image/yanzm.png') center no-repeat;*/
+    background-size: 100% 100%;
+    position: absolute;
+    top: 1rem;
+    right: 0.3125rem;
+}
+.sign_famima{
+    display: inline-block;
+    color: #fff;
+    font-size: 0.9375rem;
+    width: 6.25rem;
+    height: 2.8125rem;
+    line-height: 2.8125rem;
+    text-align: center;
+    background-color: #ff8067;
+    border-radius: 0.46875rem;
+    position: absolute;
+    top: 0.46875rem;
+    right: 0.3125rem;
+}
+.sign_mine_tishi{
+    color: #ff8067;
+    font-size: 0.8125rem;
+    padding-left: 0.9375rem;
+}
+.sign_bottom_bdiv{
+    width: 100%;
+    text-align: center;
+}
+.sign_bottom_btn{
+    display: inline-block;
+    color: #fff;
+    font-size: 1.125rem;
+    width: 95%;
+    height: 3.75rem;
+    line-height: 3.75rem;
+    text-align: center;
+    background-color: #ff8067;
+    border-radius: 0.625rem;
+}
+.sign_bottom_txt{
+    text-align: center;
+    margin: 2.1875rem 0 0.625rem 0;
+}
+.sign_leftLine{
+    color: #aaa;
+    margin: 0 0.625rem;
+}
+.sign_errorTs{
+    color: #fff;
+    font-size: 0.6375rem;
+    height: 0.6375rem;
+    line-height: 0.6375rem;
+    padding: 0.625rem;
+    background-color: #000;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    position: absolute;
+    left: 4.6875rem;
+    top: 2.5rem;
 }
