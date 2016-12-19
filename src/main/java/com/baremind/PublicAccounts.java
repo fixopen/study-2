@@ -1130,7 +1130,7 @@ public class PublicAccounts {
     @Produces(MediaType.TEXT_HTML)
     public Response video(@Context HttpServletRequest request, @QueryParam("code") String code) {
         System.out.println("===================直播开始==========================");
-        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/videos.html");
+        return click(request.getCookies(), code, "http://www.xiaoyuschool.com/content/videos.html");
     }
 
     //获取微信服务器ID

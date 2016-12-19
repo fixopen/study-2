@@ -1099,3 +1099,249 @@ canvas{
     width: 35%;
 }
 
+/* 我的账号-设置 */
+.mainsetting-zilo{
+    margin: 1.25rem 0 1.875rem;
+}
+.mainsetting-zUl{
+    background-color: #fff;
+    border-top: 1px solid #e5e5e5;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+}
+.mainsetting-zuli{
+    color: #444;
+    display: block;
+    height: 3.71875rem;
+    line-height: 3.71875rem;
+    padding: 0 0.9375rem;
+    border-bottom: 1px solid #e5e5e5;
+    position: relative;
+    background-image: url('../img/rsanjiao.png');
+    background-size: 0.46875rem 0.71875rem;
+    background-repeat: no-repeat;
+    background-position: 96% center;
+}
+/* 我的账号-联系我们 */
+.account-setOur-login{
+    width: 100%;
+    text-align: center;
+    padding: 2.34375rem 0;
+}
+.account-setOur-login img{
+    width: 5.84375rem;
+    height: 5.84375rem;
+}
+.account-setOur-content{
+    width: 100%;
+    padding: 0.9375rem;
+    box-sizing: border-box;
+    background: url('../img/account-setOur-contentBg1.png') center 0 no-repeat;
+    background-size: 80% 7.4375rem;
+}
+.account-setOur-contentTxt{
+    width: 100%;
+    height: 15rem;
+    margin: 0 auto;
+    padding: 2.1875rem 0.9375rem;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+.setOur-contentTxt-h3{
+    color: #444;
+    font-size: 1.125rem;
+    margin-bottom: 0.9375rem;
+}
+.setOur-contentTxt-li{
+    color: #888;
+    font-size: 0.9375rem;
+    font-family: "苹方 中等";
+    margin-top: 0.46875rem;
+}
+.setOur-contentTxt-spanL{
+    display: inline-block;
+    width: 2.9rem;
+    vertical-align: top;
+}
+.setOur-contentTxt-spanR{
+    display: inline-block;
+    width: 78%;
+    line-height: 1.25rem;
+}
+.setOur-contentTxt-bottom{
+    text-align: center;
+    position: relative;
+    top: -3.5rem;
+}
+.setOur-contentTxt-bottom img{
+    width: 21.65625rem;
+    height: 6.125rem;
+}
+/* 我的账号-设置-密码设置 */
+.set-prompt{
+    color: #ff8067;
+    font-size: 0.8125rem;
+    padding-top: 0.3125rem;
+    text-align: center;
+    box-sizing: border-box;
+    line-height: 1.5rem;
+}
+.set-password-maindiv{
+    padding-top: 0.5rem;
+}
+.set-password-ul{
+    margin: 0 0.9375rem;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.3125rem;
+    box-sizing: border-box;
+}
+.set-password-li{
+    height: 3.6875rem;
+    line-height: 3.6875rem;
+    padding: 0 0.625rem;
+    box-sizing: border-box;
+    font-size: 1.0625rem;
+    border-bottom: 1px solid #e5e5e5;
+    color: #444;
+}
+.set-password-liLeft{
+    display: inline-block;
+    width: 4.95rem;
+}
+.set-password-span{
+    padding-right: 0.625rem;
+    border-right: 1px solid #eee;
+}
+.set-password-input{
+    width: 68%;
+    height: 96%;
+    font-size: 1.0rem;
+    padding: 0 0.3125rem;
+    box-sizing: border-box;
+    font-family: "苹方";
+}
+.set-password-input-tel{
+    width: 43%;
+    height: 3.5rem;
+    font-size: 1.0rem;
+    padding: 0 0.3125rem;
+    box-sizing: border-box;
+    font-family: "苹方";
+}
+.set-password-sendBtn,.set-password-sencondBtn,.set-password-resendBtn{
+    float: right;
+    display: inline-block;
+    width: 25%;
+    height: 2.8125rem;
+    margin-top: 0.4rem;
+    line-height: 2.6875rem;
+    text-align: center;
+    font-size: 0.9375rem;
+    font-family: "苹方";
+    border-radius: 0.3125rem;
+    display: none;
+}
+.set-password-sendBtn.cur,.set-password-sencondBtn.cur,.set-password-resendBtn.cur{
+    display: inline-block;
+}
+.set-password-sendBtn{
+    background-color: #ff8067;
+    color: #fff;
+}
+.set-password-sencondBtn{
+    background-color: #ccc;
+    color: #666;
+}
+.set-password-resendBtn{
+    background-color: #ff8067;
+    color: #fff;
+}
+.myset-btnBox{
+    padding: 1.5625rem 0.9375rem 0;
+}
+.myset-saveBtn{
+    display: block;
+    color: #fff;
+    font-size: 1.0625rem;
+    height: 3.75rem;
+    line-height: 3.75rem;
+    text-align: center;
+    background-color: #ff8067;
+    margin-bottom: 0.53125rem;
+    border-radius: 5px;
+}
+.myset-saveBtn:hover{
+    text-decoration: underline;
+}
+/* 解绑li */
+.set-unbundling-li{
+    color: #444;
+    font-size: 1.0625rem;
+    height: 3.5625rem;
+    padding: 0.3125rem 0.9375rem 0 0.9375rem;
+    border-top: 1px solid #e5e5e5;
+    box-sizing: border-box;
+}
+.set-unbundling-litou{
+    color: #aaa;
+    line-height: 3.5625rem;
+    padding-top: 0;
+    border-top: none;
+}
+.set-unbundling-wechat1{
+    display: inline-block;
+    width: 1.4375rem;
+    height: 1.4375rem;
+    border: 1px solid #ff8067;
+    border-radius: 0.3125rem;
+    vertical-align: middle;
+    position: relative;
+}
+.set-unbundling-wechat1 input{
+    display: inline-block;
+    width: 1.4375rem;
+    height: 1.4375rem;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.set-unbundling-wechat1 input:checked{
+    opacity: 1;
+    filter: alpha(opacity=1);
+    background: url(../img/checkedBtn.png) 0 0 no-repeat;
+    background-size: 1.4375rem 1.4375rem;
+}
+.set-unbundling-time{
+    color: #aaa;
+    font-size: 0.75rem;
+}
+.set-unbundling-wechat2{
+    display: inline-block;
+    width: 88%;
+    vertical-align: middle;
+}
+.set-unbundling-allCheck{
+    margin: 0 0.9375rem;
+    padding: 1rem 0.9375rem;
+    box-sizing: border-box;
+}
+.allCheck-input{
+    display: inline-block;
+    width: 1.4375rem;
+    height: 1.4375rem;
+    margin-right: 0.3125rem;
+    border: 1px solid #ff8067;
+    border-radius: 0.3125rem;
+    vertical-align: middle;
+}
+.allCheck-input input{
+    display: inline-block;
+    width: 1.4375rem;
+    height: 1.4375rem;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
