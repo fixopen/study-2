@@ -176,10 +176,6 @@
     <div class="wrap">
         <!-- main -->
         <ul class="changePassword_ul_css">
-            <li class="changePassword_li_css public_li_css" id="yuan" style="display: none">
-                <span class="public_span_css changePassword_interval_width_css">原密码</span>
-                <input class="firstActiveCard_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
-            </li>
             <li class="changePassword_li_css public_li_css">
                 <span class="public_span_css changePassword_interval_width_css">新密码</span>
                 <input class="firstActiveCard_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
@@ -195,6 +191,18 @@
             <a href="javascript:void(0)" class="changePassword_button_css" id="pwd_save">保 存</a>
             <a href="javascript:void(0)" id="quxiao" class="changePassword_save_css">取 消</a>
         </div>
+    </div>
+</article>
+<article id="changePhoneNumber" style="display: none">
+    <div>
+        <input/>
+        <input>
+    </div>
+</article>
+<article id="changeWechat" style="display: none">
+    <div>
+        <input/>
+        <input>
     </div>
 </article>
 
@@ -436,21 +444,19 @@
                     </button>
                 </li>
                 <li class="firstActiveCard_li_css public_li_css">
-                    <button data-article="changePassword">
+                    <button data-article="changePhoneNumber">
                         手机号修改
                         <span class="next-btn"></span>
                     </button>
                 </li>
                 <li class="firstActiveCard_li_css public_li_css">
-                    <button data-article="changePassword">
+                    <button data-article="changeWechat">
                         微信解绑
                         <span class="next-btn"></span>
                     </button>
                 </li>
             </ul>
         </div>
-    </div>
-    <div class="wrap">
         <div class="changePassword_div_css">
             <ul class="changePassword_ul_css">
                 <li class="firstActiveCard_li_css public_li_css">
@@ -1999,7 +2005,7 @@
                         }
                         $.ajax({
                             type: "put",
-                            url: "/api/users/updatePassword",
+                            url: "/api/users/self",
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
