@@ -231,7 +231,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.discount = discount;
     }
 
-    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount) {
+    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, boolean isVIP) {
         Map<String, Object> schedulerMap = new HashMap<>();
         schedulerMap.put("id", scheduler.getId());
         schedulerMap.put("year", scheduler.getYear());
@@ -260,6 +260,10 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
         schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
         schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != null);
+        if (isVIP) {
+            schedulerMap.put("contentLink", scheduler.getContentLink());
+            schedulerMap.put("directLink", scheduler.getDirectLink());
+        }
         return schedulerMap;
     }
 

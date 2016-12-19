@@ -548,6 +548,11 @@ public class Users {
         }
     }
 
+    static boolean isVIP(User user) {
+        boolean result = false;
+        return result;
+    }
+
     @GET
     @Path("telephones/{telephone}/code")
     @Produces(MediaType.APPLICATION_JSON)
