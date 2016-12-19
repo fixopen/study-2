@@ -140,8 +140,35 @@ public class Users {
         return Impl.updateById(sessionId, id, newData, User.class, new Updater(), null);
     }
 
+    @PUT
+    @Path("{phone}/{code}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateByphone(@CookieParam("sessionId") String sessionId, @PathParam("phone") Long phone, @PathParam("code") Long code, User newData) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            Map con = new HashMap();
+            con.put("phoneNumber",phone);
+            con.put("validCode",code);
+            ValidationCode validationCode = JPAEntry.getObject(ValidationCode.class, con);
+            Date now = new Date();
+            if(validationCode != null){
+                Date sendTime = validationCode.getTimestamp();
+                if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
 
-    @PUT //根据token修改
+                }else {
+                    JPAEntry.genericDelete(ValidationCode.class,"phoneNumber",phone);
+                }
+            }else {
+                result = Response.status(404).build();
+            }
+        }
+
+        return Impl.updateUserSelf(sessionId, newData, new Updater());
+    }
+
+
+    @PUT
     @Path("self")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
