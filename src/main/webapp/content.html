@@ -537,8 +537,8 @@
 </template>
 <template id="problem-option-template">
     <li class="mld_daanLi">
-        <span class="daan_quan" data-id="${id}">${title}</span>
-        <input class="daana" name="daan3" type="radio">${name}
+        <span class="daan_quan" data-id="${id}" data-order="${order}">${title}</span>
+        <input class="daana" name="daan3" type="radio" data-order="${order}">${name}
     </li>
 </template>
 <template id="problem-checkbox-template">
@@ -1269,28 +1269,20 @@
                                 p.options[j].title = String.fromCharCode(65 + j);
                             }
                         }
-                        $.ajax({
-                            type: "get",
-                            url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/is-self-like',
-                            dataType: "json",
-                            success: function (like) {
-                                state.knowledgePoint.value.liked = like.like
-                                state.knowledgePoint.value.contents = e
-                                for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
-                                    $.ajax({
-                                        type: "get",
-                                        url: '/api/comments/' + state.knowledgePoint.value.contents.comments[s].id + '/is-self-like',
-                                        dataType: "json",
-                                        async: false,
-                                        success: function (like) {
-                                            state.knowledgePoint.value.contents.comments[s].liked = like.like;
-//                                                    state.knowledgePoint.show()
-                                        }
-                                    })
+                        state.knowledgePoint.value.contents = e;
+                        for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
+                            $.ajax({
+                                type: "get",
+                                url: '/api/comments/' + state.knowledgePoint.value.contents.comments[s].id + '/is-self-like',
+                                dataType: "json",
+                                async: false,
+                                success: function (like) {
+                                    state.knowledgePoint.value.contents.comments[s].liked = like.like;
+                                    // state.knowledgePoint.show()
                                 }
-                                state.knowledgePoint.show()
-                            }
-                        })
+                            })
+                        }
+                        state.knowledgePoint.show()
                     },
                     error: function (e) {
                         tan(cards, ke, object_Types, object_Id)
@@ -1637,10 +1629,10 @@
             //var userId = g.getUrlParameter('userid')
             //g.setCookie('userId', userId)
 
-            var sessionId = g.getUrlParameter('sessionId')
-            g.setCookie('sessionId', sessionId)
+//            var sessionId = g.getUrlParameter('sessionId')
+//            g.setCookie('sessionId', sessionId)
 
-//            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
+            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
 
             $.ajax({
                 type: 'GET',
@@ -1652,7 +1644,6 @@
                         subjects[i].low = [];
                         subjects[i].high = [];
                     }
-
                     $.ajax({
                         type: 'GET',
                         url: '/api/volumes',
@@ -1719,9 +1710,9 @@
                                                 v.knowledgePoints.push(kps[i])
                                             }
                                             if (kps[i].liked == true) {
-                                                kps[i].type += 'Like';
-                                            } else if (kps[i].liked == false) {
                                                 kps[i].type += 'Unlike';
+                                            } else if (kps[i].liked == false) {
+                                                kps[i].type += 'Like';
                                             }
                                             if (kps[i].price == 0) {
                                                 kps[i].type += 'Free';
@@ -2162,10 +2153,10 @@
             }
         },
         knowledgePoint: {
+            isChanged: false,
             init: function () {
                 var falseImage = getTemplate('falseImage');
                 var trueImage = getTemplate('trueImage');
-                var selectedId;
                 $(document).on('click', '.mld_daanLi', function (e) {
                     var elm = e.currentTarget
                     if (state.volumes.parentId == 1) {
@@ -2173,8 +2164,7 @@
                     } else if (state.volumes.parentId == 2) {
                         var problemType = elm.parentNode.previousElementSibling.previousElementSibling.dataset.type;
                     }
-                    var titleElement = elm.children[1]
-                    selectedId = elm.firstElementChild.dataset.id;
+                    var titleElement = elm.children[1];
                     switch (problemType) {
                         case '多选题':
                             if (titleElement.dataset.selected == 'true' || titleElement.dataset.selected == true) {
@@ -2207,78 +2197,42 @@
                 })
                 $(document).on('click', '.btnTrue', function (e) {
                     var optionsContainer = e.target.parentNode.previousElementSibling
+                    var problem = state.knowledgePoint.findProblem(optionsContainer.dataset.id);
                     for (var i = 0; i < optionsContainer.children.length; ++i) {
                         var option = optionsContainer.children[i];
-                        var problem = state.knowledgePoint.findProblem(optionsContainer.dataset.id);
                         if (state.knowledgePoint.compareAnswer(i, problem.standardAnswers)) {
                             option.addClass('daanLi_true');
                             option.firstElementChild.innerHTML = ''
                             option.firstElementChild.removeClass('daanLi_nowBai');
                             option.firstElementChild.appendChild(trueImage.cloneNode(true))
-                            var selectedIndex = state.knowledgePoint.findIndex(selectedId);
-                            ss(problem.id, selectedIndex)
                         }
                         if (option.children[1].dataset.selected == 'true' || option.children[1].dataset.selected == true) {
+                            var selectedIndex = option.children[1].dataset.order - 1;
+                            ss(problem.id, selectedIndex);
                             if (!state.knowledgePoint.compareAnswer(i, problem.standardAnswers)) {
                                 option.addClass('daanLi_error');
                                 option.firstElementChild.innerHTML = ''
                                 option.firstElementChild.removeClass('daanLi_nowBai');
                                 option.firstElementChild.appendChild(falseImage.cloneNode(true))
-                                var selectedIndex = state.knowledgePoint.findIndex(selectedId);
-                                ss(problem.id, selectedIndex)
                             }
                         }
+                        var input = option.children[1];
+                        input.disabled = true;
                     }
+
                 })
             },
             parentId: 0,
-            isXiao: false,
+            isXiao: true,
             changeId: function (knowledgePointId) {
                 if (state.knowledgePoint.parentId != knowledgePointId) {
                     state.knowledgePoint.parentId = knowledgePointId
                     state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.parentId)
                     if (!state.knowledgePoint.value.contents) {
-//                        $.ajax({
-//                            type: 'get',
-//                            url: 'api/knowledge-points/' + state.knowledgePoint.value.id + '/contents',
-//                            dataType: 'json',
-//                            success: function (data) {
-//                                //  选项ABCD
-//                                for (var i = 0; i < data.problems.length; ++i) {
-//                                    var p = data.problems[i];
-//                                    for (var j = 0; j < p.options.length; ++j) {
-//                                        p.options[j].title = String.fromCharCode(65 + j);
-//                                    }
-//                                }
-//                                $.ajax({
-//                                    type: "get",
-//                                    url: '/api/knowledge-points/' + state.knowledgePoint.value.id + '/is-self-like',
-//                                    dataType: "json",
-//                                    success: function (like) {
-//                                        state.knowledgePoint.value.liked = like.like
-//                                        //state.knowledgePoints.value.liked=state.knowledgePoint.value.liked
-//                                        state.knowledgePoint.value.contents = data
-//                                        for (var s = 0; s < state.knowledgePoint.value.contents.comments.length; ++s) {
-//                                            $.ajax({
-//                                                type: "get",
-//                                                url: '/api/comments/' + state.knowledgePoint.value.contents.comments[s].id + '/is-self-like',
-//                                                dataType: "json",
-//                                                async: false,
-//                                                success: function (like) {
-//                                                    state.knowledgePoint.value.contents.comments[s].liked = like.like;
-////                                                    state.knowledgePoint.show()
-//                                                }
-//                                            })
-//                                        }
-//                                        state.knowledgePoint.show()
-//                                    }
-//                                })
-//                            }
-//                        })
                         xiao(state.knowledgePoint.value.id, 'knowledge-point');
-//                        state.knowledgePoint.isXiao=true;
                         state.knowledgePoint.show()
                     } else {
+                        xiao(state.knowledgePoint.value.id, 'knowledge-point');
                         state.knowledgePoint.show()
                     }
                 }
@@ -2417,10 +2371,10 @@
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
-                        if (state.knowledgePoint.isXiao = false) {
-                            xiao(state.knowledgePoint.value.id, 'knowledge-point');
-                            // state.knowledgePoint.isXiao=false
-                        }
+//                        if (state.knowledgePoint.isXiao) {
+//                            xiao(state.knowledgePoint.value.id, 'knowledge-point');
+//                            state.knowledgePoint.isXiao = false
+//                        }
 
                         proc({
                             containerId: 'knowledgePoint',
@@ -2797,26 +2751,26 @@
                 }
                 return problem
             },
-            findIndex: function (optionsId) {
-                var index = null
-                var finded = false
-                for (var i = 0; i < state.knowledgePoint.value.contents.problems.length; ++i) {
-                    for (var j = 0; i < state.knowledgePoint.value.contents.problems[i].options.length; ++i) {
-                        if (state.knowledgePoint.value.contents.problems[i].options[j].id == optionsId) {
-                            index = state.knowledgePoint.value.contents.problems[i].options[j].order - 1;
-                            finded = true
-                            break
-                        }
-                        if (finded) {
-                            break
-                        }
-                    }
-                    if (finded) {
-                        break
-                    }
-                }
-                return index
-            },
+//            findIndex: function (order) {
+//                var index = null
+//                var finded = false
+//                for (var i = 0; i < state.knowledgePoint.value.contents.problems.length; ++i) {
+//                    for (var j = 0; i < state.knowledgePoint.value.contents.problems[i].options.length; ++i) {
+//                        if (state.knowledgePoint.value.contents.problems[i].options[j].order == order) {
+//                            index = state.knowledgePoint.value.contents.problems[i].options[j].order-1;
+//                            finded = true
+//                            break
+//                        }
+//                        if (finded) {
+//                            break
+//                        }
+//                    }
+//                    if (finded) {
+//                        break
+//                    }
+//                }
+//                return index
+//            },
             compareAnswer: function (index, standardAnswers) {
                 var finded = false
                 for (var j = 0; j < standardAnswers.length; ++j) {
