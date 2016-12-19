@@ -146,15 +146,18 @@ public class Sessions {
             String count = loginFailureCount.getValidCode();
             if (Long.parseLong(count) > 5L) {
                 String code = loginInfo.getCode();
-                if (code == null) {
+                if (code == "") {
                     isPass = false;
+                    result = Response.status(410).build();
                 } else {
                     ValidationCode pictureValidationCode = JPAEntry.getObject(ValidationCode.class, "phoneNumber", ipAddr);
                     if (pictureValidationCode == null) {
                         isPass = false;
+                        result = Response.status(408).build();
                     } else {
                         if (!pictureValidationCode.getValidCode().equals(code)) {
                             isPass = false;
+                            result = Response.status(415).build();
                         }
                         JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", ipAddr);
                     }

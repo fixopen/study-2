@@ -21,72 +21,77 @@
 <body>
 <article id="sign" style="display: none">
     <div class="wrap">
-        <div class="header">
-            <div class="avatar"></div>
-            <div class="touImg">
-                <img src="myUser/image/login_tou.png" class="avatarImg"/>
+        <div class="sign_header">
+            <div class="sign_avatar"></div>
+            <div class="sign_touImg">
+                <img class="sign_avatarImg" src="myUser/image/login_tou.png" alt="">
             </div>
-            <ul class="tab_switch">
-                <li class="tab_swli cur">
-                    <a class="tab_mima" href="JavaScript:;" id="pass">密码登录</a>
-                    <span class="now_sanjiao"></span>
+            <ul class="sign_tab_switch">
+                <li class="sign_tab_swli cur" data-content="username" data-type="telephone">
+                    <a class="sign_tab_mima" >密码登录</a>
+                    <span class="sign_now_sanjiao"></span>
                 </li>
-                <li class="tab_swli">
-                    <a class="tab_duanx" href="JavaScript:;" id="shortMessage">短信登录</a>
-                    <span class="now_sanjiao sanJer"></span>
+                <li class="sign_tab_swli" data-content="short" data-type="validationCode">
+                    <a class="sign_tab_duanx" >短信登录</a>
+                    <span class="sign_now_sanjiao sign_sanJer"></span>
                 </li>
             </ul>
         </div>
-        <div class="mine_zilo">
-            <div class="mine_table cur" id="username">
-                <ul class="mine_zUl">
-                    <li class="mine_zuli">
-                        <span class="mine_leftsp">账号</span>
-                        <input class="mine_rightip" type="number" id="Number" placeholder="请输入已激活手机号">
-                        <i class="errorTs" id="errorNumber">
-                            <!--该手机号尚未绑卡激活，请重新输入-->
-                        </i>
+        <div class="sign_mine_zilo">
+            <div class="sign_mine_table cur" id="username">
+                <ul class="sign_mine_zUl">
+                    <li class="sign_mine_zuli">
+                        <span class="sign_mine_leftsp">账号</span>
+                        <input class="sign_mine_rightip" type="number" id="Number" placeholder="请输入已激活手机号">
+                        <!--<i class="sign_errorTs" >
+                            &lt;!&ndash;该手机号尚未绑卡激活，请重新输入&ndash;&gt;
+                        </i>-->
                     </li>
-                    <li class="mine_zuli">
-                        <span class="mine_leftsp">密码</span>
-                        <input class="mine_rightip" type="password" id="Dense" placeholder="请输入6-16位密码">
-                        <!--<a class="eye" href="#"></a>-->
-                        <i class="errorTs" id="errorpassword1">
-                            <!--密码错误-->
-                        </i>
+                    <li class="sign_mine_zuli">
+                        <span class="sign_mine_leftsp">密码</span>
+                        <!--<input class="sign_mine_rightip" type="password" id="pwd" placeholder="请输入6-16位密码">-->
+                        <input class="sign_mine_rightip mima_dd" name="" id="pwd" type="password"  placeholder="请输入6-16位密码" >
+                        <input class="sign_mine_rightip mima_wz" name="" type="text"  style="display:none;" placeholder="请输入6-16位密码" >
+                        <a class="eye" data-show="1" href="javascript:void(0);"></a>
+                    <i class="sign_errorTs" id="errorNumber" style="display: none">密码错误</i>
                     </li>
-                    <li class="mine_zuli zuli_yzm" style="display: none;" id="tu">
-                        <span class="mine_leftsp">验证码</span>
-                        <input class="mine_rightip" type="password" id="Verification" placeholder="请输入验证码">
-                        <img src="" id="tuxing" class="yanZma">
-                        <button class="yanZma" id="huan">点击换一张</button>
-                        <i class="errorTs">
+                    <li class="sign_mine_zuli sign_zuli_yzm" id="tu" style="display: none;">
+                        <span class="sign_mine_leftsp">验证码</span>
+                        <input class="sign_mine_rightip" id="code" placeholder="请输入验证码">
+                        <!--<a class="sign_yanZma" id="huan">点击换一张</a>-->
+                        <img src="" class="sign_yanZma" id="huan">
+                        <!--点击换一张-->
+                        <i class="sign_errorTs" style="display: none">
                             <!--验证码错误-->
                         </i>
                     </li>
-                    <span id="zhanghaoerror"></span>
                 </ul>
+                <span id="zhanghaoerror" class="sign_mine_tishi">
+
+                </span>
             </div>
-            <div class="mine_table" id="short">
-                <ul class="mine_zUl">
-                    <li class="mine_zuli">
-                        <span class="mine_leftsp">账号</span>
-                        <input class="mine_rightip" type="number" id="duanNumber" placeholder="请输入手机号">
+            <div class="sign_mine_table" id="short">
+                <ul class="sign_mine_zUl">
+                    <li class="sign_mine_zuli">
+                        <span class="sign_mine_leftsp">账号</span>
+                        <input class="sign_mine_rightip" type="number" id="activationNumber" placeholder="请输入已激活手机号">
                     </li>
-                    <li class="mine_zuli">
-                        <span class="mine_leftsp">密码</span>
-                        <input class="mine_rightip" type="password" id="duanDense" placeholder="请输入短信密码">
-                        <!--<a class="famima" href="JavaScript:;" id="fapassword">发送密码</a>-->
-                        <input type="button" class="famima" id="fapassword" class="famima" value="发送密码">
+                    <li class="sign_mine_zuli">
+                        <span class="sign_mine_leftsp">密码</span>
+                        <input class="sign_mine_rightip" type="password" id="activationPassword" placeholder="请输入短信密码">
+                        <a class="sign_famima" id="fapassword">发送密码</a>
                     </li>
                 </ul>
-                <span class="mine_tishi" id="errorfamima"></span>
+                <span class="sign_mine_tishi" id="errorfamima">
+                    <!--密码已发送至手机，5分钟内有效-->
+                </span>
             </div>
-            <div class="bottom_bdiv">
-                <a class="bottom_btn" href="JavaScript:;" id="signSubmit">登 录</a>
+            <div class="sign_bottom_bdiv">
+                <a class="sign_bottom_btn" id="signSubmit" >登 录</a>
             </div>
-            <div class="bottom_txt" data-article="firstActiveCard"><span class="leftLine">——</span>还没有账号？先去“填加卡号”<span
-                    class="leftLine">——</span></div>
+            <div class="sign_bottom_txt" data-article="firstActiveCard">
+                <span class="leftLine">——</span >还没有账号？先去“填加卡号”<span class="leftLine">——</span>
+            </div>
         </div>
     </div>
 </article>
@@ -135,7 +140,6 @@
           </button>-->
     </div>
 </article>
-
 <article id="gold" style="display: none">
     <!--<div class="goldwrap"></div>
     <div class="goldbgImg">
@@ -170,16 +174,11 @@
         </div>
     </div>
 </article>
-
 <article id="info" style="display: none;"></article>
 <article id="changePassword" style="display: none;">
     <div class="wrap">
         <!-- main -->
         <ul class="changePassword_ul_css">
-            <li class="changePassword_li_css public_li_css" id="yuan" style="display: none">
-                <span class="public_span_css changePassword_interval_width_css">原密码</span>
-                <input class="firstActiveCard_input_css" type="password" id="oldpwd" placeholder="请输入原密码">
-            </li>
             <li class="changePassword_li_css public_li_css">
                 <span class="public_span_css changePassword_interval_width_css">新密码</span>
                 <input class="firstActiveCard_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
@@ -197,11 +196,24 @@
         </div>
     </div>
 </article>
-
-<article id="user"></article>
-<article id="nickname" style="display: none">
+<article id="changePhoneNumber" style="display: none">
+    <div>
+        <input/>
+        <input>
+    </div>
+</article>
+<article id="changeWechat" style="display: none">
+    <div>
+        <input/>
+        <input>
+    </div>
+</article>
+<article id="user">
 
 </article>
+<!--<article id="nickname" style="display: none">
+
+</article>-->
 <article id="cards" style="display: none;">
     <div class="wrap">
         <div class="headercard">
@@ -374,7 +386,7 @@
                 <li class="mine_liname">
                     <div class="mine_leftdiv">
                         <p class="mine_zhaunc">转出金豆数量</p>
-                        <span class="mine_leftsp">金豆：</span>
+                          <span class="mine_leftsp">金豆：</span>
                         <input class="mine_zhauncIn" type="text" id="convertedNumber">
                     </div>
                 </li>
@@ -427,30 +439,19 @@
 </article>
 <article id="settings" style="display: none;">
     <div class="wrap">
-        <div class="changePassword_div_css">
-            <ul class="changePassword_ul_css">
-                <li class="firstActiveCard_li_css public_li_css">
-                    <button data-article="changePassword">
-                        密码设置
-                        <span class="next-btn"></span>
-                    </button>
+        <div class="mainsetting-zilo">
+            <ul class="mainsetting-zUl">
+                <li>
+                    <button class="mainsetting-zuli" data-article="changePassword">密码设置</button>
                 </li>
-                <li class="firstActiveCard_li_css public_li_css">
-                    <button data-article="changePassword">
-                        手机号修改
-                        <span class="next-btn"></span>
-                    </button>
+                <li>
+                    <button class="mainsetting-zuli" data-article="changePhoneNumber">手机号修改</button>
                 </li>
-                <li class="firstActiveCard_li_css public_li_css">
-                    <button data-article="changePassword">
-                        微信解绑
-                        <span class="next-btn"></span>
-                    </button>
+                <li>
+                    <button class="mainsetting-zuli" data-article="changeWechat">微信解绑</button>
                 </li>
             </ul>
         </div>
-    </div>
-    <div class="wrap">
         <div class="changePassword_div_css">
             <ul class="changePassword_ul_css">
                 <li class="firstActiveCard_li_css public_li_css">
@@ -576,7 +577,7 @@
 <template id="user-template">
     <!--<div class="user_div_css">-->
     <ul class="public_ul_css">
-        <li class="user_li_css public_li_css">
+       <!-- <li class="user_li_css public_li_css">
             <ul data-article="head">
                 <span class="public_span_css">我的头像</span>
                 <img class="user_head_css" src="${head}" alt="">
@@ -588,7 +589,7 @@
                 <span class="public_span_css">昵称</span>
                 <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
             </ul>
-        </li>
+        </li>-->
         <li class="user_li_css public_li_css">
             <span class="public_span_css">账号</span>
             <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
@@ -699,7 +700,7 @@
 <template id="study-template">
 
 </template>
-<template id="nickname-template">
+<!--<template id="nickname-template">
     <div class="wrap">
         <div class="mine_zilo">
             <ul class="mine_zUl">
@@ -711,7 +712,7 @@
             </ul>
         </div>
     </div>
-</template>
+</template>-->
 <template id="settings-template">
 
 </template>
@@ -754,18 +755,11 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-
     var user = null;
     var sessionId;
-    //var userId;
-    // var pan;
-    //var duan;
     var array = [];
-    //var count =0;
     var wechatUserId = null;
     var state = {
-        //openId: null,
-        // duan: null,
         pan: null,
         switchTo: function (id) {
             state.currentArticle.style.display = 'none'
@@ -782,11 +776,9 @@
         },
         currentArticle: document.getElementById('sign'),
         init: function () {
-            alert("没有来吗？");
             wechatUserId = g.getUrlParameter("wechatUserId");
             sessionId = g.getUrlParameter("sessionId");
             g.setCookie("sessionId",sessionId,"/api")
-//            alert("openId="+openId)
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 state.switchTo(id)
@@ -967,186 +959,165 @@
         return result;
     },*/
         sign: {
+            isSign: false,
+            currentTab: $('[data-content="username"]')[0],
+            type: 'telephone',
             init: function () {
-                document.getElementById("sign").style.display = "block"
-                var biaoji = 1;
-                var shortMessage = document.getElementById("shortMessage");
-                shortMessage.addEventListener('click', function (e) {
-                    document.getElementById("username").style.display = "none";
-                    document.getElementById("short").style.display = "block";
-                    biaoji = 0;
-                })
-                var pass = document.getElementById("pass");
-                pass.addEventListener('click', function (e) {
-                    document.getElementById("username").style.display = "block";
-                    document.getElementById("short").style.display = "none";
-                    biaoji = 1;
-                })
+                if (!state.sign.isSign) {
+                    var fapassword = document.getElementById('fapassword');
+                    fapassword.addEventListener('click', function () {
+                        state.firstActiveCard.activeCode(0)
+                    }, false);
 
-                var hu = document.getElementById("huan");
-                hu.addEventListener('click', function (e) {
-                    state.sign.huan();
-                })
-                var deviceType;
-                var fapassword = document.getElementById('fapassword');
-                fapassword.addEventListener('click', function () {
-                    //count = 0;
-                    state.firstActiveCard.activeCode(0)
-                }, false);
+                    var pwd = document.getElementById('pwd');
+                    pwd.addEventListener('focus', function () {
+                        document.getElementById("errorNumber").style.display = "none";
+                        document.getElementById("errorNumber").innerHTML = ""
+                    }, false);
 
-                var signSubmit = document.getElementById("signSubmit");
-                signSubmit.addEventListener('click', function (e) {
-                    var browser = {
-                        versions: (function () {
-                            var u = navigator.userAgent, app = navigator.appVersion;
-                            var yng =
-                            {//移动终端浏览器版本信息
-                                trident: u.indexOf('Trident') > -1, //IE内核
-                                presto: u.indexOf('Presto') > -1, //opera内核
-                                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-                                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-                                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-                                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-                                android: u.indexOf('Android') > -1, //android终端
-                                iPhone: u.indexOf('iPhone') > -1, //是否为iPhone
-                                iPad: u.indexOf('iPad') > -1, //是否iPad
-                                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
-                            };
+                    var huan = document.getElementById('huan');
+                    huan.addEventListener('click', function () {
+                        state.sign.GraphicCode();
+                    }, false);
 
-                            if (yng.mobile == true) {
-                                if (yng.ios == true) {
-                                    deviceType = "ios";
+                    $(".eye").on('click',function(){
+                        if($(this).attr("data-show")==1){//明文
+                            $(this).attr("data-show","2");
+                            $(this).children("i").html("&#xe627;");
+                            $(this).parent("li").children(".mima_dd").hide();
+                            $(this).parent("li").children(".mima_wz").show();
+                            $(this).parent("li").children(".mima_wz").val($(this).parent("li").children(".mima_dd").val());
+                            return;
+                        }
+                        if($(this).attr("data-show")==2){//密文
+                            $(this).attr("data-show","1");
+                            $(this).children("i").html("&#xe624;");
+                            $(this).parent("li").children(".mima_dd").show();
+                            $(this).parent("li").children(".mima_wz").hide();
+                            $(this).parent("li").children(".mima_dd").val($(this).parent("li").children(".mima_wz").val());
+                            return;
+                        }
+                    });
+
+                    $('.sign_tab_swli').on('click', function(e) {
+                        state.sign.currentTab.removeClass('cur')
+                        document.getElementById(state.sign.currentTab.dataset.content).removeClass('cur')
+                        state.sign.currentTab = e.currentTarget
+                        state.sign.type = state.sign.currentTab.dataset.type
+                        state.sign.currentTab.addClass('cur')
+                        document.getElementById(state.sign.currentTab.dataset.content).addClass('cur')
+                    })
+                    var signSubmit = document.getElementById("signSubmit");
+                    signSubmit.addEventListener('click', function (e) {
+                        var loginInfo = {type: state.sign.type, wechatUserId: wechatUserId, deviceType: 'WeChat'};
+                        switch (state.sign.type) {
+                            case 'telephone':
+                                //Number//手机号 pwd//密码 code//验证码 activationNumber//激活手机号 activationPassword//短信密码
+                                loginInfo.deviceNo = $('#Number').val()
+                                loginInfo.info = $('#Number').val()
+                                loginInfo.key = $("#pwd").val()
+                                loginInfo.code = $("#code").val()
+                                var dense = loginInfo.key
+                                if (dense.length >= 6 && dense.length <= 16) {
+                                    document.getElementById("errorNumber").style.display = "none";
+                                    document.getElementById("errorNumber").innerHTML = ""
+                                    send(loginInfo)
+                                } else {
+                                    document.getElementById("errorNumber").style.display = "block";
+                                    document.getElementById("errorNumber").innerHTML = "请输入6-16位密码";
                                 }
-                                if (yng.android == true) {
-                                    deviceType = "android";
-                                }
-                                if (yng.iPhone == true) {
-                                    deviceType = "iPhone";
-                                }
-                                if (yng.iPad == true) {
-                                    deviceType = "iPad";
-                                }
-                            } else {
-                                if (yng.trident == true) {
-                                    deviceType = "IE内核";
-                                }
-                                if (yng.presto == true) {
-                                    deviceType = "opera内核";
-                                }
-                                if (yng.webKit == true) {
-                                    deviceType = "苹果/谷歌内核";
-                                }
-                                if (yng.gecko == true) {
-                                    deviceType = "火狐内核";
-                                }
+                                break
+                            case 'validationCode':
+                                loginInfo.deviceNo = $('#activationNumber').val()
+                                loginInfo.info = $('#activationNumber').val()
+                                loginInfo.key = $("#activationPassword").val()
+                                send(loginInfo)
+                                break
+                            default:
+                                break
+                        }
+
+
+                    })
+                }
+                state.sign.isSign = true
+                function send(loginInfo) {
+                    $.ajax({
+                        type: "PUT",
+                        url: "/api/sessions",
+                        data: JSON.stringify(loginInfo),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (a) {
+                            state.switchTo('user')
+                        },
+                        error: function (e) {
+                            var element = null
+                            switch (loginInfo.type) {
+                                case 'validationCode':
+                                    element = document.getElementById('errorfamima')
+                                    break
+                                case 'telephone':
+                                    element = document.getElementById('zhanghaoerror')
+                                    break
                             }
-                            return yng;
-                        })()
-                        // language: (navigator.browserLanguage || navigator.language).toLowerCase()
-                    }
-                    // alert(deviceType)
-                    // alert(JSON.stringify(deviceType))
-                    var loginInfo = {};
-                    var nub = $("#Number").val();
-                    var dnub = $("#duanNumber").val();
-
-                    if (biaoji == 1) {
-                        loginInfo = {
-                            info: nub,
-                            key: $("#Dense").val(),
-                            type: "telephone",
-                            deviceType: deviceType,
-                            deviceNo: nub,
-                            code: $("#Verification").val(),
-                            //openId: g.getUrlParameter('openId'),
-                            wechatUserId: wechatUserId,
-                        }
-                        var dense = $("#Dense").val();
-                        if (dense.length >= 6 && dense.length <= 16) {
-                            document.getElementById("errorpassword1").style.display = "none";
-                            document.getElementById("errorpassword1").innerHTML = ""
-                            pan = 0
-                        } else {
-                            document.getElementById("errorpassword1").style.display = "block";
-                            document.getElementById("errorpassword1").innerHTML = "请输入6-16位密码";
-                            pan = 1
-                        }
-
-                        /* var ber = $("#Number").val();
-                         if (ber.length != 11) {
-                         document.getElementById("errorNumber").style.display = "block";
-                         document.getElementById("errorNumber").innerHTML = "请输入正确的手机格式";
-                         duan = 1
-                         } else {
-                         document.getElementById("errorNumber").style.display = "none";
-                         document.getElementById("errorNumber").innerHTML = ""
-                         duan = 0
-                         }*/
-                        if (pan == 0) {
-                            send(loginInfo)
-                        }
-                    } else {
-                        loginInfo = {
-                            info: dnub,
-                            key: $("#duanDense").val(),
-                            type: "validationCode",
-                            deviceType: deviceType,
-                            deviceNo: dnub,
-                            code: $("#Verification").val(),
-                            // openId: g.getUrlParameter('openId'),
-                            wechatUserId: wechatUserId,
-                        }
-                        send(loginInfo)
-                    }
-
-
-                    function send(loginInfo) {
-                        $.ajax({
-                            type: "PUT",
-                            url: "/api/sessions",
-                            data: JSON.stringify(loginInfo),
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (a) {
-                                state.switchTo('user')
-                            },
-                            error: function (e) {
-                                switch (e.status) {
-                                    case 406:
-                                        document.getElementById("errorfamima").innerHTML = "手机号或密码错误，请重新输入！"
-                                        break;
-                                    case 405:
-                                        document.getElementById("errorfamima").innerHTML = "密码过期，请重新输入！"
-                                        break;
-                                    case 404:
-                                        document.getElementById("zhanghaoerror").innerHTML = "账号或密码错误，请重新输入！"
-                                        break;
-                                    case 410:
-                                        //超过五次了
-                                        state.sign.huan();
-                                        document.getElementById("tu").style.display = "block"
-                                        document.getElementById("zhanghaoerror").innerHTML = "错误次数超过五次，请输入验证码！"
-                                        break;
-                                    case 412:
-                                        document.getElementById("zhanghaoerror").innerHTML = "手机号未激活 ！"
-                                        break;
-                                    case 407:
-                                        document.getElementById("zhanghaoerror").innerHTML = "验证码错误 ！"
-                                        break;
-                                }
+                            switch (e.status) {
+                                case 404:
+                                    element.innerHTML = '手机号或密码错误'
+                                    break;
+                                case 405:
+                                    element.innerHTML = '验证码过期'
+                                    break;
+                                case 408:
+                                    element.innerHTML = '手机号未激活'
+                                    break;
+                                case 415:
+                                    element.innerHTML = '图形验证码错误'
+                                    break;
+                                case 410:
+                                    state.sign.GraphicCode();
+                                    document.getElementById("tu").style.display = "block"
+                                    element.innerHTML = '错误次数超过五次，显示图形码'
+                                    break;
+                                default:
+                                    break
                             }
-                        })
-                    }
-                })
+
+                           /* switch (e.status) {
+                                case 406:
+                                    document.getElementById("errorfamima").innerHTML = "手机号或密码错误，请重新输入！"
+                                    break;
+                                case 405:
+                                    document.getElementById("errorfamima").innerHTML = "密码过期，请重新输入！"
+                                    break;
+                                case 404:
+                                    document.getElementById("zhanghaoerror").innerHTML = "账号或密码错误，请重新输入！"
+                                    break;
+                                case 410:
+                                    //超过五次了
+                                    state.sign.huan();
+                                    document.getElementById("tu").style.display = "block"
+                                    document.getElementById("zhanghaoerror").innerHTML = "错误次数超过五次，请输入验证码！"
+                                    break;
+                                case 412:
+                                    document.getElementById("zhanghaoerror").innerHTML = "手机号未激活 ！"
+                                    break;
+                                case 407:
+                                    document.getElementById("zhanghaoerror").innerHTML = "验证码错误 ！"
+                                    break;
+                            }*/
+                        }
+                    })
+                }
             },
-            huan: function () {
+            GraphicCode: function () {
                 $.ajax({
                     type: "get",
                     url: "api/medias/validation-picture",
                     dataType: "json",
                     success: function (e) {
-                        alert(e)
-                        document.getElementById("tuxing").src = "e"
+                        alert(JSON.stringify(e))
+                        document.getElementById("huan").src = "e"
                     }
                 })
             }
@@ -1999,7 +1970,7 @@
                         }
                         $.ajax({
                             type: "put",
-                            url: "/api/users/updatePassword",
+                            url: "/api/users/self",
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -2031,7 +2002,7 @@
             init: function () {
             }
         },
-        nickname: {
+       /* nickname: {
             init: function () {
                 // document.getElementById("nicknameval").innerHTML=user.name
                 document.getElementById("nickname").innerHTML = ""
@@ -2066,7 +2037,7 @@
                 });
                 //或$("p").blur(fn)
             }
-        }
+        }*/
     }
 
     state.init()

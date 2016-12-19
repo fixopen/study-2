@@ -17,28 +17,21 @@
     </div>
     <div class="review">
         <h3 class="today_live_title">往期回顾</h3>
-        <ul class="subject_tab" id="subjectTabs"></ul>
+        <ul class="subject_tab" id="subjectTabs">
+            <li class="subject_chinese cur">语文(<span id="chineseVideoCount">${count}</span>)</li>
+            <li class="subject_math">数学(<span id="mathVideoCount">${count}</span>)</li>
+        </ul>
         <!-- 语文 -->
         <div class="subject_content cur">
             <ul class="review_list" id="chinesePassedContainer"></ul>
             <!-- 页码 -->
-            <p class="page">
-                <a href="javascript:;" class="page_next">上一页</a>
-                <a href="javascript:;" class="page_num cur">1</a>
-                <a href="javascript:;" class="page_num">2</a>
-                <a href="javascript:;" class="page_num">3</a>
-                <a href="javascript:;" class="page_num">4</a>
-                <a href="javascript:;" class="page_num">5</a>
-                <a href="javascript:;" class="page_spot">...</a>
-                <a href="javascript:;" class="page_num">23</a>
-                <a href="javascript:;" class="page_next">下一页</a>
-            </p>
+            <p class="page" id="chinesePageContainer"></p>
         </div>
         <!-- 数学 -->
         <div class="subject_content">
             <ul class="review_list" id="mathPassedContainer"></ul>
             <!-- 页码 -->
-            <p class="page">
+            <p class="page" id="mathPageContainer">
                 <a href="javascript:;" class="page_next">上一页</a>
                 <a href="javascript:;" class="page_num cur">1</a>
                 <a href="javascript:;" class="page_num">2</a>
@@ -82,7 +75,7 @@
 
 <template id="live-template">
     <li class="live_item" style="width: 24%; float: left;">
-        <a href="play.html" class="live_video">
+        <div class="live_video" data-article="content">
             <img src="images/live_in.png" alt="" class="live_state">
             <div class="course_title">
                 <div class="course_big_title">${generalization}</div>
@@ -93,8 +86,8 @@
                 <span class="split_line"></span>
                 <span>${teacher}</span>
             </div>
-        </a>
-        <div class="live_title_section">
+        </div>
+        <div class="live_title_section" data-article="detail">
             <span class="live_title">${title}</span>
             <a href="details.html" class="title_details">详情</a>
         </div>
@@ -102,7 +95,7 @@
 </template>
 <template id="future-template">
     <li class="live_item" style="width: 24%; float: left;">
-        <a href="javascript:;" class="live_video">
+        <a href="javascript:;" class="live_video" data-article="wait">
             <img src="images/wait.png" alt="" class="live_state">
             <div class="bean_time">
                 <div class="play_time">${hour}:${minute}开讲</div>
@@ -118,18 +111,18 @@
             </div>
             <div class="wait_cover"></div>
         </a>
-        <div class="live_title_section">
+        <div class="live_title_section" data-article="detail">
             <span class="live_title">${title}</span>
             <a href="javascript:;" class="title_details">详情</a>
         </div>
     </li>
 </template>
-<template id="subject-tab-template">
-    <li class="subject_math">${name}(<span>${count}</span>)</li>
+<template id="subject-count-template">
+    <span>${count}</span>
 </template>
 <template id="passed-chinese-template">
     <li class="live_item" style="width: 24%; float: left;">
-        <a href="javascript:;" class="live_video">
+        <a href="javascript:;" class="live_video" data-article="content">
             <div class="course_title">
                 <div class="course_big_title">${generalization}</div>
                 <div class="course_small_title">${outline}</div>
@@ -141,7 +134,7 @@
                 <span>${year}-${month}-${date}</span>
             </div>
         </a>
-        <div class="live_title_section">
+        <div class="live_title_section" data-article="detail">
             <span class="live_title">${title}</span>
             <a href="javascript:;" class="title_details">详情</a>
         </div>
@@ -149,7 +142,7 @@
 </template>
 <template id="passed-math-template">
     <li class="live_item" style="width: 24%; float: left;">
-        <a href="javascript:;" class="review_math">
+        <a href="javascript:;" class="review_math" data-article="content">
             <div class="course_title">
                 <div class="course_big_title">${generalization}</div>
                 <div class="course_small_title">${outline}</div>
@@ -161,17 +154,31 @@
                 <span>${year}-${month}-${date}</span>
             </div>
         </a>
-        <div class="live_title_section">
+        <div class="live_title_section" data-article="device">
             <span class="live_title">${title}</span>
             <a href="javascript:;" class="title_details_math">详情</a>
         </div>
     </li>
 </template>
+<template id="first-page-template"></template>
+<template id="last-page-template"></template>
+<template id="previous-page-template">
+    <a href="javascript:;" class="page_next previous">上一页</a>
+</template>
+<template id="next-page-template">
+    <a href="javascript:;" class="page_next next">下一页</a>
+</template>
+<template id="page-template">
+    <a href="javascript:;" class="page_num">${pageNo}</a>
+</template>
+<template id="page-el">
+    <a href="javascript:;" class="page_spot">...</a>
+</template>
 
 <template id="detail-template">
     <div class="details_inner">
         <div class="details_video">
-            <a href="play.html" class="live_video">
+            <div class="live_video" data-article="content">
                 <img src="images/live_in.png" alt="" class="live_state">
                 <div class="course_title">
                     <div class="course_big_title">${generalization}</div>
@@ -182,7 +189,7 @@
                     <span class="split_line"></span>
                     <span>${teacher}</span>
                 </div>
-            </a>
+            </div>
             <div class="live_title_section">
                 <span class="live_title">${title}</span>
             </div>
@@ -406,12 +413,22 @@
             container: doc.getElementById('videoContainer'),
             liveTemplate: getTemplate('live-template'),
             futureTemplate: getTemplate('future-template'),
-            subjectTabs: doc.getElementById('subjectTabs'),
-            subjectTabTemplate: getTemplate('subject-tab-template'),
+            chineseCount: doc.getElementById('chineseVideoCount'),
+            mathCount: doc.getElementById('mathVideoCount'),
+            subjectCountTemplate: getTemplate('subject-count-template'),
+            currentTab: null,
+            currentContent: null,
             chinesePassedContainer: doc.getElementById('chinesePassedContainer'),
             passedChineseTemplate: getTemplate('passed-chinese-template'),
             mathPassedContainer: doc.getElementById('mathPassedContainer'),
             passedMathTemplate: getTemplate('passed-math-template'),
+            //chinesePageContainer: doc.getElementById('chinesePageContainer'),
+            //chineseCurrentPage: 1,
+            //mathPageContainer: doc.getElementById('mathPageContainer'),
+            //mathCurrentPage: 1,
+            //previousPageTemplate: getTemplate('previous-page-template'),
+            //nextPageTemplate: getTemplate('next-page-template'),
+            //pageSize: 16,
             isInit: false,
             init: function () {
                 if (!state.main.isInit) {
@@ -428,9 +445,17 @@
                     })
 
                     proc({
-                        container: state.main.subjectTabs,
-                        template: state.main.subjectTabTemplate,
-                        data: subjects
+                        container: state.main.chineseCount,
+                        template: state.main.subjectCountTemplate,
+                        data: {count: subjects[0].passed.length}
+                    })
+
+                    state.main.currentTab = doc.querySelector('.subject_chinese')
+
+                    proc({
+                        container: state.main.mathCount,
+                        template: state.main.subjectCountTemplate,
+                        data: {count: subjects[1].passed.length}
                     })
 
                     proc({
@@ -439,11 +464,95 @@
                         data: subjects[0].passed
                     })
 
+                    state.main.currentContent = doc.querySelector('.subject_content cur')
+
                     proc({
                         container: state.main.mathPassedContainer,
                         template: state.main.passedMathTemplate,
                         data: subjects[1].passed
                     })
+
+//                    proc({
+//                        container: state.main.chinesePageContainer,
+//                        template: state.main.previousPageTemplate,
+//                        data: {}
+//                    })
+//
+//                    var pageCount = Math.ceil(subjects[0].passed.length / state.main.pageSize)
+//                    for (var i = 0; i < pageCount; ++i) {
+//                        proc({
+//                            container: state.main.chinesePageContainer,
+//                            template: state.main.previousPageTemplate,
+//                            data: {pageNo: i}
+//                        })
+//                    }
+//
+//                    $(state.main.chinesePageContainer).find('.page_num').addClass('cur')
+//
+//                    proc({
+//                        container: state.main.chinesePageContainer,
+//                        template: state.main.nextPageTemplate,
+//                        data: {}
+//                    })
+//
+//                    $(document).on('click', '.page > .previous', function(e) {
+//                        //remove cur
+//                        --state.main.chineseCurrentPage
+//                        //add cur
+//                    })
+//
+//                    $(document).on('click', '.page > .next', function(e) {
+//                        //remove cur
+//                        ++state.main.chineseCurrentPage
+//                        //add cur
+//                    })
+//
+//                    $(document).on('click', '.page > .page_num', function(e) {
+//                        //remove cur
+//                        state.main.chineseCurrentPage = parseInt(e.target.textContent)
+//                        //add cur
+//                    })
+//
+//                    proc({
+//                        container: state.main.mathPageContainer,
+//                        template: state.main.previousPageTemplate,
+//                        data: {}
+//                    })
+//
+//                    var pageCount = Math.ceil(subjects[1].passed.length / state.main.pageSize)
+//                    for (var i = 0; i < pageCount; ++i) {
+//                        proc({
+//                            container: state.main.mathPageContainer,
+//                            template: state.main.previousPageTemplate,
+//                            data: {pageNo: i}
+//                        })
+//                    }
+//
+//                    $(state.main.mathPageContainer).find('.page_num').addClass('cur')
+//
+//                    proc({
+//                        container: state.main.mathPageContainer,
+//                        template: state.main.nextPageTemplate,
+//                        data: {}
+//                    })
+//
+//                    $(document).on('click', '.page > .previous', function(e) {
+//                        //remove cur
+//                        --state.main.mathCurrentPage
+//                        //add cur
+//                    })
+//
+//                    $(document).on('click', '.page > .next', function(e) {
+//                        //remove cur
+//                        ++state.main.mathCurrentPage
+//                        //add cur
+//                    })
+//
+//                    $(document).on('click', '.page > .page_num', function(e) {
+//                        //remove cur
+//                        state.main.mathCurrentPage = parseInt(e.target.textContent)
+//                        //add cur
+//                    })
 
                     function reviewTab() { // 往期回顾选项卡
                         var $subjectLi = $(".subject_tab li");
@@ -455,6 +564,12 @@
                             });
                         });
                     }
+
+//                    $(document).on('click', '.subject_tab li', function(e) {
+//                        $('.subject_tab li').removeClass('cur')
+//                        e.currentTarget.addClass('cur')
+//                        $(".subject_content").removeClass('cur')
+//                    })
 
                     function pageClick() { //点击页码
                         $(".page_num").each(function (index, el) {
