@@ -33,7 +33,7 @@ public class Sessions {
             if (existUser != null) {
                 Session s = PublicAccounts.putSession(new Date(), existUser.getId());
 //                Logs.insert(8l, "perf", 33l, new Date().toString());
-                result = Response.ok()
+                result = Response.ok(s)
                         .cookie(new NewCookie("userId", existUser.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                         .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                         .build();
