@@ -27,11 +27,11 @@
                 <img src="myUser/image/login_tou.png" class="avatarImg"/>
             </div>
             <ul class="tab_switch">
-                <li class="tab_swli cur">
+                <li class="tab_swli cur" data-content="username" data-type="telephone">
                     <a class="tab_mima" href="JavaScript:;" id="pass">密码登录</a>
                     <span class="now_sanjiao"></span>
                 </li>
-                <li class="tab_swli">
+                <li class="tab_swli" data-content="short" data-type="validationCode">
                     <a class="tab_duanx" href="JavaScript:;" id="shortMessage">短信登录</a>
                     <span class="now_sanjiao sanJer"></span>
                 </li>
@@ -82,6 +82,7 @@
                 </ul>
                 <span class="mine_tishi" id="errorfamima"></span>
             </div>
+
             <div class="bottom_bdiv">
                 <a class="bottom_btn" href="JavaScript:;" id="signSubmit">登 录</a>
             </div>
@@ -973,138 +974,75 @@
         return result;
     },*/
         sign: {
+            currentTab: $('.tab_swli .cur')[0],
+            type: null,
             init: function () {
-                document.getElementById("sign").style.display = "block"
-                var biaoji = 1;
-                var shortMessage = document.getElementById("shortMessage");
-                shortMessage.addEventListener('click', function (e) {
-                    document.getElementById("username").style.display = "none";
-                    document.getElementById("short").style.display = "block";
-                    biaoji = 0;
-                })
-                var pass = document.getElementById("pass");
-                pass.addEventListener('click', function (e) {
-                    document.getElementById("username").style.display = "block";
-                    document.getElementById("short").style.display = "none";
-                    biaoji = 1;
-                })
-
-                var hu = document.getElementById("huan");
-                hu.addEventListener('click', function (e) {
-                    state.sign.huan();
-                })
-                var deviceType;
                 var fapassword = document.getElementById('fapassword');
                 fapassword.addEventListener('click', function () {
                     //count = 0;
                     state.firstActiveCard.activeCode(0)
                 }, false);
 
+
+                $('.tab_swli').on('click', function(e) {
+                    state.sign.currentTab.removeClass('cur')
+                    document.getElementById(state.sign.currentTab.dataset.content).removeClass('cur')
+                    state.sign.currentTab = e.target
+                    state.sign.type = e.target.dataset.type
+                    e.target.addClass('cur')
+                    document.getElementById(e.target.dataset.content).addClass('cur')
+                })
+
+
+                //                document.getElementById("sign").style.display = "block"
+//                var biaoji = 1;
+//                var shortMessage = document.getElementById("shortMessage");
+//                shortMessage.addEventListener('click', function (e) {
+//                    document.getElementById("username").style.display = "none";
+//                    document.getElementById("short").style.display = "block";
+//                    biaoji = 0;
+//                })
+//                var pass = document.getElementById("pass");
+//                pass.addEventListener('click', function (e) {
+//                    document.getElementById("username").style.display = "block";
+//                    document.getElementById("short").style.display = "none";
+//                    biaoji = 1;
+//                })
+//
+//                var hu = document.getElementById("huan");
+//                hu.addEventListener('click', function (e) {
+//                    state.sign.huan();
+//                })
+//                var deviceType;
+
                 var signSubmit = document.getElementById("signSubmit");
                 signSubmit.addEventListener('click', function (e) {
-                    var browser = {
-                        versions: (function () {
-                            var u = navigator.userAgent, app = navigator.appVersion;
-                            var yng =
-                            {//移动终端浏览器版本信息
-                                trident: u.indexOf('Trident') > -1, //IE内核
-                                presto: u.indexOf('Presto') > -1, //opera内核
-                                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-                                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-                                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-                                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-                                android: u.indexOf('Android') > -1, //android终端
-                                iPhone: u.indexOf('iPhone') > -1, //是否为iPhone
-                                iPad: u.indexOf('iPad') > -1, //是否iPad
-                                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
-                            };
-
-                            if (yng.mobile == true) {
-                                if (yng.ios == true) {
-                                    deviceType = "ios";
-                                }
-                                if (yng.android == true) {
-                                    deviceType = "android";
-                                }
-                                if (yng.iPhone == true) {
-                                    deviceType = "iPhone";
-                                }
-                                if (yng.iPad == true) {
-                                    deviceType = "iPad";
-                                }
+                    var loginInfo = {type: state.sign.type, wechatUserId: wechatUserId, deviceType: 'WeChat'};
+                    switch (state.sign.type) {
+                        case 'telephone':
+                            loginInfo.deviceNo = $('#Number').val()
+                            loginInfo.info = $('#Number').val()
+                            loginInfo.key = $("#Dense").val()
+                            loginInfo.code = $("#Verification").val()
+                            var dense = loginInfo.key
+                            if (dense.length >= 6 && dense.length <= 16) {
+                                document.getElementById("errorpassword1").style.display = "none";
+                                document.getElementById("errorpassword1").innerHTML = ""
+                                send(loginInfo)
                             } else {
-                                if (yng.trident == true) {
-                                    deviceType = "IE内核";
-                                }
-                                if (yng.presto == true) {
-                                    deviceType = "opera内核";
-                                }
-                                if (yng.webKit == true) {
-                                    deviceType = "苹果/谷歌内核";
-                                }
-                                if (yng.gecko == true) {
-                                    deviceType = "火狐内核";
-                                }
+                                document.getElementById("errorpassword1").style.display = "block";
+                                document.getElementById("errorpassword1").innerHTML = "请输入6-16位密码";
                             }
-                            return yng;
-                        })()
-                        // language: (navigator.browserLanguage || navigator.language).toLowerCase()
-                    }
-                    // alert(deviceType)
-                    // alert(JSON.stringify(deviceType))
-                    var loginInfo = {};
-                    var nub = $("#Number").val();
-                    var dnub = $("#duanNumber").val();
-
-                    if (biaoji == 1) {
-                        loginInfo = {
-                            info: nub,
-                            key: $("#Dense").val(),
-                            type: "telephone",
-                            deviceType: deviceType,
-                            deviceNo: nub,
-                            code: $("#Verification").val(),
-                            //openId: g.getUrlParameter('openId'),
-                            wechatUserId: wechatUserId,
-                        }
-                        var dense = $("#Dense").val();
-                        if (dense.length >= 6 && dense.length <= 16) {
-                            document.getElementById("errorpassword1").style.display = "none";
-                            document.getElementById("errorpassword1").innerHTML = ""
-                            pan = 0
-                        } else {
-                            document.getElementById("errorpassword1").style.display = "block";
-                            document.getElementById("errorpassword1").innerHTML = "请输入6-16位密码";
-                            pan = 1
-                        }
-
-                        /* var ber = $("#Number").val();
-                         if (ber.length != 11) {
-                         document.getElementById("errorNumber").style.display = "block";
-                         document.getElementById("errorNumber").innerHTML = "请输入正确的手机格式";
-                         duan = 1
-                         } else {
-                         document.getElementById("errorNumber").style.display = "none";
-                         document.getElementById("errorNumber").innerHTML = ""
-                         duan = 0
-                         }*/
-                        if (pan == 0) {
+                            break
+                        case 'validationCode':
+                            loginInfo.deviceNo = $('#duanNumber').val()
+                            loginInfo.info = $('#duanNumber').val()
+                            loginInfo.key = $("#duanDense").val()
                             send(loginInfo)
-                        }
-                    } else {
-                        loginInfo = {
-                            info: dnub,
-                            key: $("#duanDense").val(),
-                            type: "validationCode",
-                            deviceType: deviceType,
-                            deviceNo: dnub,
-                            code: $("#Verification").val(),
-                            // openId: g.getUrlParameter('openId'),
-                            wechatUserId: wechatUserId,
-                        }
-                        send(loginInfo)
+                            break
+                        default:
+                            break
                     }
-
 
                     function send(loginInfo) {
                         $.ajax({
@@ -1117,6 +1055,23 @@
                                 state.switchTo('user')
                             },
                             error: function (e) {
+                                var element = null
+                                switch (loginInfo.type) {
+                                    case 'validationCode':
+                                        element = document.getElementById('errorfamima')
+                                        break
+                                    case 'telephone':
+                                        element = document.getElementById('zhanghaoerror')
+                                        break
+                                }
+                                switch (e.status) {
+                                    case 406:
+                                        element.innerHTML = ''
+                                        break
+                                    default:
+                                        break
+                                }
+
                                 switch (e.status) {
                                     case 406:
                                         document.getElementById("errorfamima").innerHTML = "手机号或密码错误，请重新输入！"
