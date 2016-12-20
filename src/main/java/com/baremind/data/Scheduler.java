@@ -245,14 +245,20 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         //schedulerMap.put("abstraction", scheduler.getAbstraction());
         //schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("description", scheduler.getDescription());
-        Image cover = Resources.findItem(covers, item -> item.getId() == scheduler.getCoverId());
-        if (cover != null) {
-            schedulerMap.put("cover", cover.getStorePath());
+        Long coverId = scheduler.getCoverId();
+        if (coverId != null) {
+            Image cover = Resources.findItem(covers, item -> item.getId() == coverId);
+            if (cover != null) {
+                schedulerMap.put("cover", cover.getStorePath());
+            }
         }
-        User teacher = JPAEntry.getObject(User.class,"id",scheduler.getTeacherId());
-        if (teacher != null) {
-            schedulerMap.put("teacher", teacher.getName());
-            schedulerMap.put("teacherDescription", teacher.getDescription());
+        Long teacherId = scheduler.getTeacherId();
+        if (teacherId != null) {
+            User teacher = Resources.findItem(teachers, item -> item.getId() == teacherId);
+            if (teacher != null) {
+                schedulerMap.put("teacher", teacher.getName());
+                schedulerMap.put("teacherDescription", teacher.getDescription());
+            }
         }
         schedulerMap.put("price", scheduler.getPrice());
         schedulerMap.put("discount", scheduler.getDiscount());

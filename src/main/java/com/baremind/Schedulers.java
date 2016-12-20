@@ -31,8 +31,14 @@ public class Schedulers {
             List<String> coverIds = new ArrayList<>();
             for (Scheduler ri : r) {
                 ids.add(ri.getId().toString());
-                teacherIds.add(ri.getTeacherId().toString());
-                coverIds.add(ri.getCoverId().toString());
+                Long teacherId = ri.getTeacherId();
+                if (teacherId != null) {
+                    teacherIds.add(teacherId.toString());
+                }
+                Long coverId = ri.getCoverId();
+                if (coverId != null) {
+                    coverIds.add(coverId.toString());
+                }
             }
             EntityManager em = JPAEntry.getEntityManager();
             List<User> teachers = Resources.getList(em, teacherIds, User.class);
