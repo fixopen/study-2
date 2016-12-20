@@ -246,6 +246,7 @@ li.mld_Ulli {
 .mld_liImg {
     width: 2.1875rem;
     height: 0.9375rem;
+    line-height: 0.9375rem;
     margin-right: 0.46875rem;
     padding: 0 0.0625rem;
     border: 1px solid #24cbd1;
@@ -258,6 +259,7 @@ li.mld_Ulli {
 .mld_liImg_ {
     width: 2.1875rem;
     height: 0.9375rem;
+    line-height: 0.9375rem;
     margin-right: 0.46875rem;
     padding: 0 0.0625rem;
     border: 1px solid #fe6568;
