@@ -1080,7 +1080,7 @@ public class PublicAccounts {
         }else{
             if( wechatUser.getUserId() != null) {
                 System.out.println("==================cook是空的==================根据openid查询sessionId");
-                s = Sessions.resultCook(user, "WeChat", openId, new Date());
+                s = Sessions.resultCook(user, "WeChat", openId, new Date(),null);
                 System.out.println("==================weChat=================根据openid查询sessionId===+============"+s);
             }
         }
@@ -1088,7 +1088,7 @@ public class PublicAccounts {
         try {
             if (s == null) {
                 System.out.println("wechatUserId="+wechatUser.getId());
-                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId())).build();
+                result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId()+"&openId="+openId)).build();
             } else {
                 System.out.println("sessionId=" + s.getIdentity());
                 String a = "?";

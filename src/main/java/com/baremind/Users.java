@@ -144,27 +144,16 @@ public class Users {
     @Path("{phone}/{code}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateByphone(@CookieParam("sessionId") String sessionId, @PathParam("phone") Long phone, @PathParam("code") Long code, User newData) {
+    public Response updateByphone(@CookieParam("sessionId") String sessionId, @PathParam("phone") String phone, @PathParam("code") String code, User newData) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Map con = new HashMap();
-            con.put("phoneNumber",phone);
-            con.put("validCode",code);
-            ValidationCode validationCode = JPAEntry.getObject(ValidationCode.class, con);
-            Date now = new Date();
-            if(validationCode != null){
-                Date sendTime = validationCode.getTimestamp();
-                if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-
-                }else {
-                    JPAEntry.genericDelete(ValidationCode.class,"phoneNumber",phone);
-                }
-            }else {
-                result = Response.status(404).build();
+            result = Response.status(404).build();
+            Boolean codeOverdue = getCodeOverdue(phone, code);
+            if(codeOverdue == true){
+                result = Impl.updateUserSelf(sessionId, newData, new Updater());
             }
         }
-
-        return Impl.updateUserSelf(sessionId, newData, new Updater());
+        return result;
     }
 
 
@@ -340,6 +329,24 @@ public class Users {
         return result;
     }
 
+    public static Boolean getCodeOverdue(String p,String v) {
+        Boolean result = false;
+        Date now = new Date();
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("phoneNumber", p);
+        conditions.put("validCode", v);
+        List<ValidationCode> validationCodeList = JPAEntry.getList(ValidationCode.class, conditions);
+        for (int i = 0; i < validationCodeList.size(); i++) {
+            Date sendTime = validationCodeList.get(i).getTimestamp();
+            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                result = true;
+                break;
+            }else{
+                JPAEntry.genericDelete(ValidationCode.class, conditions);
+            }
+        }
+        return result;
+    }
     @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -359,8 +366,7 @@ public class Users {
                 case 1:
                     result = Response.status(410).build();
                     Date now = new Date();
-                    Date sendTime = validationCodes.get(0).getTimestamp();
-                    if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
+                    if (getCodeOverdue(ac.getPhoneNumber(),ac.getValidCode()) == true) {
                         boolean isPassed = true;
                         User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                         User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());

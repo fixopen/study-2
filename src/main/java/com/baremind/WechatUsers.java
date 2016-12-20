@@ -1,14 +1,18 @@
 package com.baremind;
 
+import com.baremind.data.Device;
+import com.baremind.data.Session;
+import com.baremind.data.User;
 import com.baremind.data.WechatUser;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
+import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
+import java.util.*;
 
 import static com.baremind.PublicAccounts.fillWechatUserByUserInfo;
 
@@ -25,6 +29,28 @@ public class WechatUsers {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         return Impl.getById(sessionId, id, WechatUser.class, null);
+    }
+
+    @GET //根据id查询
+    @Path("related")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@CookieParam("sessionId") String sessionId) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            Session session = JPAEntry.getSession(sessionId);
+            Device device = JPAEntry.getObject(Device.class, "id", session.getDeviceId());
+            WechatUser self = JPAEntry.getObject(WechatUser.class, "openId", device.getPlatformIdentity());
+            List<WechatUser> userList = JPAEntry.getList(WechatUser.class, "userId", session.getUserId());
+            List<WechatUser> r = new ArrayList<>();
+            r.add(self);
+            for (WechatUser wu : userList) {
+                if (wu.getId().longValue() != self.getId().longValue()) {
+                    r.add(wu);
+                }
+            }
+            result = Response.ok(new Gson().toJson(r)).build();
+        }
+        return result;
     }
 
     @POST
@@ -97,6 +123,26 @@ public class WechatUsers {
                 exist.setUserId(userIds);
             }
         }, null);
+    }
+
+    @PUT
+    @Path("wechatsolution/{ids}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateByIds(@CookieParam("sessionId") String sessionId, @PathParam("ids") String ids) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            String[] id=ids.split(",");
+            //split(正则表达式)
+            List list = new ArrayList();
+            for(int i=0;i<id.length;i++){
+                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", Long.parseLong(id[i]));
+                wechatUser.setUserId(null);
+                JPAEntry.genericPut(wechatUser);
+            }
+            result = Response.ok(new Gson().toJson(list)).build();
+        }
+        return result;
     }
 
     @DELETE

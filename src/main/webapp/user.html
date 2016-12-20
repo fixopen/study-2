@@ -28,11 +28,11 @@
             </div>
             <ul class="sign_tab_switch">
                 <li class="sign_tab_swli cur" data-content="username" data-type="telephone">
-                    <a class="sign_tab_mima" >密码登录</a>
+                    <a class="sign_tab_mima">密码登录</a>
                     <span class="sign_now_sanjiao"></span>
                 </li>
                 <li class="sign_tab_swli" data-content="short" data-type="validationCode">
-                    <a class="sign_tab_duanx" >短信登录</a>
+                    <a class="sign_tab_duanx">短信登录</a>
                     <span class="sign_now_sanjiao sign_sanJer"></span>
                 </li>
             </ul>
@@ -50,10 +50,12 @@
                     <li class="sign_mine_zuli">
                         <span class="sign_mine_leftsp">密码</span>
                         <!--<input class="sign_mine_rightip" type="password" id="pwd" placeholder="请输入6-16位密码">-->
-                        <input class="sign_mine_rightip mima_dd" name="" id="pwd" type="password"  placeholder="请输入6-16位密码" >
-                        <input class="sign_mine_rightip mima_wz" name="" type="text"  style="display:none;" placeholder="请输入6-16位密码" >
+                        <input class="sign_mine_rightip mima_dd" name="" id="pwd" type="password"
+                               placeholder="请输入6-16位密码">
+                        <input class="sign_mine_rightip mima_wz" name="" type="text" style="display:none;"
+                               placeholder="请输入6-16位密码">
                         <a class="eye" data-show="1" href="javascript:void(0);"></a>
-                    <i class="sign_errorTs" id="errorNumber" style="display: none">密码错误</i>
+                        <i class="sign_errorTs" id="errorNumber" style="display: none">密码错误</i>
                     </li>
                     <li class="sign_mine_zuli sign_zuli_yzm" id="tu" style="display: none;">
                         <span class="sign_mine_leftsp">验证码</span>
@@ -87,10 +89,10 @@
                 </span>
             </div>
             <div class="sign_bottom_bdiv">
-                <a class="sign_bottom_btn" id="signSubmit" >登 录</a>
+                <a class="sign_bottom_btn" id="signSubmit">登 录</a>
             </div>
             <div class="sign_bottom_txt" data-article="firstActiveCard">
-                <span class="leftLine">——</span >还没有账号？先去“填加卡号”<span class="leftLine">——</span>
+                <span class="leftLine">——</span>还没有账号？先去“填加卡号”<span class="leftLine">——</span>
             </div>
         </div>
     </div>
@@ -197,15 +199,57 @@
     </div>
 </article>
 <article id="changePhoneNumber" style="display: none">
-    <div>
-        <input/>
-        <input>
+    <div class="wrap">
+        <div class="set-password-maindiv">
+            <ul class="set-password-ul">
+                <li class="set-password-li">
+                    <p class="set-password-liLeft">
+                        <span class="set-password-span">新手机号</span>
+                    </p>
+                    <input class="set-password-input" type="number" id="newPhone" placeholder="请填写11位手机号">
+                </li>
+                <li class="set-password-li">
+                    <p class="set-password-liLeft">
+                        <span class="set-password-span">验 证 码</span>
+                    </p>
+                    <input class="set-password-input-tel" type="tel" id="putcode" placeholder="请输入手机验证码">
+                    <a href="javascript:void(0)" class="set-password-sendBtn cur" id="sendcode">发送验证码</a>
+                </li>
+            </ul>
+            <i id="newError"></i>
+            <div class="myset-btnBox">
+                <a href="javascript:void(0)" class="myset-saveBtn" id="newSubmit">确  认</a>
+            </div>
+        </div>
     </div>
 </article>
 <article id="changeWechat" style="display: none">
-    <div>
-        <input/>
-        <input>
+    <div class="tan"></div>
+    <div class="window1"><!-- 弹窗 -->
+        <a class="windowClose" id="closeWechat"></a>
+        <div class="win_neir">
+            <p class="neir_ptxt">解绑成功！</p>
+            <p class="neir_pBtn">
+                <a class="p_btn" id="en">知道了</a>
+            </p>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="set-prompt">绑定微信可直接登录，请选择需要解绑的微信号</div>
+        <div class="set-password-maindiv">
+            <!--<li class="set-unbundling-li set-unbundling-litou"><span id="main"></span>（主微信号）</li>-->
+            <div id="wechatsolution">
+
+            </div>
+            <!--<div class="set-unbundling-allCheck">
+                <div class="allCheck-input">
+                    <input type="checkbox" checked="checked">
+                </div>全选
+            </div>-->
+            <div class="myset-btnBox">
+                <a href="javascript:void(0)" class="myset-saveBtn set-unbundling-Btn" id="solution">确定解绑</a>
+            </div>
+        </div>
     </div>
 </article>
 <article id="user">
@@ -317,7 +361,7 @@
     </div>
     <div id="rechargepage" style="display: none">
         <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
-        <li class="mine_zuli"  id="z" style="cursor: hand">
+        <li class="mine_zuli" id="z" style="cursor: hand">
             <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
             <div class="xuanze_leftdiv">
                 <span class="xuanze_leftsp" id="name"></span>
@@ -372,7 +416,7 @@
             <ul class="mine_baodiv">
                 <li>
                     <a class="xuanze_zuli" href="javascript:void(0)">
-                        <img class="xuanze_img1" src="" alt="" id="image" >
+                        <img class="xuanze_img1" src="" alt="" id="image">
                         <div class="xuanze_leftdiv" id="cardid">
                             <span class="xuanze_leftsp" id="zs"></span>
                             <span class="xuanze_leftsp" id="zn"></span>
@@ -386,7 +430,7 @@
                 <li class="mine_liname">
                     <div class="mine_leftdiv">
                         <p class="mine_zhaunc">转出金豆数量</p>
-                          <span class="mine_leftsp">金豆：</span>
+                        <span class="mine_leftsp">金豆：</span>
                         <input class="mine_zhauncIn" type="text" id="convertedNumber">
                     </div>
                 </li>
@@ -438,28 +482,26 @@
     </div>
 </article>
 <article id="settings" style="display: none;">
-    <div class="wrap">
-        <div class="mainsetting-zilo">
-            <ul class="mainsetting-zUl">
-                <li>
-                    <button class="mainsetting-zuli" data-article="changePassword">密码设置</button>
+            <ul class="public_ul_css">
+                <li class="user_li_css public_li_css" data-article="changePassword">
+                    <span  data-article="changePassword" class="public_span_css">密码设置</span>
+                </li >
+
+
+                <li class="user_li_css public_li_css" data-article="changePhoneNumber">
+                    <span  data-article="changePhoneNumber" class="public_span_css">手机号修改</span>
                 </li>
-                <li>
-                    <button class="mainsetting-zuli" data-article="changePhoneNumber">手机号修改</button>
-                </li>
-                <li>
-                    <button class="mainsetting-zuli" data-article="changeWechat">微信解绑</button>
-                </li>
-            </ul>
-        </div>
-        <div class="changePassword_div_css">
-            <ul class="changePassword_ul_css">
-                <li class="firstActiveCard_li_css public_li_css">
-                    <button data-article="contactUs">联系我们<span class="next-btn"></span></button>
+
+
+                <li class="user_li_css public_li_css" data-article="changeWechat">
+                    <span data-article="changeWechat" class="public_span_css">微信解绑</span>
                 </li>
             </ul>
-        </div>
-    </div>
+            <ul class="public_ul_css">
+                <li class="user_li_css public_li_css" data-article="contactUs">
+                    <span data-article="contactUs" class="public_span_css">联系我们</span>
+                </li>
+            </ul>
 </article>
 <article id="help" style="display: none;">
     <div class="wrap youBackg">
@@ -577,19 +619,19 @@
 <template id="user-template">
     <!--<div class="user_div_css">-->
     <ul class="public_ul_css">
-       <!-- <li class="user_li_css public_li_css">
-            <ul data-article="head">
-                <span class="public_span_css">我的头像</span>
-                <img class="user_head_css" src="${head}" alt="">
-            </ul>
+        <!-- <li class="user_li_css public_li_css">
+             <ul data-article="head">
+                 <span class="public_span_css">我的头像</span>
+                 <img class="user_head_css" src="${head}" alt="">
+             </ul>
 
-        </li>
-        <li class="user_li_css public_li_css">
-            <ul data-article="nickname">
-                <span class="public_span_css">昵称</span>
-                <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
-            </ul>
-        </li>-->
+         </li>
+         <li class="user_li_css public_li_css">
+             <ul data-article="nickname">
+                 <span class="public_span_css">昵称</span>
+                 <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
+             </ul>
+         </li>-->
         <li class="user_li_css public_li_css">
             <span class="public_span_css">账号</span>
             <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
@@ -721,13 +763,14 @@
 </template>
 <template id="selectCard-template">
     <div>
-        <ul class="xuanze_zuli" data-id="${id}" data-amount="${amount}" data-subject="${subjectId}" data-img="${image}" data-no="${no}" style="cursor:hand">
+        <ul class="xuanze_zuli" data-id="${id}" data-amount="${amount}" data-subject="${subjectId}" data-img="${image}"
+            data-no="${no}" style="cursor:hand">
             <img class="xuanze_img1" src="${image}" alt="">
             <div class="xuanze_leftdiv">
-                <span class="xuanze_leftsp" >${subjectId}</span>
-                <span class="xuanze_leftsp" >${no}</span>
+                <span class="xuanze_leftsp">${subjectId}</span>
+                <span class="xuanze_leftsp">${no}</span>
                 <br>
-                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" >${amount}</i>金豆</span>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
             </div>
             <!--<img src="" id="${id}" src="" class="xuanze_img2"/>-->
         </ul>
@@ -735,18 +778,31 @@
 </template>
 <template id="userCard-template">
     <div>
-        <ul class="xuanze_zuli" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}" style="cursor:hand">
+        <ul class="xuanze_zuli" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}"
+            style="cursor:hand">
             <img class="xuanze_img1" src="${image}" alt="">
             <div class="xuanze_leftdiv">
-                <span class="xuanze_leftsp" >${name}</span>
+                <span class="xuanze_leftsp">${name}</span>
                 <span class="xuanze_leftsp"></span>
                 <br>
-                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" >${amount}</i>金豆</span>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
             </div>
         </ul>
     </div>
 </template>
-
+<template id="wechat-solution-template">
+    <ul id="set-password-ul" class="set-password-ul">
+        <li class="set-unbundling-li">
+            <div class="set-unbundling-wechat1">
+                <input type="checkbox" name="checkbox" value="${id}">
+            </div>
+            <div class="set-unbundling-wechat2">
+                <p>${nickname}</p>
+                <p class="set-unbundling-time">绑定时间：<i>${expiry}</i></p>
+            </div>
+        </li>
+    </ul>
+</template>
 <!-- 引入js -->
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <!--<script type="text/javascript" src="/zepto/zepto.min.js"></script>-->
@@ -756,10 +812,11 @@
 <script src="/basic.js"></script>
 <script>
     var user = null;
-    var sessionId;
     var array = [];
-    var wechatUserId = null;
     var state = {
+        sessionId:null,
+        wechatUserId: null,
+        openId: null,
         pan: null,
         switchTo: function (id) {
             state.currentArticle.style.display = 'none'
@@ -776,17 +833,18 @@
         },
         currentArticle: document.getElementById('sign'),
         init: function () {
-            wechatUserId = g.getUrlParameter("wechatUserId");
-            sessionId = g.getUrlParameter("sessionId");
-            g.setCookie("sessionId",sessionId,"/api")
+            state.wechatUserId = g.getUrlParameter("wechatUserId");
+            state.openId = g.getUrlParameter("openId");
+            state.sessionId = g.getUrlParameter("sessionId");
+            g.setCookie("sessionId", state.sessionId, "/api")
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article
                 state.switchTo(id)
             })
-            if (wechatUserId != null) {
+            if (state.wechatUserId != null) {
                 state.switchTo("sign")
                 history.pushState(null, null, '/user.html#sign');
-            } else if (sessionId != null) {
+            } else if (state.sessionId != null) {
                 state.switchTo("user")
                 history.pushState(null, null, '/user.html#user');
             }
@@ -829,135 +887,135 @@
             return result
         },
         /*rechargePage(cards,T){
-            document.getElementById("to").style.display="block"
-            document.getElementById("rechargepage").style.display="none"
-            $("#to").val(T)
-            document.getElementById("oneCard").innerHTML = ""
-            document.getElementById("account").innerHTML = ""
-            for (var i = 0; i < cards.length; i++) {
-                if (cards[i].subjectId == 1 || cards[i].subjectId == "语文") {
-                    cards[i].image = "keBiao.png"
-                }
-                if (cards[i].subjectId == 2 || cards[i].subjectId == "数学") {
-                    cards[i].image = "mathBiao.png"
-                }
-                if(cards[i].subjectId == 1 || cards[i].subjectId == 2){
-                    cards[i].subjectId = state.getSubjectNameById(cards[i].subjectId)
-                }
-                if (cards[i].amount == 0) {
-                    cards[i].amount = "0"
-                }
-            }
-            if (T == "c") {
-                var ua = user.amount
-                if (ua == 0) {
-                    ua = "0"
-                }
-                var uc = {
-                    id: user.id,
-                    amount: ua,
-                    name: "账户",
-                    image: "yueBiao.png",
-                }
-                //selectCard userCard recharge-template
-                proc({
-                    containerId: 'account',
-                    data: uc,
-                    templateId: 'userCard-template'
-                })
-                proc({
-                    containerId: 'oneCard',
-                    data: cards,
-                    templateId: 'selectCard-template'
-                })
-            } else if (T == "z") {
-                document.getElementById("converted").innerHTML=""
-                proc({
-                    containerId: 'converted',
-                    data: cards,
-                    templateId: 'selectCard-template'
-                })
-            }
-            $('.xuanze_zuli').on('click', function (e) {
-                document.getElementById("to").style.display = "block"
-                var element = e.target
-                var id = element.dataset.id;
-                var amount = element.dataset.amount;
-                var no = element.dataset.no;
-                var subject = element.dataset.subject;
-                var name = element.dataset.name;
-                var img = element.dataset.img;
-                state.switchRecharge(id,amount,no,subject,name,img, $("#to").val())
-            })
+         document.getElementById("to").style.display="block"
+         document.getElementById("rechargepage").style.display="none"
+         $("#to").val(T)
+         document.getElementById("oneCard").innerHTML = ""
+         document.getElementById("account").innerHTML = ""
+         for (var i = 0; i < cards.length; i++) {
+         if (cards[i].subjectId == 1 || cards[i].subjectId == "语文") {
+         cards[i].image = "keBiao.png"
+         }
+         if (cards[i].subjectId == 2 || cards[i].subjectId == "数学") {
+         cards[i].image = "mathBiao.png"
+         }
+         if(cards[i].subjectId == 1 || cards[i].subjectId == 2){
+         cards[i].subjectId = state.getSubjectNameById(cards[i].subjectId)
+         }
+         if (cards[i].amount == 0) {
+         cards[i].amount = "0"
+         }
+         }
+         if (T == "c") {
+         var ua = user.amount
+         if (ua == 0) {
+         ua = "0"
+         }
+         var uc = {
+         id: user.id,
+         amount: ua,
+         name: "账户",
+         image: "yueBiao.png",
+         }
+         //selectCard userCard recharge-template
+         proc({
+         containerId: 'account',
+         data: uc,
+         templateId: 'userCard-template'
+         })
+         proc({
+         containerId: 'oneCard',
+         data: cards,
+         templateId: 'selectCard-template'
+         })
+         } else if (T == "z") {
+         document.getElementById("converted").innerHTML=""
+         proc({
+         containerId: 'converted',
+         data: cards,
+         templateId: 'selectCard-template'
+         })
+         }
+         $('.xuanze_zuli').on('click', function (e) {
+         document.getElementById("to").style.display = "block"
+         var element = e.target
+         var id = element.dataset.id;
+         var amount = element.dataset.amount;
+         var no = element.dataset.no;
+         var subject = element.dataset.subject;
+         var name = element.dataset.name;
+         var img = element.dataset.img;
+         state.switchRecharge(id,amount,no,subject,name,img, $("#to").val())
+         })
 
-        },
-        switchRecharge(id,amount,no,subject,name,img, T){
-            if (T == "z") {
-                document.getElementById("converted").innerHTML=""
+         },
+         switchRecharge(id,amount,no,subject,name,img, T){
+         if (T == "z") {
+         document.getElementById("converted").innerHTML=""
 
-                document.getElementById("za").innerHTML=amount
-                document.getElementById("tishi").innerHTML=user.amount
-                document.getElementById("zn").innerHTML=no
-                document.getElementById("zs").innerHTML=subject
-                $("#cardid").val(id)
-                document.getElementById("image").src=img
-                document.getElementById("selectOneCard").style.display="block"
-            } else if (T == "c") {
-                if(id == user.id){
-                    document.getElementById("name").innerHTML=name
-                    document.getElementById("no").innerHTML=""
-                    document.getElementById("money").innerHTML=amount
-                    document.getElementById("src").src=img
-                    src
-                }else{
-                    document.getElementById("name").innerHTML=subject
-                    document.getElementById("no").innerHTML=no
-                    document.getElementById("money").innerHTML=amount
-                    document.getElementById("src").src=img
-                }
-                document.getElementById("to").style.display="none"
-                document.getElementById("rechargepage").style.display="block"
-            }
-        },
-        atom(sourceId, sourceType, object_Id, object_Type, count, money) {
-        var result;
-       if (count == null) {
-           var filter = { //转账transferFilter
-                sourceId: sourceId,
-                sourceType: sourceType,
-                objectId: object_Id,
-                objectType: object_Type,
-                money: money
-            }
-        }
+         document.getElementById("za").innerHTML=amount
+         document.getElementById("tishi").innerHTML=user.amount
+         document.getElementById("zn").innerHTML=no
+         document.getElementById("zs").innerHTML=subject
+         $("#cardid").val(id)
+         document.getElementById("image").src=img
+         document.getElementById("selectOneCard").style.display="block"
+         } else if (T == "c") {
+         if(id == user.id){
+         document.getElementById("name").innerHTML=name
+         document.getElementById("no").innerHTML=""
+         document.getElementById("money").innerHTML=amount
+         document.getElementById("src").src=img
+         src
+         }else{
+         document.getElementById("name").innerHTML=subject
+         document.getElementById("no").innerHTML=no
+         document.getElementById("money").innerHTML=amount
+         document.getElementById("src").src=img
+         }
+         document.getElementById("to").style.display="none"
+         document.getElementById("rechargepage").style.display="block"
+         }
+         },
+         atom(sourceId, sourceType, object_Id, object_Type, count, money) {
+         var result;
+         if (count == null) {
+         var filter = { //转账transferFilter
+         sourceId: sourceId,
+         sourceType: sourceType,
+         objectId: object_Id,
+         objectType: object_Type,
+         money: money
+         }
+         }
 
-        $.ajax({
-            type: "post",
-            url: "/api/transactions",
-            dataType: "json",
-            data: JSON.stringify(filter),
-            contentType: "application/json; charset=utf-8",
-            success: function (e) {
-                user.amount = user.amount - $("#convertedNumber").val()
-                user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
-                state.switchToFront('consumes')
-            },
-            error: function (e) {
-                result = e;
-                alert(JSON.stringify(e))
-                switch (JSON.stringify(e.status)) {
-                    case "408":
-                        alert("余额不足")
-                        break;
-                    case "200":
-                        user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
-                        state.switchToFront('consumes')
-                        break;
-                }
-            }
-        })
-        return result;
-    },*/
+         $.ajax({
+         type: "post",
+         url: "/api/transactions",
+         dataType: "json",
+         data: JSON.stringify(filter),
+         contentType: "application/json; charset=utf-8",
+         success: function (e) {
+         user.amount = user.amount - $("#convertedNumber").val()
+         user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
+         state.switchToFront('consumes')
+         },
+         error: function (e) {
+         result = e;
+         alert(JSON.stringify(e))
+         switch (JSON.stringify(e.status)) {
+         case "408":
+         alert("余额不足")
+         break;
+         case "200":
+         user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
+         state.switchToFront('consumes')
+         break;
+         }
+         }
+         })
+         return result;
+         },*/
         sign: {
             isSign: false,
             currentTab: $('[data-content="username"]')[0],
@@ -965,8 +1023,11 @@
             init: function () {
                 if (!state.sign.isSign) {
                     var fapassword = document.getElementById('fapassword');
+                    fapassword.disabled = false
                     fapassword.addEventListener('click', function () {
-                        state.firstActiveCard.activeCode(0)
+                        if(fapassword.disabled == false){
+                            state.firstActiveCard.activeCode(0)
+                        }
                     }, false);
 
                     var pwd = document.getElementById('pwd');
@@ -980,17 +1041,17 @@
                         state.sign.GraphicCode();
                     }, false);
 
-                    $(".eye").on('click',function(){
-                        if($(this).attr("data-show")==1){//明文
-                            $(this).attr("data-show","2");
+                    $(".eye").on('click', function () {
+                        if ($(this).attr("data-show") == 1) {//明文
+                            $(this).attr("data-show", "2");
                             $(this).children("i").html("&#xe627;");
                             $(this).parent("li").children(".mima_dd").hide();
                             $(this).parent("li").children(".mima_wz").show();
                             $(this).parent("li").children(".mima_wz").val($(this).parent("li").children(".mima_dd").val());
                             return;
                         }
-                        if($(this).attr("data-show")==2){//密文
-                            $(this).attr("data-show","1");
+                        if ($(this).attr("data-show") == 2) {//密文
+                            $(this).attr("data-show", "1");
                             $(this).children("i").html("&#xe624;");
                             $(this).parent("li").children(".mima_dd").show();
                             $(this).parent("li").children(".mima_wz").hide();
@@ -999,7 +1060,7 @@
                         }
                     });
 
-                    $('.sign_tab_swli').on('click', function(e) {
+                    $('.sign_tab_swli').on('click', function (e) {
                         state.sign.currentTab.removeClass('cur')
                         document.getElementById(state.sign.currentTab.dataset.content).removeClass('cur')
                         state.sign.currentTab = e.currentTarget
@@ -1009,7 +1070,7 @@
                     })
                     var signSubmit = document.getElementById("signSubmit");
                     signSubmit.addEventListener('click', function (e) {
-                        var loginInfo = {type: state.sign.type, wechatUserId: wechatUserId, deviceType: 'WeChat'};
+                        var loginInfo = {type: state.sign.type,openId:state.openId, wechatUserId: state.wechatUserId, deviceType: 'WeChat'};
                         switch (state.sign.type) {
                             case 'telephone':
                                 //Number//手机号 pwd//密码 code//验证码 activationNumber//激活手机号 activationPassword//短信密码
@@ -1083,29 +1144,29 @@
                                     break
                             }
 
-                           /* switch (e.status) {
-                                case 406:
-                                    document.getElementById("errorfamima").innerHTML = "手机号或密码错误，请重新输入！"
-                                    break;
-                                case 405:
-                                    document.getElementById("errorfamima").innerHTML = "密码过期，请重新输入！"
-                                    break;
-                                case 404:
-                                    document.getElementById("zhanghaoerror").innerHTML = "账号或密码错误，请重新输入！"
-                                    break;
-                                case 410:
-                                    //超过五次了
-                                    state.sign.huan();
-                                    document.getElementById("tu").style.display = "block"
-                                    document.getElementById("zhanghaoerror").innerHTML = "错误次数超过五次，请输入验证码！"
-                                    break;
-                                case 412:
-                                    document.getElementById("zhanghaoerror").innerHTML = "手机号未激活 ！"
-                                    break;
-                                case 407:
-                                    document.getElementById("zhanghaoerror").innerHTML = "验证码错误 ！"
-                                    break;
-                            }*/
+                            /* switch (e.status) {
+                             case 406:
+                             document.getElementById("errorfamima").innerHTML = "手机号或密码错误，请重新输入！"
+                             break;
+                             case 405:
+                             document.getElementById("errorfamima").innerHTML = "密码过期，请重新输入！"
+                             break;
+                             case 404:
+                             document.getElementById("zhanghaoerror").innerHTML = "账号或密码错误，请重新输入！"
+                             break;
+                             case 410:
+                             //超过五次了
+                             state.sign.huan();
+                             document.getElementById("tu").style.display = "block"
+                             document.getElementById("zhanghaoerror").innerHTML = "错误次数超过五次，请输入验证码！"
+                             break;
+                             case 412:
+                             document.getElementById("zhanghaoerror").innerHTML = "手机号未激活 ！"
+                             break;
+                             case 407:
+                             document.getElementById("zhanghaoerror").innerHTML = "验证码错误 ！"
+                             break;
+                             }*/
                         }
                     })
                 }
@@ -1125,7 +1186,6 @@
         },
         user: {
             init: function () {
-                alert("到底来没来")
                 if (user == null) {
                     $.ajax({
                         type: 'get',
@@ -1153,7 +1213,7 @@
                     })
 
                     var z = document.getElementById("z")
-                    z.addEventListener('click',function (e) {
+                    z.addEventListener('click', function (e) {
                         state.rechargePage(user.cards, 'c')
                     })
                     var clickchinese = document.getElementById("clickchinese");
@@ -1185,7 +1245,6 @@
                     var cc = document.getElementById("chinesecards")
                     var nmc = document.getElementById("nomathematics")
                     var mc = document.getElementById("mathecards")
-
 
 
                     var addcard = document.getElementById("addcard");
@@ -1240,7 +1299,7 @@
                         $("#cardPassword").val("")
                         $('.tan').hide();
                         $('.window1').eq(0).hide();
-                        document.getElementById("createCardError").innerHTML=""
+                        document.getElementById("createCardError").innerHTML = ""
                         state.switchToFront('cards')
                     })
                     var close = document.getElementById("close")
@@ -1249,7 +1308,7 @@
                         $('.window1').eq(0).hide();
                         $("#cardNumber").val("")
                         $("#cardPassword").val("")
-                        document.getElementById("createCardError").innerHTML=""
+                        document.getElementById("createCardError").innerHTML = ""
                     })
                     var chongzhi = document.getElementById("chongzhi");
                     chongzhi.addEventListener('click', function (e) {
@@ -1341,6 +1400,7 @@
                         noc.style.display = "block"
                     }
                 }
+
                 function bang(cs) {
                     user.cards.chinese = []
                     user.cards.mathematics = []
@@ -1486,21 +1546,21 @@
         },
         consumes: {
             init: function () {
-                document.getElementById("yu").innerHTML=user.amount
+                document.getElementById("yu").innerHTML = user.amount
                 if (!state.consumes.isCards) {
                     if (!user.consumes) {
                         $.ajax({
-                            type:"get",
-                            url:"/api/transactions/self",
-                            dataType:"json",
-                            success:function (e) {
+                            type: "get",
+                            url: "/api/transactions/self",
+                            dataType: "json",
+                            success: function (e) {
                                 for (var i = 0; i < e.length; ++i) {
-                                    if(e[i].count == 0 && e[i].sourceId != null){
+                                    if (e[i].count == 0 && e[i].sourceId != null) {
                                         e[i].action = "转账"
-                                    }else if(e[i].count == 0 && e[i].sourceId == null){
+                                    } else if (e[i].count == 0 && e[i].sourceId == null) {
                                         e[i].action = "充值"
                                     }
-                                    e[i].timestamp = e[i].timestamp.substr(0,10)
+                                    e[i].timestamp = e[i].timestamp.substr(0, 10)
                                 }
                                 user.consumes = e
                                 proc({
@@ -1515,7 +1575,7 @@
                             }
                         })
                     }
-                }else{
+                } else {
                     document.getElementById("balance").innerHTML = ""
                     proc({
                         containerId: 'balance',
@@ -1542,7 +1602,7 @@
                         })
                         var submitTransfer = document.getElementById("submitTransfer")
                         submitTransfer.addEventListener('click', function (e) {
-                            state.atom(user.id,"user",$("#cardid").val(),"card",null,$("#convertedNumber").val())
+                            state.atom(user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
                         })
                     }
                 } else {
@@ -1652,6 +1712,76 @@
             init: function () {
             }
         },
+        changePhoneNumber: {
+            init: function () {
+            }
+        },
+        changeWechat: {
+            isWechat : false,
+            init: function () {
+                if(!state.changeWechat.isWechat){
+                    $.ajax({
+                        type:"get",
+                        url:"/api/wechat-users/related",
+                        dataType:"json",
+                        success:function (e) {
+                            user.wechat = e
+                            document.getElementById("wechatsolution").innerHTML = ""
+                            proc({
+                                containerId: 'wechatsolution',
+                                data: user.wechat,
+                                templateId: 'wechat-solution-template'
+                            })
+                        }
+                    })
+                    var solution = document.getElementById("solution");
+                    solution.addEventListener('click',function (e) {
+                        var chk_value =[];
+                        $('input[name="checkbox"]:checked').each(function(){
+                            chk_value.push($(this).val());
+                            alert(chk_value.length==0 ?'你还没有选择任何内容！':chk_value);
+                        });
+                        $.ajax({
+                            type:"put",
+                            url:"/api/wechat-users/wechatsolution/"+chk_value,
+                            dataType:"json",
+                            success:function (e) {
+                                for (var i = 0; i < e.length; i++) {
+                                    if (e[i].id == user.wechat[i].id){
+                                        remove(i)
+                                    }
+                                }
+                                document.getElementById("wechatsolution").innerHTML = ""
+                                proc({
+                                    containerId: 'wechatsolution',
+                                    data: user.wechat,
+                                    templateId: 'wechat-solution-template'
+                                })
+                            }
+                        })
+                        function indexOf(val){
+                            for(var i = 0; i < user.wechat.length; i++){
+                                if(user.wechat[i] == val){return i;}
+                            }
+                            return -1;
+                        }
+                        function remove(val){
+                            var index = indexOf(val);
+                            if(index > -1){user.wechat.splice(index,1);}
+                        }
+                    })
+                }else{
+                    document.getElementById("wechatsolution").innerHTML = ""
+                    proc({
+                        containerId: 'wechatsolution',
+                        data: user.wechat,
+                        templateId: 'wechat-solution-template'
+                    })
+                }
+                state.changeWechat.isWechat = true
+
+            }
+        },
         activeCard: {
             init: function () {
             }
@@ -1715,7 +1845,7 @@
                         data.password = document.getElementById('password').value;
                         data.phoneNumber = document.getElementById('phoneNumber').value;
                         data.validCode = document.getElementById('validCode').value;
-                        data.wechatUserId = wechatUserId;
+                        data.wechatUserId = state.wechatUserId;
                         var url = 'api/users/cards'
                         /* if (userId) {
                          url = 'api/users/' + userId + '/cards'
@@ -1725,7 +1855,7 @@
                             {name: 'Accept', value: 'application/json'}
                         ], data, function (r) {
                             if (r.meta.code < 400) {
-                                if (sessionId != null) {
+                                if (state.sessionId != null) {
                                     alert("激活成功")
                                     user.cards.push(r.data)
                                     state.switchToFront('cards')
@@ -1787,10 +1917,11 @@
                 }
 
                 var activeCodeButton = document.getElementById('activeCode');
+                activeCodeButton.disabled = false
                 activeCodeButton.addEventListener('click', function () {
-                    // count = 1;
-                    state.firstActiveCard.activeCode(1)
-                    //state.firstActiveCard.activeCode
+                    if(activeCodeButton.disabled == false){
+                        state.firstActiveCard.activeCode(1)
+                    }
                 }, false);
 
                 var saveButton = document.getElementById('save');
@@ -1813,59 +1944,69 @@
                 var timeoutId;
                 var an;
                 var error;
-                //var asfdf = "phoneNumber";
                 if (e == 1) {
                     var phoneNumber = document.getElementById("phoneNumber").value
                     an = "activeCode";
                     error = "tips";
-                } else {
-                    var phoneNumber = document.getElementById("duanNumber").value
+                    daojishi(e)
+                } else if(e == 0) {
+                    var phoneNumber = document.getElementById("activationNumber").value
                     an = "fapassword";
                     error = "errorfamima";
+                    daojishi(e)
+                }else if(e == 2){
+                    var phoneNumber = document.getElementById("newPhone").value
+                    an = "sendcode";
+                    error = "newError";
+                    daojishi(e)
                 }
-                //e = document.getElementById("activeCode")
-                if (phoneNumber != "") {
-                    $.ajax({
-                        type: "get",
-                        url: "/api/users/telephones/" + phoneNumber + "/code",
-                        dataType: "json",
-                        error: function (r) {
-                            var tips = document.getElementById(error);
-                            //alert(JSON.stringify(r))
-                            if (r.status < 400) {
-                                tips.innerHTML = '短信已发送至手机，3分钟内有效'
-                            } else {
-                                tips.innerHTML = '发送失败，请重新获取验证码'
-                            }
-                            var timeoutCount = 180;
-                            var proc = function () {
-                                document.getElementById(an).value = ' (' + timeoutCount + ')  秒后\n重新发送';
-                                --timeoutCount;
-                                document.getElementById(an).disabled = true
-                                if (timeoutCount <= 0) {
-                                    document.getElementById(an).value = ' 重新发送 ';
-                                    clearInterval(timeoutId);
-                                    document.getElementById(an).disabled = false
+                function daojishi(e) {
+                    if (phoneNumber != "") {
+                        $.ajax({
+                            type: "get",
+                            url: "/api/users/telephones/" + phoneNumber + "/code",
+                            dataType: "json",
+                            error: function (r) {
+                                var tips = document.getElementById(error);
+                                //alert(JSON.stringify(r))
+                                if (r.status < 400) {
+                                    tips.innerHTML = '短信已发送至手机，3分钟内有效'
+                                } else {
+                                    tips.innerHTML = '发送失败，请重新获取验证码'
                                 }
+                                var timeoutCount = 180;
+                                if (e == 1) {
+                                    var proc = function () {
+                                        document.getElementById(an).value = ' (' + timeoutCount + ')  秒后\n重新发送';
+                                        --timeoutCount;
+                                        document.getElementById(an).disabled = true
+                                        if (timeoutCount <= 0) {
+                                            document.getElementById(an).value = ' 重新发送 ';
+                                            clearInterval(timeoutId);
+                                            document.getElementById(an).disabled = false
+                                        }
+                                    }
+                                } else {
+                                    var proc = function () {
+                                        document.getElementById(an).innerHTML = ' (' + timeoutCount + ')  秒后\n重新发送';
+                                        --timeoutCount;
+                                        document.getElementById(an).disabled = true
+                                        if (timeoutCount <= 0) {
+                                            document.getElementById(an).innerHTML = ' 重新发送 ';
+                                            clearInterval(timeoutId);
+                                            document.getElementById(an).disabled = false
+                                        }
+                                    }
+                                }
+                                timeoutId = setInterval(proc, 1000);
                             }
-                            timeoutId = setInterval(proc, 1000);
-                        }
-                    })
-                    /*ajax('GET', '/api/users/telephones/' + phoneNumber + '/code', [
-                     {name: 'Accept', value: 'application/json'}
-                     ], null, function (r) {
-                     var tips = document.getElementById("tips")
-                     if (r.meta.code < 400) {
-                     tips.innerHTML = '发送成功，请注意查收'
-                     } else {
-                     tips.innerHTML = '发送失败，请重新获取验证码'
-                     }
-                     })*/
+                        })
+                    } else {
+                        alert('手机号不能为空')
+                    }
 
-
-                } else {
-                    alert('手机号不能为空')
                 }
+
             }
 
         },
@@ -1878,166 +2019,152 @@
             }
         },
         settings: {
+            isSettings:false,
             init: function () {
-                var i;
-                var j;
-                var x;
-                var p1 = document.getElementById("newpwd1");
-                p1.addEventListener('blur', function () {
-                    var pwd1 = $("#newpwd1").val();
-                    if (pwd1.length >= 6 && pwd1.length <= 16) {
-                        document.getElementById("error").innerHTML = ""
-                        j = 1;
-                    } else {
-                        document.getElementById("error").innerHTML = "请输入6-16位密码"
-                        j = 0;
-                    }
-                })
-                var p2 = document.getElementById("newpwd2");
-                p2.addEventListener('blur', function () {
-                    var pwd1 = $("#newpwd1").val();
-                    var pwd2 = $("#newpwd2").val();
-                    if (pwd1 != pwd2) {
-                        document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
-                        i = 0;
-                    } else {
-                        document.getElementById("error").innerHTML = ""
-                        i = 1;
-                    }
-                })
-                /*var p3 = document.getElementById("oldpwd");
-                p3.addEventListener('blur', function () {
-                    var pwd3 = $("#oldpwd").val();
-                    if (pwd3.length >= 6 && pwd3.length <= 16) {
-                        document.getElementById("error").innerHTML = ""
-                        x = 1;
-                    } else {
-                        document.getElementById("error").innerHTML = "请输入6-16位密码"
-                        x = 0;
-                    }
-                })*/
-
-                /*function validatePWD1() {
-                 var pwd1 = $("#newpwd1").val();
-                 if (pwd1.length >= 6 && pwd1.length <= 16) {
-                 document.getElementById("error").innerHTML = ""
-                 j = 1;
-                 } else {
-                 document.getElementById("error").innerHTML = "请输入6-16位密码"
-                 j = 0;
-                 }
-                 }*/
-
-                /* function validatePWD3(id, error) {
-                 var pwd3 = $("#oldpwd").val();
-                 if (pwd3.length >= 6 && pwd3.length <= 16) {
-                 document.getElementById("error").innerHTML = ""
-                 x = 1;
-                 } else {
-                 document.getElementById("error").innerHTML = "请输入6-16位密码"
-                 x = 0;
-                 }
-                 }
-                 */
-                /*function validatePWD2() {
-                 var pwd1 = $("#newpwd1").val();
-                 var pwd2 = $("#newpwd2").val();
-                 if (pwd1 != pwd2) {
-                 document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
-                 i = 0;
-                 } else {
-                 document.getElementById("error").innerHTML = ""
-                 i = 1;
-                 }
-                 }*/
-                if (user.password == null) {
-                    j = 1
-                    x = 1
-                } else {
-                    document.getElementById("yuan").style.display = "block"
-                    j = 0
-                    x = 0
-                }
-                var pwdSave = document.getElementById("pwd_save");
-                var quxiao = document.getElementById("quxiao");
-                quxiao.addEventListener('click', function () {
-                    history.back();
-                })
-                pwdSave.addEventListener('click', function () {
-                    if (i == 1 && j == 1 && x == 1) {
-                        var data = {
-                            yearpassword: $("#newpwd2").val(),
+                if(!state.settings.isSettings){
+                    var i;
+                    var j;
+                    var x;
+                    var p1 = document.getElementById("newpwd1");
+                    p1.addEventListener('blur', function () {
+                        var pwd1 = $("#newpwd1").val();
+                        if (pwd1.length >= 6 && pwd1.length <= 16) {
+                            document.getElementById("error").innerHTML = ""
+                            j = 1;
+                        } else {
+                            document.getElementById("error").innerHTML = "请输入6-16位密码"
+                            j = 0;
                         }
-                        $.ajax({
-                            type: "put",
-                            url: "/api/users/self",
-                            data: JSON.stringify(data),
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function (a) {
+                    })
+                    var p2 = document.getElementById("newpwd2");
+                    p2.addEventListener('blur', function () {
+                        var pwd1 = $("#newpwd1").val();
+                        var pwd2 = $("#newpwd2").val();
+                        if (pwd1 != pwd2) {
+                            document.getElementById("error").innerHTML = "密码输入不一致，请重新输入"
+                            i = 0;
+                        } else {
+                            document.getElementById("error").innerHTML = ""
+                            i = 1;
+                        }
+                    })
+                    var pwdSave = document.getElementById("pwd_save");
+                    var quxiao = document.getElementById("quxiao");
+                    var newPhone = document.getElementById("newPhone");
+                    var putcode = document.getElementById("putcode");
+                    var sendcode = document.getElementById("sendcode");
+                    var newSubmit = document.getElementById("newSubmit");
+                    quxiao.addEventListener('click', function () {
+                        state.switchTo('settings')
+                    })
+                    pwdSave.addEventListener('click', function () {
+                        if (i == 1 && j == 1 && x == 1) {
+                            var data = {
+                                password: $("#newpwd2").val(),
+                            }
+                            put(data)
+                        }
+                    }, false);
+                    sendcode.disabled = false;
+                    sendcode.addEventListener('click', function () {
+                        if(putcode.disabled == false){
+                            state.firstActiveCard.activeCode(2)
+                        }
+                    })
+                    newPhone.addEventListener('blur', function () {
+                        if($("#newPhone").val().length != 11){
+                            document.getElementById("newError").innerHTML="手机号格式错误！"
+                            i = 1
+                        }else{
+                            document.getElementById("newError").innerHTML==""
+                            i = 0
+                        }
+                    })
+                    newSubmit.addEventListener('click', function () {
+                        var data = {
+                            telephone : $("#newPhone").val()
+                        }
+                        putphone(data)
+                    })
+                }
+                state.settings.isSettings=true
+                function put(data) {
+                    $.ajax({
+                        type: "put",
+                        url: "/api/users/self",
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (a) {
                                 document.getElementById("error").innerHTML = "修改密码成功"
                                 a.data = user
                                 j = 0
                                 x = 0
-                                state.switchToFront('user')
-                                state.switchTo('settings')
+                                state.switchToFront('settings')
+                        },
+                    })
+                }
+                function putphone(data) {
+                    if(i == 0){
+                        $.ajax({
+                            type: "put",
+                            url: "/api/users/"+$("#newPhone").val()+"/"+$("#putcode").val(),
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (a) {
+                                document.getElementById("newError").innerHTML = "修改手机号成功"
+                                a.data = user
+                                state.switchToFront('settings')
                             },
-                            error: function (a) {
-                                //switch a.struts
-                                switch (a.status) {
-                                    case 404:
-                                        document.getElementById("error").innerHTML = "原密码有误，请重新输入！"
-                                        break;
-                                    case 405:
-                                        document.getElementById("error").innerHTML = "新密码不符合要求，请重新输入！"
-                                        break;
-                                }
+                            error:function (e) {
+                                document.getElementById("newError").innerHTML = "密码过期或错误"
                             }
                         })
                     }
-                }, false);
+                }
             }
         },
         help: {
             init: function () {
             }
         },
-       /* nickname: {
-            init: function () {
-                // document.getElementById("nicknameval").innerHTML=user.name
-                document.getElementById("nickname").innerHTML = ""
-                proc({
-                    containerId: 'nickname',
-                    data: user,
-                    templateId: 'nickname-template'
-                })
+        /* nickname: {
+         init: function () {
+         // document.getElementById("nicknameval").innerHTML=user.name
+         document.getElementById("nickname").innerHTML = ""
+         proc({
+         containerId: 'nickname',
+         data: user,
+         templateId: 'nickname-template'
+         })
 
 
-                $("#nicehng").on('click', function () {
-                    $("#nicknameval").val("")
-                })
-                $("#nicknameval").blur(function () {
-                    var data = {
-                        name: $("#nicknameval").val()
-                    }
-                    alert("提交")
-                    alert(JSON.stringify(data))
-                    $.ajax({
-                        type: "put",
-                        url: "/api/users/self/",
-                        data: JSON.stringify(data),
-                        contentType: 'application/json; charset=utf-8',
-                        dataType: "json",
-                        success: function (e) {
-                            alert("成功")
-                            user = e
-                            state.switchToFront('user')
-                        }
-                    })
-                });
-                //或$("p").blur(fn)
-            }
-        }*/
+         $("#nicehng").on('click', function () {
+         $("#nicknameval").val("")
+         })
+         $("#nicknameval").blur(function () {
+         var data = {
+         name: $("#nicknameval").val()
+         }
+         alert("提交")
+         alert(JSON.stringify(data))
+         $.ajax({
+         type: "put",
+         url: "/api/users/self/",
+         data: JSON.stringify(data),
+         contentType: 'application/json; charset=utf-8',
+         dataType: "json",
+         success: function (e) {
+         alert("成功")
+         user = e
+         state.switchToFront('user')
+         }
+         })
+         });
+         //或$("p").blur(fn)
+         }
+         }*/
     }
 
     state.init()
