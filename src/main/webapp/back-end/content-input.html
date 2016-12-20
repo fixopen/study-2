@@ -642,6 +642,9 @@
                 q.setAttribute('data-id', value.id)
                 q.querySelector('[data-type="content"]').value = value.content
                 q.querySelector('[data-type="source"]').value = value.source
+                if (value.id != '') {
+                    q.addClass('saved')
+                }
                 return q
             },
             submit: function() {
@@ -654,6 +657,9 @@
                 text.setAttribute('data-type', 'text')
                 text.setAttribute('data-id', value.id)
                 text.value = value.content
+                if (value.id != '') {
+                    text.addClass('saved')
+                }
                 return text
             },
             submit: function() {
@@ -667,10 +673,13 @@
                 image.setAttribute('name', 'file')
                 image.setAttribute('type', 'file')
                 image.setAttribute('data-id', value.id)
+                image.src = value.storePath
                 image.addEventListener('change', function (e) {
                     delete e.target.dataset.id
                 }, false)
-                image.src = value.storePath
+                if (value.id != '') {
+                    image.addClass('saved')
+                }
                 return image
             },
             submit: function() {
@@ -682,12 +691,15 @@
                 let itt = document.getElementById('imageText-template')
                 let it = itt.content.children[0].cloneNode(true)
                 let image = it.querySelector('[data-type="image"]')
+                image.setAttribute('data-id', value.imageId)
                 image.addEventListener('change', function (e) {
                     delete e.target.dataset.id
                 }, false)
-                image.setAttribute('data-id', value.imageId)
                 it.setAttribute('data-id', value.id)
                 it.querySelector('[data-type="content"]').value = value.content
+                if (value.id != '') {
+                    it.addClass('saved')
+                }
                 return it
             },
             submit: function() {
@@ -701,6 +713,9 @@
                 pt.setAttribute('data-set', value.id)
                 pt.querySelector('[data-type="pinyin"]').value = value.pinyin
                 pt.querySelector('[data-type="content"]').value = value.content
+                if (value.id != '') {
+                    pt.addClass('saved')
+                }
                 return pt
             },
             submit: function() {
@@ -712,12 +727,15 @@
                 let vt = document.getElementById('video-template')
                 let v = vt.content.children[0].cloneNode(true)
                 let image = v.querySelector('[data-type="image"]')
+                image.setAttribute('data-id', value.cover)
                 image.addEventListener('change', function (e) {
                     delete e.target.dataset.id
                 }, false)
-                image.setAttribute('data-id', value.cover)
                 v.setAttribute('data-id', value.id)
                 v.querySelector('[data-type="storePath"]').value = value.storePath
+                if (value.id != '') {
+                    v.addClass('saved')
+                }
                 return v
             },
             submit: function() {
@@ -753,6 +771,9 @@
                 }
                 p.setAttribute('data-id', value.id)
                 p.querySelector('[data-type="title"]').value = value.name
+                if (value.id != '') {
+                    p.addClass('saved')
+                }
                 return p
             },
             submit: function() {
@@ -797,19 +818,19 @@
 
                             state.refillChoice(state.subject.choice, subjects)
                             state.subject.change(0)
-                            state.contents.style.visibility = 'hidden'
+                            //state.contents.style.visibility = 'hidden'
                         },
                         error: function(r) {
                             state.refillChoice(state.subject.choice, subjects)
                             state.subject.change(0)
-                            state.contents.style.visibility = 'hidden'
+                            //state.contents.style.visibility = 'hidden'
                         }
                     })
                 },
                 error: function(r) {
                     state.refillChoice(state.subject.choice, subjects)
                     state.subject.change(0)
-                    state.contents.style.visibility = 'hidden'
+                    //state.contents.style.visibility = 'hidden'
                 }
             })
         },
