@@ -247,8 +247,6 @@
                     url: "/api/resources/" + params.objectType + "/" + params.objectId + "/sale-info",
                     dataType: "json",
                     success: function (info) {
-                        this.user = info.user
-                        this.cards = info.cards
                         this.money = info.price
 
                         //popup dialog via get info
