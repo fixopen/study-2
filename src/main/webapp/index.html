@@ -236,6 +236,137 @@
             }
         })
     }, false)
+
+    var _$_ = function(params) {
+        var t = {
+            try: function() {
+                this.objectType = params.objectType
+                this.objectId = params.objectId
+                $.ajax({
+                    type: "get",
+                    url: "/api/resources/" + params.objectType + "/" + params.objectId + "/sale-info",
+                    dataType: "json",
+                    success: function (info) {
+                        this.user = info.user
+                        this.cards = info.cards
+                        this.money = info.price
+
+                        //popup dialog via get info
+
+                        //dialog event process
+                        //purchase
+                        //--or--
+                        //recharge
+                        //--or--
+                        //transfer
+
+                        //select source | sink
+                        //select money
+                        //select count
+                    }
+                })
+            },
+            purchase: function () {
+                params.money = this.money
+                params.sourceType = 'card'
+                params.sourceId = this.card.id
+                params.count = this.count
+                params.objectType = this.objectType
+                params.objectId = this.objectId
+                $.ajax({
+                    type: "post",
+                    url: "/api/transactions",
+                    dataType: "json",
+                    data: JSON.stringify(params),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (t) {
+                        //
+                    }
+                })
+            },
+            getContent: function () {
+                params.objectType = this.objectType
+                params.objectId = this.objectId
+                $.ajax({
+                    type: "get",
+                    url: "/api/resources/" + params.objectType + "/" + params.objectId,
+                    dataType: "json",
+                    success: function (content) {
+                        //
+                    }
+                })
+            },
+            recharge: function() {
+                //popup dialog for select sink
+
+                //dialog event process
+                //select money
+                params.money = this.money
+                params.objectType = 'card' // | 'user
+                params.objectId = this.card.id // | this.user.id
+                $.ajax({
+                    type: "post",
+                    url: "/api/transactions",
+                    dataType: "json",
+                    data: JSON.stringify(params),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (t) {
+                        //
+                    }
+                })
+            },
+            transfer: function() {
+                //popup dialog for select source | sink
+
+                //dialog event process
+                //select money
+                params.sourceType = 'user' // | 'card'
+                params.sourceId = this.user.id // | this.card.id
+                params.money = this.money
+                params.objectType = 'card' // | 'user
+                params.objectId = this.card.id // | this.user.id
+                $.ajax({
+                    type: "post",
+                    url: "/api/transactions",
+                    dataType: "json",
+                    data: JSON.stringify(params),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (t) {
+                        //
+                    }
+                })
+            }
+        }
+        for (var property in params) {
+            t[property] = params[property]
+        }
+        $.ajax({
+            type: 'get',
+            url: '/api/users/self',
+            success: function(u) {
+                t.user = u
+                $.ajax({
+                    type: 'get',
+                    url: '/api/users/self/cards',
+                    success: function(cs) {
+                        t.cards = cs
+                    }
+                })
+            }
+        })
+        return t
+    }
+
+    var t = _$_({objectType: 'video', objectId: 124235})
+    t.try()
+    t.purchase()
+    t.getContent()
+
+    var t = _$_({money: 124235})
+    t.recharge()
+
+    var t = _$_({money: 124235})
+    t.transfer()
 </script>
 <script>
     var sale_info;
@@ -287,7 +418,6 @@
                 object_Id = objectId;
                 object_Types = objectType;
                 break;
-
             }
         }
         if (biao != 1) {
@@ -406,7 +536,6 @@
                 count: count
             }
         }
-
 
         $.ajax({
             type: "post",

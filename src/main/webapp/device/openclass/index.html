@@ -65,7 +65,7 @@
 
 <template id="live-template">
     <li class="live_item">
-        <div class="live_video" data-id="${id}" data-article="content">
+        <div class="live_video" data-type="live" data-id="${id}" data-article="content">
             <img src="images/live_in.png" alt="" class="live_state">
             <div class="course_title">
                 <div class="course_big_title">${generalization}</div>
@@ -112,7 +112,7 @@
 </template>
 <template id="passed-chinese-template">
     <li class="live_item">
-        <div class="live_video" data-id="${id}" data-article="content">
+        <div class="live_video" data-type="normal" data-id="${id}" data-article="content">
             <div class="course_title">
                 <div class="course_big_title">${generalization}</div>
                 <div class="course_small_title">${outline}</div>
@@ -132,7 +132,7 @@
 </template>
 <template id="passed-math-template">
     <li class="live_item">
-        <div class="review_math" data-id="${id}" data-article="content">
+        <div class="review_math" data-type="normal" data-id="${id}" data-article="content">
             <div class="course_title">
                 <div class="course_big_title">${generalization}</div>
                 <div class="course_small_title">${outline}</div>
@@ -214,6 +214,18 @@
             </div>
         </div>
         <video src="${cdnLink}" controls="controls" class="subject_video"></video>
+    </div>
+</template>
+<template id="live-content-template">
+    <div>
+        <div class="cover_img">
+            <div class="video_introduce">
+                <p class="big_title">${generalization}</p>
+                <p class="small_title">${outline}</p>
+                <p class="teacher">—<span>${teacher}</span>老师</p>
+            </div>
+        </div>
+        <video src="${directLink}" controls="controls" class="subject_video"></video>
     </div>
 </template>
 
@@ -353,6 +365,9 @@
 
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.currentTarget.dataset.article;
+                if (e.currentTarget.dataset.type) {
+                    state[id].setType(e.currentTarget.dataset.type)
+                }
                 state[id].changeId(e.currentTarget.dataset.id)
                 switchTo(id);
             })
@@ -627,7 +642,11 @@
                     state.content.container.innerHTML = ''
                     proc({
                         container: state.content.container,
-                        template: state.content.template,
+                        alterTemplates: [
+                            {type: 'normal', templateId: 'content-template'},
+                            {type: 'live', templateId: 'live-content-template'},
+                        ],
+                        //template: state.content.template,
                         data: state.getById(state.content.id)
                     })
 
@@ -657,6 +676,10 @@
                     state.content.id = id
                     state.content.isInit = false
                 }
+            },
+            type: null,
+            setType: function(type) {
+                state.content.type = type
             }
         },
         wait: {

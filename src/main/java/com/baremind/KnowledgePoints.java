@@ -117,7 +117,7 @@ public class KnowledgePoints {
     public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Log log = Logs.insert(Long.parseLong(sessionId), "knowledge-point", id, "like");
+            Log log = Logs.insert(JPAEntry.getSession(sessionId).getUserId(), "knowledge-point", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;
@@ -130,7 +130,7 @@ public class KnowledgePoints {
     public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Long count = Logs.deleteLike(Long.parseLong(sessionId), "knowledge-point", id);
+            Long count = Logs.deleteLike(JPAEntry.getSession(sessionId).getUserId(), "knowledge-point", id);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
@@ -185,19 +185,6 @@ public class KnowledgePoints {
                 Logs.insert(JPAEntry.getSession(sessionId).getUserId(),"knowledge-point",id,"read");
                 result = Response.ok(new Gson().toJson(p.getContent()), "application/json; charset=utf-8").build();
             }
-        }
-        return result;
-    }
-
-    static String join(List<String> ids) {
-        String result = "";
-        boolean isFirst = true;
-        for (String id : ids) {
-            if (!isFirst) {
-                result += ", ";
-            }
-            result += id;
-            isFirst = false;
         }
         return result;
     }
