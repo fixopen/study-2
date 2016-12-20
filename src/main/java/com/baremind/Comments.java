@@ -88,7 +88,7 @@ public class Comments {
     public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Log log = Logs.insert(Long.parseLong(sessionId), "comment", id, "like");
+            Log log = Logs.insert(JPAEntry.getSession(sessionId).getUserId(), "comment", id, "like");
             result = Response.ok(new Gson().toJson(log)).build();
         }
         return result;
@@ -101,7 +101,7 @@ public class Comments {
     public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Long count = Logs.deleteLike(Long.parseLong(sessionId), "comment", id);
+            Long count = Logs.deleteLike(JPAEntry.getSession(sessionId).getUserId(), "comment", id);
             result = Response.ok("{\"count\":" + count.toString() + "}").build();
         }
         return result;
@@ -125,7 +125,7 @@ public class Comments {
     public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Boolean has = Logs.has(Long.parseLong(sessionId), "comment", id, "like");
+            Boolean has = Logs.has(JPAEntry.getSession(sessionId).getUserId(), "comment", id, "like");
             result = Response.ok("{\"like\":" + has.toString() + "}").build();
         }
         return result;
