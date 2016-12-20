@@ -272,7 +272,7 @@
 <!--********************************main***********************-->
 <template id="chinese-playing-template">
     <div class="all_uli">
-        <div class="all_liplay" onclick="div1Show()" data-id="${id}">
+        <div class="all_liplay" data-id="${id}">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>150</span>金豆</div>
@@ -1740,7 +1740,6 @@
             isInit: false,
             init: function () {
                 if (!state.passed.isInit) {
-                    xiao(objectId, video)
                     $(document).on('click', '.passed-detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                         if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
@@ -1752,6 +1751,7 @@
                             $(this).children('img').eq(0).show();
                         }
                     })
+
                     $('.asd').on('click', function (e) {
                         var element = e.target;
                         var id = element.dataset.article;
@@ -1760,6 +1760,7 @@
                         }
                         alert("直播ID====="+id)
                     })
+
                     $(document).on('click', '[data-type="subject"]', function (e) {
                         //hide subjects
                         state.passed.subject.style.display = 'none'
@@ -1869,16 +1870,20 @@
                             $(e.currentTarget).siblings(".xiala_ul").show();
                         }
                     });
+
                     $(document).on('click', ".xiala_li", function (e) {
                         $(e.currentTarget).parents(".xiala_ul").find('.xiala_li').removeClass('cur');
                         $(e.currentTarget).addClass('cur');
                         $('.tan').hide();
                         $(e.currentTarget).parents(".xiala_ul").hide();
                         $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
-                        var $tuzhiTr = "<li class='jieG_li'><span></span><a href='javascript:void(0)'><img class='jieG_licha' src='images/zhong_xiao.png' alt=''></a></li>";
+                        var $tuzhiTr = "<li class='jieG_li'><span></span><a href='javascript:void(0)'><img class='jieG_licha' src='../images/zhong_xiao.png' alt=''></a></li>";
                         $('.tiaoj_jieG').show();
                         $('.tiaoj_jieG').append($tuzhiTr);
                         $('.tiaoj_jieG').children(".jieG_li").children('span').text($(this).text());
+                        $(document).on('click','.jieG_licha',function(){
+                            $('.jieG_li').hide()
+                        })
                         var hei1 = document.getElementsByClassName('tiao_jian').height();
                         var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
                         document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
@@ -2069,6 +2074,7 @@
         videoDetail: {
             id: null,
             init: function () {
+                xiao(id, video)
                 var data = state.passed.findById(state.videoDetail.id)
                 var l = document.getElementById('live-details-video')
                 l.innerHTML = ''
