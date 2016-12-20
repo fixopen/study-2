@@ -171,16 +171,17 @@
     </div>
 </article>
 <article id="passed" style="display: none;" class="noBackg">
+    <div class="tan"></div>
     <div class="wrap">
         <div class="tiao_jian">
             <div class="tiaoj_TJ">
-                <div class="tiaoj_span" id="subjectSelect">
+                <div class="tiaoj_span">
                     <span class="filter_item">科目</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
-                    <li class="xiala_li">语文<img src="../images/zbwq_zhong.png" alt=""></li>
-                    <li class="xiala_li">数学<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur" data-type="subject">全部<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li" data-type="subject">语文<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li" data-type="subject">数学<img src="../images/zbwq_zhong.png" alt=""></li>
                 </ul>
             </div>
             <div class="tiaoj_TJ">
@@ -188,7 +189,7 @@
                     <span class="filter_item">老师</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur" data-type="teacher">全部<img src="../images/zbwq_zhong.png" alt=""></li>
                     <ul id="teacher" class="xiala_liUl"></ul>
                 </ul>
             </div>
@@ -197,7 +198,7 @@
                     <span class="filter_item">年级</span>
                 </div>
                 <ul class="xiala_ul">
-                    <li class="xiala_li cur">全部<img src="../images/zbwq_zhong.png" alt=""></li>
+                    <li class="xiala_li cur" data-type="grade">全部<img src="../images/zbwq_zhong.png" alt=""></li>
                     <ul id="grade" class="xiala_liUl"></ul>
                 </ul>
             </div>
@@ -493,7 +494,7 @@
 </template>
 <!--***********************************passed*****************************************-->
 <template id="chinese-template">
-    <li class="asd all_uli">
+    <li class="all_uli">
         <div class="all_liplay">
             <div class="all_aBtn" data-id="${id}" data-article="videoDetail">
                 <div class="leftJinDou"><span>150</span>金豆</div>
@@ -599,17 +600,17 @@
     </li>
 </template>
 <template id="teacher-template">
-    <li class="xiala_li">${teacher}<img src="../images/zbwq_zhong.png" alt=""></li>
+    <li class="xiala_li" data-type="teacher">${teacher}<img src="../images/zbwq_zhong.png" alt=""></li>
 </template>
 <template id="grade-template">
-    <li class="xiala_li">${grade}<img src="../images/zbwq_zhong.png" alt=""></li>
+    <li class="xiala_li" data-type="grade">${grade}<img src="../images/zbwq_zhong.png" alt=""></li>
 </template>
 <template id="date-template">
     <li class="xiala_li"></li>
 </template>
 <template id="selected-entries">
     <li class="jieG_li">
-        <span>${selectedTxt}</span>
+        <span  id="Select">${selectedTxt}</span>
         <a href="javascript:void(0)">
             <img class="jieG_licha" src="../images/zhong_xiao.png" alt="">
         </a>
@@ -1457,30 +1458,30 @@
             }
             return result
         },
-        containTeacher: function (subject, teacher) {
-            var result = false
-            for (var i = 0; i < subject.teachers.length; ++i) {
-                if (subject.teachers[i] == teacher) {
-                    result = true
-                    break
-                }
-            }
-            return result
-        },
-        containGrade: function (subject, grade) {
-            var result = false
-            for (var i = 0; i < subject.grades.length; ++i) {
-                if (subject.grades[i] == grade) {
-                    result = true
-                    break
-                }
-            }
-            return result
-        },
+//        containTeacher: function (subject, teacher) {
+//            var result = false
+//            for (var i = 0; i < subject.teachers.length; ++i) {
+//                if (subject.teachers[i] == teacher) {
+//                    result = true
+//                    break
+//                }
+//            }
+//            return result
+//        },
+//        containGrade: function (subject, grade) {
+//            var result = false
+//            for (var i = 0; i < subject.grades.length; ++i) {
+//                if (subject.grades[i] == grade) {
+//                    result = true
+//                    break
+//                }
+//            }
+//            return result
+//        },
         init: function () {
 //            var userId = g.getUrlParameter('userid')
 //            g.setCookie('userId', userId)
-            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
+//            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
 
             $.ajax({
                 type: 'get',
@@ -1751,108 +1752,95 @@
                             $(this).children('img').eq(0).show();
                         }
                     })
-
-                    $('.asd').on('click', function (e) {
-                        var element = e.target;
-                        var id = element.dataset.article;
-                        if (element.dataset.id) {
-                            id = element.dataset.id
-                        }
-                        alert("直播ID====="+id)
-                    })
-
-                    $(document).on('click', '[data-type="subject"]', function (e) {
-                        //hide subjects
-                        state.passed.subject.style.display = 'none'
-                        //change subjectSelect
-                        var s = document.getElementById('subjectSelect')
-                        s.textContent = e.target.textContent
-                        s.dataset.id = e.target.dataset.id
-                        var sub = state.getSubjectById(e.target.dataset.id)
-                        if (!state.containTeacher(sub, t.textContent)) {
-                            state.passed.teacherSelect.textContent = '老师'
-                        }
-                        //change teachers container
-                        state.passed.teacher.innerHTML = ''
-                        proc({
-                            container: state.passed.teacher,
-                            data: sub.teachers,
-                            templateId: 'teacher-template'
-                        })
-
-                        //if need {
-                        // change gradeSelect
-                        //}
-                        if (!state.containGrade(sub, g.textContent)) {
-                            state.passed.gradeSelect.textContent = '年级'
-                        }
-
-//change grades container
-                        state.passed.grade.innerHTML = ''
-                        proc({
-                            container: state.passed.grade,
-                            data: sub.grades,
-                            templateId: 'grade-template'
-                        })
-
-//filter data
-                        var d = state.passed.search()
-//refill the content
-                        state.passed.content.innerHTML = ''
-                        proc({
-                            container: state.passed.content,
-                            data: d,
-                            templateId: ''
-                        })
-                    })
-
-                    $(document).on('click', '[data-type="teacher"]', function (e) {
-//hide teachers
-//                        state.passed.teacher.style.display = 'none'
-// change teacherSelect
-                        var s = document.getElementById('teacherSelect')
+//                    $(document).on('click', '[data-type="subject"]', function (e) {
+//                        //hide subjects
+//                        state.passed.subject.style.display = 'none'
+//                        //change Select
+//                        var s = document.getElementById('Select')
 //                        s.textContent = e.target.textContent
-                        s.dataset.id = e.target.dataset.id
-
-                        var sub = state.getSubjectById(e.target.dataset.id)
-
-//                        if (!state.containTeacher(sub, t.textContent)) {
-//                            state.passed.teacherSelect.textContent = '老师'
+//                        s.dataset.id = e.target.dataset.id
+//                        var sub = state.getSubjectById(e.target.dataset.id)
+//                        //change teachers container
+//                        state.passed.teacher.innerHTML = ''
+//                        proc({
+//                            container: state.passed.teacher,
+//                            data: sub.teachers,
+//                            templateId: 'teacher-template'
+//                        })
+//
+//                        //if need {
+//                        // change gradeSelect
+//                        //}
+//                        if (!state.containGrade(sub, g.textContent)) {
+//                            state.passed.gradeSelect.textContent = '年级'
 //                        }
-//filter data
-                        var d = state.passed.search()
-//refill the content
-                        state.passed.content.innerHTML = ''
-                        proc({
-                            container: state.passed.content,
-                            data: d,
-                            templateId: ''
-                        })
-                    })
-
-                    $(document).on('click', '[data-type="grade"]', function (e) {
+//
+////change grades container
+//                        state.passed.grade.innerHTML = ''
+//                        proc({
+//                            container: state.passed.grade,
+//                            data: sub.grades,
+//                            templateId: 'grade-template'
+//                        })
+//
+////filter data
+//                        var d = state.passed.search()
+////refill the content
+//                        state.passed.content.innerHTML = ''
+//                        proc({
+//                            container: state.passed.content,
+//                            data: d,
+//                            templateId: ''
+//                        })
+//                    })
+//
+//                    $(document).on('click', '[data-type="teacher"]', function (e) {
+////hide teachers
+////                        state.passed.teacher.style.display = 'none'
+//// change teacherSelect
+//                        var s = document.getElementById('teacherSelect')
+////                        s.textContent = e.target.textContent
+//                        s.dataset.id = e.target.dataset.id
+//
+//                        var sub = state.getSubjectById(e.target.dataset.id)
+//
+////                        if (!state.containTeacher(sub, t.textContent)) {
+////                            state.passed.teacherSelect.textContent = '老师'
+////                        }
+////filter data
+//                        var d = state.passed.search()
+////refill the content
+//                        state.passed.content.innerHTML = ''
+//                        proc({
+//                            container: state.passed.content,
+//                            data: d,
+//                            templateId: ''
+//                        })
+//                    })
+//
+//                    $(document).on('click', '[data-type="grade"]', function (e) {
 //hide grade
 //                        state.passed.grade.style.display = 'none'
 // change gradeSelect
-                        var s = document.getElementById('gradeSelect')
-//                        s.textContent = e.target.textContent
-                        s.dataset.id = e.target.dataset.id
-
-                        var sub = state.getSubjectById(e.target.dataset.id)
-
-//                        if (!state.containTeacher(sub, t.textContent)) {
-//                            state.passed.teacherSelect.textContent = '老师'
-//                        }
-//filter data
-                        var d = state.passed.search()
-//refill the content
-                        state.passed.content.innerHTML = ''
-                        proc({
-                            container: state.passed.content,
-                            data: d,
-                            templateId: ''
-                        })
-                    })
+//                        var s = document.getElementById('gradeSelect')
+////                        s.textContent = e.target.textContent
+//                        s.dataset.id = e.target.dataset.id
+//
+//                        var sub = state.getSubjectById(e.target.dataset.id)
+//
+////                        if (!state.containTeacher(sub, t.textContent)) {
+////                            state.passed.teacherSelect.textContent = '老师'
+////                        }
+////filter data
+//                        var d = state.passed.search()
+////refill the content
+//                        state.passed.content.innerHTML = ''
+//                        proc({
+//                            container: state.passed.content,
+//                            data: d,
+//                            templateId: ''
+//                        })
+//                    })
 
                     $(document).on('click', ".tiaoj_span", function (e) {
                         if ($(e.currentTarget).hasClass('cur')) {
@@ -1871,39 +1859,49 @@
                         }
                     });
 
+                    $(document).on('click','.jieG_licha',function(e){
+                        $(e.target.parentNode.parentNode).hide()
+                    })
+
                     $(document).on('click', ".xiala_li", function (e) {
                         $(e.currentTarget).parents(".xiala_ul").find('.xiala_li').removeClass('cur');
                         $(e.currentTarget).addClass('cur');
                         $('.tan').hide();
                         $(e.currentTarget).parents(".xiala_ul").hide();
                         $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
-                        var $tuzhiTr = "<li class='jieG_li'><span></span><a href='javascript:void(0)'><img class='jieG_licha' src='../images/zhong_xiao.png' alt=''></a></li>";
-                        $('.tiaoj_jieG').show();
-                        $('.tiaoj_jieG').append($tuzhiTr);
-                        $('.tiaoj_jieG').children(".jieG_li").children('span').text($(this).text());
-                        $(document).on('click','.jieG_licha',function(){
-                            $('.jieG_li').hide()
-                        })
-                        var hei1 = document.getElementsByClassName('tiao_jian').height();
-                        var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
-                        document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
-//                        alert($(e.currentTarget).text());
+                        var $tuzhiTr = "<li class='jieG_li'><span>${value}</span><a href='javascript:void(0)'><img class='jieG_licha' src='../images/zhong_xiao.png' alt=''></a></li>";
+
+                        var filter = document.getElementById('xuanzhong-entries')
+                        filter.innerHTML = ''
+                        var v = {}
+                        if (filter.dataset.value && filter.dataset.value != '') {
+                            v = JSON.parse(filter.dataset.value)
+                        }
+                        v[e.currentTarget.dataset.type] = $(e.currentTarget).text()
+                        filter.dataset.value = JSON.stringify(v)
+                        for (var prop in v) {
+                            if (v[prop] != '全部') {
+                                var e = $($tuzhiTr)[0]
+                                bind(e, {value: v[prop]})
+                                filter.appendChild(e)
+                            }
+                        }
+                        filter.style.display = 'block'
+
+//                        state.passed.innerHTML = ''
+//                        proc({
+//                            data: passed,
+//                            containerId: 'video',
+//                            alterTemplates: [
+//                                {type: 'chinese', templateId: 'chinese-template'},
+//                                {type: 'math', templateId: 'math-template'}
+//                            ]
+//                        })
+//                        var hei1 = document.getElementsByClassName('tiao_jian').height();
+//                        var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
+//                        document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
                     });
 
-                    $(document).on('click', ".shipin", function (e) {
-                        $('.tan').show();
-                        $('.window1').eq(0).show();
-                    });
-
-                    $(document).on('click', ".p_btn", function (e) {
-                        $('.tan').hide();
-                        $('.window1').hide();
-                    });
-                    // 弹窗关闭按钮
-                    $(document).on('click', ".windowClose", function (e) {
-                        $('.tan').hide();
-                        $('.window1').hide();
-                    })
 
                     for (var i = 0; i < passed.length; ++i) {
                         passed[i].type = 'chinese'
@@ -1925,35 +1923,6 @@
                             {type: 'math', templateId: 'math-template'}
                         ]
                     });
-//********************************getTeacher*****************************
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers/teachers?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[0].id})),
-                        success: function (t0s) {
-                            subjects[0].teachers = t0s
-                            $.ajax({
-                                type: 'get',
-                                url: '/api/schedulers/teachers?filter=' + JSON.stringify({subjectId: subjects[1].id}),
-                                success: function (t1s) {
-                                    subjects[1].teachers = t1s
-//fill to teachers choice
-                                    var teachers = []
-//                                    teachers.concat(t0s, t1s)
-                                    for (var i = 0; i < t0s.length; ++i) {
-                                        teachers.push({teacher: t0s[i]})
-                                    }
-                                    for (var i = 0; i < t1s.length; ++i) {
-                                        teachers.push({teacher: t1s[i]})
-                                    }
-                                    proc({
-                                        containerId: 'teacher',
-                                        data: teachers,
-                                        templateId: 'teacher-template'
-                                    })
-                                }
-                            })
-                        }
-                    })
 // **********************************getGrade**************************
                     $.ajax({
                         type: 'get',
@@ -1987,27 +1956,44 @@
                             })
                         }
                     })
-//                    function div3Show() {
-//                        var div1 = document.getElementById("div3");
-//                        div1.style.display = "block";
-//                    }
-//
-//                    function div2Show() {
-//                        var div1 = document.getElementById("div1");
-//                        var div2 = document.getElementById("div2");
-//                        div1.style.display = "none";
-//                        div2.style.display = "";
-//                    }
-
-                    var s = document.getElementById('subjectSelect')
-                    s.addEventListener('click', function (e) {
-                        if (state.passed.subject.style.display == 'block') {
-                            state.passed.subject.style.display = 'none'
-                        } else if (state.passed.subject.style.display == 'none') {
-                            state.passed.subject.style.display = 'block'
-                        }
-                    }, false)
+//********************************getTeacher*****************************
                     state.passed.isInit = true
+                    var getTeachers = function(subjectId, postProcessor) {
+                        $.ajax({
+                            type: 'get',
+                            url: '/api/schedulers/teachers?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjectId})),
+                            success: function (ts) {
+                                var s = state.getSubjectById(subjectId)
+                                s.teachers = ts
+                                if (postProcessor) {
+                                    postProcessor()
+                                }
+                            },
+                            error: function(r) {
+                                if (r.status == 404) {
+                                    if (postProcessor) {
+                                        postProcessor()
+                                    }
+                                }
+                            }
+                        })
+                    }
+
+                    getTeachers(subjects[0].id, function() {
+                        getTeachers(subjects[1].id);
+                        var teachers = []
+                        for (var i = 0; i < subjects[0].teachers.length; ++i) {
+                            teachers.push({teacher: subjects[0].teachers[i]})
+                        }
+                        for (var i = 0; i < subjects[1].teachers.length; ++i) {
+                            teachers.push({teacher: subjects[1].teachers[i]})
+                        }
+                        proc({
+                            containerId: 'teacher',
+                            data: teachers,
+                            templateId: 'teacher-template'
+                        })
+                    })
                 }
 //                var picker = new Pikaday({
 //                    field: document.getElementById('datePicker'),
@@ -2017,40 +2003,22 @@
 //                    }
 //                });
             },
-            search: function () {
-                var result = []
-                var s = document.getElementById('subjectSelect')
-                var t = document.getElementById('teacherSelect')
-                var g = document.getElementById('gradeSelect')
-//filter the passed data via the filter element state
-//                var subject, teacher, grade, date
-                for (var i = 0; i < passed.length; ++i) {
-                    var pass = true
-                    if (s.textContent != '科目') {
-                        if (passed[i].subjectId != s.dataset.id) {
-                            pass = false
-                        }
-                    }
-
-                    var tPass = true
-                    if (s.textContent != '老师') {
-                        if (passed[i].teacher != t.textContent) {
-                            tPass = false
-                        }
-                    }
-                    var gPass = true
-                    if (g.textContent != '年级') {
-                        if (passed[i].grade != g.textContent) {
-                            gPass = false
-                        }
-                    }
-
-                    if (pass && tPass && gPass) {
-                        result.push(passed[i])
-                    }
-                }
-                return result
-            },
+//            search: function () {
+//                var result = []
+//                var s = document.getElementById('Select')
+////filter the passed data via the filter element state
+////                var subject, teacher, grade, date
+//                for (var i = 0; i < passed.length; ++i) {
+//                    var pass = true
+//                        if (passed[i].subjectId != s.dataset.id) {
+//                            pass = false
+//                        }
+//                    if (pass) {
+//                        result.push(passed[i])
+//                    }
+//                }
+//                return result
+//            },
             findById: function (id) {
                 var result = null;
                 for (var i = 0; i < passed.length; ++i) {
@@ -2074,7 +2042,7 @@
         videoDetail: {
             id: null,
             init: function () {
-                xiao(id, video)
+//                xiao(id, video)
                 var data = state.passed.findById(state.videoDetail.id)
                 var l = document.getElementById('live-details-video')
                 l.innerHTML = ''
