@@ -48,12 +48,4 @@ public class ProblemStandardAnswer implements com.baremind.data.Entity {
     public void setIndex(Integer name) {
         this.index = name;
     }
-
-    public static Map<String, Object> convertToMap(ProblemStandardAnswer o) {
-        Map<String, Object> psa = new HashMap<>();
-        psa.put("id", o.getId());
-        psa.put("problemId", o.getProblemId());
-        psa.put("index", o.getIndex());
-        return psa;
-    }
 }

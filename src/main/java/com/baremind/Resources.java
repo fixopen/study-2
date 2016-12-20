@@ -182,7 +182,8 @@ public class Resources {
                     consumption.setTransactionId(findTransaction.getId());
                     JPAEntry.genericPost(consumption);
                     JPAEntry.log(userId, "read", type, id);
-                    result = Response.ok(s.getContent()).build();
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                    result = Response.ok(gson.toJson(s.getContent())).build();
                 }
             }
         }

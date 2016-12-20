@@ -31,8 +31,14 @@ public class Schedulers {
             List<String> coverIds = new ArrayList<>();
             for (Scheduler ri : r) {
                 ids.add(ri.getId().toString());
-                teacherIds.add(ri.getTeacherId().toString());
-                coverIds.add(ri.getCoverId().toString());
+                Long teacherId = ri.getTeacherId();
+                if (teacherId != null) {
+                    teacherIds.add(teacherId.toString());
+                }
+                Long coverId = ri.getCoverId();
+                if (coverId != null) {
+                    coverIds.add(coverId.toString());
+                }
             }
             EntityManager em = JPAEntry.getEntityManager();
             List<User> teachers = Resources.getList(em, teacherIds, User.class);
@@ -192,12 +198,36 @@ public class Schedulers {
     public Response getGrades(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            Map<String, Object> filterObject = Impl.getFilters(filter);
             EntityManager em = JPAEntry.getEntityManager();
             String stats = "SELECT l.grade FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.grade";
             TypedQuery<Long> q = em.createQuery(stats, Long.class);
+            Map<String, Object> filterObject = Impl.getFilters(filter);
             q.setParameter("subjectId", filterObject.get("subjectId"));
             result = Response.ok(new Gson().toJson(q.getResultList())).build();
+        }
+        return result;
+    }
+
+    @GET //查询年级
+    @Path("teachers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTeachers(@CookieParam("sessionId") String sessionId, @QueryParam("filter") String filter) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            EntityManager em = JPAEntry.getEntityManager();
+            String stats = "SELECT l.teacherId FROM Scheduler l WHERE l.subjectId = :subjectId GROUP BY l.teacherId";
+            TypedQuery<Long> q = em.createQuery(stats, Long.class);
+            Map<String, Object> filterObject = Impl.getFilters(filter);
+            q.setParameter("subjectId", filterObject.get("subjectId"));
+            List<Long> teacherIds = q.getResultList();
+            List<String> teachersId = new ArrayList<>();
+            for (Long teacherId : teacherIds) {
+                teachersId.add(teacherId.toString());
+            }
+            String teacherName = "SELECT u.name FROM User u WHERE u.id IN ( " + Resources.join(teachersId) + " )";
+            TypedQuery<String> uq = em.createQuery(teacherName, String.class);
+            List<String> teacherNames = uq.getResultList();
+            result = Response.ok(new Gson().toJson(teacherNames)).build();
         }
         return result;
     }
