@@ -37,7 +37,7 @@ public class Resources {
         return result;
     }
 
-    public static <T> List<T> getListByColumn(EntityManager em, String columnName, List<String> ids, Class<T> type) {
+    static <T> List<T> getListByColumn(EntityManager em, String columnName, List<String> ids, Class<T> type) {
         List<T> result = null;
         if (!ids.isEmpty()) {
             String query = "SELECT o FROM " + type.getSimpleName() + " o WHERE o." + columnName + " IN ( " + join(ids) + " )";
@@ -137,9 +137,9 @@ public class Resources {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             result = Response.status(403).build();
-            User user = JPAEntry.getLoginUser(sessionId);
+            Long userId = JPAEntry.getSession(sessionId).getUserId();
             Map<String, Object> filter = new HashMap<>();
-            filter.put("userId", user.getId());
+            filter.put("userId", userId);
             filter.put("objectType", type);
             filter.put("objectId", id);
             List<Transaction> ts = JPAEntry.getList(Transaction.class, filter);
@@ -175,13 +175,13 @@ public class Resources {
                 if (s != null) {
                     Consumption consumption = new Consumption();
                     consumption.setId(IdGenerator.getNewId());
-                    consumption.setUserId(user.getId());
+                    consumption.setUserId(userId);
                     consumption.setObjectId(id);
                     consumption.setObjectType(type);
                     consumption.setTimestamp(new Date());
                     consumption.setTransactionId(findTransaction.getId());
                     JPAEntry.genericPost(consumption);
-                    JPAEntry.log(user.getId(), "read", type, id);
+                    JPAEntry.log(userId, "read", type, id);
                     result = Response.ok(s.getContent()).build();
                 }
             }
