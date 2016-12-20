@@ -33,7 +33,7 @@ public class KnowledgePoints {
         final List<Object[]> likeStats = lq.getResultList();
         String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
         Query rq = em.createQuery(readCountQuery);
-        final List<Object[]> readStats = lq.getResultList();
+        final List<Object[]> readStats = rq.getResultList();
         String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginUser(sessionId).getId().toString() + " GROUP BY l.objectId";
         Query ldq = em.createQuery(likedQuery);
         final List<Object[]> likedStats = ldq.getResultList();

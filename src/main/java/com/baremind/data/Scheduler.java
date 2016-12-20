@@ -260,7 +260,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
         schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
         schedulerMap.put("comments", Resources.findItems(comments, c -> c.getObjectId() == scheduler.getId()));
-        schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != null);
+        schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != 0L);
         if (isVIP) {
             schedulerMap.put("contentLink", scheduler.getContentLink());
             schedulerMap.put("directLink", scheduler.getDirectLink());

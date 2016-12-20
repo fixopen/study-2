@@ -108,7 +108,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
 
         kpm.put("likeCount", Resources.findUntypedItem(likeCount, kp.getId()));
         kpm.put("readCount", Resources.findUntypedItem(readCount, kp.getId()));
-        kpm.put("liked", Resources.findUntypedItem(likedCount, kp.getId()) != null);
+        kpm.put("liked", Resources.findUntypedItem(likedCount, kp.getId()) != 0L);
         List<Object[]> stats = Resources.findUntypedItems(contentType, kp.getId());
         kpm.put("type", "pk");
         for (Object[] s : stats) {

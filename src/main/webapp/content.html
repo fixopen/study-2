@@ -624,7 +624,7 @@
                 <li class="topUl_top">
                     <div class="litop_fleft">${userName}</div>
                     <div class="litop_friht" data-id="${id}" data-liked="${liked}">
-                        <!--<img class="ul01_imgzan_" src="img/zan-over.png" alt="">-->
+                        <!--<img class="ul01_imgzan_ like-icon" src="img/zan-over.png" alt="">-->
                         <span class="like-icon">已点</span>
                         <span class="ul01_count">${likeCount}</span>
                     </div>
@@ -649,7 +649,7 @@
                 <li class="topUl_top">
                     <div class="litop_fleft">${userName}</div>
                     <div class="litop_friht" data-id="${id}">
-                        <!--<img class="ul01_imgzan_" src="img/zan.png" alt="">-->
+                        <!--<img class="ul01_imgzan_ like-icon" src="img/zan.png" alt="">-->
                         <span class="like-icon">未点</span>
                         <span class="ul01_count">${likeCount}</span>
                     </div>
@@ -1579,10 +1579,10 @@
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             success: function (e) {
-                alert(JSON.stringify(e))
+              //  alert(JSON.stringify(e))
             },
             error: function (e) {
-                alert(JSON.stringify(e))
+               // alert(JSON.stringify(e))
             }
         })
     }
@@ -1631,7 +1631,7 @@
 //            var sessionId = g.getUrlParameter('sessionId')
 //            g.setCookie('sessionId', sessionId)
 
-            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
+            g.setCookie('sessionId', 'abf6b30873127305bfc9c1ed3dda85f0bf20f4c7557d7d74e1c204d51dd887f', '/api')
 
             $.ajax({
                 type: 'GET',
@@ -1709,9 +1709,9 @@
                                                 v.knowledgePoints.push(kps[i])
                                             }
                                             if (kps[i].liked == true) {
-                                                kps[i].type += 'Unlike';
-                                            } else if (kps[i].liked == false) {
                                                 kps[i].type += 'Like';
+                                            } else if (kps[i].liked == false) {
+                                                kps[i].type += 'Unlike';
                                             }
                                             if (kps[i].price == 0) {
                                                 kps[i].type += 'Free';
@@ -2033,8 +2033,6 @@
                     }
                     return result
                 }
-
-
                 $('#knowledgePoints').html("");
                 switch (state.volumes.parentId) {
                     case 1:
@@ -2074,6 +2072,8 @@
                                 {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
                                 {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-template'},
                                 {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
+                                {type: 'normalOldLikeFree', templateId: 'chapter-free-old-like-template'},
+                                {type: 'normalOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
                             ]
                         })
 
@@ -2142,6 +2142,8 @@
                                     {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
                                     {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-template'},
                                     {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
+                                    {type: 'normalOldLikeFree', templateId: 'chapter-free-old-like-template'},
+                                    {type: 'normalOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
                                 ]
                             })
                         }
@@ -2325,38 +2327,13 @@
                         proc({
                             container: container,
                             data: data,
-                            templateId: unlikeTemplate
-                        })
-                        var button = container.querySelector(iconName)
-                        button.addEventListener('click', function (e) {
-                            state.knowledgePoint.unlike(apiUrl, data.id)
-                            data.likeCount++;
-                            data.liked = false;
-                            if (data.type.substring(0, 2) == "no" && data.type.substring(15, 16) == "") {
-                                data.type = data.type.slice(0, 9);
-                                data.type += 'Like';
-                            } else if (data.type.substring(0, 2) == "pk" && data.type.substring(11, 12) == "") {
-                                data.type = data.type.slice(0, 5);
-                                data.type += 'Like';
-                            } else if (data.type.substring(11, 13) == "Fr") {
-                                data.type = data.type.slice(0, 5);
-                                data.type += 'Like';
-                                data.type += 'Free';
-                            }
-                            container.innerHTML = '';
-                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
-                        }, false)
-                    } else {
-                        proc({
-                            container: container,
-                            data: data,
                             templateId: likeTemplate
                         })
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
-                            state.knowledgePoint.like(apiUrl, data.id)
-                            data.likeCount--;
-                            data.liked = true;
+                            state.knowledgePoint.unlike(apiUrl, data.id)
+                            data.likeCount--
+                            data.liked = false
                             if (data.type.substring(0, 2) == "no" && data.type.substring(13, 14) == "") {
                                 data.type = data.type.slice(0, 9);
                                 data.type += 'Unlike'
@@ -2366,6 +2343,31 @@
                             } else if (data.type.substring(9, 11) == "Fr") {
                                 data.type = data.type.slice(0, 5);
                                 data.type += 'Unlike';
+                                data.type += 'Free';
+                            }
+                            container.innerHTML = '';
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                        }, false)
+                    } else {
+                        proc({
+                            container: container,
+                            data: data,
+                            templateId: unlikeTemplate
+                        })
+                        var button = container.querySelector(iconName)
+                        button.addEventListener('click', function (e) {
+                            state.knowledgePoint.like(apiUrl, data.id)
+                            data.likeCount++
+                            data.liked = true
+                            if (data.type.substring(0, 2) == "no" && data.type.substring(15, 16) == "") {
+                                data.type = data.type.slice(0, 9);
+                                data.type += 'Like';
+                            } else if (data.type.substring(0, 2) == "pk" && data.type.substring(11, 12) == "") {
+                                data.type = data.type.slice(0, 5);
+                                data.type += 'Like';
+                            } else if (data.type.substring(11, 13) == "Fr") {
+                                data.type = data.type.slice(0, 5);
+                                data.type += 'Like';
                                 data.type += 'Free';
                             }
                             container.innerHTML = '';
