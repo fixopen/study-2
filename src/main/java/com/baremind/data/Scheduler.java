@@ -231,7 +231,10 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.discount = discount;
     }
 
-    public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, List<Comment> comments, boolean isVIP) {
+    public static Map<String, Object> convertToMap(Scheduler scheduler, Date now, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, List<Comment> comments, boolean isVIP) {
+        if (scheduler.getEndTime().before(now) && (scheduler.getContentLink() == null || scheduler.getContentLink().equals(""))) {
+            return null;
+        }
         Map<String, Object> schedulerMap = new HashMap<>();
         schedulerMap.put("id", scheduler.getId());
         schedulerMap.put("year", scheduler.getYear());
