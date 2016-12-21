@@ -76,7 +76,7 @@ public class Impl {
     public static Response validationAdmin(String sessionId) {
         Response result = Response.status(401).build();
         User admin = JPAEntry.getLoginUser(sessionId);
-        if (admin != null && admin.getIsAdministrator()) {
+        if (admin != null && admin.getIsAdministrator() != null && admin.getIsAdministrator()) {
             result = Response.status(202).build();
         }
         return result;
