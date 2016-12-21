@@ -44,6 +44,7 @@ public class Schedulers {
             List<User> teachers = Resources.getList(em, teacherIds, User.class);
             List<Image> covers = Resources.getList(em, coverIds, Image.class);
 
+            Date now = new Date();
             String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
             Query lq = em.createQuery(likeCountQuery);
             final List<Object[]> likeStats = lq.getResultList();
@@ -57,7 +58,7 @@ public class Schedulers {
 
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");
-            result = Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, teachers, covers, likeStats, likedStats, readStats, comments, Users.isVIP(operator)), null);
+            result = Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, now, teachers, covers, likeStats, likedStats, readStats, comments, Users.isVIP(operator)), null);
         }
         return result;
     }

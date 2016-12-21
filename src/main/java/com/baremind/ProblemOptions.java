@@ -1,11 +1,16 @@
 package com.baremind;
 
+import com.baremind.data.Image;
 import com.baremind.data.ProblemOption;
 import com.baremind.utils.Impl;
+import com.baremind.utils.JPAEntry;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by User on 2016/9/19.
@@ -15,7 +20,16 @@ public class ProblemOptions {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        return Impl.get(sessionId, filter, null, ProblemOption.class, ProblemOption::convertToMap, null);
+        List<ProblemOption> r = JPAEntry.getList(ProblemOption.class, Impl.getFilters(filter));
+        List<String> imageIds = new ArrayList<>();
+        for (ProblemOption ri : r) {
+            if (ri.getImageId() != null) {
+                imageIds.add(ri.getImageId().toString());
+            }
+        }
+        EntityManager em = JPAEntry.getEntityManager();
+        List<Image> optionImages = Resources.getList(em, imageIds, Image.class);
+        return Impl.get(sessionId, filter, null, ProblemOption.class, option -> ProblemOption.convertToMap(option, optionImages), null);
     }
 
     @GET //根据id查询

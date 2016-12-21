@@ -1,5 +1,6 @@
 package com.baremind.data;
 
+import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,6 +82,21 @@ public class ProblemOption implements com.baremind.data.Entity {
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public static Map<String, Object> convertToMap(ProblemOption o, List<Image> optionImages) {
+        Map<String, Object> pom = new HashMap<>();
+        pom.put("id", o.getId());
+        pom.put("name", o.getName());
+        if (o.getImageId() != null) {
+            Image image = Resources.findItem(optionImages, img -> img.getId().longValue() == o.getImageId().longValue());
+            if (image != null) {
+                pom.put("image", image);
+                pom.put("index", o.getIndex());
+            }
+        }
+        pom.put("order", o.getOrder());
+        return pom;
     }
 
     public static Map<String, Object> convertToMap(ProblemOption o) {

@@ -103,13 +103,6 @@ public class Logs {
     }
 
     @GET
-    @Path("{id}/count")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        return getLogsCount(sessionId, "knowledge-point", id, "like");
-    }
-
-    @GET
     @Path("{objectType}/{objectId}/{action}/count")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLogsCount(@CookieParam("sessionId") String sessionId, @PathParam("objectType") String objectType, @PathParam("objectId") Long objectId, @PathParam("action") String action) {
