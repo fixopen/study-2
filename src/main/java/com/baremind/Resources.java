@@ -184,6 +184,7 @@ public class Resources {
                     JPAEntry.log(userId, "read", type, id);
                     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                     result = Response.ok(gson.toJson(s.getContent())).build();
+                    Logs.insert(userId, type, id, "read");
                 }
             }
         }
