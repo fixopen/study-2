@@ -692,7 +692,7 @@ public class Users {
     }
 
     @GET
-    @Path("history-resoruces")
+    @Path("history-resources")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getHistory(@CookieParam("sessionId") String sessionId) {
         Response result = Impl.validationUser(sessionId);
