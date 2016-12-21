@@ -1544,3 +1544,164 @@ canvas{
     left: 4.6875rem;
     top: 2.5rem;
 }
+/*@Author: zhaoxq*/
+.youBackg{
+    background-color: #ff8067;
+}
+.study-record{
+    padding: 2.65625rem 0.9375rem 1.75rem;
+    box-sizing: border-box;
+}
+.study_text{
+    border-radius: 0 0 0.3125rem 0.3125rem;
+    background-color: #fff7e5;
+    padding: 1.96875rem 0.59375rem 1.5625rem;
+    box-sizing: border-box;
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+.chi{
+    position: absolute;
+    top: -0.3125rem;
+    left: 0;
+    width: 100%;
+    height: 0.3125rem;
+    background: url('../image/chi.png') center no-repeat;
+    -webkit-background-size: 100% 0.3125rem;
+    background-size: 100% 0.3125rem;
+}
+.abc{
+    position: absolute;
+    top: -2.40625rem;
+    right: -0.4375rem;
+    width: 6.09375rem;
+    height: 4.65625rem;
+    background: url('../image/abc.png') center no-repeat;
+    -webkit-background-size: 6.09375rem 4.65625rem;
+    background-size: 6.09375rem 4.65625rem;
+}
+.bottomImg{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8.40625rem;
+}
+.study-record-ul{
+    overflow: hidden;
+    padding: 0.625rem 0 6.40625rem 0;
+}
+.study-record-li{
+    width: 100%;
+    height: 6.03125rem;
+    border-bottom: 1px dashed #f1f1f1;
+    background-position: center;
+    margin-bottom: 1.5625rem;
+    padding: 0.4375rem 0.825rem 6rem 1.5625rem;
+    box-sizing: border-box;
+    font-size: 1.875rem;
+}
+a.study_lia{
+    display: inline-block;
+    width: 100%;
+}
+.study_lidiv{
+    display: inline-block;
+}
+.srul_size48{
+    font-size: 1.5rem;
+}
+.srul_zbo{
+    color: #ff5e92;
+}
+.srul_kec{
+    color: #17aaea;
+}
+.srul_zan{
+    color: #ff9e36;
+}
+.srul_size42{
+    color: #b1b1b1;
+    font-size: 1.3125rem;
+    font-weight: 100;
+}
+.you{
+    float: right;
+    width: 2.1875rem;
+    height: 4rem;
+}
+.srul_zbotu{
+    background: url('../image/youjian1.png') center no-repeat;
+    background-size: 2.1875rem 2.1875rem;
+}
+.srul_kectu{
+    background: url('../image/youjian2.png') center no-repeat;
+    background-size: 2.1875rem 2.1875rem;
+}
+.srul_zantu{
+    background: url('../image/youjian3.png') center no-repeat;
+    background-size: 2.1875rem 2.1875rem;
+}
+
+.pastLiveVideos_header{
+    width: 100%;
+    height: 10.59375rem;
+    background: url('../image/studyBg.png') center no-repeat;
+    background-size: 100% 100%;
+}
+.pastLiveVideos_header_l,.pastLiveVideos_header_r{
+    display: inline-block;
+    color: #fff;
+    width: 49%;
+    text-align: center;
+    padding-top: 1.875rem;
+}
+.pastLiveVideos_header_cen{
+    color: #fff;
+    font-size: 0.8125rem;
+    text-align: center;
+    margin-top: 1.5625rem;
+}
+.pastLiveVideos_header_cen pastLiveVideos_span{
+    margin: 0 0.3125rem;
+}
+.pastLiveVideos_l_one,.pastLiveVideos_r_one{
+    font-size: 0.9375rem;
+}
+.pastLiveVideos_l_two,.pastLiveVideos_r_two{
+    font-size: 0.8125rem;
+}
+.pastLiveVideos_l_twoshu,.pastLiveVideos_r_twoshu{
+    font-size: 1.5rem;
+}
+.pastLiveVideos_tab_div{
+    width: 100%;
+    margin: 0.625rem 0;
+}
+.pastLiveVideos_tab_switch{
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #24cbd1;
+    border-radius: 0.3125rem;
+    overflow: hidden;
+}
+.pastLiveVideos_tab_swli{
+    float: left;
+    color: #444;
+    font-size: 1.125rem;
+    width: 49.8%;
+    height: 2.6875rem;
+    line-height: 2.6875rem;
+    text-align: center;
+    border-right: 1px solid #24cbd1;
+}
+.pastLiveVideos_tab_swlino{
+    border-right: none;
+}
+.pastLiveVideos_tab_swli.cur{
+    color: #fff;
+    background-color: #24cbd1;
+}
+.pastLiveVideos_tab_swlispan{
+    font-size: 0.9375rem;
+}
