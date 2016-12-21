@@ -54,7 +54,7 @@ public class Schedulers {
             String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginUser(sessionId).getId().toString() + " GROUP BY l.objectId";
             Query ldq = em.createQuery(likedQuery);
             final List<Object[]> likedStats = ldq.getResultList();
-            List<Comment> comments = Resources.getListByColumn(em, "objectId", ids, Comment.class);
+            List<Comment> comments = Resources.getList(em, "objectId", ids, Comment.class);
 
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");

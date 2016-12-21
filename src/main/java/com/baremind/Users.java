@@ -698,10 +698,6 @@ public class Users {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             Long userId = JPAEntry.getSession(sessionId).getUserId();
-            Map<String, Object> condition = new HashMap<>();
-            condition.put("userId", userId);
-            condition.put("action", "read");
-            List<Log> logs = JPAEntry.getList(Log.class, condition);
             List<AnswerRecord> answerRecords = JPAEntry.getList(AnswerRecord.class, "userId", userId);
             List<String> problemIds = new ArrayList<>();
             for (AnswerRecord answerRecord : answerRecords) {
@@ -709,12 +705,16 @@ public class Users {
             }
             EntityManager em = JPAEntry.getEntityManager();
             List<Problem> problems = Resources.getList(em, problemIds, Problem.class);
-            List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getListByColumn(em, "objectId", problemIds, KnowledgePointContentMap.class);
+            List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getList(em, "objectId", problemIds, KnowledgePointContentMap.class);
             List<String> knowledgePointIds = new ArrayList<>();
             for (KnowledgePointContentMap m : knowledgePointContentMaps) {
                 knowledgePointIds.add(m.getKnowledgePointId().toString());
             }
             List<String> schedulerIds = new ArrayList<>();
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("userId", userId);
+            condition.put("action", "read");
+            List<Log> logs = JPAEntry.getList(Log.class, condition);
             for (Log log : logs) {
                 switch (log.getObjectType()) {
                     case "scheduler":

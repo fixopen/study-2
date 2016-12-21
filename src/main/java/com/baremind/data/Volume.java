@@ -24,7 +24,6 @@ public class Volume implements com.baremind.data.Entity {
     @Column(name = "knowledge_point_count")
     private Long knowledgePointCount;
 
-
     @Column(name = "grade")
     private Integer grade;
 
