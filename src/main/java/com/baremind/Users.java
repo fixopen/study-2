@@ -698,18 +698,18 @@ public class Users {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             Long userId = JPAEntry.getSession(sessionId).getUserId();
+            Gson gson1 = new Gson();
+            System.out.println("==================根据sessionId得到用户Id=========================="+userId);
             List<AnswerRecord> answerRecords = JPAEntry.getList(AnswerRecord.class, "userId", userId);
-            List<String> problemIds = new ArrayList<>();
-            for (AnswerRecord answerRecord : answerRecords) {
-                problemIds.add(answerRecord.getProblemId().toString());
-            }
+            System.out.println("==================根据userId得到这个用户提交了那些问题+（自己选择答案）=========================="+gson1.toJson(answerRecords));
+            List<String> problemIds = answerRecords.stream().map(answerRecord -> answerRecord.getProblemId().toString()).collect(Collectors.toList());
             EntityManager em = JPAEntry.getEntityManager();
             List<Problem> problems = Resources.getList(em, problemIds, Problem.class);
+            System.out.println("==================根据这个用户提交了那些问题的问题id查到这些问题=========================="+gson1.toJson(problems));
             List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getList(em, "objectId", problemIds, KnowledgePointContentMap.class);
-            List<String> knowledgePointIds = new ArrayList<>();
-            for (KnowledgePointContentMap m : knowledgePointContentMaps) {
-                knowledgePointIds.add(m.getKnowledgePointId().toString());
-            }
+            System.out.println("==================根据这个用户提交了那些问题的问题id查详情表=========================="+gson1.toJson(problems));
+            List<String> knowledgePointIds = knowledgePointContentMaps.stream().map(m -> m.getKnowledgePointId().toString()).collect(Collectors.toList());
+
             List<String> schedulerIds = new ArrayList<>();
             Map<String, Object> condition = new HashMap<>();
             condition.put("userId", userId);
@@ -725,63 +725,55 @@ public class Users {
                         break;
                 }
             }
+            System.out.println("==================根据详情表的objectId得到知识点Id的集合=========================="+knowledgePointIds);
             List<KnowledgePoint> knowledgePoints = Resources.getList(em, knowledgePointIds, KnowledgePoint.class);
-            List<String> volumeIds = new ArrayList<>();
-            for (KnowledgePoint knowledgePoint: knowledgePoints) {
-                volumeIds.add(knowledgePoint.getVolumeId().toString());
-            }
+            System.out.println("==================根据知识点Id的集合得到知识点集合=========================="+knowledgePointIds);
+            List<String> volumeIds = knowledgePoints.stream().map(knowledgePoint -> knowledgePoint.getVolumeId().toString()).collect(Collectors.toList());
             List<Volume> volumes = Resources.getList(em, volumeIds, Volume.class);
-            List<String> subjectIds = new ArrayList<>();
-            for (Volume volume: volumes) {
-                subjectIds.add(volume.getSubjectId().toString());
-            }
+            System.out.println("==================根据知识点集合的书Id查到书集合=========================="+gson1.toJson(volumes));
+
+            List<String> subjectIds = volumes.stream().map(volume -> volume.getSubjectId().toString()).collect(Collectors.toList());
             List<Scheduler> schedulers = Resources.getList(em, schedulerIds, Scheduler.class);
-            for (Scheduler scheduler: schedulers) {
-                subjectIds.add(scheduler.getSubjectId().toString());
-            }
+            System.out.println("==================根据logs得到的直播集合=========================="+gson1.toJson(schedulers));
+            subjectIds.addAll(schedulers.stream().map(scheduler -> scheduler.getSubjectId().toString()).collect(Collectors.toList()));
             List<Subject> subjects = Resources.getList(em, subjectIds, Subject.class);
+            System.out.println("==================根据书集合查到科目集合=========================="+gson1.toJson(subjects));
             Date now = new Date();
             final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
             List<Map<String, Object>> r = new ArrayList<>();
             for (Subject subject: subjects) {
-                List<Map<String, Object>> ss = new ArrayList<>();
-                for (Scheduler scheduler: schedulers) {
-                    if (scheduler.getSubjectId().longValue() == subject.getId().longValue()) {
-                        ss.add(Scheduler.convertToMap(scheduler, userId));
-                    }
-                }
+                List<Map<String, Object>> ss = schedulers.stream().filter(scheduler -> scheduler.getSubjectId().longValue() == subject.getId().longValue()).map(scheduler -> Scheduler.convertToMap(scheduler, userId)).collect(Collectors.toList());
                 Map<String, Object> s = Subject.convertToMap(subject);
                 s.put("schedulers", ss);
                 List<Map<String, Object>> vs = new ArrayList<>();
-                for (Volume volume: volumes) {
-                    if (volume.getSubjectId().longValue() == subject.getId().longValue()) {
-                        List<Map<String, Object>> ks = new ArrayList<>();
-                        for (KnowledgePoint knowledgePoint: knowledgePoints) {
-                            if (knowledgePoint.getVolumeId().longValue() == volume.getId().longValue()) {
-                                List<Map<String, Object>> ps = new ArrayList<>();
-                                for (Problem problem: problems) {
-                                    for (KnowledgePointContentMap m: knowledgePointContentMaps) {
-                                        if (problem.getId().longValue() == m.getObjectId().longValue()) {
-                                            if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
-                                                ps.add(Problem.convertToMap(problem, null, null, null, null, null, null));
-                                                break;
-                                            }
-                                        }
+                volumes.stream().filter(volume -> volume.getSubjectId().longValue() == subject.getId().longValue()).forEach(volume -> {
+                    List<Map<String, Object>> ks = new ArrayList<>();
+                    knowledgePoints.stream().filter(knowledgePoint -> knowledgePoint.getVolumeId().longValue() == volume.getId().longValue()).forEach(knowledgePoint -> {
+                        List<Map<String, Object>> ps = new ArrayList<>();
+                        for (Problem problem : problems) {
+                            for (KnowledgePointContentMap m : knowledgePointContentMaps) {
+                                if (problem.getId().longValue() == m.getObjectId().longValue()) {
+                                    if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
+                                        System.out.println("==================根据问题集合得到某一个问题=========================="+gson1.toJson(problem));
+                                        ps.add(Problem.convertToMap(problem,answerRecords));
+                                        break;
                                     }
                                 }
-                                Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, userId, now, yesterday);
-                                km.put("problems", ps);
-                                ks.add(km);
                             }
                         }
-                        Map<String, Object> vm = Volume.convertToMap(volume, now, yesterday);
-                        vm.put("knowledgePoints", ks);
-                        vs.add(vm);
-                    }
-                }
+                        Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, logs,userId);
+                        km.put("problems", ps);
+                        ks.add(km);
+                    });
+                    Map<String, Object> vm = Volume.convertToMap(volume);
+                    vm.put("knowledgePoints", ks);
+                    vs.add(vm);
+                });
                 s.put("volumes", vs);
                 r.add(s);
             }
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(r)).build();
             //{subjects: [], schedulers: [], volumes: [], knowledgePoints: [], problems: []}
             //[{subject-info, schedulers: [{}, ...], volumes: [{volume-info, knowledgePoints: [{knowledgePoint-info, problems: [{problem-info, standAnswer:[], answer:[]}, ...]}, ...]}, ...]}, {...}]
         }

@@ -2003,8 +2003,28 @@
             }
         },
         study: {
+            isStudy:false,
             init: function () {
-
+                if(!state.study.isStudy){
+                    $.ajax({
+                        type:"get",
+                        url:"/api/users/history-resources",
+                        dataType:"json",
+                        success:function (e) {
+                            user.chinepast = []
+                            user.mathpast = []
+                            for (var i = 0; i < e.length; i++) {
+                                if(e[i].no == "02"){
+                                    user.chinepast = e[i]
+                                }else if(e[i].no == "01"){
+                                    user.mathpast = e[i]
+                                }
+                            }
+                            alert(JSON.stringify(user.chinepast))
+                            alert(JSON.stringify(user.mathpast))
+                        }
+                    })
+                }
             }
         },
         score: {
@@ -2057,8 +2077,8 @@
                             chk_value.push($(this).val());
                         });
                         $.ajax({
-                            type: "put",
-                            url: "/api/wechat-users/wechatsolution/" + chk_value,
+                            type: "delete",
+                            url: "/api/wechat-users/related/" + chk_value,
                             dataType: "json",
                             success: function (e) {
                                 for (var i = 0; i < user.wechat.length; i++) {
@@ -2444,6 +2464,9 @@
             currentTab: $('[data-content="chineLiveVideos"]')[0],
             init: function () {
                 if(!state.pastLiveVideos.isPastLiveVidos){
+                    user.chinepast = []
+                    user.mathpast = []
+
                     $('.pastLiveVideos_tab_swli').on('click', function (e) {
                         state.pastLiveVideos.currentTab.removeClass('cur')
                         document.getElementById(state.pastLiveVideos.currentTab.dataset.content).removeClass('cur')

@@ -12,10 +12,7 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -42,7 +39,7 @@ public class Resources {
     }
 
     public static <T> List<T> getList(EntityManager em, String columnName, List<String> ids, Class<T> type) {
-        List<T> result = null;
+        List<T> result = new ArrayList<>();
         if (!ids.isEmpty()) {
             String query = "SELECT o FROM " + type.getSimpleName() + " o WHERE o." + columnName + " IN ( " + join(ids) + " )";
             TypedQuery<T> pq = em.createQuery(query, type);
