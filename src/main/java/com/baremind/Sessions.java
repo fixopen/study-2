@@ -48,15 +48,6 @@ public class Sessions {
         private String deviceNo;
         private String wechatUserId;
         private String code;
-        private String openId;
-
-        public String getOpenId() {
-            return openId;
-        }
-
-        public void setOpenId(String openId) {
-            this.openId = openId;
-        }
 
         public String getType() {
             return type;
@@ -187,7 +178,7 @@ public class Sessions {
 
                     if (!validationCodes.isEmpty()) {
                         result = Response.status(405).build();
-                        if (getCodeOverdue(loginInfo.getInfo(),loginInfo.getKey()) == true) {
+                        if (getCodeOverdue(loginInfo.getInfo(), loginInfo.getKey()) == true) {
                             user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
                         }
                         JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", loginInfo.getInfo());
@@ -221,23 +212,25 @@ public class Sessions {
                     }
                     break;
             }
-            Session session = resultCook(user, loginInfo.getDeviceType(), loginInfo.getOpenId(), now,loginInfo.getInfo());
+            Session session = resultCook(user, loginInfo.getDeviceType(), loginInfo.getDeviceNo(), now);
             if (session != null) {
                 result = Response.ok(session)
-                    .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                    .build();
+                        .cookie(new NewCookie("sessionId", session.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                        .build();
             }
         }
         return result;
     }
 
-    static Session resultCook(User user, String deviceType, String deviceNo, Date now,String phone) {
+    static Session resultCook(User user, String deviceType, String deviceNo, Date now) {
         Session session = null;
         if (user != null) {
             WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", deviceNo);
-            if(wechatUser.getUserId() == null){
-                wechatUser.setUserId(user.getId());
-                JPAEntry.genericPut(wechatUser);
+            if (wechatUser != null) {
+                if (wechatUser.getUserId() == null) {
+                    wechatUser.setUserId(user.getId());
+                    JPAEntry.genericPut(wechatUser);
+                }
             }
             Map<String, Object> deviceConditions = new HashMap<>();
             deviceConditions.put("platform", deviceType);

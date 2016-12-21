@@ -1070,11 +1070,10 @@
                     })
                     var signSubmit = document.getElementById("signSubmit");
                     signSubmit.addEventListener('click', function (e) {
-                        var loginInfo = {type: state.sign.type,openId:state.openId, wechatUserId: state.wechatUserId, deviceType: 'WeChat'};
+                        var loginInfo = {type: state.sign.type,deviceNo:state.openId, wechatUserId: state.wechatUserId, deviceType: 'WeChat'};
                         switch (state.sign.type) {
                             case 'telephone':
                                 //Number//手机号 pwd//密码 code//验证码 activationNumber//激活手机号 activationPassword//短信密码
-                                loginInfo.deviceNo = $('#Number').val()
                                 loginInfo.info = $('#Number').val()
                                 loginInfo.key = $("#pwd").val()
                                 loginInfo.code = $("#code").val()
@@ -1089,7 +1088,6 @@
                                 }
                                 break
                             case 'validationCode':
-                                loginInfo.deviceNo = $('#activationNumber').val()
                                 loginInfo.info = $('#activationNumber').val()
                                 loginInfo.key = $("#activationPassword").val()
                                 send(loginInfo)
@@ -1746,11 +1744,13 @@
                             url:"/api/wechat-users/wechatsolution/"+chk_value,
                             dataType:"json",
                             success:function (e) {
-                                for (var i = 0; i < e.length; i++) {
-                                    if (e[i].id == user.wechat[i].id){
-                                        remove(i)
+                                var z = []
+                                for (var i = 0; i < user.wechat.length; i++) {
+                                    if (user.wechat[i].id != e[i].id){
+                                        z.push(user.wechat[i])
                                     }
                                 }
+                                user.wechat = z
                                 document.getElementById("wechatsolution").innerHTML = ""
                                 proc({
                                     containerId: 'wechatsolution',
@@ -1759,16 +1759,6 @@
                                 })
                             }
                         })
-                        function indexOf(val){
-                            for(var i = 0; i < user.wechat.length; i++){
-                                if(user.wechat[i] == val){return i;}
-                            }
-                            return -1;
-                        }
-                        function remove(val){
-                            var index = indexOf(val);
-                            if(index > -1){user.wechat.splice(index,1);}
-                        }
                     })
                 }else{
                     document.getElementById("wechatsolution").innerHTML = ""

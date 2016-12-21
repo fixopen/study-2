@@ -132,13 +132,17 @@ public class WechatUsers {
     public Response updateByIds(@CookieParam("sessionId") String sessionId, @PathParam("ids") String ids) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
+            User loginUser = JPAEntry.getLoginUser(sessionId);
             String[] id=ids.split(",");
             //split(正则表达式)
             List list = new ArrayList();
             for(int i=0;i<id.length;i++){
                 WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", Long.parseLong(id[i]));
-                wechatUser.setUserId(null);
-                JPAEntry.genericPut(wechatUser);
+                if(loginUser.getId().longValue() == wechatUser.getUserId().longValue()){
+                    wechatUser.setUserId(null);
+                    JPAEntry.genericPut(wechatUser);
+                    list.add(wechatUser);
+                }
             }
             result = Response.ok(new Gson().toJson(list)).build();
         }

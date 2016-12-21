@@ -1080,7 +1080,7 @@ public class PublicAccounts {
         }else{
             if( wechatUser.getUserId() != null) {
                 System.out.println("==================cook是空的==================根据openid查询sessionId");
-                s = Sessions.resultCook(user, "WeChat", openId, new Date(),null);
+                s = Sessions.resultCook(user, "WeChat", openId, new Date());
                 System.out.println("==================weChat=================根据openid查询sessionId===+============"+s);
             }
         }
