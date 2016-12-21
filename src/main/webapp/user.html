@@ -176,7 +176,9 @@
         </div>
     </div>
 </article>
-<article id="info" style="display: none;"></article>
+<article id="info" style="display: none;">
+
+</article>
 <article id="changePassword" style="display: none;">
     <div class="wrap">
         <!-- main -->
@@ -218,7 +220,7 @@
             </ul>
             <i id="newError"></i>
             <div class="myset-btnBox">
-                <a href="javascript:void(0)" class="myset-saveBtn" id="newSubmit">确  认</a>
+                <a href="javascript:void(0)" class="myset-saveBtn" id="newSubmit">确 认</a>
             </div>
         </div>
     </div>
@@ -237,7 +239,10 @@
     <div class="wrap">
         <div class="set-prompt">绑定微信可直接登录，请选择需要解绑的微信号</div>
         <div class="set-password-maindiv">
-            <!--<li class="set-unbundling-li set-unbundling-litou"><span id="main"></span>（主微信号）</li>-->
+
+            <div id="mainWeChat">
+
+            </div>
             <div id="wechatsolution">
 
             </div>
@@ -255,9 +260,19 @@
 <article id="user">
 
 </article>
-<!--<article id="nickname" style="display: none">
-
-</article>-->
+<article id="nickname" style="display: none">
+    <div class="wrap">
+        <div class="mine_zilo">
+            <ul class="mine_zUl">
+                <li class="mine_zuli">
+                    <span class="mine_leftsp">昵称</span>
+                    <input class="mine_rightip" type="text" id="nicknameval">
+                    <a class="chahao" href="JavaScript:;" id="nicehng"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</article>
 <article id="cards" style="display: none;">
     <div class="wrap">
         <div class="headercard">
@@ -319,7 +334,9 @@
     <!--</div>-->
     <!--</div>-->
 </article>
-<article id="head" style="display: none;"></article>
+<article id="head" style="display: none;">
+
+</article>
 <article id="consumes" style="display: none;">
     <div class="wrap">
         <div class="balance_jine">
@@ -449,7 +466,49 @@
     </div>
 </article>
 <!--<article id="recharge" style="display: none;"></article>-->
-<article id="study" style="display: none;"></article>
+<article id="study" style="display: none;">
+    <div class="wrap youBackg">
+        <div class="study-record">
+            <div class="study_text">
+                <span class="chi"></span>
+                <span class="abc"></span>
+                <ul class="study-record-ul">
+                    <li class="study-record-li cur" data-article="pastLiveVideos">
+                        <a class="study_lia" href="javascript:void(0)" data-article="pastLiveVideos">
+                            <div class="study_lidiv">
+                                <span class="srul_size48 srul_zbo" data-article="pastLiveVideos">看过的直播</span>
+                                <br>
+                                <span class="srul_size42" data-article="pastLiveVideos">READ  LIVE</span>
+                            </div>
+                            <span class="you srul_zbotu" data-article="pastLiveVideos"></span>
+                        </a>
+                    </li>
+                    <li class="study-record-li" data-article="pastKnowledgePoints">
+                        <a class="study_lia" href="javascript:void(0)" data-article="pastKnowledgePoints">
+                            <div class="study_lidiv">
+                                <span class="srul_size48 srul_kec" data-article="pastKnowledgePoints">学过的课程</span>
+                                <br>
+                                <span class="srul_size42" data-article="pastKnowledgePoints">LEARNED  LESSONS</span>
+                            </div>
+                            <span class="you srul_kectu" data-article="pastKnowledgePoints"></span>
+                        </a>
+                    </li>
+                    <li class="study-record-li" data-article="pastTopics">
+                        <a class="study_lia" href="javascript:void(0)" data-article="pastTopics">
+                            <div class="study_lidiv">
+                                <span class="srul_size48 srul_zan" data-article="pastTopics">做过的题</span>
+                                <br>
+                                <span class="srul_size42" data-article="pastTopics">DONE</span>
+                            </div>
+                            <span class="you srul_zantu" data-article="pastTopics"></span>
+                        </a>
+                    </li>
+                </ul>
+                <img class="bottomImg" src="myUser/image/car.png" alt="">
+            </div>
+        </div>
+    </div>
+</article>
 <article id="score" style="display: none;"></article>
 <article id="activeCard" style="display: none;">
     <!-- 弹窗开始 -->
@@ -482,26 +541,26 @@
     </div>
 </article>
 <article id="settings" style="display: none;">
-            <ul class="public_ul_css">
-                <li class="user_li_css public_li_css" data-article="changePassword">
-                    <span  data-article="changePassword" class="public_span_css">密码设置</span>
-                </li >
+    <ul class="public_ul_css">
+        <li class="user_li_css public_li_css" data-article="changePassword">
+            <span data-article="changePassword" class="public_span_css">密码设置</span>
+        </li>
 
 
-                <li class="user_li_css public_li_css" data-article="changePhoneNumber">
-                    <span  data-article="changePhoneNumber" class="public_span_css">手机号修改</span>
-                </li>
+        <li class="user_li_css public_li_css" data-article="changePhoneNumber">
+            <span data-article="changePhoneNumber" class="public_span_css">手机号修改</span>
+        </li>
 
 
-                <li class="user_li_css public_li_css" data-article="changeWechat">
-                    <span data-article="changeWechat" class="public_span_css">微信解绑</span>
-                </li>
-            </ul>
-            <ul class="public_ul_css">
-                <li class="user_li_css public_li_css" data-article="contactUs">
-                    <span data-article="contactUs" class="public_span_css">联系我们</span>
-                </li>
-            </ul>
+        <li class="user_li_css public_li_css" data-article="changeWechat">
+            <span data-article="changeWechat" class="public_span_css">微信解绑</span>
+        </li>
+    </ul>
+    <ul class="public_ul_css">
+        <li class="user_li_css public_li_css" data-article="contactUs">
+            <span data-article="contactUs" class="public_span_css">联系我们</span>
+        </li>
+    </ul>
 </article>
 <article id="help" style="display: none;">
     <div class="wrap youBackg">
@@ -615,26 +674,168 @@
 <article id="contactUs" style="display: none;">
     <img src="myUser/image/contactUs.jpg" style="width: 100%;height: 100%"/>
 </article>
+<article id="pastLiveVideos" style="display: none">
+    <div class="wrap">
+        <div class="pastLiveVideos_header">
+            <div class="pastLiveVideos_header_l">
+                <span class="pastLiveVideos_l_one">当前级别</span><br>
+                <span class="pastLiveVideos_l_two"><i class="pastLiveVideos_l_twoshu">学水</i></span>
+            </div>
+            <div class="pastLiveVideos_header_r">
+                <span class="pastLiveVideos_r_one">共看过直播</span><br>
+                <span class="pastLiveVideos_r_two"><i class="pastLiveVideos_r_twoshu">20</i>个</span>
+            </div>
+            <p class="pastLiveVideos_header_cen">距离下个级别还差<span>10</span>个直播</p>
+        </div>
+        <div class="pastLiveVideos_tab_div">
+            <ul class="pastLiveVideos_tab_switch">
+                <li class="pastLiveVideos_tab_swli cur" data-content="chineLiveVideos">语文
+                    <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
+                </li>
+                <li class="pastLiveVideos_tab_swli pastLiveVideos_tab_swlino" data-content="mathLiveVideos">数学
+                    <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="mine_zilo">
+            <div class="mine_table cur" id="chineLiveVideos">
+                <ul>
+                    <li class="all_uli" id="chine_live">
+
+                    </li>
+                </ul>
+                <div class="bottom_txt">
+                    <span class="leftLine">————</span>没有更多语文视频咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+            <div class="mine_table" id="mathLiveVideos">
+                <ul>
+                    <li class="all_uli" id="math_live">
+
+                    </li>
+                </ul>
+                <div class="bottom_txt">
+                    <span class="leftLine">————</span>没有更多数学视频咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+<article id="pastKnowledgePoints" style="display: none">
+    <div class="wrap">
+        <div class="pastLiveVideos_header">
+            <div class="pastLiveVideos_header_l">
+                <span class="pastLiveVideos_l_one">当前级别</span><br>
+                <span class="pastLiveVideos_l_two"><i class="pastLiveVideos_l_twoshu">学水</i></span>
+            </div>
+            <div class="pastLiveVideos_header_r">
+                <span class="pastLiveVideos_r_one">共看过知识点</span><br>
+                <span class="pastLiveVideos_r_two"><i class="pastLiveVideos_r_twoshu">20</i>个</span>
+            </div>
+            <p class="pastLiveVideos_header_cen">距离下个级别还差<span>10</span>个知识点</p>
+        </div>
+        <div class="pastLiveVideos_tab_div">
+            <ul class="pastLiveVideos_tab_switch">
+                <li class="a pastLiveVideos_tab_swli cur" data-content="chineKnowledgePoints">语文
+                    <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
+                </li>
+                <li class="a pastLiveVideos_tab_swli pastLiveVideos_tab_swlino" data-content="mathKnowledgePoints">数学
+                    <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="mine_zilo">
+            <div class="mine_table cur" id="chineKnowledgePoints">
+                <ul>
+                    <li class="all_uli" id="chine_knowledgePoint">
+
+                    </li>
+                </ul>
+                <div class="bottom_txt">
+                    <span class="leftLine">————</span>没有更多语文课程咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+            <div class="mine_table" id="mathKnowledgePoints">
+                <ul>
+                    <li class="all_uli" id="math_knowledgePoint">
+
+                    </li>
+                </ul>
+                <div class="bottom_txt">
+                    <span class="leftLine">————</span>没有更多数学课程咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+<article id="pastTopics" style="display: none">
+    <div class="wrap">
+        <div class="pastLiveVideos_header">
+            <div class="pastLiveVideos_header_l">
+                <span class="pastLiveVideos_l_one">当前级别</span><br>
+                <span class="pastLiveVideos_l_two"><i class="pastLiveVideos_l_twoshu">学水</i></span>
+            </div>
+            <div class="pastLiveVideos_header_r">
+                <span class="pastLiveVideos_r_one">共做过题</span><br>
+                <span class="pastLiveVideos_r_two"><i class="pastLiveVideos_r_twoshu">20</i>个</span>
+            </div>
+            <p class="pastLiveVideos_header_cen">距离下个级别还差<span>10</span>个题</p>
+        </div>
+        <div class="pastLiveVideos_tab_div">
+            <ul class="pastLiveVideos_tab_switch">
+                <li class="pastLiveVideos_tab_swli cur b" data-content="chineTopics">语文
+                    <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
+                </li>
+                <li class="pastLiveVideos_tab_swli pastLiveVideos_tab_swlino b" data-content="mathTopics">数学
+                    <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="mine_zilo">
+            <div class="mine_table cur" id="chineTopics">
+                <ul>
+                    <li class="all_uli" id="chine_topic">
+
+                    </li>
+                </ul>
+                <div class="bottom_txt" >
+                    <span class="leftLine">————</span>没有更多语文题咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+            <div class="mine_table" id="mathTopics">
+                <ul>
+                    <li class="all_uli" id="math_topic">
+
+                    </li>
+                </ul>
+                <div class="bottom_txt">
+                    <span class="leftLine">————</span>没有更多数学题咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
 
 <template id="user-template">
-    <!--<div class="user_div_css">-->
     <ul class="public_ul_css">
-        <!-- <li class="user_li_css public_li_css">
-             <ul data-article="head">
+         <li class="user_li_css public_li_css">
+             <ul>
+                 <!--data-article="head"-->
                  <span class="public_span_css">我的头像</span>
                  <img class="user_head_css" src="${head}" alt="">
              </ul>
 
          </li>
-         <li class="user_li_css public_li_css">
+         <li class="user_li_css public_li_css" data-article="nickname">
              <ul data-article="nickname">
-                 <span class="public_span_css">昵称</span>
-                 <input class="user_input_css public_input_css" type="text" value="${name}" readonly>
+                 <span class="public_span_css" data-article="nickname">昵称</span>
+                 <input class="user_input_css public_input_css" type="text" value="${name}" data-article="nickname">
              </ul>
-         </li>-->
-        <li class="user_li_css public_li_css">
+         </li>
+        <li style="height: 3.71875rem;line-height: 3.71875rem;padding: 0 0 0 0.9375rem;border-bottom: 1px solid #e5e5e5;">
             <span class="public_span_css">账号</span>
-            <input class="user_input_css public_input_css" type="text" value="${telephone}" readonly>
+            <!--padding-left: 64px;-->
+            <input style="font-size: 1.0rem;padding-left: 10%" type="text" value="${telephone}" readonly>
         </li>
         <li>
             <ul class="user_li_css public_li_css" data-article="info">个人资料</ul>
@@ -644,8 +845,8 @@
         <li>
             <ul class="user_li_css public_li_css" data-article="cards">我的学习卡</ul>
         </li>
-        <li>
-            <ul class="user_li_css public_li_css">学习记录</ul>
+        <li data-article="study">
+            <ul class="user_li_css public_li_css" data-article="study">学习记录</ul>
         </li>
         <br/>
         <li>
@@ -661,7 +862,6 @@
         <li class="user_li_css public_li_css" data-article="settings">设置</li>
         <li class="user_li_css public_li_css" data-article="help">帮助</li>
     </ul>
-    <!--</div>-->
 </template>
 <template id="info-template">
     <ul class="public_ul_css">
@@ -681,7 +881,7 @@
             <input class="mine_rightip mine_rightRu" type="text " value="${school}" id="info_school">
         </li>
         <li class="public_li_css">
-            <span class="imine_leftsp">班级<i class="xing">*</i></span>
+            <span class="imine_leftsp">年级<i class="xing">*</i></span>
             <input class="mine_rightip mine_rightRu" type="text " value="${classname}" id="info_class">
         </li>
         <li class="public_li_css">
@@ -739,22 +939,116 @@
         <p class="balance_rightip"><span>${money}</span>金豆</p>
     </li>
 </template>
-<template id="study-template">
+<template id="pastTopics-template">
 
 </template>
-<!--<template id="nickname-template">
-    <div class="wrap">
-        <div class="mine_zilo">
-            <ul class="mine_zUl">
-                <li class="mine_zuli">
-                    <span class="mine_leftsp">昵称</span>
-                    <input class="mine_rightip" type="text" id="nicknameval" value="${name}">
-                    <a class="chahao" href="JavaScript:;" id="nicehng"></a>
-                </li>
-            </ul>
+<template id="pastKnowledgePoints-template">
+
+</template>
+<template id="pastLiveVideos-chine-template">
+    <div class="all_liplay">
+        <a class="all_aBtn" href="javascript:void(0)">
+            <div class="yuwen_div0"><span>20</span>金豆</div>
+            <div class="yuwen_div1">语文</div>
+            <div class="yuwen_div2">
+                <h3 class="yuwen_h3">写人作文</h3>
+                <p class="yuwen_p">写作手法+得分技巧</p>
+            </div>
+            <p class="yuwen_p2">
+                <span>一年级</span>
+                <span class="yuwen_span">刘志超</span>
+                <span class="yuwen_riqi">2016-11-16</span>
+            </p>
+            <span class="yuwen_a"></span>
+        </a>
+    </div>
+    <div class="course-intro">
+        <div class="course_xiaqing">
+            <div class="xiaq_div">
+                <p>语文作文与写作手法语文作文与写作写作</p>
+                <div class="course_detail">详情
+                    <img src="../../images/xiala.png" alt="">
+                    <img src="../../images/xiala_sq.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="course-detail">
+            <div class="keqian_zb">
+                课前准备：
+                <span>笔记本、铅笔、橡皮、圆珠笔、课本</span>
+            </div>
+            <h3 class="sml-tit brief1">
+                <img src="../../images/abc.png" alt="">
+                课程简介
+            </h3>
+            <p class="tim2">写人作文是指通过具体的描写，以典型的事例表现人物的品质或特点的文章。写人作文着眼于描写人物，包括人物的外貌特征、言行举止、心理活动等。人物是主要的描写对象，事情是为突出人物的性格特征和思想品质服务的。</p>
+
+            <h3 class="sml-tit brief2">
+                <img src="../../images/zjr_btn.png" alt="">
+                主讲人简介
+            </h3>
+            <p class="tim2">董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+
+            <h3 class="sml-tit brief3">
+                <img src="../../images/sxsj_btn.png" alt="">
+                上线时间
+            </h3>
+            <p>2016-03-11    10:22:33</p>
         </div>
     </div>
-</template>-->
+</template>
+<template id="pastLiveVideos-math-template">
+    <div class="all_liplay yingyu_play">
+        <a class="all_aBtn" href="javascript:void(0)">
+            <div class="yuwen_div0"><span>20</span>金豆</div>
+            <div class="yuwen_div1 yingyu_div1">英语</div>
+            <div class="yuwen_div2 yingyu_div2">
+                <h3 class="yuwen_h3">写人作文</h3>
+                <p class="yuwen_p">认识单词+ear/eye/arm</p>
+            </div>
+            <p class="yuwen_p2">
+                <span>三年级</span>
+                <span class="yuwen_span">刘志超</span>
+                <span class="yuwen_riqi">2016-11-16</span>
+            </p>
+            <span class="yuwen_a"></span>
+        </a>
+    </div>
+    <div class="course-intro">
+        <div class="course_xiaqing">
+            <div class="xiaq_div">
+                <p>认识小熊的各个部位单词</p>
+                <div class="course_detail yingyu_Btn">详情
+                    <img src="../../images/xiala_yy.png" alt="">
+                    <img src="../../images/xiala_sqyy.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="course-detail">
+            <div class="keqian_zb">
+                课前准备：
+                <span>笔记本、铅笔、橡皮、圆珠笔、课本</span>
+            </div>
+            <h3 class="sml-tit brief1">
+                <img src="../../images/abc.png" alt="">
+                课程简介
+            </h3>
+            <p class="tim2">写人作文是指通过具体的描写，以典型的事例表现人物的品质或特点的文章。写人作文着眼于描写人物，包括人物的外貌特征、言行举止、心理活动等。人物是主要的描写对象，事情是为突出人物的性格特征和思想品质服务的。</p>
+
+            <h3 class="sml-tit brief2">
+                <img src="../../images/zjr_btn.png" alt="">
+                主讲人简介
+            </h3>
+            <p class="tim2">董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
+
+            <h3 class="sml-tit brief3">
+                <img src="../../images/sxsj_btn.png" alt="">
+                上线时间
+            </h3>
+            <p>2016-03-11    10:22:33</p>
+        </div>
+    </div>
+</template>
 <template id="settings-template">
 
 </template>
@@ -803,6 +1097,11 @@
         </li>
     </ul>
 </template>
+<template id="mainwechat-template">
+    <ul class="set-password-ul">
+        <li class="set-unbundling-li set-unbundling-litou"><span>${nickname}</span>（主微信号）</li>
+    </ul>
+</template>
 <!-- 引入js -->
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <!--<script type="text/javascript" src="/zepto/zepto.min.js"></script>-->
@@ -814,7 +1113,7 @@
     var user = null;
     var array = [];
     var state = {
-        sessionId:null,
+        sessionId: null,
         wechatUserId: null,
         openId: null,
         pan: null,
@@ -1025,7 +1324,7 @@
                     var fapassword = document.getElementById('fapassword');
                     fapassword.disabled = false
                     fapassword.addEventListener('click', function () {
-                        if(fapassword.disabled == false){
+                        if (fapassword.disabled == false) {
                             state.firstActiveCard.activeCode(0)
                         }
                     }, false);
@@ -1070,7 +1369,12 @@
                     })
                     var signSubmit = document.getElementById("signSubmit");
                     signSubmit.addEventListener('click', function (e) {
-                        var loginInfo = {type: state.sign.type,deviceNo:state.openId, wechatUserId: state.wechatUserId, deviceType: 'WeChat'};
+                        var loginInfo = {
+                            type: state.sign.type,
+                            deviceNo: state.openId,
+                            wechatUserId: state.wechatUserId,
+                            deviceType: 'WeChat'
+                        };
                         switch (state.sign.type) {
                             case 'telephone':
                                 //Number//手机号 pwd//密码 code//验证码 activationNumber//激活手机号 activationPassword//短信密码
@@ -1611,7 +1915,7 @@
         },
         head: {
             init: function () {
-                var url = window.location.href;
+                /*var url = window.location.href;
                 url = url.replace(/[/]/g, ',')
                 gettick();
                 $.ajax({
@@ -1675,7 +1979,7 @@
                             //alert(JSON.stringify(e))
                         }
                     })
-                }
+                }*/
 
                 /*var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
                  libai(sdakfjlasf);
@@ -1700,6 +2004,7 @@
         },
         study: {
             init: function () {
+
             }
         },
         score: {
@@ -1715,15 +2020,28 @@
             }
         },
         changeWechat: {
-            isWechat : false,
+            isWechat: false,
             init: function () {
-                if(!state.changeWechat.isWechat){
+                if (!state.changeWechat.isWechat) {
                     $.ajax({
-                        type:"get",
-                        url:"/api/wechat-users/related",
-                        dataType:"json",
-                        success:function (e) {
-                            user.wechat = e
+                        type: "get",
+                        url: "/api/wechat-users/related",
+                        dataType: "json",
+                        success: function (e) {
+                            user.wechat = []
+                            for (var i = 0; i < e.length; i++) {
+                                if (i == 0) {
+                                    user.mainWeChat = e[i]
+                                } else {
+                                    user.wechat.push(e[i])
+                                }
+                            }
+                            document.getElementById("mainWeChat").innerHTML = ""
+                            proc({
+                                containerId: 'mainWeChat',
+                                data: user.mainWeChat,
+                                templateId: 'mainwechat-template'
+                            })
                             document.getElementById("wechatsolution").innerHTML = ""
                             proc({
                                 containerId: 'wechatsolution',
@@ -1733,24 +2051,25 @@
                         }
                     })
                     var solution = document.getElementById("solution");
-                    solution.addEventListener('click',function (e) {
-                        var chk_value =[];
-                        $('input[name="checkbox"]:checked').each(function(){
+                    solution.addEventListener('click', function (e) {
+                        var chk_value = [];
+                        $('input[name="checkbox"]:checked').each(function () {
                             chk_value.push($(this).val());
-                            alert(chk_value.length==0 ?'你还没有选择任何内容！':chk_value);
                         });
                         $.ajax({
-                            type:"put",
-                            url:"/api/wechat-users/wechatsolution/"+chk_value,
-                            dataType:"json",
-                            success:function (e) {
-                                var z = []
+                            type: "put",
+                            url: "/api/wechat-users/wechatsolution/" + chk_value,
+                            dataType: "json",
+                            success: function (e) {
                                 for (var i = 0; i < user.wechat.length; i++) {
-                                    if (user.wechat[i].id != e[i].id){
-                                        z.push(user.wechat[i])
+                                    for (var j = 0; j < e.length; ++j) {
+                                        if (user.wechat[i].id == e[j].id) {
+                                            user.wechat.splice(i, 1)
+                                            --i
+                                            break
+                                        }
                                     }
                                 }
-                                user.wechat = z
                                 document.getElementById("wechatsolution").innerHTML = ""
                                 proc({
                                     containerId: 'wechatsolution',
@@ -1760,7 +2079,7 @@
                             }
                         })
                     })
-                }else{
+                } else {
                     document.getElementById("wechatsolution").innerHTML = ""
                     proc({
                         containerId: 'wechatsolution',
@@ -1909,7 +2228,7 @@
                 var activeCodeButton = document.getElementById('activeCode');
                 activeCodeButton.disabled = false
                 activeCodeButton.addEventListener('click', function () {
-                    if(activeCodeButton.disabled == false){
+                    if (activeCodeButton.disabled == false) {
                         state.firstActiveCard.activeCode(1)
                     }
                 }, false);
@@ -1939,12 +2258,12 @@
                     an = "activeCode";
                     error = "tips";
                     daojishi(e)
-                } else if(e == 0) {
+                } else if (e == 0) {
                     var phoneNumber = document.getElementById("activationNumber").value
                     an = "fapassword";
                     error = "errorfamima";
                     daojishi(e)
-                }else if(e == 2){
+                } else if (e == 2) {
                     var phoneNumber = document.getElementById("newPhone").value
                     an = "sendcode";
                     error = "newError";
@@ -2009,9 +2328,9 @@
             }
         },
         settings: {
-            isSettings:false,
+            isSettings: false,
             init: function () {
-                if(!state.settings.isSettings){
+                if (!state.settings.isSettings) {
                     var i;
                     var j;
                     var x;
@@ -2057,27 +2376,27 @@
                     }, false);
                     sendcode.disabled = false;
                     sendcode.addEventListener('click', function () {
-                        if(putcode.disabled == false){
+                        if (putcode.disabled == false) {
                             state.firstActiveCard.activeCode(2)
                         }
                     })
                     newPhone.addEventListener('blur', function () {
-                        if($("#newPhone").val().length != 11){
-                            document.getElementById("newError").innerHTML="手机号格式错误！"
+                        if ($("#newPhone").val().length != 11) {
+                            document.getElementById("newError").innerHTML = "手机号格式错误！"
                             i = 1
-                        }else{
-                            document.getElementById("newError").innerHTML==""
+                        } else {
+                            document.getElementById("newError").innerHTML == ""
                             i = 0
                         }
                     })
                     newSubmit.addEventListener('click', function () {
                         var data = {
-                            telephone : $("#newPhone").val()
+                            telephone: $("#newPhone").val()
                         }
                         putphone(data)
                     })
                 }
-                state.settings.isSettings=true
+                state.settings.isSettings = true
                 function put(data) {
                     $.ajax({
                         type: "put",
@@ -2086,19 +2405,20 @@
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                         success: function (a) {
-                                document.getElementById("error").innerHTML = "修改密码成功"
-                                a.data = user
-                                j = 0
-                                x = 0
-                                state.switchToFront('settings')
+                            document.getElementById("error").innerHTML = "修改密码成功"
+                            a.data = user
+                            j = 0
+                            x = 0
+                            state.switchToFront('settings')
                         },
                     })
                 }
+
                 function putphone(data) {
-                    if(i == 0){
+                    if (i == 0) {
                         $.ajax({
                             type: "put",
-                            url: "/api/users/"+$("#newPhone").val()+"/"+$("#putcode").val(),
+                            url: "/api/users/" + $("#newPhone").val() + "/" + $("#putcode").val(),
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -2107,7 +2427,7 @@
                                 a.data = user
                                 state.switchToFront('settings')
                             },
-                            error:function (e) {
+                            error: function (e) {
                                 document.getElementById("newError").innerHTML = "密码过期或错误"
                             }
                         })
@@ -2119,47 +2439,90 @@
             init: function () {
             }
         },
-        /* nickname: {
-         init: function () {
-         // document.getElementById("nicknameval").innerHTML=user.name
-         document.getElementById("nickname").innerHTML = ""
-         proc({
-         containerId: 'nickname',
-         data: user,
-         templateId: 'nickname-template'
-         })
-
-
-         $("#nicehng").on('click', function () {
-         $("#nicknameval").val("")
-         })
-         $("#nicknameval").blur(function () {
-         var data = {
-         name: $("#nicknameval").val()
-         }
-         alert("提交")
-         alert(JSON.stringify(data))
-         $.ajax({
-         type: "put",
-         url: "/api/users/self/",
-         data: JSON.stringify(data),
-         contentType: 'application/json; charset=utf-8',
-         dataType: "json",
-         success: function (e) {
-         alert("成功")
-         user = e
-         state.switchToFront('user')
-         }
-         })
-         });
-         //或$("p").blur(fn)
-         }
-         }*/
+        pastLiveVideos: {
+            isPastLiveVidos:false,
+            currentTab: $('[data-content="chineLiveVideos"]')[0],
+            init: function () {
+                if(!state.pastLiveVideos.isPastLiveVidos){
+                    $('.pastLiveVideos_tab_swli').on('click', function (e) {
+                        state.pastLiveVideos.currentTab.removeClass('cur')
+                        document.getElementById(state.pastLiveVideos.currentTab.dataset.content).removeClass('cur')
+                        state.pastLiveVideos.currentTab = e.currentTarget
+                        state.pastLiveVideos.currentTab.addClass('cur')
+                        document.getElementById(state.pastLiveVideos.currentTab.dataset.content).addClass('cur')
+                    })
+                }
+                state.pastLiveVideos.isPastLiveVidos = true
+            }
+        },
+        pastKnowledgePoints: {
+            isPastKnowledgePoints:false,
+            currentTab: $('[data-content="chineKnowledgePoints"]')[0],
+            init: function () {
+                if(!state.pastKnowledgePoints.isPastKnowledgePoints){
+                    $('.a').on('click', function (e) {
+                        state.pastKnowledgePoints.currentTab.removeClass('cur')
+                        document.getElementById(state.pastKnowledgePoints.currentTab.dataset.content).removeClass('cur')
+                        state.pastKnowledgePoints.currentTab = e.currentTarget
+                        state.pastKnowledgePoints.type = state.pastKnowledgePoints.currentTab.dataset.type
+                        state.pastKnowledgePoints.currentTab.addClass('cur')
+                        document.getElementById(state.pastKnowledgePoints.currentTab.dataset.content).addClass('cur')
+                    })
+                }
+                state.pastKnowledgePoints.isPastKnowledgePoints = true
+            }
+        },
+        pastTopics: {
+            isPastTopics:false,
+            currentTab: $('[data-content="chineTopics"]')[0],
+            init: function () {
+                if(!state.pastTopics.isPastTopics){
+                    $('.b').on('click', function (e) {
+                        state.pastTopics.currentTab.removeClass('cur')
+                        document.getElementById(state.pastTopics.currentTab.dataset.content).removeClass('cur')
+                        state.pastTopics.currentTab = e.currentTarget
+                        state.pastTopics.type = state.pastTopics.currentTab.dataset.type
+                        state.pastTopics.currentTab.addClass('cur')
+                        document.getElementById(state.pastTopics.currentTab.dataset.content).addClass('cur')
+                    })
+                }
+                state.pastTopics.isPastTopics = true
+            }
+        },
+        nickname: {
+            isNickname: false,
+            init: function () {
+                if (!state.nickname.isNickname){
+                    document.getElementById("nicknameval").value = user.name
+                    var nicehng = document.getElementById("nicehng");
+                    nicehng.addEventListener('click',function (e) {
+                        $("#nicknameval").val("")
+                    },false)
+                    var nicknameval = document.getElementById("nicknameval");
+                    nicknameval.addEventListener('blur',function (e) {
+                        var data = {
+                            name: $("#nicknameval").val()
+                        }
+                        $.ajax({
+                            type: "put",
+                            url: "/api/users/self/",
+                            data: JSON.stringify(data),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: "json",
+                            success: function (e) {
+                                user = e
+                                state.switchToFront('user')
+                            }
+                        })
+                    },false)
+                }else{
+                    document.getElementById("nicknameval").value = user.name
+                }
+                state.nickname.isNickname = true
+            }
+        },
     }
-
     state.init()
-
-
 </script>
 </body>
 </html>

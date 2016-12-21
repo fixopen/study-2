@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -45,5 +47,11 @@ public class Subject implements com.baremind.data.Entity {
         this.name = name;
     }
 
-
+    public static Map<String, Object> convertToMap(Subject subject) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", subject.getId());
+        result.put("name", subject.getName());
+        result.put("no", subject.getNo());
+        return result;
+    }
 }
