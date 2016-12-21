@@ -235,9 +235,11 @@ public class Sessions {
         Session session = null;
         if (user != null) {
             WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", deviceNo);
-            if(wechatUser.getUserId() == null){
-                wechatUser.setUserId(user.getId());
-                JPAEntry.genericPut(wechatUser);
+            if (wechatUser != null) {
+                if (wechatUser.getUserId() == null) {
+                    wechatUser.setUserId(user.getId());
+                    JPAEntry.genericPut(wechatUser);
+                }
             }
             Map<String, Object> deviceConditions = new HashMap<>();
             deviceConditions.put("platform", deviceType);
