@@ -474,31 +474,31 @@
                     <li class="study-record-li cur" data-article="pastLiveVideos">
                         <a class="study_lia" href="javascript:void(0)" data-article="pastLiveVideos">
                             <div class="study_lidiv">
-                                <span class="srul_size48 srul_zbo">看过的直播</span>
+                                <span class="srul_size48 srul_zbo" data-article="pastLiveVideos">看过的直播</span>
                                 <br>
-                                <span class="srul_size42">READ  LIVE</span>
+                                <span class="srul_size42" data-article="pastLiveVideos">READ  LIVE</span>
                             </div>
-                            <span class="you srul_zbotu"></span>
+                            <span class="you srul_zbotu" data-article="pastLiveVideos"></span>
                         </a>
                     </li>
-                    <li class="study-record-li">
-                        <a class="study_lia" href="javascript:void(0)">
+                    <li class="study-record-li" data-article="pastKnowledgePoints">
+                        <a class="study_lia" href="javascript:void(0)" data-article="pastKnowledgePoints">
                             <div class="study_lidiv">
-                                <span class="srul_size48 srul_kec">学过的课程</span>
+                                <span class="srul_size48 srul_kec" data-article="pastKnowledgePoints">学过的课程</span>
                                 <br>
-                                <span class="srul_size42">LEARNED  LESSONS</span>
+                                <span class="srul_size42" data-article="pastKnowledgePoints">LEARNED  LESSONS</span>
                             </div>
-                            <span class="you srul_kectu"></span>
+                            <span class="you srul_kectu" data-article="pastKnowledgePoints"></span>
                         </a>
                     </li>
-                    <li class="study-record-li">
-                        <a class="study_lia" href="javascript:void(0)">
+                    <li class="study-record-li" data-article="pastTopics">
+                        <a class="study_lia" href="javascript:void(0)" data-article="pastTopics">
                             <div class="study_lidiv">
-                                <span class="srul_size48 srul_zan">做过的题</span>
+                                <span class="srul_size48 srul_zan" data-article="pastTopics">做过的题</span>
                                 <br>
-                                <span class="srul_size42">DONE</span>
+                                <span class="srul_size42" data-article="pastTopics">DONE</span>
                             </div>
-                            <span class="you srul_zantu"></span>
+                            <span class="you srul_zantu" data-article="pastTopics"></span>
                         </a>
                     </li>
                 </ul>
@@ -687,43 +687,131 @@
         </div>
         <div class="pastLiveVideos_tab_div">
             <ul class="pastLiveVideos_tab_switch">
-                <li class="pastLiveVideos_tab_swli cur">语文
+                <li class="pastLiveVideos_tab_swli cur" data-content="chineLiveVideos">语文
                     <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
                 </li>
-                <li class="pastLiveVideos_tab_swli pastLiveVideos_tab_swlino">数学
+                <li class="pastLiveVideos_tab_swli pastLiveVideos_tab_swlino" data-content="mathLiveVideos">数学
                     <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
                 </li>
             </ul>
         </div>
         <div class="mine_zilo">
-            <div class="mine_table cur">
+            <div class="mine_table cur" id="chineLiveVideos">
                 <ul>
                     <li class="all_uli" id="chine_live">
 
                     </li>
                 </ul>
                 <div class="bottom_txt">
-                    <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
+                    <span class="leftLine">————</span>没有更多语文视频咯！<span class="leftLine">————</span>
                 </div>
             </div>
-            <div class="mine_table">
+            <div class="mine_table" id="mathLiveVideos">
                 <ul>
                     <li class="all_uli" id="math_live">
 
                     </li>
                 </ul>
                 <div class="bottom_txt">
-                    <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
+                    <span class="leftLine">————</span>没有更多数学视频咯！<span class="leftLine">————</span>
                 </div>
             </div>
         </div>
     </div>
 </article>
 <article id="pastKnowledgePoints" style="display: none">
+    <div class="wrap">
+        <div class="pastLiveVideos_header">
+            <div class="pastLiveVideos_header_l">
+                <span class="pastLiveVideos_l_one">当前级别</span><br>
+                <span class="pastLiveVideos_l_two"><i class="pastLiveVideos_l_twoshu">学水</i></span>
+            </div>
+            <div class="pastLiveVideos_header_r">
+                <span class="pastLiveVideos_r_one">共看过知识点</span><br>
+                <span class="pastLiveVideos_r_two"><i class="pastLiveVideos_r_twoshu">20</i>个</span>
+            </div>
+            <p class="pastLiveVideos_header_cen">距离下个级别还差<span>10</span>个知识点</p>
+        </div>
+        <div class="pastLiveVideos_tab_div">
+            <ul class="pastLiveVideos_tab_switch">
+                <li class="a pastLiveVideos_tab_swli cur" data-content="chineKnowledgePoints">语文
+                    <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
+                </li>
+                <li class="a pastLiveVideos_tab_swli pastLiveVideos_tab_swlino" data-content="mathKnowledgePoints">数学
+                    <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="mine_zilo">
+            <div class="mine_table cur" id="chineKnowledgePoints">
+                <ul>
+                    <li class="all_uli" id="chine_knowledgePoint">
 
+                    </li>
+                </ul>
+                <div class="bottom_txt">
+                    <span class="leftLine">————</span>没有更多语文课程咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+            <div class="mine_table" id="mathKnowledgePoints">
+                <ul>
+                    <li class="all_uli" id="math_knowledgePoint">
+
+                    </li>
+                </ul>
+                <div class="bottom_txt">
+                    <span class="leftLine">————</span>没有更多数学课程咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </article>
 <article id="pastTopics" style="display: none">
+    <div class="wrap">
+        <div class="pastLiveVideos_header">
+            <div class="pastLiveVideos_header_l">
+                <span class="pastLiveVideos_l_one">当前级别</span><br>
+                <span class="pastLiveVideos_l_two"><i class="pastLiveVideos_l_twoshu">学水</i></span>
+            </div>
+            <div class="pastLiveVideos_header_r">
+                <span class="pastLiveVideos_r_one">共做过题</span><br>
+                <span class="pastLiveVideos_r_two"><i class="pastLiveVideos_r_twoshu">20</i>个</span>
+            </div>
+            <p class="pastLiveVideos_header_cen">距离下个级别还差<span>10</span>个题</p>
+        </div>
+        <div class="pastLiveVideos_tab_div">
+            <ul class="pastLiveVideos_tab_switch">
+                <li class="pastLiveVideos_tab_swli cur b" data-content="chineTopics">语文
+                    <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
+                </li>
+                <li class="pastLiveVideos_tab_swli pastLiveVideos_tab_swlino b" data-content="mathTopics">数学
+                    <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="mine_zilo">
+            <div class="mine_table cur" id="chineTopics">
+                <ul>
+                    <li class="all_uli" id="chine_topic">
 
+                    </li>
+                </ul>
+                <div class="bottom_txt" >
+                    <span class="leftLine">————</span>没有更多语文题咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+            <div class="mine_table" id="mathTopics">
+                <ul>
+                    <li class="all_uli" id="math_topic">
+
+                    </li>
+                </ul>
+                <div class="bottom_txt">
+                    <span class="leftLine">————</span>没有更多数学题咯！<span class="leftLine">————</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </article>
 
 <template id="user-template">
@@ -2351,21 +2439,52 @@
         },
         pastLiveVideos: {
             isPastLiveVidos:false,
+            currentTab: $('[data-content="chineLiveVideos"]')[0],
             init: function () {
                 if(!state.pastLiveVideos.isPastLiveVidos){
-                    $('.sign_tab_swli').on('click', function (e) {
-                        state.sign.currentTab.removeClass('cur')
-                        document.getElementById(state.sign.currentTab.dataset.content).removeClass('cur')
-                        state.sign.currentTab = e.currentTarget
-                        state.sign.type = state.sign.currentTab.dataset.type
-                        state.sign.currentTab.addClass('cur')
-                        document.getElementById(state.sign.currentTab.dataset.content).addClass('cur')
-                    })
-                    $.ajax({
-                        type:"get"
+                    $('.pastLiveVideos_tab_swli').on('click', function (e) {
+                        state.pastLiveVideos.currentTab.removeClass('cur')
+                        document.getElementById(state.pastLiveVideos.currentTab.dataset.content).removeClass('cur')
+                        state.pastLiveVideos.currentTab = e.currentTarget
+                        state.pastLiveVideos.currentTab.addClass('cur')
+                        document.getElementById(state.pastLiveVideos.currentTab.dataset.content).addClass('cur')
                     })
                 }
                 state.pastLiveVideos.isPastLiveVidos = true
+            }
+        },
+        pastKnowledgePoints: {
+            isPastKnowledgePoints:false,
+            currentTab: $('[data-content="chineKnowledgePoints"]')[0],
+            init: function () {
+                if(!state.pastKnowledgePoints.isPastKnowledgePoints){
+                    $('.a').on('click', function (e) {
+                        state.pastKnowledgePoints.currentTab.removeClass('cur')
+                        document.getElementById(state.pastKnowledgePoints.currentTab.dataset.content).removeClass('cur')
+                        state.pastKnowledgePoints.currentTab = e.currentTarget
+                        state.pastKnowledgePoints.type = state.pastKnowledgePoints.currentTab.dataset.type
+                        state.pastKnowledgePoints.currentTab.addClass('cur')
+                        document.getElementById(state.pastKnowledgePoints.currentTab.dataset.content).addClass('cur')
+                    })
+                }
+                state.pastKnowledgePoints.isPastKnowledgePoints = true
+            }
+        },
+        pastTopics: {
+            isPastTopics:false,
+            currentTab: $('[data-content="chineTopics"]')[0],
+            init: function () {
+                if(!state.pastTopics.isPastTopics){
+                    $('.b').on('click', function (e) {
+                        state.pastTopics.currentTab.removeClass('cur')
+                        document.getElementById(state.pastTopics.currentTab.dataset.content).removeClass('cur')
+                        state.pastTopics.currentTab = e.currentTarget
+                        state.pastTopics.type = state.pastTopics.currentTab.dataset.type
+                        state.pastTopics.currentTab.addClass('cur')
+                        document.getElementById(state.pastTopics.currentTab.dataset.content).addClass('cur')
+                    })
+                }
+                state.pastTopics.isPastTopics = true
             }
         },
         nickname: {
