@@ -691,6 +691,103 @@ public class Users {
         return result;
     }
 
+    @GET
+    @Path("history-resoruces")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getHistory(@CookieParam("sessionId") String sessionId) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            Long userId = JPAEntry.getSession(sessionId).getUserId();
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("userId", userId);
+            condition.put("action", "read");
+            List<Log> logs = JPAEntry.getList(Log.class, condition);
+            List<AnswerRecord> answerRecords = JPAEntry.getList(AnswerRecord.class, "userId", userId);
+            List<String> problemIds = new ArrayList<>();
+            for (AnswerRecord answerRecord : answerRecords) {
+                problemIds.add(answerRecord.getProblemId().toString());
+            }
+            EntityManager em = JPAEntry.getEntityManager();
+            List<Problem> problems = Resources.getList(em, problemIds, Problem.class);
+            List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getListByColumn(em, "objectId", problemIds, KnowledgePointContentMap.class);
+            List<String> knowledgePointIds = new ArrayList<>();
+            for (KnowledgePointContentMap m : knowledgePointContentMaps) {
+                knowledgePointIds.add(m.getKnowledgePointId().toString());
+            }
+            List<String> schedulerIds = new ArrayList<>();
+            for (Log log : logs) {
+                switch (log.getObjectType()) {
+                    case "scheduler":
+                        schedulerIds.add(log.getObjectId().toString());
+                        break;
+                    case "knowledge-point":
+                        knowledgePointIds.add(log.getObjectId().toString());
+                        break;
+                }
+            }
+            List<KnowledgePoint> knowledgePoints = Resources.getList(em, knowledgePointIds, KnowledgePoint.class);
+            List<String> volumeIds = new ArrayList<>();
+            for (KnowledgePoint knowledgePoint: knowledgePoints) {
+                volumeIds.add(knowledgePoint.getVolumeId().toString());
+            }
+            List<Volume> volumes = Resources.getList(em, volumeIds, Volume.class);
+            List<String> subjectIds = new ArrayList<>();
+            for (Volume volume: volumes) {
+                subjectIds.add(volume.getSubjectId().toString());
+            }
+            List<Scheduler> schedulers = Resources.getList(em, schedulerIds, Scheduler.class);
+            for (Scheduler scheduler: schedulers) {
+                subjectIds.add(scheduler.getSubjectId().toString());
+            }
+            List<Subject> subjects = Resources.getList(em, subjectIds, Subject.class);
+            Date now = new Date();
+            final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
+            List<Map<String, Object>> r = new ArrayList<>();
+            for (Subject subject: subjects) {
+                List<Map<String, Object>> ss = new ArrayList<>();
+                for (Scheduler scheduler: schedulers) {
+                    if (scheduler.getSubjectId().longValue() == subject.getId().longValue()) {
+                        ss.add(Scheduler.convertToMap(scheduler, userId));
+                    }
+                }
+                Map<String, Object> s = Subject.convertToMap(subject);
+                s.put("schedulers", ss);
+                List<Map<String, Object>> vs = new ArrayList<>();
+                for (Volume volume: volumes) {
+                    if (volume.getSubjectId().longValue() == subject.getId().longValue()) {
+                        List<Map<String, Object>> ks = new ArrayList<>();
+                        for (KnowledgePoint knowledgePoint: knowledgePoints) {
+                            if (knowledgePoint.getVolumeId().longValue() == volume.getId().longValue()) {
+                                List<Map<String, Object>> ps = new ArrayList<>();
+                                for (Problem problem: problems) {
+                                    for (KnowledgePointContentMap m: knowledgePointContentMaps) {
+                                        if (problem.getId().longValue() == m.getObjectId().longValue()) {
+                                            if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
+                                                ps.add(Problem.convertToMap(problem, null, null, null, null, null, null));
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, userId, now, yesterday);
+                                km.put("problems", ps);
+                                ks.add(km);
+                            }
+                        }
+                        Map<String, Object> vm = Volume.convertToMap(volume, now, yesterday);
+                        vm.put("knowledgePoints", ks);
+                        vs.add(vm);
+                    }
+                }
+                s.put("volumes", vs);
+                r.add(s);
+            }
+            //{subjects: [], schedulers: [], volumes: [], knowledgePoints: [], problems: []}
+            //[{subject-info, schedulers: [{}, ...], volumes: [{volume-info, knowledgePoints: [{knowledgePoint-info, problems: [{problem-info, standAnswer:[], answer:[]}, ...]}, ...]}, ...]}, {...}]
+        }
+        return result;
+    }
+
     static TransferObject getByTypeAndId(EntityManager em, String type, Long id) {
         TransferObject result = null;
         switch (type) {
