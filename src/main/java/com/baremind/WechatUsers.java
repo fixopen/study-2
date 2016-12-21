@@ -9,6 +9,7 @@ import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -125,25 +126,27 @@ public class WechatUsers {
         }, null);
     }
 
-    @PUT
-    @Path("wechatsolution/{ids}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @DELETE
+    @Path("related/{idStr}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateByIds(@CookieParam("sessionId") String sessionId, @PathParam("ids") String ids) {
+    public Response updateByIds(@CookieParam("sessionId") String sessionId, @PathParam("idStr") String idStr) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             User loginUser = JPAEntry.getLoginUser(sessionId);
-            String[] id=ids.split(",");
-            //split(正则表达式)
-            List list = new ArrayList();
-            for(int i=0;i<id.length;i++){
-                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", Long.parseLong(id[i]));
-                if(loginUser.getId().longValue() == wechatUser.getUserId().longValue()){
+            String[] ids = idStr.split(",");
+            EntityManager em = JPAEntry.getNewEntityManager();
+            em.getTransaction().begin();
+            List<WechatUser> list = new ArrayList<>();
+            for (String id : ids) {
+                WechatUser wechatUser = JPAEntry.getObject(em, WechatUser.class, "id", Long.parseLong(id));
+                if (loginUser.getId().longValue() == wechatUser.getUserId().longValue()) {
                     wechatUser.setUserId(null);
-                    JPAEntry.genericPut(wechatUser);
+                    em.merge(wechatUser);
                     list.add(wechatUser);
                 }
             }
+            em.getTransaction().commit();
+            em.close();
             result = Response.ok(new Gson().toJson(list)).build();
         }
         return result;

@@ -106,7 +106,6 @@ public class Resources {
                 break;
         }
         return result;
-
     }
 
     @GET
