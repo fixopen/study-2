@@ -56,10 +56,7 @@ public class Schedulers {
             Query ldq = em.createQuery(likedQuery);
             final List<Object[]> likedStats = ldq.getResultList();
             List<Comment> comments = Resources.getList(em, "objectId", ids, Comment.class);
-            List<String> commentOwnerIds = new ArrayList<>();
-            for (Comment comment : comments) {
-                commentOwnerIds.add(comment.getUserId().toString());
-            }
+            List<String> commentOwnerIds = comments.stream().map(c -> c.getUserId().toString()).collect(Collectors.toList());
             List<User> commentOwners = Resources.getList(em, commentOwnerIds, User.class);
 
             Map<String, String> orders = new HashMap<>();
