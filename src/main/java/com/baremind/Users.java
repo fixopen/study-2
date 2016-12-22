@@ -270,39 +270,21 @@ public class Users {
             List<Card> cs = JPAEntry.getList(Card.class, cardConditions);
             switch (cs.size()) {
                 case 0:
-                    //Logs.insert(id, "log", logId, "card not exists");
                     result = Response.status(404).build();
                     break;
                 case 1:
-                    //Logs.insert(id, "log", logId, "card exists");
                     Card c = cs.get(0);
                     if (c.getActiveTime() == null) {
-                        //Logs.insert(id, "log", logId, "card success");
                         Date now = new Date();
-                        c.setActiveTime(now);
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(now);
-                        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
-                        Date oneYearAfter = cal.getTime();
-                        c.setEndTime(oneYearAfter);
-                        c.setAmount(5880L);
-                        if (ac.getCardNo().startsWith("03")) {
-                            c.setAmount(1680L);
-                        }
-                        c.setUserId(id);
-                        JPAEntry.genericPut(c);
+                        activeCard(ac, now, user, c);
                         result = Response.ok(c).build();
                     } else {
-                        //Logs.insert(id, "log", logId, "card already active");
                         result = Response.status(405).build();
                     }
                     break;
                 default:
-                    //Logs.insert(id, "log", logId, "card multiple exists");
                     break;
             }
-            //JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", phoneNumber);
-            //Logs.insert(id, "log", logId, "remove validation codes");
         }
         return result;
     }
