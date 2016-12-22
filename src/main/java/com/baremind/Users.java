@@ -127,7 +127,7 @@ public class Users {
             existUser.setUpdateTime(now);
             String site = userData.getSite();
             if (site != null) {
-                existUser.getSite();
+                existUser.setSite(site);
             }
         }
     }
@@ -141,27 +141,29 @@ public class Users {
     }
 
     @PUT
-    @Path("{phone}/{code}")
+    @Path("self-phone/via/{key}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateByphone(@CookieParam("sessionId") String sessionId, @PathParam("phone") String phone, @PathParam("code") String code, User newData) {
+    public Response updateByphone(@CookieParam("sessionId") String sessionId, @PathParam("key") String key, User newData) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             result = Response.status(404).build();
-            Boolean codeOverdue = getCodeOverdue(phone, code);
-            if(codeOverdue == true){
+            Boolean pass = ValidationCodes.validation(newData.getTelephone(), key);
+            if (pass) {
                 result = Impl.updateUserSelf(sessionId, newData, new Updater());
             }
         }
         return result;
     }
 
-
     @PUT
     @Path("self")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateSelf(@CookieParam("sessionId") String sessionId, User newData) {
+        if (newData.getTelephone() != null) {
+            newData.setTelephone(null);
+        }
         return Impl.updateUserSelf(sessionId, newData, new Updater());
     }
 
@@ -329,24 +331,6 @@ public class Users {
         return result;
     }
 
-    public static Boolean getCodeOverdue(String p,String v) {
-        Boolean result = false;
-        Date now = new Date();
-        Map<String, Object> conditions = new HashMap<>();
-        conditions.put("phoneNumber", p);
-        conditions.put("validCode", v);
-        List<ValidationCode> validationCodeList = JPAEntry.getList(ValidationCode.class, conditions);
-        for (int i = 0; i < validationCodeList.size(); i++) {
-            Date sendTime = validationCodeList.get(i).getTimestamp();
-            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                result = true;
-                break;
-            }else{
-                JPAEntry.genericDelete(ValidationCode.class, conditions);
-            }
-        }
-        return result;
-    }
     @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -366,7 +350,7 @@ public class Users {
                 case 1:
                     result = Response.status(410).build();
                     Date now = new Date();
-                    if (getCodeOverdue(ac.getPhoneNumber(),ac.getValidCode()) == true) {
+                    if (ValidationCodes.validation(ac.getPhoneNumber(), ac.getValidCode())) {
                         boolean isPassed = true;
                         User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                         User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
@@ -433,14 +417,8 @@ public class Users {
                                         JPAEntry.genericPut(c);
                                         Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
                                         result = Response.ok(c)
-                                            //.cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                                             .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
                                             .build();
-//                                        Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
-//                                        result = Response.ok(c)
-//                                                //.cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-//                                                .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-//                                                .build();
                                     }
                                     break;
                                 default:
@@ -503,13 +481,13 @@ public class Users {
             String username = "zhibo1";
             String password = "Tch243450";
             Response response = client.target(hostname)
-                    .path("/msg/HttpBatchSendSM")
-                    .queryParam("account", username)
-                    .queryParam("pswd", password)
-                    .queryParam("mobile", phoneNumber)
-                    .queryParam("msg", validInfo)
-                    .queryParam("needstatus", true)
-                    .request("text/plain").get();
+                .path("/msg/HttpBatchSendSM")
+                .queryParam("account", username)
+                .queryParam("pswd", password)
+                .queryParam("mobile", phoneNumber)
+                .queryParam("msg", validInfo)
+                .queryParam("needstatus", true)
+                .request("text/plain").get();
             String responseBody = response.readEntity(String.class);
             if (responseBody.contains("\n")) {
                 String[] lines = responseBody.split("\n");
@@ -699,17 +677,11 @@ public class Users {
         if (result.getStatus() == 202) {
             Long userId = JPAEntry.getSession(sessionId).getUserId();
             List<AnswerRecord> answerRecords = JPAEntry.getList(AnswerRecord.class, "userId", userId);
-            List<String> problemIds = new ArrayList<>();
-            for (AnswerRecord answerRecord : answerRecords) {
-                problemIds.add(answerRecord.getProblemId().toString());
-            }
+            List<String> problemIds = answerRecords.stream().map(answerRecord -> answerRecord.getProblemId().toString()).collect(Collectors.toList());
             EntityManager em = JPAEntry.getEntityManager();
             List<Problem> problems = Resources.getList(em, problemIds, Problem.class);
             List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getList(em, "objectId", problemIds, KnowledgePointContentMap.class);
-            List<String> knowledgePointIds = new ArrayList<>();
-            for (KnowledgePointContentMap m : knowledgePointContentMaps) {
-                knowledgePointIds.add(m.getKnowledgePointId().toString());
-            }
+            List<String> knowledgePointIds = knowledgePointContentMaps.stream().map(m -> m.getKnowledgePointId().toString()).collect(Collectors.toList());
             List<String> schedulerIds = new ArrayList<>();
             Map<String, Object> condition = new HashMap<>();
             condition.put("userId", userId);
@@ -726,26 +698,18 @@ public class Users {
                 }
             }
             List<KnowledgePoint> knowledgePoints = Resources.getList(em, knowledgePointIds, KnowledgePoint.class);
-            List<String> volumeIds = new ArrayList<>();
-            for (KnowledgePoint knowledgePoint: knowledgePoints) {
-                volumeIds.add(knowledgePoint.getVolumeId().toString());
-            }
+            List<String> volumeIds = knowledgePoints.stream().map(knowledgePoint -> knowledgePoint.getVolumeId().toString()).collect(Collectors.toList());
             List<Volume> volumes = Resources.getList(em, volumeIds, Volume.class);
-            List<String> subjectIds = new ArrayList<>();
-            for (Volume volume: volumes) {
-                subjectIds.add(volume.getSubjectId().toString());
-            }
+            List<String> subjectIds = volumes.stream().map(volume -> volume.getSubjectId().toString()).collect(Collectors.toList());
             List<Scheduler> schedulers = Resources.getList(em, schedulerIds, Scheduler.class);
-            for (Scheduler scheduler: schedulers) {
-                subjectIds.add(scheduler.getSubjectId().toString());
-            }
+            subjectIds.addAll(schedulers.stream().map(scheduler -> scheduler.getSubjectId().toString()).collect(Collectors.toList()));
             List<Subject> subjects = Resources.getList(em, subjectIds, Subject.class);
             Date now = new Date();
             final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
             List<Map<String, Object>> r = new ArrayList<>();
-            for (Subject subject: subjects) {
+            for (Subject subject : subjects) {
                 List<Map<String, Object>> ss = new ArrayList<>();
-                for (Scheduler scheduler: schedulers) {
+                for (Scheduler scheduler : schedulers) {
                     if (scheduler.getSubjectId().longValue() == subject.getId().longValue()) {
                         ss.add(Scheduler.convertToMap(scheduler, userId));
                     }
@@ -753,20 +717,16 @@ public class Users {
                 Map<String, Object> s = Subject.convertToMap(subject);
                 s.put("schedulers", ss);
                 List<Map<String, Object>> vs = new ArrayList<>();
-                for (Volume volume: volumes) {
-                    if (volume.getSubjectId().longValue() == subject.getId().longValue()) {
-                        List<Map<String, Object>> ks = new ArrayList<>();
-                        for (KnowledgePoint knowledgePoint: knowledgePoints) {
-                            if (knowledgePoint.getVolumeId().longValue() == volume.getId().longValue()) {
-                                List<Map<String, Object>> ps = new ArrayList<>();
-                                for (Problem problem: problems) {
-                                    for (KnowledgePointContentMap m: knowledgePointContentMaps) {
-                                        if (problem.getId().longValue() == m.getObjectId().longValue()) {
-                                            if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
-                                                ps.add(Problem.convertToMap(problem, null, null, null, null, null, null));
-                                                break;
-                                            }
-                                        }
+                volumes.stream().filter(volume -> volume.getSubjectId().longValue() == subject.getId().longValue()).forEach(volume -> {
+                    List<Map<String, Object>> ks = new ArrayList<>();
+                    knowledgePoints.stream().filter(knowledgePoint -> knowledgePoint.getVolumeId().longValue() == volume.getId().longValue()).forEach(knowledgePoint -> {
+                        List<Map<String, Object>> ps = new ArrayList<>();
+                        for (Problem problem : problems) {
+                            for (KnowledgePointContentMap m : knowledgePointContentMaps) {
+                                if (problem.getId().longValue() == m.getObjectId().longValue()) {
+                                    if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
+                                        ps.add(Problem.convertToMap(problem, answerRecords));
+                                        break;
                                     }
                                 }
                                 Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, userId, now, yesterday);
@@ -777,8 +737,8 @@ public class Users {
                         Map<String, Object> vm = Volume.convertToMap(volume, now, yesterday);
                         vm.put("knowledgePoints", ks);
                         vs.add(vm);
-                    }
-                }
+                    });
+                });
                 s.put("volumes", vs);
                 r.add(s);
             }
