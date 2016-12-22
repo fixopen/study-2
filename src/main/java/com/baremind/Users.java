@@ -349,43 +349,11 @@ public class Users {
                     break;
                 case 2: //ok
                     result = Response.status(403).build();
-                    boolean isPassed = true;
                     Date now = new Date();
                     User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                    User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+                    boolean isPassed = checkUser(user, wechatUser, ac.getPhoneNumber(), now);
                     if (user == null) {
-                        if (linkedUser != null) {
-                            if (linkedUser.getTelephone() == null) {
-                                linkedUser.setTelephone(ac.getPassword());
-                                JPAEntry.genericPut(linkedUser);
-                                user = linkedUser;
-                            } else {
-                                isPassed = false;
-                            }
-                        } else {
-                            user = new User();
-                            user.setId(IdGenerator.getNewId());
-                            user.setTelephone(ac.getPhoneNumber());
-                            user.setLoginName(ac.getPhoneNumber());
-                            user.setCreateTime(now);
-                            user.setUpdateTime(now);
-                            user.setName(wechatUser.getNickname());
-                            user.setSex(wechatUser.getSex());
-                            user.setAmount(0L);
-                            user.setHead(wechatUser.getHead());
-                            wechatUser.setUserId(user.getId());
-                            JPAEntry.genericPost(user);
-                            JPAEntry.genericPut(wechatUser);
-                        }
-                    } else {
-                        if (linkedUser == null) {
-                            wechatUser.setUserId(user.getId());
-                            JPAEntry.genericPut(wechatUser);
-                        } else {
-                            if (user.getId().longValue() != wechatUser.getUserId().longValue()) {
-                                isPassed = false;
-                            }
-                        }
+                        user = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
                     }
 
                     if (isPassed) {
@@ -401,18 +369,7 @@ public class Users {
                                 result = Response.status(405).build();
                                 Card c = cs.get(0);
                                 if (c.getActiveTime() == null) {
-                                    c.setActiveTime(now);
-                                    Calendar cal = Calendar.getInstance();
-                                    cal.setTime(now);
-                                    cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
-                                    Date oneYearAfter = cal.getTime();
-                                    c.setEndTime(oneYearAfter);
-                                    c.setAmount(5880L);
-                                    if (ac.getCardNo().startsWith("03")) {
-                                        c.setAmount(1680L);
-                                    }
-                                    c.setUserId(user.getId());
-                                    JPAEntry.genericPut(c);
+                                    activeCard(ac, now, user, c);
                                     Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
                                     result = Response.ok(c)
                                         .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
@@ -431,6 +388,60 @@ public class Users {
             }
         }
         return result;
+    }
+
+    private void activeCard(ActiveCard ac, Date now, User user, Card c) {
+        c.setActiveTime(now);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+        Date oneYearAfter = cal.getTime();
+        c.setEndTime(oneYearAfter);
+        c.setAmount(5880L);
+        if (ac.getCardNo().startsWith("03")) {
+            c.setAmount(1680L);
+        }
+        c.setUserId(user.getId());
+        JPAEntry.genericPut(c);
+    }
+
+    private boolean checkUser(User user, WechatUser wechatUser, String phoneNumber, Date now) {
+        boolean isPassed = true;
+        User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+        if (user == null) {
+            if (linkedUser != null) {
+                if (linkedUser.getTelephone() == null) {
+                    linkedUser.setTelephone(phoneNumber);
+                    JPAEntry.genericPut(linkedUser);
+                } else {
+                    isPassed = false;
+                }
+            } else {
+                user = new User();
+                user.setId(IdGenerator.getNewId());
+                user.setTelephone(phoneNumber);
+                user.setLoginName(phoneNumber);
+                user.setCreateTime(now);
+                user.setUpdateTime(now);
+                user.setName(wechatUser.getNickname());
+                user.setSex(wechatUser.getSex());
+                user.setAmount(0L);
+                user.setHead(wechatUser.getHead());
+                wechatUser.setUserId(user.getId());
+                JPAEntry.genericPost(user);
+                JPAEntry.genericPut(wechatUser);
+            }
+        } else {
+            if (linkedUser == null) {
+                wechatUser.setUserId(user.getId());
+                JPAEntry.genericPut(wechatUser);
+            } else {
+                if (user.getId().longValue() != wechatUser.getUserId().longValue()) {
+                    isPassed = false;
+                }
+            }
+        }
+        return isPassed;
     }
 
     private static class Sms {
