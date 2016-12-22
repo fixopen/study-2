@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import static com.baremind.Users.getCodeOverdue;
+import static com.baremind.ValidationCodes.validation;
 
 @Path("sessions")
 public class Sessions {
@@ -178,7 +178,7 @@ public class Sessions {
 
                     if (!validationCodes.isEmpty()) {
                         result = Response.status(405).build();
-                        if (getCodeOverdue(loginInfo.getInfo(), loginInfo.getKey()) == true) {
+                        if (validation(loginInfo.getInfo(), loginInfo.getKey()) == true) {
                             user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
                         }
                         JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", loginInfo.getInfo());
