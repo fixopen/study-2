@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 import static com.baremind.ValidationCodes.validation;
@@ -146,7 +147,7 @@ public class Sessions {
         if (count != null) {
             if (Long.parseLong(count) > 5L) {
                 String code = loginInfo.getCode();
-                if (code == "") {
+                if (code == null || Objects.equals(code, "")) {
                     isPass = false;
                     result = Response.status(410).build();
                 } else {
