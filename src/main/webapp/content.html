@@ -1579,10 +1579,10 @@
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             success: function (e) {
-                //  alert(JSON.stringify(e))
+                  alert(JSON.stringify(e))
             },
             error: function (e) {
-                // alert(JSON.stringify(e))
+                 alert(JSON.stringify(e))
             }
         })
     }
@@ -2309,14 +2309,16 @@
                 var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
                     toggleButton.addEventListener('click', function (e) {
                         $(commentContentPanel).toggle()
-                    }, false)
+                    }, false);
                     submitButton.addEventListener('click', function (e) {
                         state.knowledgePoint.submit(e.target, commentContent, function (c) {
-                            state.knowledgePoint.value.contents.comments.push(c)
-                            commentsContainer.innerHTML = ''
+                            c.likeCount = 0;
+                            c.liked = false;
+                            state.knowledgePoint.value.contents.comments.push(c);
+                            commentsContainer.innerHTML = '';
                             proc({
                                 data: state.knowledgePoint.value.contents.comments,
-                                container: comments,
+                                container: commentsContainer,
                                 templateId: 'comment-unlike-template'
                             })
                         })
