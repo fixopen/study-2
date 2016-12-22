@@ -14,11 +14,11 @@ import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
-import static com.baremind.Users.getCodeOverdue;
+import static com.baremind.ValidationCodes.validation;
 
 @Path("sessions")
 public class Sessions {
@@ -143,21 +143,20 @@ public class Sessions {
     private Response loginImpl(String ipAddr, LoginInfo loginInfo) {
         Response result = Response.status(404).build();
         boolean isPass = true;
-        ValidationCode loginFailureCount = JPAEntry.getObject(ValidationCode.class, "phoneNumber", ipAddr + "-count");
-        if (loginFailureCount != null) {
-            String count = loginFailureCount.getValidCode();
+        String count = ValidationCodes.get(ipAddr + "-count");
+        if (count != null) {
             if (Long.parseLong(count) > 5L) {
                 String code = loginInfo.getCode();
-                if (code == "") {
+                if (code == null || Objects.equals(code, "")) {
                     isPass = false;
                     result = Response.status(410).build();
                 } else {
-                    ValidationCode pictureValidationCode = JPAEntry.getObject(ValidationCode.class, "phoneNumber", ipAddr);
-                    if (pictureValidationCode == null) {
+                    String getCode = ValidationCodes.get(ipAddr);
+                    if (getCode == null) {
                         isPass = false;
                         result = Response.status(408).build();
                     } else {
-                        if (!pictureValidationCode.getValidCode().equals(code)) {
+                        if (!getCode.equals(code)) {
                             isPass = false;
                             result = Response.status(415).build();
                         }
@@ -172,16 +171,17 @@ public class Sessions {
             Map<String, Object> conditions = new HashMap<>();
             switch (loginInfo.getType()) {
                 case "validationCode":
-                    conditions.put("phoneNumber", loginInfo.getInfo());
-                    conditions.put("validCode", loginInfo.getKey());
-                    List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, conditions);
-
-                    if (!validationCodes.isEmpty()) {
-                        result = Response.status(405).build();
-                        if (getCodeOverdue(loginInfo.getInfo(), loginInfo.getKey()) == true) {
+                    switch (validation(loginInfo.getInfo(), loginInfo.getKey())) {
+                        case 0:
+                            break;
+                        case 1:
+                            result = Response.status(405).build();
+                            break;
+                        case 2:
                             user = JPAEntry.getObject(User.class, "telephone", loginInfo.getInfo());
-                        }
-                        JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", loginInfo.getInfo());
+                            break;
+                        default:
+                            break;
                     }
                     if (user == null) {
                         //WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", loginInfo.getWechatUserId());

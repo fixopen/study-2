@@ -9,10 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by lenovo on 2016/8/18.
@@ -231,7 +229,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.discount = discount;
     }
 
-    public static Map<String, Object> convertToMap(Scheduler scheduler, Date now, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, List<Comment> comments, boolean isVIP) {
+    public static Map<String, Object> convertToMap(Scheduler scheduler, Date now, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, List<Comment> comments, List<User> commentOwners, boolean isVIP) {
         if (scheduler.getEndTime().before(now) && (scheduler.getContentLink() == null || scheduler.getContentLink().equals(""))) {
             return null;
         }
@@ -268,7 +266,9 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         //schedulerMap.put("price", scheduler.getAmount());
         schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
         schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
-        schedulerMap.put("comments", Resources.findItems(comments, c -> c.getObjectId() == scheduler.getId()));
+        List<Comment> schedulerComments = Resources.findItems(comments, c -> c.getObjectId() == scheduler.getId());
+        List<Map<String, Object>> schedulerCommentMaps = schedulerComments.stream().map(item -> Comment.convertToMap(item, commentOwners)).collect(Collectors.toList());
+        schedulerMap.put("comments", schedulerCommentMaps);
         schedulerMap.put("liked", Resources.findUntypedItem(likedCount, scheduler.getId()) != 0L);
         if (isVIP) {
             schedulerMap.put("contentLink", scheduler.getContentLink());

@@ -127,7 +127,7 @@ public class Users {
             existUser.setUpdateTime(now);
             String site = userData.getSite();
             if (site != null) {
-                existUser.getSite();
+                existUser.setSite(site);
             }
         }
     }
@@ -141,27 +141,30 @@ public class Users {
     }
 
     @PUT
-    @Path("{phone}/{code}")
+    @Path("self-phone/via/{key}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateByphone(@CookieParam("sessionId") String sessionId, @PathParam("phone") String phone, @PathParam("code") String code, User newData) {
+    public Response updateSelfPhone(@CookieParam("sessionId") String sessionId, @PathParam("key") String key, User newData) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             result = Response.status(404).build();
-            Boolean codeOverdue = getCodeOverdue(phone, code);
-            if(codeOverdue == true){
-                result = Impl.updateUserSelf(sessionId, newData, new Updater());
+            switch (ValidationCodes.validation(newData.getTelephone(), key)) {
+                case 2:
+                    result = Impl.updateUserSelf(sessionId, newData, new Updater());
+                    break;
             }
         }
         return result;
     }
-
 
     @PUT
     @Path("self")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateSelf(@CookieParam("sessionId") String sessionId, User newData) {
+        if (newData.getTelephone() != null) {
+            newData.setTelephone(null);
+        }
         return Impl.updateUserSelf(sessionId, newData, new Updater());
     }
 
@@ -267,39 +270,21 @@ public class Users {
             List<Card> cs = JPAEntry.getList(Card.class, cardConditions);
             switch (cs.size()) {
                 case 0:
-                    //Logs.insert(id, "log", logId, "card not exists");
                     result = Response.status(404).build();
                     break;
                 case 1:
-                    //Logs.insert(id, "log", logId, "card exists");
                     Card c = cs.get(0);
                     if (c.getActiveTime() == null) {
-                        //Logs.insert(id, "log", logId, "card success");
                         Date now = new Date();
-                        c.setActiveTime(now);
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(now);
-                        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
-                        Date oneYearAfter = cal.getTime();
-                        c.setEndTime(oneYearAfter);
-                        c.setAmount(5880L);
-                        if (ac.getCardNo().startsWith("03")) {
-                            c.setAmount(1680L);
-                        }
-                        c.setUserId(id);
-                        JPAEntry.genericPut(c);
+                        activeCard(ac, now, user, c);
                         result = Response.ok(c).build();
                     } else {
-                        //Logs.insert(id, "log", logId, "card already active");
                         result = Response.status(405).build();
                     }
                     break;
                 default:
-                    //Logs.insert(id, "log", logId, "card multiple exists");
                     break;
             }
-            //JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", phoneNumber);
-            //Logs.insert(id, "log", logId, "remove validation codes");
         }
         return result;
     }
@@ -329,24 +314,6 @@ public class Users {
         return result;
     }
 
-    public static Boolean getCodeOverdue(String p,String v) {
-        Boolean result = false;
-        Date now = new Date();
-        Map<String, Object> conditions = new HashMap<>();
-        conditions.put("phoneNumber", p);
-        conditions.put("validCode", v);
-        List<ValidationCode> validationCodeList = JPAEntry.getList(ValidationCode.class, conditions);
-        for (int i = 0; i < validationCodeList.size(); i++) {
-            Date sendTime = validationCodeList.get(i).getTimestamp();
-            if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                result = true;
-                break;
-            }else{
-                JPAEntry.genericDelete(ValidationCode.class, conditions);
-            }
-        }
-        return result;
-    }
     @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -355,98 +322,45 @@ public class Users {
         Response result = Response.status(412).build();
         WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", ac.getWechatUserId());
         if (wechatUser != null) {
-            Map<String, Object> validationCodeConditions = new HashMap<>();
-            validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
-            validationCodeConditions.put("validCode", ac.getValidCode());
-            List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
-            switch (validationCodes.size()) {
-                case 0:
+            switch (ValidationCodes.validation(ac.getPhoneNumber(), ac.getValidCode())) {
+                case 0: //not found
                     result = Response.status(401).build();
                     break;
-                case 1:
+                case 1: //timeout
                     result = Response.status(410).build();
+                    break;
+                case 2: //ok
+                    result = Response.status(403).build();
                     Date now = new Date();
-                    if (getCodeOverdue(ac.getPhoneNumber(),ac.getValidCode()) == true) {
-                        boolean isPassed = true;
-                        User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                        User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
-                        if (user == null) {
-                            if (linkedUser != null) {
-                                if (linkedUser.getTelephone() == null) {
-                                    linkedUser.setTelephone(ac.getPassword());
-                                    JPAEntry.genericPut(linkedUser);
-                                    user = linkedUser;
-                                } else {
-                                    isPassed = false;
-                                }
-                            } else {
-                                user = new User();
-                                user.setId(IdGenerator.getNewId());
-                                user.setTelephone(ac.getPhoneNumber());
-                                user.setLoginName(ac.getPhoneNumber());
-                                user.setCreateTime(now);
-                                user.setUpdateTime(now);
-                                user.setName(wechatUser.getNickname());
-                                user.setSex(wechatUser.getSex());
-                                user.setAmount(0L);
-                                user.setHead(wechatUser.getHead());
-                                wechatUser.setUserId(user.getId());
-                                JPAEntry.genericPost(user);
-                                JPAEntry.genericPut(wechatUser);
-                            }
-                        } else {
-                            if (linkedUser == null) {
-                                wechatUser.setUserId(user.getId());
-                                JPAEntry.genericPut(wechatUser);
-                            } else {
-                                if (user.getId() != wechatUser.getUserId()) {
-                                    isPassed = false;
-                                }
-                            }
-                        }
+                    User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
+                    boolean isPassed = checkUser(user, wechatUser, ac.getPhoneNumber(), now);
+                    if (user == null) {
+                        user = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+                    }
 
-                        result = Response.status(403).build();
-                        if (isPassed) {
-                            Map<String, Object> condition = new HashMap<>();
-                            condition.put("no", ac.getCardNo());
-                            condition.put("password", ac.getPassword());
-                            List<Card> cs = JPAEntry.getList(Card.class, condition);
-                            switch (cs.size()) {
-                                case 0:
-                                    result = Response.status(404).build();
-                                    break;
-                                case 1:
-                                    result = Response.status(405).build();
-                                    Card c = cs.get(0);
-                                    if (c.getActiveTime() == null) {
-                                        c.setActiveTime(now);
-                                        Calendar cal = Calendar.getInstance();
-                                        cal.setTime(now);
-                                        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
-                                        Date oneYearAfter = cal.getTime();
-                                        c.setEndTime(oneYearAfter);
-                                        c.setAmount(5880L);
-                                        if (ac.getCardNo().startsWith("03")) {
-                                            c.setAmount(1680L);
-                                        }
-                                        c.setUserId(user.getId());
-                                        JPAEntry.genericPut(c);
-                                        Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
-                                        result = Response.ok(c)
-                                            //.cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .build();
-//                                        Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
-//                                        result = Response.ok(c)
-//                                                //.cookie(new NewCookie("userId", user.getId().toString(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-//                                                .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-//                                                .build();
-                                    }
-                                    break;
-                                default:
-                                    result = Response.status(501).build();
-                                    break;
-                            }
+                    if (isPassed) {
+                        Map<String, Object> condition = new HashMap<>();
+                        condition.put("no", ac.getCardNo());
+                        condition.put("password", ac.getPassword());
+                        List<Card> cs = JPAEntry.getList(Card.class, condition);
+                        switch (cs.size()) {
+                            case 0:
+                                result = Response.status(404).build();
+                                break;
+                            case 1:
+                                result = Response.status(405).build();
+                                Card c = cs.get(0);
+                                if (c.getActiveTime() == null) {
+                                    activeCard(ac, now, user, c);
+                                    Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
+                                    result = Response.ok(c)
+                                        .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .build();
+                                }
+                                break;
+                            default:
+                                result = Response.status(501).build();
+                                break;
                         }
                     }
                     break;
@@ -456,6 +370,60 @@ public class Users {
             }
         }
         return result;
+    }
+
+    private void activeCard(ActiveCard ac, Date now, User user, Card c) {
+        c.setActiveTime(now);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+        Date oneYearAfter = cal.getTime();
+        c.setEndTime(oneYearAfter);
+        c.setAmount(5880L);
+        if (ac.getCardNo().startsWith("03")) {
+            c.setAmount(1680L);
+        }
+        c.setUserId(user.getId());
+        JPAEntry.genericPut(c);
+    }
+
+    private boolean checkUser(User user, WechatUser wechatUser, String phoneNumber, Date now) {
+        boolean isPassed = true;
+        User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+        if (user == null) {
+            if (linkedUser != null) {
+                if (linkedUser.getTelephone() == null) {
+                    linkedUser.setTelephone(phoneNumber);
+                    JPAEntry.genericPut(linkedUser);
+                } else {
+                    isPassed = false;
+                }
+            } else {
+                user = new User();
+                user.setId(IdGenerator.getNewId());
+                user.setTelephone(phoneNumber);
+                user.setLoginName(phoneNumber);
+                user.setCreateTime(now);
+                user.setUpdateTime(now);
+                user.setName(wechatUser.getNickname());
+                user.setSex(wechatUser.getSex());
+                user.setAmount(0L);
+                user.setHead(wechatUser.getHead());
+                wechatUser.setUserId(user.getId());
+                JPAEntry.genericPost(user);
+                JPAEntry.genericPut(wechatUser);
+            }
+        } else {
+            if (linkedUser == null) {
+                wechatUser.setUserId(user.getId());
+                JPAEntry.genericPut(wechatUser);
+            } else {
+                if (user.getId().longValue() != wechatUser.getUserId().longValue()) {
+                    isPassed = false;
+                }
+            }
+        }
+        return isPassed;
     }
 
     private static class Sms {
@@ -503,13 +471,13 @@ public class Users {
             String username = "zhibo1";
             String password = "Tch243450";
             Response response = client.target(hostname)
-                    .path("/msg/HttpBatchSendSM")
-                    .queryParam("account", username)
-                    .queryParam("pswd", password)
-                    .queryParam("mobile", phoneNumber)
-                    .queryParam("msg", validInfo)
-                    .queryParam("needstatus", true)
-                    .request("text/plain").get();
+                .path("/msg/HttpBatchSendSM")
+                .queryParam("account", username)
+                .queryParam("pswd", password)
+                .queryParam("mobile", phoneNumber)
+                .queryParam("msg", validInfo)
+                .queryParam("needstatus", true)
+                .request("text/plain").get();
             String responseBody = response.readEntity(String.class);
             if (responseBody.contains("\n")) {
                 String[] lines = responseBody.split("\n");
@@ -579,6 +547,7 @@ public class Users {
             //http://pushMoUrl?receiver=admin&pswd=12345&moTime=1208212205&mobile=13800210021&msg=hello&destcode=10657109012345
             return null;
         }
+
     }
 
     static boolean isVIP(User user) {
@@ -698,14 +667,12 @@ public class Users {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             Long userId = JPAEntry.getSession(sessionId).getUserId();
-            Gson gson1 = new Gson();
             List<AnswerRecord> answerRecords = JPAEntry.getList(AnswerRecord.class, "userId", userId);
             List<String> problemIds = answerRecords.stream().map(answerRecord -> answerRecord.getProblemId().toString()).collect(Collectors.toList());
             EntityManager em = JPAEntry.getEntityManager();
             List<Problem> problems = Resources.getList(em, problemIds, Problem.class);
             List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getList(em, "objectId", problemIds, KnowledgePointContentMap.class);
             List<String> knowledgePointIds = knowledgePointContentMaps.stream().map(m -> m.getKnowledgePointId().toString()).collect(Collectors.toList());
-
             List<String> schedulerIds = new ArrayList<>();
             Map<String, Object> condition = new HashMap<>();
             condition.put("userId", userId);
@@ -731,8 +698,13 @@ public class Users {
             Date now = new Date();
             final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
             List<Map<String, Object>> r = new ArrayList<>();
-            for (Subject subject: subjects) {
-                List<Map<String, Object>> ss = schedulers.stream().filter(scheduler -> scheduler.getSubjectId().longValue() == subject.getId().longValue()).map(scheduler -> Scheduler.convertToMap(scheduler, userId)).collect(Collectors.toList());
+            for (Subject subject : subjects) {
+                List<Map<String, Object>> ss = new ArrayList<>();
+                for (Scheduler scheduler : schedulers) {
+                    if (scheduler.getSubjectId().longValue() == subject.getId().longValue()) {
+                        ss.add(Scheduler.convertToMap(scheduler, userId));
+                    }
+                }
                 Map<String, Object> s = Subject.convertToMap(subject);
                 s.put("schedulers", ss);
                 List<Map<String, Object>> vs = new ArrayList<>();
@@ -744,25 +716,23 @@ public class Users {
                             for (KnowledgePointContentMap m : knowledgePointContentMaps) {
                                 if (problem.getId().longValue() == m.getObjectId().longValue()) {
                                     if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
-                                        ps.add(Problem.convertToMap(problem,answerRecords));
+                                        ps.add(Problem.convertToMap(problem, answerRecords));
                                         break;
                                     }
                                 }
+                                Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, userId, now, yesterday);
+                                km.put("problems", ps);
+                                ks.add(km);
                             }
                         }
-                        Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, logs,userId);
-                        km.put("problems", ps);
-                        ks.add(km);
+                        Map<String, Object> vm = Volume.convertToMap(volume, now, yesterday);
+                        vm.put("knowledgePoints", ks);
+                        vs.add(vm);
                     });
-                    Map<String, Object> vm = Volume.convertToMap(volume);
-                    vm.put("knowledgePoints", ks);
-                    vs.add(vm);
                 });
                 s.put("volumes", vs);
                 r.add(s);
             }
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            result = Response.ok(gson.toJson(r)).build();
             //{subjects: [], schedulers: [], volumes: [], knowledgePoints: [], problems: []}
             //[{subject-info, schedulers: [{}, ...], volumes: [{volume-info, knowledgePoints: [{knowledgePoint-info, problems: [{problem-info, standAnswer:[], answer:[]}, ...]}, ...]}, ...]}, {...}]
         }

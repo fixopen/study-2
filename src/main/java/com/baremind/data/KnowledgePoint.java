@@ -377,7 +377,9 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         conditions.put("objectType", "knowledge-point");
         conditions.put("objectId", id);
         List<Comment> comments = JPAEntry.getList(Comment.class, conditions);
-        List<Map<String, Object>> commentMaps = comments.stream().map(Comment::convertToMap).collect(Collectors.toList());
+        List<String> ownerIds = comments.stream().map(c -> c.getUserId().toString()).collect(Collectors.toList());
+        List<User> owners = Resources.getList(em, ownerIds, User.class);
+        List<Map<String, Object>> commentMaps = comments.stream().map(c -> Comment.convertToMap(c, owners)).collect(Collectors.toList());
         totalResult.put("comments", commentMaps);
         return totalResult;
     }
