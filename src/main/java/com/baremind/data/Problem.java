@@ -133,13 +133,8 @@ public class Problem implements com.baremind.data.Entity {
         List<Map<String, Object>> poms = problemOptions.stream().map(option -> ProblemOption.convertToMap(option, finalImageList)).collect(Collectors.toList());
         pm.put("options", poms);
         pm.put("standardAnswers", problemStandardAnswers);
-        List a = new ArrayList();
+        List a = answerRecords.stream().filter(answerRecord -> answerRecord.getProblemId().longValue() == problem.getId().longValue()).map(AnswerRecord::getIndex).collect(Collectors.toList());
 
-        for (AnswerRecord answerRecord:answerRecords) {
-            if(answerRecord.getProblemId().longValue() == problem.getId().longValue()){
-                a.add(answerRecord.getIndex());
-            }
-        }
         pm.put("answerRecords", a);
         pm.put("name", problem.getName());
         if (problem.getImageId() != null) {
