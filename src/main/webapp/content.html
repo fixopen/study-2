@@ -699,7 +699,7 @@
 </template>
 <template id="strongest-brain-template">
     <li class="mld_Ulli">
-        <div class="addimg" data-type="${type}">${title}</div>
+        <div class="addimg" data-type="${type}">${name}</div>
         <img src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
         <div class="baoBtn" data-id="${id}">
@@ -711,7 +711,7 @@
 </template>
 <template id="pk-template">
     <li class="mld_Ulli">
-        <div>${title}</div>
+        <div>${name}</div>
         <img class="ceshi_ti1" src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
     </li>
@@ -2154,7 +2154,6 @@
             }
         },
         knowledgePoint: {
-            isChanged: false,
             init: function () {
                 var falseImage = getTemplate('falseImage');
                 var trueImage = getTemplate('trueImage');
@@ -2224,7 +2223,6 @@
                 })
             },
             parentId: 0,
-            isXiao: true,
             changeId: function (knowledgePointId) {
                 if (state.knowledgePoint.parentId != knowledgePointId) {
                     state.knowledgePoint.parentId = knowledgePointId
@@ -2236,6 +2234,10 @@
                         xiao(state.knowledgePoint.value.id, 'knowledge-point');
                         state.knowledgePoint.show()
                     }
+                }
+                if (state.knowledgePoint.parentId = knowledgePointId) {
+                    xiao(state.knowledgePoint.value.id, 'knowledge-point');
+                    state.knowledgePoint.show()
                 }
             },
             value: null,
@@ -2380,10 +2382,6 @@
                 switch (state.volumes.parentId) {
                     case 1:
                     case "1":
-//                        if (state.knowledgePoint.isXiao) {
-//                            xiao(state.knowledgePoint.value.id, 'knowledge-point');
-//                            state.knowledgePoint.isXiao = false
-//                        }
 
                         proc({
                             containerId: 'knowledgePoint',
@@ -2464,8 +2462,6 @@
                             case 'normalNewUnlike':
                             case 'normalOldLike':
                             case 'normalOldUnlike':
-
-                                //  xiao(state.knowledgePoint.value.id, 'knowledge-point');
 
                                 proc({
                                     containerId: 'knowledgePoint',
@@ -2572,7 +2568,6 @@
                             case 'pkNewUnlike':
                             case 'pkOldLike':
                             case 'pkOldUnlike':
-                                //  xiao(state.knowledgePoint.value.id, 'knowledge-point');
 
                                 proc({
                                     containerId: 'knowledgePoint',
@@ -2629,7 +2624,6 @@
                         break
                     case 3:
                     case "3":
-                        //  xiao(state.knowledgePoint.value.id, 'knowledge-point');
 
                         proc({
                             containerId: 'knowledgePoint',
@@ -2675,7 +2669,6 @@
                                 {type: 'image', templateId: 'english-content-template'},
                             ]
                         });
-
 
                         //  interaction-likes
                         var container = state.knowledgePoint.interaction;
@@ -2760,26 +2753,6 @@
                 }
                 return problem
             },
-//            findIndex: function (order) {
-//                var index = null
-//                var finded = false
-//                for (var i = 0; i < state.knowledgePoint.value.contents.problems.length; ++i) {
-//                    for (var j = 0; i < state.knowledgePoint.value.contents.problems[i].options.length; ++i) {
-//                        if (state.knowledgePoint.value.contents.problems[i].options[j].order == order) {
-//                            index = state.knowledgePoint.value.contents.problems[i].options[j].order-1;
-//                            finded = true
-//                            break
-//                        }
-//                        if (finded) {
-//                            break
-//                        }
-//                    }
-//                    if (finded) {
-//                        break
-//                    }
-//                }
-//                return index
-//            },
             compareAnswer: function (index, standardAnswers) {
                 var finded = false
                 for (var j = 0; j < standardAnswers.length; ++j) {

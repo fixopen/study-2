@@ -45,6 +45,7 @@ public class Schedulers {
             List<User> teachers = Resources.getList(em, teacherIds, User.class);
             List<Image> covers = Resources.getList(em, coverIds, Image.class);
 
+            Date now = new Date();
             String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
             Query lq = em.createQuery(likeCountQuery);
             final List<Object[]> likeStats = lq.getResultList();
@@ -54,13 +55,11 @@ public class Schedulers {
             String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginUser(sessionId).getId().toString() + " GROUP BY l.objectId";
             Query ldq = em.createQuery(likedQuery);
             final List<Object[]> likedStats = ldq.getResultList();
-            List comment = new ArrayList();
-            List<Comment> comments = Resources.getListByColumn(em, "objectId", ids, Comment.class);
-            comment.addAll(comments.stream().map(Comment::convertToMap).collect(Collectors.toList()));
+            List<Comment> comments = Resources.getList(em, "objectId", ids, Comment.class);
 
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");
-            result = Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, teachers, covers, likeStats, likedStats, readStats, comment, Users.isVIP(operator)), null);
+            result = Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, now, teachers, covers, likeStats, likedStats, readStats, comments, Users.isVIP(operator)), null);
         }
         return result;
     }

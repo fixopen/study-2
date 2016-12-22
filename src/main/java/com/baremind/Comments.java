@@ -2,9 +2,11 @@ package com.baremind;
 
 import com.baremind.data.Comment;
 import com.baremind.data.Log;
+import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -30,13 +32,18 @@ public class Comments {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, Comment entity) {
-        return Impl.create(sessionId, entity, (comment) -> {
-            comment.setUserId(JPAEntry.getLoginUser(sessionId).getId());
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            entity.setId(IdGenerator.getNewId());
+            entity.setUserId(JPAEntry.getSession(sessionId).getUserId());
             Date now = new Date();
-            comment.setCreateTime(now);
-            comment.setUpdateTime(now);
-            return comment;
-        }, null);
+            entity.setCreateTime(now);
+            entity.setUpdateTime(now);
+            JPAEntry.genericPost(entity);
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(entity)).build();
+        }
+        return result;
     }
 
     @PUT //根据id修改

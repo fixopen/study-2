@@ -799,6 +799,10 @@
                 url: '/api/subjects',
                 success: function (ss) {
                     subjects = ss
+                    for (var i = 0; i < subjects.length; ++i) {
+                        subjects[i].futures = []
+                        subjects[i].playings = []
+                    }
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers',
@@ -835,14 +839,8 @@
                                 if (+item.endTime > now) {
                                     var s = state.getSubjectById(item.subjectId)
                                     if (+item.startTime > now) {
-                                        if (!s.futures) {
-                                            s.futures = []
-                                        }
                                         s.futures.push(item)
                                     } else {
-                                        if (!s.playings) {
-                                            s.playings = []
-                                        }
                                         s.playings.push(item)
                                     }
                                 } else {

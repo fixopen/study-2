@@ -4,17 +4,17 @@ import com.baremind.data.Device;
 import com.baremind.data.Session;
 import com.baremind.data.User;
 import com.baremind.data.WechatUser;
-import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.*;
-
-import static com.baremind.PublicAccounts.fillWechatUserByUserInfo;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Path("wechat-users")
 public class WechatUsers {
@@ -125,26 +125,28 @@ public class WechatUsers {
         }, null);
     }
 
-    @PUT
-    @Path("wechatsolution/{ids}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @DELETE
+    @Path("related/{idStr}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateByIds(@CookieParam("sessionId") String sessionId, @PathParam("ids") String ids) {
+    public Response updateByIds(@CookieParam("sessionId") String sessionId, @PathParam("idStr") String idStr) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             User loginUser = JPAEntry.getLoginUser(sessionId);
-            String[] id=ids.split(",");
-            //split(正则表达式)
-            List list = new ArrayList();
-            for(int i=0;i<id.length;i++){
-                WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", Long.parseLong(id[i]));
-                if(loginUser.getId().longValue() == wechatUser.getUserId().longValue()){
+            String[] ids = idStr.split(",");
+            EntityManager em = JPAEntry.getNewEntityManager();
+            em.getTransaction().begin();
+            List<WechatUser> r = new ArrayList<>();
+            for (String id : ids) {
+                WechatUser wechatUser = JPAEntry.getObject(em, WechatUser.class, "id", Long.parseLong(id));
+                if (loginUser.getId().longValue() == wechatUser.getUserId().longValue()) {
                     wechatUser.setUserId(null);
-                    JPAEntry.genericPut(wechatUser);
-                    list.add(wechatUser);
+                    em.merge(wechatUser);
+                    r.add(wechatUser);
                 }
             }
-            result = Response.ok(new Gson().toJson(list)).build();
+            em.getTransaction().commit();
+            em.close();
+            result = Response.ok(new Gson().toJson(r)).build();
         }
         return result;
     }
@@ -153,36 +155,5 @@ public class WechatUsers {
     @Path("{id}")
     public Response deleteById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         return Impl.deleteById(sessionId, id, WechatUser.class);
-    }
-
-    @GET //根据open-id查询
-    @Path("{openId}/identities")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getIdentitiesByOpenId(@PathParam("openId") String openId) {
-        WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "openId", openId);
-        if (wechatUser == null) {
-            wechatUser = new WechatUser();
-            wechatUser.setId(IdGenerator.getNewId());
-            PublicAccounts.WechatUserInfo userInfo = PublicAccounts.getUserInfo(openId);
-            if (userInfo != null) {
-                fillWechatUserByUserInfo(wechatUser, userInfo);
-                JPAEntry.genericPost(wechatUser);
-            }
-        }
-        return Response.ok(wechatUser).build();
-//        Date now = new Date();
-//        Long userId;
-//        String sessionId;
-//        if (wechatUser == null) {
-//            User user = PublicAccounts.insertUserByOpenId(now, openId);
-//            userId = user.getId();
-//            Session s = PublicAccounts.putSession(now, user.getId(), null); //@@deviceId is temp null
-//            sessionId = s.getIdentity();
-//        } else {
-//            userId = wechatUser.getUserId();
-//            Session s = PublicAccounts.putSession(now, userId, null); //@@deviceId is temp null
-//            sessionId = s.getIdentity();
-//        }
-//        return Response.ok("{\"userId\":" + userId.toString() + ", \"sessionId\": \"" + sessionId + "\"}").build();
     }
 }

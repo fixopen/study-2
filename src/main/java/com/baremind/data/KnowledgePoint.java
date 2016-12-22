@@ -270,7 +270,33 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         List<Video> videoObjects = getList(em, videoIds, Video.class);
 
         List<Problem> problemObjects = getList(em, problemIds, Problem.class);
+        List<String> problemImageIds = new ArrayList<>();
+        List<String> problemVideoIds = new ArrayList<>();
+        for (Problem problem : problemObjects) {
+            if (problem.getImageId() != null) {
+                problemImageIds.add(problem.getImageId().toString());
+            }
+            if (problem.getVideoId() != null) {
+                problemVideoIds.add(problem.getVideoId().toString());
+            }
+        }
+        List<Image> problemImages = getList(em, problemImageIds, Image.class);
+        List<Video> problemVideos = getList(em, problemVideoIds, Video.class);
+        List<String> videoCoverIds = new ArrayList<>();
+        for (Video v : problemVideos) {
+            if (v.getCover() != null) {
+                videoCoverIds.add(v.getCover().toString());
+            }
+        }
+        List<Image> videoCovers = getList(em, videoCoverIds, Image.class);
         List<ProblemOption> problemOptionObjects = Resources.getList(em, "problemId", problemIds, ProblemOption.class);
+        List<String> optionImageIds = new ArrayList<>();
+        for (ProblemOption o : problemOptionObjects) {
+            if (o.getImageId() != null) {
+                optionImageIds.add(o.getImageId().toString());
+            }
+        }
+        List<Image> optionImages = getList(em, optionImageIds, Image.class);
         List<ProblemStandardAnswer> problemStandardAnswerObjects = Resources.getList(em, "problemId", problemIds, ProblemStandardAnswer.class);
 
         List<ImageText> imageTextObject = getList(em, imageTextIds, ImageText.class);
@@ -314,13 +340,11 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
                     }
                     break;
                 case "problem":
-                    if (problemObjects != null || problemOptionObjects != null || problemStandardAnswerObjects != null) {
-                        Problem problemItem = Resources.findItem(problemObjects, (problem) -> problem.getId().longValue() == item.getObjectId().longValue());
-                        List<ProblemOption> problemOptions = Resources.findItems(problemOptionObjects, (ProblemOption problemoption) -> problemoption.getProblemId().longValue() == item.getObjectId().longValue());
-                        List<ProblemStandardAnswer> problemStandardAnswers = Resources.findItems(problemStandardAnswerObjects, (problemstandardanswers) -> problemstandardanswers.getProblemId().longValue() == item.getObjectId().longValue());
-                        Map<String, Object> pm = Problem.convertToMap(problemItem, problemOptions, problemStandardAnswers);
-                        orderedProblems.add(pm);
-                    }
+                    Problem problemItem = Resources.findItem(problemObjects, problem -> problem.getId().longValue() == item.getObjectId().longValue());
+                    List<ProblemOption> problemOptions = Resources.findItems(problemOptionObjects, problemOption -> problemOption.getProblemId().longValue() == item.getObjectId().longValue());
+                    List<ProblemStandardAnswer> problemStandardAnswers = Resources.findItems(problemStandardAnswerObjects, problemStandardAnswer -> problemStandardAnswer.getProblemId().longValue() == item.getObjectId().longValue());
+                    Map<String, Object> pm = Problem.convertToMap(problemItem, problemImages, problemVideos, videoCovers, problemOptions, optionImages, problemStandardAnswers);
+                    orderedProblems.add(pm);
                     break;
                 case "quote":
                     if (quoteObject != null) {
@@ -356,5 +380,21 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         List<Map<String, Object>> commentMaps = comments.stream().map(Comment::convertToMap).collect(Collectors.toList());
         totalResult.put("comments", commentMaps);
         return totalResult;
+    }
+
+    public static Map<String,Object> convertToMap(KnowledgePoint knowledgePoint, List<Log> logs, Long userId) {
+        Map<String, Object> kpm = new HashMap<>();
+        Date createTime = null;
+        kpm.put("id", knowledgePoint.getId());
+        kpm.put("name", knowledgePoint.getName());
+        for (Log l:logs){
+            if(l.getUserId().longValue() == userId.longValue() && l.getObjectId().longValue() == knowledgePoint.getId().longValue()){
+                 createTime = l.getCreateTime();
+                break;
+            }
+        }
+        kpm.put("readTime", createTime);
+        kpm.put("price", knowledgePoint.getPrice());
+        return kpm;
     }
 }

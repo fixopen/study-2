@@ -171,22 +171,5 @@ public class KnowledgePoints {
         }
         return result;
     }
-
-
-    @GET
-    @Path("{id}/contents")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getContentsById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
-        Response result = Impl.validationUser(sessionId);
-        if (result.getStatus() == 202) {
-            result = Response.status(404).build();
-            KnowledgePoint p = JPAEntry.getObject(KnowledgePoint.class, "id", id);
-            if (p != null) {
-                Logs.insert(JPAEntry.getSession(sessionId).getUserId(),"knowledge-point",id,"read");
-                result = Response.ok(new Gson().toJson(p.getContent()), "application/json; charset=utf-8").build();
-            }
-        }
-        return result;
-    }
 }
 

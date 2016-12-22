@@ -24,7 +24,6 @@ public class Volume implements com.baremind.data.Entity {
     @Column(name = "knowledge_point_count")
     private Long knowledgePointCount;
 
-
     @Column(name = "grade")
     private Integer grade;
 
@@ -113,6 +112,16 @@ public class Volume implements com.baremind.data.Entity {
         if (count > 0) {
             vm.put("type", "new");
         }
+        return vm;
+    }
+    public static Map<String, Object> convertToMap(Volume volume) {
+        Map<String, Object> vm = new HashMap<>();
+        vm.put("id", volume.getId());
+        vm.put("order", volume.getOrder());
+        vm.put("subjectId", volume.getSubjectId());
+        vm.put("coverId", volume.getCoverId());
+        vm.put("name", volume.getName());
+        vm.put("knowledgePointCount", volume.getKnowledgePointCount());
         return vm;
     }
 }
