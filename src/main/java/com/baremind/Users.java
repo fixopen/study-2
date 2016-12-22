@@ -333,9 +333,24 @@ public class Users {
                     result = Response.status(403).build();
                     Date now = new Date();
                     User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                    boolean isPassed = checkUser(user, wechatUser, ac.getPhoneNumber(), now);
+                    boolean isPassed = checkUser(user, wechatUser, ac.getPhoneNumber());
                     if (user == null) {
                         user = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+                        if (user == null) {
+                            user = new User();
+                            user.setId(IdGenerator.getNewId());
+                            user.setTelephone(ac.getPhoneNumber());
+                            user.setLoginName(ac.getPhoneNumber());
+                            user.setCreateTime(now);
+                            user.setUpdateTime(now);
+                            user.setName(wechatUser.getNickname());
+                            user.setSex(wechatUser.getSex());
+                            user.setAmount(0L);
+                            user.setHead(wechatUser.getHead());
+                            wechatUser.setUserId(user.getId());
+                            JPAEntry.genericPost(user);
+                            JPAEntry.genericPut(wechatUser);
+                        }
                     }
 
                     if (isPassed) {
@@ -387,7 +402,7 @@ public class Users {
         JPAEntry.genericPut(c);
     }
 
-    private boolean checkUser(User user, WechatUser wechatUser, String phoneNumber, Date now) {
+    private boolean checkUser(User user, WechatUser wechatUser, String phoneNumber) {
         boolean isPassed = true;
         User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
         if (user == null) {
@@ -398,20 +413,6 @@ public class Users {
                 } else {
                     isPassed = false;
                 }
-            } else {
-                user = new User();
-                user.setId(IdGenerator.getNewId());
-                user.setTelephone(phoneNumber);
-                user.setLoginName(phoneNumber);
-                user.setCreateTime(now);
-                user.setUpdateTime(now);
-                user.setName(wechatUser.getNickname());
-                user.setSex(wechatUser.getSex());
-                user.setAmount(0L);
-                user.setHead(wechatUser.getHead());
-                wechatUser.setUserId(user.getId());
-                JPAEntry.genericPost(user);
-                JPAEntry.genericPut(wechatUser);
             }
         } else {
             if (linkedUser == null) {
