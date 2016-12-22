@@ -27,17 +27,27 @@ public class ValidationCodes {
         return Response.ok("{\"state\":\"" + validation(info, key).toString() + "\"}").build();
     }
 
-    static Boolean validation(String p, String v) {
-        Boolean result = false;
+    static String get(String p) {
+        String result = null;
+        ValidationCode validationCode = JPAEntry.getObject(ValidationCode.class, "phoneNumber" , p);
+        if (validationCode != null) {
+            result = validationCode.getValidCode();
+        }
+        return result;
+    }
+
+    static Integer validation(String p, String v) {
+        Integer result = 0;
         Date now = new Date();
         Map<String, Object> conditions = new HashMap<>();
         conditions.put("phoneNumber", p);
         conditions.put("validCode", v);
         List<ValidationCode> validationCodeList = JPAEntry.getList(ValidationCode.class, conditions);
         for (ValidationCode aValidationCodeList : validationCodeList) {
+            result = 1;
             Date sendTime = aValidationCodeList.getTimestamp();
             if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
-                result = true;
+                result = 2;
                 break;
             }
         }
