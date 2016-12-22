@@ -144,13 +144,14 @@ public class Users {
     @Path("self-phone/via/{key}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateByphone(@CookieParam("sessionId") String sessionId, @PathParam("key") String key, User newData) {
+    public Response updateSelfPhone(@CookieParam("sessionId") String sessionId, @PathParam("key") String key, User newData) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             result = Response.status(404).build();
-            Boolean pass = ValidationCodes.validation(newData.getTelephone(), key);
-            if (pass) {
-                result = Impl.updateUserSelf(sessionId, newData, new Updater());
+            switch (ValidationCodes.validation(newData.getTelephone(), key)) {
+                case 2:
+                    result = Impl.updateUserSelf(sessionId, newData, new Updater());
+                    break;
             }
         }
         return result;
@@ -339,92 +340,88 @@ public class Users {
         Response result = Response.status(412).build();
         WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", ac.getWechatUserId());
         if (wechatUser != null) {
-            Map<String, Object> validationCodeConditions = new HashMap<>();
-            validationCodeConditions.put("phoneNumber", ac.getPhoneNumber());
-            validationCodeConditions.put("validCode", ac.getValidCode());
-            List<ValidationCode> validationCodes = JPAEntry.getList(ValidationCode.class, validationCodeConditions);
-            switch (validationCodes.size()) {
-                case 0:
+            switch (ValidationCodes.validation(ac.getPhoneNumber(), ac.getValidCode())) {
+                case 0: //not found
                     result = Response.status(401).build();
                     break;
-                case 1:
+                case 1: //timeout
                     result = Response.status(410).build();
+                    break;
+                case 2: //ok
+                    result = Response.status(403).build();
+                    boolean isPassed = true;
                     Date now = new Date();
-                    if (ValidationCodes.validation(ac.getPhoneNumber(), ac.getValidCode())) {
-                        boolean isPassed = true;
-                        User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                        User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
-                        if (user == null) {
-                            if (linkedUser != null) {
-                                if (linkedUser.getTelephone() == null) {
-                                    linkedUser.setTelephone(ac.getPassword());
-                                    JPAEntry.genericPut(linkedUser);
-                                    user = linkedUser;
-                                } else {
-                                    isPassed = false;
-                                }
+                    User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
+                    User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+                    if (user == null) {
+                        if (linkedUser != null) {
+                            if (linkedUser.getTelephone() == null) {
+                                linkedUser.setTelephone(ac.getPassword());
+                                JPAEntry.genericPut(linkedUser);
+                                user = linkedUser;
                             } else {
-                                user = new User();
-                                user.setId(IdGenerator.getNewId());
-                                user.setTelephone(ac.getPhoneNumber());
-                                user.setLoginName(ac.getPhoneNumber());
-                                user.setCreateTime(now);
-                                user.setUpdateTime(now);
-                                user.setName(wechatUser.getNickname());
-                                user.setSex(wechatUser.getSex());
-                                user.setAmount(0L);
-                                user.setHead(wechatUser.getHead());
-                                wechatUser.setUserId(user.getId());
-                                JPAEntry.genericPost(user);
-                                JPAEntry.genericPut(wechatUser);
+                                isPassed = false;
                             }
                         } else {
-                            if (linkedUser == null) {
-                                wechatUser.setUserId(user.getId());
-                                JPAEntry.genericPut(wechatUser);
-                            } else {
-                                if (user.getId() != wechatUser.getUserId()) {
-                                    isPassed = false;
-                                }
+                            user = new User();
+                            user.setId(IdGenerator.getNewId());
+                            user.setTelephone(ac.getPhoneNumber());
+                            user.setLoginName(ac.getPhoneNumber());
+                            user.setCreateTime(now);
+                            user.setUpdateTime(now);
+                            user.setName(wechatUser.getNickname());
+                            user.setSex(wechatUser.getSex());
+                            user.setAmount(0L);
+                            user.setHead(wechatUser.getHead());
+                            wechatUser.setUserId(user.getId());
+                            JPAEntry.genericPost(user);
+                            JPAEntry.genericPut(wechatUser);
+                        }
+                    } else {
+                        if (linkedUser == null) {
+                            wechatUser.setUserId(user.getId());
+                            JPAEntry.genericPut(wechatUser);
+                        } else {
+                            if (user.getId().longValue() != wechatUser.getUserId().longValue()) {
+                                isPassed = false;
                             }
                         }
+                    }
 
-                        result = Response.status(403).build();
-                        if (isPassed) {
-                            Map<String, Object> condition = new HashMap<>();
-                            condition.put("no", ac.getCardNo());
-                            condition.put("password", ac.getPassword());
-                            List<Card> cs = JPAEntry.getList(Card.class, condition);
-                            switch (cs.size()) {
-                                case 0:
-                                    result = Response.status(404).build();
-                                    break;
-                                case 1:
-                                    result = Response.status(405).build();
-                                    Card c = cs.get(0);
-                                    if (c.getActiveTime() == null) {
-                                        c.setActiveTime(now);
-                                        Calendar cal = Calendar.getInstance();
-                                        cal.setTime(now);
-                                        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
-                                        Date oneYearAfter = cal.getTime();
-                                        c.setEndTime(oneYearAfter);
-                                        c.setAmount(5880L);
-                                        if (ac.getCardNo().startsWith("03")) {
-                                            c.setAmount(1680L);
-                                        }
-                                        c.setUserId(user.getId());
-                                        JPAEntry.genericPut(c);
-                                        Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
-                                        result = Response.ok(c)
-                                            .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
-                                            .build();
+                    if (isPassed) {
+                        Map<String, Object> condition = new HashMap<>();
+                        condition.put("no", ac.getCardNo());
+                        condition.put("password", ac.getPassword());
+                        List<Card> cs = JPAEntry.getList(Card.class, condition);
+                        switch (cs.size()) {
+                            case 0:
+                                result = Response.status(404).build();
+                                break;
+                            case 1:
+                                result = Response.status(405).build();
+                                Card c = cs.get(0);
+                                if (c.getActiveTime() == null) {
+                                    c.setActiveTime(now);
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTime(now);
+                                    cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+                                    Date oneYearAfter = cal.getTime();
+                                    c.setEndTime(oneYearAfter);
+                                    c.setAmount(5880L);
+                                    if (ac.getCardNo().startsWith("03")) {
+                                        c.setAmount(1680L);
                                     }
-                                    break;
-                                default:
-                                    result = Response.status(501).build();
-                                    break;
-                            }
+                                    c.setUserId(user.getId());
+                                    JPAEntry.genericPut(c);
+                                    Session s = PublicAccounts.putSession(new Date(), user.getId(), 0L); //@@deviceId is temp zero
+                                    result = Response.ok(c)
+                                        .cookie(new NewCookie("sessionId", s.getIdentity(), "/api", null, null, NewCookie.DEFAULT_MAX_AGE, false))
+                                        .build();
+                                }
+                                break;
+                            default:
+                                result = Response.status(501).build();
+                                break;
                         }
                     }
                     break;
@@ -557,6 +554,7 @@ public class Users {
             //http://pushMoUrl?receiver=admin&pswd=12345&moTime=1208212205&mobile=13800210021&msg=hello&destcode=10657109012345
             return null;
         }
+
     }
 
     static boolean isVIP(User user) {
