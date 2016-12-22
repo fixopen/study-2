@@ -699,15 +699,11 @@ public class Users {
         if (result.getStatus() == 202) {
             Long userId = JPAEntry.getSession(sessionId).getUserId();
             Gson gson1 = new Gson();
-            System.out.println("==================根据sessionId得到用户Id=========================="+userId);
             List<AnswerRecord> answerRecords = JPAEntry.getList(AnswerRecord.class, "userId", userId);
-            System.out.println("==================根据userId得到这个用户提交了那些问题+（自己选择答案）=========================="+gson1.toJson(answerRecords));
             List<String> problemIds = answerRecords.stream().map(answerRecord -> answerRecord.getProblemId().toString()).collect(Collectors.toList());
             EntityManager em = JPAEntry.getEntityManager();
             List<Problem> problems = Resources.getList(em, problemIds, Problem.class);
-            System.out.println("==================根据这个用户提交了那些问题的问题id查到这些问题=========================="+gson1.toJson(problems));
             List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getList(em, "objectId", problemIds, KnowledgePointContentMap.class);
-            System.out.println("==================根据这个用户提交了那些问题的问题id查详情表=========================="+gson1.toJson(problems));
             List<String> knowledgePointIds = knowledgePointContentMaps.stream().map(m -> m.getKnowledgePointId().toString()).collect(Collectors.toList());
 
             List<String> schedulerIds = new ArrayList<>();
@@ -725,19 +721,13 @@ public class Users {
                         break;
                 }
             }
-            System.out.println("==================根据详情表的objectId得到知识点Id的集合=========================="+knowledgePointIds);
             List<KnowledgePoint> knowledgePoints = Resources.getList(em, knowledgePointIds, KnowledgePoint.class);
-            System.out.println("==================根据知识点Id的集合得到知识点集合=========================="+knowledgePointIds);
             List<String> volumeIds = knowledgePoints.stream().map(knowledgePoint -> knowledgePoint.getVolumeId().toString()).collect(Collectors.toList());
             List<Volume> volumes = Resources.getList(em, volumeIds, Volume.class);
-            System.out.println("==================根据知识点集合的书Id查到书集合=========================="+gson1.toJson(volumes));
-
             List<String> subjectIds = volumes.stream().map(volume -> volume.getSubjectId().toString()).collect(Collectors.toList());
             List<Scheduler> schedulers = Resources.getList(em, schedulerIds, Scheduler.class);
-            System.out.println("==================根据logs得到的直播集合=========================="+gson1.toJson(schedulers));
             subjectIds.addAll(schedulers.stream().map(scheduler -> scheduler.getSubjectId().toString()).collect(Collectors.toList()));
             List<Subject> subjects = Resources.getList(em, subjectIds, Subject.class);
-            System.out.println("==================根据书集合查到科目集合=========================="+gson1.toJson(subjects));
             Date now = new Date();
             final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
             List<Map<String, Object>> r = new ArrayList<>();
@@ -754,7 +744,6 @@ public class Users {
                             for (KnowledgePointContentMap m : knowledgePointContentMaps) {
                                 if (problem.getId().longValue() == m.getObjectId().longValue()) {
                                     if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
-                                        System.out.println("==================根据问题集合得到某一个问题=========================="+gson1.toJson(problem));
                                         ps.add(Problem.convertToMap(problem,answerRecords));
                                         break;
                                     }
