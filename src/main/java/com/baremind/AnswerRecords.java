@@ -1,8 +1,11 @@
 package com.baremind;
 
 import com.baremind.data.AnswerRecord;
+import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -37,11 +40,17 @@ public class AnswerRecords {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@CookieParam("sessionId") String sessionId, AnswerRecord entity) {
-        entity.setUserId(JPAEntry.getLoginUser(sessionId).getId());
-        entity.setCreateTime(new Date());
-        return Impl.create(sessionId, entity, null, null);
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            entity.setId(IdGenerator.getNewId());
+            entity.setUserId(JPAEntry.getSession(sessionId).getUserId());
+            entity.setCreateTime(new Date());
+            JPAEntry.genericPost(entity);
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(entity)).build();
+        }
+        return result;
     }
-
 
     @PUT //根据id修改
     @Path("{id}")

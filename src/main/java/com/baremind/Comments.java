@@ -2,6 +2,7 @@ package com.baremind;
 
 import com.baremind.data.Comment;
 import com.baremind.data.Log;
+import com.baremind.utils.IdGenerator;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
@@ -33,10 +34,12 @@ public class Comments {
     public Response create(@CookieParam("sessionId") String sessionId, Comment entity) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            entity.setUserId(JPAEntry.getLoginUser(sessionId).getId());
+            entity.setId(IdGenerator.getNewId());
+            entity.setUserId(JPAEntry.getSession(sessionId).getUserId());
             Date now = new Date();
             entity.setCreateTime(now);
             entity.setUpdateTime(now);
+            JPAEntry.genericPost(entity);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             result = Response.ok(gson.toJson(entity)).build();
         }

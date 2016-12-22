@@ -113,4 +113,56 @@ public class Problem implements com.baremind.data.Entity {
         }
         return pm;
     }
+
+    public static Map<String, Object> convertToMap(Problem problem, List<AnswerRecord> answerRecords) {
+        Map<String, Object> pm = new HashMap<>();
+        List<Image> imageList = new ArrayList<>();
+        pm.put("id", problem.getId());
+        List<ProblemStandardAnswer> problemStandardAnswers = JPAEntry.getList(ProblemStandardAnswer.class, "problemId", problem.getId());
+        if (problemStandardAnswers.size() > 1) {
+            pm.put("type", "多选题");
+        } else {
+            pm.put("type", "单选题");
+        }
+        List<ProblemOption> problemOptions = JPAEntry.getList(ProblemOption.class, "problemId", problem.getId());
+        for (ProblemOption p:problemOptions) {
+            imageList = JPAEntry.getList(Image.class, "id", p.getImageId());
+        }
+
+        List<Image> finalImageList = imageList;
+        List<Map<String, Object>> poms = problemOptions.stream().map(option -> ProblemOption.convertToMap(option, finalImageList)).collect(Collectors.toList());
+        pm.put("options", poms);
+        pm.put("standardAnswers", problemStandardAnswers);
+        List a = new ArrayList();
+
+        for (AnswerRecord answerRecord:answerRecords) {
+            if(answerRecord.getProblemId().longValue() == problem.getId().longValue()){
+                a.add(answerRecord.getIndex());
+            }
+        }
+        pm.put("answerRecords", a);
+        pm.put("name", problem.getName());
+        if (problem.getImageId() != null) {
+//            Image image = Resources.findItem(problemImages, img -> img.getId().longValue() == problemItem.getImageId().longValue());
+            Image image = JPAEntry.getObject(Image.class, "id", problem.getImageId());
+            if (image != null) {
+                pm.put("storePath", image.getStorePath());
+            }
+        }
+        if (problem.getVideoId() != null) {
+//            Video video = Resources.findItem(problemVideos, v -> v.getId().longValue() == problemItem.getVideoId().longValue());
+            Video video = JPAEntry.getObject(Video.class, "id", problem.getVideoId());
+            if (video != null) {
+                pm.put("videoUrl", video.getStorePath());
+                if (video.getCover() != null) {
+//                    Image cover = Resources.findItem(videoCovers, img -> img.getId() == video.getCover().longValue());
+                    Image cover = JPAEntry.getObject(Image.class, "id", video.getCover());
+                    if (cover != null) {
+                        pm.put("videoImage", cover.getStorePath());
+                    }
+                }
+            }
+        }
+        return pm;
+    }
 }

@@ -149,7 +149,7 @@ public class Users {
         if (result.getStatus() == 202) {
             result = Response.status(404).build();
             Boolean codeOverdue = getCodeOverdue(phone, code);
-            if (codeOverdue == true) {
+            if(codeOverdue == true){
                 result = Impl.updateUserSelf(sessionId, newData, new Updater());
             }
         }
@@ -329,7 +329,7 @@ public class Users {
         return result;
     }
 
-    public static Boolean getCodeOverdue(String p, String v) {
+    public static Boolean getCodeOverdue(String p,String v) {
         Boolean result = false;
         Date now = new Date();
         Map<String, Object> conditions = new HashMap<>();
@@ -341,13 +341,12 @@ public class Users {
             if (now.getTime() < 60 * 3 * 1000 + sendTime.getTime()) {
                 result = true;
                 break;
-            } else {
+            }else{
                 JPAEntry.genericDelete(ValidationCode.class, conditions);
             }
         }
         return result;
     }
-
     @POST
     @Path("cards")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -367,7 +366,7 @@ public class Users {
                 case 1:
                     result = Response.status(410).build();
                     Date now = new Date();
-                    if (getCodeOverdue(ac.getPhoneNumber(), ac.getValidCode()) == true) {
+                    if (getCodeOverdue(ac.getPhoneNumber(),ac.getValidCode()) == true) {
                         boolean isPassed = true;
                         User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
                         User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
@@ -504,13 +503,13 @@ public class Users {
             String username = "zhibo1";
             String password = "Tch243450";
             Response response = client.target(hostname)
-                .path("/msg/HttpBatchSendSM")
-                .queryParam("account", username)
-                .queryParam("pswd", password)
-                .queryParam("mobile", phoneNumber)
-                .queryParam("msg", validInfo)
-                .queryParam("needstatus", true)
-                .request("text/plain").get();
+                    .path("/msg/HttpBatchSendSM")
+                    .queryParam("account", username)
+                    .queryParam("pswd", password)
+                    .queryParam("mobile", phoneNumber)
+                    .queryParam("msg", validInfo)
+                    .queryParam("needstatus", true)
+                    .request("text/plain").get();
             String responseBody = response.readEntity(String.class);
             if (responseBody.contains("\n")) {
                 String[] lines = responseBody.split("\n");
@@ -728,25 +727,25 @@ public class Users {
             }
             List<KnowledgePoint> knowledgePoints = Resources.getList(em, knowledgePointIds, KnowledgePoint.class);
             List<String> volumeIds = new ArrayList<>();
-            for (KnowledgePoint knowledgePoint : knowledgePoints) {
+            for (KnowledgePoint knowledgePoint: knowledgePoints) {
                 volumeIds.add(knowledgePoint.getVolumeId().toString());
             }
             List<Volume> volumes = Resources.getList(em, volumeIds, Volume.class);
             List<String> subjectIds = new ArrayList<>();
-            for (Volume volume : volumes) {
+            for (Volume volume: volumes) {
                 subjectIds.add(volume.getSubjectId().toString());
             }
             List<Scheduler> schedulers = Resources.getList(em, schedulerIds, Scheduler.class);
-            for (Scheduler scheduler : schedulers) {
+            for (Scheduler scheduler: schedulers) {
                 subjectIds.add(scheduler.getSubjectId().toString());
             }
             List<Subject> subjects = Resources.getList(em, subjectIds, Subject.class);
             Date now = new Date();
             final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
             List<Map<String, Object>> r = new ArrayList<>();
-            for (Subject subject : subjects) {
+            for (Subject subject: subjects) {
                 List<Map<String, Object>> ss = new ArrayList<>();
-                for (Scheduler scheduler : schedulers) {
+                for (Scheduler scheduler: schedulers) {
                     if (scheduler.getSubjectId().longValue() == subject.getId().longValue()) {
                         ss.add(Scheduler.convertToMap(scheduler, userId));
                     }
@@ -754,14 +753,14 @@ public class Users {
                 Map<String, Object> s = Subject.convertToMap(subject);
                 s.put("schedulers", ss);
                 List<Map<String, Object>> vs = new ArrayList<>();
-                for (Volume volume : volumes) {
+                for (Volume volume: volumes) {
                     if (volume.getSubjectId().longValue() == subject.getId().longValue()) {
                         List<Map<String, Object>> ks = new ArrayList<>();
-                        for (KnowledgePoint knowledgePoint : knowledgePoints) {
+                        for (KnowledgePoint knowledgePoint: knowledgePoints) {
                             if (knowledgePoint.getVolumeId().longValue() == volume.getId().longValue()) {
                                 List<Map<String, Object>> ps = new ArrayList<>();
-                                for (Problem problem : problems) {
-                                    for (KnowledgePointContentMap m : knowledgePointContentMaps) {
+                                for (Problem problem: problems) {
+                                    for (KnowledgePointContentMap m: knowledgePointContentMaps) {
                                         if (problem.getId().longValue() == m.getObjectId().longValue()) {
                                             if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
                                                 ps.add(Problem.convertToMap(problem, null, null, null, null, null, null));

@@ -381,4 +381,20 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         totalResult.put("comments", commentMaps);
         return totalResult;
     }
+
+    public static Map<String,Object> convertToMap(KnowledgePoint knowledgePoint, List<Log> logs, Long userId) {
+        Map<String, Object> kpm = new HashMap<>();
+        Date createTime = null;
+        kpm.put("id", knowledgePoint.getId());
+        kpm.put("name", knowledgePoint.getName());
+        for (Log l:logs){
+            if(l.getUserId().longValue() == userId.longValue() && l.getObjectId().longValue() == knowledgePoint.getId().longValue()){
+                 createTime = l.getCreateTime();
+                break;
+            }
+        }
+        kpm.put("readTime", createTime);
+        kpm.put("price", knowledgePoint.getPrice());
+        return kpm;
+    }
 }
