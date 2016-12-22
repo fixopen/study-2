@@ -48,17 +48,17 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
     @Column(name = "name")
     private String name;
 
-//    @Column(name = "abstraction")
-//    private String abstraction;
-//
-//    @Column(name = "outline")
-//    private String outline;
+    @Column(name = "abstraction")
+    private String abstraction;
+
+    @Column(name = "outline")
+    private String outline;
 
     @Column(name = "description")
     private String description;
 
-//    @Column(name = "prepare")
-//    private String prepare;
+    @Column(name = "prepare")
+    private String prepare;
 
     @Column(name = "cover_id")
     private Long coverId;
@@ -151,21 +151,21 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.name = name;
     }
 
-//    public String getAbstraction() {
-//        return abstraction;
-//    }
-//
-//    public void setAbstraction(String abstraction) {
-//        this.abstraction = abstraction;
-//    }
-//
-//    public String getOutline() {
-//        return outline;
-//    }
-//
-//    public void setOutline(String outline) {
-//        this.outline = outline;
-//    }
+    public String getAbstraction() {
+        return abstraction;
+    }
+
+    public void setAbstraction(String abstraction) {
+        this.abstraction = abstraction;
+    }
+
+    public String getOutline() {
+        return outline;
+    }
+
+    public void setOutline(String outline) {
+        this.outline = outline;
+    }
 
     public String getDescription() {
         return description;
@@ -175,13 +175,13 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         this.description = description;
     }
 
-//    public String getPrepare() {
-//        return prepare;
-//    }
-//
-//    public void setPrepare(String prepare) {
-//        this.prepare = prepare;
-//    }
+    public String getPrepare() {
+        return prepare;
+    }
+
+    public void setPrepare(String prepare) {
+        this.prepare = prepare;
+    }
 
     public Long getCoverId() {
         return coverId;
@@ -245,8 +245,9 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("subjectId", scheduler.getSubjectId());
         schedulerMap.put("grade", scheduler.getGrade());
         schedulerMap.put("name", scheduler.getName());
-        //schedulerMap.put("abstraction", scheduler.getAbstraction());
-        //schedulerMap.put("outline", scheduler.getOutline());
+        schedulerMap.put("abstraction", scheduler.getAbstraction());
+        schedulerMap.put("outline", scheduler.getOutline());
+        schedulerMap.put("prepare", scheduler.getPrepare());
         schedulerMap.put("description", scheduler.getDescription());
         Long coverId = scheduler.getCoverId();
         if (coverId != null) {
@@ -265,7 +266,6 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         }
         schedulerMap.put("price", scheduler.getPrice());
         schedulerMap.put("discount", scheduler.getDiscount());
-        //schedulerMap.put("price", scheduler.getAmount());
         schedulerMap.put("likeCount", Resources.findUntypedItem(likeCount, scheduler.getId()));
         schedulerMap.put("readCount", Resources.findUntypedItem(readCount, scheduler.getId()));
         schedulerMap.put("comments", Resources.findItems(comments, c -> c.getObjectId() == scheduler.getId()));
@@ -288,6 +288,20 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("subjectId", scheduler.getSubjectId());
         schedulerMap.put("grade", scheduler.getGrade());
         schedulerMap.put("name", scheduler.getName());
+        schedulerMap.put("abstraction", scheduler.getAbstraction());
+        schedulerMap.put("outline", scheduler.getOutline());
+        schedulerMap.put("prepare", scheduler.getPrepare());
+        schedulerMap.put("description", scheduler.getDescription());
+        Long teacherId = scheduler.getTeacherId();
+
+        if (teacherId != null) {
+            User teacher = JPAEntry.getObject(User.class, "id", teacherId);
+//            User teacher = Resources.findItem(user, item -> item.getId() == teacherId);
+            if (teacher != null) {
+                schedulerMap.put("teacher", teacher.getName());
+                schedulerMap.put("teacherDescription", teacher.getDescription());
+            }
+        }
 //        schedulerMap.put("abstraction", scheduler.getAbstraction());
 //        schedulerMap.put("outline", scheduler.getOutline());
 //        schedulerMap.put("description", scheduler.getDescription());
