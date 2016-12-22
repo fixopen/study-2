@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
+import java.util.stream.Collectors;
 
 //GET /api/schedulers/this-week
 //GET /api/schedulers/34
@@ -53,11 +54,13 @@ public class Schedulers {
             String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginUser(sessionId).getId().toString() + " GROUP BY l.objectId";
             Query ldq = em.createQuery(likedQuery);
             final List<Object[]> likedStats = ldq.getResultList();
+            List comment = new ArrayList();
             List<Comment> comments = Resources.getListByColumn(em, "objectId", ids, Comment.class);
+            comment.addAll(comments.stream().map(Comment::convertToMap).collect(Collectors.toList()));
 
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");
-            result = Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, teachers, covers, likeStats, likedStats, readStats, comments, Users.isVIP(operator)), null);
+            result = Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, teachers, covers, likeStats, likedStats, readStats, comment, Users.isVIP(operator)), null);
         }
         return result;
     }

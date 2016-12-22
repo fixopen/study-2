@@ -831,7 +831,7 @@
                                 if (item.endMinute == 0) {
                                     item.endMinute = '00'
                                 }
-                                item[i].grade = state.getGrade(item[i].grade)
+                                item.grade = state.getGrade(item.grade)
                                 if (+item.endTime > now) {
                                     var s = state.getSubjectById(item.subjectId)
                                     if (+item.startTime > now) {

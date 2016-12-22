@@ -642,8 +642,8 @@
 </template>
 <template id="video-comment-template">
     <li class="liveDetails-li">
-        <span class="liveDetails-name">${name}</span>
-        <span class="liveDetails-time">${create_time}</span>
+        <span class="liveDetails-name">${userId}</span>
+        <span class="liveDetails-time">${createTime}</span>
         <p class="liveDetails-txt">${content}</p>
     </li>
 </template>
@@ -1483,64 +1483,104 @@
 //            g.setCookie('userId', userId)
 //            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
 
+            var now = Date.now()
             $.ajax({
                 type: 'get',
                 url: '/api/subjects',
-                dataType: 'json',
                 success: function (ss) {
                     subjects = ss
                     for (var i = 0; i < subjects.length; ++i) {
-                        subjects[i].futures = []
                         subjects[i].playing = []
+                        subjects[i].futures = []
                     }
                     $.ajax({
                         type: 'get',
                         url: '/api/schedulers',
-                        dataType: 'json',
                         success: function (vs) {
+                            var monday = new Date(now)
+                            var year = monday.getFullYear()
+                            var month = monday.getMonth() + 1
+                            var m = moment(now)
+                            var week = m.week()
+                            state.scheduler.week = week
+                            var weekDay = m.day()
+                            if (weekDay > 1) {
+                                monday = new Date(now - (weekDay - 1) * 24 * 60 * 60 * 1000)
+                            }
                             for (var i = 0; i < vs.length; ++i) {
-                                for (var j = 0; j < vs[i].length; ++j) {
-                                    vs[i][j].startTime = new Date(Date.parse(vs[i][j].startTime.replace(/-/g, '/')))
-                                    vs[i][j].endTime = new Date(Date.parse(vs[i][j].endTime.replace(/-/g, '/')))
-                                    vs[i][j].grade = state.getGrade(vs[i][j].grade)
-                                    vs[i][j].year = vs[i][j].startTime.getFullYear()
-                                    vs[i][j].month = vs[i][j].startTime.getMonth() + 1
-                                    vs[i][j].day = vs[i][j].startTime.getDate()
-                                    vs[i][j].hour = vs[i][j].startTime.getHours()
-                                    var minute = vs[i][j].startTime.getMinutes()
-                                    if (minute == 0) {
-                                        minute = '00'
+                                var item = vs[i]
+                                item.grade = state.getGrade(item.grade)
+                                item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
+                                item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
+                                item.year = item.startTime.getFullYear()
+                                item.month = item.startTime.getMonth() + 1
+                                item.date = item.startTime.getDate()
+                                item.hour = item.startTime.getHours()
+                                item.minute = item.startTime.getMinutes()
+                                if (item.minute == 0) {
+                                    item.minute = '00'
+                                }
+                                item.endHour = item.endTime.getHours()
+                                item.endMinute = item.endTime.getMinutes()
+                                if (item.endMinute == 0) {
+                                    item.endMinute = '00'
+                                }
+                                if (+item.endTime > now) {
+                                    var s = state.getSubjectById(item.subjectId)
+                                    if (+item.startTime > now) {
+                                        s.futures.push(item)
+                                    } else {
+                                        s.playing.push(item)
                                     }
-                                    vs[i][j].minute = minute
-                                    var second = vs[i][j].startTime.getSeconds()
-                                    if (second == 0) {
-                                        second = '00'
+                                } else {
+                                    passed.push(item)
+                                }
+                                if (item.year == year && item.week == week) {
+                                    switch (item.day) {
+                                        case 1:
+                                            if (courseTable[0].date == '') {
+                                                courseTable[0].date = year + '-' + month + '-' + monday.getDate()
+                                            }
+                                            courseTable[0].items.push(item)
+                                            break
+                                        case 2:
+                                            if (courseTable[1].date == '') {
+                                                var tuesday = new Date(+monday + 24 * 60 * 60 * 1000)
+                                                courseTable[1].date = year + '-' + month + '-' + tuesday.getDate()
+                                            }
+                                            courseTable[1].items.push(item)
+                                            break
+                                        case 3:
+                                            if (courseTable[2].date == '') {
+                                                var wednesday = new Date(+monday + 2 * 24 * 60 * 60 * 1000)
+                                                courseTable[2].date = year + '-' + month + '-' + wednesday.getDate()
+                                            }
+                                            courseTable[2].items.push(item)
+                                            break
+                                        case 4:
+                                            if (courseTable[3].date == '') {
+                                                var thursday = new Date(+monday + 3 * 24 * 60 * 60 * 1000)
+                                                courseTable[3].date = year + '-' + month + '-' + thursday.getDate()
+                                            }
+                                            courseTable[3].items.push(item)
+                                            break
+                                        case 5:
+                                            if (courseTable[4].date == '') {
+                                                var friday = new Date(+monday + 4 * 24 * 60 * 60 * 1000)
+                                                courseTable[4].date = year + '-' + month + '-' + friday.getDate()
+                                            }
+                                            courseTable[4].items.push(item)
+                                            break
                                     }
-                                    vs[i][j].second = second
                                 }
                             }
-                            for (var i = 0; i < vs[0].length; ++i) {
-                                var s = state.getSubjectById(vs[0][i].subjectId)
-                                if (!s.playing) {
-                                    s.playing = []
-                                }
-                                s.playing.push(vs[0][i])
-                            }
-                            for (var i = 0; i < vs[1].length; ++i) {
-                                var s = state.getSubjectById(vs[1][i].subjectId)
-                                if (!s.futures) {
-                                    s.futures = []
-                                }
-                                s.futures.push(vs[1][i])
-                            }
-                            passed = vs[2]
 
-                            state['main'].init()
-                            history.pushState(null, null, '/content/videos.html#main')
+                            switchTo('main')
                         }
                     })
                 }
             })
+
 
             var switchTo = function (id) {
                 state.currentArticle.style.display = 'none'
@@ -1738,9 +1778,50 @@
             teacher: document.getElementById('teacher'),
             grade: document.getElementById('grade'),
             date: document.getElementById('date'),
+            videoContainer: document.getElementById('video'),
             isInit: false,
             init: function () {
                 if (!state.passed.isInit) {
+                    var search = function(v) {
+                        var result = []
+                        for (var i = 0; i < passed.length; ++i) {
+                            var isPassed = true
+                            for (var p in v) {
+                                if (v[p] != '全部') {
+                                    switch (p) {
+                                        case 'subject':
+                                            //if (isPassed && passed[i].subjectId != v[p]) {
+                                            //    isPassed = false
+                                            //}
+                                            break;
+                                        case 'grade':
+                                            if (isPassed && passed[i].grade != v[p]) {
+                                                isPassed = false
+                                            }
+                                            break
+                                        case 'teacher':
+                                            if (isPassed && passed[i].teacher != v[p]) {
+                                                isPassed = false
+                                            }
+                                            break
+                                    }
+                                }
+                            }
+                            if (isPassed) {
+                                result.push(passed[i])
+                            }
+                        }
+                        state.passed.videoContainer.innerHTML = ''
+                        proc({
+                            data: result,
+                            container: state.passed.videoContainer,
+                            alterTemplates: [
+                                {type: 'chinese', templateId: 'chinese-template'},
+                                {type: 'math', templateId: 'math-template'}
+                            ]
+                        })
+                    }
+
                     $(document).on('click', '.passed-detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                         if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
@@ -1860,7 +1941,12 @@
                     });
 
                     $(document).on('click','.jieG_licha',function(e){
+                        var filter = document.getElementById('xuanzhong-entries')
+                        var f = JSON.parse(filter.dataset.value)
+                        delete f[e.target.dataset.type]
+                        filter.dataset.value = JSON.stringify(f)
                         $(e.target.parentNode.parentNode).hide()
+                        search(f)
                     })
 
                     $(document).on('click', ".xiala_li", function (e) {
@@ -1869,7 +1955,7 @@
                         $('.tan').hide();
                         $(e.currentTarget).parents(".xiala_ul").hide();
                         $(e.currentTarget).parents(".tiaoj_TJ").children('.tiaoj_span').removeClass('cur');
-                        var $tuzhiTr = "<li class='jieG_li'><span>${value}</span><a href='javascript:void(0)'><img class='jieG_licha' src='../images/zhong_xiao.png' alt=''></a></li>";
+                        var $tuzhiTr = "<li class='jieG_li'><span>${value}</span><a href='javascript:void(0)'><img data-type='${type}' class='jieG_licha' src='../images/zhong_xiao.png' alt=''></a></li>";
 
                         var filter = document.getElementById('xuanzhong-entries')
                         filter.innerHTML = ''
@@ -1882,24 +1968,18 @@
                         for (var prop in v) {
                             if (v[prop] != '全部') {
                                 var e = $($tuzhiTr)[0]
-                                bind(e, {value: v[prop]})
+                                bind(e, {value: v[prop], type: prop})
                                 filter.appendChild(e)
                             }
                         }
                         filter.style.display = 'block'
 
-//                        state.passed.innerHTML = ''
-//                        proc({
-//                            data: passed,
-//                            containerId: 'video',
-//                            alterTemplates: [
-//                                {type: 'chinese', templateId: 'chinese-template'},
-//                                {type: 'math', templateId: 'math-template'}
-//                            ]
-//                        })
-//                        var hei1 = document.getElementsByClassName('tiao_jian').height();
-//                        var hei2 = document.getElementsByClassName('tiaoj_jieG').height();
-//                        document.getElementsByClassName('noPadd').css("margin-top", hei1 + hei2)
+                        search(v)
+
+                        var one = document.getElementsByClassName('tiao_jian')
+                        var h1 = one.offsetHeight;
+                        var h2 = document.getElementsByClassName('tiaoj_jieG').offsetHeight;
+                        document.getElementById('video').css("margin-top", h1 + h2)
                     });
 
 
@@ -1917,54 +1997,20 @@
 //                    }
                     proc({
                         data: passed,
-                        containerId: 'video',
+                        container: state.passed.videoContainer,
                         alterTemplates: [
                             {type: 'chinese', templateId: 'chinese-template'},
                             {type: 'math', templateId: 'math-template'}
                         ]
                     });
-// **********************************getGrade**************************
-                    $.ajax({
-                        type: 'get',
-                        url: '/api/schedulers/grades?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[0].id})),
-                        success: function (g0s) {
-                            subjects[0].grades = g0s
-                            $.ajax({
-                                type: 'get',
-                                url: '/api/schedulers/grades?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjects[1].id})),
-                                success: function (g1s) {
-                                    subjects[1].grades = g1s
-//fill to grades choice
-                                    var grades = []
-                                    for (var i = 0; i < g0s.length; ++i) {
-                                        g0s[i] = state.getGrade(g0s[i])
-                                        grades.push({grade: g0s[i]})
-                                    }
-                                    for (var i = 0; i < g1s.length; ++i) {
-                                        g1s[i] = state.getGrade(g1s[i])
-                                        grades.push({grade: g1s[i]})
-                                    }
-//                                    for (var i = 0; i < grades.length; ++i) {
-//                                        grades=state.getGrade(grades[i].grade)
-//                                    }
-                                    proc({
-                                        containerId: 'grade',
-                                        data: grades,
-                                        templateId: 'grade-template'
-                                    })
-                                }
-                            })
-                        }
-                    })
 //********************************getTeacher*****************************
-                    state.passed.isInit = true
-                    var getTeachers = function(subjectId, postProcessor) {
+                    var getSomethings = function(type, subjectId, fieldName, postProcessor) {
                         $.ajax({
                             type: 'get',
-                            url: '/api/schedulers/teachers?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjectId})),
+                            url: '/api/schedulers/' + type + '?filter=' + encodeURIComponent(JSON.stringify({subjectId: subjectId})),
                             success: function (ts) {
                                 var s = state.getSubjectById(subjectId)
-                                s.teachers = ts
+                                s[fieldName] = ts
                                 if (postProcessor) {
                                     postProcessor()
                                 }
@@ -1978,22 +2024,43 @@
                             }
                         })
                     }
-
-                    getTeachers(subjects[0].id, function() {
-                        getTeachers(subjects[1].id);
-                        var teachers = []
-                        for (var i = 0; i < subjects[0].teachers.length; ++i) {
-                            teachers.push({teacher: subjects[0].teachers[i]})
-                        }
-                        for (var i = 0; i < subjects[1].teachers.length; ++i) {
-                            teachers.push({teacher: subjects[1].teachers[i]})
-                        }
-                        proc({
-                            containerId: 'teacher',
-                            data: teachers,
-                            templateId: 'teacher-template'
-                        })
+                    getSomethings('teachers', subjects[0].id, 'teachers', function() {
+                        getSomethings('teachers', subjects[1].id, 'teachers', function() {
+                            var teachers = []
+                            for (var i = 0; i < subjects[0].teachers.length; ++i) {
+                                teachers.push({teacher: subjects[0].teachers[i]})
+                            }
+                            for (var i = 0; i < subjects[1].teachers.length; ++i) {
+                                teachers.push({teacher: subjects[1].teachers[i]})
+                            }
+                            proc({
+                                containerId: 'teacher',
+                                data: teachers,
+                                templateId: 'teacher-template'
+                            })
+                        });
                     })
+// **********************************getGrade**************************
+                    getSomethings('grades', subjects[0].id, 'grades', function() {
+                        getSomethings('grades', subjects[1].id, 'grades', function() {
+                            var grades = []
+                            for (var i = 0; i < subjects[0].grades.length; ++i) {
+                                subjects[0].grades[i] = state.getGrade(subjects[0].grades[i])
+                                grades.push({grade: subjects[0].grades[i]})
+                            }
+                            for (var i = 0; i < subjects[1].grades.length; ++i) {
+                                subjects[1].grades[i] = state.getGrade(subjects[1].grades[i])
+                                grades.push({grade: subjects[1].grades[i]})
+                            }
+                            proc({
+                                containerId: 'grade',
+                                data: grades,
+                                templateId: 'grade-template'
+                            })
+                        });
+                    })
+
+                    state.passed.isInit = true
                 }
 //                var picker = new Pikaday({
 //                    field: document.getElementById('datePicker'),
@@ -2055,9 +2122,9 @@
 
                 var icon = document.getElementById('icon')
                 if (data.liked) {
-                    icon.setAttribute('src', 'images/zanover.png');
+                    icon.setAttribute('src', '../images/zanover.png');
                 } else {
-                    icon.setAttribute('src', 'images/dianzan.png');
+                    icon.setAttribute('src', '../images/dianzan.png');
                 }
                 icon.addEventListener('click', function (e) {
                     if (data.liked) {
@@ -2068,7 +2135,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (unlike) {
-                                icon.setAttribute('src', 'images/dianzan.png');
+                                icon.setAttribute('src', '../images/dianzan.png');
                                 data.likeCount--
                                 e.target.nextElementSibling.textContent = data.likeCount
                                 data.liked = false;
@@ -2082,7 +2149,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (like) {
-                                icon.setAttribute('src', 'images/zanover.png');
+                                icon.setAttribute('src', '../images/zanover.png');
                                 ++data.likeCount;
                                 e.target.nextElementSibling.textContent = data.likeCount
                                 data.liked = true;
