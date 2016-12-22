@@ -2,6 +2,7 @@ package com.baremind;
 
 import com.baremind.data.KnowledgePoint;
 import com.baremind.data.Log;
+import com.baremind.data.User;
 import com.baremind.utils.Impl;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
@@ -19,28 +20,31 @@ public class KnowledgePoints {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
-        List<KnowledgePoint> r = JPAEntry.getList(KnowledgePoint.class, Impl.getFilters(filter));
-        List<String> ids = new ArrayList<>();
-        for (KnowledgePoint ri : r) {
-            ids.add(ri.getId().toString());
-        }
-        EntityManager em = JPAEntry.getEntityManager();
-        String contentCountQuery = "SELECT m.knowledgePointId, m.objectType, count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId IN (" + Resources.join(ids) + ") GROUP BY m.knowledgePointId, m.objectType";
-        Query cq = em.createQuery(contentCountQuery);
-        final List<Object[]> contentStats = cq.getResultList();
-        String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
-        Query lq = em.createQuery(likeCountQuery);
-        final List<Object[]> likeStats = lq.getResultList();
-        String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
-        Query rq = em.createQuery(readCountQuery);
-        final List<Object[]> readStats = rq.getResultList();
-        String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginUser(sessionId).getId().toString() + " GROUP BY l.objectId";
-        Query ldq = em.createQuery(likedQuery);
-        final List<Object[]> likedStats = ldq.getResultList();
+        Response result = Response.status(401).build();
+        User operator = JPAEntry.getLoginUser(sessionId);
+        if (operator != null) {
+            List<KnowledgePoint> r = JPAEntry.getList(KnowledgePoint.class, Impl.getFilters(filter));
+            List<String> ids = new ArrayList<>();
+            for (KnowledgePoint ri : r) {
+                ids.add(ri.getId().toString());
+            }
+            EntityManager em = JPAEntry.getEntityManager();
+            String contentCountQuery = "SELECT m.knowledgePointId, m.objectType, count(m) FROM KnowledgePointContentMap m WHERE m.knowledgePointId IN (" + Resources.join(ids) + ") GROUP BY m.knowledgePointId, m.objectType";
+            Query cq = em.createQuery(contentCountQuery);
+            final List<Object[]> contentStats = cq.getResultList();
+            String likeCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' GROUP BY l.objectId";
+            Query lq = em.createQuery(likeCountQuery);
+            final List<Object[]> likeStats = lq.getResultList();
+            String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
+            Query rq = em.createQuery(readCountQuery);
+            final List<Object[]> readStats = rq.getResultList();
+            String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'knowledge-point' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' AND l.userId = " + operator.getId().toString() + " GROUP BY l.objectId";
+            Query ldq = em.createQuery(likedQuery);
+            final List<Object[]> likedStats = ldq.getResultList();
 
-        Map<String, String> orders = new HashMap<>();
-        orders.put("order", "ASC");
-        return Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats), null);
+            Map<String, String> orders = new HashMap<>();
+            orders.put("order", "ASC");
+            result = Impl.get(sessionId, filter, orders, KnowledgePoint.class, knowledgePoint -> KnowledgePoint.convertToMap(knowledgePoint, likeStats, likedStats, readStats, contentStats), null);
 
 //        Map<String, String> orders = new HashMap<>();
 //        orders.put("order", "ASC");
@@ -57,6 +61,8 @@ public class KnowledgePoints {
 //            }
 //            return result;
 //        });
+        }
+        return result;
     }
 
     @GET //根据id查询

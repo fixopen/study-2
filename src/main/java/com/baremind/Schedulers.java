@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
+import java.util.stream.Collectors;
 
 //GET /api/schedulers/this-week
 //GET /api/schedulers/34
@@ -51,14 +52,16 @@ public class Schedulers {
             String readCountQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' GROUP BY l.objectId";
             Query rq = em.createQuery(readCountQuery);
             final List<Object[]> readStats = rq.getResultList();
-            String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'read' AND l.userId = " + JPAEntry.getLoginUser(sessionId).getId().toString() + " GROUP BY l.objectId";
+            String likedQuery = "SELECT l.objectId, count(l) FROM Log l WHERE l.objectType = 'scheduler' AND l.objectId IN (" + Resources.join(ids) + ") AND l.action = 'like' AND l.userId = " + operator.getId().toString() + " GROUP BY l.objectId";
             Query ldq = em.createQuery(likedQuery);
             final List<Object[]> likedStats = ldq.getResultList();
             List<Comment> comments = Resources.getList(em, "objectId", ids, Comment.class);
+            List<String> commentOwnerIds = comments.stream().map(c -> c.getUserId().toString()).collect(Collectors.toList());
+            List<User> commentOwners = Resources.getList(em, commentOwnerIds, User.class);
 
             Map<String, String> orders = new HashMap<>();
             orders.put("startTime", "DESC");
-            result = Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, now, teachers, covers, likeStats, likedStats, readStats, comments, Users.isVIP(operator)), null);
+            result = Impl.get(sessionId, filter, orders, Scheduler.class, scheduler -> Scheduler.convertToMap(scheduler, now, teachers, covers, likeStats, likedStats, readStats, comments, commentOwners, Users.isVIP(operator)), null);
         }
         return result;
     }
@@ -289,4 +292,67 @@ public class Schedulers {
         }
         return result;
     }
+
+    @PUT
+    @Path("{id}/like")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response like(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            Log log = Logs.insert(JPAEntry.getSession(sessionId).getUserId(), "scheduler", id, "like");
+            result = Response.ok(new Gson().toJson(log)).build();
+        }
+        return result;
+    }
+
+    @PUT
+    @Path("{id}/unlike")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unlike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            Long count = Logs.deleteLike(JPAEntry.getSession(sessionId).getUserId(), "scheduler", id);
+            result = Response.ok("{\"count\":" + count.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/like-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLikeCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            Long likeCount = Logs.getStatsCount("scheduler", id, "like");
+            result = Response.ok("{\"count\":" + likeCount.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/is-self-like")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSelfLike(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            Boolean has = Logs.has(JPAEntry.getSession(sessionId).getUserId(), "scheduler", id, "like");
+            result = Response.ok("{\"like\":" + has.toString() + "}").build();
+        }
+        return result;
+    }
+
+    @GET
+    @Path("{id}/read-count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReadCount(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
+        Response result = Impl.validationUser(sessionId);
+        if (result.getStatus() == 202) {
+            Long readCount = Logs.getStatsCount("scheduler", id, "read");
+            result = Response.ok("{\"count\":" + readCount.toString() + "}").build();
+        }
+        return result;
+    }
+
 }

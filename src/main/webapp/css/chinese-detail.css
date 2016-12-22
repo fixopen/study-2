@@ -55,6 +55,8 @@ a {
     -webkit-background-size: 3.0rem 4.53125rem;
     background-size: 3.0rem 4.53125rem;
     box-sizing: border-box;
+    display: inline-block;
+    z-index: 2;
 }
 
 .origin-title span {
