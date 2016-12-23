@@ -279,12 +279,12 @@
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2">
                     <h3 class="yuwen_h3">${abstraction}</h3>
-                    <p class="yuwen_p">${title}</p>
+                    <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
                     <span class="yuwen_span">${teacher}</span>
-                    <span class="yuwen_riqi">${year}-${month}-${day} ${hour}:${minute}:${second}</span>
+                    <span class="yuwen_riqi">${startTimr}</span>
                 </p>
                 <a class="yuwen_a" href="${directLink}"></a>
             </a>
@@ -1415,6 +1415,13 @@
             }
             return result
         },
+        switchTo: function (id) {
+            state.currentArticle.style.display = 'none'
+            state.currentArticle = document.getElementById(id)
+            state.currentArticle.style.display = 'block'
+            history.pushState(null, null, '/content/videos.html#' + id)
+            state[id].init()
+        },
         getSubjectById: function (subjectId) {
             var result = null
             for (var i = 0; i < subjects.length; ++i) {
@@ -1542,20 +1549,12 @@
                                 }
                             }
 
-                            switchTo('main')
+                            state.switchTo('main')
                         }
                     })
                 }
             })
 
-
-            var switchTo = function (id) {
-                state.currentArticle.style.display = 'none'
-                state.currentArticle = document.getElementById(id)
-                state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/content/videos.html#' + id)
-                state[id].init()
-            }
 
             $(document).on('click', '[data-article]', function (e) {
                 var element = e.target;
@@ -1563,13 +1562,13 @@
                 if (element.dataset.id) {
                     state[id].id = element.dataset.id
                 }
-                switchTo(id)
+                state.switchTo(id)
             })
 
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
-                switchTo(hash)
+                state.switchTo(hash)
             }, false)
         },
 
@@ -1787,6 +1786,7 @@
                                 {type: 'math', templateId: 'math-template'}
                             ]
                         })
+
                     }
 
                     $(document).on('click', '.passed-detail', function (e) {
@@ -1824,7 +1824,8 @@
                         delete f[e.target.dataset.type]
                         filter.dataset.value = JSON.stringify(f)
                         $(e.target.parentNode.parentNode).hide()
-                        if(f.length == 0){
+                        if(!f || (!f.subject && !f.teacher && !f.grade)) {
+                            $('.tiaoj_jieG').attr("style","display:none");
                             $("#video").attr("style","padding-top:0rem");
                         }
                         search(f)
@@ -1851,13 +1852,18 @@
                                 var e = $($tuzhiTr)[0]
                                 bind(e, {value: v[prop], type: prop})
                                 filter.appendChild(e)
+                                $("#video").attr("style","padding-top:3rem");
+                            }else{
+                                $(".tiaoj_jieG").attr("style","display:none");
+                                $("#video").attr("style","padding-top:0rem");
+
                             }
                         }
                         filter.style.display = 'block'
 
                         search(v)
 
-                        $("#video").attr("style","padding-top:3rem");
+//                        $("#video").attr("style","padding-top:3rem");
                     });
 
 
