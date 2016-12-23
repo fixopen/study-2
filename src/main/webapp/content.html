@@ -908,7 +908,7 @@
     </div>
 </template>
 <div id="1" style="display: none">
-    <div class="tan" style="display: block;"></div>
+    <div class="tan1" style="display: block;"></div>
     <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="JavaScript:void(0)" id="close1"></a>
         <div class="win_neir koudou_win">
@@ -926,7 +926,7 @@
     </div>
 </div>
 <div id="2" style="display: none">
-    <div class="tan" style="display: block;"></div>
+    <div class="tan1" style="display: block;"></div>
     <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="JavaScript:void(0)" id="close2"></a>
         <div class="win_neir koudou_win">
@@ -944,7 +944,7 @@
     </div>
 </div>
 <div id="3" style="display: none">
-    <div class="tan" style="display: block;"></div>
+    <div class="tan1" style="display: block;"></div>
     <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="JavaScript:void(0)" id="close3"></a>
         <div class="win_neir koudou_win">
@@ -962,7 +962,7 @@
     </div>
 </div>
 <div id="4" style="display: none">
-    <div class="tan" style="display: block;"></div>
+    <div class="tan1" style="display: block;"></div>
     <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="JavaScript:void(0)" id="close4"></a>
         <div class="win_neir koudou_win">
@@ -1073,7 +1073,7 @@
     function tan(cards, subject, objectType, objectId) {
         for (var i = 0; i < cards.length; i++) {
             var a = cards[i].subjectId
-            if (cards[i].subjectId == subject && cards[i].amount >= price) {
+            if (cards[i].subjectId == subject && cards[i].amount >= price && price !=0) {
                 //第二步：你有这个科目下的卡&&卡余额>资源价格:弹出1床
                 var subject_card = transformation(a);
                 var object_Type = transformationType(objectType);
@@ -1088,6 +1088,10 @@
                 object_Types = objectType;
                 break;
 
+            }else if(cards[i].subjectId == subject && cards[i].amount >= price && price == 0){
+                na(objectType, objectId)
+                biao = 1;
+                break;
             }
         }
         if (biao != 1) {
@@ -1120,7 +1124,7 @@
         if (biao != 1) {
             for (var i = 0; i < cards.length; i++) {
                 var a = cards[i].subjectId
-                if (cards[i].subjectId != subject && cards[i].amount >= price && biao != 1) {
+                if (cards[i].subjectId != subject && cards[i].amount >= price && biao != 1 && price !=0) {
                     //第二步：你有其他科目下的卡&&卡余额>资源价格:弹出3床
                     var subject_card = transformation(a);
                     if (a == 1) {
@@ -1138,6 +1142,10 @@
                     card = cards[i];
                     object_Id = objectId;
                     object_Types = objectType;
+                    break;
+                }else if(cards[i].subjectId != subject && cards[i].amount >= price && biao != 1 && price == 0){
+                    biao = 1;
+                    na(objectType, objectId)
                     break;
                 }
             }
@@ -1708,7 +1716,7 @@
                                         dataType: "json",
                                         success: function (pop) {
                                             state.volumes.popuped = pop.popup;
-                                            //  state.volumes.popuped = false;
+                                              state.volumes.popuped = false;
 
                                             history.pushState(null, null, '/content.html#volumes')
                                             state.volumes.changeId(subjectId)
