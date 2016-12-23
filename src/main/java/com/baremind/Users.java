@@ -333,9 +333,24 @@ public class Users {
                     result = Response.status(403).build();
                     Date now = new Date();
                     User user = JPAEntry.getObject(User.class, "telephone", ac.getPhoneNumber());
-                    boolean isPassed = checkUser(user, wechatUser, ac.getPhoneNumber(), now);
+                    boolean isPassed = checkUser(user, wechatUser, ac.getPhoneNumber());
                     if (user == null) {
                         user = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
+                        if (user == null) {
+                            user = new User();
+                            user.setId(IdGenerator.getNewId());
+                            user.setTelephone(ac.getPhoneNumber());
+                            user.setLoginName(ac.getPhoneNumber());
+                            user.setCreateTime(now);
+                            user.setUpdateTime(now);
+                            user.setName(wechatUser.getNickname());
+                            user.setSex(wechatUser.getSex());
+                            user.setAmount(0L);
+                            user.setHead(wechatUser.getHead());
+                            wechatUser.setUserId(user.getId());
+                            JPAEntry.genericPost(user);
+                            JPAEntry.genericPut(wechatUser);
+                        }
                     }
 
                     if (isPassed) {
@@ -387,7 +402,7 @@ public class Users {
         JPAEntry.genericPut(c);
     }
 
-    private boolean checkUser(User user, WechatUser wechatUser, String phoneNumber, Date now) {
+    private boolean checkUser(User user, WechatUser wechatUser, String phoneNumber) {
         boolean isPassed = true;
         User linkedUser = JPAEntry.getObject(User.class, "id", wechatUser.getUserId());
         if (user == null) {
@@ -398,20 +413,6 @@ public class Users {
                 } else {
                     isPassed = false;
                 }
-            } else {
-                user = new User();
-                user.setId(IdGenerator.getNewId());
-                user.setTelephone(phoneNumber);
-                user.setLoginName(phoneNumber);
-                user.setCreateTime(now);
-                user.setUpdateTime(now);
-                user.setName(wechatUser.getNickname());
-                user.setSex(wechatUser.getSex());
-                user.setAmount(0L);
-                user.setHead(wechatUser.getHead());
-                wechatUser.setUserId(user.getId());
-                JPAEntry.genericPost(user);
-                JPAEntry.genericPut(wechatUser);
             }
         } else {
             if (linkedUser == null) {
@@ -673,6 +674,7 @@ public class Users {
             List<Problem> problems = Resources.getList(em, problemIds, Problem.class);
             List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getList(em, "objectId", problemIds, KnowledgePointContentMap.class);
             List<String> knowledgePointIds = knowledgePointContentMaps.stream().map(m -> m.getKnowledgePointId().toString()).collect(Collectors.toList());
+
             List<String> schedulerIds = new ArrayList<>();
             Map<String, Object> condition = new HashMap<>();
             condition.put("userId", userId);
@@ -691,6 +693,8 @@ public class Users {
             List<KnowledgePoint> knowledgePoints = Resources.getList(em, knowledgePointIds, KnowledgePoint.class);
             List<String> volumeIds = knowledgePoints.stream().map(knowledgePoint -> knowledgePoint.getVolumeId().toString()).collect(Collectors.toList());
             List<Volume> volumes = Resources.getList(em, volumeIds, Volume.class);
+            List<String> coverIds = volumes.stream().map(v -> v.getCoverId().toString()).collect(Collectors.toList());
+            List<Image> covers = Resources.getList(em, coverIds, Image.class);
             List<String> subjectIds = volumes.stream().map(volume -> volume.getSubjectId().toString()).collect(Collectors.toList());
             List<Scheduler> schedulers = Resources.getList(em, schedulerIds, Scheduler.class);
             subjectIds.addAll(schedulers.stream().map(scheduler -> scheduler.getSubjectId().toString()).collect(Collectors.toList()));
@@ -698,13 +702,8 @@ public class Users {
             Date now = new Date();
             final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
             List<Map<String, Object>> r = new ArrayList<>();
-            for (Subject subject : subjects) {
-                List<Map<String, Object>> ss = new ArrayList<>();
-                for (Scheduler scheduler : schedulers) {
-                    if (scheduler.getSubjectId().longValue() == subject.getId().longValue()) {
-                        ss.add(Scheduler.convertToMap(scheduler, userId));
-                    }
-                }
+            for (Subject subject: subjects) {
+                List<Map<String, Object>> ss = schedulers.stream().filter(scheduler -> scheduler.getSubjectId().longValue() == subject.getId().longValue()).map(scheduler -> Scheduler.convertToMap(scheduler, userId)).collect(Collectors.toList());
                 Map<String, Object> s = Subject.convertToMap(subject);
                 s.put("schedulers", ss);
                 List<Map<String, Object>> vs = new ArrayList<>();
@@ -716,23 +715,25 @@ public class Users {
                             for (KnowledgePointContentMap m : knowledgePointContentMaps) {
                                 if (problem.getId().longValue() == m.getObjectId().longValue()) {
                                     if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
-                                        ps.add(Problem.convertToMap(problem, answerRecords));
+                                        ps.add(Problem.convertToMap(problem,answerRecords));
                                         break;
                                     }
                                 }
-                                Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, userId, now, yesterday);
-                                km.put("problems", ps);
-                                ks.add(km);
                             }
                         }
-                        Map<String, Object> vm = Volume.convertToMap(volume, now, yesterday);
-                        vm.put("knowledgePoints", ks);
-                        vs.add(vm);
+                        Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, logs,userId);
+                        km.put("problems", ps);
+                        ks.add(km);
                     });
+                    Map<String, Object> vm = Volume.convertToMap(volume, covers);
+                    vm.put("knowledgePoints", ks);
+                    vs.add(vm);
                 });
                 s.put("volumes", vs);
                 r.add(s);
             }
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(r)).build();
             //{subjects: [], schedulers: [], volumes: [], knowledgePoints: [], problems: []}
             //[{subject-info, schedulers: [{}, ...], volumes: [{volume-info, knowledgePoints: [{knowledgePoint-info, problems: [{problem-info, standAnswer:[], answer:[]}, ...]}, ...]}, ...]}, {...}]
         }
