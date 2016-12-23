@@ -211,7 +211,7 @@
         </div>
         <ul id="xuanzhong-entries" class="tiaoj_jieG"></ul>
         <div class="rain-main video-passed-textTop">
-            <ul id="video"></ul>
+            <ul id="video" style="margin-top: 0px;"></ul>
             <div class="bottom_txt">
                 <span class="leftLine">————</span>没有更多视频咯！<span class="leftLine">————</span>
             </div>
@@ -276,9 +276,9 @@
         <div class="all_liplay" data-id="${id}">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
-                <div class="yuwen_div0"><span>150</span>金豆</div>
+                <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <h3 class="yuwen_h3">${abstraction}</h3>
                     <p class="yuwen_p">${title}</p>
                 </div>
                 <p class="yuwen_p2">
@@ -332,10 +332,10 @@
                 <span class="daibo_ceng ceng_yuwen" data-article="futureNote" data-id="${id}"></span>
                 <span class="bofang daibo"></span>
                 <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
-                <div class="yuwen_div0"><span>150</span>金豆</div>
+                <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2">
                     <h3 class="yuwen_h3">${generalization}</h3>
-                    <p class="yuwen_p">${title}</p>
+                    <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -386,10 +386,10 @@
         <div class="all_liplay shuxue_play">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
-                <div class="yuwen_div0"><span>150</span>金豆</div>
+                <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2 shuxue_div2">
                     <h3 class="yuwen_h3">${generalization}</h3>
-                    <p class="yuwen_p">${title}</p>
+                    <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -442,10 +442,10 @@
                 <span class="daibo_ceng" data-article="futureNote" data-id="${id}"></span>
                 <span class="bofang daibo"></span>
                 <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
-                <div class="yuwen_div0"><span>150</span>金豆</div>
+                <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2 shuxue_div2">
                     <h3 class="yuwen_h3">${generalization}</h3>
-                    <p class="yuwen_p">${title}</p>
+                    <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -496,12 +496,13 @@
 <template id="chinese-template">
     <li class="all_uli">
         <div class="all_liplay">
-            <div class="all_aBtn" data-id="${id}" data-article="videoDetail">
-                <div class="leftJinDou"><span>150</span>金豆</div>
+            <div class="all_aBtn" data-id="${id}" id="a">
+                <!--data-article="videoDetail"-->
+                <div class="leftJinDou"><span>${price}</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
                     <h3 class="yuwen_h3">${generalization}</h3>
-                    <p class="yuwen_p">${title}</p>
+                    <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -550,11 +551,11 @@
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
             <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
-                <div class="leftJinDou"><span>150</span>金豆</div>
+                <div class="leftJinDou"><span>${price}</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">数学</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
                     <h3 class="yuwen_h3">${generalization}</h3>
-                    <p class="yuwen_p">${title}</p>
+                    <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
@@ -624,7 +625,7 @@
         <div class="live-details-videoPlay">
             <video src="${cdnLink}" controls="controls" autoplay="autoplay"></video>
             <div class="live-details-label" id="bookMark"></div>
-            <div class="live-details-videoTxt">${title}</div>
+            <div class="live-details-videoTxt">${name}</div>
         </div>
         <div class="course-intro">
             <div class="course_xiaqing">
@@ -666,7 +667,7 @@
         <td style="width: 22%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
             ${grade}
         </td>
-        <td style="width: 50%;">${title}</td>
+        <td style="width: 50%;">${name}</td>
     </tr>
 </template>
 
@@ -1425,6 +1426,7 @@
         {day: '五', date: '', items: []}
     ]
 
+
     var state = {
         currentArticle: document.getElementById('main'),
         getGrade: function (gradeValue) {
@@ -1598,7 +1600,6 @@
                 }
                 switchTo(id)
             })
-
 
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
@@ -1790,9 +1791,9 @@
                                 if (v[p] != '全部') {
                                     switch (p) {
                                         case 'subject':
-                                            //if (isPassed && passed[i].subjectId != v[p]) {
-                                            //    isPassed = false
-                                            //}
+                                            if (isPassed && passed[i].subject != v[p]) {
+                                                isPassed = false
+                                            }
                                             break;
                                         case 'grade':
                                             if (isPassed && passed[i].grade != v[p]) {
@@ -1833,95 +1834,6 @@
                             $(this).children('img').eq(0).show();
                         }
                     })
-//                    $(document).on('click', '[data-type="subject"]', function (e) {
-//                        //hide subjects
-//                        state.passed.subject.style.display = 'none'
-//                        //change Select
-//                        var s = document.getElementById('Select')
-//                        s.textContent = e.target.textContent
-//                        s.dataset.id = e.target.dataset.id
-//                        var sub = state.getSubjectById(e.target.dataset.id)
-//                        //change teachers container
-//                        state.passed.teacher.innerHTML = ''
-//                        proc({
-//                            container: state.passed.teacher,
-//                            data: sub.teachers,
-//                            templateId: 'teacher-template'
-//                        })
-//
-//                        //if need {
-//                        // change gradeSelect
-//                        //}
-//                        if (!state.containGrade(sub, g.textContent)) {
-//                            state.passed.gradeSelect.textContent = '年级'
-//                        }
-//
-////change grades container
-//                        state.passed.grade.innerHTML = ''
-//                        proc({
-//                            container: state.passed.grade,
-//                            data: sub.grades,
-//                            templateId: 'grade-template'
-//                        })
-//
-////filter data
-//                        var d = state.passed.search()
-////refill the content
-//                        state.passed.content.innerHTML = ''
-//                        proc({
-//                            container: state.passed.content,
-//                            data: d,
-//                            templateId: ''
-//                        })
-//                    })
-//
-//                    $(document).on('click', '[data-type="teacher"]', function (e) {
-////hide teachers
-////                        state.passed.teacher.style.display = 'none'
-//// change teacherSelect
-//                        var s = document.getElementById('teacherSelect')
-////                        s.textContent = e.target.textContent
-//                        s.dataset.id = e.target.dataset.id
-//
-//                        var sub = state.getSubjectById(e.target.dataset.id)
-//
-////                        if (!state.containTeacher(sub, t.textContent)) {
-////                            state.passed.teacherSelect.textContent = '老师'
-////                        }
-////filter data
-//                        var d = state.passed.search()
-////refill the content
-//                        state.passed.content.innerHTML = ''
-//                        proc({
-//                            container: state.passed.content,
-//                            data: d,
-//                            templateId: ''
-//                        })
-//                    })
-//
-//                    $(document).on('click', '[data-type="grade"]', function (e) {
-//hide grade
-//                        state.passed.grade.style.display = 'none'
-// change gradeSelect
-//                        var s = document.getElementById('gradeSelect')
-////                        s.textContent = e.target.textContent
-//                        s.dataset.id = e.target.dataset.id
-//
-//                        var sub = state.getSubjectById(e.target.dataset.id)
-//
-////                        if (!state.containTeacher(sub, t.textContent)) {
-////                            state.passed.teacherSelect.textContent = '老师'
-////                        }
-////filter data
-//                        var d = state.passed.search()
-////refill the content
-//                        state.passed.content.innerHTML = ''
-//                        proc({
-//                            container: state.passed.content,
-//                            data: d,
-//                            templateId: ''
-//                        })
-//                    })
 
                     $(document).on('click', ".tiaoj_span", function (e) {
                         if ($(e.currentTarget).hasClass('cur')) {
@@ -1976,17 +1888,21 @@
 
                         search(v)
 
-                        var one = document.getElementsByClassName('tiao_jian')
-                        var h1 = one.offsetHeight;
-                        var h2 = document.getElementsByClassName('tiaoj_jieG').offsetHeight;
-                        document.getElementById('video').css("margin-top", h1 + h2)
+//                        var one = document.getElementsByClassName('tiao_jian')
+//                        var h1 = one.offsetHeight;
+//                        var h2 = document.getElementsByClassName('tiaoj_jieG').offsetHeight;
+//                        document.getElementById('video').css("margin-top", "50px")
+                        $("#video").attr("margin-top","50px");
                     });
+
 
 
                     for (var i = 0; i < passed.length; ++i) {
                         passed[i].type = 'chinese'
+                        passed[i].subject='语文'
                         if (passed[i].subjectId == 2) {
                             passed[i].type = 'math'
+                            passed[i].subject='数学'
                         }
                     }
 //                    for (var i = 0; i < passed.length; ++i) {
@@ -2069,6 +1985,11 @@
 //                        console.log(this.getMoment().format('Do MMMM YYYY'));
 //                    }
 //                });
+                var a = document.getElementById("a")
+                a.addEventListener('click', function (e) {
+//                    alert(e.target.id)
+                    xiao(1,"scheduler")
+                })
             },
 //            search: function () {
 //                var result = []
@@ -2109,7 +2030,6 @@
         videoDetail: {
             id: null,
             init: function () {
-//                xiao(id, video)
                 var data = state.passed.findById(state.videoDetail.id)
                 var l = document.getElementById('live-details-video')
                 l.innerHTML = ''
@@ -2118,6 +2038,12 @@
                     data: data,
                     templateId: 'live-video-template'
                 })
+                var bookMark = document.getElementById("bookMark")
+                if(data.subjectId==1){
+                    bookMark.innerHTML='语文'
+                }else if(data.subjectId==2){
+                    bookMark.innerHTML='数学'
+                }
 
 
                 var icon = document.getElementById('icon')
@@ -2193,7 +2119,8 @@
                         }
                     })
                 }
-
+                var c = document.getElementById('comment-area')
+                c.innerHTML = ''
                 proc({
                     containerId: 'comment-area',
                     data: data.comments,
