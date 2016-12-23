@@ -690,8 +690,8 @@
 </template>
 <template id="strongest-brain-option-template">
     <li class="mld_daanLi">
-        <span class="daan_quan">${title}</span>
-        <input type="radio" class="daana" name="daan3">${name}
+        <span class="daan_quan" data-order="${order}">${title}</span>
+        <input type="radio" class="daana" name="daan3" data-order="${order}">${name}
         <!--<input type="radio" id="daan_s3A" class="daana" name="daan1">-->
         <img src="${optionImagePath}" class="option" alt="">
         <!--<label for="daan_s3A">${name}</label>-->
@@ -703,7 +703,6 @@
         <img src="${storePath}" alt="">
         <ol class="mld_daanUl" data-ext-point="options" data-id="${id}"></ol>
         <div class="baoBtn" data-id="${id}">
-            <!--<a class="btnTrue" href="#">查看答案</a>-->
             <span class="btnTrue">查看答案</span>
         </div>
         <a href="${videoUrl}"><img class="muld_images" src="${videoImage}" alt=""></a>
@@ -848,7 +847,7 @@
 </template>
 
 
-<!----------------------------------------------------------------- 弹窗开始 -->
+<!----------------------------------------------------------------------- 弹窗开始 -->
 <article id="selectCard" style="display: none">
 
 </article>
@@ -1567,26 +1566,7 @@
         d.getElementById("c").style.display = "block"
     }
 
-    function ss(problemId, index) {
-        var data = {
-            problemId: problemId,
-            index: index,
-        }
-        $.ajax({
-            type: "post",
-            url: "/api/answer-records/",
-            dataType: "json",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            success: function (e) {
-                  alert(JSON.stringify(e))
-            },
-            error: function (e) {
-                 alert(JSON.stringify(e))
-            }
-        })
-    }
-    //    --------------------------------------------------------------弹窗js开始
+    //        -----------------------------------------------------------弹窗js结束
 
     /*
      *  [
@@ -2155,6 +2135,25 @@
         },
         knowledgePoint: {
             init: function () {
+                var submitAnswer = function (problemId, index) {
+                    var data = {
+                        problemId: problemId,
+                        index: index,
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: "/api/answer-records/",
+                        dataType: "json",
+                        data: JSON.stringify(data),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (e) {
+                            //alert(JSON.stringify(e))
+                        },
+                        error: function (e) {
+                            //  alert(JSON.stringify(e))
+                        }
+                    })
+                }
                 var falseImage = getTemplate('falseImage');
                 var trueImage = getTemplate('trueImage');
                 $(document).on('click', '.mld_daanLi', function (e) {
@@ -2208,7 +2207,7 @@
                         }
                         if (option.children[1].dataset.selected == 'true' || option.children[1].dataset.selected == true) {
                             var selectedIndex = option.children[1].dataset.order - 1;
-                            ss(problem.id, selectedIndex);
+                            submitAnswer(problem.id, selectedIndex);
                             if (!state.knowledgePoint.compareAnswer(i, problem.standardAnswers)) {
                                 option.addClass('daanLi_error');
                                 option.firstElementChild.innerHTML = ''
@@ -2219,7 +2218,6 @@
                         var input = option.children[1];
                         input.disabled = true;
                     }
-
                 })
             },
             parentId: 0,
@@ -2314,6 +2312,8 @@
                         state.knowledgePoint.submit(e.target, commentContent, function (c) {
                             c.likeCount = 0;
                             c.liked = false;
+//                            c.userName =;
+//                            c.userAvatar =;
                             state.knowledgePoint.value.contents.comments.push(c);
                             commentsContainer.innerHTML = '';
                             proc({
@@ -2457,6 +2457,7 @@
                         //comments-likes;
                         state.knowledgePoint.renderComments()
                         break
+
                     case 2:
                     case '2':
                         switch (state.knowledgePoint.value.type) {
@@ -2624,6 +2625,7 @@
                                 break
                         }
                         break
+
                     case 3:
                     case "3":
 
@@ -2685,7 +2687,6 @@
                         //滑动
                         state.pageTopChange();
                         break
-
                 }
             },
             getById: function (id) {

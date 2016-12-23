@@ -692,6 +692,8 @@ public class Users {
             List<KnowledgePoint> knowledgePoints = Resources.getList(em, knowledgePointIds, KnowledgePoint.class);
             List<String> volumeIds = knowledgePoints.stream().map(knowledgePoint -> knowledgePoint.getVolumeId().toString()).collect(Collectors.toList());
             List<Volume> volumes = Resources.getList(em, volumeIds, Volume.class);
+            List<String> coverIds = volumes.stream().map(v -> v.getCoverId().toString()).collect(Collectors.toList());
+            List<Image> covers = Resources.getList(em, coverIds, Image.class);
             List<String> subjectIds = volumes.stream().map(volume -> volume.getSubjectId().toString()).collect(Collectors.toList());
             List<Scheduler> schedulers = Resources.getList(em, schedulerIds, Scheduler.class);
             subjectIds.addAll(schedulers.stream().map(scheduler -> scheduler.getSubjectId().toString()).collect(Collectors.toList()));
@@ -734,6 +736,7 @@ public class Users {
                 s.put("volumes", vs);
                 r.add(s);
             }
+            result = Response.ok(new Gson().toJson(r)).build();
             //{subjects: [], schedulers: [], volumes: [], knowledgePoints: [], problems: []}
             //[{subject-info, schedulers: [{}, ...], volumes: [{volume-info, knowledgePoints: [{knowledgePoint-info, problems: [{problem-info, standAnswer:[], answer:[]}, ...]}, ...]}, ...]}, {...}]
         }

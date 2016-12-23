@@ -191,6 +191,7 @@ li.mld_Ulli {
     border-radius: 50%;
     margin-right: 0.25rem;
     box-sizing: border-box;
+    z-index: 11;
 }
 
 .daan_error, .daan_true {
@@ -244,6 +245,8 @@ li.mld_Ulli {
     min-height: 2.5rem;
     margin-right: 3.75rem;
     position: relative;
+    width: 100%;
+    float: left;
 }
 
 .baoBtn {

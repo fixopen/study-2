@@ -84,10 +84,7 @@ public class Resources {
             case "knowledge-point":
                 result = JPAEntry.getObject(em, KnowledgePoint.class, "id", id);
                 break;
-            case "video":
-                result = JPAEntry.getObject(em, Scheduler.class, "id", id);
-                break;
-            case "liveVideo":
+            case "scheduler":
                 result = JPAEntry.getObject(em, Scheduler.class, "id", id);
                 break;
         }

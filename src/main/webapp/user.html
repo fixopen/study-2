@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="myUser/css/user.css">
     <script src="dao.js"></script>
     <link rel="stylesheet" href="myUser/css/Popup.css">
+    <link rel="stylesheet" href="myUser/css/直播.css">
 </head>
 <body>
 <article id="sign" style="display: none">
@@ -690,29 +691,25 @@
         <div class="pastLiveVideos_tab_div">
             <ul class="pastLiveVideos_tab_switch">
                 <li class="pastLiveVideos_tab_swli cur" data-content="chineLiveVideos">语文
-                    <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
+                    <span class="pastLiveVideos_tab_swlispan">(<i id="chineLiveSize"></i>)</span>
                 </li>
                 <li class="pastLiveVideos_tab_swli pastLiveVideos_tab_swlino" data-content="mathLiveVideos">数学
-                    <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
+                    <span class="pastLiveVideos_tab_swlispan">(<i id="mathLiveSize"></i>)</span>
                 </li>
             </ul>
         </div>
         <div class="mine_zilo">
             <div class="mine_table cur" id="chineLiveVideos">
-                <ul>
-                    <li class="all_uli" id="chine_live">
+                <ul id="chine_live">
 
-                    </li>
                 </ul>
                 <div class="bottom_txt">
                     <span class="leftLine">————</span>没有更多语文视频咯！<span class="leftLine">————</span>
                 </div>
             </div>
             <div class="mine_table" id="mathLiveVideos">
-                <ul>
-                    <li class="all_uli" id="math_live">
+                <ul id="math_live">
 
-                    </li>
                 </ul>
                 <div class="bottom_txt">
                     <span class="leftLine">————</span>没有更多数学视频咯！<span class="leftLine">————</span>
@@ -737,19 +734,17 @@
         <div class="pastLiveVideos_tab_div">
             <ul class="pastLiveVideos_tab_switch">
                 <li class="a pastLiveVideos_tab_swli cur" data-content="chineKnowledgePoints">语文
-                    <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
+                    <span class="pastLiveVideos_tab_swlispan">(<i id="chine_knowledgePoint_count"></i>)</span>
                 </li>
                 <li class="a pastLiveVideos_tab_swli pastLiveVideos_tab_swlino" data-content="mathKnowledgePoints">数学
-                    <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
+                    <span class="pastLiveVideos_tab_swlispan">(<i id="math_knowledgePoint_count"></i>)</span>
                 </li>
             </ul>
         </div>
         <div class="mine_zilo">
             <div class="mine_table cur" id="chineKnowledgePoints">
-                <ul>
-                    <li class="all_uli" id="chine_knowledgePoint">
+                <ul id="chine_knowledgePoint">
 
-                    </li>
                 </ul>
                 <div class="bottom_txt">
                     <span class="leftLine">————</span>没有更多语文课程咯！<span class="leftLine">————</span>
@@ -768,7 +763,7 @@
         </div>
     </div>
 </article>
-<article id="pastTopics" style="display: none">
+<!--<article id="pastTopics" style="display: none">
     <div class="wrap">
         <div class="pastLiveVideos_header">
             <div class="pastLiveVideos_header_l">
@@ -784,19 +779,17 @@
         <div class="pastLiveVideos_tab_div">
             <ul class="pastLiveVideos_tab_switch">
                 <li class="pastLiveVideos_tab_swli cur b" data-content="chineTopics">语文
-                    <span class="pastLiveVideos_tab_swlispan">(<i>2</i>)</span>
+                    <span class="pastLiveVideos_tab_swlispan">(<i id="chineTopicsCount"></i>)</span>
                 </li>
                 <li class="pastLiveVideos_tab_swli pastLiveVideos_tab_swlino b" data-content="mathTopics">数学
-                    <span class="pastLiveVideos_tab_swlispan">(<i>1</i>)</span>
+                    <span class="pastLiveVideos_tab_swlispan">(<i>0</i>)</span>
                 </li>
             </ul>
         </div>
         <div class="mine_zilo">
             <div class="mine_table cur" id="chineTopics">
                 <ul>
-                    <li class="all_uli" id="chine_topic">
 
-                    </li>
                 </ul>
                 <div class="bottom_txt" >
                     <span class="leftLine">————</span>没有更多语文题咯！<span class="leftLine">————</span>
@@ -804,9 +797,7 @@
             </div>
             <div class="mine_table" id="mathTopics">
                 <ul>
-                    <li class="all_uli" id="math_topic">
 
-                    </li>
                 </ul>
                 <div class="bottom_txt">
                     <span class="leftLine">————</span>没有更多数学题咯！<span class="leftLine">————</span>
@@ -814,7 +805,7 @@
             </div>
         </div>
     </div>
-</article>
+</article>-->
 
 <template id="user-template">
     <ul class="public_ul_css">
@@ -939,115 +930,173 @@
         <p class="balance_rightip"><span>${money}</span>金豆</p>
     </li>
 </template>
-<template id="pastTopics-template">
+<!--<template id="pastTopics-template">
+    <li class="all_uli">
+        <div class="uli_divT">
+            <img src="${image}" alt="">
+            <div class="uli_divTdiv" 书名>
+                ${name}
+                <br>
+                <span class="uli_divTspan">共<i>${knowledgePointCount}</i>篇，看过<i>4</i>${readpast}</span>
+            </div>
+        </div>
+        <ul class="mld_xiaoUl" data-ext-point="problems" data-id="${id}">
 
+        </ul>
+    </li>
+</template>
+<template id="pastTopicsOption-template">
+    <li class="mld_Ulli">
+        <div>
+            <span class="mld_tihao">4.</span>
+            <span class="mld_timu">
+                <img class="mld_liImg" src="img/double.png" alt="">${name}
+            </span>
+        </div>
+        <ul class="mld_daanUl">
+            <li>
+                <div class="daan_zuo">
+                    <span class="daan_quan">${english}</span>
+                </div>
+                <div class="daan_you" data-ext-point="Option" data-id="${id}">
+                    &lt;!&ndash;<input type="checkbox" id="daan_y4A" class="daana" name="daan4">&ndash;&gt;
+                </div>
+            </li>
+        </ul>
+    </li>
+</template>-->
+<template id="pastTopicsOptionStandardAnswers-template">
+    <label>${name}</label>
 </template>
 <template id="pastKnowledgePoints-template">
+    <li class="all_uli">
+        <div class="uli_divT">
+            <img src="${image}" alt="">
+            <div class="uli_divTdiv">
+                ${name}
+                <br>
+                <span class="uli_divTspan">共<i>${knowledgePointCount}</i>篇，看过<i>${readpast}</i>篇</span>
+            </div>
+        </div>
+        <ul class="all_erul" data-ext-point="knowledge" data-id="${id}">
 
+        </ul>
+    </li>
+</template>
+<template id="knowledge-template">
+    <li class="all_lifen">
+        <div class="lifen_div">
+            <span class="biaoti_left">${name}</span>
+            <span class="biaoti_right">${readTime}</span>
+        </div>
+    </li>
 </template>
 <template id="pastLiveVideos-chine-template">
-    <div class="all_liplay">
-        <a class="all_aBtn" href="javascript:void(0)">
-            <div class="yuwen_div0"><span>20</span>金豆</div>
-            <div class="yuwen_div1">语文</div>
-            <div class="yuwen_div2">
-                <h3 class="yuwen_h3">写人作文</h3>
-                <p class="yuwen_p">写作手法+得分技巧</p>
-            </div>
-            <p class="yuwen_p2">
-                <span>一年级</span>
-                <span class="yuwen_span">刘志超</span>
-                <span class="yuwen_riqi">2016-11-16</span>
-            </p>
-            <span class="yuwen_a"></span>
-        </a>
-    </div>
-    <div class="course-intro">
-        <div class="course_xiaqing">
-            <div class="xiaq_div">
-                <p>语文作文与写作手法语文作文与写作写作</p>
-                <div class="course_detail">详情
-                    <img src="../../images/xiala.png" alt="">
-                    <img src="../../images/xiala_sq.png" alt="">
+    <li class="all_uli">
+        <div class="all_liplay">
+            <a class="all_aBtn" href="javascript:void(0)" data-id="${id}" data-article="videoDetail">
+                <div class="yuwen_div0"><span>${price}</span>金豆</div>
+                <div class="yuwen_div1">${subjectId}</div>
+                <div class="yuwen_div2">
+                    <h3 class="yuwen_h3">${abstraction}</h3>
+                    <p class="yuwen_p">${name}</p>
+                </div>
+                <p class="yuwen_p2">
+                    <span>${grade}</span>
+                    <span class="yuwen_span">${teacher}</span>
+                    <span class="yuwen_riqi">${startTime}</span>
+                </p>
+                <span class="yuwen_a"></span>
+            </a>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="xiaq_div">
+                    <p>${outline}</p>
+                    <div class="course_detail yingyu_Btn passed-detail"  data-detail="${id}">详情
+                        <img src="img/xiala.png" alt=""/>
+                        <img src="img/xiala_sq.png" alt=""/>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="course-detail">
-            <div class="keqian_zb">
-                课前准备：
-                <span>笔记本、铅笔、橡皮、圆珠笔、课本</span>
+            <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>${prepare}</span>
+                </div>
+                <h3 class="sml-tit brief1">
+                    <img src="../../images/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p class="tim2">${description}</p>
+
+                <h3 class="sml-tit brief2">
+                    <img src="../../images/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2">${teacherDescription}</p>
+
+                <h3 class="sml-tit brief3">
+                    <img src="../../images/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${startTime}</p>
             </div>
-            <h3 class="sml-tit brief1">
-                <img src="../../images/abc.png" alt="">
-                课程简介
-            </h3>
-            <p class="tim2">写人作文是指通过具体的描写，以典型的事例表现人物的品质或特点的文章。写人作文着眼于描写人物，包括人物的外貌特征、言行举止、心理活动等。人物是主要的描写对象，事情是为突出人物的性格特征和思想品质服务的。</p>
-
-            <h3 class="sml-tit brief2">
-                <img src="../../images/zjr_btn.png" alt="">
-                主讲人简介
-            </h3>
-            <p class="tim2">董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
-
-            <h3 class="sml-tit brief3">
-                <img src="../../images/sxsj_btn.png" alt="">
-                上线时间
-            </h3>
-            <p>2016-03-11    10:22:33</p>
         </div>
-    </div>
+    </li>
 </template>
 <template id="pastLiveVideos-math-template">
-    <div class="all_liplay yingyu_play">
-        <a class="all_aBtn" href="javascript:void(0)">
-            <div class="yuwen_div0"><span>20</span>金豆</div>
-            <div class="yuwen_div1 yingyu_div1">英语</div>
-            <div class="yuwen_div2 yingyu_div2">
-                <h3 class="yuwen_h3">写人作文</h3>
-                <p class="yuwen_p">认识单词+ear/eye/arm</p>
+    <li class="all_uli">
+        <div class="all_liplay shuxue_play">
+            <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
+                <div class="yuwen_div0"><span>${price}</span>金豆</div>
+                <div class="yuwen_div1 shuxue_div1">${subjectId}</div>
+                <div class="yuwen_div2 shuxue_div2" id="subjectImg">
+                    <h3 class="yuwen_h3">${abstraction}</h3>
+                    <p class="yuwen_p">${name}</p>
+                </div>
+                <p class="yuwen_p2">
+                    <span>${grade}</span>
+                    <span class="yuwen_span">${teacher}</span>
+                    <span class="yuwen_riqi">${startTime}</span>
+                </p>
+                <span class="yuwen_a"></span>
             </div>
-            <p class="yuwen_p2">
-                <span>三年级</span>
-                <span class="yuwen_span">刘志超</span>
-                <span class="yuwen_riqi">2016-11-16</span>
-            </p>
-            <span class="yuwen_a"></span>
-        </a>
-    </div>
-    <div class="course-intro">
-        <div class="course_xiaqing">
-            <div class="xiaq_div">
-                <p>认识小熊的各个部位单词</p>
-                <div class="course_detail yingyu_Btn">详情
-                    <img src="../../images/xiala_yy.png" alt="">
-                    <img src="../../images/xiala_sqyy.png" alt="">
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="xiaq_div">
+                    <p>${outline}</p>
+                    <div class="course_detail shuxue_Btn passed-detail" data-detail="${id}">详情
+                        <img src="/images/xiala_sx.png" alt="">
+                        <img src="/images/xiala_sqsx.png" alt="">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="course-detail">
-            <div class="keqian_zb">
-                课前准备：
-                <span>笔记本、铅笔、橡皮、圆珠笔、课本</span>
+            <div class="course-detail" data-identity="${id}">
+                <div class="keqian_zb">
+                    课前准备：
+                    <span>${prepare}</span>
+                </div>
+                <h3 class="sml-tit brief1">
+                    <img src="/images/abc.png" alt="">
+                    课程简介
+                </h3>
+                <p>${description}</p>
+                <h3 class="sml-tit brief2">
+                    <img src="/images/zjr_btn.png" alt="">
+                    主讲人简介
+                </h3>
+                <p class="tim2"> ${teacherDescription}</p>
+
+                <h3 class="sml-tit brief3">
+                    <img src="/images/sxsj_btn.png" alt="">
+                    上线时间
+                </h3>
+                <p>${startTime}</p>
             </div>
-            <h3 class="sml-tit brief1">
-                <img src="../../images/abc.png" alt="">
-                课程简介
-            </h3>
-            <p class="tim2">写人作文是指通过具体的描写，以典型的事例表现人物的品质或特点的文章。写人作文着眼于描写人物，包括人物的外貌特征、言行举止、心理活动等。人物是主要的描写对象，事情是为突出人物的性格特征和思想品质服务的。</p>
-
-            <h3 class="sml-tit brief2">
-                <img src="../../images/zjr_btn.png" alt="">
-                主讲人简介
-            </h3>
-            <p class="tim2">董 霞，女，本科学历，小学语文高级教师，现任文学部教学主管，文学写作项目、童话阅读项目专业指导教师。《母婴杂志》绘本栏目特邀专家顾问。曾获杭州市教坛新秀、杭州市小学语文学科带头人、杭州市优秀班主任等荣誉；多次在杭州市语文教学观摩活动中获奖。出版《小学生成语故事》、《青少年宫文学写作专用教材》二、三册。撰写的论文多次在杭州市校外教育论文评选活动中获奖。</p>
-
-            <h3 class="sml-tit brief3">
-                <img src="../../images/sxsj_btn.png" alt="">
-                上线时间
-            </h3>
-            <p>2016-03-11    10:22:33</p>
         </div>
-    </div>
+    </li>
 </template>
 <template id="settings-template">
 
@@ -1183,6 +1232,31 @@
                 result = 2
             }
 
+            return result
+        },
+        getGrade:function(grade){
+            var result = 0
+            if (grade == 1) {
+                result = "一年级"
+            }
+            if (grade == 2) {
+                result = "二年级"
+            }
+            if (grade == 3) {
+                result = "三年级"
+            }if (grade == 4) {
+                result = "四年级"
+            }if (grade == 5) {
+                result = "五年级"
+            }if (grade == 6) {
+                result = "六年级"
+            }
+            if (grade == "20") {
+                result = "1-2年级"
+            }
+            if (grade == "21") {
+                result = "3-6年级"
+            }
             return result
         },
         /*rechargePage(cards,T){
@@ -2013,18 +2087,35 @@
                         success:function (e) {
                             user.chinepast = []
                             user.mathpast = []
+                            user.chineproblems = []
+                            user.mathproblems = []
                             for (var i = 0; i < e.length; i++) {
                                 if(e[i].no == "02"){
                                     user.chinepast = e[i]
+                                    for (var j = 0; j < user.chinepast.volumes.length; j++) {
+                                        user.chinepast.volumes[j].readpast = user.chinepast.volumes[j].knowledgePoints.length
+                                        for (var k = 0; k < user.chinepast.volumes[j].knowledgePoints.length; k++) {
+                                            for (var x = 0; x < user.chinepast.volumes[j].knowledgePoints[k].problems.length; x++) {
+                                                user.chineproblems.push(user.chinepast.volumes[j].knowledgePoints[k].problems[x])
+                                            }
+                                        }
+                                    }
                                 }else if(e[i].no == "01"){
                                     user.mathpast = e[i]
+                                    for (var j= 0; j < user.mathpast.volumes.length; j++) {
+                                        user.mathpast.volumes[j].readpast = user.mathpast.volumes[j].knowledgePoints.length
+                                        for (var k = 0; k < user.mathpast.volumes[j].knowledgePoints.length; k++) {
+                                            for (var x = 0; x < user.mathpast.volumes[j].knowledgePoints[k].problems.length; x++) {
+                                                user.mathproblems.push(user.mathpast.volumes[j].knowledgePoints[k].problems[x])
+                                            }
+                                        }
+                                    }
                                 }
                             }
-                            alert(JSON.stringify(user.chinepast))
-                            alert(JSON.stringify(user.mathpast))
                         }
                     })
                 }
+                state.study.isStudy = true
             }
         },
         score: {
@@ -2464,15 +2555,58 @@
             currentTab: $('[data-content="chineLiveVideos"]')[0],
             init: function () {
                 if(!state.pastLiveVideos.isPastLiveVidos){
-                    user.chinepast = []
-                    user.mathpast = []
+                    user.chinepastschedulers = []
+                    user.mathpastschedulers = []
+                    user.chinepastschedulers = user.chinepast.schedulers
+                    var grade = 0;
+                    for (var i = 0; i < user.chinepastschedulers.length; i++) {
+                        if(user.chinepastschedulers[i].subjectId == 1){
+                            user.chinepastschedulers[i].subjectId = "语文"
+                        }
+                        grade = user.chinepastschedulers[i].grade
+                        user.chinepastschedulers[i].grade = state.getGrade(grade);
+                    }
+                    document.getElementById("chine_live").innerHTML=""
+                    document.getElementById("chineLiveSize").innerHTML=user.chinepastschedulers.length
+                    proc({
+                        containerId: 'chine_live',
+                        data: user.chinepastschedulers,
+                        templateId: 'pastLiveVideos-chine-template'
+                    })
+                    user.mathpastschedulers = user.mathpast.schedulers
 
+                    for (var i = 0; i < user.mathpastschedulers.length; i++) {
+                        if(user.mathpastschedulers[i].subjectId == 2){
+                            user.mathpastschedulers[i].subjectId = "数学"
+                        }
+                        grade = user.mathpastschedulers[i].grade
+                        user.mathpastschedulers[i].grade = state.getGrade(grade);
+                    }
+                    document.getElementById("math_live").innerHTML=""
+                    document.getElementById("mathLiveSize").innerHTML=user.mathpastschedulers.length
+                    proc({
+                        containerId: 'math_live',
+                        data: user.mathpastschedulers,
+                        templateId: 'pastLiveVideos-math-template'
+                    })
                     $('.pastLiveVideos_tab_swli').on('click', function (e) {
                         state.pastLiveVideos.currentTab.removeClass('cur')
                         document.getElementById(state.pastLiveVideos.currentTab.dataset.content).removeClass('cur')
                         state.pastLiveVideos.currentTab = e.currentTarget
                         state.pastLiveVideos.currentTab.addClass('cur')
                         document.getElementById(state.pastLiveVideos.currentTab.dataset.content).addClass('cur')
+                    })
+
+                    $(document).on('click', '.passed-detail', function (e) {
+                        $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
+                        if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
+                            $(this).children('img').eq(0).hide();
+                            $(this).children('img').eq(1).show();
+                        }
+                        else {
+                            $(this).children('img').eq(1).hide();
+                            $(this).children('img').eq(0).show();
+                        }
                     })
                 }
                 state.pastLiveVideos.isPastLiveVidos = true
@@ -2483,6 +2617,35 @@
             currentTab: $('[data-content="chineKnowledgePoints"]')[0],
             init: function () {
                 if(!state.pastKnowledgePoints.isPastKnowledgePoints){
+                    user.chinepastvolumes = []
+                    user.chinepastvolumes = user.chinepast.volumes
+                    document.getElementById("chine_knowledgePoint").innerHTML=""
+                    document.getElementById("chine_knowledgePoint_count").innerHTML=user.chinepastvolumes.length
+                    proc({
+                        containerId: 'chine_knowledgePoint',
+                        data: user.chinepastvolumes,
+                        templateId: 'pastKnowledgePoints-template',
+                        secondBind: {
+                            extPoint: 'knowledge',
+                            dataFieldName: 'knowledgePoints',
+                            templateId: 'knowledge-template'
+                        }
+                    })
+                    user.mathpastvolumes = []
+                    user.mathpastvolumes = user.mathpast.volumes
+                    document.getElementById("math_knowledgePoint").innerHTML=""
+                    document.getElementById("math_knowledgePoint_count").innerHTML=user.mathpastvolumes.length
+                    proc({
+                        containerId: 'math_knowledgePoint',
+                        data: user.mathpastvolumes,
+                        templateId: 'pastKnowledgePoints-template',
+                        secondBind: {
+                            extPoint: 'knowledge',
+                            dataFieldName: 'knowledgePoints',
+                            templateId: 'knowledge-template'
+                        }
+                    })
+
                     $('.a').on('click', function (e) {
                         state.pastKnowledgePoints.currentTab.removeClass('cur')
                         document.getElementById(state.pastKnowledgePoints.currentTab.dataset.content).removeClass('cur')
@@ -2500,6 +2663,22 @@
             currentTab: $('[data-content="chineTopics"]')[0],
             init: function () {
                 if(!state.pastTopics.isPastTopics){
+                   /* user.mathproblems = []
+                    user.mathproblems = user.chinepast.volumes
+                    document.getElementById("chineTopics").innerHTML=""
+                    document.getElementById("chineTopicsCount").innerHTML=user.chinepastvolumes.length
+                    proc({
+                        containerId: 'chineTopics',
+                        data: user.mathproblems,
+                        templateId: 'pastTopics-template',
+                        secondBind: {
+                            extPoint: 'problems',
+                            dataFieldName: 'problems',
+                            templateId: 'pastTopicsOption-template'
+                        }
+                    })
+                    alert(JSON.stringify(user.chineproblems))
+                    alert(JSON.stringify(user.mathproblems))*/
                     $('.b').on('click', function (e) {
                         state.pastTopics.currentTab.removeClass('cur')
                         document.getElementById(state.pastTopics.currentTab.dataset.content).removeClass('cur')
