@@ -2158,19 +2158,22 @@
                         success: function (e) {
                             user.chinepast = []
                             user.mathpast = []
-                            user.chineproblems = []
-                            user.mathproblems = []
                             var process = function(subject) {
                                 var check = function(problem) {
                                     for (var i = 0; i < problem.options.length; ++i) {
-                                        problem.options[i] = false
+                                        problem.options[i].type = true
                                     }
                                     for (var i = 0; i < problem.answerRecords.length; ++i) {
+                                        var index = problem.answerRecords[i].index
+                                        var isFind = false
                                         for (var j = 0; j < problem.standardAnswers.length; ++j) {
-                                            if (problem.answerRecords[i].index == problem.standardAnswers[j].index) {
-                                                problem.options[problem.answerRecords[i].index] = true
+                                            if (index == problem.standardAnswers[j].index) {
+                                                isFind = true
                                                 break
                                             }
+                                        }
+                                        if (!isFind) {
+                                            problem.options[index].type = false
                                         }
                                     }
                                 }
