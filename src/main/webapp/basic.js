@@ -32,34 +32,12 @@ var proc = function (option) {
     }
 
     if (clone == null) {
-        //
-    }
-    var prepareAltTemplates = function(option) {
-        //prepare alt templates
-        var templates
         if (option.alterTemplates) {
-            templates = []
+            var templates = []
             for (var i = 0; i < option.alterTemplates.length; ++i) {
                 templates.push({type: option.alterTemplates[i].type, template: option.alterTemplates[i].template || getTemplate(option.alterTemplates[i].templateId)})
             }
-        }
-        return templates
-    }
-
-    var templates = prepareAltTemplates(option)
-
-    //prepare container
-    var container = option.container
-    if (!container) {
-        container = doc.getElementById(option.containerId)
-    }
-    if ((template || templates) && container) {
-        //clone element via template or alt templates
-        var cloneElement = function (type) {
-            var element
-            if (template) {
-                element = template.cloneNode(true)
-            } else if (templates) {
+            clone = function(type) {
                 for (var j = 0; j < templates.length; ++j) {
                     if (type == templates[j].type) {
                         element = templates[j].template.cloneNode(true)
@@ -67,42 +45,36 @@ var proc = function (option) {
                     }
                 }
             }
-            return element
         }
-        //proc second bind
-        var procSecond = function (element, data) {
-            if (option.secondBind) {
-                var process = function(element, data, option) {
-                    if (option.alterTemplates) {
-                        proc({
-                            container: element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]'),
-                            alterTemplates: option.secondBind.alterTemplates,
-                            data: data[option.secondBind.dataFieldName]
-                        })
-                    } else {
-                        proc({
-                            container: element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]'),
-                            templateId: option.secondBind.templateId,
-                            data: data[option.secondBind.dataFieldName]
-                        })
-                    }
-                }
-                if (Array.isArray(option.secondBind)) {
-                    for (var i = 0; i < option.secondBind.length; ++i) {
-                        var o = {}
-                        for (var p in option.secondBind[i]) {
-                            o[p] = option.secondBind[i][p]
-                        }
-                        process(element, data, o)
+    }
+
+    //prepare container
+    var container = option.container || doc.getElementById(option.containerId)
+
+    if (clone && container) {
+        var procSecond = function (element, data, config) {
+            if (config) {
+                if (Array.isArray(config)) {
+                    for (var i = 0; i < config.length; ++i) {
+                        procSecond(element, data, config[i])
                     }
                 } else {
-                    process(element, data, option)
+                    var opt = {
+                        container: element.querySelector('*[data-ext-point="' + config.extPoint + '"]'),
+                        data: data[config.dataFieldName],
+                        template: config.template || getTemplate(config.templateId)
+                    }
+                    if (!opt.template) {
+                        opt.alterTemplates = config.alterTemplates
+                    }
+                    proc(opt)
                 }
             }
         }
+
         if (Array.isArray(option.data)) { //data is array of object
             for (var i = 0; i < option.data.length; ++i) {
-                var element = cloneElement(option.data[i].type)
+                var element = clone(option.data[i].type)
                 if (element) {
                     bind(element, option.data[i])
                     procSecond(element, option.data[i])
@@ -110,10 +82,10 @@ var proc = function (option) {
                 }
             }
         } else { //data is object
-            var element = cloneElement()
+            var element = clone()
             if (element) {
                 bind(element, option.data)
-                procSecond(element, option.data)
+                procSecond(element, option.data, option.secondBind)
                 container.appendChild(element)
             }
         }
