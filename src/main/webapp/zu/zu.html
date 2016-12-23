@@ -1,181 +1,174 @@
-
-<!--弹窗开始 -->
-<article id="selectCard" style="display: none">
-
-</article>
-<article id="selectOneCard" style="display: none">
-
-</article>
-<template id="selectCard-template">
-    <div class="wrap">
-        <ul class="mine_baodiv">
-            <li>
-                <a class="mine_zuli" href="#" data-id="${id}">
-                    <img class="mine_img1" src="${image}" alt="">
-                    <div class="mine_leftdiv">
-                        <span class="mine_leftsp">${subjectId}</span>
-                        <span class="mine_leftsp">${no}</span>
-                        <br>
-                        <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
-                    </div>
-                    <img src="" id="${id}" src="" class="mine_img2"/>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-</template>
-<template id="selectOneCard-template">
-    <div class="wrap">
-        <ul class="mine_baodiv">
-            <li>
-                <a class="mine_zuli" href="javascript:void(0)">
-                    <img class="mine_img1" src="myUser/image/keBiao.png" alt="">
-                    <div class="mine_leftdiv">
-                        <span class="mine_leftsp">${subjectId}</span>
-                        <span class="mine_leftsp">${no}</span>
-                        <br>
-                        <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
-        <ul class="mine_baodiv">
-            <li class="mine_liname">
-                <div class="mine_leftdiv">
-                    <p class="mine_zhaunc">转出金豆数量</p>
-                    <span class="mine_leftsp">金豆：</span>
-                    <input class="mine_zhauncIn" type="text" id="Number">
-                </div>
-            </li>
-        </ul>
-        <p class="turnOut_note">
-            最多可转出到卡
-            <span class="note_number" id="tishi"></span>
-        </p>
-        <div class="zhaunc_btn">
-            <a class="zhaunc_a" href="#" id="submitTransfer">确认转出</a>
-
+<div>
+    <article id="selectCard" style="display: none"></article>
+    <article id="selectOneCard" style="display: none"></article>
+    <template id="selectCard-template">
+        <div class="wrap">
+            <ul class="mine_baodiv">
+                <li>
+                    <a class="mine_zuli" href="#" data-id="${id}">
+                        <img class="mine_img1" src="${image}" alt="">
+                        <div class="mine_leftdiv">
+                            <span class="mine_leftsp">${subjectId}</span>
+                            <span class="mine_leftsp">${no}</span>
+                            <br>
+                            <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
+                        </div>
+                        <img src="" id="${id}" src="" class="mine_img2"/>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </div>
-</template>
-<div class="wrap" id="c" style="display: none">
-    <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
-    <a class="mine_zuli" href="javascript:void(0)" id="z">
-        <img src="myUser/image/keBiao.png" alt="">
-        <div class="mine_leftdiv">
-            <span class="mine_leftsp" id="name"></span>
-            &lt;!&ndash; <span class="mine_leftsp">5487965452</span> &ndash;&gt;
+    </template>
+    <template id="selectOneCard-template">
+        <div class="wrap">
+            <ul class="mine_baodiv">
+                <li>
+                    <a class="mine_zuli" href="javascript:void(0)">
+                        <img class="mine_img1" src="myUser/image/keBiao.png" alt="">
+                        <div class="mine_leftdiv">
+                            <span class="mine_leftsp">${subjectId}</span>
+                            <span class="mine_leftsp">${no}</span>
+                            <br>
+                            <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="mine_baodiv">
+                <li class="mine_liname">
+                    <div class="mine_leftdiv">
+                        <p class="mine_zhaunc">转出金豆数量</p>
+                        <span class="mine_leftsp">金豆：</span>
+                        <input class="mine_zhauncIn" type="text" id="Number">
+                    </div>
+                </li>
+            </ul>
+            <p class="turnOut_note">
+                最多可转出到卡
+                <span class="note_number" id="tishi"></span>
+            </p>
+            <div class="zhaunc_btn">
+                <a class="zhaunc_a" href="#" id="submitTransfer">确认转出</a>
+            </div>
+        </div>
+    </template>
+    <div id="c" class="wrap" style="display: none">
+        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+        <a id="z" class="mine_zuli" href="javascript:void(0)">
+            <img src="myUser/image/keBiao.png" alt="">
+            <div class="mine_leftdiv">
+                <span class="mine_leftsp" id="name"></span>
+                <span class="mine_leftsp">5487965452</span>
+                <br>
+                <span class="uli_span">余<i class="uli_spani" id="usermoney"></i>金豆</span>
+            </div>
+        </a>
+        <div class="charge-main">
+            <!-- charge-area -->
+            <p class="main_ptxt">1元=10金豆</p>
+            <ul class="rain-drop-ul">
+                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+            </ul>
+            <div class="srinput_div">
+                <span class="srinput_span">其他金额：</span>
+                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+            </div>
+            <div class="count_div">小计：
+                <span>￥<i class="count_spani1">15</i></span>
+            </div>
+        </div>
+        <div class="count_div">合计：
+            <span>￥<i class="count_spani2">10.50</i></span>
             <br>
-            <span class="uli_span">余<i class="uli_spani" id="usermoney"></i>金豆</span>
+            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
         </div>
-    </a>
-    <div class="charge-main">
-        &lt;!&ndash; charge-area &ndash;&gt;
-        <p class="main_ptxt">1元=10金豆</p>
-        <ul class="rain-drop-ul">
-            <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
-            <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
-            <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
-            <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
-            <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
-            <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
-        </ul>
-        <div class="srinput_div">
-            <span class="srinput_span">其他金额：</span>
-            <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
-        </div>
-        <div class="count_div">小计：
-            <span>￥<i class="count_spani1">15</i></span>
+        <!-- pay-btn -->
+        <div class="pay_btn">
+            <div class="wechat-btn">
+                <span class="wechat-span"></span>
+                微信支付
+            </div>
+            <div class="alipay-btn">
+                <span class="alipay-span"></span>
+                支付宝支付
+            </div>
         </div>
     </div>
-    <div class="count_div">合计：
-        <span>￥<i class="count_spani2">10.50</i></span>
-        <br>
-        <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
-    </div>
-    &lt;!&ndash; pay-btn &ndash;&gt;
-    <div class="pay_btn">
-        <div class="wechat-btn">
-            <span class="wechat-span"></span>
-            微信支付
-        </div>
-        <div class="alipay-btn">
-            <span class="alipay-span"></span>
-            支付宝支付
-        </div>
-    </div>
-</div>
-<div id="1" style="display: none">
-    <div class="tan" style="display: block;"></div>
-    <div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;
-        <a class="windowClose" href="JavaScript:void(0)" id="close1"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt" id="p11">直播需要150个金豆</p>
-            <p class="neir_ptxt" id="p21">确认要扣语文卡150个金豆吗？</p>
-            &lt;!&ndash;//<span class="ptxt_span" id="jin"></span>&ndash;&gt;
-            <p class="neir_ptiX" id="p31"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="JavaScript:;" id="a11">确认</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="JavaScript:;" id="a21">充值</a>
-            </p>
+    <div id="1" style="display: none">
+        <div class="tan" style="display: block;"></div>
+        <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+            <a class="windowClose" href="JavaScript:void(0)" id="close1"></a>
+            <div class="win_neir koudou_win">
+                <p class="neir_ptxt" id="p11">直播需要150个金豆</p>
+                <p class="neir_ptxt" id="p21">确认要扣语文卡150个金豆吗？</p>
+                <!--//<span class="ptxt_span" id="jin"></span>-->
+                <p class="neir_ptiX" id="p31"><input name="" type="checkbox">下次不提醒</p>
+                <p class="neir_pBtn kou_dou">
+                    <a class="p_btn" href="JavaScript:;" id="a11">确认</a>
+                </p>
+                <p class="neir_pBtn2">
+                    <a class="p_buyka" href="JavaScript:;" id="a21">充值</a>
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<div id="2" style="display: none">
-    <div class="tan" style="display: block;"></div>
-    <div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;
-        <a class="windowClose" href="JavaScript:void(0)" id="close2"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt" id="p12">直播需要150个金豆</p>
-            <p class="neir_ptxt" id="p22">您的语文卡余额不足</p>
-            &lt;!&ndash;//<span class="ptxt_span" id="jin"></span>&ndash;&gt;
-            <p class="neir_ptiX" id="p32"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="JavaScript:;" id="a12">充值</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="JavaScript:;" id="a22">转入</a>
-            </p>
+    <div id="2" style="display: none">
+        <div class="tan" style="display: block;"></div>
+        <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+            <a class="windowClose" href="JavaScript:void(0)" id="close2"></a>
+            <div class="win_neir koudou_win">
+                <p class="neir_ptxt" id="p12">直播需要150个金豆</p>
+                <p class="neir_ptxt" id="p22">您的语文卡余额不足</p>
+                <!--//<span class="ptxt_span" id="jin"></span>-->
+                <p class="neir_ptiX" id="p32"><input name="" type="checkbox">下次不提醒</p>
+                <p class="neir_pBtn kou_dou">
+                    <a class="p_btn" href="JavaScript:;" id="a12">充值</a>
+                </p>
+                <p class="neir_pBtn2">
+                    <a class="p_buyka" href="JavaScript:;" id="a22">转入</a>
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<div id="3" style="display: none">
-    <div class="tan" style="display: block;"></div>
-    <div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;
-        <a class="windowClose" href="JavaScript:void(0)" id="close3"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt" id="p13">您没有语文卡</p>
-            <p class="neir_ptxt" id="p23">确认要扣除数学卡150个金豆</p>
-            &lt;!&ndash;//<span class="ptxt_span" id="jin"></span>&ndash;&gt;
-            <p class="neir_ptiX" id="p33"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="JavaScript:;" id="a13">确认</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="JavaScript:;" id="a23">充值</a>
-            </p>
+    <div id="3" style="display: none">
+        <div class="tan" style="display: block;"></div>
+        <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+            <a class="windowClose" href="JavaScript:void(0)" id="close3"></a>
+            <div class="win_neir koudou_win">
+                <p class="neir_ptxt" id="p13">您没有语文卡</p>
+                <p class="neir_ptxt" id="p23">确认要扣除数学卡150个金豆</p>
+                <!--//<span class="ptxt_span" id="jin"></span>-->
+                <p class="neir_ptiX" id="p33"><input name="" type="checkbox">下次不提醒</p>
+                <p class="neir_pBtn kou_dou">
+                    <a class="p_btn" href="JavaScript:;" id="a13">确认</a>
+                </p>
+                <p class="neir_pBtn2">
+                    <a class="p_buyka" href="JavaScript:;" id="a23">充值</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="4" style="display: none">
+        <div class="tan" style="display: block;"></div>
+        <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
+            <a class="windowClose" href="JavaScript:void(0)" id="close4"></a>
+            <div class="win_neir koudou_win">
+                <p class="neir_ptxt" id="p14">您没有语文卡</p>
+                <p class="neir_ptxt" id="p24">您的数学卡余额不足</p>
+                <!--//<span class="ptxt_span" id="jin"></span>-->
+                <p class="neir_ptiX" id="p34"><input name="" type="checkbox">下次不提醒</p>
+                <p class="neir_pBtn kou_dou">
+                    <a class="p_btn" href="JavaScript:;" id="a14">充值</a>
+                </p>
+                <p class="neir_pBtn2">
+                    <a class="p_buyka" href="JavaScript:;" id="a24">转入</a>
+                </p>
+            </div>
         </div>
     </div>
 </div>
-<div id="4" style="display: none">
-    <div class="tan" style="display: block;"></div>
-    <div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;
-        <a class="windowClose" href="JavaScript:void(0)" id="close4"></a>
-        <div class="win_neir koudou_win">
-            <p class="neir_ptxt" id="p14">您没有语文卡</p>
-            <p class="neir_ptxt" id="p24">您的数学卡余额不足</p>
-            &lt;!&ndash;//<span class="ptxt_span" id="jin"></span>&ndash;&gt;
-            <p class="neir_ptiX" id="p34"><input name="" type="checkbox">下次不提醒</p>
-            <p class="neir_pBtn kou_dou">
-                <a class="p_btn" href="JavaScript:;" id="a14">充值</a>
-            </p>
-            <p class="neir_pBtn2">
-                <a class="p_buyka" href="JavaScript:;" id="a24">转入</a>
-            </p>
-        </div>
-    </div>
-</div>
-<!--弹窗结束-->
