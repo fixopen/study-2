@@ -33,15 +33,13 @@ var proc = function (option) {
 
     if (clone == null) {
         if (option.alterTemplates) {
-            var templates = []
-            for (var i = 0; i < option.alterTemplates.length; ++i) {
-                templates.push({type: option.alterTemplates[i].type, template: option.alterTemplates[i].template || getTemplate(option.alterTemplates[i].templateId)})
-            }
             clone = function(type) {
-                for (var j = 0; j < templates.length; ++j) {
-                    if (type == templates[j].type) {
-                        element = templates[j].template.cloneNode(true)
-                        break
+                for (var i = 0; i < option.alterTemplates.length; ++i) {
+                    if (option.alterTemplates[i].type == type) {
+                        var template = option.alterTemplates[i].template || getTemplate(option.alterTemplates[i].templateId)
+                        if (template) {
+                            return template.cloneNode(true)
+                        }
                     }
                 }
             }
@@ -52,7 +50,7 @@ var proc = function (option) {
     var container = option.container || doc.getElementById(option.containerId)
 
     if (clone && container) {
-        var procSecond = function (element, data, config) {
+        var procNext = function (element, data, config) {
             if (config) {
                 if (Array.isArray(config)) {
                     for (var i = 0; i < config.length; ++i) {
@@ -77,7 +75,7 @@ var proc = function (option) {
                 var element = clone(option.data[i].type)
                 if (element) {
                     bind(element, option.data[i])
-                    procSecond(element, option.data[i])
+                    procNext(element, option.data[i], option.secondBind)
                     container.appendChild(element)
                 }
             }
@@ -85,7 +83,7 @@ var proc = function (option) {
             var element = clone()
             if (element) {
                 bind(element, option.data)
-                procSecond(element, option.data, option.secondBind)
+                procNext(element, option.data, option.secondBind)
                 container.appendChild(element)
             }
         }
