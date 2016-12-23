@@ -12,7 +12,7 @@
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="myUser/css/common.css"/>
     <link rel="stylesheet" href="myUser/css/global.css">
-
+    <link rel="stylesheet" href="css/math-detail.css">
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <link rel="stylesheet" href="myUser/css/user.css">
     <script src="dao.js"></script>
@@ -763,7 +763,7 @@
         </div>
     </div>
 </article>
-<!--<article id="pastTopics" style="display: none">
+<article id="pastTopics" style="display: none">
     <div class="wrap">
         <div class="pastLiveVideos_header">
             <div class="pastLiveVideos_header_l">
@@ -788,7 +788,7 @@
         </div>
         <div class="mine_zilo">
             <div class="mine_table cur" id="chineTopics">
-                <ul>
+                <ul id="chinetopicsname">
 
                 </ul>
                 <div class="bottom_txt" >
@@ -796,7 +796,7 @@
                 </div>
             </div>
             <div class="mine_table" id="mathTopics">
-                <ul>
+                <ul id="mathtopicsname">
 
                 </ul>
                 <div class="bottom_txt">
@@ -805,7 +805,7 @@
             </div>
         </div>
     </div>
-</article>-->
+</article>
 
 <template id="user-template">
     <ul class="public_ul_css">
@@ -930,18 +930,40 @@
         <p class="balance_rightip"><span>${money}</span>金豆</p>
     </li>
 </template>
-<!--<template id="pastTopics-template">
+<!--
+<template id="pastTopics-template">
     <li class="all_uli">
-        <div class="uli_divT">
+       &lt;!&ndash; <div class="uli_divT">
             <img src="${image}" alt="">
             <div class="uli_divTdiv" 书名>
                 ${name}
                 <br>
                 <span class="uli_divTspan">共<i>${knowledgePointCount}</i>篇，看过<i>4</i>${readpast}</span>
             </div>
-        </div>
-        <ul class="mld_xiaoUl" data-ext-point="problems" data-id="${id}">
+        </div>&ndash;&gt;
+        &lt;!&ndash;<ul class="mld_xiaoUl" data-ext-point="problems" data-id="${id}">
 
+        </ul>&ndash;&gt;
+        <ul class="mld_xiaoUl">
+            <li class="mld_Ulli">
+                <div>
+                    <span class="mld_tihao">4.</span>
+                    <span class="mld_timu">
+                        <img class="mld_liImg"  alt="">以下哪些人被认为是“魏晋风度”的代表？
+                    </span>
+                </div>
+                <ul class="mld_daanUl" >
+                    <li>
+                        <div class="daan_zuo">
+                            <span class="daan_quan">A</span>
+                        </div>
+                        <div class="daan_you">
+                            <input type="checkbox" id="daan_y4A" class="daana" name="daan4">
+                            <label for="daan_y4A">嵇喜</label>
+                        </div>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </li>
 </template>
@@ -964,10 +986,56 @@
             </li>
         </ul>
     </li>
-</template>-->
+</template>
 <template id="pastTopicsOptionStandardAnswers-template">
     <label>${name}</label>
 </template>
+-->
+
+<template id="problem-option-template">
+    <li class="mld_daanLi">
+        <span class="daan_quan" data-id="${id}" data-order="${order}">${title}</span>
+        <input class="daana" name="daan3" type="radio" data-order="${order}">${name}
+    </li>
+</template>
+<template id="problem-option-true-template">
+    <li class="mld_daanLi ">
+        <!--daanLi_true-->
+        <span class="daan_quan" data-id="${id}" data-order="${order}">
+            <img src="img/true.png" alt="">
+        </span>
+        <input class="daana" name="daan3" type="radio" data-order="${order}">${name}
+    </li>
+</template>
+<template id="problem-option-false-template">
+    <li class="mld_daanLi ">
+        <!--daanLi_now daanLi_error-->
+        <span class="daan_quan" data-id="${id}" data-order="${order}">
+            <img src="img/error.png" alt="">
+        </span>
+        <input class="daana" name="daan3" type="radio" data-order="${order}">${name}
+    </li>
+</template>
+<template id="problem-radio-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span  style=" width: 2.1875rem;height: 0.9375rem; border: 1px solid #24cbd1; color: #24cbd1;">${type}</span>
+            ${name}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+    </li>
+</template>
+<template id="problem-checkbox-template">
+    <li class="mld_Ulli">
+        <div class="addimg">
+            <span style=" width: 2.1875rem;height: 0.9375rem;border: 1px solid #fe6568;color: #fe6568;">${type}</span>
+            ${name}
+        </div>
+        <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
+    </li>
+</template>
+
+
 <template id="pastKnowledgePoints-template">
     <li class="all_uli">
         <div class="uli_divT">
@@ -2097,6 +2165,15 @@
                                         for (var k = 0; k < user.chinepast.volumes[j].knowledgePoints.length; k++) {
                                             for (var x = 0; x < user.chinepast.volumes[j].knowledgePoints[k].problems.length; x++) {
                                                 user.chineproblems.push(user.chinepast.volumes[j].knowledgePoints[k].problems[x])
+                                                for (var v = 0; v < user.chinepast.volumes[j].knowledgePoints[k].problems[x].options.length; v++) {
+                                                    user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].title = String.fromCharCode(65 + v);
+                                                    /*if(state.study.judge(user.chineproblems[v].standardAnswers,user.chineproblems[v].answerRecords) == false){
+                                                        user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type='false'
+                                                    }else{
+                                                        user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type='true'
+                                                    }*/
+                                                }
+
                                             }
                                         }
                                     }
@@ -2112,10 +2189,39 @@
                                     }
                                 }
                             }
+
+
                         }
                     })
                 }
                 state.study.isStudy = true
+            },
+            judge:function (standardAnswers,answerRecords) {
+                var result
+                for (var i = 0; i < standardAnswers.length; i++) {
+                    for (var j = 0; j < answerRecords.length; j++) {
+                        if(standardAnswers[i].index == answerRecords[j]){
+                            result = true
+                        }else{
+                            result = false
+                        }
+                    }
+                }
+                return result
+                    /*for (var f = 0; f < user.chinepast.volumes[j].knowledgePoints[k].problems[x].standardAnswers.length; f++) { // 第一个正确答案
+                    for (var g = 0; g < user.chinepast.volumes[j].knowledgePoints[k].problems[x].answerRecords.length; g++) {//用户选择的答案
+                        if(user.chinepast.volumes[j].knowledgePoints[k].problems[x].standardAnswers[f].index == user.chinepast.volumes[j].knowledgePoints[k].problems[x].answerRecords[g]){
+                            //正确答案等于用户答案
+                            user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type = 'true'
+                        }else if(user.chinepast.volumes[j].knowledgePoints[k].problems[x].standardAnswers[f].index != user.chinepast.volumes[j].knowledgePoints[k].problems[x].answerRecords[g]){
+                            //正确答案不等于用户答案
+                            user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type = 'false'
+                        }else{
+                            //外
+                            user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type = 'no'
+                        }
+                    }
+                }*/
             }
         },
         score: {
@@ -2663,22 +2769,20 @@
             currentTab: $('[data-content="chineTopics"]')[0],
             init: function () {
                 if(!state.pastTopics.isPastTopics){
-                   /* user.mathproblems = []
-                    user.mathproblems = user.chinepast.volumes
-                    document.getElementById("chineTopics").innerHTML=""
-                    document.getElementById("chineTopicsCount").innerHTML=user.chinepastvolumes.length
+                    document.getElementById("chinetopicsname").innerHTML=""
                     proc({
-                        containerId: 'chineTopics',
-                        data: user.mathproblems,
-                        templateId: 'pastTopics-template',
+                        containerId: 'chinetopicsname',
+                        data: user.chineproblems,
+                        alterTemplates: [
+                            {type: '单选题', templateId: 'problem-radio-template'},
+                            {type: '多选题', templateId: 'problem-checkbox-template'}
+                        ],
                         secondBind: {
-                            extPoint: 'problems',
-                            dataFieldName: 'problems',
-                            templateId: 'pastTopicsOption-template'
+                            extPoint: 'options',
+                            dataFieldName: 'options',
+                            templateId: 'problem-option-template'
                         }
                     })
-                    alert(JSON.stringify(user.chineproblems))
-                    alert(JSON.stringify(user.mathproblems))*/
                     $('.b').on('click', function (e) {
                         state.pastTopics.currentTab.removeClass('cur')
                         document.getElementById(state.pastTopics.currentTab.dataset.content).removeClass('cur')
