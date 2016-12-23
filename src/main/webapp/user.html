@@ -791,7 +791,7 @@
                 <ul id="chinetopicsname">
 
                 </ul>
-                <div class="bottom_txt" >
+                <div class="bottom_txt">
                     <span class="leftLine">————</span>没有更多语文题咯！<span class="leftLine">————</span>
                 </div>
             </div>
@@ -809,20 +809,20 @@
 
 <template id="user-template">
     <ul class="public_ul_css">
-         <li class="user_li_css public_li_css">
-             <ul>
-                 <!--data-article="head"-->
-                 <span class="public_span_css">我的头像</span>
-                 <img class="user_head_css" src="${head}" alt="">
-             </ul>
+        <li class="user_li_css public_li_css">
+            <ul>
+                <!--data-article="head"-->
+                <span class="public_span_css">我的头像</span>
+                <img class="user_head_css" src="${head}" alt="">
+            </ul>
 
-         </li>
-         <li class="user_li_css public_li_css" data-article="nickname">
-             <ul data-article="nickname">
-                 <span class="public_span_css" data-article="nickname">昵称</span>
-                 <input class="user_input_css public_input_css" type="text" value="${name}" data-article="nickname">
-             </ul>
-         </li>
+        </li>
+        <li class="user_li_css public_li_css" data-article="nickname">
+            <ul data-article="nickname">
+                <span class="public_span_css" data-article="nickname">昵称</span>
+                <input class="user_input_css public_input_css" type="text" value="${name}" data-article="nickname">
+            </ul>
+        </li>
         <li style="height: 3.71875rem;line-height: 3.71875rem;padding: 0 0 0 0.9375rem;border-bottom: 1px solid #e5e5e5;">
             <span class="public_span_css">账号</span>
             <!--padding-left: 64px;-->
@@ -1019,7 +1019,7 @@
 <template id="problem-radio-template">
     <li class="mld_Ulli">
         <div class="addimg">
-            <span  style=" width: 2.1875rem;height: 0.9375rem; border: 1px solid #24cbd1; color: #24cbd1;">${type}</span>
+            <span style=" width: 2.1875rem;height: 0.9375rem; border: 1px solid #24cbd1; color: #24cbd1;">${type}</span>
             ${name}
         </div>
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
@@ -1081,7 +1081,7 @@
             <div class="course_xiaqing">
                 <div class="xiaq_div">
                     <p>${outline}</p>
-                    <div class="course_detail yingyu_Btn passed-detail"  data-detail="${id}">详情
+                    <div class="course_detail yingyu_Btn passed-detail" data-detail="${id}">详情
                         <img src="img/xiala.png" alt=""/>
                         <img src="img/xiala_sq.png" alt=""/>
                     </div>
@@ -1302,7 +1302,7 @@
 
             return result
         },
-        getGrade:function(grade){
+        getGrade: function (grade) {
             var result = 0
             if (grade == 1) {
                 result = "一年级"
@@ -1312,11 +1312,14 @@
             }
             if (grade == 3) {
                 result = "三年级"
-            }if (grade == 4) {
+            }
+            if (grade == 4) {
                 result = "四年级"
-            }if (grade == 5) {
+            }
+            if (grade == 5) {
                 result = "五年级"
-            }if (grade == 6) {
+            }
+            if (grade == 6) {
                 result = "六年级"
             }
             if (grade == "20") {
@@ -2058,70 +2061,70 @@
         head: {
             init: function () {
                 /*var url = window.location.href;
-                url = url.replace(/[/]/g, ',')
-                gettick();
-                $.ajax({
-                    type: "get",
-                    url: "/api/public-account/config/" + url,
-                    dataType: "json",
-                    success: function (e) {
-                        alert(JSON.stringify(e));
-                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
-                    }, error: function (e) {
-                        alert(JSON.stringify(e));
-                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
-                    }
-                })
-                function wechat(appId, timestamp, nonceStr, signature) {
-                    wx.config({
-                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                        appId: appId, // 必填，公众号的唯一标识
-                        timestamp: timestamp, // 必填，生成签名的时间戳
-                        nonceStr: nonceStr, // 必填，生成签名的随机串
-                        signature: signature,// 必填，签名，见附录1
-                        jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                    });
-                    wx.error(function (res) {
-                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                 url = url.replace(/[/]/g, ',')
+                 gettick();
+                 $.ajax({
+                 type: "get",
+                 url: "/api/public-account/config/" + url,
+                 dataType: "json",
+                 success: function (e) {
+                 alert(JSON.stringify(e));
+                 wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                 }, error: function (e) {
+                 alert(JSON.stringify(e));
+                 wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                 }
+                 })
+                 function wechat(appId, timestamp, nonceStr, signature) {
+                 wx.config({
+                 debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                 appId: appId, // 必填，公众号的唯一标识
+                 timestamp: timestamp, // 必填，生成签名的时间戳
+                 nonceStr: nonceStr, // 必填，生成签名的随机串
+                 signature: signature,// 必填，签名，见附录1
+                 jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                 });
+                 wx.error(function (res) {
+                 // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 
-                        alert("服务器繁忙，请刷新！")
-                    });
-                    wx.ready(function () {
-                        wx.chooseImage({
-                            count: 1,
-                            needResult: 1,
-                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                            success: function (res) {
-                                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                                //上传图片接口
-                                wx.uploadImage({
-                                    localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
-                                    isShowProgressTips: 1, // 默认为1，显示进度提示
-                                    success: function (res) {
-                                        var mediaId = res.serverId; // 返回图片的服务器端ID
-                                        //alert("返回图片的服务器端ID=="+mediaId)
-                                        libai(mediaId)
-                                    }
-                                });
-                            }
-                        });
-                    })
-                }
+                 alert("服务器繁忙，请刷新！")
+                 });
+                 wx.ready(function () {
+                 wx.chooseImage({
+                 count: 1,
+                 needResult: 1,
+                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                 success: function (res) {
+                 var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                 //上传图片接口
+                 wx.uploadImage({
+                 localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                 isShowProgressTips: 1, // 默认为1，显示进度提示
+                 success: function (res) {
+                 var mediaId = res.serverId; // 返回图片的服务器端ID
+                 //alert("返回图片的服务器端ID=="+mediaId)
+                 libai(mediaId)
+                 }
+                 });
+                 }
+                 });
+                 })
+                 }
 
-                function gettick() {
-                    $.ajax({
-                        type: "get",
-                        url: "/api/public-account/ticket/",
-                        dataType: "json",
-                        success: function (e) {
-                            //alert(JSON.stringify(e))
-                        },
-                        error: function (e) {
-                            //alert(JSON.stringify(e))
-                        }
-                    })
-                }*/
+                 function gettick() {
+                 $.ajax({
+                 type: "get",
+                 url: "/api/public-account/ticket/",
+                 dataType: "json",
+                 success: function (e) {
+                 //alert(JSON.stringify(e))
+                 },
+                 error: function (e) {
+                 //alert(JSON.stringify(e))
+                 }
+                 })
+                 }*/
 
                 /*var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
                  libai(sdakfjlasf);
@@ -2145,83 +2148,57 @@
             }
         },
         study: {
-            isStudy:false,
+            isStudy: false,
             init: function () {
-                if(!state.study.isStudy){
+                if (!state.study.isStudy) {
                     $.ajax({
-                        type:"get",
-                        url:"/api/users/history-resources",
-                        dataType:"json",
-                        success:function (e) {
+                        type: "get",
+                        url: "/api/users/history-resources",
+                        dataType: "json",
+                        success: function (e) {
                             user.chinepast = []
                             user.mathpast = []
                             user.chineproblems = []
                             user.mathproblems = []
-                            for (var i = 0; i < e.length; i++) {
-                                if(e[i].no == "02"){
-                                    user.chinepast = e[i]
-                                    for (var j = 0; j < user.chinepast.volumes.length; j++) {
-                                        user.chinepast.volumes[j].readpast = user.chinepast.volumes[j].knowledgePoints.length
-                                        for (var k = 0; k < user.chinepast.volumes[j].knowledgePoints.length; k++) {
-                                            for (var x = 0; x < user.chinepast.volumes[j].knowledgePoints[k].problems.length; x++) {
-                                                user.chineproblems.push(user.chinepast.volumes[j].knowledgePoints[k].problems[x])
-                                                for (var v = 0; v < user.chinepast.volumes[j].knowledgePoints[k].problems[x].options.length; v++) {
-                                                    user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].title = String.fromCharCode(65 + v);
-                                                    /*if(state.study.judge(user.chineproblems[v].standardAnswers,user.chineproblems[v].answerRecords) == false){
-                                                        user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type='false'
-                                                    }else{
-                                                        user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type='true'
-                                                    }*/
-                                                }
-
-                                            }
-                                        }
+                            var process = function(subject) {
+                                var check = function(problem) {
+                                    for (var i = 0; i < problem.options.length; ++i) {
+                                        problem.options[i] = false
                                     }
-                                }else if(e[i].no == "01"){
-                                    user.mathpast = e[i]
-                                    for (var j= 0; j < user.mathpast.volumes.length; j++) {
-                                        user.mathpast.volumes[j].readpast = user.mathpast.volumes[j].knowledgePoints.length
-                                        for (var k = 0; k < user.mathpast.volumes[j].knowledgePoints.length; k++) {
-                                            for (var x = 0; x < user.mathpast.volumes[j].knowledgePoints[k].problems.length; x++) {
-                                                user.mathproblems.push(user.mathpast.volumes[j].knowledgePoints[k].problems[x])
+                                    for (var i = 0; i < problem.answerRecords.length; ++i) {
+                                        for (var j = 0; j < problem.standardAnswers.length; ++j) {
+                                            if (problem.answerRecords[i].index == problem.standardAnswers[j].index) {
+                                                problem.options[problem.answerRecords[i].index] = true
+                                                break
                                             }
                                         }
                                     }
                                 }
+                                var result = []
+                                for (var i = 0; i < subject.volumes.length; ++i) {
+                                    subject.volumes[i].readpast = subject.volumes[i].knowledgePoints.length
+                                    for (var j = 0; j < subject.volumes[i].knowledgePoints.length; ++j) {
+                                        for (var k = 0; k < subject.volumes[i].knowledgePoints[j].problems.length; ++k) {
+                                            check(subject.volumes[i].knowledgePoints[j].problems[k])
+                                            result.push(subject.volumes[i].knowledgePoints[j].problems[k])
+                                        }
+                                    }
+                                }
+                                return result
                             }
-
-
+                            for (var i = 0; i < e.length; i++) {
+                                if (e[i].no == "02") {
+                                    user.chinepast = e[i]
+                                    user.chineproblems = process(user.chinepast)
+                                } else if (e[i].no == "01") {
+                                    user.mathpast = e[i]
+                                    user.mathproblems = process(user.mathpast)
+                                }
+                            }
                         }
                     })
                 }
                 state.study.isStudy = true
-            },
-            judge:function (standardAnswers,answerRecords) {
-                var result
-                for (var i = 0; i < standardAnswers.length; i++) {
-                    for (var j = 0; j < answerRecords.length; j++) {
-                        if(standardAnswers[i].index == answerRecords[j]){
-                            result = true
-                        }else{
-                            result = false
-                        }
-                    }
-                }
-                return result
-                    /*for (var f = 0; f < user.chinepast.volumes[j].knowledgePoints[k].problems[x].standardAnswers.length; f++) { // 第一个正确答案
-                    for (var g = 0; g < user.chinepast.volumes[j].knowledgePoints[k].problems[x].answerRecords.length; g++) {//用户选择的答案
-                        if(user.chinepast.volumes[j].knowledgePoints[k].problems[x].standardAnswers[f].index == user.chinepast.volumes[j].knowledgePoints[k].problems[x].answerRecords[g]){
-                            //正确答案等于用户答案
-                            user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type = 'true'
-                        }else if(user.chinepast.volumes[j].knowledgePoints[k].problems[x].standardAnswers[f].index != user.chinepast.volumes[j].knowledgePoints[k].problems[x].answerRecords[g]){
-                            //正确答案不等于用户答案
-                            user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type = 'false'
-                        }else{
-                            //外
-                            user.chinepast.volumes[j].knowledgePoints[k].problems[x].options[v].type = 'no'
-                        }
-                    }
-                }*/
             }
         },
         score: {
@@ -2657,23 +2634,23 @@
             }
         },
         pastLiveVideos: {
-            isPastLiveVidos:false,
+            isPastLiveVidos: false,
             currentTab: $('[data-content="chineLiveVideos"]')[0],
             init: function () {
-                if(!state.pastLiveVideos.isPastLiveVidos){
+                if (!state.pastLiveVideos.isPastLiveVidos) {
                     user.chinepastschedulers = []
                     user.mathpastschedulers = []
                     user.chinepastschedulers = user.chinepast.schedulers
                     var grade = 0;
                     for (var i = 0; i < user.chinepastschedulers.length; i++) {
-                        if(user.chinepastschedulers[i].subjectId == 1){
+                        if (user.chinepastschedulers[i].subjectId == 1) {
                             user.chinepastschedulers[i].subjectId = "语文"
                         }
                         grade = user.chinepastschedulers[i].grade
                         user.chinepastschedulers[i].grade = state.getGrade(grade);
                     }
-                    document.getElementById("chine_live").innerHTML=""
-                    document.getElementById("chineLiveSize").innerHTML=user.chinepastschedulers.length
+                    document.getElementById("chine_live").innerHTML = ""
+                    document.getElementById("chineLiveSize").innerHTML = user.chinepastschedulers.length
                     proc({
                         containerId: 'chine_live',
                         data: user.chinepastschedulers,
@@ -2682,14 +2659,14 @@
                     user.mathpastschedulers = user.mathpast.schedulers
 
                     for (var i = 0; i < user.mathpastschedulers.length; i++) {
-                        if(user.mathpastschedulers[i].subjectId == 2){
+                        if (user.mathpastschedulers[i].subjectId == 2) {
                             user.mathpastschedulers[i].subjectId = "数学"
                         }
                         grade = user.mathpastschedulers[i].grade
                         user.mathpastschedulers[i].grade = state.getGrade(grade);
                     }
-                    document.getElementById("math_live").innerHTML=""
-                    document.getElementById("mathLiveSize").innerHTML=user.mathpastschedulers.length
+                    document.getElementById("math_live").innerHTML = ""
+                    document.getElementById("mathLiveSize").innerHTML = user.mathpastschedulers.length
                     proc({
                         containerId: 'math_live',
                         data: user.mathpastschedulers,
@@ -2719,14 +2696,14 @@
             }
         },
         pastKnowledgePoints: {
-            isPastKnowledgePoints:false,
+            isPastKnowledgePoints: false,
             currentTab: $('[data-content="chineKnowledgePoints"]')[0],
             init: function () {
-                if(!state.pastKnowledgePoints.isPastKnowledgePoints){
+                if (!state.pastKnowledgePoints.isPastKnowledgePoints) {
                     user.chinepastvolumes = []
                     user.chinepastvolumes = user.chinepast.volumes
-                    document.getElementById("chine_knowledgePoint").innerHTML=""
-                    document.getElementById("chine_knowledgePoint_count").innerHTML=user.chinepastvolumes.length
+                    document.getElementById("chine_knowledgePoint").innerHTML = ""
+                    document.getElementById("chine_knowledgePoint_count").innerHTML = user.chinepastvolumes.length
                     proc({
                         containerId: 'chine_knowledgePoint',
                         data: user.chinepastvolumes,
@@ -2739,8 +2716,8 @@
                     })
                     user.mathpastvolumes = []
                     user.mathpastvolumes = user.mathpast.volumes
-                    document.getElementById("math_knowledgePoint").innerHTML=""
-                    document.getElementById("math_knowledgePoint_count").innerHTML=user.mathpastvolumes.length
+                    document.getElementById("math_knowledgePoint").innerHTML = ""
+                    document.getElementById("math_knowledgePoint_count").innerHTML = user.mathpastvolumes.length
                     proc({
                         containerId: 'math_knowledgePoint',
                         data: user.mathpastvolumes,
@@ -2765,11 +2742,11 @@
             }
         },
         pastTopics: {
-            isPastTopics:false,
+            isPastTopics: false,
             currentTab: $('[data-content="chineTopics"]')[0],
             init: function () {
-                if(!state.pastTopics.isPastTopics){
-                    document.getElementById("chinetopicsname").innerHTML=""
+                if (!state.pastTopics.isPastTopics) {
+                    document.getElementById("chinetopicsname").innerHTML = ""
                     proc({
                         containerId: 'chinetopicsname',
                         data: user.chineproblems,
@@ -2798,14 +2775,14 @@
         nickname: {
             isNickname: false,
             init: function () {
-                if (!state.nickname.isNickname){
+                if (!state.nickname.isNickname) {
                     document.getElementById("nicknameval").value = user.name
                     var nicehng = document.getElementById("nicehng");
-                    nicehng.addEventListener('click',function (e) {
+                    nicehng.addEventListener('click', function (e) {
                         $("#nicknameval").val("")
-                    },false)
+                    }, false)
                     var nicknameval = document.getElementById("nicknameval");
-                    nicknameval.addEventListener('blur',function (e) {
+                    nicknameval.addEventListener('blur', function (e) {
                         var data = {
                             name: $("#nicknameval").val()
                         }
@@ -2820,8 +2797,8 @@
                                 state.switchToFront('user')
                             }
                         })
-                    },false)
-                }else{
+                    }, false)
+                } else {
                     document.getElementById("nicknameval").value = user.name
                 }
                 state.nickname.isNickname = true
