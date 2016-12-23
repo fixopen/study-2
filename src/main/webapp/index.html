@@ -214,7 +214,7 @@
 <script src="jquery/jquery-3.1.1.js"></script>
 <script src="basic.js"></script>
 <script>
-    var login = document.getElementById('submit')
+    /*var login = document.getElementById('submit')
     login.addEventListener('click', function (e) {
         $.ajax({
             type: 'put',
@@ -353,8 +353,19 @@
             }
         })
         return t
+    }*/
+    user = [];
+    for (var i = 0; i < 100; i++){
+        user.push({"a":i})
+    }
+    for(var j = 0;j < user.length; j++) {
+        for (var k = 1; k < 6; k++){
+            user[j].b = k
+
+        }
     }
 
+    alert(JSON.stringify(user))
 //    var t = _$_({objectType: 'video', objectId: 124235})
 //    t.try()
 //    t.purchase()

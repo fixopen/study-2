@@ -673,6 +673,7 @@ public class Users {
             List<Problem> problems = Resources.getList(em, problemIds, Problem.class);
             List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getList(em, "objectId", problemIds, KnowledgePointContentMap.class);
             List<String> knowledgePointIds = knowledgePointContentMaps.stream().map(m -> m.getKnowledgePointId().toString()).collect(Collectors.toList());
+
             List<String> schedulerIds = new ArrayList<>();
             Map<String, Object> condition = new HashMap<>();
             condition.put("userId", userId);
@@ -700,13 +701,8 @@ public class Users {
             Date now = new Date();
             final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
             List<Map<String, Object>> r = new ArrayList<>();
-            for (Subject subject : subjects) {
-                List<Map<String, Object>> ss = new ArrayList<>();
-                for (Scheduler scheduler : schedulers) {
-                    if (scheduler.getSubjectId().longValue() == subject.getId().longValue()) {
-                        ss.add(Scheduler.convertToMap(scheduler, userId));
-                    }
-                }
+            for (Subject subject: subjects) {
+                List<Map<String, Object>> ss = schedulers.stream().filter(scheduler -> scheduler.getSubjectId().longValue() == subject.getId().longValue()).map(scheduler -> Scheduler.convertToMap(scheduler, userId)).collect(Collectors.toList());
                 Map<String, Object> s = Subject.convertToMap(subject);
                 s.put("schedulers", ss);
                 List<Map<String, Object>> vs = new ArrayList<>();
@@ -718,24 +714,25 @@ public class Users {
                             for (KnowledgePointContentMap m : knowledgePointContentMaps) {
                                 if (problem.getId().longValue() == m.getObjectId().longValue()) {
                                     if (m.getKnowledgePointId().longValue() == knowledgePoint.getId().longValue()) {
-                                        ps.add(Problem.convertToMap(problem, answerRecords));
+                                        ps.add(Problem.convertToMap(problem,answerRecords));
                                         break;
                                     }
                                 }
-                                Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, userId, now, yesterday);
-                                km.put("problems", ps);
-                                ks.add(km);
                             }
                         }
-                        Map<String, Object> vm = Volume.convertToMap(volume, now, yesterday);
-                        vm.put("knowledgePoints", ks);
-                        vs.add(vm);
+                        Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, logs,userId);
+                        km.put("problems", ps);
+                        ks.add(km);
                     });
+                    Map<String, Object> vm = Volume.convertToMap(volume, covers);
+                    vm.put("knowledgePoints", ks);
+                    vs.add(vm);
                 });
                 s.put("volumes", vs);
                 r.add(s);
             }
-            result = Response.ok(new Gson().toJson(r)).build();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            result = Response.ok(gson.toJson(r)).build();
             //{subjects: [], schedulers: [], volumes: [], knowledgePoints: [], problems: []}
             //[{subject-info, schedulers: [{}, ...], volumes: [{volume-info, knowledgePoints: [{knowledgePoint-info, problems: [{problem-info, standAnswer:[], answer:[]}, ...]}, ...]}, ...]}, {...}]
         }
