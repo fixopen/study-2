@@ -1,11 +1,13 @@
 package com.baremind.data;
 
+import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -114,12 +116,17 @@ public class Volume implements com.baremind.data.Entity {
         }
         return vm;
     }
-    public static Map<String, Object> convertToMap(Volume volume) {
+
+    public static Map<String, Object> convertToMap(Volume volume, List<Image> covers) {
         Map<String, Object> vm = new HashMap<>();
         vm.put("id", volume.getId());
         vm.put("order", volume.getOrder());
         vm.put("subjectId", volume.getSubjectId());
         vm.put("coverId", volume.getCoverId());
+        Image image = Resources.findItem(covers, img -> img.getId().longValue() == volume.getCoverId().longValue());
+        if (image != null) {
+            vm.put("coverPath", image.getStorePath());
+        }
         vm.put("name", volume.getName());
         vm.put("knowledgePointCount", volume.getKnowledgePointCount());
         return vm;

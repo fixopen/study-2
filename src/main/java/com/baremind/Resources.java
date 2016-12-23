@@ -66,8 +66,8 @@ public class Resources {
     public static Long findUntypedItem(List<Object[]> container, Long id) {
         Long result = 0L;
         for (Object[] item : container) {
-            if (((Long)item[0]).longValue() == id.longValue()) {
-                result = (Long)item[1];
+            if (((Long) item[0]).longValue() == id.longValue()) {
+                result = (Long) item[1];
                 break;
             }
         }
@@ -75,7 +75,7 @@ public class Resources {
     }
 
     public static List<Object[]> findUntypedItems(List<Object[]> container, Long id) {
-        return container.stream().filter((item) -> ((Long)item[0]).longValue() == id.longValue()).collect(Collectors.toList());
+        return container.stream().filter((item) -> ((Long) item[0]).longValue() == id.longValue()).collect(Collectors.toList());
     }
 
     static Resource getByTypeAndId(EntityManager em, String type, Long id) {
@@ -84,10 +84,7 @@ public class Resources {
             case "knowledge-point":
                 result = JPAEntry.getObject(em, KnowledgePoint.class, "id", id);
                 break;
-            case "video":
-                result = JPAEntry.getObject(em, Scheduler.class, "id", id);
-                break;
-            case "liveVideo":
+            case "scheduler":
                 result = JPAEntry.getObject(em, Scheduler.class, "id", id);
                 break;
         }
@@ -97,7 +94,7 @@ public class Resources {
     @GET
     @Path("{type}/{id}/sale-info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSaleInfo(@CookieParam("sessionId") String sessionId,  @PathParam("type") String type, @PathParam("id") Long id) {
+    public Response getSaleInfo(@CookieParam("sessionId") String sessionId, @PathParam("type") String type, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             Map<String, Object> r = new HashMap<>();
@@ -118,57 +115,64 @@ public class Resources {
     @GET
     @Path("{type}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getById(@CookieParam("sessionId") String sessionId,  @PathParam("type") String type, @PathParam("id") Long id) {
+    public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("type") String type, @PathParam("id") Long id) {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
-            result = Response.status(403).build();
+            result = Response.status(404).build();
             Long userId = JPAEntry.getSession(sessionId).getUserId();
-            Map<String, Object> filter = new HashMap<>();
-            filter.put("userId", userId);
-            filter.put("objectType", type);
-            filter.put("objectId", id);
-            List<Transaction> ts = JPAEntry.getList(Transaction.class, filter);
-            List<Consumption> cs = JPAEntry.getList(Consumption.class, filter);
-
-            Long total = 0L;
-            Map<Transaction, Long> transactionCount = new HashMap<>();
-            for (Transaction t : ts) {
-                Long count = t.getCount();
-                transactionCount.put(t, count);
-                total += count;
-            }
-
-            if (cs.size() < total) {
-                for (Consumption c : cs) {
-                    transactionCount.forEach((t, count) -> {
-                        if (t.getId().longValue() == c.getTransactionId().longValue()) {
-                            transactionCount.put(t, count - 1);
-                        }
-                    });
-                }
-
-                Transaction findTransaction = null;
-                for (Map.Entry<Transaction, Long> item : transactionCount.entrySet()) {
-                    if (item.getValue() > 0L) {
-                        findTransaction = item.getKey();
-                        break;
-                    }
-                }
-
-                EntityManager em = JPAEntry.getEntityManager();
-                Resource s = getByTypeAndId(em, type, id);
-                if (s != null) {
-                    Consumption consumption = new Consumption();
-                    consumption.setId(IdGenerator.getNewId());
-                    consumption.setUserId(userId);
-                    consumption.setObjectId(id);
-                    consumption.setObjectType(type);
-                    consumption.setTimestamp(new Date());
-                    consumption.setTransactionId(findTransaction.getId());
-                    JPAEntry.genericPost(consumption);
+            EntityManager em = JPAEntry.getEntityManager();
+            Resource resource = getByTypeAndId(em, type, id);
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            if (resource != null) {
+                Long a = resource.getAmount();
+                if (a == 0L) {
+                    result = Response.ok(gson.toJson(resource.getContent())).build();
                     JPAEntry.log(userId, "read", type, id);
-                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                    result = Response.ok(gson.toJson(s.getContent())).build();
+                } else {
+                    result = Response.status(403).build();
+                    Map<String, Object> filter = new HashMap<>();
+                    filter.put("userId", userId);
+                    filter.put("objectType", type);
+                    filter.put("objectId", id);
+                    List<Transaction> ts = JPAEntry.getList(Transaction.class, filter);
+                    List<Consumption> cs = JPAEntry.getList(Consumption.class, filter);
+
+                    Long total = 0L;
+                    Map<Transaction, Long> transactionCount = new HashMap<>();
+                    for (Transaction t : ts) {
+                        Long count = t.getCount();
+                        transactionCount.put(t, count);
+                        total += count;
+                    }
+
+                    if (cs.size() < total) {
+                        for (Consumption c : cs) {
+                            transactionCount.forEach((t, count) -> {
+                                if (t.getId().longValue() == c.getTransactionId().longValue()) {
+                                    transactionCount.put(t, count - 1);
+                                }
+                            });
+                        }
+
+                        Transaction findTransaction = null;
+                        for (Map.Entry<Transaction, Long> item : transactionCount.entrySet()) {
+                            if (item.getValue() > 0L) {
+                                findTransaction = item.getKey();
+                                break;
+                            }
+                        }
+
+                        Consumption consumption = new Consumption();
+                        consumption.setId(IdGenerator.getNewId());
+                        consumption.setUserId(userId);
+                        consumption.setObjectId(id);
+                        consumption.setObjectType(type);
+                        consumption.setTimestamp(new Date());
+                        consumption.setTransactionId(findTransaction.getId());
+                        JPAEntry.genericPost(consumption);
+                        result = Response.ok(gson.toJson(resource.getContent())).build();
+                        JPAEntry.log(userId, "read", type, id);
+                    }
                 }
             }
         }

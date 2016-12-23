@@ -830,9 +830,9 @@ canvas{
     margin: 0 auto;
     display: none;
 }
-.mine_table.cur{
+/*.mine_table.cur{
     display: block;
-}
+}*/
 .table_ul{
     height: 10.71875rem;
     padding: 1.09375rem;
@@ -1662,7 +1662,7 @@ a.study_lia{
     text-align: center;
     margin-top: 1.5625rem;
 }
-.pastLiveVideos_header_cen pastLiveVideos_span{
+.pastLiveVideos_header_cen .pastLiveVideos_span{
     margin: 0 0.3125rem;
 }
 .pastLiveVideos_l_one,.pastLiveVideos_r_one{
@@ -1705,3 +1705,46 @@ a.study_lia{
 .pastLiveVideos_tab_swlispan{
     font-size: 0.9375rem;
 }
+.uli_divT,.lifen_div{
+    padding: 0 0.9375rem 0 0.9375rem;
+    box-sizing: border-box;
+}
+.uli_divT img{
+    width: 3.1875rem;
+    height: 4.4375rem;
+    border: 3px solid #fff;
+    border-radius: 0.3125rem;
+    box-shadow: 0.5px 0.5px 10px #909090;
+    vertical-align: top;
+    position: relative;
+    top: -0.625rem;
+}
+.uli_divTdiv{
+    display: inline-block;
+    font-size: 1.0625rem;
+    font-weight: bold;
+    margin: 0.625rem 0 0 0.5rem;
+}
+.uli_divTspan{
+    display: inline-block;
+    color: #aaa;
+    font-size: 0.8125rem;
+}
+.all_lifen{
+    padding: 1.09375rem 0;
+    border-top: 1px solid #e5e5e5;
+}
+.biaoti_left{
+    display: inline-block;
+    width: 70%;
+    line-height: 1.125rem;
+    font-size: 0.9375rem;
+}
+.biaoti_right{
+    float: right;
+    font-size: 0.8125rem;
+    vertical-align: middle;
+}
+
+
+
