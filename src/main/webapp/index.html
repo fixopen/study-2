@@ -39,7 +39,7 @@
     }, false)
     var _$_ = function(params) {
         var t = {
-            try: function() {
+            try: function () {
                 this.objectType = params.objectType
                 this.objectId = params.objectId
                 $('#container').load('/zu/zu.html')
@@ -81,12 +81,12 @@
                     success: function (content) {
                         alert("成功")
                     },
-                    error:function (e) {
+                    error: function (e) {
                         alert("失败")
                     }
                 })
             },
-            recharge: function() {
+            recharge: function () {
                 //popup dialog for select sink
 
                 //dialog event process
@@ -105,7 +105,7 @@
                     }
                 })
             },
-            transfer: function() {
+            transfer: function () {
                 //popup dialog for select source | sink
 
                 //dialog event process
@@ -133,24 +133,28 @@
         $.ajax({
             type: 'get',
             url: '/api/users/self',
-            success: function(u) {
+            success: function (u) {
                 t.user = u
                 $.ajax({
                     type: 'get',
                     url: '/api/users/self/cards',
-                    success: function(cs) {
+                    success: function (cs) {
                         t.cards = cs
                     }
                 })
             }
         })
         return t
+
     }
 
     var t = _$_({objectType: 'knowledge-point', objectId: 1})
+    t.getContent()
+
+
 //    t.try()
 //    t.purchase()
-    t.getContent()
+
 
 //    var t = _$_({money: 124235})
 //    t.recharge()

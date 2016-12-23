@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="submit">提交</button>
+<script src="jquery/jquery-3.1.1.js"></script>
+<script src="basic.js"></script>
+<script>
+    var login = document.getElementById('submit')
+    login.addEventListener('click', function (e) {
+        $.ajax({
+            type: 'put',
+            url: '/api/sessions',
+            data: JSON.stringify({
+                type: 'name',
+                info: '18503594576',
+                key: '666666',
+                deviceType: 'web',
+                deviceNo: ''
+            }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (d) {
+                alert('login success')
+            },
+            error: function (xhr) {
+                alert(xhr.status + ' ' + xhr.statusText)
+            }
+        })
+    }, false)
+
+</script>
+</body>
+</html>
