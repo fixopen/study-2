@@ -763,7 +763,7 @@
         </div>
     </div>
 </article>
-<article id="pastTopics" style="display: none">
+<!--<article id="pastTopics" style="display: none">
     <div class="wrap">
         <div class="pastLiveVideos_header">
             <div class="pastLiveVideos_header_l">
@@ -805,7 +805,7 @@
             </div>
         </div>
     </div>
-</article>
+</article>-->
 
 <template id="user-template">
     <ul class="public_ul_css">
@@ -930,7 +930,7 @@
         <p class="balance_rightip"><span>${money}</span>金豆</p>
     </li>
 </template>
-<template id="pastTopics-template">
+<!--<template id="pastTopics-template">
     <li class="all_uli">
         <div class="uli_divT">
             <img src="${image}" alt="">
@@ -959,12 +959,12 @@
                     <span class="daan_quan">${english}</span>
                 </div>
                 <div class="daan_you" data-ext-point="Option" data-id="${id}">
-                    <!--<input type="checkbox" id="daan_y4A" class="daana" name="daan4">-->
+                    &lt;!&ndash;<input type="checkbox" id="daan_y4A" class="daana" name="daan4">&ndash;&gt;
                 </div>
             </li>
         </ul>
     </li>
-</template>
+</template>-->
 <template id="pastTopicsOptionStandardAnswers-template">
     <label>${name}</label>
 </template>
@@ -2663,7 +2663,7 @@
             currentTab: $('[data-content="chineTopics"]')[0],
             init: function () {
                 if(!state.pastTopics.isPastTopics){
-                    user.mathproblems = []
+                   /* user.mathproblems = []
                     user.mathproblems = user.chinepast.volumes
                     document.getElementById("chineTopics").innerHTML=""
                     document.getElementById("chineTopicsCount").innerHTML=user.chinepastvolumes.length
@@ -2678,7 +2678,7 @@
                         }
                     })
                     alert(JSON.stringify(user.chineproblems))
-                    alert(JSON.stringify(user.mathproblems))
+                    alert(JSON.stringify(user.mathproblems))*/
                     $('.b').on('click', function (e) {
                         state.pastTopics.currentTab.removeClass('cur')
                         document.getElementById(state.pastTopics.currentTab.dataset.content).removeClass('cur')

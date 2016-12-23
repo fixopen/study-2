@@ -735,6 +735,7 @@ public class Users {
                 s.put("volumes", vs);
                 r.add(s);
             }
+            result = Response.ok(new Gson().toJson(r)).build();
             //{subjects: [], schedulers: [], volumes: [], knowledgePoints: [], problems: []}
             //[{subject-info, schedulers: [{}, ...], volumes: [{volume-info, knowledgePoints: [{knowledgePoint-info, problems: [{problem-info, standAnswer:[], answer:[]}, ...]}, ...]}, ...]}, {...}]
         }
