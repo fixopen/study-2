@@ -54,7 +54,7 @@ var proc = function (option) {
             if (config) {
                 if (Array.isArray(config)) {
                     for (var i = 0; i < config.length; ++i) {
-                        procSecond(element, data, config[i])
+                        procNext(element, data, config[i])
                     }
                 } else {
                     var opt = {
