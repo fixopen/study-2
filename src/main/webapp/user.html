@@ -2161,7 +2161,8 @@
                             var process = function(subject) {
                                 var check = function(problem) {
                                     for (var i = 0; i < problem.options.length; ++i) {
-                                        problem.options[i].type = true
+                                        problem.options[i].type = 'normal'
+                                        problem.options[i].title = String.fromCharCode(65 + i);
                                     }
                                     for (var i = 0; i < problem.answerRecords.length; ++i) {
                                         var index = problem.answerRecords[i].index
@@ -2172,8 +2173,10 @@
                                                 break
                                             }
                                         }
-                                        if (!isFind) {
-                                            problem.options[index].type = false
+                                        if (isFind) {
+                                            problem.options[index].type = 'true'
+                                        } else {
+                                            problem.options[index].type = 'false'
                                         }
                                     }
                                 }
@@ -2760,7 +2763,11 @@
                         secondBind: {
                             extPoint: 'options',
                             dataFieldName: 'options',
-                            templateId: 'problem-option-template'
+                            alterTemplates: [
+                                {type: 'true', templateId: 'problem-option-true-template'},
+                                {type: 'false', templateId: 'problem-option-false-template'},
+                                {type: 'normal', templateId: 'problem-option-template'}
+                            ]
                         }
                     })
                     $('.b').on('click', function (e) {

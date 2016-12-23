@@ -22,22 +22,32 @@ var bind = function (element, data) {
 }
 
 var proc = function (option) {
-    //prepare template
-    var template = option.template
-    if (!template) {
-        template = getTemplate(option.templateId)
-    }
-    //prepare alt templates
-    var templates
-    if (option.alterTemplates) {
-        templates = []
-        for (var i = 0; i < option.alterTemplates.length; ++i) {
-            var altTemplate = getTemplate(option.alterTemplates[i].templateId)
-            if (altTemplate) {
-                templates.push({type: option.alterTemplates[i].type, template: altTemplate})
-            }
+    var clone = null
+
+    var template = option.template || getTemplate(option.templateId)
+    if (template) {
+        clone = function() {
+            return template.cloneNode(true)
         }
     }
+
+    if (clone == null) {
+        //
+    }
+    var prepareAltTemplates = function(option) {
+        //prepare alt templates
+        var templates
+        if (option.alterTemplates) {
+            templates = []
+            for (var i = 0; i < option.alterTemplates.length; ++i) {
+                templates.push({type: option.alterTemplates[i].type, template: option.alterTemplates[i].template || getTemplate(option.alterTemplates[i].templateId)})
+            }
+        }
+        return templates
+    }
+
+    var templates = prepareAltTemplates(option)
+
     //prepare container
     var container = option.container
     if (!container) {
@@ -62,44 +72,31 @@ var proc = function (option) {
         //proc second bind
         var procSecond = function (element, data) {
             if (option.secondBind) {
-                //prepare second templates
-                var secondTemplates = []
-                if (Array.isArray(option.secondBind)) {
-                    for (var i = 0; i < option.secondBind.length; ++i) {
-                        var secondTemplate = getTemplate(option.secondBind[i].templateId)
-                        secondTemplates.push({
-                            extPoint: option.secondBind[i].extPoint,
-                            template: secondTemplate
-                        })
-                    }
-                } else {
-                    var secondTemplate = getTemplate(option.secondBind.templateId)
-                    secondTemplates.push({extPoint: option.secondBind.extPoint, template: secondTemplate})
-                }
-                //get second template from second templates
-                var getSecondTemplate = function (secondTemplates, extPoint) {
-                    var secondTemplate
-                    for (var j = 0; j < secondTemplates.length; ++j) {
-                        if (secondTemplates[j].extPoint == extPoint) {
-                            secondTemplate = secondTemplates[j].template
-                        }
-                    }
-                    return secondTemplate
-                }
-                if (Array.isArray(option.secondBind)) {
-                    for (var i = 0; i < option.secondBind.length; ++i) {
+                var process = function(element, data, option) {
+                    if (option.alterTemplates) {
                         proc({
-                            container: element.querySelector('*[data-ext-point="' + option.secondBind[i].extPoint + '"]'),
-                            template: getSecondTemplate(secondTemplates, option.secondBind[i].extPoint),
-                            data: data[option.secondBind[i].dataFieldName]
+                            container: element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]'),
+                            alterTemplates: option.secondBind.alterTemplates,
+                            data: data[option.secondBind.dataFieldName]
+                        })
+                    } else {
+                        proc({
+                            container: element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]'),
+                            templateId: option.secondBind.templateId,
+                            data: data[option.secondBind.dataFieldName]
                         })
                     }
+                }
+                if (Array.isArray(option.secondBind)) {
+                    for (var i = 0; i < option.secondBind.length; ++i) {
+                        var o = {}
+                        for (var p in option.secondBind[i]) {
+                            o[p] = option.secondBind[i][p]
+                        }
+                        process(element, data, o)
+                    }
                 } else {
-                    proc({
-                        container: element.querySelector('*[data-ext-point="' + option.secondBind.extPoint + '"]'),
-                        template: getSecondTemplate(secondTemplates, option.secondBind.extPoint),
-                        data: data[option.secondBind.dataFieldName]
-                    })
+                    process(element, data, option)
                 }
             }
         }
