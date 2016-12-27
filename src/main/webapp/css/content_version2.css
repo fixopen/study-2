@@ -286,9 +286,9 @@
     position: relative;
 }
 
-.neir_li:first-child {
-    border: none;
-}
+/*.neir_li:first-child {*/
+/*border: none;*/
+/*}*/
 
 .neir_lidiv {
     margin-top: 0.8125rem;
@@ -339,7 +339,7 @@
     width: 2.59375rem;
     height: 2.5625rem;
     position: absolute;
-    top: -0.8125rem;
+    top: -0.0625rem;
     right: 0;
 }
 

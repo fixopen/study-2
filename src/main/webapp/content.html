@@ -176,10 +176,10 @@
             <div class="mltop_main" id="pack_up_title"></div>
             <img class="juchi" src="images_version2/juchi.png" alt="">
         </div>
-        <div class="rain-main catalog_list">
-            <div class="chinese_catalog_list">
-                <ul class="each_chapter" id="chapter-section"></ul>
-            </div>
+        <div class="rain-main catalog_list" id="chapter-section">
+            <!--<div class="chinese_catalog_list">-->
+            <!--<ul class="each_chapter" id="chapter-section"></ul>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
@@ -219,9 +219,43 @@
             </a>
         </div>
     </li>
-</template>
+</template><!--免费-普通-->
 <template id="chapter-free-old-unlike-template">
     <li class="neir_li">
+        <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
+            <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-free-new-like-template">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
+            <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-free-new-unlike-template">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
         <div class="neir_lidiv">
             <img class="free" src="img/free.png" alt="">
             <a class="neir_pzi" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
@@ -251,7 +285,7 @@
             </a>
         </div>
     </li>
-</template>
+</template><!--收费-普通-->
 <template id="chapter-new-unlike-template">
     <li class="neir_li">
         <img class="shang_new" src="images_version2/muluNew.png" alt="">
@@ -298,6 +332,72 @@
         </div>
     </li>
 </template>
+<template id="chapter-free-new-like-challenge">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
+            <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template><!--免费-PK-->
+<template id="chapter-free-new-unlike-challenge">
+    <li class="neir_li">
+        <img class="shang_new" src="images_version2/muluNew.png" alt="">
+        <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
+            <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-free-old-like-challenge">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
+            <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/zanover.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
+<template id="chapter-free-old-unlike-challenge">
+    <li class="neir_li">
+        <div class="neir_lidiv">
+            <img class="free" src="img/free.png" alt="">
+            <a class="neir_pzi neir_tianZ" href="javascript:;" data-article="knowledgePoint" data-id="${id}">${name}</a>
+        </div>
+        <div class="neir_ridiv">
+            <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+            <a href="javascript:void(0)" class="course_xqpzan">
+                <img class="dianzanImg" src="images_version2/dianzan.png" alt="">
+                赞
+                <span>${likeCount}</span>
+            </a>
+        </div>
+    </li>
+</template>
 <template id="chapter-new-like-challenge">
     <li class="neir_li">
         <img class="shang_new" src="images_version2/muluNew.png" alt="">
@@ -313,7 +413,7 @@
             </a>
         </div>
     </li>
-</template>
+</template><!--收费-PK-->
 <template id="chapter-new-unlike-challenge">
     <li class="neir_li">
         <img class="shang_new" src="images_version2/muluNew.png" alt="">
@@ -1073,7 +1173,7 @@
     function tan(cards, subject, objectType, objectId) {
         for (var i = 0; i < cards.length; i++) {
             var a = cards[i].subjectId
-            if (cards[i].subjectId == subject && cards[i].amount >= price && price !=0) {
+            if (cards[i].subjectId == subject && cards[i].amount >= price && price != 0) {
                 //第二步：你有这个科目下的卡&&卡余额>资源价格:弹出1床
                 var subject_card = transformation(a);
                 var object_Type = transformationType(objectType);
@@ -1088,7 +1188,7 @@
                 object_Types = objectType;
                 break;
 
-            }else if(cards[i].subjectId == subject && cards[i].amount >= price && price == 0){
+            } else if (cards[i].subjectId == subject && cards[i].amount >= price && price == 0) {
                 na(objectType, objectId)
                 biao = 1;
                 break;
@@ -1124,7 +1224,7 @@
         if (biao != 1) {
             for (var i = 0; i < cards.length; i++) {
                 var a = cards[i].subjectId
-                if (cards[i].subjectId != subject && cards[i].amount >= price && biao != 1 && price !=0) {
+                if (cards[i].subjectId != subject && cards[i].amount >= price && biao != 1 && price != 0) {
                     //第二步：你有其他科目下的卡&&卡余额>资源价格:弹出3床
                     var subject_card = transformation(a);
                     if (a == 1) {
@@ -1143,7 +1243,7 @@
                     object_Id = objectId;
                     object_Types = objectType;
                     break;
-                }else if(cards[i].subjectId != subject && cards[i].amount >= price && biao != 1 && price == 0){
+                } else if (cards[i].subjectId != subject && cards[i].amount >= price && biao != 1 && price == 0) {
                     biao = 1;
                     na(objectType, objectId)
                     break;
@@ -1648,7 +1748,8 @@
                                                 } else {
                                                     kps[i].type = 'normalNew'
                                                 }
-                                                v.knowledgePoints.unshift(kps[i])
+                                                //    v.knowledgePoints.unshift(kps[i])
+                                                v.knowledgePoints.push(kps[i])
                                             } else {
                                                 if (kps[i].type) {
                                                     kps[i].type += 'Old'
@@ -1974,9 +2075,19 @@
                         if (!result[currentSegment]) {
                             result[currentSegment] = []
                         }
-                        result[currentSegment].push(knowledgePoints[i])
+                        if (knowledgePoints[i].type == 'normalNewUnlike' || knowledgePoints[i].type == 'pkNewLike' ||
+                                knowledgePoints[i].type == 'normalNewLike' || knowledgePoints[i].type == 'pkNewUnlike' ||
+                                knowledgePoints[i].type == 'normalNewUnlikeFree' || knowledgePoints[i].type == 'pkNewUnlikeFree' ||
+                                knowledgePoints[i].type == 'normalNewLikeFree' || knowledgePoints[i].type == 'pkNewLikeFree') {
+                            result[currentSegment].unshift(knowledgePoints[i])
+                        } else {
+                            result[currentSegment].push(knowledgePoints[i])
+                        }
                         if (knowledgePoints[i].type == 'pkOldLike' || knowledgePoints[i].type == 'pkNewLike' ||
-                                knowledgePoints[i].type == 'pkOldUnlike' || knowledgePoints[i].type == 'pkNewUnlike') {
+                                knowledgePoints[i].type == 'pkOldUnlike' || knowledgePoints[i].type == 'pkNewUnlike' ||
+                                knowledgePoints[i].type == 'pkOldLikeFree' || knowledgePoints[i].type == 'pkOldUnlikeFree' ||
+                                knowledgePoints[i].type == 'pkNewLikeFree' || knowledgePoints[i].type == 'pkNewUnlikeFree'
+                        ) {
                             currentSegment++
                         }
                     }
@@ -2007,24 +2118,46 @@
                             data: value,
                             containerId: 'pack_up_title'
                         })
+                        if (!value.isSegment) {
+                            value.knowledgePoints = segment(value.knowledgePoints);
+                            value.isSegment = 1
+                        }
+
+                        for (var i = 0; i < value.knowledgePoints.length; ++i) {
+                            value.knowledgePoints[i].index = i
+                        }
                         proc({
+                            templateId: 'chapter',
                             data: value.knowledgePoints,
-                            containerId: 'chapter-section',
-                            alterTemplates: [
-                                {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
-                                {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
-                                {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
-                                {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
-                                {type: 'pkOldLike', templateId: 'chapter-old-like-challenge'},
-                                {type: 'pkOldUnlike', templateId: 'chapter-old-unlike-challenge'},
-                                {type: 'pkNewLike', templateId: 'chapter-new-like-challenge'},
-                                {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
-                                {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-template'},
-                                {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
-                                {type: 'normalOldLikeFree', templateId: 'chapter-free-old-like-template'},
-                                {type: 'normalOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
-                            ]
+                            containerId: 'chapter-section'
                         })
+
+                        var chapters = document.getElementById('chapter-section').querySelectorAll('[data-identity]')
+                        for (var i = 0; i < chapters.length; ++i) {
+                            var c = chapters[i]
+                            proc({
+                                container: c,
+                                data: value.knowledgePoints[i],
+                                alterTemplates: [
+                                    {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
+                                    {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
+                                    {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
+                                    {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
+                                    {type: 'pkOldLike', templateId: 'chapter-old-like-challenge'},
+                                    {type: 'pkOldUnlike', templateId: 'chapter-old-unlike-challenge'},
+                                    {type: 'pkNewLike', templateId: 'chapter-new-like-challenge'},
+                                    {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
+                                    {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-challenge'},
+                                    {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-challenge'},
+                                    {type: 'pkNewUnlikeFree', templateId: 'chapter-free-new-unlike-challenge'},
+                                    {type: 'pkNewLikeFree', templateId: 'chapter-free-new-like-challenge'},
+                                    {type: 'normalOldLikeFree', templateId: 'chapter-free-old-like-template'},
+                                    {type: 'normalOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
+                                    {type: 'normalNewUnlikeFree', templateId: 'chapter-free-new-unlike-template'},
+                                    {type: 'normalNewLikeFree', templateId: 'chapter-free-new-like-template'}
+                                ]
+                            })
+                        }
 
                         state.pageTopChange();
 
@@ -2089,10 +2222,14 @@
                                     {type: 'pkOldUnlike', templateId: 'chapter-old-unlike-challenge'},
                                     {type: 'pkNewLike', templateId: 'chapter-new-like-challenge'},
                                     {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
-                                    {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-template'},
-                                    {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
+                                    {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-challenge'},
+                                    {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-challenge'},
+                                    {type: 'pkNewUnlikeFree', templateId: 'chapter-free-new-unlike-challenge'},
+                                    {type: 'pkNewLikeFree', templateId: 'chapter-free-new-like-challenge'},
                                     {type: 'normalOldLikeFree', templateId: 'chapter-free-old-like-template'},
                                     {type: 'normalOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
+                                    {type: 'normalNewUnlikeFree', templateId: 'chapter-free-new-unlike-template'},
+                                    {type: 'normalNewLikeFree', templateId: 'chapter-free-new-like-template'}
                                 ]
                             })
                         }
@@ -2196,15 +2333,12 @@
                     state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.parentId)
                     if (!state.knowledgePoint.value.contents) {
                         xiao(state.knowledgePoint.value.id, 'knowledge-point');
-                        state.knowledgePoint.show()
                     } else {
                         xiao(state.knowledgePoint.value.id, 'knowledge-point');
-                        state.knowledgePoint.show()
                     }
                 }
                 if (state.knowledgePoint.parentId = knowledgePointId) {
                     xiao(state.knowledgePoint.value.id, 'knowledge-point');
-                    state.knowledgePoint.show()
                 }
             },
             value: null,
@@ -2434,6 +2568,10 @@
                             case 'normalNewUnlike':
                             case 'normalOldLike':
                             case 'normalOldUnlike':
+                            case 'normalOldUnlikeFree':
+                            case 'normalOldLikeFree':
+                            case 'normalNewLikeFree':
+                            case 'normalNewUnlikeFree':
 
                                 proc({
                                     containerId: 'knowledgePoint',
@@ -2540,6 +2678,10 @@
                             case 'pkNewUnlike':
                             case 'pkOldLike':
                             case 'pkOldUnlike':
+                            case 'pkOldUnlikeFree':
+                            case 'pkOldLikeFree':
+                            case 'pkNewLikeFree':
+                            case 'pkNewUnlikeFree':
 
                                 proc({
                                     containerId: 'knowledgePoint',
@@ -2828,7 +2970,12 @@
                     if (state.volume.value.knowledgePoints[i].type == 'normalNewUnlike' ||
                             state.volume.value.knowledgePoints[i].type == 'pkNewUnlike' ||
                             state.volume.value.knowledgePoints[i].type == 'normalNewLike' ||
-                            state.volume.value.knowledgePoints[i].type == 'pkNewLike') {
+                            state.volume.value.knowledgePoints[i].type == 'pkNewLike' ||
+                            state.volume.value.knowledgePoints[i].type == 'normalNewUnlikeFree' ||
+                            state.volume.value.knowledgePoints[i].type == 'normalNewLikeFree' ||
+                            state.volume.value.knowledgePoints[i].type == 'pkNewUnlikeFree' ||
+                            state.volume.value.knowledgePoints[i].type == 'pkNewLikeFree'
+                    ) {
                         newCount++
                     }
                 }
