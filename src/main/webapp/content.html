@@ -2131,6 +2131,48 @@
                     }
                     return result
                 }
+                var procKps = function(){
+                    if (!value.isSegment) {
+                        value.knowledgePoints = segment(value.knowledgePoints);
+                        value.isSegment = 1
+                    }
+
+                    for (var i = 0; i < value.knowledgePoints.length; ++i) {
+                        value.knowledgePoints[i].index = i
+                    }
+                    proc({
+                        templateId: 'chapter',
+                        data: value.knowledgePoints,
+                        containerId: 'chapter-section'
+                    })
+
+                    var chapters = document.getElementById('chapter-section').querySelectorAll('[data-identity]')
+                    for (var i = 0; i < chapters.length; ++i) {
+                        var c = chapters[i]
+                        proc({
+                            container: c,
+                            data: value.knowledgePoints[i],
+                            alterTemplates: [
+                                {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
+                                {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
+                                {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
+                                {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
+                                {type: 'pkOldLike', templateId: 'chapter-old-like-challenge'},
+                                {type: 'pkOldUnlike', templateId: 'chapter-old-unlike-challenge'},
+                                {type: 'pkNewLike', templateId: 'chapter-new-like-challenge'},
+                                {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
+                                {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-challenge'},
+                                {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-challenge'},
+                                {type: 'pkNewUnlikeFree', templateId: 'chapter-free-new-unlike-challenge'},
+                                {type: 'pkNewLikeFree', templateId: 'chapter-free-new-like-challenge'},
+                                {type: 'normalOldLikeFree', templateId: 'chapter-free-old-like-template'},
+                                {type: 'normalOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
+                                {type: 'normalNewUnlikeFree', templateId: 'chapter-free-new-unlike-template'},
+                                {type: 'normalNewLikeFree', templateId: 'chapter-free-new-like-template'}
+                            ]
+                        })
+                    }
+                }
                 $('#knowledgePoints').html("");
                 switch (state.volumes.parentId) {
                     case 1:
@@ -2156,47 +2198,8 @@
                             data: value,
                             containerId: 'pack_up_title'
                         })
-                        if (!value.isSegment) {
-                            value.knowledgePoints = segment(value.knowledgePoints);
-                            value.isSegment = 1
-                        }
 
-                        for (var i = 0; i < value.knowledgePoints.length; ++i) {
-                            value.knowledgePoints[i].index = i
-                        }
-                        proc({
-                            templateId: 'chapter',
-                            data: value.knowledgePoints,
-                            containerId: 'chapter-section'
-                        })
-
-                        var chapters = document.getElementById('chapter-section').querySelectorAll('[data-identity]')
-                        for (var i = 0; i < chapters.length; ++i) {
-                            var c = chapters[i]
-                            proc({
-                                container: c,
-                                data: value.knowledgePoints[i],
-                                alterTemplates: [
-                                    {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
-                                    {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
-                                    {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
-                                    {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
-                                    {type: 'pkOldLike', templateId: 'chapter-old-like-challenge'},
-                                    {type: 'pkOldUnlike', templateId: 'chapter-old-unlike-challenge'},
-                                    {type: 'pkNewLike', templateId: 'chapter-new-like-challenge'},
-                                    {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
-                                    {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-challenge'},
-                                    {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-challenge'},
-                                    {type: 'pkNewUnlikeFree', templateId: 'chapter-free-new-unlike-challenge'},
-                                    {type: 'pkNewLikeFree', templateId: 'chapter-free-new-like-challenge'},
-                                    {type: 'normalOldLikeFree', templateId: 'chapter-free-old-like-template'},
-                                    {type: 'normalOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
-                                    {type: 'normalNewUnlikeFree', templateId: 'chapter-free-new-unlike-template'},
-                                    {type: 'normalNewLikeFree', templateId: 'chapter-free-new-like-template'}
-                                ]
-                            })
-                        }
-
+                        procKps();
                         state.pageTopChange();
 
                         break
@@ -2210,11 +2213,17 @@
 
                         var value = state.knowledgePoints.value
 
+                        // 重新定义order
                         for (var i = 0; i < value.knowledgePoints.length; ++i) {
                             if (value.knowledgePoints[i].type != 'pkNewLike' &&
                                     value.knowledgePoints[i].type !== 'pkOldLike' &&
                                     value.knowledgePoints[i].type !== 'pkNewUnlike' &&
-                                    value.knowledgePoints[i].type !== 'pkOldUnlike') {
+                                    value.knowledgePoints[i].type !== 'pkOldUnlike' &&
+                                    value.knowledgePoints[i].type !== 'pkOldUnlikeFree' &&
+                                    value.knowledgePoints[i].type !== 'pkNewUnlikeFree' &&
+                                    value.knowledgePoints[i].type !== 'pkOldLikeFree' &&
+                                    value.knowledgePoints[i].type !== 'pkNewLikeFree'
+                            ) {
                                 value.knowledgePoints[i].order = i + 1;
                             }
                         }
@@ -2231,47 +2240,7 @@
                             data: value,
                             containerId: 'pack_up_title'
                         })
-                        if (!value.isSegment) {
-                            value.knowledgePoints = segment(value.knowledgePoints);
-                            value.isSegment = 1
-                        }
-
-                        for (var i = 0; i < value.knowledgePoints.length; ++i) {
-                            value.knowledgePoints[i].index = i
-                        }
-                        proc({
-                            templateId: 'chapter',
-                            data: value.knowledgePoints,
-                            containerId: 'chapter-section'
-                        })
-
-                        var chapters = document.getElementById('chapter-section').querySelectorAll('[data-identity]')
-                        for (var i = 0; i < chapters.length; ++i) {
-                            var c = chapters[i]
-                            proc({
-                                container: c,
-                                data: value.knowledgePoints[i],
-                                alterTemplates: [
-                                    {type: 'normalNewLike', templateId: 'chapter-new-like-template'},
-                                    {type: 'normalNewUnlike', templateId: 'chapter-new-unlike-template'},
-                                    {type: 'normalOldLike', templateId: 'chapter-old-like-template'},
-                                    {type: 'normalOldUnlike', templateId: 'chapter-old-unlike-template'},
-                                    {type: 'pkOldLike', templateId: 'chapter-old-like-challenge'},
-                                    {type: 'pkOldUnlike', templateId: 'chapter-old-unlike-challenge'},
-                                    {type: 'pkNewLike', templateId: 'chapter-new-like-challenge'},
-                                    {type: 'pkNewUnlike', templateId: 'chapter-new-unlike-challenge'},
-                                    {type: 'pkOldLikeFree', templateId: 'chapter-free-old-like-challenge'},
-                                    {type: 'pkOldUnlikeFree', templateId: 'chapter-free-old-unlike-challenge'},
-                                    {type: 'pkNewUnlikeFree', templateId: 'chapter-free-new-unlike-challenge'},
-                                    {type: 'pkNewLikeFree', templateId: 'chapter-free-new-like-challenge'},
-                                    {type: 'normalOldLikeFree', templateId: 'chapter-free-old-like-template'},
-                                    {type: 'normalOldUnlikeFree', templateId: 'chapter-free-old-unlike-template'},
-                                    {type: 'normalNewUnlikeFree', templateId: 'chapter-free-new-unlike-template'},
-                                    {type: 'normalNewLikeFree', templateId: 'chapter-free-new-like-template'}
-                                ]
-                            })
-                        }
-
+                        procKps();
                         state.pageTopChange();
                         break
                 }
