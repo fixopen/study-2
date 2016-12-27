@@ -273,7 +273,7 @@
 <!--********************************main***********************-->
 <template id="chinese-playing-template">
     <div class="all_uli">
-        <div class="all_liplay" data-id="${id}">
+        <div class="all_liplay a" data-id="${id}">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
@@ -320,21 +320,21 @@
                     <img src="../images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
+                <p>${year}-${month}-${day} ${hour}:${minute}</p>
             </div>
         </div>
     </div>
 </template>
 <template id="chinese-future-template">
     <div class="all_uli">
-        <div class="all_liplay">
+        <div class="all_liplay a">
             <div class="futureNoteEntry" class="all_aBtn">
                 <span class="daibo_ceng ceng_yuwen" data-article="futureNote" data-id="${id}"></span>
                 <span class="bofang daibo"></span>
-                <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
+                <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}开讲</span>
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <h3 class="yuwen_h3">${abstraction}</h3>
                     <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
@@ -376,7 +376,7 @@
                     <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
+                <p>${year}-${month}-${day} ${hour}:${minute}</p>
             </div>
         </div>
     </div>
@@ -388,13 +388,13 @@
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2 shuxue_div2">
-                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <h3 class="yuwen_h3">${abstraction}</h3>
                     <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
                     <span>${grade}</span>
                     <span class="yuwen_span">${teacher}</span>
-                    <span class="yuwen_riqi">${year}-${month}-${day} ${hour}:${minute}:${second}</span>
+                    <span class="yuwen_riqi">${year}-${month}-${day} ${hour}:${minute}</span>
                 </p>
                 <a class="yuwen_a" href="${directLink}"></a>
             </a>
@@ -430,7 +430,7 @@
                     <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
+                <p>${year}-${month}-${day} ${hour}:${minute}</p>
             </div>
         </div>
     </div>
@@ -441,10 +441,10 @@
             <div class="futureNoteEntry" class="all_aBtn">
                 <span class="daibo_ceng" data-article="futureNote" data-id="${id}"></span>
                 <span class="bofang daibo"></span>
-                <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}:${second}开讲</span>
+                <span class="bofang_time">${year}-${month}-${day} ${hour}:${minute}开讲</span>
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2 shuxue_div2">
-                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <h3 class="yuwen_h3">${abstraction}</h3>
                     <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
@@ -487,7 +487,7 @@
                     <img src="/images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${year}-${month}-${day} ${hour}:${minute}:${second}</p>
+                <p>${year}-${month}-${day} ${hour}:${minute}</p>
             </div>
         </div>
     </div>
@@ -501,7 +501,7 @@
                 <div class="leftJinDou"><span>${price}</span>金豆</div>
                 <div class="yuwen_div1">语文</div>
                 <div class="yuwen_div2">
-                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <h3 class="yuwen_h3">${abstraction}</h3>
                     <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
@@ -555,7 +555,7 @@
                 <div class="leftJinDou"><span>${price}</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">数学</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
-                    <h3 class="yuwen_h3">${generalization}</h3>
+                    <h3 class="yuwen_h3">${abstraction}</h3>
                     <p class="yuwen_p">${name}</p>
                 </div>
                 <p class="yuwen_p2">
@@ -733,7 +733,7 @@
     </div>
 </template>
 <div id="1" style="display: none">
-    <div class="tan1" style="display: block;"></div>
+    <div class="tan" style="display: block;"></div>
     <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="JavaScript:void(0)" id="close1"></a>
         <div class="win_neir koudou_win">
@@ -751,7 +751,7 @@
     </div>
 </div>
 <div id="2" style="display: none">
-    <div class="tan1" style="display: block;"></div>
+    <div class="tan" style="display: block;"></div>
     <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="JavaScript:void(0)" id="close2"></a>
         <div class="win_neir koudou_win">
@@ -769,7 +769,7 @@
     </div>
 </div>
 <div id="3" style="display: none">
-    <div class="tan1" style="display: block;"></div>
+    <div class="tan" style="display: block;"></div>
     <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="JavaScript:void(0)" id="close3"></a>
         <div class="win_neir koudou_win">
@@ -787,7 +787,7 @@
     </div>
 </div>
 <div id="4" style="display: none">
-    <div class="tan1" style="display: block;"></div>
+    <div class="tan" style="display: block;"></div>
     <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
         <a class="windowClose" href="JavaScript:void(0)" id="close4"></a>
         <div class="win_neir koudou_win">
@@ -1085,9 +1085,22 @@
                     url: "/api/resources/" + object_Types + "/" + object_Id + "",
                     dataType: "json",
                     success: function (e) {
+//                        {"directLink":"adf","contentLink":"asdfadsf"}
+
                         alert("成功")
-                        alert(JSON.stringify(e))
-                        state.switchTo('object_Id')
+//                        alert(JSON.stringify(e))
+//                        alert(object_Id)
+
+//                        for(var i = 0;i<state.passed.result.length;i++){
+//                            if(state.passed.result[i].id == object_Id){
+//                                state.passed.result[i].directLink = directLink
+//                                state.passed.result[i].contentLink = contentLink
+//                            }
+//                        }
+//                        if(voideType == "video"){
+//                            state.switchTo('videoDetail')
+//                        }
+
                     },
                     error: function (e) {
                         tan(cards, ke, object_Types, object_Id,voideType)
@@ -1456,7 +1469,6 @@
 //            var userId = g.getUrlParameter('userid')
 //            g.setCookie('userId', userId)
 //            g.setCookie('sessionId', '301dd50b5903de73ce0c25ee516307fd88eba65355fd02b62ab4ce7ec7e6847')
-
             var now = Date.now()
             $.ajax({
                 type: 'get',
@@ -1607,6 +1619,11 @@
                             $(this).children('img').eq(0).show();
                         }
                     })
+
+                    $(document).on('click', ".a", function (e) {
+                        alert(e.target.dataset.id);
+                        xiao(e.target.dataset.id,"scheduler","liveVideo")
+                    });
 
                     state.main.zeroFuture.data = subjects[0].futures
                     state.main.zeroPlaying.data = subjects[0].playing
@@ -1866,6 +1883,10 @@
 //                        $("#video").attr("style","padding-top:3rem");
                     });
 
+                    $(document).on('click', ".a", function (e) {
+                        alert(e.target.dataset.id);
+                        xiao(e.target.dataset.id,"scheduler","video")
+                    });
 
 
                     for (var i = 0; i < passed.length; ++i) {
@@ -1962,10 +1983,7 @@
                     xiao(state.videoDetail.id,"scheduler","video")
                 })*/
 
-                $(".a").on("click",function(e){
-                    alert(e.target.dataset.id);
-                    xiao(e.target.dataset.id,"scheduler","video")
-                });
+
             },
 //            search: function () {
 //                var result = []
@@ -1997,7 +2015,7 @@
 
         futureNote: {
             init: function () {
-                var t = state.main.findById(state.futureNote.id).year + '-' + state.main.findById(state.futureNote.id).month + '-' + state.main.findById(state.futureNote.id).day + ' ' + state.main.findById(state.futureNote.id).hour + ':' + state.main.findById(state.futureNote.id).minute + ':' + state.main.findById(state.futureNote.id).second + '开讲';
+                var t = state.main.findById(state.futureNote.id).year + '-' + state.main.findById(state.futureNote.id).month + '-' + state.main.findById(state.futureNote.id).day + ' ' + state.main.findById(state.futureNote.id).hour + ':' + state.main.findById(state.futureNote.id).minute  + '开讲';
                 var e = document.getElementsByClassName('waitTime')
                 e[0].innerHTML = t
             }
