@@ -25,7 +25,7 @@ public class Transactions {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(@CookieParam("sessionId") String sessionId, Transaction entity) {
+    public Response create(@CookieParam("sessionId") String sessionId, Transaction entity)  {
         Response result = Impl.validationUser(sessionId);
         if (result.getStatus() == 202) {
             User user = JPAEntry.getLoginUser(sessionId);
