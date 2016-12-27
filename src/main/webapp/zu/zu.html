@@ -1,104 +1,90 @@
 <div>
-    <article id="selectCard" style="display: none"></article>
-    <article id="selectOneCard" style="display: none"></article>
     <template id="selectCard-template">
-        <div class="wrap">
-            <ul class="mine_baodiv">
-                <li>
-                    <a class="mine_zuli" href="#" data-id="${id}">
-                        <img class="mine_img1" src="${image}" alt="">
-                        <div class="mine_leftdiv">
-                            <span class="mine_leftsp">${subjectId}</span>
-                            <span class="mine_leftsp">${no}</span>
-                            <br>
-                            <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
-                        </div>
-                        <img src="" id="${id}" src="" class="mine_img2"/>
-                    </a>
-                </li>
+        <div>
+            <ul class="xuanze_zuli" data-id="${id}" data-amount="${amount}" data-subject="${subjectId}" data-img="${image}"
+                data-no="${no}" style="cursor:hand">
+                <img class="xuanze_img1" src="${image}" alt="">
+                <div class="xuanze_leftdiv" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}" data-no="${no}">
+                    <span class="xuanze_leftsp">${subjectId}</span>
+                    <span class="xuanze_leftsp">${no}</span>
+                    <br>
+                    <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
+                </div>
+                <!--<img src="" id="${id}" src="" class="xuanze_img2"/>-->
             </ul>
         </div>
     </template>
-    <template id="selectOneCard-template">
-        <div class="wrap">
-            <ul class="mine_baodiv">
-                <li>
-                    <a class="mine_zuli" href="javascript:void(0)">
-                        <img class="mine_img1" src="myUser/image/keBiao.png" alt="">
-                        <div class="mine_leftdiv">
-                            <span class="mine_leftsp">${subjectId}</span>
-                            <span class="mine_leftsp">${no}</span>
-                            <br>
-                            <span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>
-                        </div>
-                    </a>
+    <template id="userCard-template">
+        <div>
+            <ul class="xuanze_zuli" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}"
+                style="cursor:hand">
+                <img class="xuanze_img1" src="${image}" alt="">
+                <div class="xuanze_leftdiv">
+                    <span class="xuanze_leftsp">${name}</span>
+                    <span class="xuanze_leftsp"></span>
+                    <br>
+                    <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
+                </div>
+            </ul>
+        </div>
+    </template>
+    <article id="recharge" style="display: none">
+        <div class="wrap" id="to" >
+            <ul class="xuanze_baodiv">
+                <li id="account">
+                </li>
+                <li id="oneCard">
                 </li>
             </ul>
-            <ul class="mine_baodiv">
-                <li class="mine_liname">
-                    <div class="mine_leftdiv">
-                        <p class="mine_zhaunc">转出金豆数量</p>
-                        <span class="mine_leftsp">金豆：</span>
-                        <input class="mine_zhauncIn" type="text" id="Number">
-                    </div>
-                </li>
-            </ul>
-            <p class="turnOut_note">
-                最多可转出到卡
-                <span class="note_number" id="tishi"></span>
-            </p>
-            <div class="zhaunc_btn">
-                <a class="zhaunc_a" href="#" id="submitTransfer">确认转出</a>
+        </div>
+        <div id="rechargepage" style="display: none">
+            <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+            <li class="mine_zuli" id="z" style="cursor: hand">
+                <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
+                <div class="xuanze_leftdiv">
+                    <span class="xuanze_leftsp" id="name"></span>
+                    <span class="xuanze_leftsp" id="no"></span>
+                    <br>
+                    <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
+                </div>
+            </li>
+            <div class="charge-main">
+                <!-- charge-area -->
+                <p class="main_ptxt">1元=10金豆</p>
+                <ul class="rain-drop-ul">
+                    <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+                </ul>
+                <div class="srinput_div">
+                    <span class="srinput_span">其他金额：</span>
+                    <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+                </div>
+                <div class="count_div">小计：
+                    <span>￥<i class="count_spani1">15</i></span>
+                </div>
             </div>
-        </div>
-    </template>
-    <div id="c" class="wrap" style="display: none">
-        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
-        <a id="z" class="mine_zuli" href="javascript:void(0)">
-            <img src="myUser/image/keBiao.png" alt="">
-            <div class="mine_leftdiv">
-                <span class="mine_leftsp" id="name"></span>
-                <span class="mine_leftsp">5487965452</span>
+            <div class="count_div">合计：
+                <span>￥<i class="count_spani2">10.50</i></span>
                 <br>
-                <span class="uli_span">余<i class="uli_spani" id="usermoney"></i>金豆</span>
+                <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
             </div>
-        </a>
-        <div class="charge-main">
-            <!-- charge-area -->
-            <p class="main_ptxt">1元=10金豆</p>
-            <ul class="rain-drop-ul">
-                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
-            </ul>
-            <div class="srinput_div">
-                <span class="srinput_span">其他金额：</span>
-                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
-            </div>
-            <div class="count_div">小计：
-                <span>￥<i class="count_spani1">15</i></span>
+            <!-- pay-btn -->
+            <div class="pay_btn">
+                <div class="wechat-btn">
+                    <span class="wechat-span"></span>
+                    微信支付
+                </div>
+                <div class="alipay-btn">
+                    <span class="alipay-span"></span>
+                    支付宝支付
+                </div>
             </div>
         </div>
-        <div class="count_div">合计：
-            <span>￥<i class="count_spani2">10.50</i></span>
-            <br>
-            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
-        </div>
-        <!-- pay-btn -->
-        <div class="pay_btn">
-            <div class="wechat-btn">
-                <span class="wechat-span"></span>
-                微信支付
-            </div>
-            <div class="alipay-btn">
-                <span class="alipay-span"></span>
-                支付宝支付
-            </div>
-        </div>
-    </div>
+    </article>
     <div id="1" style="display: none">
         <div class="tan" style="display: block;"></div>
         <div class="window1" style="display: block;"><!-- 无此卡扣豆提醒 -->
