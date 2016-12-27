@@ -333,6 +333,10 @@
                                                 minute = '00'
                                             }
                                             item.minute = minute
+                                            item.type = 'normal'
+                                            if (i == 0) {
+                                                item.type = 'live'
+                                            }
                                         }
                                     }
                                     lives = d[0]
@@ -352,7 +356,7 @@
                                             --i
                                         }
                                     }
-                                    moveTo('main')
+                                    switchTo('main')
                                 }
                             })
                         }
