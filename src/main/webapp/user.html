@@ -996,7 +996,7 @@
                 <span class="uli_divTspan">共<i>${knowledgePointCount}</i>篇，看过<i>${readpast}</i>篇</span>
             </div>
         </div>
-        <ul class="mld_daanUl" data-ext-point="problem" data-id="${id}"></ul>
+        <ul class="mld_daanUl" data-ext-point="problems" data-id="${id}"></ul>
     </li>
 </template>
 <template id="problem-checkbox-template">
@@ -1018,7 +1018,7 @@
                 <span class="uli_divTspan">共<i>${knowledgePointCount}</i>篇，看过<i>${readpast}</i>篇</span>
             </div>
         </div>
-        <ul class="all_erul" data-ext-point="knowledge" data-id="${id}">
+        <ul class="all_erul" data-ext-point="knowledgePoints" data-id="${id}">
 
         </ul>
     </li>
@@ -2542,11 +2542,7 @@
                         containerId: 'chine_knowledgePoint',
                         data: user.chinepastvolumes,
                         templateId: 'pastKnowledgePoints-template',
-                        next: {
-//                            extPoint: 'knowledge',
-//                            dataFieldName: 'knowledgePoints',
-                            templateId: 'knowledge-template'
-                        }
+                        next: {templateId: 'knowledge-template'}
                     })
                     user.mathpastvolumes = []
                     user.mathpastvolumes = user.mathpast.volumes
@@ -2556,11 +2552,7 @@
                         containerId: 'math_knowledgePoint',
                         data: user.mathpastvolumes,
                         templateId: 'pastKnowledgePoints-template',
-                        next: {
-                          /*  extPoint: 'knowledge',
-                            dataFieldName: 'knowledgePoints',*/
-                            templateId: 'knowledge-template'
-                        }
+                        next: {templateId: 'knowledge-template'}
 
                     })
 
@@ -2615,17 +2607,13 @@
                     containerId: 'chinetopicsname',
                     data: user.chineproblems,
                     templateId: 'book',
-                    secondBind: {
-                        extPoint: 'problem',
-                        dataFieldName: 'problems',
-                        alterTemplates: [
+                    next: {
+                        templates: [
                             {type: '单选题', templateId: 'problem-radio-template'},
                             {type: '多选题', templateId: 'problem-checkbox-template'}
                         ],
-                        secondBind: {
-                            extPoint: 'options',
-                            dataFieldName: 'options',
-                            alterTemplates: [
+                        next: {
+                            templates: [
                                 {type: 'true', templateId: 'problem-option-true-template'},
                                 {type: 'false', templateId: 'problem-option-false-template'},
                                 {type: 'normal', templateId: 'problem-option-template'}
@@ -2637,17 +2625,13 @@
                     containerId: 'mathtopicsname',
                     data: user.mathproblems,
                     templateId: 'book',
-                    secondBind: {
-                        extPoint: 'problem',
-                        dataFieldName: 'problems',
-                        alterTemplates: [
+                    next: {
+                        templates: [
                             {type: '单选题', templateId: 'problem-radio-template'},
                             {type: '多选题', templateId: 'problem-checkbox-template'}
                         ],
-                        secondBind: {
-                            extPoint: 'options',
-                            dataFieldName: 'options',
-                            alterTemplates: [
+                        next: {
+                            templates: [
                                 {type: 'true', templateId: 'problem-option-true-template'},
                                 {type: 'false', templateId: 'problem-option-false-template'},
                                 {type: 'normal', templateId: 'problem-option-template'}
