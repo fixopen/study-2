@@ -2091,7 +2091,7 @@
                     }
                     return result
                 }
-                var procKps = function(){
+                var procKps = function () {
                     if (!value.isSegment) {
                         value.knowledgePoints = segment(value.knowledgePoints);
                         value.isSegment = 1
@@ -2509,11 +2509,7 @@
                             ],
                             data: value.contents.problems,
                             containerId: 'problems',
-                            next: {
-//                                extPoint: 'options',
-//                                dataFieldName: 'options',
-                                templateId: 'problem-option-template'
-                            }
+                            next: {templateId: 'problem-option-template'}
                         });
 
                         //  interaction-likes
@@ -2607,25 +2603,13 @@
                                     templateId: 'pk-template',
                                     data: pk,
                                     containerId: 'pk',
-                                    next:
-                                        {
-//                                            extPoint: 'options',
-//                                            dataFieldName: 'options',
-                                            templateId: 'strongest-brain-option-template'
-                                        }
-
+                                    next: {templateId: 'strongest-brain-option-template'}
                                 });
                                 proc({
                                     templateId: 'strongest-brain-template',
                                     data: strongestBrains,
                                     containerId: 'strongest-brain',
-                                    next:
-                                        {
-//                                            extPoint: 'options',
-//                                            dataFieldName: 'options',
-                                            templateId: 'strongest-brain-option-template'
-                                        }
-
+                                    next: {templateId: 'strongest-brain-option-template'}
                                 });
 
                                 //  interaction-likes
@@ -2679,14 +2663,7 @@
                                     templateId: 'strongest-brain-template',
                                     data: value.contents.problems,
                                     containerId: 'strongest-brain',
-                                    next:
-                                        {
-//                                            extPoint: 'options',
-//                                            dataFieldName: 'options',
-                                            templateId: 'strongest-brain-option-template'
-
-                                        }
-
+                                    next: {templateId: 'strongest-brain-option-template'}
                                 });
 
                                 //  interaction-likes
