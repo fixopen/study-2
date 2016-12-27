@@ -1164,6 +1164,7 @@
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
+
 <script>
     var user = null;
     var array = [];
@@ -2541,9 +2542,9 @@
                         containerId: 'chine_knowledgePoint',
                         data: user.chinepastvolumes,
                         templateId: 'pastKnowledgePoints-template',
-                        secondBind: {
-                            extPoint: 'knowledge',
-                            dataFieldName: 'knowledgePoints',
+                        next: {
+//                            extPoint: 'knowledge',
+//                            dataFieldName: 'knowledgePoints',
                             templateId: 'knowledge-template'
                         }
                     })
@@ -2555,11 +2556,12 @@
                         containerId: 'math_knowledgePoint',
                         data: user.mathpastvolumes,
                         templateId: 'pastKnowledgePoints-template',
-                        secondBind: {
-                            extPoint: 'knowledge',
-                            dataFieldName: 'knowledgePoints',
+                        next: {
+                          /*  extPoint: 'knowledge',
+                            dataFieldName: 'knowledgePoints',*/
                             templateId: 'knowledge-template'
                         }
+
                     })
 
                     $('.a').on('click', function (e) {

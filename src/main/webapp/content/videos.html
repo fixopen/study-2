@@ -273,7 +273,7 @@
 <!--********************************main***********************-->
 <template id="chinese-playing-template">
     <div class="all_uli">
-        <div class="all_liplay a" data-id="${id}">
+        <div class="all_liplay b" data-id="${id}">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
@@ -284,7 +284,7 @@
                 <p class="yuwen_p2">
                     <span>${grade}</span>
                     <span class="yuwen_span">${teacher}</span>
-                    <span class="yuwen_riqi">${startTimr}</span>
+                    <span class="yuwen_riqi">${year}-${month}-${day} ${hour}:${minute}</span>
                 </p>
                 <a class="yuwen_a" href="${directLink}"></a>
             </a>
@@ -320,7 +320,7 @@
                     <img src="../images/sxsj_btn.png" alt="">
                     上线时间
                 </h3>
-                <p>${year}-${month}-${day} ${hour}:${minute}</p>
+                <p>${startTime}</p>
             </div>
         </div>
     </div>
@@ -383,7 +383,7 @@
 </template>
 <template id="math-playing-template">
     <div class="all_uli">
-        <div class="all_liplay shuxue_play">
+        <div class="all_liplay shuxue_play b">
             <a class="all_aBtn" href="${directLink}">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
@@ -1087,9 +1087,6 @@
                     success: function (e) {
 //                        {"directLink":"adf","contentLink":"asdfadsf"}
 
-                        alert("成功")
-//                        alert(JSON.stringify(e))
-//                        alert(object_Id)
 
 //                        for(var i = 0;i<state.passed.result.length;i++){
 //                            if(state.passed.result[i].id == object_Id){
@@ -1097,9 +1094,10 @@
 //                                state.passed.result[i].contentLink = contentLink
 //                            }
 //                        }
-//                        if(voideType == "video"){
+//                        if(objectType == "video"){
 //                            state.switchTo('videoDetail')
-//                        }
+//                        }else if(objectType == 'liveVideo'){
+// state.switchTo('')}
 
                     },
                     error: function (e) {
@@ -1621,7 +1619,7 @@
                     })
 
                     $(document).on('click', ".a", function (e) {
-                        alert(e.target.dataset.id);
+//                        alert(e.target.dataset.id);
                         xiao(e.target.dataset.id,"scheduler","liveVideo")
                     });
 
@@ -1798,7 +1796,7 @@
                         proc({
                             data: result,
                             container: state.passed.videoContainer,
-                            alterTemplates: [
+                            templates: [
                                 {type: 'chinese', templateId: 'chinese-template'},
                                 {type: 'math', templateId: 'math-template'}
                             ]
@@ -1884,7 +1882,7 @@
                     });
 
                     $(document).on('click', ".a", function (e) {
-                        alert(e.target.dataset.id);
+//                        alert(e.target.dataset.id);
                         xiao(e.target.dataset.id,"scheduler","video")
                     });
 
@@ -1906,7 +1904,7 @@
                     proc({
                         data: passed,
                         container: state.passed.videoContainer,
-                        alterTemplates: [
+                        templates: [
                             {type: 'chinese', templateId: 'chinese-template'},
                             {type: 'math', templateId: 'math-template'}
                         ]
@@ -2189,9 +2187,9 @@
                                 containerId: 'day',
                                 data: courseTable,
                                 templateId: 'day-template',
-                                secondBind: {
-                                    extPoint: 'items',
-                                    dataFieldName: 'items',
+                                next: {
+//                                    dataSelector: 'items',
+//                                    dataFieldName: 'items',
                                     templateId: 'item-template'
                                 }
                             })
