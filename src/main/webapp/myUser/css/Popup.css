@@ -1,5 +1,5 @@
 /* 弹窗 */
-.tan{
+.tan1 {
     width: 100%;
     height: 100%;
     background-color: #000;
@@ -12,7 +12,8 @@
     z-index: 99;
     display: none;
 }
-.window1{
+
+.window1 {
     width: 16.90625rem;
     /* height: 26.375rem; */
     height: 25.3125rem;
@@ -21,14 +22,15 @@
     background-size: 16.90625rem 25.3125rem;
     /*margin: 0 auto;*/
     position: absolute;
-    left:10%;
-    right:40%;
-    top:-2px;
+    left: 10%;
+    right: 40%;
+    top: -2px;
     /*//bottom:*/
     z-index: 100;
     display: none;
 }
-.windowClose{
+
+.windowClose {
     display: inline-block;
     width: 0.75rem;
     height: 0.75rem;
@@ -38,7 +40,8 @@
     top: 13rem;
     right: 1rem;
 }
-.win_neir{
+
+.win_neir {
     color: #444;
     font-size: 1.0625rem;
     width: 84%;
@@ -46,39 +49,47 @@
     top: 17.25rem;
     left: 2.5625rem;
 }
-.neir_duo{
+
+.neir_duo {
     top: 16rem;
 }
-.neir_ptxt{
+
+.neir_ptxt {
     color: #ff6c00;
     font-size: 1.105rem;
     font-weight: bold;
 }
-.neir_ptxt span{
+
+.neir_ptxt span {
     display: inline-block;
     color: #ff6c00;
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 0.625rem;
 }
-span.neir_span{
+
+span.neir_span {
     margin: 0.625rem 0 0 0;
 }
-span.ptxt_span{
+
+span.ptxt_span {
     margin: 0 0.3125rem;
 }
-.neir_ptiX{
+
+.neir_ptiX {
     color: #888;
     font-size: 0.8125rem;
     margin-top: 0.625rem;
 }
-.neir_ptiX input{
+
+.neir_ptiX input {
     -webkit-appearance: checkbox !important;
     appearance: checkbox !important;
     vertical-align: middle;
     margin-right: 0.15625rem;
 }
-.neir_pBtn{
+
+.neir_pBtn {
     display: inline-block;
     width: 7.0625rem;
     height: 1.875rem;
@@ -86,13 +97,16 @@ span.ptxt_span{
     border-radius: 0.3125rem;
     margin: 1.875rem auto 0;
 }
-.koudou_win{
+
+.koudou_win {
     top: 16.25rem;
 }
-.kou_dou{
+
+.kou_dou {
     margin: 1.475rem auto 0;
 }
-.p_btn{
+
+.p_btn {
     display: inline-block;
     font-size: 1.0rem;
     font-weight: bold;
@@ -100,14 +114,16 @@ span.ptxt_span{
     height: 1.875rem;
     line-height: 1.875rem;
     text-align: center;
-    background:-webkit-linear-gradient(top,#bc8c07,#6d2f00);
-    -webkit-background-clip:text;
-    color:transparent;
+    background: -webkit-linear-gradient(top, #bc8c07, #6d2f00);
+    -webkit-background-clip: text;
+    color: transparent;
 }
-.neir_pBtn2{
+
+.neir_pBtn2 {
     display: inline-block;
 }
-.p_buyka{
+
+.p_buyka {
     display: inline-block;
     color: #39b4fa;
     font-size: 0.8125rem;
@@ -118,10 +134,11 @@ span.ptxt_span{
 }
 
 /*!*@Author: zhaoxq*!*/
-.mine_baodiv{
+.mine_baodiv {
     margin-top: 1.25rem;
 }
-.mine_zuli{
+
+.mine_zuli {
     display: block;
     color: #444;
     min-height: 3.71875rem;
@@ -132,44 +149,51 @@ span.ptxt_span{
     border-bottom: 1px solid #e5e5e5;
     background-color: #fff;
 }
-.mine_img1{
+
+.mine_img1 {
     width: 1.125rem;
     height: 4.75rem;
     vertical-align: top;
     margin-right: 0.625rem;
 }
-.mine_img2{
+
+.mine_img2 {
     float: right;
     width: 1.125rem;
     height: 0.8125rem;
     vertical-align: top;
     margin-top: 2.0rem;
-     display: none;
+    display: none;
 }
-.mine_img2.cur{
+
+.mine_img2.cur {
     display: block;
 }
-.mine_leftdiv{
+
+.mine_leftdiv {
     display: inline-block;
     line-height: 1.25rem;
     padding-top: 1rem;
 }
-.mine_leftsp{
+
+.mine_leftsp {
     display: inline-block;
     color: #444;
     font-size: 1.0625rem;
     text-align: left;
 }
-.uli_span{
+
+.uli_span {
     display: block;
     color: #ff8067;
     font-size: 0.9375rem;
 }
-.uli_spani{
+
+.uli_spani {
     margin: 0 0.3125rem;
 }
 
-.mine_liname{
+.mine_liname {
     color: #444;
     min-height: 3.71875rem;
     line-height: 3.71875rem;
@@ -179,22 +203,26 @@ span.ptxt_span{
     border-bottom: 1px solid #e5e5e5;
     background-color: #fff;
 }
-.mine_zhaunc{
+
+.mine_zhaunc {
     color: #888;
     font-size: 0.9375rem;
     margin-bottom: 0.625rem;
 }
-.mine_zhauncIn{
+
+.mine_zhauncIn {
     color: #444;
     font-size: 1.0rem;
     height: 2.25rem;
     line-height: 2.25rem;
 }
-.zhaunc_btn{
+
+.zhaunc_btn {
     padding: 0 1.25rem;
     margin-top: 4.375rem;
 }
-.zhaunc_a{
+
+.zhaunc_a {
     display: inline-block;
     color: #fff;
     width: 100%;
@@ -205,15 +233,17 @@ span.ptxt_span{
     border-radius: 0.3125rem;
 }
 
-.turnOut_note{
+.turnOut_note {
     color: #ccc;
     font-size: 0.9375rem;
     font-family: "苹方";
     padding: 0 1.25rem;
 }
-.note_number{
+
+.note_number {
     margin: 0 0.3125rem;
 }
+
 /*
 !*@Author: zhaoxq*!
 .charge-explain{
@@ -277,10 +307,11 @@ span.ptxt_span{
 }*/
 
 /* charge-area */
-.rain-drop-ul{
+.rain-drop-ul {
     overflow: hidden;
 }
-.rain-drop-li{
+
+.rain-drop-li {
     float: left;
     color: #fff;
     font-size: 1.25rem;
@@ -293,28 +324,33 @@ span.ptxt_span{
     background-color: #ffbc3c;
     border-radius: 0.3125rem;
 }
-.rain-drop-li:first-child{
+
+.rain-drop-li:first-child {
     margin-left: 0;
 }
-.rain-drop-li:nth-child(4){
+
+.rain-drop-li:nth-child(4) {
     margin-left: 0;
 }
-.rain-drop-li.cur{
+
+.rain-drop-li.cur {
     background-color: #ff6d00;
 }
-.rain_lispan{
+
+.rain_lispan {
     font-size: 1.875rem;
     font-weight: bold;
     margin-right: 0.3125rem;
 }
 
-.srinput_span{
+.srinput_span {
     display: block;
     color: #444;
     font-size: 1.0rem;
     margin-bottom: 0.3125rem;
 }
-.srinput_input{
+
+.srinput_input {
     color: #444;
     font-size: 1.0rem;
     width: 90%;
@@ -324,33 +360,39 @@ span.ptxt_span{
     border: 1px solid #ccc;
     border-radius: 0.3125rem;
 }
-.count_div{
+
+.count_div {
     color: #ff8067;
     font-size: 0.8125rem;
     text-align: right;
     margin: 0.9375rem 0;
     margin-right: 5%;
 }
-.count_spani1{
+
+.count_spani1 {
     font-size: 1.125rem;
 }
-.count_spani2{
+
+.count_spani2 {
     font-size: 1.3125rem;
     font-weight: bold;
 }
-.count_span{
+
+.count_span {
     color: #aaa;
     font-size: 0.8125rem;
 }
-.count_spani3{
+
+.count_spani3 {
     margin: 0 0.3125rem;
 }
 
 /* pay */
-.pay_btn{
+.pay_btn {
     padding: 0 0.9375rem;
 }
-.wechat-btn,.alipay-btn{
+
+.wechat-btn, .alipay-btn {
     width: 100%;
     text-align: center;
     color: #fff;
@@ -359,13 +401,16 @@ span.ptxt_span{
     border-radius: 10px;
     padding: 0.53125rem 0;
 }
-.wechat-btn{
+
+.wechat-btn {
     background-color: #86c610;
 }
-.alipay-btn{
+
+.alipay-btn {
     background-color: #2595c9;
 }
-.wechat-span{
+
+.wechat-span {
     position: relative;
     top: 0.1875rem;
     display: inline-block;
@@ -376,7 +421,8 @@ span.ptxt_span{
     background-size: 1.8125rem 1.46875rem;
     margin-right: 0.625rem;
 }
-.alipay-span{
+
+.alipay-span {
     position: relative;
     top: 0.3125rem;
     display: inline-block;

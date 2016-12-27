@@ -7,214 +7,15 @@
     <link rel="stylesheet" href="myUser/css/global.css">
 </head>
 <body>
-<!--<article id="knowledgePoints"></article>-->
-<!--<template id="knowledgePoint-template">-->
-    <!--<ul class="public_ul_css" id="knowledgePoint">-->
-        <!--<li class="public_li_css">-->
-            <!--<span class="public_span_css info_interval_width_css">Id</span>-->
-            <!--<span class="public_input_css">${id}</span>-->
-        <!--</li>-->
-        <!--<li class="public_li_css">-->
-            <!--<span class="public_span_css info_interval_width_css">科目</span>-->
-            <!--<span class="public_input_css">${subjectId}</span>-->
-        <!--</li>-->
-        <!--<li class="public_li_css">-->
-            <!--<span class="public_span_css info_interval_width_css">册名</span>-->
-            <!--<span class="public_input_css">${volumeId}</span>-->
-        <!--</li>-->
-        <!--<li class="public_li_css">-->
-            <!--<span class="public_span_css info_interval_width_css">年级</span>-->
-            <!--<span class="public_input_css">${grade}</span>-->
-        <!--</li>-->
-        <!--<li class="public_li_css">-->
-            <!--<span class="public_span_css info_interval_width_css">知识点名称</span>-->
-            <!--<span class="public_input_css">${name}</span>-->
-        <!--</li>-->
-        <!--<li class="public_li_css">-->
-            <!--<span class="public_span_css info_interval_width_css">展示时间</span>-->
-            <!--<span class="public_input_css">${showTime}</span>-->
-        <!--</li>-->
-    <!--</ul>-->
-<!--</template>-->
+<div id="container"></div>
 <button id="submit">提交</button>
-<!--弹窗开始 -->
-<!--<article id="selectCard" style="display: none"></article>-->
-<!--<article id="selectOneCard" style="display: none"></article>-->
-<!--<template id="selectCard-template">-->
-    <!--<div class="wrap">-->
-        <!--<ul class="mine_baodiv">-->
-            <!--<li>-->
-                <!--<a class="mine_zuli" href="#" data-id="${id}">-->
-                    <!--<img class="mine_img1" src="${image}" alt="">-->
-                    <!--<div class="mine_leftdiv">-->
-                        <!--<span class="mine_leftsp">${subjectId}</span>-->
-                        <!--<span class="mine_leftsp">${no}</span>-->
-                        <!--<br>-->
-                        <!--<span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>-->
-                    <!--</div>-->
-                    <!--<img src="" id="${id}" src="" class="mine_img2"/>-->
-                <!--</a>-->
-            <!--</li>-->
-        <!--</ul>-->
-    <!--</div>-->
-<!--</template>-->
-<!--<template id="selectOneCard-template">-->
-    <!--<div class="wrap">-->
-        <!--<ul class="mine_baodiv">-->
-            <!--<li>-->
-                <!--<a class="mine_zuli" href="javascript:void(0)">-->
-                    <!--<img class="mine_img1" src="myUser/image/keBiao.png" alt="">-->
-                    <!--<div class="mine_leftdiv">-->
-                        <!--<span class="mine_leftsp">${subjectId}</span>-->
-                        <!--<span class="mine_leftsp">${no}</span>-->
-                        <!--<br>-->
-                        <!--<span class="uli_span">余<i class="uli_spani">${amount}</i>金豆</span>-->
-                    <!--</div>-->
-                <!--</a>-->
-            <!--</li>-->
-        <!--</ul>-->
-        <!--<ul class="mine_baodiv">-->
-            <!--<li class="mine_liname">-->
-                <!--<div class="mine_leftdiv">-->
-                    <!--<p class="mine_zhaunc">转出金豆数量</p>-->
-                    <!--<span class="mine_leftsp">金豆：</span>-->
-                    <!--<input class="mine_zhauncIn" type="text" id="Number">-->
-                <!--</div>-->
-            <!--</li>-->
-        <!--</ul>-->
-        <!--<p class="turnOut_note">-->
-            <!--最多可转出到卡-->
-            <!--<span class="note_number" id="tishi"></span>-->
-        <!--</p>-->
-        <!--<div class="zhaunc_btn">-->
-            <!--<a class="zhaunc_a" href="#" id="submitTransfer">确认转出</a>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</template>-->
-<!--<div id="c" class="wrap" style="display: none">-->
-    <!--<div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>-->
-    <!--<a id="z" class="mine_zuli" href="javascript:void(0)">-->
-        <!--<img src="myUser/image/keBiao.png" alt="">-->
-        <!--<div class="mine_leftdiv">-->
-            <!--<span class="mine_leftsp" id="name"></span>-->
-            <!--<span class="mine_leftsp">5487965452</span>-->
-            <!--<br>-->
-            <!--<span class="uli_span">余<i class="uli_spani" id="usermoney"></i>金豆</span>-->
-        <!--</div>-->
-    <!--</a>-->
-    <!--<div class="charge-main">-->
-        <!--&lt;!&ndash; charge-area &ndash;&gt;-->
-        <!--<p class="main_ptxt">1元=10金豆</p>-->
-        <!--<ul class="rain-drop-ul">-->
-            <!--<li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>-->
-            <!--<li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>-->
-            <!--<li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>-->
-            <!--<li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>-->
-            <!--<li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>-->
-            <!--<li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>-->
-        <!--</ul>-->
-        <!--<div class="srinput_div">-->
-            <!--<span class="srinput_span">其他金额：</span>-->
-            <!--<input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">-->
-        <!--</div>-->
-        <!--<div class="count_div">小计：-->
-            <!--<span>￥<i class="count_spani1">15</i></span>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="count_div">合计：-->
-        <!--<span>￥<i class="count_spani2">10.50</i></span>-->
-        <!--<br>-->
-        <!--<span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>-->
-    <!--</div>-->
-    <!--&lt;!&ndash; pay-btn &ndash;&gt;-->
-    <!--<div class="pay_btn">-->
-        <!--<div class="wechat-btn">-->
-            <!--<span class="wechat-span"></span>-->
-            <!--微信支付-->
-        <!--</div>-->
-        <!--<div class="alipay-btn">-->
-            <!--<span class="alipay-span"></span>-->
-            <!--支付宝支付-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--<div id="1" style="display: none">-->
-    <!--<div class="tan" style="display: block;"></div>-->
-    <!--<div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;-->
-        <!--<a class="windowClose" href="JavaScript:void(0)" id="close1"></a>-->
-        <!--<div class="win_neir koudou_win">-->
-            <!--<p class="neir_ptxt" id="p11">直播需要150个金豆</p>-->
-            <!--<p class="neir_ptxt" id="p21">确认要扣语文卡150个金豆吗？</p>-->
-            <!--&lt;!&ndash;//<span class="ptxt_span" id="jin"></span>&ndash;&gt;-->
-            <!--<p class="neir_ptiX" id="p31"><input name="" type="checkbox">下次不提醒</p>-->
-            <!--<p class="neir_pBtn kou_dou">-->
-                <!--<a class="p_btn" href="JavaScript:;" id="a11">确认</a>-->
-            <!--</p>-->
-            <!--<p class="neir_pBtn2">-->
-                <!--<a class="p_buyka" href="JavaScript:;" id="a21">充值</a>-->
-            <!--</p>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--<div id="2" style="display: none">-->
-    <!--<div class="tan" style="display: block;"></div>-->
-    <!--<div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;-->
-        <!--<a class="windowClose" href="JavaScript:void(0)" id="close2"></a>-->
-        <!--<div class="win_neir koudou_win">-->
-            <!--<p class="neir_ptxt" id="p12">直播需要150个金豆</p>-->
-            <!--<p class="neir_ptxt" id="p22">您的语文卡余额不足</p>-->
-            <!--&lt;!&ndash;//<span class="ptxt_span" id="jin"></span>&ndash;&gt;-->
-            <!--<p class="neir_ptiX" id="p32"><input name="" type="checkbox">下次不提醒</p>-->
-            <!--<p class="neir_pBtn kou_dou">-->
-                <!--<a class="p_btn" href="JavaScript:;" id="a12">充值</a>-->
-            <!--</p>-->
-            <!--<p class="neir_pBtn2">-->
-                <!--<a class="p_buyka" href="JavaScript:;" id="a22">转入</a>-->
-            <!--</p>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--<div id="3" style="display: none">-->
-    <!--<div class="tan" style="display: block;"></div>-->
-    <!--<div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;-->
-        <!--<a class="windowClose" href="JavaScript:void(0)" id="close3"></a>-->
-        <!--<div class="win_neir koudou_win">-->
-            <!--<p class="neir_ptxt" id="p13">您没有语文卡</p>-->
-            <!--<p class="neir_ptxt" id="p23">确认要扣除数学卡150个金豆</p>-->
-            <!--&lt;!&ndash;//<span class="ptxt_span" id="jin"></span>&ndash;&gt;-->
-            <!--<p class="neir_ptiX" id="p33"><input name="" type="checkbox">下次不提醒</p>-->
-            <!--<p class="neir_pBtn kou_dou">-->
-                <!--<a class="p_btn" href="JavaScript:;" id="a13">确认</a>-->
-            <!--</p>-->
-            <!--<p class="neir_pBtn2">-->
-                <!--<a class="p_buyka" href="JavaScript:;" id="a23">充值</a>-->
-            <!--</p>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--<div id="4" style="display: none">-->
-    <!--<div class="tan" style="display: block;"></div>-->
-    <!--<div class="window1" style="display: block;">&lt;!&ndash; 无此卡扣豆提醒 &ndash;&gt;-->
-        <!--<a class="windowClose" href="JavaScript:void(0)" id="close4"></a>-->
-        <!--<div class="win_neir koudou_win">-->
-            <!--<p class="neir_ptxt" id="p14">您没有语文卡</p>-->
-            <!--<p class="neir_ptxt" id="p24">您的数学卡余额不足</p>-->
-            <!--&lt;!&ndash;//<span class="ptxt_span" id="jin"></span>&ndash;&gt;-->
-            <!--<p class="neir_ptiX" id="p34"><input name="" type="checkbox">下次不提醒</p>-->
-            <!--<p class="neir_pBtn kou_dou">-->
-                <!--<a class="p_btn" href="JavaScript:;" id="a14">充值</a>-->
-            <!--</p>-->
-            <!--<p class="neir_pBtn2">-->
-                <!--<a class="p_buyka" href="JavaScript:;" id="a24">转入</a>-->
-            <!--</p>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--弹窗结束-->
 <script src="jquery/jquery-3.1.1.js"></script>
 <script src="basic.js"></script>
+<script src="/moment/moment.min.js"></script>
 <script>
-    /*var login = document.getElementById('submit')
+    var m = moment()
+    var w = m.week()
+    var login = document.getElementById('submit')
     login.addEventListener('click', function (e) {
         $.ajax({
             type: 'put',
@@ -236,12 +37,12 @@
             }
         })
     }, false)
-
     var _$_ = function(params) {
         var t = {
-            try: function() {
+            try: function () {
                 this.objectType = params.objectType
                 this.objectId = params.objectId
+                $('#container').load('/zu/zu.html')
                 $.ajax({
                     type: "get",
                     url: "/api/resources/" + params.objectType + "/" + params.objectId + "/sale-info",
@@ -249,18 +50,6 @@
                     success: function (info) {
                         this.money = info.price
 
-                        //popup dialog via get info
-
-                        //dialog event process
-                        //purchase
-                        //--or--
-                        //recharge
-                        //--or--
-                        //transfer
-
-                        //select source | sink
-                        //select money
-                        //select count
                     }
                 })
             },
@@ -290,11 +79,14 @@
                     url: "/api/resources/" + params.objectType + "/" + params.objectId,
                     dataType: "json",
                     success: function (content) {
-                        //
+                        alert("成功")
+                    },
+                    error: function (e) {
+                        alert("失败")
                     }
                 })
             },
-            recharge: function() {
+            recharge: function () {
                 //popup dialog for select sink
 
                 //dialog event process
@@ -313,7 +105,7 @@
                     }
                 })
             },
-            transfer: function() {
+            transfer: function () {
                 //popup dialog for select source | sink
 
                 //dialog event process
@@ -341,41 +133,34 @@
         $.ajax({
             type: 'get',
             url: '/api/users/self',
-            success: function(u) {
+            success: function (u) {
                 t.user = u
                 $.ajax({
                     type: 'get',
                     url: '/api/users/self/cards',
-                    success: function(cs) {
+                    success: function (cs) {
                         t.cards = cs
                     }
                 })
             }
         })
         return t
-    }*/
-    user = [];
-    for (var i = 0; i < 100; i++){
-        user.push({"a":i})
-    }
-    for(var j = 0;j < user.length; j++) {
-        for (var k = 1; k < 6; k++){
-            user[j].b = k
 
-        }
     }
 
-    alert(JSON.stringify(user))
-//    var t = _$_({objectType: 'video', objectId: 124235})
+    var t = _$_({objectType: 'knowledge-point', objectId: 1})
+    t.getContent()
+
+
 //    t.try()
 //    t.purchase()
-//    t.getContent()
-//
+
+
 //    var t = _$_({money: 124235})
 //    t.recharge()
 //
 //    var t = _$_({money: 124235})
-//    t.transfer()
+//    t.transfer()*/
 </script>
 <!--<script>-->
     <!--var sale_info;-->
