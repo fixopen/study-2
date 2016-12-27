@@ -58,38 +58,38 @@ var bind = function (element, data, next) {
                 result = data
             }
             if (data && variable && (data[variable] != undefined)) {
-                if (Array.isArray(data[variable])) {
-                    var c = element.querySelector('*[data-ext-point="' + variable + '"]')
-                    if (c && next) {
-                        var opt = {
-                            container: c,
-                            data: data[variable],
-                            next: next.next || next.nexts
-                        }
-                        if (Array.isArray(next)) {
-                            for (var i = 0; i < next.length; ++i) {
-                                if (next[i].dataSelector == variable) {
-                                    opt.template = next[i].template || getTemplate(next[i].templateId)
-                                    if (!opt.template) {
-                                        opt.templates = next[i].templates
-                                    }
-                                    break
-                                }
-                            }
-                        } else {
-                            opt.template = next.template || getTemplate(next.templateId)
-                            if (!opt.template) {
-                                opt.templates = next.templates
-                            }
-                        }
-                        proc(opt)
-                    }
-                } else {
-                    result = data[variable]
-                }
+                result = data[variable]
             }
             return result
         })
+        var cs = element.querySelectorAll('[data-ext-point]')
+        for (var i = 0; i < cs.length; ++i) {
+            var c = cs[i]
+            if (c && next) {
+                var opt = {
+                    container: c,
+                    data: data[c.dataset.extPoint],
+                    next: next.next || next.nexts
+                }
+                if (Array.isArray(next)) {
+                    for (var i = 0; i < next.length; ++i) {
+                        if (next[i].dataSelector == c.dataset.extPoint) {
+                            opt.template = next[i].template || getTemplate(next[i].templateId)
+                            if (!opt.template) {
+                                opt.templates = next[i].templates
+                            }
+                            break
+                        }
+                    }
+                } else {
+                    opt.template = next.template || getTemplate(next.templateId)
+                    if (!opt.template) {
+                        opt.templates = next.templates
+                    }
+                }
+                proc(opt)
+            }
+        }
     }
 }
 
