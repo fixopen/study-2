@@ -1,5 +1,46 @@
 var doc = document
 
+/*
+proc syntax change:
+proc({
+    container|containerId: element|elementId,
+    data: dataObject|dataArray,
+    template|templateId: template|templateId,
+    templates: [
+        {type: 'selector', template|templateId: template|templateId},
+        {type: 'selector', template|templateId: template|templateId},
+        {type: 'selector', template|templateId: template|templateId}
+    ],
+    next: {
+        template|templateId: template|templateId,
+        templates: [
+            {type: 'selector', template|templateId: template|templateId},
+            {type: 'selector', template|templateId: template|templateId},
+            {type: 'selector', template|templateId: template|templateId}
+        ],
+    },
+    nexts: [
+        {
+            dataSelector: 'dataSelector',
+            template|templateId: template|templateId,
+            templates: [
+                {type: 'selector', template|templateId: template|templateId},
+                {type: 'selector', template|templateId: template|templateId},
+                {type: 'selector', template|templateId: template|templateId}
+            ],
+        }
+    ]
+})
+
+其中template|templateId和templates在同一级别只能出现一个。templates就是原来的altTemplates。
+对于data是单个对象的，不能选用templates，只能是template或者templateId。
+next就是原来的secondBind，它是单个对象。去掉了里面extPoint和dataFieldName——它们将由模板中的data-ext-point属性和数据中对应的字段推导出。
+next是由template|templateId或者templates组成的。
+next可以嵌套，当扩展点里面还有扩展点时，就用嵌套。嵌套意味着数据也是层层累积起来的。
+nexts是next的数组，当有多个扩展点时，用nexts处理。next和nexts二者最多有一个。
+nexts（多个扩展点）时，加入dataSelector用于指示该扩展适应于那个数据。
+*/
+
 var getTemplate = function (templateId) {
     var result
     var template = doc.getElementById(templateId)
@@ -23,10 +64,23 @@ var bind = function (element, data, next) {
                         var opt = {
                             container: c,
                             data: data[variable],
-                            template: next.template || getTemplate(next.templateId)
+                            next: next.next || next.nexts
                         }
-                        if (!opt.template) {
-                            opt.alterTemplates = next.alterTemplates
+                        if (Array.isArray(next)) {
+                            for (var i = 0; i < next.length; ++i) {
+                                if (next[i].dataSelector == variable) {
+                                    opt.template = next[i].template || getTemplate(next[i].templateId)
+                                    if (!opt.template) {
+                                        opt.templates = next[i].templates
+                                    }
+                                    break
+                                }
+                            }
+                        } else {
+                            opt.template = next.template || getTemplate(next.templateId)
+                            if (!opt.template) {
+                                opt.templates = next.templates
+                            }
                         }
                         proc(opt)
                     }
@@ -49,14 +103,12 @@ var proc = function (option) {
         }
     }
 
-    var dataTemplateSelector = option.dataTemplateSelector || 'type'
-
     if (clone == null) {
-        if (option.alterTemplates) {
+        if (option.templates) {
             clone = function (type) {
-                for (var i = 0; i < option.alterTemplates.length; ++i) {
-                    if (option.alterTemplates[i][dataTemplateSelector] == type) {
-                        var template = option.alterTemplates[i].template || getTemplate(option.alterTemplates[i].templateId)
+                for (var i = 0; i < option.templates.length; ++i) {
+                    if (option.templates[i]['type'] == type) {
+                        var template = option.templates[i].template || getTemplate(option.templates[i].templateId)
                         if (template) {
                             return template.cloneNode(true)
                         }
@@ -77,15 +129,15 @@ var proc = function (option) {
 
         if (Array.isArray(option.data)) { //data is array of object
             for (var i = 0; i < option.data.length; ++i) {
-                var element = clone(option.data[i][dataTemplateSelector])
+                var element = clone(option.data[i]['type'])
                 if (element) {
-                    bindAndAppend(container, element, option.data[i], option.next)
+                    bindAndAppend(container, element, option.data[i], option.next || option.nexts)
                 }
             }
         } else { //data is object
             var element = clone()
             if (element) {
-                bindAndAppend(container, element, option.data, option.next)
+                bindAndAppend(container, element, option.data, option.next || option.nexts)
             }
         }
     }
