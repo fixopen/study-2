@@ -18,6 +18,7 @@
     <script src="dao.js"></script>
     <link rel="stylesheet" href="myUser/css/Popup.css">
     <link rel="stylesheet" href="myUser/css/直播.css">
+    <script src="zu/zu.js"></script>
 </head>
 <body>
 <article id="sign" style="display: none">
@@ -227,14 +228,15 @@
     </div>
 </article>
 <article id="changeWechat" style="display: none">
-    <div class="tan"></div>
-    <div class="window1"><!-- 弹窗 -->
-        <a class="windowClose" id="closeWechat"></a>
-        <div class="win_neir">
-            <p class="neir_ptxt">解绑成功！</p>
-            <p class="neir_pBtn">
-                <a class="p_btn" id="en">知道了</a>
-            </p>
+    <div class="tan">
+        <div class="window1"><!-- 弹窗 -->
+            <a class="windowClose" id="closeWechat"></a>
+            <div class="win_neir">
+                <p class="neir_ptxt">解绑成功！</p>
+                <p class="neir_pBtn">
+                    <a class="p_btn" id="en">知道了</a>
+                </p>
+            </div>
         </div>
     </div>
     <div class="wrap">
@@ -276,197 +278,59 @@
 </article>
 <article id="cards" style="display: none;">
     <div class="wrap">
-        <div class="headercard">
-            <div class="headercard_l">
-                <span class="l_one">总持卡数</span><br>
-                <span class="l_two"><i class="l_twoshu" id="total"></i>张</span><br>
-                <button style="cursor:pointer" class="l_three" id="addcard">增加新卡</button>
+        <div class="card_header">
+            <div class="card_header_l">
+                <span class="card_l_one">总持卡数</span><br>
+                <span class="card_l_two"><i class="card_l_twoshu" id="total"></i>张</span><br>
+                <button style="cursor:pointer" class="card_l_three" id="addcard">增加新卡</button>
             </div>
-            <div class="headercard_r">
-                <span class="r_one">金豆不足</span><br>
-                <span class="r_two"><i class="r_twoshu" id="insufficient"></i>张</span><br>
-                <button style="cursor:pointer" class="r_three" id="chongzhi">充值</button>
+            <div class="card_header_r">
+                <span class="card_r_one">金豆不足</span><br>
+                <span class="card_r_two"><i class="card_r_twoshu" id="insufficient"></i>张</span><br>
+                <button style="cursor:pointer" class="card_r_three" id="chongzhi">充值</button>
             </div>
         </div>
-        <div class="tab_div">
-            <ul class="tab_switch2">
-                <li class="tab_swli2 cur" id="clickchinese">语文
+        <div class="card_tab_div">
+            <ul class="card_tab_switch">
+                <li class="card_tab_swli cur" data-content="chineCards" data-type="chine">语文
                     <span class="tab_swlispan">(<i id="chinese"></i>)</span>
-
-                <li class="tab_swli2" id="clickmath">数学
-                    <span class="tab_swlispan">(<i id="mathematics"></i>)</span>
-
+                </li>
+                <li class="card_tab_swli card_tab_swlino" data-content="mathCards" data-type="math">数学
+                    <span class="card_tab_swlispan">(<i id="mathematics"></i>)</span>
+                </li>
             </ul>
         </div>
-
-        <div class="mine_table" style="display: none" id="nochinese">
-            <div class="table_NOul">
-                <p class="noul_p1">
-                    <img src="myUser/image/facejk.png" height="24" width="76"/>
-                    没有学习卡哦！
-                </p>
-                <p class="noul_p2">
-                    请在淘宝店里搜索 “ 铮铮书屋 ”，购买！
-                </p>
-            </div>
-        </div>
-        <div id="chinesecards" style="display: none"></div>
-
-        <div class="mine_table" style="display: none" id="nomathematics">
-            <div class="table_NOul">
-                <p class="noul_p1">
-                    <img src="myUser/image/facejk.png" height="24" width="76"/>
-                    没有学习卡哦！
-                </p>
-                <p class="noul_p2">
-                    请在淘宝店里搜索 “ 铮铮书屋 ”，购买！
-                </p>
-            </div>
-        </div>
-        <div id="mathecards" style="display: none"></div>
-    </div>
-
-
-    <!-- <div id="card"></div>
-     &lt;!&ndash;<div class="card_button_div_css">&ndash;&gt;
-     <a class="card_button_css " href="JavaScript:;">充值</a>
-     <a class="card_button_css card_button_background_css" href="JavaScript:;" data-article="firstActiveCard">添加卡号</a>-->
-    <!--<a class="bottom_btn Btn02" href="JavaScript:;" onclick="back()">返回上一页</a>-->
-    <!--</div>-->
-    <!--</div>-->
-</article>
-<article id="head" style="display: none;">
-
-</article>
-<article id="consumes" style="display: none;">
-    <div class="wrap">
-        <div class="balance_jine">
-            <div class="balance_top">
-                <div class="baltop_div1"></div>
-                <div class="baltop_div2">
-                    <p class="baldiv2_p0">账号余额</p>
-                    <p class="baldiv2_p1"><span class="baldiv2_p1span" id="yu"></span>(金豆)</p>
-                    <p class="baldiv2_p2">
-                        <button class="recharge" style="cursor:hand" id="zhichong">
-                            <img src="myUser/image/recharge.png" alt="">
-                            充值
-                        </button>
-                        <button class="turnout" style="cursor:hand" id="zhuanchu">
-                            <img src="myUser/image/turnout.png" alt="">
-                            转出
-                        </button>
+        <div class="card_mine_table cur" id="chineCards">
+            <div class="card_mine_table" id="nocard1" style="display: none" >
+                <div class="card_table_NOul">
+                    <p class="card_noul_p1">
+                        <img src="myUser/image/cardfacejk.png" height="24" width="76"/>
+                        没有学习卡哦！
+                    </p>
+                    <p class="card_noul_p2">
+                        请在淘宝店里搜索 “ 铮铮书屋 ”，购买！
                     </p>
                 </div>
             </div>
         </div>
-        <div class="balance_zilo">
-            <img src="myUser/image/hotqiu.png" alt="">
-            <ul class="balance_zUl">
-                <li class="balance_zuli balancezuli_tou">消费记录</li>
-                <div id="balance"></div>
-            </ul>
-        </div>
-    </div>
-</article>
-<article id="selectCard" style="display: none">
-    <div class="wrap" id="to">
-        <ul class="xuanze_baodiv">
-            <li id="account">
-            </li>
-            <li id="oneCard">
-            </li>
-        </ul>
-    </div>
-    <div id="rechargepage" style="display: none">
-        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
-        <li class="mine_zuli" id="z" style="cursor: hand">
-            <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
-            <div class="xuanze_leftdiv">
-                <span class="xuanze_leftsp" id="name"></span>
-                <span class="xuanze_leftsp" id="no"></span>
-                <br>
-                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
-            </div>
-        </li>
-        <div class="charge-main">
-            <!-- charge-area -->
-            <p class="main_ptxt">1元=10金豆</p>
-            <ul class="rain-drop-ul">
-                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
-            </ul>
-            <div class="srinput_div">
-                <span class="srinput_span">其他金额：</span>
-                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
-            </div>
-            <div class="count_div">小计：
-                <span>￥<i class="count_spani1">15</i></span>
-            </div>
-        </div>
-        <div class="count_div">合计：
-            <span>￥<i class="count_spani2">10.50</i></span>
-            <br>
-            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
-        </div>
-        <!-- pay-btn -->
-        <div class="pay_btn">
-            <div class="wechat-btn">
-                <span class="wechat-span"></span>
-                微信支付
-            </div>
-            <div class="alipay-btn">
-                <span class="alipay-span"></span>
-                支付宝支付
+        <div class="card_mine_table" id="mathCards">
+            <div class="card_mine_table" id="nocard2" style="display: none" >
+                <div class="card_table_NOul">
+                    <p class="card_noul_p1">
+                        <img src="myUser/image/cardfacejk.png" height="24" width="76"/>
+                        没有学习卡哦！
+                    </p>
+                    <p class="card_noul_p2">
+                        请在淘宝店里搜索 “ 铮铮书屋 ”，购买！
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </article>
-<article id="recharge" style="display: none">
-    <div id="converted">
+<article id="head" style="display: none;">
 
-    </div>
-    <div id="selectOneCard" style="display: none">
-        <div class="wrap">
-            <ul class="mine_baodiv">
-                <li>
-                    <a class="xuanze_zuli" href="javascript:void(0)">
-                        <img class="xuanze_img1" src="" alt="" id="image">
-                        <div class="xuanze_leftdiv" id="cardid">
-                            <span class="xuanze_leftsp" id="zs"></span>
-                            <span class="xuanze_leftsp" id="zn"></span>
-                            <br>
-                            <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="za"></i>金豆</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            <ul class="mine_baodiv">
-                <li class="mine_liname">
-                    <div class="mine_leftdiv">
-                        <p class="mine_zhaunc">转出金豆数量</p>
-                        <span class="mine_leftsp">金豆：</span>
-                        <input class="mine_zhauncIn" type="text" id="convertedNumber">
-                    </div>
-                </li>
-            </ul>
-            <p class="turnOut_note">
-                最多可转出到卡
-                <span class="note_number" id="tishi">
-
-                </span>
-                金豆
-            </p>
-            <div class="zhaunc_btn">
-                <button class="zhaunc_a" style="cursor: hand" id="submitTransfer">确认转出</button>
-            </div>
-        </div>
-    </div>
 </article>
-<!--<article id="recharge" style="display: none;"></article>-->
 <article id="study" style="display: none;">
     <div class="wrap youBackg">
         <div class="study-record">
@@ -510,17 +374,20 @@
         </div>
     </div>
 </article>
-<article id="score" style="display: none;"></article>
+<article id="score" style="display: none;">
+
+</article>
 <article id="activeCard" style="display: none;">
     <!-- 弹窗开始 -->
-    <div class="tan" id="cardtan"></div>
-    <div class="window1"><!-- 弹窗 -->
-        <button class="windowClose" style="cursor:pointer" id="close"></button>
-        <div class="win_neir">
-            <p class="neir_ptxt">已成功填加！</p>
-            <p class="neir_pBtn">
-                <button class="p_btn" style="cursor:pointer" id="ok">知道了</button>
-            </p>
+    <div class="cardtan">
+        <div class="window1"><!-- 弹窗 -->
+            <button class="windowClose" style="cursor:pointer" id="close"></button>
+            <div class="win_neir">
+                <p class="neir_ptxt">已成功填加！</p>
+                <p class="neir_pBtn">
+                    <button class="p_btn" style="cursor:pointer" id="ok">知道了</button>
+                </p>
+            </div>
         </div>
     </div>
     <!-- 弹窗结束 -->
@@ -782,7 +649,7 @@
                     <span class="pastLiveVideos_tab_swlispan">(<i id="chineTopicsCount"></i>)</span>
                 </li>
                 <li class="pastLiveVideos_tab_swli pastLiveVideos_tab_swlino b" data-content="mathTopics">数学
-                    <span class="pastLiveVideos_tab_swlispan">(<i>0</i>)</span>
+                    <span class="pastLiveVideos_tab_swlispan">(<i id="mathTopicsCount"></i>)</span>
                 </li>
             </ul>
         </div>
@@ -806,7 +673,170 @@
         </div>
     </div>
 </article>
+<article id="recharge" style="display: none">
+    <div class="wrap" id="to">
+        <ul class="xuanze_baodiv">
+            <li id="account">
+            </li>
+            <li id="oneCard">
+            </li>
+        </ul>
+    </div>
+    <div id="rechargepage" style="display: none">
+        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+        <li class="mine_zuli" id="z" style="cursor: hand">
+            <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
+            <div class="xuanze_leftdiv">
+                <span class="xuanze_leftsp" id="name"></span>
+                <span class="xuanze_leftsp" id="no"></span>
+                <br>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
+            </div>
+        </li>
+        <div class="charge-main">
+            <!-- charge-area -->
+            <p class="main_ptxt">1元=10金豆</p>
+            <ul class="rain-drop-ul">
+                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+            </ul>
+            <div class="srinput_div">
+                <span class="srinput_span">其他金额：</span>
+                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+            </div>
+            <div class="count_div">小计：
+                <span>￥<i class="count_spani1">15</i></span>
+            </div>
+        </div>
+        <div class="count_div">合计：
+            <span>￥<i class="count_spani2">10.50</i></span>
+            <br>
+            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
+        </div>
+        <!-- pay-btn -->
+        <div class="pay_btn">
+            <div class="wechat-btn">
+                <span class="wechat-span"></span>
+                微信支付
+            </div>
+            <div class="alipay-btn">
+                <span class="alipay-span"></span>
+                支付宝支付
+            </div>
+        </div>
+    </div>
+</article>
+<article id="consumes" style="display: none;">
+    <div class="wrap">
+        <div class="balance_jine">
+            <div class="balance_top">
+                <div class="baltop_div1"></div>
+                <div class="baltop_div2">
+                    <p class="baldiv2_p0">账号余额</p>
+                    <p class="baldiv2_p1"><span class="baldiv2_p1span" id="yu"></span>(金豆)</p>
+                    <p class="baldiv2_p2">
+                        <button class="recharge" style="cursor:hand" id="zhichong">
+                            <img src="myUser/image/recharge.png" alt="">
+                            充值
+                        </button>
+                        <button class="turnout" style="cursor:hand" id="zhuanchu">
+                            <img src="myUser/image/turnout.png" alt="">
+                            转出
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="balance_zilo">
+            <img src="myUser/image/hotqiu.png" alt="">
+            <ul class="balance_zUl">
+                <li class="balance_zuli balancezuli_tou">消费记录</li>
+                <div id="balance"></div>
+            </ul>
+        </div>
+    </div>
+</article>
+<article id="transfer" style="display: none">
+    <div id="converted">
 
+    </div>
+    <div id="selectOneCard" style="display: none">
+        <div class="wrap">
+            <ul class="mine_baodiv">
+                <li>
+                    <a class="xuanze_zuli" href="javascript:void(0)">
+                        <img class="xuanze_img1" src="" alt="" id="image">
+                        <div class="xuanze_leftdiv" id="cardid">
+                            <span class="xuanze_leftsp" id="zs"></span>
+                            <span class="xuanze_leftsp" id="zn"></span>
+                            <br>
+                            <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="za"></i>金豆</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="mine_baodiv">
+                <li class="mine_liname">
+                    <div class="mine_leftdiv">
+                        <p class="mine_zhaunc">转出金豆数量</p>
+                        <span class="mine_leftsp">金豆：</span>
+                        <input class="mine_zhauncIn" type="text" id="convertedNumber">
+                    </div>
+                </li>
+            </ul>
+            <p class="turnOut_note">
+                最多可转出到卡
+                <span class="note_number" id="tishi">
+
+                </span>
+                金豆
+            </p>
+            <div class="zhaunc_btn">
+                <button class="zhaunc_a" style="cursor: hand" id="submitTransfer">确认转出</button>
+            </div>
+        </div>
+    </div>
+</article>
+<template id="consume-template">
+    <li class="balance_zuli">
+        <p class="balance_leftsp">${timestamp}</p>
+        <p class="balance_center">${action}</p>
+        <p class="balance_rightip"><span>${money}</span>金豆</p>
+    </li>
+</template>
+<template id="selectCard-template">
+    <div>
+        <ul class="xuanze_zuli" data-id="${id}" data-amount="${amount}" data-subject="${subjectId}" data-img="${image}"
+            data-no="${no}" style="cursor:hand">
+            <img class="xuanze_img1" src="${image}" alt="">
+            <div class="xuanze_leftdiv">
+                <span class="xuanze_leftsp">${subjectId}</span>
+                <span class="xuanze_leftsp">${no}</span>
+                <br>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
+            </div>
+            <!--<img src="" id="${id}" src="" class="xuanze_img2"/>-->
+        </ul>
+    </div>
+</template>
+<template id="userCard-template">
+    <div>
+        <ul class="xuanze_zuli" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}"
+            style="cursor:hand">
+            <img class="xuanze_img1" src="${image}" alt="">
+            <div class="xuanze_leftdiv">
+                <span class="xuanze_leftsp">${name}</span>
+                <span class="xuanze_leftsp"></span>
+                <br>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
+            </div>
+        </ul>
+    </div>
+</template>
 <template id="user-template">
     <ul class="public_ul_css">
         <li class="user_li_css public_li_css">
@@ -844,7 +874,7 @@
             <ul class="user_li_css public_li_css" data-article="consumes">账户余额</ul>
         </li>
         <li>
-            <ul class="user_li_css public_li_css" data-article="selectCard">充值</ul>
+            <ul class="user_li_css public_li_css" data-article="recharge">充值</ul>
         </li>
         <li>
             <ul class="user_li_css public_li_css">我的积分</ul>
@@ -923,75 +953,6 @@
         </div>
     </div>
 </template>
-<template id="consume-template">
-    <li class="balance_zuli">
-        <p class="balance_leftsp">${timestamp}</p>
-        <p class="balance_center">${action}</p>
-        <p class="balance_rightip"><span>${money}</span>金豆</p>
-    </li>
-</template>
-<!--
-<template id="pastTopics-template">
-    <li class="all_uli">
-       &lt;!&ndash; <div class="uli_divT">
-            <img src="${image}" alt="">
-            <div class="uli_divTdiv" 书名>
-                ${name}
-                <br>
-                <span class="uli_divTspan">共<i>${knowledgePointCount}</i>篇，看过<i>4</i>${readpast}</span>
-            </div>
-        </div>&ndash;&gt;
-        &lt;!&ndash;<ul class="mld_xiaoUl" data-ext-point="problems" data-id="${id}">
-
-        </ul>&ndash;&gt;
-        <ul class="mld_xiaoUl">
-            <li class="mld_Ulli">
-                <div>
-                    <span class="mld_tihao">4.</span>
-                    <span class="mld_timu">
-                        <img class="mld_liImg"  alt="">以下哪些人被认为是“魏晋风度”的代表？
-                    </span>
-                </div>
-                <ul class="mld_daanUl" >
-                    <li>
-                        <div class="daan_zuo">
-                            <span class="daan_quan">A</span>
-                        </div>
-                        <div class="daan_you">
-                            <input type="checkbox" id="daan_y4A" class="daana" name="daan4">
-                            <label for="daan_y4A">嵇喜</label>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-</template>
-<template id="pastTopicsOption-template">
-    <li class="mld_Ulli">
-        <div>
-            <span class="mld_tihao">4.</span>
-            <span class="mld_timu">
-                <img class="mld_liImg" src="img/double.png" alt="">${name}
-            </span>
-        </div>
-        <ul class="mld_daanUl">
-            <li>
-                <div class="daan_zuo">
-                    <span class="daan_quan">${english}</span>
-                </div>
-                <div class="daan_you" data-ext-point="Option" data-id="${id}">
-                    &lt;!&ndash;<input type="checkbox" id="daan_y4A" class="daana" name="daan4">&ndash;&gt;
-                </div>
-            </li>
-        </ul>
-    </li>
-</template>
-<template id="pastTopicsOptionStandardAnswers-template">
-    <label>${name}</label>
-</template>
--->
-
 <template id="problem-option-template">
     <li class="mld_daanLi">
         <span class="daan_quan" data-id="${id}" data-order="${order}">${title}</span>
@@ -1025,6 +986,19 @@
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
     </li>
 </template>
+<template id="book">
+    <li class="all_uli">
+        <div class="uli_divT">
+            <img src="${image}" alt="">
+            <div class="uli_divTdiv">
+                ${name}
+                <br>
+                <span class="uli_divTspan">共<i>${knowledgePointCount}</i>篇，看过<i>${readpast}</i>篇</span>
+            </div>
+        </div>
+        <ul class="mld_daanUl" data-ext-point="problem" data-id="${id}"></ul>
+    </li>
+</template>
 <template id="problem-checkbox-template">
     <li class="mld_Ulli">
         <div class="addimg">
@@ -1034,8 +1008,6 @@
         <ul class="mld_daanUl" data-ext-point="options" data-id="${id}"></ul>
     </li>
 </template>
-
-
 <template id="pastKnowledgePoints-template">
     <li class="all_uli">
         <div class="uli_divT">
@@ -1169,38 +1141,6 @@
 <template id="settings-template">
 
 </template>
-<template id="recharge-template">
-
-</template>
-<template id="selectCard-template">
-    <div>
-        <ul class="xuanze_zuli" data-id="${id}" data-amount="${amount}" data-subject="${subjectId}" data-img="${image}"
-            data-no="${no}" style="cursor:hand">
-            <img class="xuanze_img1" src="${image}" alt="">
-            <div class="xuanze_leftdiv">
-                <span class="xuanze_leftsp">${subjectId}</span>
-                <span class="xuanze_leftsp">${no}</span>
-                <br>
-                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
-            </div>
-            <!--<img src="" id="${id}" src="" class="xuanze_img2"/>-->
-        </ul>
-    </div>
-</template>
-<template id="userCard-template">
-    <div>
-        <ul class="xuanze_zuli" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}"
-            style="cursor:hand">
-            <img class="xuanze_img1" src="${image}" alt="">
-            <div class="xuanze_leftdiv">
-                <span class="xuanze_leftsp">${name}</span>
-                <span class="xuanze_leftsp"></span>
-                <br>
-                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
-            </div>
-        </ul>
-    </div>
-</template>
 <template id="wechat-solution-template">
     <ul id="set-password-ul" class="set-password-ul">
         <li class="set-unbundling-li">
@@ -1219,11 +1159,9 @@
         <li class="set-unbundling-li set-unbundling-litou"><span>${nickname}</span>（主微信号）</li>
     </ul>
 </template>
+<!--<div id="container"></div>-->
 <!-- 引入js -->
 <script src="/jquery/jquery-3.1.1.min.js"></script>
-<!--<script type="text/javascript" src="/zepto/zepto.min.js"></script>-->
-<!--<script type="text/javascript" src="/zepto/touch.js"></script>-->
-<!--<script type="text/javascript" src="/zepto/selector.js"></script>-->
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
@@ -1264,13 +1202,16 @@
                 state.switchTo("user")
                 history.pushState(null, null, '/user.html#user');
             }
-            //  state['sign'].init()
-
+//            $('#container').load('/zu/zu.html')
             window.addEventListener('hashchange', function (e) {
                 var hashPos = e.newURL.indexOf('#')
                 var hash = e.newURL.substring(hashPos + 1)
                 state.switchTo(hash)
-            }, false)
+            })
+            /*window.addEventListener("popstate", function (e) {
+             document.getElementById("container").innerHTML = ""
+             $('#container').load('/zu/zu.html')
+             });*/
         },
         getSubjectNameById: function (subjects) {
             var result = ''
@@ -1330,136 +1271,6 @@
             }
             return result
         },
-        /*rechargePage(cards,T){
-         document.getElementById("to").style.display="block"
-         document.getElementById("rechargepage").style.display="none"
-         $("#to").val(T)
-         document.getElementById("oneCard").innerHTML = ""
-         document.getElementById("account").innerHTML = ""
-         for (var i = 0; i < cards.length; i++) {
-         if (cards[i].subjectId == 1 || cards[i].subjectId == "语文") {
-         cards[i].image = "keBiao.png"
-         }
-         if (cards[i].subjectId == 2 || cards[i].subjectId == "数学") {
-         cards[i].image = "mathBiao.png"
-         }
-         if(cards[i].subjectId == 1 || cards[i].subjectId == 2){
-         cards[i].subjectId = state.getSubjectNameById(cards[i].subjectId)
-         }
-         if (cards[i].amount == 0) {
-         cards[i].amount = "0"
-         }
-         }
-         if (T == "c") {
-         var ua = user.amount
-         if (ua == 0) {
-         ua = "0"
-         }
-         var uc = {
-         id: user.id,
-         amount: ua,
-         name: "账户",
-         image: "yueBiao.png",
-         }
-         //selectCard userCard recharge-template
-         proc({
-         containerId: 'account',
-         data: uc,
-         templateId: 'userCard-template'
-         })
-         proc({
-         containerId: 'oneCard',
-         data: cards,
-         templateId: 'selectCard-template'
-         })
-         } else if (T == "z") {
-         document.getElementById("converted").innerHTML=""
-         proc({
-         containerId: 'converted',
-         data: cards,
-         templateId: 'selectCard-template'
-         })
-         }
-         $('.xuanze_zuli').on('click', function (e) {
-         document.getElementById("to").style.display = "block"
-         var element = e.target
-         var id = element.dataset.id;
-         var amount = element.dataset.amount;
-         var no = element.dataset.no;
-         var subject = element.dataset.subject;
-         var name = element.dataset.name;
-         var img = element.dataset.img;
-         state.switchRecharge(id,amount,no,subject,name,img, $("#to").val())
-         })
-
-         },
-         switchRecharge(id,amount,no,subject,name,img, T){
-         if (T == "z") {
-         document.getElementById("converted").innerHTML=""
-
-         document.getElementById("za").innerHTML=amount
-         document.getElementById("tishi").innerHTML=user.amount
-         document.getElementById("zn").innerHTML=no
-         document.getElementById("zs").innerHTML=subject
-         $("#cardid").val(id)
-         document.getElementById("image").src=img
-         document.getElementById("selectOneCard").style.display="block"
-         } else if (T == "c") {
-         if(id == user.id){
-         document.getElementById("name").innerHTML=name
-         document.getElementById("no").innerHTML=""
-         document.getElementById("money").innerHTML=amount
-         document.getElementById("src").src=img
-         src
-         }else{
-         document.getElementById("name").innerHTML=subject
-         document.getElementById("no").innerHTML=no
-         document.getElementById("money").innerHTML=amount
-         document.getElementById("src").src=img
-         }
-         document.getElementById("to").style.display="none"
-         document.getElementById("rechargepage").style.display="block"
-         }
-         },
-         atom(sourceId, sourceType, object_Id, object_Type, count, money) {
-         var result;
-         if (count == null) {
-         var filter = { //转账transferFilter
-         sourceId: sourceId,
-         sourceType: sourceType,
-         objectId: object_Id,
-         objectType: object_Type,
-         money: money
-         }
-         }
-
-         $.ajax({
-         type: "post",
-         url: "/api/transactions",
-         dataType: "json",
-         data: JSON.stringify(filter),
-         contentType: "application/json; charset=utf-8",
-         success: function (e) {
-         user.amount = user.amount - $("#convertedNumber").val()
-         user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
-         state.switchToFront('consumes')
-         },
-         error: function (e) {
-         result = e;
-         alert(JSON.stringify(e))
-         switch (JSON.stringify(e.status)) {
-         case "408":
-         alert("余额不足")
-         break;
-         case "200":
-         user.consumes.push({"action":"转账","timestamp":new Date().toLocaleDateString(),"money":$("#convertedNumber").val()})
-         state.switchToFront('consumes')
-         break;
-         }
-         }
-         })
-         return result;
-         },*/
         sign: {
             isSign: false,
             currentTab: $('[data-content="username"]')[0],
@@ -1659,41 +1470,6 @@
                         }
                     })
 
-                    var z = document.getElementById("z")
-                    z.addEventListener('click', function (e) {
-                        state.rechargePage(user.cards, 'c')
-                    })
-                    var clickchinese = document.getElementById("clickchinese");
-                    clickchinese.addEventListener('click', function (e) {
-                        if (user.cards.chinese.count > 0) {
-                            nmc.style.display = "none"
-                            mc.style.display = "none"
-                            cc.style.display = "block"
-                        } else {
-                            nmc.style.display = "none"
-                            mc.style.display = "none"
-                            noc.style.display = "block"
-                        }
-                    })
-
-                    var clickmath = document.getElementById("clickmath");
-                    clickmath.addEventListener('click', function (e) {
-                        if (user.cards.mathematics.count > 0) {
-                            cc.style.display = "none"
-                            noc.style.display = "none"
-                            mc.style.display = "block"
-                        } else {
-                            cc.style.display = "none"
-                            noc.style.display = "none"
-                            nmc.style.display = "block"
-                        }
-                    })
-                    var noc = document.getElementById("nochinese")
-                    var cc = document.getElementById("chinesecards")
-                    var nmc = document.getElementById("nomathematics")
-                    var mc = document.getElementById("mathecards")
-
-
                     var addcard = document.getElementById("addcard");
                     addcard.addEventListener('click', function (e) {
                         if (user.cards == null) {
@@ -1712,7 +1488,7 @@
                         if ($("#cardNumber").val().length != null && $("#cardPassword").val().length != null) {
                             $.ajax({
                                 type: "post",
-                                url: "/api/users/simplify-card",
+                                url: "/api/users/self/cards",
                                 data: JSON.stringify(data),
                                 contentType: 'application/json; charset=utf-8',
                                 dataType: "json",
@@ -1751,7 +1527,7 @@
                     })
                     var close = document.getElementById("close")
                     close.addEventListener('click', function (e) {
-                        $('.tan').hide();
+                        $('.cardtan').hide();
                         $('.window1').eq(0).hide();
                         $("#cardNumber").val("")
                         $("#cardPassword").val("")
@@ -1759,11 +1535,11 @@
                     })
                     var chongzhi = document.getElementById("chongzhi");
                     chongzhi.addEventListener('click', function (e) {
-                        state.switchTo('selectCard')
+                        state.switchTo('recharge')
                     })
                     var zhichong = document.getElementById("zhichong");
                     zhichong.addEventListener('click', function (e) {
-                        state.switchTo('selectCard')
+                        state.switchTo('recharge')
                     })
                 } else {
                     document.getElementById("user").innerHTML = ""
@@ -1777,6 +1553,8 @@
 
         },
         cards: {
+            currentTab: $('[data-content="chineCards"]')[0],
+            type:'chine',
             isCards: false,
             init: function () {
                 if (!state.cards.isCards) {
@@ -1787,67 +1565,26 @@
                             dataType: 'json',
                             success: function (cs) {
                                 user.cards = cs
-
                                 bang(cs)
-
-                                proc({
-                                    containerId: 'chinesecards',
-                                    data: user.cards.chinese,
-                                    templateId: 'card-template'
+                                cardswitch()
+                                $('.card_tab_swli').on('click', function (e) {
+                                    state.cards.currentTab.removeClass('cur')
+                                    document.getElementById(state.cards.currentTab.dataset.content).removeClass('cur')
+                                    state.cards.currentTab = e.currentTarget
+                                    state.cards.type = state.cards.currentTab.dataset.type
+                                    cardswitch()
+                                    state.cards.currentTab.addClass('cur')
+                                    document.getElementById(state.cards.currentTab.dataset.content).addClass('cur')
                                 })
-
-                                proc({
-                                    containerId: 'mathecards',
-                                    data: user.cards.mathematics,
-                                    templateId: 'card-template'
-                                })
-                                switchcard()
                             }
                         })
 
                     }
                 } else {
                     bang(user.cards)
-                    document.getElementById("chinesecards").innerHTML = ""
-                    document.getElementById("mathecards").innerHTML = ""
-                    proc({
-                        containerId: 'chinesecards',
-                        data: user.cards.chinese,
-                        templateId: 'card-template'
-                    })
-
-                    proc({
-                        containerId: 'mathecards',
-                        data: user.cards.mathematics,
-                        templateId: 'card-template'
-                    })
-                    switchcard()
-                }
-                state.cards.isCards = true
-                function switchcard() {
-                    var noc = document.getElementById("nochinese")
-                    var cc = document.getElementById("chinesecards")
-                    var nmc = document.getElementById("nomathematics")
-                    var mc = document.getElementById("mathecards")
-                    if (user.cards.chinese.count > 0 && user.cards.mathematics.count > 0) {
-                        nmc.style.display = "none"
-                        mc.style.display = "none"
-                        cc.style.display = "block"
-                    } else if (user.cards.chinese.count > 0 && user.cards.mathematics.count == 0) {
-                        nmc.style.display = "none"
-                        mc.style.display = "none"
-                        cc.style.display = "block"
-                    } else if (user.cards.mathematics.count > 0 && user.cards.chinese.count == 0) {
-                        cc.style.display = "none"
-                        noc.style.display = "none"
-                        mc.style.display = "block"
-                    } else if (user.cards.mathematics.count == 0 && user.cards.chinese.count == 0) {
-                        nmc.style.display = "none"
-                        mc.style.display = "none"
-                        noc.style.display = "block"
+                    cardswitch()
                     }
-                }
-
+                state.cards.isCards = true
                 function bang(cs) {
                     user.cards.chinese = []
                     user.cards.mathematics = []
@@ -1894,8 +1631,31 @@
                     document.getElementById("mathematics").innerHTML = user.cards.mathematics.count
 
                 }
-
-
+                function cardswitch() {
+                    if(state.cards.type == 'chine'){
+                        if(user.cards.chinese.length == 0){
+                            document.getElementById("nocard1").style.display="block"
+//                            document.getElementById("nocard2").style.display="none"
+                        }else{
+                            document.getElementById("chineCards").innerHTML = ""
+                            proc({
+                                containerId: 'chineCards',
+                                data: user.cards.chinese,
+                                templateId: 'card-template'
+                            })
+                        }
+                    }else if(state.cards.type == 'math'){
+                        if(user.cards.mathematics.length == 0){
+                        document.getElementById("nocard2").style.display="block"
+                    }else{
+                        document.getElementById("mathCards").innerHTML = ""
+                        proc({
+                            containerId: 'mathCards',
+                            data: user.cards.mathematics,
+                            templateId: 'card-template'
+                        })
+                    }}
+                }
             }
         },
         info: {
@@ -1964,31 +1724,94 @@
                 }
             }
         },
-        selectCard: {
-            init: function () {
-                if (!state.cards.isCards) {
-                    if (!user.cards) {
-                        $.ajax({
-                            type: 'get',
-                            url: '/api/users/self/cards',
-                            dataType: 'json',
-                            success: function (cs) {
-                                user.cards = cs
-                                state.rechargePage(cs, 'c')
-                            }
-                        })
-
-                    }
-                } else {
-                    state.rechargePage(user.cards, 'c')
-                }
-                state.cards.isCards = true
-            },
-
-        },
         gold: {
             init: function () {
                 document.getElementById("")
+            },
+        },
+        recharge: {
+            init: function () {
+                if (!user.cards) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/users/self/cards',
+                        dataType: 'json',
+                        success: function (cs) {
+                            user.cards = cs
+                            state.recharge.rechargePage(user.cards, "c");
+                            var z = document.getElementById("z")
+                            z.addEventListener('click', function (e) {
+                                state.recharge.rechargePage(user.cards, 'c')
+                            })
+                        }
+                    })
+                } else {
+                    state.recharge.rechargePage(user.cards, 'c')
+                }
+            },
+            rechargePage: function (cards, T) {
+                var t = _$_({user: user})
+                this.user = user
+                $("#to").val(T)
+                for (var i = 0; i < cards.length; i++) {
+                    if (cards[i].subjectId == 1 || cards[i].subjectId == "语文") {
+                        cards[i].image = "keBiao.png"
+                    }
+                    if (cards[i].subjectId == 2 || cards[i].subjectId == "数学") {
+                        cards[i].image = "mathBiao.png"
+                    }
+                    if (cards[i].subjectId == 1 || cards[i].subjectId == 2) {
+                        cards[i].subjectId = t.getSubjectNameById(cards[i].subjectId)
+                    }
+                    if (cards[i].amount == 0) {
+                        cards[i].amount = "0"
+                    }
+                }
+                if (T == "c") {
+                    document.getElementById("oneCard").innerHTML = ""
+                    document.getElementById("account").innerHTML = ""
+                    var ua = this.user.amount
+                    if (ua == 0) {
+                        ua = "0"
+                    }
+                    var uc = {
+                        id: this.user.id,
+                        amount: ua,
+                        name: "账户",
+                        image: "yueBiao.png",
+                    }
+                    proc({
+                        containerId: 'account',
+                        data: uc,
+                        templateId: 'userCard-template'
+                    })
+                    proc({
+                        containerId: 'oneCard',
+                        data: cards,
+                        templateId: 'selectCard-template'
+                    })
+
+                    document.getElementById("rechargepage").style.display = "none"
+                    document.getElementById("to").style.display = "block"
+                } else if (T == "z") {
+                    document.getElementById("converted").innerHTML = ""
+                    proc({
+                        containerId: 'converted',
+                        data: cards,
+                        templateId: 'selectCard-template'
+                    })
+                }
+                $('.xuanze_zuli').on('click', function (e) {
+                    document.getElementById("recharge").style.display = "block"
+                    var element = e.target
+                    var id = element.dataset.id;
+                    var amount = element.dataset.amount;
+                    var no = element.dataset.no;
+                    var subject = element.dataset.subject;
+                    var name = element.dataset.name;
+                    var img = element.dataset.img;
+                    t.switchRecharge(id, amount, no, subject, name, img, $("#to").val())
+                })
             },
         },
         consumes: {
@@ -2004,10 +1827,14 @@
                                 for (var i = 0; i < e.length; ++i) {
                                     if (e[i].count == 0 && e[i].sourceId != null) {
                                         e[i].action = "转账"
+                                        e[i].timestamp = e[i].timestamp.substr(0, 10)
                                     } else if (e[i].count == 0 && e[i].sourceId == null) {
                                         e[i].action = "充值"
+                                        e[i].timestamp = e[i].timestamp.substr(0, 10)
+                                    } else {
+                                        e.splice(i, 1)
+                                        --i
                                     }
-                                    e[i].timestamp = e[i].timestamp.substr(0, 10)
                                 }
                                 user.consumes = e
                                 proc({
@@ -2017,7 +1844,7 @@
                                 })
                                 var zhuanchu = document.getElementById("zhuanchu");
                                 zhuanchu.addEventListener('click', function (e) {
-                                    state.switchTo("recharge")
+                                    state.switchTo('transfer')
                                 })
                             }
                         })
@@ -2034,28 +1861,27 @@
 
             }
         },
-        recharge: {
+        transfer: {
             init: function () {
-                if (!state.cards.isCards) {
-                    if (!user.cards) {
-                        $.ajax({
-                            type: 'get',
-                            url: '/api/users/self/cards',
-                            dataType: 'json',
-                            success: function (cs) {
-                                user.cards = cs
-                                state.rechargePage(cs, 'z')
-                            }
-                        })
-                        var submitTransfer = document.getElementById("submitTransfer")
-                        submitTransfer.addEventListener('click', function (e) {
-                            state.atom(user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
-                        })
-                    }
+                if (!user.cards) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/users/self/cards',
+                        dataType: 'json',
+                        success: function (cs) {
+                            user.cards = cs
+                            state.recharge.rechargePage(user.cards, 'z')
+                            var t = _$_({user: user})
+                            var submitTransfer = document.getElementById("submitTransfer")
+                            submitTransfer.addEventListener('click', function (e) {
+                                t.atom(user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
+                            })
+                        }
+                    })
                 } else {
-                    state.rechargePage(user.cards, 'z')
+                    state.recharge.rechargePage(user.cards, 'z')
                 }
-                state.cards.isCards = true
+
             }
         },
         head: {
@@ -2158,8 +1984,8 @@
                         success: function (e) {
                             user.chinepast = []
                             user.mathpast = []
-                            var process = function(subject) {
-                                var check = function(problem) {
+                            var process = function (subject) {
+                                var check = function (problem) {
                                     for (var i = 0; i < problem.options.length; ++i) {
                                         problem.options[i].type = 'normal'
                                         problem.options[i].title = String.fromCharCode(65 + i);
@@ -2187,10 +2013,11 @@
                                         for (var k = 0; k < subject.volumes[i].knowledgePoints[j].problems.length; ++k) {
                                             check(subject.volumes[i].knowledgePoints[j].problems[k])
                                             result.push(subject.volumes[i].knowledgePoints[j].problems[k])
+                                            subject.volumes[i].problems = result
                                         }
                                     }
                                 }
-                                return result
+                                return subject.volumes
                             }
                             for (var i = 0; i < e.length; i++) {
                                 if (e[i].no == "02") {
@@ -2533,7 +2360,7 @@
                 if (!state.settings.isSettings) {
                     var i;
                     var j;
-                    var x;
+//                    var x;
                     var p1 = document.getElementById("newpwd1");
                     p1.addEventListener('blur', function () {
                         var pwd1 = $("#newpwd1").val();
@@ -2567,7 +2394,7 @@
                         state.switchTo('settings')
                     })
                     pwdSave.addEventListener('click', function () {
-                        if (i == 1 && j == 1 && x == 1) {
+                        if (i == 1 && j == 1) {
                             var data = {
                                 password: $("#newpwd2").val(),
                             }
@@ -2608,7 +2435,7 @@
                             document.getElementById("error").innerHTML = "修改密码成功"
                             a.data = user
                             j = 0
-                            x = 0
+//                            x = 0
                             state.switchToFront('settings')
                         },
                     })
@@ -2618,7 +2445,7 @@
                     if (i == 0) {
                         $.ajax({
                             type: "put",
-                            url: "/api/users/" + $("#newPhone").val() + "/" + $("#putcode").val(),
+                            url: "/api/users/self-phone/via/" + $("#putcode").val(),
                             data: JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
@@ -2752,10 +2579,43 @@
             currentTab: $('[data-content="chineTopics"]')[0],
             init: function () {
                 if (!state.pastTopics.isPastTopics) {
-                    document.getElementById("chinetopicsname").innerHTML = ""
-                    proc({
-                        containerId: 'chinetopicsname',
-                        data: user.chineproblems,
+                    $('.b').on('click', function (e) {
+                        state.pastTopics.currentTab.removeClass('cur')
+                        document.getElementById(state.pastTopics.currentTab.dataset.content).removeClass('cur')
+                        state.pastTopics.currentTab = e.currentTarget
+                        state.pastTopics.type = state.pastTopics.currentTab.dataset.type
+                        state.pastTopics.currentTab.addClass('cur')
+                        document.getElementById(state.pastTopics.currentTab.dataset.content).addClass('cur')
+                    })
+                }
+                state.pastTopics.isPastTopics = true
+                document.getElementById("chinetopicsname").innerHTML = ""
+                document.getElementById("mathtopicsname").innerHTML = ""
+                var cpc = 0
+                var mpc = 0
+                for (var i = 0; i < user.chineproblems.length; ++i) {
+                    if(user.chineproblems[i].problems.length == 0){
+                        cpc = "0"
+                    }else{
+                        cpc+=user.chineproblems[i].problems.length
+                    }
+                }
+                for (var i = 0; i < user.mathproblems.length; ++i) {
+                    if (user.mathproblems[i].problems.length == 0) {
+                        mpc = "0"
+                    } else {
+                        mpc += user.mathproblems[i].problems.length
+                    }
+                }
+                document.getElementById("chineTopicsCount").innerHTML = cpc
+                document.getElementById("mathTopicsCount").innerHTML = mpc
+                proc({
+                    containerId: 'chinetopicsname',
+                    data: user.chineproblems,
+                    templateId: 'book',
+                    secondBind: {
+                        extPoint: 'problem',
+                        dataFieldName: 'problems',
                         alterTemplates: [
                             {type: '单选题', templateId: 'problem-radio-template'},
                             {type: '多选题', templateId: 'problem-checkbox-template'}
@@ -2767,28 +2627,32 @@
                                 {type: 'true', templateId: 'problem-option-true-template'},
                                 {type: 'false', templateId: 'problem-option-false-template'},
                                 {type: 'normal', templateId: 'problem-option-template'}
-                            ],
-                            /*secondBind: {
-                                extPoint: 'options',
-                                dataFieldName: 'options',
-                                alterTemplates: [
-                                    {type: 'true', templateId: 'problem-option-true-template'},
-                                    {type: 'false', templateId: 'problem-option-false-template'},
-                                    {type: 'normal', templateId: 'problem-option-template'}
-                                ]
-                            }*/
+                            ]
                         }
-                    })
-                    $('.b').on('click', function (e) {
-                        state.pastTopics.currentTab.removeClass('cur')
-                        document.getElementById(state.pastTopics.currentTab.dataset.content).removeClass('cur')
-                        state.pastTopics.currentTab = e.currentTarget
-                        state.pastTopics.type = state.pastTopics.currentTab.dataset.type
-                        state.pastTopics.currentTab.addClass('cur')
-                        document.getElementById(state.pastTopics.currentTab.dataset.content).addClass('cur')
-                    })
-                }
-                state.pastTopics.isPastTopics = true
+                    }
+                })
+                proc({
+                    containerId: 'mathtopicsname',
+                    data: user.mathproblems,
+                    templateId: 'book',
+                    secondBind: {
+                        extPoint: 'problem',
+                        dataFieldName: 'problems',
+                        alterTemplates: [
+                            {type: '单选题', templateId: 'problem-radio-template'},
+                            {type: '多选题', templateId: 'problem-checkbox-template'}
+                        ],
+                        secondBind: {
+                            extPoint: 'options',
+                            dataFieldName: 'options',
+                            alterTemplates: [
+                                {type: 'true', templateId: 'problem-option-true-template'},
+                                {type: 'false', templateId: 'problem-option-false-template'},
+                                {type: 'normal', templateId: 'problem-option-template'}
+                            ]
+                        }
+                    }
+                })
             }
         },
         nickname: {

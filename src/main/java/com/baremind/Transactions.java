@@ -13,6 +13,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -91,7 +92,8 @@ public class Transactions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@CookieParam("sessionId") String sessionId, @QueryParam("filter") @DefaultValue("") String filter) {
         Response result = Response.status(401).build();
-        Map<String, Object> filterObject = Impl.getFilters(filter);
+        Map<String, Object> filterObject = new HashMap();
+        //Impl.getFilters(filter);
         Session s = JPAEntry.getSession(sessionId);
         if (s != null) {
             filterObject.put("userId", s.getUserId());
