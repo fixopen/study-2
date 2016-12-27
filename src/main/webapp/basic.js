@@ -165,7 +165,7 @@ var login = function (loginName, password) {
     })
 }
 
-var _$_ = function (params) {
+/*var _$_ = function (params) {
     if (this == window) {
         return new _$_(params)
     }
@@ -366,7 +366,7 @@ var _$_ = function (params) {
             })
         }
     }
-}
+}*/
 
 var priceDialog = function() {
     //price is how much
