@@ -60,7 +60,7 @@ var bind = function (element, data, next) {
             if (data && variable && (data[variable] != undefined)) {
                 if (Array.isArray(data[variable])) {
                     var c = element.querySelector('*[data-ext-point="' + variable + '"]')
-                    if (c) {
+                    if (c && next) {
                         var opt = {
                             container: c,
                             data: data[variable],
