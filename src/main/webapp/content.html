@@ -1186,8 +1186,8 @@
         biao = 0;
     }
 
-    var filter = {}
     //第三步确认购买||确认转入||确认充值
+    var filter = {}
     function atom(sourceId, sourceType, object_Id, object_Type, count, money, none) {
         var result;
         if (money == null && count == null) {
@@ -1303,74 +1303,48 @@
 
     var purchase1 = document.getElementById("a11")
     purchase1.addEventListener('click', function (e) {
-        //   alert("购买1")
-//                    sourceId, sourceType, objectId, objectType, count, money
         atom(card.id, "card", object_Id, object_Types, count, price, 1);
-//        sourceId, sourceType, object_Id, object_Type, count, money, none
     })
 
     var purchase2 = document.getElementById("a13")
     purchase2.addEventListener('click', function (e) {
-        // alert("购买2")
-//                    sourceId, sourceType, objectId, objectType, count, money
         atom(card.id, "card", object_Id, object_Types, count, price, 3);
     })
+
     var recharge1 = document.getElementById("a21")
     recharge1.addEventListener('click', function (e) {
-        // alert("充值1")
         d.getElementById("1").style.display = "none"
-        //turnOutPage(cards)
-        //d.getElementById("1").style.display = "none"
-        //d.getElementById("c").style.display="block";
         rechargePage(cards, "c")
     })
 
     var recharge2 = document.getElementById("a12")
     recharge2.addEventListener('click', function (e) {
-        // alert("充值2")
         d.getElementById("2").style.display = "none"
-        //turnOutPage(cards)
-        //d.getElementById("1").style.display = "none"
-        // d.getElementById("c").style.display="block";
         rechargePage(cards, 'c')
     })
 
     var recharge3 = document.getElementById("a23")
     recharge3.addEventListener('click', function (e) {
-        //  alert("充值3")
         d.getElementById("3").style.display = "none"
-        //turnOutPage(cards)
-        //d.getElementById("1").style.display = "none"
-        // d.getElementById("c").style.display="block";
         rechargePage(cards, 'c')
     })
 
     var recharge4 = document.getElementById("a14")
     recharge4.addEventListener('click', function (e) {
-        //  alert("充值4")
         d.getElementById("4").style.display = "none"
-        //turnOutPage(cards)
-        //d.getElementById("1").style.display = "none"
-        //  d.getElementById("c").style.display="block";
         rechargePage(cards, 'c')
     })
 
     var turnOut1 = document.getElementById("a22")
     turnOut1.addEventListener('click', function (e) {
-        //  alert("转入1")
         d.getElementById("2").style.display = "none"
         turnOutPage(cards, "z")
-        //d.getElementById("1").style.display = "none"
-        // d.getElementById("c").style.display="block";
     })
 
     var turnOut2 = document.getElementById("a24")
     turnOut2.addEventListener('click', function (e) {
-        //   alert("转入2")
         d.getElementById("4").style.display = "none"
         turnOutPage(cards, "z")
-        //d.getElementById("1").style.display = "none"
-        //d.getElementById("c").style.display="block";
     })
 
     var z = d.getElementById("z")
@@ -1383,22 +1357,22 @@
     close1.addEventListener('click', function (e) {
         document.getElementById("1").style.display = "none"
     })
+
     var close2 = document.getElementById("close2")
     close2.addEventListener('click', function (e) {
         document.getElementById("2").style.display = "none"
     })
+
     var close3 = document.getElementById("close3")
     close1.addEventListener('click', function (e) {
         document.getElementById("3").style.display = "none"
     })
     var close4 = document.getElementById("close4")
+
     close1.addEventListener('click', function (e) {
         document.getElementById("4").style.display = "none"
     })
-    /*
-     function clo(id) {
-     document.getElementById(id).style.display = "none"
-     }*/
+
 
     function transformation(sex) {
         var result;
@@ -1498,23 +1472,11 @@
                 data: cards,
                 templateId: 'selectCard-template'
             })
-            //  document.getElementById("1").style.display = "none"
-
             d.getElementById("selectCard").style.display = "block"
-
             $('.mine_zuli').on('click', function (e) {
                 var id = e.target.dataset.id
-                //  var id = e.target.dataset.id
-
-                //  document.getElementById(id).src = "true.png";
-                /*  setTimeout(function () {
-
-                 }, 1000)*/
                 duo(id, T)
-                //     document.getElementById(id).src = "";
-                //duo(id)
             })
-            // alert("到多个卡选择页面")
         } else if (cards.length == 1) {
             dan(cards);
         }

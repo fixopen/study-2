@@ -60,7 +60,8 @@ var proc = function (option) {
                     var opt = {
                         container: element.querySelector('*[data-ext-point="' + config.extPoint + '"]'),
                         data: data[config.dataFieldName],
-                        template: config.template || getTemplate(config.templateId)
+                        template: config.template || getTemplate(config.templateId),
+                        secondBind: config.secondBind
                     }
                     if (!opt.template) {
                         opt.alterTemplates = config.alterTemplates

@@ -806,7 +806,7 @@ canvas{
     float: left;
     color: #444;
     font-size: 1.125rem;
-    width: 49.79%;
+    width: 49.8%;
     height: 2.6875rem;
     line-height: 2.6875rem;
     text-align: center;
@@ -815,7 +815,7 @@ canvas{
 .tab_swlino{
     border-right: none;
 }
-.tab_swli.cur{
+.tab_swli2.cur{
     color: #fff;
     background-color: #ff8067;
 }
@@ -1745,6 +1745,158 @@ a.study_lia{
     font-size: 0.8125rem;
     vertical-align: middle;
 }
-
-
+/*//========================================================================*/
+.card_header{
+    width: 100%;
+    height: 10.59375rem;
+    background: url('../image/card.png') center no-repeat;
+    background-size: 100% 100%;
+}
+.card_header_l,.card_header_r{
+    display: inline-block;
+    color: #fff;
+    width: 49%;
+    text-align: center;
+    padding-top: 1.875rem;
+}
+.card_l_one,.card_r_one{
+    font-size: 0.9375rem;
+}
+.card_l_two,.card_r_two{
+    font-size: 0.8125rem;
+}
+.card_l_twoshu,.card_r_twoshu{
+    font-size: 1.5rem;
+}
+.card_l_three,.card_r_three{
+    color: #fff;
+    display: inline-block;
+    font-size: 0.9375rem;
+    width: 5.0rem;
+    height: 2.0625rem;
+    line-height: 2.0625rem;
+    text-align: center;
+    background-color: #ffbc3d;
+    border-radius: 0.3125rem;
+    margin-top: 0.625rem;
+}
+.card_tab_div{
+    width: 100%;
+    margin: 0.625rem 0;
+}
+.card_tab_switch{
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #ff8067;
+    border-radius: 0.3125rem;
+    overflow: hidden;
+}
+.card_tab_swli{
+    float: left;
+    color: #444;
+    font-size: 1.125rem;
+    width: 49%;
+    height: 2.6875rem;
+    line-height: 2.6875rem;
+    text-align: center;
+    border-right: 1px solid #ff8067;
+}
+.card_tab_swlino{
+    border-right: none;
+}
+.card_tab_swli.cur{
+    color: #fff;
+    background-color: #ff8067;
+}
+.card_tab_swlispan{
+    font-size: 0.9375rem;
+}
+.card_mine_zilo{
+    width: 100%;
+}
+.card_mine_table{
+    width: 90%;
+    margin: 0 auto;
+    display: none;
+}
+.card_mine_table.cur{
+    display: block;
+}
+.card_table_ul{
+    height: 10.71875rem;
+    padding: 1.09375rem;
+    margin-bottom: 0.9375rem;
+    background: url('../image/cardKuang.png') center no-repeat;
+    background-size: 100% 10.71875rem;
+    background-color: #fff;
+    border-radius: 0.3125rem;
+}
+.card_table_ulLi{
+    color: #888;
+    font-size: 1.0rem;
+    width: 12.5rem;
+    height: 1.84375rem;
+    line-height: 1.875rem;
+    margin: 0 auto;
+    padding: 0.3125rem;
+    border-bottom: 1px solid #ccc;
+}
+.card_tLi_diff{
+    color: #ff7e64;
+    font-size: 1.125rem;
+    font-weight: bold;
+    border-bottom: none;
+    margin-top: 0.725rem;
+}
+.card_tLi_span{
+    display: inline-block;
+    width: 5.0rem;
+}
+.card_table_NOul{
+    height: 10.5625rem;
+    text-align: center;
+    margin: 0 auto;
+    padding: 1.09375rem;
+    margin-bottom: 0.9375rem;
+    background: url('../image/cardNoka.png') center no-repeat;
+    background-size: 100% 10.5625rem;
+    background-color: #fff;
+    border-radius: 0.3125rem;
+}
+.card_noul_p1{
+    height: 1.84375rem;
+    line-height: 1.875rem;
+    margin: 0.725rem auto 0;
+    padding: 0.3125rem;
+    color: #ff7e64;
+    font-size: 1.125rem;
+    font-weight: bold;
+}
+.card_noul_p1 img{
+    width: 2.375rem;
+    height: 0.75rem;
+    vertical-align: middle;
+}
+.card_noul_p2{
+    font-size: 0.9375rem;
+    padding: 0.3125rem;
+    margin: 0.625rem auto 0.625rem;
+}
+.card_noulp_sapn{
+    color: #ff765c;
+    font-size: 0.9375rem;
+    margin: 0 0.3125rem;
+}
+.card_noul_p3{
+    display: inline-block;
+    color: #fff;
+    font-size: 1.0625rem;
+    width: 8.125rem;
+    height: 2.1875rem;
+    line-height: 2.1875rem;
+    margin: 0 auto;
+    padding: 0.3125rem;
+    background-color: #ff8067;
+    border-radius: 0.3125rem;
+}
 
