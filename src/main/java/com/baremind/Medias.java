@@ -154,11 +154,11 @@ public class Medias {
         JPAEntry.genericPost(code);
 
         long now = new Date().getTime();
-        String virtualDirectory = Properties.getProperty("testrd");
+        String virtualDirectory = Properties.getProperty("realDirectory");
         String fileName = virtualDirectory + now + ".png";
         File file = new File(fileName);
         ImageIO.write(img, "png", file);
-        String realDirectory = Properties.getProperty("testvd");
+        String realDirectory = Properties.getProperty("virtualDirectory");
         String path = realDirectory + now + ".png";
         return Response.ok(new Gson().toJson(path)).build();
     }

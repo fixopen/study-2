@@ -931,6 +931,19 @@ canvas{
     border-bottom: 1px solid #e5e5e5;
     background-color: #fff;
 }
+
+.oncardszuli{
+    display: block;
+    color: #444;
+    min-height: 3.71875rem;
+    line-height: 3.71875rem;
+    padding: 0 1.25rem 0 0;
+    margin-bottom: 0.625rem;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: #fff;
+}
+
 .xuanze_img1{
     width: 1.125rem;
     height: 4.75rem;

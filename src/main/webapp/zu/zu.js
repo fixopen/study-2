@@ -315,11 +315,13 @@ var _$_ = function(params) {
                         data: cards,
                         templateId: 'selectCard-template'
                     })
-                    document.getElementById("recharge").style.display="block"
-                    // document.getElementById("to").style.display="block"
+                    document.getElementById("rechargepage").style.display="block"
+                    document.getElementById("to").style.display="block"
                     // document.getElementById("rechargepage").style.display="none"
             } else if (T == "z") {
-                document.getElementById("recharge").style.display="block"
+                // document.getElementById("recharge").style.display="block"
+                document.getElementById("rechargepage").style.display="none"
+                document.getElementById("to").style.display="none"
                 document.getElementById("converted").innerHTML=""
                 proc({
                     containerId: 'converted',
