@@ -191,16 +191,16 @@ public class PublicAccounts {
         return result;
     }
 
-    public String sign(String[] origin) {
+    public String sign(String origin) {
         String sign = "";
-        Arrays.sort(origin);
-        String v = "";
-        for (String anOrigin : origin) {
-            v += anOrigin;
-        }
+//        Arrays.sort(origin);
+//        String v = "";
+//        for (String anOrigin : origin) {
+//            v += anOrigin;
+//        }
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(v.getBytes("utf-8"));
+            byte[] digest = md.digest(origin.getBytes("utf-8"));
             sign = Hex.bytesToHex(digest);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -213,10 +213,17 @@ public class PublicAccounts {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getConfig(@PathParam("url") String url) {
         Response result = Response.status(500).build();
+        url= url.replaceAll(",","/");
         String ticket = Properties.getProperty("ticket");
         String timestamp = Long.toString(new Date().getTime());
+        timestamp = timestamp.substring(0,10);
         String nonceStr = "";
         try {
+            nonceStr = String.valueOf(new Date().toString().getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        /*try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             try {
                 byte[] digest = md.digest(new Date().toString().getBytes("utf-8"));
@@ -226,13 +233,13 @@ public class PublicAccounts {
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        }
-        String[] params = {ticket, timestamp, nonceStr, url};
+        }*/
+        String params = "jsapi_ticket="+ticket+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url+"";
         String sign = sign(params);
         Map<String, Object> r = new HashMap<>();
         r.put("appId", appID);
         r.put("timestamp", timestamp);
-        r.put(nonceStr, nonceStr);
+        r.put("nonceStr", nonceStr);
         r.put("signature", sign);
         result = Response.ok(r).build();
         return result;
@@ -1087,7 +1094,7 @@ public class PublicAccounts {
 
         try {
             if (s == null) {
-                System.out.println("wechatUserId="+wechatUser.getId());
+                System.out.println("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId()+"&openId="+openId);
                 result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId()+"&openId="+openId)).build();
             } else {
                 System.out.println("sessionId=" + s.getIdentity());
