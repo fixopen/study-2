@@ -120,30 +120,11 @@ public class Sessions {
         return user;
     }
 
-    private void loginFailure(String ipAddr) {
-        EntityManager em = JPAEntry.getNewEntityManager();
-        em.getTransaction().begin();
-        ValidationCode count = JPAEntry.getObject(em, ValidationCode.class, "phoneNumber", ipAddr + "-count");
-        if (count != null) {
-            Long currentCount = Long.parseLong(count.getValidCode()) + 1L;
-            count.setValidCode(currentCount.toString());
-            em.merge(count);
-        } else {
-            count = new ValidationCode();
-            count.setId(IdGenerator.getNewId());
-            count.setPhoneNumber(ipAddr + "-count");
-            count.setValidCode("1");
-            count.setTimestamp(new Date());
-            em.persist(count);
-        }
-        em.getTransaction().commit();
-        em.close();
-    }
-
     private Response loginImpl(String ipAddr, LoginInfo loginInfo) {
         Response result = Response.status(404).build();
         boolean isPass = true;
-        String count = ValidationCodes.get(ipAddr + "-count");
+        EntityManager em = JPAEntry.getNewEntityManager();
+        String count = ValidationCodes.get(em, ipAddr + "-count");
         if (count != null) {
             if (Long.parseLong(count) > 5L) {
                 String code = loginInfo.getCode();
@@ -151,7 +132,7 @@ public class Sessions {
                     isPass = false;
                     result = Response.status(410).build();
                 } else {
-                    String getCode = ValidationCodes.get(ipAddr);
+                    String getCode = ValidationCodes.get(em, ipAddr);
                     if (getCode == null) {
                         isPass = false;
                         result = Response.status(408).build();
@@ -165,6 +146,7 @@ public class Sessions {
                 }
             }
         }
+        em.close();
         if (isPass) {
             Date now = new Date();
             User user = null;
@@ -186,7 +168,7 @@ public class Sessions {
                     if (user == null) {
                         //WechatUser wechatUser = JPAEntry.getObject(WechatUser.class, "id", loginInfo.getWechatUserId());
                         //user = insertUser(now, loginInfo.getInfo(), wechatUser);
-                        loginFailure(ipAddr);
+                        ValidationCodes.inc(ipAddr + "-count");
                     } else {
                         JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", ipAddr + "-count");
                     }
@@ -196,7 +178,7 @@ public class Sessions {
                     conditions.put("password", loginInfo.getKey());
                     user = JPAEntry.getObject(User.class, conditions);
                     if (user == null) {
-                        loginFailure(ipAddr);
+                        ValidationCodes.inc(ipAddr + "-count");
                     } else {
                         JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", ipAddr + "-count");
                     }
@@ -206,7 +188,7 @@ public class Sessions {
                     conditions.put("password", loginInfo.getKey());
                     user = JPAEntry.getObject(User.class, conditions);
                     if (user == null) {
-                        loginFailure(ipAddr);
+                        ValidationCodes.inc(ipAddr + "-count");
                     } else {
                         JPAEntry.genericDelete(ValidationCode.class, "phoneNumber", ipAddr + "-count");
                     }
