@@ -261,7 +261,29 @@
     </div>
 </article>
 <article id="user">
-
+    <div class="tan1" id="usertan"></div>
+    <div class="window1" id="userwindow"><!-- 弹窗 -->
+        <a class="windowClose" id="closeWaChet"></a>
+        <div class="win_neir neir_duo">
+            <p class="neir_ptxt">请完善资料<br>
+                <span class="neir_span">以便推送精准的<br>私人订制学习资料</span>
+            </p>
+            <p class="neir_pBtn">
+                <a class="p_btn" id="wan">完善资料</a>
+            </p>
+        </div>
+    </div>
+    <div class="window1" id="userpasswordwindow"><!-- 弹窗 -->
+        <a class="windowClose" id="closepasswordWaChet"></a>
+        <div class="win_neir neir_duo">
+            <p class="neir_ptxt">请设置密码<br>
+                <span class="neir_span">以便您下次登录</span>
+            </p>
+            <p class="neir_pBtn">
+                <a class="p_btn" id="uppassword">设置密码</a>
+            </p>
+        </div>
+    </div>
 </article>
 <article id="nickname" style="display: none">
     <div class="wrap">
@@ -338,34 +360,34 @@
                 <span class="chi"></span>
                 <span class="abc"></span>
                 <ul class="study-record-ul">
-                    <li class="study-record-li cur" data-article="pastLiveVideos">
-                        <a class="study_lia" href="javascript:void(0)" data-article="pastLiveVideos">
+                    <li class="study-record-li cur">
+                        <a class="study_lia" data-article="pastLiveVideos">
                             <div class="study_lidiv">
-                                <span class="srul_size48 srul_zbo" data-article="pastLiveVideos">看过的直播</span>
+                                <span class="srul_size48 srul_zbo">看过的直播</span>
                                 <br>
-                                <span class="srul_size42" data-article="pastLiveVideos">READ  LIVE</span>
+                                <span class="srul_size42">READ  LIVE</span>
                             </div>
-                            <span class="you srul_zbotu" data-article="pastLiveVideos"></span>
+                            <span class="you srul_zbotu"></span>
                         </a>
                     </li>
-                    <li class="study-record-li" data-article="pastKnowledgePoints">
-                        <a class="study_lia" href="javascript:void(0)" data-article="pastKnowledgePoints">
+                    <li class="study-record-li">
+                        <a class="study_lia" data-article="pastKnowledgePoints">
                             <div class="study_lidiv">
-                                <span class="srul_size48 srul_kec" data-article="pastKnowledgePoints">学过的课程</span>
+                                <span class="srul_size48 srul_kec">学过的课程</span>
                                 <br>
-                                <span class="srul_size42" data-article="pastKnowledgePoints">LEARNED  LESSONS</span>
+                                <span class="srul_size42">LEARNED  LESSONS</span>
                             </div>
-                            <span class="you srul_kectu" data-article="pastKnowledgePoints"></span>
+                            <span class="you srul_kectu"></span>
                         </a>
                     </li>
-                    <li class="study-record-li" data-article="pastTopics">
-                        <a class="study_lia" href="javascript:void(0)" data-article="pastTopics">
+                    <li class="study-record-li" >
+                        <a class="study_lia" data-article="pastTopics">
                             <div class="study_lidiv">
-                                <span class="srul_size48 srul_zan" data-article="pastTopics">做过的题</span>
+                                <span class="srul_size48 srul_zan">做过的题</span>
                                 <br>
-                                <span class="srul_size42" data-article="pastTopics">DONE</span>
+                                <span class="srul_size42">DONE</span>
                             </div>
-                            <span class="you srul_zantu" data-article="pastTopics"></span>
+                            <span class="you srul_zantu"></span>
                         </a>
                     </li>
                 </ul>
@@ -674,7 +696,7 @@
     </div>
 </article>
 <article id="recharge" style="display: none">
-    <div class="wrap" id="to">
+    <div class="wrap" style="display:none;" id="to">
         <ul class="xuanze_baodiv">
             <li id="account">
             </li>
@@ -768,7 +790,7 @@
         <div class="wrap">
             <ul class="mine_baodiv">
                 <li>
-                    <a class="xuanze_zuli" href="javascript:void(0)">
+                    <a class="oncardszuli" href="javascript:void(0)">
                         <img class="xuanze_img1" src="" alt="" id="image">
                         <div class="xuanze_leftdiv" id="cardid">
                             <span class="xuanze_leftsp" id="zs"></span>
@@ -866,7 +888,7 @@
         <li>
             <ul class="user_li_css public_li_css" data-article="cards">我的学习卡</ul>
         </li>
-        <li data-article="study">
+        <li>
             <ul class="user_li_css public_li_css" data-article="study">学习记录</ul>
         </li>
         <br/>
@@ -1183,6 +1205,7 @@
         switchToFront: function (id) {
             state.currentArticle.style.display = 'none'
             state.currentArticle = document.getElementById(id)
+            history.replaceState(null, null, '/user.html#' + id)
             state.currentArticle.style.display = 'block'
             state[id].init()
         },
@@ -1191,9 +1214,11 @@
             state.wechatUserId = g.getUrlParameter("wechatUserId");
             state.openId = g.getUrlParameter("openId");
             state.sessionId = g.getUrlParameter("sessionId");
-            g.setCookie("sessionId", state.sessionId, "/api")
+            if(state.sessionId){
+                g.setCookie("sessionId", state.sessionId, "/api")
+            }
             $(document).on('click', '[data-article]', function (e) {
-                var id = e.target.dataset.article
+                var id = e.currentTarget.dataset.article
                 state.switchTo(id)
             })
             if (state.wechatUserId != null) {
@@ -1457,17 +1482,56 @@
                             if (u.sex != null) {
                                 u.sex = state.getSexNameById(u.sex);
                             }
-                            if (u.name == null && u.school == null && u.classname == null) {
-                                state.switchTo('info')
-                            } else {
-                                user = u;
-                                proc({
-                                    containerId: 'user',
-                                    data: user,
-                                    templateId: 'user-template'
-                                })
+                            user = u;
+                            proc({
+                                containerId: 'user',
+                                data: user,
+                                templateId: 'user-template'
+                            })
+                            if (u.name == "" | u.school == null | u.school == "" | u.classname == null | u.classname == "") {
+                                  document.getElementById("usertan").style.display="block"
+                                  document.getElementById("userwindow").style.display="block"
+                            }else if(u.name != "" && u.school != null | u.school != "" && u.classname != null | u.classname != "" && u.password == null | u.password == ""){
+                                document.getElementById("usertan").style.display="block"
+                                document.getElementById("userpasswordwindow").style.display="block"
                             }
+                            var z = document.getElementById("z")
+                            z.addEventListener('click', function (e) {
+                                state.recharge.rechargePage(user.cards, 'c')
+                            })
+                        }
+                    })
 
+                    var closeWaChet = document.getElementById("closeWaChet");
+                    closeWaChet.addEventListener('click', function (e) {
+                        WeixinJSBridge.call('closeWindow');
+                    })
+
+                    var wan = document.getElementById("wan");
+                    wan.addEventListener('click', function (e) {
+                        document.getElementById("usertan").style.display="none"
+                        document.getElementById("userwindow").style.display="none"
+                        state.switchToFront('info')
+                    })
+
+                    var closepasswordWaChet = document.getElementById("closepasswordWaChet");
+                    closepasswordWaChet.addEventListener('click', function (e) {
+                        WeixinJSBridge.call('closeWindow');
+                    })
+
+                    var uppassword = document.getElementById("uppassword");
+                    uppassword.addEventListener('click', function (e) {
+                        document.getElementById("usertan").style.display="none"
+                        document.getElementById("userpasswordwindow").style.display="none"
+                        state.switchToFront('settings')
+                    })
+
+                    var addcard = document.getElementById("addcard");
+                    addcard.addEventListener('click', function (e) {
+                        if (user.cards == null) {
+                            state.switchToFront('firstActiveCard')
+                        } else {
+                            state.switchToFront('activeCard')
                         }
                     })
 
@@ -1543,15 +1607,22 @@
                         state.switchTo('recharge')
                     })
                 } else {
-                    document.getElementById("user").innerHTML = ""
-                    proc({
-                        containerId: 'user',
-                        data: user,
-                        templateId: 'user-template'
-                    })
+                        document.getElementById("user").innerHTML = ""
+                        document.getElementById("recharge").style.display = "none"
+                        proc({
+                            containerId: 'user',
+                            data: user,
+                            templateId: 'user-template'
+                        })
+                    if (user.name == "" || user.school == null || user.school == "" || user.classname == null || user.classname == "") {
+                        document.getElementById("usertan").style.display="block"
+                        document.getElementById("userwindow").style.display="block"
+                    }else if(user.name != "" && user.school != null || user.school != "" && user.classname != null || user.classname != "" && user.password == null || user.password == ""){
+                        document.getElementById("usertan").style.display="block"
+                        document.getElementById("userpasswordwindow").style.display="block"
+                    }
                 }
             },
-
         },
         cards: {
             currentTab: $('[data-content="chineCards"]')[0],
@@ -1690,8 +1761,6 @@
                     })
 
                 }
-
-
                 function saveInfo() {
                     var se = $("#info_sex").val();
                     var sex = state.getSexNameById(se);
@@ -1706,7 +1775,6 @@
                         school: $("#info_school").val(),
                         classname: $("#info_class").val(),
                     }
-//alert(JSON.stringify(data))
                     $.ajax({
                         type: "put",
                         url: "/api/users/self",
@@ -1740,10 +1808,6 @@
                         success: function (cs) {
                             user.cards = cs
                             state.recharge.rechargePage(user.cards, "c");
-                            var z = document.getElementById("z")
-                            z.addEventListener('click', function (e) {
-                                state.recharge.rechargePage(user.cards, 'c')
-                            })
                         }
                     })
                 } else {
@@ -1804,7 +1868,7 @@
                 }
                 $('.xuanze_zuli').on('click', function (e) {
                     document.getElementById("recharge").style.display = "block"
-                    var element = e.target
+                    var element = e.currentTarget
                     var id = element.dataset.id;
                     var amount = element.dataset.amount;
                     var no = element.dataset.no;
@@ -2404,7 +2468,7 @@
                     }, false);
                     sendcode.disabled = false;
                     sendcode.addEventListener('click', function () {
-                        if (putcode.disabled == false) {
+                        if (sendcode.disabled == false) {
                             state.firstActiveCard.activeCode(2)
                         }
                     })
@@ -2434,10 +2498,12 @@
                         contentType: "application/json; charset=utf-8",
                         success: function (a) {
                             document.getElementById("error").innerHTML = "修改密码成功"
-                            a.data = user
+                            user = a
                             j = 0
 //                            x = 0
-                            state.switchToFront('settings')
+//                            state.switchToFront('settings')
+                            history.back();
+                            history.back();
                         },
                     })
                 }
@@ -2453,7 +2519,8 @@
                             success: function (a) {
                                 document.getElementById("newError").innerHTML = "修改手机号成功"
                                 a.data = user
-                                state.switchToFront('settings')
+                                history.back();
+                                history.back();
                             },
                             error: function (e) {
                                 document.getElementById("newError").innerHTML = "密码过期或错误"
