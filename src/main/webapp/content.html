@@ -161,7 +161,12 @@
         </div>
     </div>
 </template>
-<template id="chapter">
+<template id="chapter-math">
+    <div>
+        <ul class="each_chapter each_chapter_math" data-identity="${index}"></ul>
+    </div>
+</template>
+<template id="chapter-chinese">
     <div>
         <ul class="each_chapter" data-identity="${index}"></ul>
     </div>
@@ -685,8 +690,8 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <!--<img class="icon" src="img/zan-over.png" alt="" id="icon">-->
-                <span class="icon">已点</span>
+                <img class="icon" src="img/zan-over.png" alt="" id="icon">
+                <!--<span class="icon">已点</span>-->
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -702,8 +707,8 @@
         <ul class="ul01_flet">
             <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
             <li>
-                <!--<img class="icon" src="img/zan.png" alt="" id="icon">-->
-                <span class="icon">未点</span>
+                <img class="icon" src="img/zan.png" alt="" id="icon">
+                <!--<span class="icon">未点</span>-->
                 <span class="ul01_count">${likeCount}</span>
             </li>
         </ul>
@@ -724,8 +729,8 @@
                 <li class="topUl_top">
                     <div class="litop_fleft">${userName}</div>
                     <div class="litop_friht" data-id="${id}" data-liked="${liked}">
-                        <!--<img class="ul01_imgzan_ like-icon" src="img/zan-over.png" alt="">-->
-                        <span class="like-icon">已点</span>
+                        <img class="ul01_imgzan_ like-icon" src="img/zan-over.png" alt="">
+                        <!--<span class="like-icon">已点</span>-->
                         <span class="ul01_count">${likeCount}</span>
                     </div>
                 </li>
@@ -749,8 +754,8 @@
                 <li class="topUl_top">
                     <div class="litop_fleft">${userName}</div>
                     <div class="litop_friht" data-id="${id}">
-                        <!--<img class="ul01_imgzan_ like-icon" src="img/zan.png" alt="">-->
-                        <span class="like-icon">未点</span>
+                        <img class="ul01_imgzan_ like-icon" src="img/zan.png" alt="">
+                        <!--<span class="like-icon">未点</span>-->
                         <span class="ul01_count">${likeCount}</span>
                     </div>
                 </li>
@@ -2100,11 +2105,19 @@
                     for (var i = 0; i < value.knowledgePoints.length; ++i) {
                         value.knowledgePoints[i].index = i
                     }
-                    proc({
-                        templateId: 'chapter',
-                        data: value.knowledgePoints,
-                        containerId: 'chapter-section'
-                    })
+                    if (state.volumes.parentId == 1) {
+                        proc({
+                            templateId: 'chapter-chinese',
+                            data: value.knowledgePoints,
+                            containerId: 'chapter-section'
+                        })
+                    } else if (state.volumes.parentId == 2) {
+                        proc({
+                            templateId: 'chapter-math',
+                            data: value.knowledgePoints,
+                            containerId: 'chapter-section'
+                        })
+                    }
 
                     var chapters = document.getElementById('chapter-section').querySelectorAll('[data-identity]')
                     for (var i = 0; i < chapters.length; ++i) {
