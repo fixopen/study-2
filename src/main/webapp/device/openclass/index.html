@@ -218,14 +218,7 @@
 </template>
 <template id="live-content-template">
     <div>
-        <div class="cover_img">
-            <div class="video_introduce">
-                <p class="big_title">${generalization}</p>
-                <p class="small_title">${outline}</p>
-                <p class="teacher">—<span>${teacher}</span>老师</p>
-            </div>
-        </div>
-        <a href="${directLink}" class="subject_video">进入</a>
+        <a href="${directLink}" target="_blank" class="subject_video">进入</a>
     </div>
 </template>
 
@@ -333,6 +326,10 @@
                                                 minute = '00'
                                             }
                                             item.minute = minute
+                                            item.type = 'normal'
+                                            if (i == 0) {
+                                                item.type = 'live'
+                                            }
                                         }
                                     }
                                     lives = d[0]
@@ -603,6 +600,7 @@
 
                     reviewTab()
                     pageClick()
+                    $('.live_item:nth-child(5n)').css('margin-left', 0)
 
                     state.main.isInit = true
                 }

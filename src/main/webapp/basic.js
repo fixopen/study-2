@@ -156,11 +156,12 @@ var login = function (loginName, password) {
         }),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function (a) {
+        success: function (d) {
             alert("登录成功")
         },
-        error: function (e) {
-            alert(JSON.stringify(e))
+        error: function (xhr) {
+            alert(xhr.status + ' ' + xhr.statusText)
+            //alert(JSON.stringify(e))
         }
     })
 }

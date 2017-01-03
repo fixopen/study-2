@@ -16,6 +16,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,15 +24,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.xml.bind.JAXBElement;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
@@ -191,16 +188,16 @@ public class PublicAccounts {
         return result;
     }
 
-    public String sign(String[] origin) {
+    public String sign(String origin) {
         String sign = "";
-        Arrays.sort(origin);
-        String v = "";
-        for (String anOrigin : origin) {
-            v += anOrigin;
-        }
+//        Arrays.sort(origin);
+//        String v = "";
+//        for (String anOrigin : origin) {
+//            v += anOrigin;
+//        }
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(v.getBytes("utf-8"));
+            byte[] digest = md.digest(origin.getBytes("utf-8"));
             sign = Hex.bytesToHex(digest);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -209,30 +206,61 @@ public class PublicAccounts {
     }
 
     @GET
+    @Path("head/{media_Id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getHead(@PathParam("media_Id") String media_Id){
+//        http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+        System.out.println("来过");
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+                .path("cgi-bin/media/get")
+                .queryParam("access_token", accessToken)
+                .queryParam("media_id", media_Id)
+                .request().get();
+        System.out.println("微信返回了");
+        long now = new Date().getTime();
+        String physicalpath = Properties.getProperty("physicalpath");
+        String fileName = physicalpath + now + "jpg";
+        System.out.println("fileName========================="+fileName);
+        File file = new File(fileName);
+        InputStream is = (InputStream) response.getEntity();
+        byte[] buffer = new byte[response.getLength()];
+        try {
+            is.read(buffer);
+            System.out.println("buffer========================="+buffer);
+            FileOutputStream fw = new FileOutputStream(file);
+            fw.write(buffer);
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String virtualpath = Properties.getProperty("virtualpath");
+        String path = virtualpath + now + ".jpg";
+        System.out.println("path====================="+path);
+        return Response.ok(path).build();
+    }
+
+    @GET
     @Path("config/{url}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getConfig(@PathParam("url") String url) {
         Response result = Response.status(500).build();
+        url= url.replaceAll(",","/");
         String ticket = Properties.getProperty("ticket");
         String timestamp = Long.toString(new Date().getTime());
+        timestamp = timestamp.substring(0,10);
         String nonceStr = "";
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            try {
-                byte[] digest = md.digest(new Date().toString().getBytes("utf-8"));
-                nonceStr = Hex.bytesToHex(digest);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        } catch (NoSuchAlgorithmException e) {
+            nonceStr = String.valueOf(new Date().toString().getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String[] params = {ticket, timestamp, nonceStr, url};
+        String params = "jsapi_ticket="+ticket+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url+"";
         String sign = sign(params);
         Map<String, Object> r = new HashMap<>();
         r.put("appId", appID);
         r.put("timestamp", timestamp);
-        r.put(nonceStr, nonceStr);
+        r.put("nonceStr", nonceStr);
         r.put("signature", sign);
         result = Response.ok(r).build();
         return result;
@@ -1087,7 +1115,7 @@ public class PublicAccounts {
 
         try {
             if (s == null) {
-                System.out.println("wechatUserId="+wechatUser.getId());
+                System.out.println("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId()+"&openId="+openId);
                 result = Response.seeOther(new URI("http://www.xiaoyuschool.com/user.html?wechatUserId=" + wechatUser.getId()+"&openId="+openId)).build();
             } else {
                 System.out.println("sessionId=" + s.getIdentity());
