@@ -1246,7 +1246,7 @@
             state.wechatUserId = g.getUrlParameter("wechatUserId");
             state.openId = g.getUrlParameter("openId");
             state.sessionId = g.getUrlParameter("sessionId");
-            if (state.sessionId) {
+            if (state.sessionId && state.sessionId == '') {
                 g.setCookie("sessionId", state.sessionId, "/api")
             }
             $(document).on('click', '[data-article]', function (e) {
@@ -2117,14 +2117,15 @@
                                         }
                                     }
                                 }
-                                var result = []
                                 for (var i = 0; i < subject.volumes.length; ++i) {
-                                    subject.volumes[i].readpast = subject.volumes[i].knowledgePoints.length
-                                    for (var j = 0; j < subject.volumes[i].knowledgePoints.length; ++j) {
-                                        for (var k = 0; k < subject.volumes[i].knowledgePoints[j].problems.length; ++k) {
-                                            check(subject.volumes[i].knowledgePoints[j].problems[k])
-                                            result.push(subject.volumes[i].knowledgePoints[j].problems[k])
-                                            subject.volumes[i].problems = result
+                                    subject.volumes[i].problems = []
+                                    var kpCount = subject.volumes[i].knowledgePoints.length
+                                    subject.volumes[i].readpast = kpCount
+                                    for (var j = 0; j < kpCount; ++j) {
+                                        var kp = subject.volumes[i].knowledgePoints[j]
+                                        for (var k = 0; k < kp.problems.length; ++k) {
+                                            check(kp.problems[k])
+                                            subject.volumes[i].problems.push(kp.problems[k])
                                         }
                                     }
                                 }
