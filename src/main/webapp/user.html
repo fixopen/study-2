@@ -62,8 +62,8 @@
                     <li class="sign_mine_zuli sign_zuli_yzm" id="tu" style="display: none;">
                         <span class="sign_mine_leftsp">验证码</span>
                         <input class="sign_mine_rightip" id="code" placeholder="请输入验证码">
-                        <!--<a class="sign_yanZma" id="huan">点击换一张</a>-->
-                        <img src="" class="sign_yanZma" id="huan">
+                        <!--<a class="sign_yanZma" id="huan"></a>-->
+                        <a class="sign_yanZma" id="huan">点击换一张</a>
                         <!--点击换一张-->
                         <i class="sign_errorTs" style="display: none">
                             <!--验证码错误-->
@@ -323,7 +323,7 @@
             </ul>
         </div>
         <div class="card_mine_table cur" id="chineCards">
-            <div class="card_mine_table" id="nocard1" style="display: none" >
+            <div class="card_mine_table" id="nocard1" style="display: none">
                 <div class="card_table_NOul">
                     <p class="card_noul_p1">
                         <img src="myUser/image/cardfacejk.png" height="24" width="76"/>
@@ -336,7 +336,7 @@
             </div>
         </div>
         <div class="card_mine_table" id="mathCards">
-            <div class="card_mine_table" id="nocard2" style="display: none" >
+            <div class="card_mine_table" id="nocard2" style="display: none">
                 <div class="card_table_NOul">
                     <p class="card_noul_p1">
                         <img src="myUser/image/cardfacejk.png" height="24" width="76"/>
@@ -351,7 +351,6 @@
     </div>
 </article>
 <article id="head" style="display: none;">
-
 </article>
 <article id="study" style="display: none;">
     <div class="wrap youBackg">
@@ -380,7 +379,7 @@
                             <span class="you srul_kectu"></span>
                         </a>
                     </li>
-                    <li class="study-record-li" >
+                    <li class="study-record-li">
                         <a class="study_lia" data-article="pastTopics">
                             <div class="study_lidiv">
                                 <span class="srul_size48 srul_zan">做过的题</span>
@@ -448,7 +447,7 @@
     </ul>
     <ul class="public_ul_css">
         <li class="user_li_css public_li_css" data-article="contactUs">
-            <span data-article="contactUs" class="public_span_css">联系我们</span>
+            <span data-article="contactUs">联系我们</span>
         </li>
     </ul>
 </article>
@@ -562,7 +561,32 @@
     </div>
 </article>
 <article id="contactUs" style="display: none;">
-    <img src="myUser/image/contactUs.jpg" style="width: 100%;height: 100%"/>
+    <div class="wrap">
+        <div class="account-setOur-login">
+            <img src="myUser/image/account-setOur-login.png" height="187" width="187"/></div>
+        <div class="account-setOur-content">
+            <div class="account-setOur-contentTxt">
+                <h3 class="setOur-contentTxt-h3">北京小雨知时教育科技有限公司</h3>
+                <ul>
+                    <li class="setOur-contentTxt-li">
+                        <span class="setOur-contentTxt-spanL">电话：</span>
+                        010-56278070
+                    </li>
+                    <li class="setOur-contentTxt-li">
+                        <span class="setOur-contentTxt-spanL">微信：</span>
+                        ***********
+                    </li>
+                    <li class="setOur-contentTxt-li">
+                        <span class="setOur-contentTxt-spanL">地址：</span>
+                        <p class="setOur-contentTxt-spanR">北京市海淀区上地七街国际创业园1号院2号楼505</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="setOur-contentTxt-bottom">
+            <img src="myUser/image/account-setOur-kids.png" height="196" width="693"/>
+        </div>
+    </div>
 </article>
 <article id="pastLiveVideos" style="display: none">
     <div class="wrap">
@@ -860,51 +884,59 @@
     </div>
 </template>
 <template id="user-template">
-    <ul class="public_ul_css">
-        <li class="user_li_css public_li_css">
-            <ul>
-                <!--data-article="head"-->
-                <span class="public_span_css">我的头像</span>
-                <img class="user_head_css" src="${head}" alt="">
+    <div class="wrap">
+        <div class="user_zilo">
+            <ul class="user_zUl">
+                <li data-article="head">
+                    <a class="user_zuli">我的头像
+                        <img class="user_touimg" src="${head}" alt="">
+                    </a>
+                </li>
+                <li data-article="nickname">
+                    <a class="user_zuli">昵称
+                        <span class="user_rightip">${name}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="user_zuli no_backG">账号
+                        <span class="user_rightip">${telephone}</span>
+                    </a>
+                </li>
+                <li data-article="info">
+                    <a class="user_zuli">个人资料</a>
+                </li>
             </ul>
-
-        </li>
-        <li class="user_li_css public_li_css" data-article="nickname">
-            <ul data-article="nickname">
-                <span class="public_span_css" data-article="nickname">昵称</span>
-                <input class="user_input_css public_input_css" type="text" value="${name}" data-article="nickname">
+            <ul class="user_zUl">
+                <li data-article="cards">
+                    <a class="user_zuli">我的学习卡</a>
+                </li>
+                <li data-article="study">
+                    <a class="user_zuli">学习记录</a>
+                </li>
             </ul>
-        </li>
-        <li style="height: 3.71875rem;line-height: 3.71875rem;padding: 0 0 0 0.9375rem;border-bottom: 1px solid #e5e5e5;">
-            <span class="public_span_css">账号</span>
-            <!--padding-left: 64px;-->
-            <input style="font-size: 1.0rem;padding-left: 10%" type="text" value="${telephone}" readonly>
-        </li>
-        <li>
-            <ul class="user_li_css public_li_css" data-article="info">个人资料</ul>
-        </li>
-        <br/>
-
-        <li>
-            <ul class="user_li_css public_li_css" data-article="cards">我的学习卡</ul>
-        </li>
-        <li>
-            <ul class="user_li_css public_li_css" data-article="study">学习记录</ul>
-        </li>
-        <br/>
-        <li>
-            <ul class="user_li_css public_li_css" data-article="consumes">账户余额</ul>
-        </li>
-        <li>
-            <ul class="user_li_css public_li_css" data-article="recharge">充值</ul>
-        </li>
-        <li>
-            <ul class="user_li_css public_li_css">我的积分</ul>
-        </li>
-        <br/>
-        <li class="user_li_css public_li_css" data-article="settings">设置</li>
-        <li class="user_li_css public_li_css" data-article="help">帮助</li>
-    </ul>
+            <ul class="user_zUl">
+                <li data-article="consumes">
+                    <a class="user_zuli">账号余额</a>
+                </li>
+                <li data-article="recharge">
+                    <a class="user_zuli">充值</a>
+                </li>
+                <li>
+                    <a class="user_zuli">我的积分</a>
+                </li>
+            </ul>
+            <ul class="user_zUl">
+                <li data-article="settings">
+                    <a class="user_zuli">
+                        <span class="ceng_jigao">设置</span>
+                    </a>
+                </li>
+                <li data-article="help">
+                    <a class="user_zuli">帮助</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </template>
 <template id="info-template">
     <ul class="public_ul_css">
@@ -1214,7 +1246,7 @@
             state.wechatUserId = g.getUrlParameter("wechatUserId");
             state.openId = g.getUrlParameter("openId");
             state.sessionId = g.getUrlParameter("sessionId");
-            if(state.sessionId){
+            if (state.sessionId) {
                 g.setCookie("sessionId", state.sessionId, "/api")
             }
             $(document).on('click', '[data-article]', function (e) {
@@ -1381,8 +1413,6 @@
                             default:
                                 break
                         }
-
-
                     })
                 }
                 state.sign.isSign = true
@@ -1414,7 +1444,9 @@
                                     element.innerHTML = '验证码过期'
                                     break;
                                 case 408:
-                                    element.innerHTML = '手机号未激活'
+                                    element.innerHTML = '手机号或密码错误'
+                                    state.sign.GraphicCode();
+                                    document.getElementById("tu").style.display = "block"
                                     break;
                                 case 415:
                                     element.innerHTML = '图形验证码错误'
@@ -1422,7 +1454,7 @@
                                 case 410:
                                     state.sign.GraphicCode();
                                     document.getElementById("tu").style.display = "block"
-                                    element.innerHTML = '错误次数超过五次，显示图形码'
+                                    element.innerHTML = '错误次数超过五次，请输入图形码'
                                     break;
                                 default:
                                     break
@@ -1461,8 +1493,9 @@
                     url: "api/medias/validation-picture",
                     dataType: "json",
                     success: function (e) {
-                        alert(JSON.stringify(e))
-                        document.getElementById("huan").src = "e"
+//                        alert()
+//                        var sec = JSON.stringify(e)
+                        document.getElementById("huan").style.backgroundImage = "url(" + e + ")"
                     }
                 })
             }
@@ -1489,11 +1522,11 @@
                                 templateId: 'user-template'
                             })
                             if (u.name == "" | u.school == null | u.school == "" | u.classname == null | u.classname == "") {
-                                  document.getElementById("usertan").style.display="block"
-                                  document.getElementById("userwindow").style.display="block"
-                            }else if(u.name != "" && u.school != null | u.school != "" && u.classname != null | u.classname != "" && u.password == null | u.password == ""){
-                                document.getElementById("usertan").style.display="block"
-                                document.getElementById("userpasswordwindow").style.display="block"
+                                document.getElementById("usertan").style.display = "block"
+                                document.getElementById("userwindow").style.display = "block"
+                            } else if (u.name != "" && u.school != null | u.school != "" && u.classname != null | u.classname != "" && u.password == null | u.password == "") {
+                                document.getElementById("usertan").style.display = "block"
+                                document.getElementById("userpasswordwindow").style.display = "block"
                             }
                             var z = document.getElementById("z")
                             z.addEventListener('click', function (e) {
@@ -1509,8 +1542,8 @@
 
                     var wan = document.getElementById("wan");
                     wan.addEventListener('click', function (e) {
-                        document.getElementById("usertan").style.display="none"
-                        document.getElementById("userwindow").style.display="none"
+                        document.getElementById("usertan").style.display = "none"
+                        document.getElementById("userwindow").style.display = "none"
                         state.switchToFront('info')
                     })
 
@@ -1521,8 +1554,8 @@
 
                     var uppassword = document.getElementById("uppassword");
                     uppassword.addEventListener('click', function (e) {
-                        document.getElementById("usertan").style.display="none"
-                        document.getElementById("userpasswordwindow").style.display="none"
+                        document.getElementById("usertan").style.display = "none"
+                        document.getElementById("userpasswordwindow").style.display = "none"
                         state.switchToFront('settings')
                     })
 
@@ -1607,26 +1640,26 @@
                         state.switchTo('recharge')
                     })
                 } else {
-                        document.getElementById("user").innerHTML = ""
-                        document.getElementById("recharge").style.display = "none"
-                        proc({
-                            containerId: 'user',
-                            data: user,
-                            templateId: 'user-template'
-                        })
+                    document.getElementById("user").innerHTML = ""
+                    document.getElementById("recharge").style.display = "none"
+                    proc({
+                        containerId: 'user',
+                        data: user,
+                        templateId: 'user-template'
+                    })
                     if (user.name == "" || user.school == null || user.school == "" || user.classname == null || user.classname == "") {
-                        document.getElementById("usertan").style.display="block"
-                        document.getElementById("userwindow").style.display="block"
-                    }else if(user.name != "" && user.school != null || user.school != "" && user.classname != null || user.classname != "" && user.password == null || user.password == ""){
-                        document.getElementById("usertan").style.display="block"
-                        document.getElementById("userpasswordwindow").style.display="block"
+                        document.getElementById("usertan").style.display = "block"
+                        document.getElementById("userwindow").style.display = "block"
+                    } else if (user.name != "" && user.school != null || user.school != "" && user.classname != null || user.classname != "" && user.password == null || user.password == "") {
+                        document.getElementById("usertan").style.display = "block"
+                        document.getElementById("userpasswordwindow").style.display = "block"
                     }
                 }
             },
         },
         cards: {
             currentTab: $('[data-content="chineCards"]')[0],
-            type:'chine',
+            type: 'chine',
             isCards: false,
             init: function () {
                 if (!state.cards.isCards) {
@@ -1655,7 +1688,7 @@
                 } else {
                     bang(user.cards)
                     cardswitch()
-                    }
+                }
                 state.cards.isCards = true
                 function bang(cs) {
                     user.cards.chinese = []
@@ -1703,12 +1736,13 @@
                     document.getElementById("mathematics").innerHTML = user.cards.mathematics.count
 
                 }
+
                 function cardswitch() {
-                    if(state.cards.type == 'chine'){
-                        if(user.cards.chinese.length == 0){
-                            document.getElementById("nocard1").style.display="block"
+                    if (state.cards.type == 'chine') {
+                        if (user.cards.chinese.length == 0) {
+                            document.getElementById("nocard1").style.display = "block"
 //                            document.getElementById("nocard2").style.display="none"
-                        }else{
+                        } else {
                             document.getElementById("chineCards").innerHTML = ""
                             proc({
                                 containerId: 'chineCards',
@@ -1716,17 +1750,18 @@
                                 templateId: 'card-template'
                             })
                         }
-                    }else if(state.cards.type == 'math'){
-                        if(user.cards.mathematics.length == 0){
-                        document.getElementById("nocard2").style.display="block"
-                    }else{
-                        document.getElementById("mathCards").innerHTML = ""
-                        proc({
-                            containerId: 'mathCards',
-                            data: user.cards.mathematics,
-                            templateId: 'card-template'
-                        })
-                    }}
+                    } else if (state.cards.type == 'math') {
+                        if (user.cards.mathematics.length == 0) {
+                            document.getElementById("nocard2").style.display = "block"
+                        } else {
+                            document.getElementById("mathCards").innerHTML = ""
+                            proc({
+                                containerId: 'mathCards',
+                                data: user.cards.mathematics,
+                                templateId: 'card-template'
+                            })
+                        }
+                    }
                 }
             }
         },
@@ -1951,91 +1986,102 @@
         },
         head: {
             init: function () {
-                /*var url = window.location.href;
-                 url = url.replace(/[/]/g, ',')
-                 gettick();
-                 $.ajax({
-                 type: "get",
-                 url: "/api/public-account/config/" + url,
-                 dataType: "json",
-                 success: function (e) {
-                 alert(JSON.stringify(e));
-                 wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
-                 }, error: function (e) {
-                 alert(JSON.stringify(e));
-                 wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
-                 }
-                 })
-                 function wechat(appId, timestamp, nonceStr, signature) {
-                 wx.config({
-                 debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                 appId: appId, // 必填，公众号的唯一标识
-                 timestamp: timestamp, // 必填，生成签名的时间戳
-                 nonceStr: nonceStr, // 必填，生成签名的随机串
-                 signature: signature,// 必填，签名，见附录1
-                 jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                 });
-                 wx.error(function (res) {
-                 // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                var url = window.location.href;
+                url = url.replace(/[/]/g, ',')
+                $.ajax({
+                    type: "get",
+                    url: "/api/public-account/config/" + url,
+                    dataType: "json",
+                    success: function (e) {
+                        gettick();
+                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
 
-                 alert("服务器繁忙，请刷新！")
-                 });
-                 wx.ready(function () {
-                 wx.chooseImage({
-                 count: 1,
-                 needResult: 1,
-                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                 success: function (res) {
-                 var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                 //上传图片接口
-                 wx.uploadImage({
-                 localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
-                 isShowProgressTips: 1, // 默认为1，显示进度提示
-                 success: function (res) {
-                 var mediaId = res.serverId; // 返回图片的服务器端ID
-                 //alert("返回图片的服务器端ID=="+mediaId)
-                 libai(mediaId)
-                 }
-                 });
-                 }
-                 });
-                 })
-                 }
+                    }, error: function (e) {
+                        alert(JSON.stringify(e));
+                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                    }
+                })
+                function wechat(appId, timestamp, nonceStr, signature) {
+                    wx.config({
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: appId, // 必填，公众号的唯一标识
+                        timestamp: timestamp, // 必填，生成签名的时间戳
+                        nonceStr: nonceStr, // 必填，生成签名的随机串
+                        signature: signature,// 必填，签名，见附录1
+                        jsApiList: ['chooseImage', 'uploadImage', 'downloadImage']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    });
+                    wx.error(function (res) {
+                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                        alert("服务器繁忙，请刷新！")
+                    });
+                    wx.ready(function () {
+                        wx.chooseImage({
+                            count: 1,
+                            needResult: 1,
+                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                            success: function (res) {
+                                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                //上传图片接口
+                                wx.uploadImage({
+                                    localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                                    success: function (res) {
+                                        var mediaId = res.serverId; // 返回图片的服务器端ID
+                                        alert("返回图片的服务器端ID=="+mediaId)
+                                        wx.downloadImage({
+                                            serverId: mediaId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
+                                            isShowProgressTips: 1, // 默认为1，显示进度提示
+                                            success: function (res) {
+                                                var localId = res.localId; // 返回图片下载后的本地ID
+                                                alert("返回图片下载后的本地ID"+localId)
+                                                $.ajax({
+                                                    type: "get",
+                                                    url: "/api/public-account/head/"+JSON.stringify(localId),
+                                                    dataType: "json",
+                                                    success: function (a) {
+                                                        alert("成功")
+                                                    },error:function (a) {
+                                                        alert(JSON.stringify(a))
+                                                    }
+                                                })
 
-                 function gettick() {
-                 $.ajax({
-                 type: "get",
-                 url: "/api/public-account/ticket/",
-                 dataType: "json",
-                 success: function (e) {
-                 //alert(JSON.stringify(e))
-                 },
-                 error: function (e) {
-                 //alert(JSON.stringify(e))
-                 }
-                 })
-                 }*/
+                                                data = {
+                                                    head:localId,
+                                                }
+                                                $.ajax({
+                                                    type: "put",
+                                                    url: "/api/users/self",
+                                                    data: JSON.stringify(data),
+                                                    dataType: "json",
+                                                    contentType: "application/json; charset=utf-8",
+                                                    success: function (a) {
+                                                        user = a
+                                                        history.back()
+                                                    }
+                                                })
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    })
+                }
 
-                /*var sdakfjlasf = "6GMxwySqgrQCtgcw0M-FcFQH6OUG0JgGPypedTaFJntlEwzAlB4BnGajCeiifCUB";
-                 libai(sdakfjlasf);
-                 function libai(mediaId) {
-                 alert("李白来了" + mediaId)
-                 $.ajax({
-                 type: "GET",
-                 url: "/api/public-account/weChat/Head/" + mediaId,
-                 dataType: "json",
-                 success: function (e) {
-                 alert("成功" + JSON.stringify(e))
-                 user.head=e.head;
-                 state.user.isCards = false
-                 history.back();
-                 },
-                 error: function (e) {
-                 alert(JSON.stringify(e))
-                 }
-                 })
-                 }*/
+                function gettick() {
+                    $.ajax({
+                        type: "get",
+                        url: "/api/public-account/ticket/",
+                        dataType: "json",
+                        success: function (e) {
+                            //alert(JSON.stringify(e))
+                        },
+                        error: function (e) {
+                            //alert(JSON.stringify(e))
+                        }
+                    })
+                }
             }
         },
         study: {
@@ -2363,13 +2409,40 @@
                 }
                 function daojishi(e) {
                     if (phoneNumber != "") {
+                        var tips = document.getElementById(error);
                         $.ajax({
                             type: "get",
                             url: "/api/users/telephones/" + phoneNumber + "/code",
                             dataType: "json",
+                            success: function (r) {
+                                tips.innerHTML = '短信已发送至手机，3分钟内有效'
+                                var timeoutCount = 180;
+                                if (e == 1) {
+                                    var proc = function () {
+                                        document.getElementById(an).value = ' (' + timeoutCount + ')  秒后\n重新发送';
+                                        --timeoutCount;
+                                        document.getElementById(an).disabled = true
+                                        if (timeoutCount <= 0) {
+                                            document.getElementById(an).value = ' 重新发送 ';
+                                            clearInterval(timeoutId);
+                                            document.getElementById(an).disabled = false
+                                        }
+                                    }
+                                } else {
+                                    var proc = function () {
+                                        document.getElementById(an).innerHTML = ' (' + timeoutCount + ')  秒后\n重新发送';
+                                        --timeoutCount;
+                                        document.getElementById(an).disabled = true
+                                        if (timeoutCount <= 0) {
+                                            document.getElementById(an).innerHTML = ' 重新发送 ';
+                                            clearInterval(timeoutId);
+                                            document.getElementById(an).disabled = false
+                                        }
+                                    }
+                                }
+                                timeoutId = setInterval(proc, 1000);
+                            },
                             error: function (r) {
-                                var tips = document.getElementById(error);
-                                //alert(JSON.stringify(r))
                                 if (r.status < 400) {
                                     tips.innerHTML = '短信已发送至手机，3分钟内有效'
                                 } else {
@@ -2655,10 +2728,10 @@
                 var cpc = 0
                 var mpc = 0
                 for (var i = 0; i < user.chineproblems.length; ++i) {
-                    if(user.chineproblems[i].problems.length == 0){
+                    if (user.chineproblems[i].problems.length == 0) {
                         cpc = "0"
-                    }else{
-                        cpc+=user.chineproblems[i].problems.length
+                    } else {
+                        cpc += user.chineproblems[i].problems.length
                     }
                 }
                 for (var i = 0; i < user.mathproblems.length; ++i) {
