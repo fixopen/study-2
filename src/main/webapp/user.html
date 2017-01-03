@@ -19,6 +19,11 @@
     <link rel="stylesheet" href="myUser/css/Popup.css">
     <link rel="stylesheet" href="myUser/css/直播.css">
     <script src="zu/zu.js"></script>
+    <style>
+        [data-article] {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <article id="sign" style="display: none">
@@ -1251,13 +1256,16 @@
             }
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.currentTarget.dataset.article
+//                alert(id)
                 state.switchTo(id)
             })
             if (state.wechatUserId != null) {
+//                alert("sign")
                 state.switchTo("sign")
                 history.pushState(null, null, '/user.html#sign');
             } else if (state.sessionId != null) {
                 state.switchTo("user")
+//                alert("user")
                 history.pushState(null, null, '/user.html#user');
             }
 //            $('#container').load('/zu/zu.html')
@@ -1657,7 +1665,7 @@
                 }
             },
         },
-        /* cards: {
+        cards: {
             currentTab: $('[data-content="chineCards"]')[0],
             type: 'chine',
             isCards: false,
@@ -2037,14 +2045,14 @@
                                     isShowProgressTips: 1, // 默认为1，显示进度提示
                                     success: function (res) {
                                         var mediaId = res.serverId; // 返回图片的服务器端ID
-                                        alert("返回图片的服务器端ID=="+mediaId)
+                                        alert("返回图片的服务器端ID==" + mediaId)
                                         $.ajax({
                                             type: "get",
-                                            url: "/api/public-account/head/"+mediaId,
+                                            url: "/api/public-account/head/" + mediaId,
                                             dataType: "json",
                                             success: function (a) {
                                                 alert("成功")
-                                            },error:function (a) {
+                                            }, error: function (a) {
                                                 alert(JSON.stringify(a))
                                             }
                                         })
@@ -2053,9 +2061,9 @@
                                             isShowProgressTips: 1, // 默认为1，显示进度提示
                                             success: function (res) {
                                                 var localId = res.localId; // 返回图片下载后的本地ID
-                                                alert("返回图片下载后的本地ID"+localId)
+                                                alert("返回图片下载后的本地ID" + localId)
                                                 data = {
-                                                    head:localId,
+                                                    head: localId,
                                                 }
                                                 $.ajax({
                                                     type: "put",
@@ -2077,9 +2085,9 @@
                     })
                 }
 
-               /!* function gettick() {
+                /* function gettick() {
 
-                }*!/
+                 }*/
             }
         },
         study: {
@@ -2231,7 +2239,7 @@
         activeCard: {
             init: function () {
             }
-        },*/
+        },
         firstActiveCard: {
             // var timeoutId;
             init: function () {
@@ -2483,7 +2491,7 @@
             }
 
         },
-       /* login: {
+        login: {
             init: function () {
             }
         },
@@ -2811,7 +2819,7 @@
                 }
                 state.nickname.isNickname = true
             }
-        },*/
+        },
     }
     state.init()
 </script>
