@@ -18,10 +18,15 @@
     <script type="text/javascript" src="zepto/zepto.min.js"></script>
     <script type="text/javascript" src="zepto/touch.js"></script>
     <script type="text/javascript" src="zepto/selector.js"></script>
-    <script type="text/javascript" src="js/audioRecord-volume.js"></script>
-    <script type="text/javascript" src="basic.js"></script>
+    <!--<script type="text/javascript" src="js/audioRecord-volume.js"></script>-->
+
 </head>
 <body>
+
+<!-- 课程更新弹窗 -->
+<div class="tan"></div>
+<div class="new-class"></div>
+
 <div class="wrap">
     <div class="rain-main">
         <div class="bao_dul">
@@ -37,25 +42,75 @@
             </ul>
         </div>
         <div class="neir_div0 div0_one">
-            <ol class="neir0_UL" id="volumes-reading">
+            <ol class="neir0_UL" id="volumesReading">
+                <li class="neir_li">
+                    <div class="neir_lidiv">
+                        <a class="neir_pzi" data-id="${id}" data-type="volume"
+                           href="/k/e/p-zhibo-0420.html?book=01&page=00">My Family</a>
+                    </div>
+                </li>
+                <li class="neir_li">
+                    <img class="new-label" src="img/new-label.png" alt="">
+                    <div class="neir_lidiv">
+                        <a class="neir_pzi" data-id="${id}" data-type="volume"
+                           href="/k/e/p-zhibo-0420.html?book=02&page=00">A polite child</a>
+                    </div>
+                </li>
             </ol>
         </div>
         <div class="neir_div0 div0_two">
-            <ol class="neir0_UL" id="volumes-phonics">
+            <ol class="neir0_UL" id="volumesPhonics">
+                <li class="neir_li">
+                    <div class="neir_lidiv">
+                        <a class="neir_pzi" data-id="${id}" data-type="volume"
+                           href="/k/e/p-zhibo-0520.html?book=01&page=00">My First Phonics Book1</a>
+                    </div>
+                </li>
+                <li class="neir_li">
+                    <img class="new-label" src="img/new-label.png" alt="">
+                    <div class="neir_lidiv">
+                        <a class="neir_pzi" data-id="${id}" data-type="volume"
+                           href="/k/e/p-zhibo-0520.html?book=02&page=00">My First Phonics Book2</a>
+                    </div>
+                </li>
             </ol>
         </div>
     </div>
 </div>
+
 <!--templates-->
-<template id="volumes-template">
-    <li class="neir_li">
-        <div class="neir_lidiv">
-            <!--<a class="neir_pzi" href="#">${title}</a>-->
-            <a class="neir_pzi" data-id="${id}" data-type="volume"
-               href="englishDetail.html?volumeId=${id}&grade=${grade}">${title}</a>
-        </div>
-    </li>
-</template>
+<!--<template id="volumes-template">-->
+<!--<li class="neir_li">-->
+<!--<div class="neir_lidiv">-->
+<!--&lt;!&ndash;<a class="neir_pzi" href="#">${title}</a>&ndash;&gt;-->
+<!--<a class="neir_pzi" data-id="${id}" data-type="volume"-->
+<!--href="englishDetail.html?volumeId=${id}&grade=${grade}">${title}</a>-->
+<!--</div>-->
+<!--</li>-->
+<!--</template>-->
+
+<!--<template id="volumes-new-template">-->
+<!--<li class="neir_li">-->
+<!--<img class="new-label" src="img/new-label.png" alt="">-->
+<!--<div class="neir_lidiv">-->
+<!--<a class="neir_pzi" data-id="${id}" data-type="volume"-->
+<!--href="englishDetail.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
+<!--</div>-->
+<!--</li>-->
+<!--</template>-->
+<!--<template id="volumes-old-template">-->
+<!--<li class="neir_li">-->
+<!--<div class="neir_lidiv">-->
+<!--<a class="neir_pzi" data-id="${id}" data-type="volume"-->
+<!--href="englishDetail.html?volumeId=${id}&grade=${grade}&volume=${title}">${title}</a>-->
+<!--</div>-->
+<!--</li>-->
+<!--</template>-->
+
+<script type="text/javascript" src="basic.js"></script>
+<script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="js/turnOne.js"></script>
+<script type="text/javascript" src="js/english-volume.js"></script>
+
 </body>
 </html>

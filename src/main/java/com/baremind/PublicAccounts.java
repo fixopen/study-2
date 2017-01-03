@@ -136,6 +136,7 @@ public class PublicAccounts {
             this.signature = signature;
         }
     }
+
     public static class Head {
         private String filename;
         private String ContentType;
@@ -156,6 +157,7 @@ public class PublicAccounts {
             ContentType = contentType;
         }
     }
+
     @GET
     @Path("config/{url}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -165,9 +167,9 @@ public class PublicAccounts {
 
         String ticket = Properties.getPropertyValue("ticket");
         String timestamp = Long.toString(new Date().getTime());
-        timestamp = timestamp.substring(0,10);
+        timestamp = timestamp.substring(0, 10);
         String nonceStr = "sdfjkljraehfldfsjak";
-        String string1 = "jsapi_ticket="+ticket+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url+"";
+        String string1 = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + url + "";
         String signature = getSha1(string1);
         Config config = new Config();
         config.setAppId(appID);
@@ -177,12 +179,12 @@ public class PublicAccounts {
         config.setCeshi(string1);
 
         Property propertys = JPAEntry.getObject(Property.class, "id", 7);
-        if (propertys !=null){
+        if (propertys != null) {
             //Property property = new Property();
             propertys.setValue(string1);
-            System.out.println("string1================================================"+string1);
+            System.out.println("string1================================================" + string1);
             JPAEntry.genericPut(propertys);
-           // result = Response.ok(property).build();
+            // result = Response.ok(property).build();
             //r = {"appId": appID, "timestamp": timestamp, nonceStr: nonceStr, "signature": sign}
             result = Response.ok(config).build();
 
@@ -190,19 +192,19 @@ public class PublicAccounts {
         return result;
     }
 
-    public static String getSha1(String str){
-        if(str==null||str.length()==0){
+    public static String getSha1(String str) {
+        if (str == null || str.length() == 0) {
             return null;
         }
-        char hexDigits[] = {'0','1','2','3','4','5','6','7','8','9',
-                'a','b','c','d','e','f'};
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f'};
         try {
             MessageDigest mdTemp = MessageDigest.getInstance("SHA1");
             mdTemp.update(str.getBytes("UTF-8"));
 
             byte[] md = mdTemp.digest();
             int j = md.length;
-            char buf[] = new char[j*2];
+            char buf[] = new char[j * 2];
             int k = 0;
             for (int i = 0; i < j; i++) {
                 byte byte0 = md[i];
@@ -241,12 +243,11 @@ public class PublicAccounts {
     }
 
 
-
     @GET
     @Path("weChat/Head/{mediaId}")
-   // @Consumes(MediaType.APPLICATION_JSON)
+    // @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProperty(@CookieParam("userId") String userId,@PathParam("mediaId") String mediaId){
+    public Response updateProperty(@CookieParam("userId") String userId, @PathParam("mediaId") String mediaId) {
 //      http请求方式: GET
 //      http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
         prepare();
@@ -258,12 +259,12 @@ public class PublicAccounts {
                 .queryParam("media_id", mediaId)
                 .request().get();
 
-        if(response.getStatus() == 200){
+        if (response.getStatus() == 200) {
             MultivaluedMap<String, String> stringHeaders = response.getStringHeaders();
 
           /*  MultivaluedMap<String, Object> headers = response.getHeaders();
             System.out.println("headers++++======================="+headers.toString());*/
-            System.out.println("stringHeaders++++======================="+stringHeaders);
+            System.out.println("stringHeaders++++=======================" + stringHeaders);
 
             byte[] responseBody = response.readEntity(byte[].class);
             //  System.out.println("互相伤害"+responseBody);
@@ -275,7 +276,7 @@ public class PublicAccounts {
             //String content = responseBody;
             Long id = Long.parseLong(userId);
             User existuser = JPAEntry.getObject(User.class, "id", id);
-            existuser.setHead(Properties.getPropertyValue("testvirtualpath")+filename);
+            existuser.setHead(Properties.getPropertyValue("testvirtualpath") + filename);
             JPAEntry.genericPut(existuser);
 
             try (FileOutputStream fop = new FileOutputStream(file)) {
@@ -295,7 +296,7 @@ public class PublicAccounts {
             }
             result = Response.ok(existuser).build();
         }
-         return result;
+        return result;
     }
 
     private static void prepare() {
@@ -609,9 +610,9 @@ public class PublicAccounts {
                                     property.setName("来到了text");
                                     property.setValue(Content);
                                     JPAEntry.genericPost(property);
-                                   // System.out.println("来到了text，打印Content====================================================="+Content);
+                                    // System.out.println("来到了text，打印Content====================================================="+Content);
                                     String text = "";
-                                    switch (Content){
+                                    switch (Content) {
                                         case "课表":
                                             text = text(p);
                                     }
@@ -661,7 +662,6 @@ public class PublicAccounts {
     private static String text(WechatPush p) {
 
 
-
         String openId = p.getFromUserName();
         long secondCount = new Date().getTime() / 1000;
         String currentEpochTime = Long.toString(secondCount);
@@ -669,8 +669,8 @@ public class PublicAccounts {
         property.setName("到text====================================================");
         property.setValue(openId);
         JPAEntry.genericPost(property);
-        String picUrl ="http://xiaoyuzhishi.com/medias/1480389780313.jpeg";
-        String url ="http://xiaoyuzhishi.com/user/active-card.html";
+        String picUrl = "http://xiaoyuzhishi.com/medias/1480389780313.jpeg";
+        String url = "http://xiaoyuzhishi.com/user/active-card.html";
         String result = "<xml>\n" +
                 "   <ToUserName><![CDATA[" + openId + "]]></ToUserName>\n" +
                 "    <FromUserName><![CDATA[" + p.getToUserName() + "]]></FromUserName> \n" +
@@ -681,8 +681,8 @@ public class PublicAccounts {
                 "   <item>\n" +
                 "   <Title><![CDATA[课表]]></Title> \n" +
                 "   <Description><![CDATA[小雨直播第九周课表]]></Description>\n" +
-                "   <PicUrl><![CDATA["+ picUrl +"]]></PicUrl>\n" +
-                "   <Url><![CDATA["+ url +"]]></Url>\n" +
+                "   <PicUrl><![CDATA[" + picUrl + "]]></PicUrl>\n" +
+                "   <Url><![CDATA[" + url + "]]></Url>\n" +
                 "   </item>\n" +
                 "   </Articles>\n" +
                 "   </xml>";
@@ -1255,6 +1255,28 @@ public class PublicAccounts {
             Session s = putSession(now, userId);
             try {
                 result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/mathVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    @GET
+    @Path("english")
+    @Produces(MediaType.TEXT_HTML)
+    public Response english(@Context HttpServletRequest request, @QueryParam("code") String code) {
+        Map<String, Object> wu = getTokenByCode(code);
+        WechatUser wechatUser = wechatUserFromToken(wu);
+
+        Response result = null;
+        Date now = new Date();
+        User user = insertUserInfoByWechatUser(now, wechatUser);
+        if (user != null) {
+            Long userId = user.getId();
+            Session s = putSession(now, userId);
+            try {
+                result = Response.seeOther(new URI("http://www.xiaoyuzhishi.com/englishVolume.html?userid=" + userId.toString() + "&sessionid=" + s.getIdentity())).build();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
