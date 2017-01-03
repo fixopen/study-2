@@ -210,7 +210,9 @@ public class PublicAccounts {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getHead(@PathParam("media_Id") String media_Id){
 //        http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+        media_Id= media_Id.replaceAll(",","/");
         System.out.println("来过");
+        System.out.println("media_Id=================="+media_Id);
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
                 .path("cgi-bin/media/get")
@@ -220,7 +222,7 @@ public class PublicAccounts {
         System.out.println("微信返回了");
         long now = new Date().getTime();
         String physicalpath = Properties.getProperty("physicalpath");
-        String fileName = physicalpath + now + "jpg";
+        String fileName = physicalpath + now + ".jpg";
         System.out.println("fileName========================="+fileName);
         File file = new File(fileName);
         InputStream is = (InputStream) response.getEntity();

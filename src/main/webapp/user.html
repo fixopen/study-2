@@ -1657,7 +1657,7 @@
                 }
             },
         },
-        cards: {
+        /* cards: {
             currentTab: $('[data-content="chineCards"]')[0],
             type: 'chine',
             isCards: false,
@@ -1993,9 +1993,18 @@
                     url: "/api/public-account/config/" + url,
                     dataType: "json",
                     success: function (e) {
-                        gettick();
-                        wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
-
+                        $.ajax({
+                            type: "get",
+                            url: "/api/public-account/ticket/",
+                            dataType: "json",
+                            success: function (a) {
+                                wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                            },
+                            error: function (a) {
+                                wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
+                                //alert(JSON.stringify(e))
+                            }
+                        })
                     }, error: function (e) {
                         alert(JSON.stringify(e));
                         wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
@@ -2029,23 +2038,22 @@
                                     success: function (res) {
                                         var mediaId = res.serverId; // 返回图片的服务器端ID
                                         alert("返回图片的服务器端ID=="+mediaId)
+                                        $.ajax({
+                                            type: "get",
+                                            url: "/api/public-account/head/"+mediaId,
+                                            dataType: "json",
+                                            success: function (a) {
+                                                alert("成功")
+                                            },error:function (a) {
+                                                alert(JSON.stringify(a))
+                                            }
+                                        })
                                         wx.downloadImage({
                                             serverId: mediaId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
                                             isShowProgressTips: 1, // 默认为1，显示进度提示
                                             success: function (res) {
                                                 var localId = res.localId; // 返回图片下载后的本地ID
                                                 alert("返回图片下载后的本地ID"+localId)
-                                                $.ajax({
-                                                    type: "get",
-                                                    url: "/api/public-account/head/"+JSON.stringify(localId),
-                                                    dataType: "json",
-                                                    success: function (a) {
-                                                        alert("成功")
-                                                    },error:function (a) {
-                                                        alert(JSON.stringify(a))
-                                                    }
-                                                })
-
                                                 data = {
                                                     head:localId,
                                                 }
@@ -2069,19 +2077,9 @@
                     })
                 }
 
-                function gettick() {
-                    $.ajax({
-                        type: "get",
-                        url: "/api/public-account/ticket/",
-                        dataType: "json",
-                        success: function (e) {
-                            //alert(JSON.stringify(e))
-                        },
-                        error: function (e) {
-                            //alert(JSON.stringify(e))
-                        }
-                    })
-                }
+               /!* function gettick() {
+
+                }*!/
             }
         },
         study: {
@@ -2233,7 +2231,7 @@
         activeCard: {
             init: function () {
             }
-        },
+        },*/
         firstActiveCard: {
             // var timeoutId;
             init: function () {
@@ -2485,7 +2483,7 @@
             }
 
         },
-        login: {
+       /* login: {
             init: function () {
             }
         },
@@ -2813,7 +2811,7 @@
                 }
                 state.nickname.isNickname = true
             }
-        },
+        },*/
     }
     state.init()
 </script>
