@@ -229,8 +229,16 @@
                     }
                 })
 
+                var player = document.getElementById('player');
+
                 var previous = document.getElementById('previous');
+                previous.addEventListener('click', function(e) {
+                    player.pause()
+                }, false)
                 var next = document.getElementById('next');
+                next.addEventListener('click', function (e) {
+                    player.pause()
+                }, false)
 
                 if (navigatorInfo.previousPageNo == null) {
                     previous.style.display = 'none'
@@ -240,7 +248,6 @@
                     next.style.display = 'none'
                 }
 
-                var player = document.getElementById('player');
                 var dialog = document.getElementById('dialog');
                 var mask = document.getElementById('mask');
                 var chinese = document.getElementById('chinese');
