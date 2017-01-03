@@ -273,8 +273,8 @@
 <!--********************************main***********************-->
 <template id="chinese-playing-template">
     <div class="all_uli">
-        <div class="all_liplay" data-id="${id}">
-            <a class="all_aBtn b" href="${directLink}">
+        <div class="all_liplay b" data-id="${id}">
+            <a class="all_aBtn" href="javascript:void(0)">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2">
@@ -286,7 +286,7 @@
                     <span class="yuwen_span">${teacher}</span>
                     <span class="yuwen_riqi">${year}-${month}-${date} ${hour}:${minute}</span>
                 </p>
-                <a class="yuwen_a" href="${directLink}"></a>
+                <a class="yuwen_a" href="javascript:void(0)"></a>
             </a>
         </div>
         <div class="course-intro">
@@ -383,8 +383,8 @@
 </template>
 <template id="math-playing-template">
     <div class="all_uli">
-        <div class="all_liplay shuxue_play">
-            <a class="all_aBtn b" href="${directLink}">
+        <div class="all_liplay b shuxue_play" data-id="${id}">
+            <a class="all_aBtn" href="javascript:void(0)">
                 <span class="bofang"></span>
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div2 shuxue_div2">
@@ -396,7 +396,7 @@
                     <span class="yuwen_span">${teacher}</span>
                     <span class="yuwen_riqi">${year}-${month}-${date} ${hour}:${minute}</span>
                 </p>
-                <a class="yuwen_a" href="${directLink}"></a>
+                <a class="yuwen_a" href="javascript:void(0)"></a>
             </a>
         </div>
         <div class="course-intro">
@@ -1163,6 +1163,7 @@
                             for (var i = 0; i < subjects.length; ++i) {
                                 for( var j=0; j<subjects[i].playing.length; ++j)
                                     subjects[i].playing[j].directLink = e.directLink
+                                    document.getElementsByClassName("b").setAttribute("href",subjects[i].playing[j].directLink);
                             }
                         }
 
@@ -1686,7 +1687,7 @@
                     })
 
                     $(document).on('click', ".b", function (e) {
-//                        alert(e.target.dataset.id);
+                        alert(e.target.dataset.id);
                         xiao(e.currentTarget.dataset.id, "scheduler", "liveVideo")
                     });
 
@@ -2059,7 +2060,7 @@
 
         futureNote: {
             init: function () {
-                var t = state.main.findById(state.futureNote.id).year + '-' + state.main.findById(state.futureNote.id).month + '-' + state.main.findById(state.futureNote.id).day + ' ' + state.main.findById(state.futureNote.id).hour + ':' + state.main.findById(state.futureNote.id).minute + '开讲';
+                var t = state.main.findById(state.futureNote.id).year + '-' + state.main.findById(state.futureNote.id).month + '-' + state.main.findById(state.futureNote.id).date + ' ' + state.main.findById(state.futureNote.id).hour + ':' + state.main.findById(state.futureNote.id).minute + '开讲';
                 var e = document.getElementsByClassName('waitTime')
                 e[0].innerHTML = t
             }
@@ -2111,7 +2112,7 @@
                     var m = moment(state.scheduler.now)
                     state.scheduler.week = m.week()
                     state.scheduler.weekDay = m.day()
-                    state.scheduler.weekElement.innerHTML = state.scheduler.week - 41
+                    state.scheduler.weekElement.innerHTML = state.scheduler.week
 
                     $.ajax({
                         type: "get",
