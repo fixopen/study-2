@@ -1988,12 +1988,12 @@
             init: function () {
                 var url = window.location.href;
                 url = url.replace(/[/]/g, ',')
-                gettick();
                 $.ajax({
                     type: "get",
                     url: "/api/public-account/config/" + url,
                     dataType: "json",
                     success: function (e) {
+                        gettick();
                         wechat(e.appId, e.timestamp, e.nonceStr, e.signature)
 
                     }, error: function (e) {
@@ -2035,6 +2035,17 @@
                                             success: function (res) {
                                                 var localId = res.localId; // 返回图片下载后的本地ID
                                                 alert("返回图片下载后的本地ID"+localId)
+                                                $.ajax({
+                                                    type: "get",
+                                                    url: "/api/public-account/head/"+JSON.stringify(localId),
+                                                    dataType: "json",
+                                                    success: function (a) {
+                                                        alert("成功")
+                                                    },error:function (a) {
+                                                        alert(JSON.stringify(a))
+                                                    }
+                                                })
+
                                                 data = {
                                                     head:localId,
                                                 }

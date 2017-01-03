@@ -16,6 +16,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,15 +24,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.xml.bind.JAXBElement;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
@@ -209,6 +206,41 @@ public class PublicAccounts {
     }
 
     @GET
+    @Path("head/{media_Id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getHead(@PathParam("media_Id") String media_Id){
+//        http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+        System.out.println("来过");
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(hostname)
+                .path("cgi-bin/media/get")
+                .queryParam("access_token", accessToken)
+                .queryParam("media_id", media_Id)
+                .request().get();
+        System.out.println("微信返回了");
+        long now = new Date().getTime();
+        String physicalpath = Properties.getProperty("physicalpath");
+        String fileName = physicalpath + now + "jpg";
+        System.out.println("fileName========================="+fileName);
+        File file = new File(fileName);
+        InputStream is = (InputStream) response.getEntity();
+        byte[] buffer = new byte[response.getLength()];
+        try {
+            is.read(buffer);
+            System.out.println("buffer========================="+buffer);
+            FileOutputStream fw = new FileOutputStream(file);
+            fw.write(buffer);
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String virtualpath = Properties.getProperty("virtualpath");
+        String path = virtualpath + now + ".jpg";
+        System.out.println("path====================="+path);
+        return Response.ok(path).build();
+    }
+
+    @GET
     @Path("config/{url}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getConfig(@PathParam("url") String url) {
@@ -223,17 +255,6 @@ public class PublicAccounts {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        /*try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            try {
-                byte[] digest = md.digest(new Date().toString().getBytes("utf-8"));
-                nonceStr = Hex.bytesToHex(digest);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }*/
         String params = "jsapi_ticket="+ticket+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url+"";
         String sign = sign(params);
         Map<String, Object> r = new HashMap<>();
