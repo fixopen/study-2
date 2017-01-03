@@ -352,6 +352,14 @@
                                     }
                                     lives = d[0]
                                     futures = d[1]
+                                    var now = new Date()
+                                    var currentDate = now.getDate()
+                                    for (var i = 0; i < futures.length; ++i) {
+                                        if (futures[i].date > currentDate) {
+                                            futures.splice(i, 1)
+                                            --i
+                                        }
+                                    }
                                     for (var i = 0; i < d[2].length; ++i) {
                                         if (d[2][i].cdnLink && d[2][i].cdnLink != '') {
                                             var s = state.getSubjectById(d[2][i].subjectId)
