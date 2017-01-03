@@ -411,7 +411,7 @@ li.mld_Ulli {
     padding: 0.9375rem;
     background-color: #f1f1f1;
     border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 1px solid #ddd;*/
     box-sizing: border-box;
     overflow: hidden;
 }
