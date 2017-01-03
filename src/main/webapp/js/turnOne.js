@@ -27,13 +27,13 @@ function newClass() { //课程更新弹窗
     $('.tan').show();
     $('.new-class').show();
 
-
     $(".tan,.new-class").bind('touchmove', function (event) {
         event.preventDefault();
     });
     $(".new-class").click(function () {
         $(this).hide();
         $(".tan").hide();
+
     });
 }
 

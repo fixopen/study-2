@@ -81,6 +81,7 @@ $(document).ready(function () {
         success: function (pop) {
             //{"popup": true|false}
             var isPopup = pop.popup
+            // var isPopup = false
             if (!isPopup) {
                 newClass();//课程更新弹窗
                 $.ajax({

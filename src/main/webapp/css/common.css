@@ -255,7 +255,7 @@ span.ptxt_span {
     background: url('../img/new-class.png') no-repeat center;
     -webkit-background-size: contain;
     background-size: contain;
-    z-index: 99;
+    z-index: 999999;
     display: none;
 }
 
