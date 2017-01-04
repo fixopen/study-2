@@ -93,7 +93,8 @@ CREATE TABLE books (
   subject_no character(2) DEFAULT '04'::bpchar NOT NULL,
   grade_no character(2) DEFAULT '20'::bpchar NOT NULL,
   book_no character(2) DEFAULT ''::bpchar NOT NULL,
-  name name DEFAULT ''::name
+  name name DEFAULT ''::name,
+  description text
 );
 
 
