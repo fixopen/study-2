@@ -1705,6 +1705,7 @@
 
                     $(document).on('click', ".b", function (e) {
 //                        alert(e.currentTarget.dataset.id);
+
                         params.objectType = "scheduler";
                         params.objectId = e.currentTarget.dataset.id;
                         params.showType = "liveVideo";
@@ -1989,7 +1990,7 @@
                         var t = _$_(params)
                         t.getContent(function (e) {
                             alert(JSON.stringify(e))
-                            if (e.contentLink!='') {
+                            /*if (e.contentLink!='') {
                                 for (var i = 0; i < passed.length; i++) {
                                     if (passed[i].id == object_Id) {
                                         passed[i].contentLink = e.contentLink
@@ -2064,7 +2065,7 @@
                                         }
                                     }
                                 }
-                            }
+                            }*/
                         })
                     });
 
