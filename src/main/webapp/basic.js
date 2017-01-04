@@ -166,7 +166,7 @@ var login = function (loginName, password) {
     })
 }
 
-/*var _$_ = function (params) {
+var transaction = function (params) {
     if (this == window) {
         return new _$_(params)
     }
@@ -211,11 +211,11 @@ var login = function (loginName, password) {
     }
 
     this.try = function () {
-        this.objectType = params.objectType
-        this.objectId = params.objectId
+        // this.objectType = params.objectType
+        // this.objectId = params.objectId
         $.ajax({
             type: "get",
-            url: "/api/resources/" + params.objectType + "/" + params.objectId + "/sale-info",
+            url: "/api/resources/" + this.objectType + "/" + this.objectId + "/sale-info",
             dataType: "json",
             success: function (info) {
                 this.money = info.price
@@ -230,8 +230,25 @@ var login = function (loginName, password) {
                     }
                 }
                 if (isOk) {
-                    //popup :
-                    //will extract this.card balance this.money for get the resource, do you confirm?
+                    var dialog = document.getElementById('transactionDialog')
+                    proc({
+                        container: dialog.querySelector('#transactionDialogContent'),
+                        data: {
+                            price: info.price,
+                            objectType: info.objectType,
+                            subjectName: getSubjectNameById(info.subjectId)
+                        },
+                        templateId: 'transactionDialog-template'
+                    })
+                    dialog.querySelector('#resourceTip').style.display = 'block'
+                    dialog.querySelector('#confirm').style.display = 'block'
+                    dialog.querySelector('#nextTip').style.display = 'block'
+                    dialog.querySelector('.kou_dou').style.display = 'block'
+                    dialog.querySelector('#okButton').addEventListener('click', function(e) {
+                        this.purchase()
+                        dialog.style.display = 'none'
+                    }, false)
+                    dialog.style.display = 'block'
                 } else {
                     var incorrectCards = getOtherCardsBySubjectId(this.subjectId)
                     for (var i = 0; i < incorrectCards.length; ++i) {
@@ -242,12 +259,50 @@ var login = function (loginName, password) {
                         }
                     }
                     if (isOk) {
-                        //popup :
-                        //will extract this.card balance this.money for get the resource, do you confirm?
+                        var dialog = document.getElementById('transactionDialog')
+                        proc({
+                            container: dialog.querySelector('#transactionDialogContent'),
+                            data: {
+                                price: info.price,
+                                objectType: info.objectType,
+                                subjectName: getSubjectNameById(this.card.subjectId)
+                            },
+                            templateId: 'transactionDialog-template'
+                        })
+                        dialog.querySelector('#resourceTip').style.display = 'block'
+                        dialog.querySelector('#confirm').style.display = 'block'
+                        dialog.querySelector('#nextTip').style.display = 'block'
+                        dialog.querySelector('.kou_dou').style.display = 'block'
+                        dialog.querySelector('#okButton').addEventListener('click', function(e) {
+                            this.purchase()
+                            dialog.style.display = 'none'
+                        }, false)
+                        dialog.style.display = 'block'
                     } else {
-                        //popup :
                         if (this.user.amount + this.card.amount > this.money) {
-                            //your balance is not enough, do you want recharge or transfer
+                            var dialog = document.getElementById('transactionDialog')
+                            proc({
+                                container: dialog.querySelector('#transactionDialogContent'),
+                                data: {
+                                    price: info.price,
+                                    objectType: info.objectType,
+                                    subjectName: getSubjectNameById(info.subjectId)
+                                },
+                                templateId: 'transactionDialog-template'
+                            })
+                            dialog.querySelector('#resourceTip').style.display = 'block'
+                            dialog.querySelector('#balanceTip').style.display = 'block'
+                            dialog.querySelector('#rechargeButton').style.display = 'block'
+                            dialog.querySelector('#rechargeButton').addEventListener('click', function(e) {
+                                this.recharge()
+                                dialog.style.display = 'none'
+                            }, false)
+                            dialog.querySelector('#transferButton').style.display = 'block'
+                            dialog.querySelector('#transferButton').addEventListener('click', function(e) {
+                                this.transfer()
+                                dialog.style.display = 'none'
+                            }, false)
+                            dialog.style.display = 'block'
                         } else {
                             //you must recharge
                         }
@@ -267,6 +322,7 @@ var login = function (loginName, password) {
         params.count = this.count
         params.objectType = this.objectType
         params.objectId = this.objectId
+        var self = this
         $.ajax({
             type: "post",
             url: "/api/transactions",
@@ -274,7 +330,7 @@ var login = function (loginName, password) {
             data: JSON.stringify(params),
             contentType: "application/json; charset=utf-8",
             success: function (t) {
-                this.card.amount -= t.money
+                self.card.amount -= t.money
             },
             error: function(xhr) {
                 //
@@ -283,28 +339,49 @@ var login = function (loginName, password) {
     }
 
     this.getContent = function (postProcessor) {
-        params.objectType = this.objectType
-        params.objectId = this.objectId
+        // params.objectType = this.objectType
+        // params.objectId = this.objectId
+        var self = this
         $.ajax({
             type: "get",
-            url: "/api/resources/" + params.objectType + "/" + params.objectId,
+            url: "/api/resources/" + this.objectType + "/" + this.objectId,
             dataType: "json",
             success: function (content) {
                 if (postProcessor) {
                     postProcessor(content)
                 }
+            },
+            error: function (xhr) {
+                params.postProcessor = postProcessor
+                self.try()
             }
         })
     }
 
-    this.recharge = function () {
-        //popup dialog for select sink
-
-        //dialog event process
+    this.recharge = function (money) {
+        state.switchTo('recharge')
         //select money
+        if (money) {
+            this.money = money
+        }
         params.money = this.money
+        //popup dialog for select sink
+        var choice = document.getElementById('to')
+        proc({
+            container: choice.querySelector('#account'),
+            data: this.user,
+            templateId: 'user-template'
+        })
+        proc({
+            container: choice.querySelector('#cards'),
+            data: this.cards,
+            templateId: 'card-template'
+        })
+        choice.style.display = 'block'
+        //dialog event process
         params.objectType = 'card' // | 'user
         params.objectId = this.card.id // | this.user.id
+        var self = this
         $.ajax({
             type: "post",
             url: "/api/transactions",
@@ -312,22 +389,37 @@ var login = function (loginName, password) {
             data: JSON.stringify(params),
             contentType: "application/json; charset=utf-8",
             success: function (t) {
-                this.card.amount += t.money
-                //this.user.amount += t.money
+                self.card.amount += t.money
+                //self.user.amount += t.money
             }
         })
     }
 
-    this.transfer = function () {
-        //popup dialog for select source | sink
-
-        //dialog event process
+    this.transfer = function (money) {
         //select money
+        if (money) {
+            this.money = money
+        }
+        //popup dialog for select source | sink
+        var choice = document.getElementById('to')
+        proc({
+            container: choice.querySelector('#account'),
+            data: this.user,
+            templateId: 'user-template'
+        })
+        proc({
+            container: choice.querySelector('#cards'),
+            data: this.cards,
+            templateId: 'card-template'
+        })
+        choice.style.display = 'block'
+        //dialog event process
         params.sourceType = 'user' // | 'card'
         params.sourceId = this.user.id // | this.card.id
         params.money = this.money
         params.objectType = 'card' // | 'user
         params.objectId = this.card.id // | this.user.id
+        var self = this
         $.ajax({
             type: "post",
             url: "/api/transactions",
@@ -335,8 +427,8 @@ var login = function (loginName, password) {
             data: JSON.stringify(params),
             contentType: "application/json; charset=utf-8",
             success: function (t) {
-                this.card.amount += t.money
-                this.user.amount -= t.money
+                self.card.amount += t.money
+                self.user.amount -= t.money
             }
         })
     }
@@ -356,18 +448,16 @@ var login = function (loginName, password) {
                 })
             }
         })
-    } else {
-        if (!this.cards) {
-            $.ajax({
-                type: 'get',
-                url: '/api/users/self/cards',
-                success: function (cs) {
-                    this.cards = cs
-                }
-            })
-        }
+    } else if (!this.cards) {
+        $.ajax({
+            type: 'get',
+            url: '/api/users/self/cards',
+            success: function (cs) {
+                this.cards = cs
+            }
+        })
     }
-}*/
+}
 
 var priceDialog = function() {
     //price is how much

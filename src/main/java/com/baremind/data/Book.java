@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "books")
-public class Book {
+public class Book implements Resource {
     @Id
     @Column(name = "id")
     private Long id;
@@ -101,5 +101,32 @@ public class Book {
         orders.put("unitNo", "ASC");
         vm.put("records", JPAEntry.getList(AudioRecord.class, condition, orders));
         return vm;
+    }
+
+    @Override
+    public Long getSubjectId() {
+        Long result = null;
+        Subject s = JPAEntry.getObject(Subject.class, "no", getSubjectNo());
+        if (s != null) {
+            result = s.getId();
+        }
+        return result;
+    }
+
+    @Override
+    public Long getAmount() {
+        return 0L;
+    }
+
+    @Override
+    public void setAmount(Long a) {
+        //do nothing
+    }
+
+    @Override
+    public Map<String, Object> getContent() {
+        Map<String, Object> schedulerMap = new HashMap<>();
+        schedulerMap.put("link", "p-zhibo-" + getSubjectNo() + getGradeNo() + "/" + getBookNo() + ".mp4");
+        return schedulerMap;
     }
 }
