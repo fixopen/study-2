@@ -1,6 +1,7 @@
 var _$_ = function(params) {
     $('#container').load('/zu/zu.html')
     var t = {
+        isStudy: false,
         try: function () {
             this.objectType = params.objectType
             this.objectId = params.objectId
@@ -11,9 +12,8 @@ var _$_ = function(params) {
                 url: "/api/resources/" + params.objectType + "/" + params.objectId + "/sale-info",
                 dataType: "json",
                 success: function (info) {
-                    this.cards = t.cards;
-//                        t.user
-                    this.userAmount = t.user.amount;
+                    this.cards = params.cards;
+                    this.userAmount = params.user.amount;
                     this.subject = info.subjectId;
                     this.price = info.price
                     for (var i = 0; i < this.cards.length; i++) {
@@ -130,16 +130,15 @@ var _$_ = function(params) {
                             }
                         }
                     }
-                    if(!is_$_){
+                    if(t.isStudy == false){
                         var purchase1 = document.getElementById("a11")
                         purchase1.addEventListener('click', function (e) {
                             t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 1);
                         })
-
-                        var submitTransfer = document.getElementById("submitTransfer")
-                        submitTransfer.addEventListener('click', function (e) {
-                            t.atom(t.user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
-                        })
+                        /*    var submitTransfer = document.getElementById("submitTransfer")
+                         submitTransfer.addEventListener('click', function (e) {
+                         t.atom(t.user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
+                         })*/
 
                         var purchase2 = document.getElementById("a13")
                         purchase2.addEventListener('click', function (e) {
@@ -194,34 +193,36 @@ var _$_ = function(params) {
                         })
 
                         var close3 = document.getElementById("close3")
-                        close1.addEventListener('click', function (e) {
+                        close3.addEventListener('click', function (e) {
                             document.getElementById("3").style.display = "none"
                         })
-                        var close4 = document.getElementById("close4")
 
-                        close1.addEventListener('click', function (e) {
+                        var close4 = document.getElementById("close4")
+                        close4.addEventListener('click', function (e) {
                             document.getElementById("4").style.display = "none"
                         })
-
                     }
-                    is_$_ = true
+                    t.isStudy = true
                 }
             })
 
         },
-        getContent: function () {
+        getContent: function (action) {
             params.objectType = this.objectType
             params.objectId = this.objectId
+            params.showType = this.showType
+            params.action = action
             $.ajax({
                 type: "get",
                 url: "/api/resources/" + params.objectType + "/" + params.objectId,
                 dataType: "json",
                 success: function (content) {
-                    t.count = content
+                    action(content)
+                    // t.count = content
                   //  alert(JSON.stringify(content))
                 },
                 error: function (e) {
-                    t.try(params.objectType,params.objectId)
+                    t.try(params.objectType,params.objectId,params.showType)
                 }
             })
         },
@@ -456,7 +457,7 @@ var _$_ = function(params) {
                     success: function (e) {
                      alert("购买成功")
                         t.nones(none)
-                        t.getContent();
+                        t.getContent(params.action);
                     },
                     error: function (e) {
                         result = e;

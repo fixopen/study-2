@@ -115,6 +115,7 @@
             padding: 10px 16px;
         }
     </style>
+
 </head>
 
 <body>
@@ -860,10 +861,11 @@
 <script src="/moment/moment.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
+<script src="../zu/zu.js"></script>
 <!--<script src="/js/pikaday.js"></script>-->
 <script>
     //        -----------------------------------------------------------弹窗js开始
-    var sale_info;
+  /*  var sale_info;
     var cards;
     var userAmount;
     var price;
@@ -1122,7 +1124,7 @@
                                         }
                                     }, false)
 
-                                    //*************************comments**************************
+                                    //!*************************comments**************************
                                     var btn = document.getElementById('btn');
                                     btn.addEventListener('click', submit, false);
                                     function submit(e) {
@@ -1173,11 +1175,11 @@
                     }
                 })
     }
-    /*  //关闭弹窗
+    /!*  //关闭弹窗
      var close = document.getElementsByClassName("close")
      close.addEventListener('click', function (e) {
      clo(e.target.dataset.id)
-     })*/
+     })*!/
 
     var purchase1 = document.getElementById("a11")
     purchase1.addEventListener('click', function (e) {
@@ -1273,10 +1275,10 @@
     close1.addEventListener('click', function (e) {
         document.getElementById("4").style.display = "none"
     })
-    /*
+    /!*
      function clo(id) {
      document.getElementById(id).style.display = "none"
-     }*/
+     }*!/
 
     function transformation(sex) {
         var result;
@@ -1316,7 +1318,7 @@
                 }
             }
         }
-        /*$.ajax({
+        /!*$.ajax({
          type: "get",
          url: "/api/cards/" + w,
          dataType: "json",
@@ -1326,7 +1328,7 @@
 
 
          }
-         })*/
+         })*!/
     }
     function dan(cards) {
         var a = cards[0].subjectId
@@ -1385,9 +1387,9 @@
                 //  var id = e.target.dataset.id
 
                 //  document.getElementById(id).src = "true.png";
-                /*  setTimeout(function () {
+                /!*  setTimeout(function () {
 
-                 }, 1000)*/
+                 }, 1000)*!/
                 duo(id, T)
                 //     document.getElementById(id).src = "";
                 //duo(id)
@@ -1430,9 +1432,9 @@
                 var id = e.target.dataset.id
                 //  document.getElementById(id).src = " ";
                 //  document.getElementById(id).src = "true.png";
-                /*  setTimeout(function () {
+                /!*  setTimeout(function () {
 
-                 }, 1000)*/
+                 }, 1000)*!/
                 duo(id, T)
                 //duo(id)
             })
@@ -1453,7 +1455,7 @@
         d.getElementById("usermoney").innerHTML = "" + cards[0].amount + ""
         d.getElementById("c").style.display = "block"
     }
-
+*/
     //    --------------------------------------------------------------弹窗结束
 
     //[{..., teachers: [], grades: [], playings: [], futures: [], ...}, ...]
@@ -1470,6 +1472,7 @@
         {day: '五', date: '', items: []}
     ]
 
+    var params = null;
 
     var state = {
         currentArticle: document.getElementById('main'),
@@ -1632,7 +1635,21 @@
                     })
                 }
             })
-
+            $.ajax({
+                type: 'get',
+                url: '/api/users/self',
+                success: function (ss) {
+                    params = ss
+                    params.user = ss
+                }
+            })
+            $.ajax({
+                type: 'get',
+                url: '/api/users/self/cards',
+                success: function (ss) {
+                    params.cards = ss
+                }
+            })
 
             $(document).on('click', '[data-article]', function (e) {
                 var element = e.currentTarget;
@@ -1688,7 +1705,21 @@
 
                     $(document).on('click', ".b", function (e) {
 //                        alert(e.currentTarget.dataset.id);
-                        xiao(e.currentTarget.dataset.id, "scheduler", "liveVideo")
+                        params.objectType = "scheduler";
+                        params.objectId = e.currentTarget.dataset.id;
+                        params.showType = "liveVideo";
+                        var t = _$_(params)
+                        t.getContent(function (e) {
+                            alert(JSON.stringify(e))
+                            if (e.directLink!='') {
+                                for (var i = 0; i < subjects.length; ++i) {
+                                    for( var j=0; j<subjects[i].playing.length; ++j)
+                                        subjects[i].playing[j].directLink = e.directLink
+                                    document.getElementsByClassName("b").setAttribute("href",subjects[i].playing[j].directLink);
+                                }
+                            }
+                        })
+                       // xiao(e.currentTarget.dataset.id, "scheduler", "liveVideo")
                     });
 
                     state.main.zeroFuture.data = subjects[0].futures
@@ -1951,7 +1982,90 @@
 
                     $(document).on('click', ".a", function (e) {
 //                        alert(e.target.dataset.id);
-                        xiao(e.target.dataset.id, "scheduler", "video")
+//                        xiao(e.target.dataset.id, "scheduler", "video")
+                        params.objectType = "scheduler";
+                        params.objectId = e.currentTarget.dataset.id;
+                        params.showType = "video";
+                        var t = _$_(params)
+                        t.getContent(function (e) {
+                            alert(JSON.stringify(e))
+                            if (e.contentLink!='') {
+                                for (var i = 0; i < passed.length; i++) {
+                                    if (passed[i].id == object_Id) {
+                                        passed[i].contentLink = e.contentLink
+                                        state.videoDetail.data=passed[i]
+                                        state.switchTo('videoDetail')
+                                        icon.addEventListener('click', function (e) {
+                                            if (state.videoDetail.data.liked) {
+                                                $.ajax({
+                                                    type: "put",
+                                                    url: '/api/schedulers/' + object_Id + '/unlike',
+                                                    data: JSON.stringify({}),
+                                                    dataType: "json",
+                                                    contentType: "application/json; charset=utf-8",
+                                                    success: function (unlike) {
+                                                        icon.setAttribute('src', '../images/dianzan.png');
+                                                        state.videoDetail.data.likeCount--
+                                                        e.target.nextElementSibling.textContent = state.videoDetail.data.likeCount
+                                                        state.videoDetail.data.liked = false;
+                                                    }
+                                                })
+                                            } else {
+                                                $.ajax({
+                                                    type: "put",
+                                                    url: '/api/schedulers/' + object_Id + '/like',
+                                                    data: JSON.stringify({}),
+                                                    dataType: "json",
+                                                    contentType: "application/json; charset=utf-8",
+                                                    success: function (like) {
+                                                        icon.setAttribute('src', '../images/zanover.png');
+                                                        ++state.videoDetail.data.likeCount;
+                                                        e.target.nextElementSibling.textContent = state.videoDetail.data.likeCount
+                                                        state.videoDetail.data.liked = true;
+                                                    }
+                                                })
+                                            }
+                                        }, false)
+
+                                        //!*************************comments**************************
+                                        var btn = document.getElementById('btn');
+                                        btn.addEventListener('click', submit, false);
+                                        function submit(e) {
+                                            var textarea = document.getElementById('textarea');
+                                            var value = textarea.value;
+                                            if (value.length < 1) {
+                                                return false;
+                                            }
+                                            textarea.value = '';
+                                            e.target.style.color = '#f5f5f5';
+                                            // e.target.style.backgroundColor = '#3e8f3e';
+                                            $.ajax({
+                                                type: "post",
+                                                url: "/api/comments",
+                                                data: JSON.stringify({
+                                                    objectType: 'playback',
+                                                    objectId: object_Id,
+                                                    content: value
+                                                }),
+                                                dataType: "json",
+                                                contentType: "application/json; charset=utf-8",
+                                                success: function (comment) {
+                                                    state.videoDetail.data.comments.push(comment)
+//                            location.reload();
+                                                    var c = document.getElementById('comment-area')
+                                                    c.innerHTML = ''
+                                                    proc({
+                                                        container: c,
+                                                        data: state.videoDetail.data.comments,
+                                                        templateId: 'video-comment-template'
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    }
+                                }
+                            }
+                        })
                     });
 
 
