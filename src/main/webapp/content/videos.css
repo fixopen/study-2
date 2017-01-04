@@ -670,7 +670,7 @@ li.active > a.tab_toggle {
         margin: 0.625rem 0.49rem;
     }
 }
-@media screen and (min-width: 414px) {
+@media screen and (min-width: 375px) {
     .xiala_li {
         margin: 0.625rem 0.48rem;
     }

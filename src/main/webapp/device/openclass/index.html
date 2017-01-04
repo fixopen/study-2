@@ -6,13 +6,7 @@
     <link rel="stylesheet" type="text/css" href="base.css">
     <link rel="stylesheet" type="text/css" href="index.css">
     <style>
-        #videoContainer:nth-child(4n+1) {
-            margin-left: 0;
-        }
-        #chinesePassedContainer:nth-child(4n+1) {
-            margin-left: 0;
-        }
-        #mathPassedContainer:nth-child(4n+1) {
+        .live_item:nth-child(4n+1) {
             margin-left: 0;
         }
     </style>
@@ -79,7 +73,7 @@
         <div class="live_video" data-type="live" data-id="${id}" data-article="content">
             <img src="images/live_in.png" alt="" class="live_state">
             <div class="course_title">
-                <div class="course_big_title">${generalization}</div>
+                <div class="course_big_title">${abstraction}</div>
                 <div class="course_small_title">${outline}</div>
             </div>
             <div class="grade_teacher">
@@ -102,7 +96,7 @@
                 <div class="play_time">${hour}:${minute}开讲</div>
             </div>
             <div class="course_title">
-                <div class="course_big_title">${generalization}</div>
+                <div class="course_big_title">${abstraction}</div>
                 <div class="course_small_title">${outline}</div>
             </div>
             <div class="grade_teacher">
@@ -125,7 +119,7 @@
     <li class="live_item">
         <div class="live_video" data-type="normal" data-id="${id}" data-article="content">
             <div class="course_title">
-                <div class="course_big_title">${generalization}</div>
+                <div class="course_big_title">${abstraction}</div>
                 <div class="course_small_title">${outline}</div>
             </div>
             <div class="grade_teacher">
@@ -145,7 +139,7 @@
     <li class="live_item">
         <div class="review_math" data-type="normal" data-id="${id}" data-article="content">
             <div class="course_title">
-                <div class="course_big_title">${generalization}</div>
+                <div class="course_big_title">${abstraction}</div>
                 <div class="course_small_title">${outline}</div>
             </div>
             <div class="grade_teacher">
@@ -182,7 +176,7 @@
             <div class="live_video" data-id="${id}" data-article="content">
                 <img src="images/live_in.png" alt="" class="live_state">
                 <div class="course_title">
-                    <div class="course_big_title">${generalization}</div>
+                    <div class="course_big_title">${abstraction}</div>
                     <div class="course_small_title">${outline}</div>
                 </div>
                 <div class="grade_teacher">
@@ -219,7 +213,7 @@
     <div>
         <div class="cover_img">
             <div class="video_introduce">
-                <p class="big_title">${generalization}</p>
+                <p class="big_title">${abstraction}</p>
                 <p class="small_title">${outline}</p>
                 <p class="teacher">—<span>${teacher}</span>老师</p>
             </div>
@@ -327,6 +321,7 @@
                                     for (var i = 0; i < d.length; ++i) {
                                         for (var j = 0; j < d[i].length; ++j) {
                                             var item = d[i][j]
+                                            item.grade = state.getGrade(item.grade)
                                             item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
                                             item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
                                             item.month = item.startTime.getMonth() + 1
@@ -345,6 +340,14 @@
                                     }
                                     lives = d[0]
                                     futures = d[1]
+                                    var now = new Date()
+                                    var currentDate = now.getDate()
+                                    for (var i = 0; i < futures.length; ++i) {
+                                        if (futures[i].date > currentDate) {
+                                            futures.splice(i, 1)
+                                            --i
+                                        }
+                                    }
                                     for (var i = 0; i < d[2].length; ++i) {
                                         if (d[2][i].cdnLink && d[2][i].cdnLink != '') {
                                             var s = state.getSubjectById(d[2][i].subjectId)
@@ -435,6 +438,28 @@
                         break
                     }
                 }
+            }
+            return result
+        },
+
+        getGrade: function (gradeValue) {
+            var result = ''
+            if (gradeValue == 1) {
+                result = '一年级'
+            } else if (gradeValue == 2) {
+                result = '二年级'
+            } else if (gradeValue == 3) {
+                result = '三年级'
+            } else if (gradeValue == 4) {
+                result = '四年级'
+            } else if (gradeValue == 5) {
+                result = '五年级'
+            } else if (gradeValue == 6) {
+                result = '六年级'
+            } else if (gradeValue == 20) {
+                result = '低年级'
+            } else {
+                result = '高年级'
             }
             return result
         },
