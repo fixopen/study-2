@@ -179,32 +179,32 @@ var transaction = function (params) {
         this.count = 0
     }
 
-    var getCardById = function(id) {
+    var getCardById = function(self, id) {
         var result = null
-        for (var i = 0; i < this.cards.length; ++i) {
-            if (this.cards[i].id == id) {
-                result = this.cards[i]
+        for (var i = 0; i < self.cards.length; ++i) {
+            if (self.cards[i].id == id) {
+                result = self.cards[i]
                 break
             }
         }
         return result
     }
 
-    var getCardsBySubjectId = function(subjectId) {
+    var getCardsBySubjectId = function(self, subjectId) {
         var result = []
-        for (var i = 0; i < this.cards.length; ++i) {
-            if (this.cards[i].subjectId == subjectId) {
-                result.push(this.cards[i])
+        for (var i = 0; i < self.cards.length; ++i) {
+            if (self.cards[i].subjectId == subjectId) {
+                result.push(self.cards[i])
             }
         }
         return result
     }
 
-    var getOtherCardsBySubjectId = function(subjectId) {
+    var getOtherCardsBySubjectId = function(self, subjectId) {
         var result = []
-        for (var i = 0; i < this.cards.length; ++i) {
-            if (this.cards[i].subjectId != subjectId) {
-                result.push(this.cards[i])
+        for (var i = 0; i < self.cards.length; ++i) {
+            if (self.cards[i].subjectId != subjectId) {
+                result.push(self.cards[i])
             }
         }
         return result
@@ -213,19 +213,20 @@ var transaction = function (params) {
     this.try = function () {
         // this.objectType = params.objectType
         // this.objectId = params.objectId
+        var self = this
         $.ajax({
             type: "get",
-            url: "/api/resources/" + this.objectType + "/" + this.objectId + "/sale-info",
+            url: "/api/resources/" + self.objectType + "/" + self.objectId + "/sale-info",
             dataType: "json",
             success: function (info) {
                 this.money = info.price
                 this.subjectId = info.subjectId
                 var isOk = false
-                var correctCards = getCardsBySubjectId(this.subjectId)
+                var correctCards = getCardsBySubjectId(self, self.subjectId)
                 for (var i = 0; i < correctCards.length; ++i) {
-                    if (correctCards[i].amount >= this.money) {
+                    if (correctCards[i].amount >= self.money) {
                         isOk = true
-                        this.card = correctCards[i]
+                        self.card = correctCards[i]
                         break
                     }
                 }
@@ -245,16 +246,16 @@ var transaction = function (params) {
                     dialog.querySelector('#nextTip').style.display = 'block'
                     dialog.querySelector('.kou_dou').style.display = 'block'
                     dialog.querySelector('#okButton').addEventListener('click', function(e) {
-                        this.purchase()
+                        self.purchase()
                         dialog.style.display = 'none'
                     }, false)
                     dialog.style.display = 'block'
                 } else {
-                    var incorrectCards = getOtherCardsBySubjectId(this.subjectId)
+                    var incorrectCards = getOtherCardsBySubjectId(self, self.subjectId)
                     for (var i = 0; i < incorrectCards.length; ++i) {
-                        if (incorrectCards[i].amount >= this.money) {
+                        if (incorrectCards[i].amount >= self.money) {
                             isOk = true
-                            this.card = incorrectCards[i]
+                            self.card = incorrectCards[i]
                             break
                         }
                     }
@@ -265,7 +266,7 @@ var transaction = function (params) {
                             data: {
                                 price: info.price,
                                 objectType: info.objectType,
-                                subjectName: getSubjectNameById(this.card.subjectId)
+                                subjectName: getSubjectNameById(self.card.subjectId)
                             },
                             templateId: 'transactionDialog-template'
                         })
@@ -274,12 +275,12 @@ var transaction = function (params) {
                         dialog.querySelector('#nextTip').style.display = 'block'
                         dialog.querySelector('.kou_dou').style.display = 'block'
                         dialog.querySelector('#okButton').addEventListener('click', function(e) {
-                            this.purchase()
+                            self.purchase()
                             dialog.style.display = 'none'
                         }, false)
                         dialog.style.display = 'block'
                     } else {
-                        if (this.user.amount + this.card.amount > this.money) {
+                        if (self.user.amount + self.card.amount > self.money) {
                             var dialog = document.getElementById('transactionDialog')
                             proc({
                                 container: dialog.querySelector('#transactionDialogContent'),
@@ -294,12 +295,12 @@ var transaction = function (params) {
                             dialog.querySelector('#balanceTip').style.display = 'block'
                             dialog.querySelector('#rechargeButton').style.display = 'block'
                             dialog.querySelector('#rechargeButton').addEventListener('click', function(e) {
-                                this.recharge()
+                                self.recharge()
                                 dialog.style.display = 'none'
                             }, false)
                             dialog.querySelector('#transferButton').style.display = 'block'
                             dialog.querySelector('#transferButton').addEventListener('click', function(e) {
-                                this.transfer()
+                                self.transfer()
                                 dialog.style.display = 'none'
                             }, false)
                             dialog.style.display = 'block'
@@ -457,24 +458,4 @@ var transaction = function (params) {
             }
         })
     }
-}
-
-var priceDialog = function() {
-    //price is how much
-    //your account balance is how much
-    //your correct cards balance is how mush
-    //your incorrect cards balance is how mush
-    //choice your source
-    //do you want confirm?
-    //do you want recharge | transfer?
-}
-
-var transferDialog = function() {
-    //money is how much
-    //choice your source
-    //your account balance is how much
-    //your correct cards balance is how mush
-    //your incorrect cards balance is how mush
-    //choice your destination
-    //do you want confirm?
 }
