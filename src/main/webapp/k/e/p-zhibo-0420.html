@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> </title>
+    <title></title>
     <meta name="screen-orientation" content="landscape"/>
     <style>
         .wrap {
@@ -38,6 +38,15 @@
             z-index: 99;
             display: none;
         }
+
+        .videoBook-Image {
+            width: 369px;
+            height: 81px;
+            position: absolute;
+            z-index: 50;
+            top: 30px;
+            right: 30px;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +55,9 @@
     <div class="wrap" data-ext-point="units">
         <audio id="player" src="p-zhibo-0420/${bookNo}/${pageNo}${unitNo}.mp3" autoplay></audio>
         <img src="p-zhibo-0420/${bookNo}/${pageNo}.jpg" alt="" style="width: 100%; height: 100%;">
+        <a id="videoBook" href="p-zhibo-0420.html?book=${bookNo}">
+            <img src="videoBook.png" alt="" class="videoBook-Image">
+        </a>
         <div data-ext-point="operation-panel"></div>
         <div>
             <a id="previous" class="abs" style="bottom: 90px;  right: 240px;"
@@ -63,8 +75,8 @@
             <img src="dialogIcon.png" alt="" style="position: relative; top: -105px; left:-6px; width: 370px;">
             <img id="tanClose" src="mask.png" alt="" style="position: absolute; top: -120px; right:0; width: 74px;">
             <!--<div style="word-wrap: break-word;">-->
-                <pre id="chinese"
-                     style="color: #131212; font-size: 2.5em; font-family: '微软雅黑'; margin: 0; padding:0 40px; height:300px;overflow-y: auto;
+            <pre id="chinese"
+                 style="color: #131212; font-size: 2.5em; font-family: '微软雅黑'; margin: 0; padding:0 40px; height:300px;overflow-y: auto;
                      white-space: pre-wrap;word-wrap: break-word;"></pre>
             <!--</div>-->
             <div class="bottomBtn" style="width:100%;text-align: center;position: absolute; bottom: 40px;">

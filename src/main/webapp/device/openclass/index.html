@@ -327,6 +327,7 @@
                                     for (var i = 0; i < d.length; ++i) {
                                         for (var j = 0; j < d[i].length; ++j) {
                                             var item = d[i][j]
+                                            item.grade = state.getGrade(item.grade)
                                             item.startTime = new Date(Date.parse(item.startTime.replace(/-/g, '/')))
                                             item.endTime = new Date(Date.parse(item.endTime.replace(/-/g, '/')))
                                             item.month = item.startTime.getMonth() + 1
@@ -435,6 +436,28 @@
                         break
                     }
                 }
+            }
+            return result
+        },
+
+        getGrade: function (gradeValue) {
+            var result = ''
+            if (gradeValue == 1) {
+                result = '一年级'
+            } else if (gradeValue == 2) {
+                result = '二年级'
+            } else if (gradeValue == 3) {
+                result = '三年级'
+            } else if (gradeValue == 4) {
+                result = '四年级'
+            } else if (gradeValue == 5) {
+                result = '五年级'
+            } else if (gradeValue == 6) {
+                result = '六年级'
+            } else if (gradeValue == 20) {
+                result = '低年级'
+            } else {
+                result = '高年级'
             }
             return result
         },
