@@ -58,7 +58,7 @@
         <a id="videoBook" href="p-zhibo-0420.html?book=${bookNo}">
             <img src="videoBook.png" alt="" class="videoBook-Image">
         </a>
-        <div data-ext-point="operation-panel"></div>
+        <div data-ext-point="records"></div>
         <div>
             <a id="previous" class="abs" style="bottom: 90px;  right: 240px;"
                href="p-zhibo-0420.html?book=${bookNo}&page=${previousPageNo}&unit=${previousUnitNo}">
@@ -222,9 +222,7 @@
                         nextUnitNo: '10',
                     },
                     containerId: 'content',
-                    secondBind: {
-                        extPoint: 'operation-panel',
-                        dataFieldName: 'records',
+                    next: {
                         templateId: 'operation-panel-template'
                     }
                 })
@@ -232,7 +230,7 @@
                 var player = document.getElementById('player');
 
                 var previous = document.getElementById('previous');
-                previous.addEventListener('click', function(e) {
+                previous.addEventListener('click', function (e) {
                     player.pause()
                 }, false)
                 var next = document.getElementById('next');
