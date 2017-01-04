@@ -374,6 +374,7 @@
     border-bottom: none;
     border-radius: 0.46875rem;
     background-color: #fff;
+    margin: 1.25rem 0 1.875rem;
 }
 .zuli_yzm{
     display: none;
@@ -817,6 +818,7 @@ canvas{
 }
 .mine_zilo{
     width: 100%;
+    margin: 1.25rem 0 1.875rem;
 }
 .mine_table{
     width: 90%;
