@@ -1,16 +1,10 @@
 package com.baremind.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
 import java.io.*;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 public class CharacterEncodingFilter implements ContainerRequestFilter {
     @Context
@@ -28,21 +22,6 @@ public class CharacterEncodingFilter implements ContainerRequestFilter {
         servletInputStream.close();
         w.close();
     }
-
-    public static Map<String, Object> getFilters(String filter) {
-        Map<String, Object> result = null;
-        if (filter != "") {
-            try {
-                String rawFilter = URLDecoder.decode(filter, StandardCharsets.UTF_8.toString());
-                result = new Gson().fromJson(rawFilter, new TypeToken<Map<String, Object>>() {
-                }.getType());
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
 
     public static void writeToFile(byte[] data, String uploadedFileLocation) {
         try {
