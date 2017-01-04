@@ -1,4 +1,4 @@
-var _$_ = function(params) {
+var _$_ = function (params) {
     $('#container').load('/zu/zu.html')
     var t = {
         try: function () {
@@ -17,7 +17,7 @@ var _$_ = function(params) {
                     this.price = info.price
                     for (var i = 0; i < this.cards.length; i++) {
                         var a = this.cards[i].subjectId
-                        if (this.cards[i].subjectId == this.subject && this.cards[i].amount >= this.price && this.price !=0) {
+                        if (this.cards[i].subjectId == this.subject && this.cards[i].amount >= this.price && this.price != 0) {
                             //第二步：你有这个科目下的卡&&卡余额>资源价格:弹出1床
                             var subject_card = t.transformation(a);
                             var object_Type = t.transformationType(params.showType);
@@ -33,7 +33,7 @@ var _$_ = function(params) {
                              object_Types = objectType;*/
                             break;
 
-                        }else if(this.cards[i].subjectId == this.subject && this.cards[i].amount >= this.price && this.price == 0){
+                        } else if (this.cards[i].subjectId == this.subject && this.cards[i].amount >= this.price && this.price == 0) {
                             na(this.objectType, this.objectId)
                             biao = 1;
                             break;
@@ -69,7 +69,7 @@ var _$_ = function(params) {
                     if (biao != 1) {
                         for (var i = 0; i < this.cards.length; i++) {
                             var a = this.cards[i].subjectId
-                            if (this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price !=0) {
+                            if (this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price != 0) {
                                 //第二步：你有其他科目下的卡&&卡余额>资源价格:弹出3床
                                 var subject_card = t.transformation(a);
                                 if (a == 1) {
@@ -89,7 +89,7 @@ var _$_ = function(params) {
                                  object_Id = objectId;
                                  object_Types = objectType;*/
                                 break;
-                            }else if(this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price == 0){
+                            } else if (this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price == 0) {
                                 biao = 1;
                                 na(this.objectType, this.objectId)
                                 break;
@@ -129,93 +129,94 @@ var _$_ = function(params) {
                             }
                         }
                     }
-                        function eventRegister() {
-                            var purchase1 = document.getElementById("a11")
-                            purchase1.addEventListener('click', function (e) {
-                                t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 1);
-                            })
-                            purchase1.dataset.bind = true
-
-                            /*var submitTransfer = document.getElementById("submitTransfer")
-                            submitTransfer.addEventListener('click', function (e) {
-                                t.atom(t.user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
-                            })*/
-
-                            var purchase2 = document.getElementById("a13")
-                            purchase2.addEventListener('click', function (e) {
-                                t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 3);
-                            })
-
-                            var recharge1 = document.getElementById("a21")
-                            recharge1.addEventListener('click', function (e) {
-                                document.getElementById("1").style.display = "none"
-                                t.rechargePage(t.cards, "c")
-                            })
-
-
-                            var recharge2 = document.getElementById("a12")
-                            recharge2.addEventListener('click', function (e) {
-                                document.getElementById("2").style.display = "none"
-                                t.rechargePage(t.cards, "c")
-                            })
-
-                            var recharge3 = document.getElementById("a23")
-                            recharge3.addEventListener('click', function (e) {
-                                document.getElementById("3").style.display = "none"
-                                t.rechargePage(t.cards, "c")
-                            })
-
-                            var recharge4 = document.getElementById("a14")
-                            recharge4.addEventListener('click', function (e) {
-                                document.getElementById("4").style.display = "none"
-                                t.rechargePage(t.cards, 'c')
-                            })
-
-                            var turnOut1 = document.getElementById("a22")
-                            turnOut1.addEventListener('click', function (e) {
-                                document.getElementById("2").style.display = "none"
-                                t.rechargePage(t.cards, 'z')
-                            })
-
-                            var turnOut2 = document.getElementById("a24")
-                            turnOut2.addEventListener('click', function (e) {
-                                document.getElementById("4").style.display = "none"
-                                t.rechargePage(t.cards, 'z')
-                            })
-
-                            var close1 = document.getElementById("close1")
-                            close1.addEventListener('click', function (e) {
-                                document.getElementById("1").style.display = "none"
-                            })
-
-                            var close2 = document.getElementById("close2")
-                            close2.addEventListener('click', function (e) {
-                                document.getElementById("2").style.display = "none"
-                            })
-
-                            var close3 = document.getElementById("close3")
-                            close3.addEventListener('click', function (e) {
-                                document.getElementById("3").style.display = "none"
-                            })
-
-                            var close4 = document.getElementById("close4")
-                            close4.addEventListener('click', function (e) {
-                                document.getElementById("4").style.display = "none"
-                            })
-
-                        }
+                    function eventRegister() {
                         var purchase1 = document.getElementById("a11")
-                        if (!purchase1.dataset.bind) {
-                            eventRegister()
-                        }
+                        purchase1.addEventListener('click', function (e) {
+                            t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 1);
+                        })
+                        purchase1.dataset.bind = true
+
+                        /*var submitTransfer = document.getElementById("submitTransfer")
+                         submitTransfer.addEventListener('click', function (e) {
+                         t.atom(t.user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
+                         })*/
+
+                        var purchase2 = document.getElementById("a13")
+                        purchase2.addEventListener('click', function (e) {
+                            t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 3);
+                        })
+
+                        var recharge1 = document.getElementById("a21")
+                        recharge1.addEventListener('click', function (e) {
+                            document.getElementById("1").style.display = "none"
+                            t.rechargePage(t.cards, "c")
+                        })
+
+
+                        var recharge2 = document.getElementById("a12")
+                        recharge2.addEventListener('click', function (e) {
+                            document.getElementById("2").style.display = "none"
+                            t.rechargePage(t.cards, "c")
+                        })
+
+                        var recharge3 = document.getElementById("a23")
+                        recharge3.addEventListener('click', function (e) {
+                            document.getElementById("3").style.display = "none"
+                            t.rechargePage(t.cards, "c")
+                        })
+
+                        var recharge4 = document.getElementById("a14")
+                        recharge4.addEventListener('click', function (e) {
+                            document.getElementById("4").style.display = "none"
+                            t.rechargePage(t.cards, 'c')
+                        })
+
+                        var turnOut1 = document.getElementById("a22")
+                        turnOut1.addEventListener('click', function (e) {
+                            document.getElementById("2").style.display = "none"
+                            t.rechargePage(t.cards, 'z')
+                        })
+
+                        var turnOut2 = document.getElementById("a24")
+                        turnOut2.addEventListener('click', function (e) {
+                            document.getElementById("4").style.display = "none"
+                            t.rechargePage(t.cards, 'z')
+                        })
+
+                        var close1 = document.getElementById("close1")
+                        close1.addEventListener('click', function (e) {
+                            document.getElementById("1").style.display = "none"
+                        })
+
+                        var close2 = document.getElementById("close2")
+                        close2.addEventListener('click', function (e) {
+                            document.getElementById("2").style.display = "none"
+                        })
+
+                        var close3 = document.getElementById("close3")
+                        close3.addEventListener('click', function (e) {
+                            document.getElementById("3").style.display = "none"
+                        })
+
+                        var close4 = document.getElementById("close4")
+                        close4.addEventListener('click', function (e) {
+                            document.getElementById("4").style.display = "none"
+                        })
+
+                    }
+
+                    var purchase1 = document.getElementById("a11")
+                    if (!purchase1.dataset.bind) {
+                        eventRegister()
+                    }
                 }
             })
 
         },
         getContent: function (action) {
-            params.objectType = this.objectType
-            params.objectId = this.objectId
-            params.showType = this.showType
+            /*  params.objectType = this.objectType
+             params.objectId = this.objectId
+             params.showType = this.showType*/
             params.action = action
             $.ajax({
                 type: "get",
@@ -224,14 +225,15 @@ var _$_ = function(params) {
                 success: function (content) {
                     action(content)
                     // t.count = content
-                  //  alert(JSON.stringify(content))
+                    //  alert(JSON.stringify(content))
                 },
                 error: function (e) {
-                    t.try(params.objectType,params.objectId,params.showType)
+                    // t.try(params.objectType,params.objectId,params.showType)
+                    t.try()
                 }
             })
         },
-        transformation:function (sex) {
+        transformation: function (sex) {
             var result;
             if (sex == 1) {
                 result = "语文"
@@ -241,7 +243,7 @@ var _$_ = function(params) {
             }
             return result;
         },
-        transformationType:function(objectType) {
+        transformationType: function (objectType) {
             var result;
             if (objectType == "knowledge-point") {
                 result = "知识点"
@@ -281,7 +283,7 @@ var _$_ = function(params) {
             }
             return result
         },
-        rechargePage:function(cards,T){
+        rechargePage: function (cards, T) {
             this.user = params.user
             $("#to").val(T)
             for (var i = 0; i < cards.length; i++) {
@@ -291,7 +293,7 @@ var _$_ = function(params) {
                 if (cards[i].subjectId == 2 || cards[i].subjectId == "数学") {
                     cards[i].image = "mathBiao.png"
                 }
-                if(cards[i].subjectId == 1 || cards[i].subjectId == 2){
+                if (cards[i].subjectId == 1 || cards[i].subjectId == 2) {
                     cards[i].subjectId = t.getSubjectNameById(cards[i].subjectId)
                 }
                 if (cards[i].amount == 0) {
@@ -299,36 +301,36 @@ var _$_ = function(params) {
                 }
             }
             if (T == "c") {
-                    document.getElementById("oneCard").innerHTML = ""
-                    document.getElementById("account").innerHTML = ""
-                    var ua = this.user.amount
-                    if (ua == 0) {
-                        ua = "0"
-                    }
-                    var uc = {
-                        id: this.user.id,
-                        amount: ua,
-                        name: "账户",
-                        image: "yueBiao.png",
-                    }
-                    proc({
-                        containerId: 'account',
-                        data: uc,
-                        templateId: 'userCard-template'
-                    })
-                    proc({
-                        containerId: 'oneCard',
-                        data: cards,
-                        templateId: 'selectCard-template'
-                    })
-                    document.getElementById("rechargepage").style.display="block"
-                    document.getElementById("to").style.display="block"
-                    // document.getElementById("rechargepage").style.display="none"
+                document.getElementById("oneCard").innerHTML = ""
+                document.getElementById("account").innerHTML = ""
+                var ua = this.user.amount
+                if (ua == 0) {
+                    ua = "0"
+                }
+                var uc = {
+                    id: this.user.id,
+                    amount: ua,
+                    name: "账户",
+                    image: "yueBiao.png",
+                }
+                proc({
+                    containerId: 'account',
+                    data: uc,
+                    templateId: 'userCard-template'
+                })
+                proc({
+                    containerId: 'oneCard',
+                    data: cards,
+                    templateId: 'selectCard-template'
+                })
+                document.getElementById("rechargepage").style.display = "block"
+                document.getElementById("to").style.display = "block"
+                // document.getElementById("rechargepage").style.display="none"
             } else if (T == "z") {
                 // document.getElementById("recharge").style.display="block"
-                document.getElementById("rechargepage").style.display="none"
-                document.getElementById("to").style.display="none"
-                document.getElementById("converted").innerHTML=""
+                document.getElementById("rechargepage").style.display = "none"
+                document.getElementById("to").style.display = "none"
+                document.getElementById("converted").innerHTML = ""
                 proc({
                     containerId: 'converted',
                     data: cards,
@@ -344,37 +346,37 @@ var _$_ = function(params) {
                 var subject = element.dataset.subject;
                 var name = element.dataset.name;
                 var img = element.dataset.img;
-                t.switchRecharge(id,amount,no,subject,name,img, $("#to").val())
+                t.switchRecharge(id, amount, no, subject, name, img, $("#to").val())
             })
         },
-        switchRecharge:function(id,amount,no,subject,name,img, T){
+        switchRecharge: function (id, amount, no, subject, name, img, T) {
             if (T == "z") {
-                document.getElementById("converted").innerHTML=""
-                document.getElementById("za").innerHTML=amount
-                document.getElementById("tishi").innerHTML=t.user.amount
-                document.getElementById("zn").innerHTML=no
-                document.getElementById("zs").innerHTML=subject
+                document.getElementById("converted").innerHTML = ""
+                document.getElementById("za").innerHTML = amount
+                document.getElementById("tishi").innerHTML = t.user.amount
+                document.getElementById("zn").innerHTML = no
+                document.getElementById("zs").innerHTML = subject
                 $("#cardid").val(id)
-                document.getElementById("image").src=img
-                document.getElementById("selectOneCard").style.display="block"
+                document.getElementById("image").src = img
+                document.getElementById("selectOneCard").style.display = "block"
             } else if (T == "c") {
-                if(id == params.user.id){
-                    document.getElementById("name").innerHTML=name
-                    document.getElementById("no").innerHTML=""
-                    document.getElementById("money").innerHTML=amount
-                    document.getElementById("src").src=img
+                if (id == params.user.id) {
+                    document.getElementById("name").innerHTML = name
+                    document.getElementById("no").innerHTML = ""
+                    document.getElementById("money").innerHTML = amount
+                    document.getElementById("src").src = img
                     src
-                }else{
-                    document.getElementById("name").innerHTML=subject
-                    document.getElementById("no").innerHTML=no
-                    document.getElementById("money").innerHTML=amount
-                    document.getElementById("src").src=img
+                } else {
+                    document.getElementById("name").innerHTML = subject
+                    document.getElementById("no").innerHTML = no
+                    document.getElementById("money").innerHTML = amount
+                    document.getElementById("src").src = img
                 }
-                document.getElementById("to").style.display="none"
-                document.getElementById("rechargepage").style.display="block"
+                document.getElementById("to").style.display = "none"
+                document.getElementById("rechargepage").style.display = "block"
             }
         },
-        atom:function(sourceId, sourceType, object_Id, object_Type, count, money, none) {
+        atom: function (sourceId, sourceType, object_Id, object_Type, count, money, none) {
             var result;
             var filter = {}
             if (money == null && count == null) {
@@ -391,7 +393,7 @@ var _$_ = function(params) {
                     data: JSON.stringify(filter),
                     contentType: "application/json; charset=utf-8",
                     success: function (e) {
-                     alert("充值成功")
+                        alert("充值成功")
                         t.nones(none)
 //                    t.getContent();
 //                    t.na(object_Type, object_Id)
@@ -460,7 +462,7 @@ var _$_ = function(params) {
                     data: JSON.stringify(filter),
                     contentType: "application/json; charset=utf-8",
                     success: function (e) {
-                     alert("购买成功")
+                        alert("购买成功")
                         t.nones(none)
                         t.getContent(params.action);
                     },
