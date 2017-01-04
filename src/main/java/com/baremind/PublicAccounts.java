@@ -4,6 +4,7 @@ import com.baremind.algorithm.Securities;
 import com.baremind.data.Session;
 import com.baremind.data.User;
 import com.baremind.data.WechatUser;
+import com.baremind.utils.CharacterEncodingFilter;
 import com.baremind.utils.Hex;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
@@ -211,34 +212,26 @@ public class PublicAccounts {
     public Response getHead(@PathParam("media_Id") String media_Id){
 //        http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
         media_Id= media_Id.replaceAll(",","/");
-        System.out.println("来过");
-        System.out.println("media_Id=================="+media_Id);
         Client client = ClientBuilder.newClient();
         Response response = client.target(hostname)
                 .path("cgi-bin/media/get")
                 .queryParam("access_token", accessToken)
                 .queryParam("media_id", media_Id)
                 .request().get();
-        System.out.println("微信返回了");
         long now = new Date().getTime();
         String physicalpath = Properties.getProperty("physicalpath");
         String fileName = physicalpath + now + ".jpg";
-        System.out.println("fileName========================="+fileName);
         File file = new File(fileName);
         InputStream is = (InputStream) response.getEntity();
-        byte[] buffer = new byte[response.getLength()];
+        FileOutputStream fw = null;
         try {
-            is.read(buffer);
-            System.out.println("buffer========================="+buffer);
-            FileOutputStream fw = new FileOutputStream(file);
-            fw.write(buffer);
-            fw.close();
+            fw = new FileOutputStream(file);
+            CharacterEncodingFilter.saveFile(fw,is);
         } catch (IOException e) {
             e.printStackTrace();
         }
         String virtualpath = Properties.getProperty("virtualpath");
         String path = virtualpath + now + ".jpg";
-        System.out.println("path====================="+path);
         return Response.ok(path).build();
     }
 
