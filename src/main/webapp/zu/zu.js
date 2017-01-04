@@ -1,7 +1,6 @@
 var _$_ = function(params) {
     $('#container').load('/zu/zu.html')
     var t = {
-        isStudy: false,
         try: function () {
             this.objectType = params.objectType
             this.objectId = params.objectId
@@ -130,79 +129,85 @@ var _$_ = function(params) {
                             }
                         }
                     }
-                    if(t.isStudy == false){
+                        function eventRegister() {
+                            var purchase1 = document.getElementById("a11")
+                            purchase1.addEventListener('click', function (e) {
+                                t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 1);
+                            })
+                            purchase1.dataset.bind = true
+
+                            /*var submitTransfer = document.getElementById("submitTransfer")
+                            submitTransfer.addEventListener('click', function (e) {
+                                t.atom(t.user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
+                            })*/
+
+                            var purchase2 = document.getElementById("a13")
+                            purchase2.addEventListener('click', function (e) {
+                                t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 3);
+                            })
+
+                            var recharge1 = document.getElementById("a21")
+                            recharge1.addEventListener('click', function (e) {
+                                document.getElementById("1").style.display = "none"
+                                t.rechargePage(t.cards, "c")
+                            })
+
+
+                            var recharge2 = document.getElementById("a12")
+                            recharge2.addEventListener('click', function (e) {
+                                document.getElementById("2").style.display = "none"
+                                t.rechargePage(t.cards, "c")
+                            })
+
+                            var recharge3 = document.getElementById("a23")
+                            recharge3.addEventListener('click', function (e) {
+                                document.getElementById("3").style.display = "none"
+                                t.rechargePage(t.cards, "c")
+                            })
+
+                            var recharge4 = document.getElementById("a14")
+                            recharge4.addEventListener('click', function (e) {
+                                document.getElementById("4").style.display = "none"
+                                t.rechargePage(t.cards, 'c')
+                            })
+
+                            var turnOut1 = document.getElementById("a22")
+                            turnOut1.addEventListener('click', function (e) {
+                                document.getElementById("2").style.display = "none"
+                                t.rechargePage(t.cards, 'z')
+                            })
+
+                            var turnOut2 = document.getElementById("a24")
+                            turnOut2.addEventListener('click', function (e) {
+                                document.getElementById("4").style.display = "none"
+                                t.rechargePage(t.cards, 'z')
+                            })
+
+                            var close1 = document.getElementById("close1")
+                            close1.addEventListener('click', function (e) {
+                                document.getElementById("1").style.display = "none"
+                            })
+
+                            var close2 = document.getElementById("close2")
+                            close2.addEventListener('click', function (e) {
+                                document.getElementById("2").style.display = "none"
+                            })
+
+                            var close3 = document.getElementById("close3")
+                            close3.addEventListener('click', function (e) {
+                                document.getElementById("3").style.display = "none"
+                            })
+
+                            var close4 = document.getElementById("close4")
+                            close4.addEventListener('click', function (e) {
+                                document.getElementById("4").style.display = "none"
+                            })
+
+                        }
                         var purchase1 = document.getElementById("a11")
-                        purchase1.addEventListener('click', function (e) {
-                            t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 1);
-                        })
-                        /*    var submitTransfer = document.getElementById("submitTransfer")
-                         submitTransfer.addEventListener('click', function (e) {
-                         t.atom(t.user.id, "user", $("#cardid").val(), "card", null, $("#convertedNumber").val())
-                         })*/
-
-                        var purchase2 = document.getElementById("a13")
-                        purchase2.addEventListener('click', function (e) {
-                            t.atom(info.cardId, "card", params.objectId, params.objectType, 1, info.price, 3);
-                        })
-
-                        var recharge1 = document.getElementById("a21")
-                        recharge1.addEventListener('click', function (e) {
-                            document.getElementById("1").style.display = "none"
-                            t.rechargePage(t.cards, "c")
-                        })
-
-
-                        var recharge2 = document.getElementById("a12")
-                        recharge2.addEventListener('click', function (e) {
-                            document.getElementById("2").style.display = "none"
-                            t.rechargePage(t.cards, "c")
-                        })
-
-                        var recharge3 = document.getElementById("a23")
-                        recharge3.addEventListener('click', function (e) {
-                            document.getElementById("3").style.display = "none"
-                            t.rechargePage(t.cards, "c")
-                        })
-
-                        var recharge4 = document.getElementById("a14")
-                        recharge4.addEventListener('click', function (e) {
-                            document.getElementById("4").style.display = "none"
-                            t.rechargePage(t.cards, 'c')
-                        })
-
-                        var turnOut1 = document.getElementById("a22")
-                        turnOut1.addEventListener('click', function (e) {
-                            document.getElementById("2").style.display = "none"
-                            t.rechargePage(t.cards, 'z')
-                        })
-
-                        var turnOut2 = document.getElementById("a24")
-                        turnOut2.addEventListener('click', function (e) {
-                            document.getElementById("4").style.display = "none"
-                            t.rechargePage(t.cards, 'z')
-                        })
-
-                        var close1 = document.getElementById("close1")
-                        close1.addEventListener('click', function (e) {
-                            document.getElementById("1").style.display = "none"
-                        })
-
-                        var close2 = document.getElementById("close2")
-                        close2.addEventListener('click', function (e) {
-                            document.getElementById("2").style.display = "none"
-                        })
-
-                        var close3 = document.getElementById("close3")
-                        close3.addEventListener('click', function (e) {
-                            document.getElementById("3").style.display = "none"
-                        })
-
-                        var close4 = document.getElementById("close4")
-                        close4.addEventListener('click', function (e) {
-                            document.getElementById("4").style.display = "none"
-                        })
-                    }
-                    t.isStudy = true
+                        if (!purchase1.dataset.bind) {
+                            eventRegister()
+                        }
                 }
             })
 
