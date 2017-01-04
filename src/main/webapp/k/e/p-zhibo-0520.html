@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> </title>
+    <title></title>
     <meta name="screen-orientation" content="landscape"/>
     <style>
-        ul,li{
+        ul, li {
             list-style: none;
         }
+
         .wrap {
             position: absolute;
             top: 0;
@@ -17,16 +18,6 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-        }
-        .wrap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
         }
 
         .abs {
@@ -51,6 +42,7 @@
             z-index: 99;
             display: none;
         }
+
         .videoBook-Image {
             width: 369px;
             height: 81px;
@@ -59,46 +51,123 @@
             top: 30px;
             right: 30px;
         }
-        .message{
+
+        .message {
             width: 100%;
             margin: 0 auto;
             line-height: 60px;
             font-size: 40px;
-            font-family: "苹方","Microsoft YaHei";
+            font-family: "苹方", "Microsoft YaHei";
             overflow: auto;
         }
-        .ul01_flet{
+
+        .ul01_flet {
             color: #aaa;
             float: left;
         }
-        .ul01_flet li{
+
+        .ul01_flet li {
             float: left;
         }
-        .ul01_fli{
+
+        .ul01_fli {
             margin-right: 30px;
         }
-        .ul01_count{
+
+        .ul01_count {
             margin-left: 10px;
         }
-        .ul01_imgzan{
+
+        .ul01_imgzan {
             width: 38px;
             height: 38px;
         }
-        .ul01_riht{
+
+        .ul01_riht {
             float: right;
         }
-        .ul01_riht li{
+
+        .ul01_riht li {
             float: left;
         }
-        .mulu_botBtn{
+
+        .mulu_botBtn {
             color: #24cbd1;
             font-size: 40px;
-            font-family: "苹方","Microsoft YaHei";
+            font-family: "苹方", "Microsoft YaHei";
             float: right;
             padding-right: 40px;
             text-decoration: none;
             background: url('../../img/write.png') right center no-repeat;
             background-size: 30px 30px;
+        }
+
+        /*写留言*/
+        .textarea {
+            width: 100%;
+            /*padding: 0.9375rem;*/
+            margin-top: 0.9375rem;
+            border-radius: 0.3125rem;
+            font-size: 2rem;
+            min-height: 10rem;
+        }
+
+        .sub-btn {
+            width: 100%;
+            height: 5rem;
+            line-height: 5rem;
+            background-color: #0BB20C;
+            color: #ffffff;
+            text-align: center;
+            margin-top: 0.9375rem;
+            border-radius: 0.3125rem;
+            font-size: 2rem;
+        }
+
+        .muluBn_center {
+            margin: 1.5625rem 0 0.9375rem;
+            overflow: hidden;
+        }
+
+        .liuyan_li {
+            float: left;
+            margin-left: 0.625rem;
+        }
+
+        .lion_01 {
+            width: 16%;
+        }
+
+        .lion_01 img {
+            width: 100%;
+            text-align: center;
+        }
+
+        .lion_02 {
+            width: 77%;
+        }
+
+        .topUl {
+            overflow: hidden;
+        }
+
+        .topUl_top {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .litop_fleft {
+            color: #aaa;
+            float: left;
+        }
+
+        .litop_friht {
+            color: #aaa;
+            float: right;
+        }
+
+        .tcmar_top {
+            margin-top: 0.3125rem;
         }
     </style>
 </head>
@@ -113,23 +182,32 @@
         </a>
         <div data-ext-point="operation-panel"></div>
         <div>
-            <a id="previous" class="abs" style="bottom: 90px;  right: 240px;" href="p-zhibo-0520.html?book=${bookNo}&page=${previousPageNo}&unit=${previousUnitNo}">
+            <a id="previous" class="abs" style="bottom: 90px;  right: 240px;"
+               href="p-zhibo-0520.html?book=${bookNo}&page=${previousPageNo}&unit=${previousUnitNo}">
                 <img src="previousOff.png" alt="" style="width: 159px; height: 57px;">
             </a>
-            <a id="next" class="abs" style="bottom: 90px; right: 30px;" href="p-zhibo-0520.html?book=${bookNo}&page=${nextPageNo}&unit=${nextUnitNo}">
+            <a id="next" class="abs" style="bottom: 90px; right: 30px;"
+               href="p-zhibo-0520.html?book=${bookNo}&page=${nextPageNo}&unit=${nextUnitNo}">
                 <img src="nextOff.png" alt="" style="width: 159px; height: 57px;">
             </a>
         </div>
         <div class="message">
             <ul class="ul01_flet">
-                <li class="ul01_fli">阅读<span class="ul01_count">1000+</span></li>
-                <li><img class="ul01_imgzan" src="../../img/zan.png" alt=""><span class="ul01_count">5876</span></li>
+                <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+                <li><img class="ul01_imgzan" src="../../img/zan.png" alt=""><span class="ul01_count">${likeCount}</span>
+                </li>
             </ul>
             <ul class="ul01_riht">
-                <li class="ul01_fli"><a class="mulu_botBtn" href="#">写留言</a></li>
+                <li class="ul01_fli"><a class="mulu_botBtn" href="#" id="createComment">写留言</a></li>
             </ul>
+            <div id="commentWriter" style="display: none;margin: 1.875rem">
+                <textarea name="message" id="textarea" class="textarea"></textarea>
+                <button type="submit" class="sub-btn" id="btn">提交</button>
+            </div>
+            <span id="comments" data-ext-point="comments"></span>
         </div>
-        <div id="mask" style="display: none; position: absolute; z-index: 50; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: 0.6;"></div>
+        <div id="mask"
+             style="display: none; position: absolute; z-index: 50; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: 0.6;"></div>
         <div id="dialog" class="dialog">
             <img src="dialogIcon.png" alt="" style="position: relative; top: -105px; left:-6px; width: 370px;">
             <img id="tanClose" src="mask.png" alt="" style="position: absolute; top: -120px; right:0; width: 74px;">
@@ -139,16 +217,43 @@
                      white-space: pre-wrap;word-wrap: break-word;"></pre>
             <!--</div>-->
             <div class="bottomBtn" style="width:100%;text-align: center;position: absolute; bottom: 40px;">
-                <button id="closeTranslator" style="margin: auto; display: block; border:none; background: none;"><img src="okOff.png" alt="" style="width:360px; height: 103.2px;"></button>
+                <button id="closeTranslator" style="margin: auto; display: block; border:none; background: none;"><img
+                        src="okOff.png" alt="" style="width:360px; height: 103.2px;"></button>
             </div>
         </div>
     </div>
 </template>
+<template id="comment-template">
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${userAvatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${userName}</div>
+                    <!--<div class="litop_friht" data-id="${id}">-->
+                    <!--<img class="ul01_imgzan_" src="img/zan.png" alt="">-->
+                    <!--<span class="ul01_count">${likeCount}</span>-->
+                    <!--</div>-->
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${createTime}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</template>
 <template id="operation-panel-template">
     <section>
         <div class="abs" style="top: ${top}%; left: ${left}%; width: ${width}%; height: ${height}%;">
-            <div id="play${unitNo}" data-unit="${unitNo}" class="abs" style="bottom: 0; left: 0px; width: 117px; height: 117px; background: url('amplifierOff.png') no-repeat center; background-size: contain;"></div>
-            <div id="translator${unitNo}" data-unit="${unitNo}" class="abs" style="bottom: 0; margin-left: 180px; width: 117px; height: 117px; background: url('translatorOff.png') no-repeat center; background-size: contain;"></div>
+            <div id="play${unitNo}" data-unit="${unitNo}" class="abs"
+                 style="bottom: 0; left: 0px; width: 117px; height: 117px; background: url('amplifierOff.png') no-repeat center; background-size: contain;"></div>
+            <div id="translator${unitNo}" data-unit="${unitNo}" class="abs"
+                 style="bottom: 0; margin-left: 180px; width: 117px; height: 117px; background: url('translatorOff.png') no-repeat center; background-size: contain;"></div>
         </div>
     </section>
 </template>
@@ -183,7 +288,7 @@
             url: '/api/audio-records/05/20/' + bookNo + '/' + pageNo,
             success: function (n) {
                 document.title = n.name;
-                var getNavigatorInfo = function(pageNo) {
+                var getNavigatorInfo = function (pageNo) {
                     var result = {};
                     switch (pageNo) {
                         case '00':
@@ -282,7 +387,12 @@
                         extPoint: 'operation-panel',
                         dataFieldName: 'records',
                         templateId: 'operation-panel-template'
-                    }
+                    },
+//                    secondBind: {
+//                        extPoint: 'comments',
+//                        dataFieldName: 'comments',
+//                        templateId: 'comment-template'
+//                    }
                 })
 
                 var previous = document.getElementById('previous');
@@ -303,14 +413,95 @@
                 var ok = document.getElementById('closeTranslator');
                 var tanClose = document.getElementById('tanClose');
 
-                ok.addEventListener('click', function(e){
+                ok.addEventListener('click', function (e) {
                     dialog.style.display = 'none';
                     mask.style.display = 'none'
                 }, false)
-                tanClose.addEventListener('click', function(e){
+                tanClose.addEventListener('click', function (e) {
                     dialog.style.display = 'none';
                     mask.style.display = 'none'
                 }, false)
+
+                // message---------
+                var createComment = document.getElementById('createComment');
+                createComment.addEventListener('click', function () {
+                    $('#commentWriter').toggle();
+                    var btn = document.getElementById('btn');
+                    btn.addEventListener('click', submit, false);
+                    function submit(e) {
+                        var textarea = document.getElementById('textarea');
+                        var value = textarea.value;
+                        if (value.length < 1) {
+                            return false;
+                        }
+                        textarea.value = '';
+                        e.target.style.color = '#f5f5f5';
+                        $.ajax({
+                            type: "post",
+                            url: "/api/audio-records/05/20/' + bookNo ",
+                            data: JSON.stringify({
+                                //   userId: 1,
+                                objectType: 'knowledge-point',
+                                objectId: g.getUrlParameter("id"),
+                                content: value
+                            }),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                location.reload();
+                                //alert(JSON.stringify(data))
+                            }
+                        })
+                    }
+                }, false);
+
+                // likes---点赞
+                var id = g.getUrlParameter("id")
+                $.ajax({
+                    type: "get",
+                    url: '/api/audio-records/05/20/' + id + '/is-self-like',
+                    dataType: "json",
+                    success: function (like) {
+                        var liked = like.like
+                        var icon = document.getElementById('icon');
+                        if (liked) {
+                            icon.setAttribute('src', 'img/zan-over.png');
+                        } else {
+                            icon.setAttribute('src', 'img/zan.png');
+                        }
+                        icon.addEventListener('click', function (e) {
+                            if (liked) {
+                                $.ajax({
+                                    type: "put",
+                                    url: '/api/audio-records/05/20/' + id + '/unlike',
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (unlike) {
+                                        icon.setAttribute('src', 'img/zan.png');
+                                        --n.likeCount;
+                                        e.target.nextElementSibling.textContent = n.likeCount;
+                                        liked = false;
+                                    }
+                                })
+                            } else {
+                                $.ajax({
+                                    type: "put",
+                                    url: '/api/audio-records/05/20/' + id + '/like',
+                                    data: JSON.stringify({}),
+                                    dataType: "json",
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (like) {
+                                        icon.setAttribute('src', 'img/zan-over.png');
+                                        ++n.likeCount;
+                                        e.target.nextElementSibling.textContent = n.likeCount
+                                        liked = true;
+                                    }
+                                })
+                            }
+                        }, false)
+                    }
+                });
 
                 for (var i = 0; i < n.records.length; ++i) {
                     var play = document.getElementById('play' + n.records[i].unitNo);
