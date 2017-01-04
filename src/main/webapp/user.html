@@ -188,19 +188,23 @@
 </article>
 <article id="changePassword" style="display: none;">
     <div class="wrap">
-        <!-- main -->
-        <ul class="changePassword_ul_css">
-            <li class="changePassword_li_css public_li_css">
-                <span class="public_span_css changePassword_interval_width_css">新密码</span>
-                <input class="firstActiveCard_input_css" type="password" id="newpwd1" placeholder="请输入新密码">
-            </li>
-            <li class="changePassword_li_css public_li_css">
-                <span class="public_span_css changePassword_interval_width_css">确认新密码</span>
-                <input class="firstActiveCard_input_css" type="password" id="newpwd2" placeholder="请确认新密码">
-            </li>
-            <div id="error"></div>
-        </ul>
-
+        <div class="set-password-maindiv">
+            <ul class="set-password-ul">
+                <li class="set-password-li">
+                    <p class="set-password-liLeft">
+                        <span class="set-password-span">新 密 码</span>
+                    </p>
+                    <input class="set-password-input" type="password" id="newpwd1" placeholder="请输入新密码">
+                </li>
+                <li class="set-password-li">
+                    <p class="set-password-liLeft">
+                        <span class="set-password-span">确认密码</span>
+                    </p>
+                    <input class="set-password-input" type="password" id="newpwd2" placeholder="请确认新密码">
+                </li>
+                <div id="error"></div>
+            </ul>
+        </div>
         <div class="changePassword_box_css">
             <a href="javascript:void(0)" class="changePassword_button_css" id="pwd_save">保 存</a>
             <a href="javascript:void(0)" id="quxiao" class="changePassword_save_css">取 消</a>
@@ -225,7 +229,7 @@
                     <a href="javascript:void(0)" class="set-password-sendBtn cur" id="sendcode">发送验证码</a>
                 </li>
             </ul>
-            <i id="newError"></i>
+            <i id="newError" class="setting-errorTishi"></i>
             <div class="myset-btnBox">
                 <a href="javascript:void(0)" class="myset-saveBtn" id="newSubmit">确 认</a>
             </div>
@@ -293,10 +297,10 @@
 <article id="nickname" style="display: none">
     <div class="wrap">
         <div class="mine_zilo">
-            <ul class="mine_zUl" style="border:none;">
-                <li class="mine_zuli">
+            <ul class="mine_zUl" style="border:none;border-radius: 0;">
+                <li class="mine_zuli2017">
                     <span class="mine_leftsp">昵称</span>
-                    <input class="mine_rightip" type="text" id="nicknameval">
+                    <input class="mine_rightip2017" type="text" id="nicknameval">
                     <a class="chahao" href="JavaScript:;" id="nicehng"></a>
                 </li>
             </ul>
@@ -418,8 +422,8 @@
     </div>
     <!-- 弹窗结束 -->
     <div class="wrap">
-        <div class="mine_zilo">
-            <ul class="mine_zUl">
+        <div class="addCard_div">
+            <ul class="addCard_zUl">
                 <li class="acardmine_zuli">
                     <span class="mine_leftsp">卡号</span>
                     <input class="mine_rightip" id="cardNumber" type="number" placeholder="请输入卡号">
@@ -430,31 +434,33 @@
                 </li>
             </ul>
             <i id="createCardError"></i>
-            <button class="bottom_btn" style="cursor:pointer" id="createCard">填 加</button>
+            <button class="addCard_bottom_btn" style="cursor:pointer" id="createCard">填 加</button>
         </div>
     </div>
 </article>
 <article id="settings" style="display: none;">
-    <ul class="public_ul_css">
-        <li class="user_li_css public_li_css" data-article="changePassword">
-            <span data-article="changePassword" class="public_span_css">密码设置</span>
-        </li>
+    <div class="wrap">
+        <ul class="public_ul_css setting-marginTop">
+            <li class="user_li_css public_li_css" data-article="changePassword">
+                <span data-article="changePassword" class="public_span_css">密码设置</span>
+            </li>
 
 
-        <li class="user_li_css public_li_css" data-article="changePhoneNumber">
-            <span data-article="changePhoneNumber" class="public_span_css">手机号修改</span>
-        </li>
+            <li class="user_li_css public_li_css" data-article="changePhoneNumber">
+                <span data-article="changePhoneNumber" class="public_span_css">手机号修改</span>
+            </li>
 
 
-        <li class="user_li_css public_li_css" data-article="changeWechat">
-            <span data-article="changeWechat" class="public_span_css">微信解绑</span>
-        </li>
-    </ul>
-    <ul class="public_ul_css">
-        <li class="user_li_css public_li_css" data-article="contactUs">
-            <span data-article="contactUs">联系我们</span>
-        </li>
-    </ul>
+            <li class="user_li_css public_li_css" data-article="changeWechat">
+                <span data-article="changeWechat" class="public_span_css">微信解绑</span>
+            </li>
+        </ul>
+        <ul class="public_ul_css">
+            <li class="user_li_css public_li_css" data-article="contactUs">
+                <span data-article="contactUs">联系我们</span>
+            </li>
+        </ul>
+    </div>
 </article>
 <article id="help" style="display: none;">
     <div class="wrap youBackg">
@@ -622,7 +628,7 @@
 
                 </ul>
                 <div class="bottom_txt">
-                    <span class="leftLine">————</span>没有更多语文视频咯！<span class="leftLine">————</span>
+                    <span class="leftLine">———</span>没有更多语文视频咯！<span class="leftLine">———</span>
                 </div>
             </div>
             <div class="mine_table" id="mathLiveVideos">
@@ -630,7 +636,7 @@
 
                 </ul>
                 <div class="bottom_txt">
-                    <span class="leftLine">————</span>没有更多数学视频咯！<span class="leftLine">————</span>
+                    <span class="leftLine">———</span>没有更多数学视频咯！<span class="leftLine">———</span>
                 </div>
             </div>
         </div>
@@ -665,7 +671,7 @@
 
                 </ul>
                 <div class="bottom_txt">
-                    <span class="leftLine">————</span>没有更多语文课程咯！<span class="leftLine">————</span>
+                    <span class="leftLine">———</span>没有更多语文课程咯！<span class="leftLine">———</span>
                 </div>
             </div>
             <div class="mine_table" id="mathKnowledgePoints">
@@ -675,7 +681,7 @@
                     </li>
                 </ul>
                 <div class="bottom_txt">
-                    <span class="leftLine">————</span>没有更多数学课程咯！<span class="leftLine">————</span>
+                    <span class="leftLine">———</span>没有更多数学课程咯！<span class="leftLine">———</span>
                 </div>
             </div>
         </div>
@@ -710,7 +716,7 @@
 
                 </ul>
                 <div class="bottom_txt">
-                    <span class="leftLine">————</span>没有更多语文题咯！<span class="leftLine">————</span>
+                    <span class="leftLine">———</span>没有更多语文题咯！<span class="leftLine">———</span>
                 </div>
             </div>
             <div class="mine_table" id="mathTopics">
@@ -718,7 +724,7 @@
 
                 </ul>
                 <div class="bottom_txt">
-                    <span class="leftLine">————</span>没有更多数学题咯！<span class="leftLine">————</span>
+                    <span class="leftLine">———</span>没有更多数学题咯！<span class="leftLine">———</span>
                 </div>
             </div>
         </div>
@@ -814,8 +820,10 @@
     </div>
 </article>
 <article id="transfer" style="display: none">
-    <div id="converted">
+    <div class="wrap">
+        <div id="converted" class="turn-choice">
 
+        </div>
     </div>
     <div id="selectOneCard" style="display: none">
         <div class="wrap">
