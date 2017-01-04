@@ -144,9 +144,11 @@ span.ptxt_span {
     min-height: 3.71875rem;
     line-height: 3.71875rem;
     padding: 0 1.25rem 0 0;
-    margin-bottom: 0.625rem;
+    margin-bottom: 1.25rem;
     border-top: 1px solid #e5e5e5;
     border-bottom: 1px solid #e5e5e5;
+    background: url(../image/rsanjiao.png) 96% center no-repeat;
+    background-size: 0.46875rem 0.71875rem;
     background-color: #fff;
 }
 
@@ -243,9 +245,6 @@ span.ptxt_span {
 .note_number {
     margin: 0 0.3125rem;
 }
-
-/*
-!*@Author: zhaoxq*!
 .charge-explain{
     background-color: #ff8067;
     text-align: center;
@@ -262,11 +261,12 @@ span.ptxt_span {
     border-bottom: 1px solid #e5e5e5;
     background-color: #fff;
 }
-!*.main_ptxt{
+.main_ptxt{
     color: #aaa;
     font-size: 0.8125rem;
     padding: 0.9375rem 0;
-}*!
+}
+/*
 .mine_zuli{
     display: block;
     color: #444;
@@ -318,7 +318,7 @@ span.ptxt_span {
     width: 30%;
     height: 3.75rem;
     text-align: center;
-    padding-top: 0.46875rem;
+    padding-top: 0.6875rem;
     box-sizing: border-box;
     margin: 0 0 0.625rem 0.8125rem;
     background-color: #ffbc3c;

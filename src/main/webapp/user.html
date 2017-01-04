@@ -725,58 +725,60 @@
     </div>
 </article>
 <article id="recharge" style="display: none">
-    <div class="wrap" style="display:none;" id="to">
-        <ul class="xuanze_baodiv">
-            <li id="account">
-            </li>
-            <li id="oneCard">
-            </li>
-        </ul>
-    </div>
-    <div id="rechargepage" style="display: none">
-        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
-        <li class="mine_zuli" id="z" style="cursor: hand">
-            <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
-            <div class="xuanze_leftdiv">
-                <span class="xuanze_leftsp" id="name"></span>
-                <span class="xuanze_leftsp" id="no"></span>
-                <br>
-                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
-            </div>
-        </li>
-        <div class="charge-main">
-            <!-- charge-area -->
-            <p class="main_ptxt">1元=10金豆</p>
-            <ul class="rain-drop-ul">
-                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
-                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+    <div class="wrap">
+        <div style="display:none;" id="to">
+            <ul class="xuanze_baodiv">
+                <li id="account">
+                </li>
+                <li id="oneCard">
+                </li>
             </ul>
-            <div class="srinput_div">
-                <span class="srinput_span">其他金额：</span>
-                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
-            </div>
-            <div class="count_div">小计：
-                <span>￥<i class="count_spani1">15</i></span>
-            </div>
         </div>
-        <div class="count_div">合计：
-            <span>￥<i class="count_spani2">10.50</i></span>
-            <br>
-            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
-        </div>
-        <!-- pay-btn -->
-        <div class="pay_btn">
-            <div class="wechat-btn">
-                <span class="wechat-span"></span>
-                微信支付
+        <div id="rechargepage" style="display: none">
+            <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+            <li class="mine_zuli" id="z" style="cursor: hand">
+                <img src="" alt="" id="src" class="mine_img1">
+                <div class="xuanze_leftdiv">
+                    <span class="xuanze_leftsp" id="name"></span>
+                    <span class="xuanze_leftsp" id="no"></span>
+                    <br>
+                    <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
+                </div>
+            </li>
+            <div class="charge-main">
+                <!-- charge-area -->
+                <p class="main_ptxt">1元=10金豆</p>
+                <ul class="rain-drop-ul">
+                    <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+                    <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+                </ul>
+                <div class="srinput_div">
+                    <span class="srinput_span">其他金额：</span>
+                    <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+                </div>
+                <div class="count_div">小计：
+                    <span>￥<i class="count_spani1">15</i></span>
+                </div>
             </div>
-            <div class="alipay-btn">
-                <span class="alipay-span"></span>
-                支付宝支付
+            <div class="count_div">合计：
+                <span>￥<i class="count_spani2">10.50</i></span>
+                <br>
+                <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
+            </div>
+            <!-- pay-btn -->
+            <div class="pay_btn">
+                <div class="wechat-btn">
+                    <span class="wechat-span"></span>
+                    微信支付
+                </div>
+                <div class="alipay-btn">
+                    <span class="alipay-span"></span>
+                    支付宝支付
+                </div>
             </div>
         </div>
     </div>
@@ -1530,7 +1532,7 @@
                                 data: user,
                                 templateId: 'user-template'
                             })
-                            document.getElementById("myimage").src=user.head
+                            document.getElementById("myimage").src = user.head
                             if (u.name == "" | u.school == null | u.school == "" | u.classname == null | u.classname == "") {
                                 document.getElementById("usertan").style.display = "block"
                                 document.getElementById("userwindow").style.display = "block"
@@ -1658,7 +1660,7 @@
                         data: user,
                         templateId: 'user-template'
                     })
-                    document.getElementById("myimage").src=user.head
+                    document.getElementById("myimage").src = user.head
                     if (user.name == "" || user.school == null || user.school == "" || user.classname == null || user.classname == "") {
                         document.getElementById("usertan").style.display = "block"
                         document.getElementById("userwindow").style.display = "block"
@@ -2054,10 +2056,11 @@
                                             type: "get",
                                             url: "/api/public-account/head/" + mediaId,
                                             dataType: "json",
-                                            success: function (a) {},
+                                            success: function (a) {
+                                            },
                                             error: function (a) {
                                                 var data = {
-                                                    head:a.responseText
+                                                    head: a.responseText
                                                 }
                                                 $.ajax({
                                                     type: "put",
@@ -2068,21 +2071,21 @@
                                                     success: function (a) {
                                                         user = a
                                                         history.back()
-                                                    },error:function (a) {
+                                                    }, error: function (a) {
                                                         alert(JSON.stringify(a))
                                                     }
                                                 })
                                             }
                                         })
                                         /*wx.downloadImage({
-                                            serverId: mediaId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
-                                            isShowProgressTips: 1, // 默认为1，显示进度提示
-                                            success: function (res) {
-                                                var localId = res.localId; // 返回图片下载后的本地ID
-//                                                alert("返回图片下载后的本地ID" + localId)
+                                         serverId: mediaId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
+                                         isShowProgressTips: 1, // 默认为1，显示进度提示
+                                         success: function (res) {
+                                         var localId = res.localId; // 返回图片下载后的本地ID
+                                         //                                                alert("返回图片下载后的本地ID" + localId)
 
-                                            }
-                                        });*/
+                                         }
+                                         });*/
                                     }
                                 });
                             }
@@ -2624,10 +2627,10 @@
                     user.mathpastschedulers = []
                     user.chinepastschedulers = user.chinepast.schedulers
                     var grade = 0;
-                    if(user.chinepastschedulers.length == 0){
+                    if (user.chinepastschedulers.length == 0) {
                         document.getElementById("chine_live").innerHTML = ""
                         document.getElementById("chineLiveSize").innerHTML = "0"
-                    }else{
+                    } else {
                         for (var i = 0; i < user.chinepastschedulers.length; i++) {
                             if (user.chinepastschedulers[i].subjectId == 1) {
                                 user.chinepastschedulers[i].subjectId = "语文"
@@ -2645,10 +2648,10 @@
                     }
 
                     user.mathpastschedulers = user.mathpast.schedulers
-                    if(user.mathpastschedulers.length == 0){
+                    if (user.mathpastschedulers.length == 0) {
                         document.getElementById("math_live").innerHTML = ""
                         document.getElementById("mathLiveSize").innerHTML = "0"
-                    }else{
+                    } else {
                         for (var i = 0; i < user.mathpastschedulers.length; i++) {
                             if (user.mathpastschedulers[i].subjectId == 2) {
                                 user.mathpastschedulers[i].subjectId = "数学"
@@ -2695,10 +2698,10 @@
                 if (!state.pastKnowledgePoints.isPastKnowledgePoints) {
                     user.chinepastvolumes = []
                     user.chinepastvolumes = user.chinepast.volumes
-                    if(user.chinepastvolumes.length == 0){
+                    if (user.chinepastvolumes.length == 0) {
                         document.getElementById("chine_knowledgePoint").innerHTML = ""
                         document.getElementById("chine_knowledgePoint_count").innerHTML = "0"
-                    }else{
+                    } else {
                         document.getElementById("chine_knowledgePoint").innerHTML = ""
                         document.getElementById("chine_knowledgePoint_count").innerHTML = user.chinepastvolumes.length
                         proc({
@@ -2711,10 +2714,10 @@
 
                     user.mathpastvolumes = []
                     user.mathpastvolumes = user.mathpast.volumes
-                    if(user.mathpastvolumes.length == 0){
+                    if (user.mathpastvolumes.length == 0) {
                         document.getElementById("math_knowledgePoint").innerHTML = ""
                         document.getElementById("math_knowledgePoint_count").innerHTML = "0"
-                    }else{
+                    } else {
                         document.getElementById("math_knowledgePoint").innerHTML = ""
                         document.getElementById("math_knowledgePoint_count").innerHTML = user.mathpastvolumes.length
                         proc({
@@ -2757,9 +2760,9 @@
                 document.getElementById("mathtopicsname").innerHTML = ""
                 var cpc = 0
                 var mpc = 0
-                if(user.chineproblems.length == 0){
+                if (user.chineproblems.length == 0) {
                     document.getElementById("chineTopicsCount").innerHTML = cpc
-                }else{
+                } else {
                     for (var i = 0; i < user.chineproblems.length; ++i) {
                         if (user.chineproblems[i].problems.length == 0) {
                             cpc = "0"
@@ -2787,9 +2790,9 @@
                         }
                     })
                 }
-                if(user.mathproblems.length == 0){
+                if (user.mathproblems.length == 0) {
                     document.getElementById("mathTopicsCount").innerHTML = mpc
-                }else{
+                } else {
                     for (var i = 0; i < user.mathproblems.length; ++i) {
                         if (user.mathproblems[i].problems.length == 0) {
                             mpc = "0"
