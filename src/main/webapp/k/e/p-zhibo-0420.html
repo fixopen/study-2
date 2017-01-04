@@ -5,6 +5,9 @@
     <title></title>
     <meta name="screen-orientation" content="landscape"/>
     <style>
+        ul,li{
+            list-style: none;
+        }
         .wrap {
             position: absolute;
             top: 0;
@@ -13,7 +16,7 @@
             right: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
 
         .abs {
@@ -46,6 +49,47 @@
             top: 30px;
             right: 30px;
         }
+        .message{
+            width: 100%;
+            margin: 0 auto;
+            line-height: 60px;
+            font-size: 40px;
+            font-family: "苹方","Microsoft YaHei";
+            overflow: auto;
+        }
+        .ul01_flet{
+            color: #aaa;
+            float: left;
+        }
+        .ul01_flet li{
+            float: left;
+        }
+        .ul01_fli{
+            margin-right: 30px;
+        }
+        .ul01_count{
+            margin-left: 10px;
+        }
+        .ul01_imgzan{
+            width: 38px;
+            height: 38px;
+        }
+        .ul01_riht{
+            float: right;
+        }
+        .ul01_riht li{
+            float: left;
+        }
+        .mulu_botBtn{
+            color: #24cbd1;
+            font-size: 40px;
+            font-family: "苹方","Microsoft YaHei";
+            float: right;
+            padding-right: 40px;
+            text-decoration: none;
+            background: url('../../img/write.png') right center no-repeat;
+            background-size: 30px 30px;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +111,15 @@
                href="p-zhibo-0420.html?book=${bookNo}&page=${nextPageNo}&unit=${nextUnitNo}">
                 <img src="nextOff.png" alt="" style="width: 159px; height: 57px;">
             </a>
+        </div>
+        <div class="message">
+            <ul class="ul01_flet">
+                <li class="ul01_fli">阅读<span class="ul01_count">1000+</span></li>
+                <li><img class="ul01_imgzan" src="../../img/zan.png" alt=""><span class="ul01_count">5876</span></li>
+            </ul>
+            <ul class="ul01_riht">
+                <li class="ul01_fli"><a class="mulu_botBtn" href="#">写留言</a></li>
+            </ul>
         </div>
         <div id="mask"
              style="display: none; position: absolute; z-index: 50; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: 0.6;"></div>
