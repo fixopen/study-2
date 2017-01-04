@@ -213,9 +213,9 @@ var _$_ = function(params) {
 
         },
         getContent: function (action) {
-            params.objectType = this.objectType
+           /* params.objectType = this.objectType
             params.objectId = this.objectId
-            params.showType = this.showType
+            params.showType = this.showType*/
             params.action = action
             $.ajax({
                 type: "get",
@@ -227,7 +227,7 @@ var _$_ = function(params) {
                   //  alert(JSON.stringify(content))
                 },
                 error: function (e) {
-                    t.try(params.objectType,params.objectId,params.showType)
+                    t.try()
                 }
             })
         },
