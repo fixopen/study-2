@@ -2,6 +2,7 @@ alter table additionals rename column table_name to object_type;
 alter table answer_records rename column commit_time to object_type;
 alter table answer_records alter column answer type integer;
 alter table answer_records rename column answer to index;
+alter table books add column description text;
 alter table cards rename column subject to subject_id;
 alter table comments drop column client_id;
 alter table consumptions alter column object_type type name;

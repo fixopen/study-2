@@ -1,0 +1,109 @@
+<div id="transactionDialog" style="display: none">
+    <a class="dialogClose" href="JavaScript:void(0)"></a>
+    <section id="transactionDialogContent"></section>
+    <template id="transactionDialog-template">
+        <div class="win_neir koudou_win">
+            <p class="neir_ptxt" style="display: none" id="resourceTip">${objectType}需要${price}个金豆</p>
+            <p class="neir_ptxt" style="display: none" id="confirm">确认要扣${subjectName}卡${price}个金豆吗？</p>
+            <p class="neir_ptxt" style="display: none" id="subjectTip">您没有${subjectName}卡</p>
+            <p class="neir_ptxt" style="display: none" id="balanceTip">您的${subjectName}卡余额不足</p>
+            <p class="neir_ptiX" style="display: none" id="nextTip"><input name="" type="checkbox">下次不提醒</p>
+            <p class="neir_pBtn kou_dou" style="display: none">
+                <a class="p_btn" href="JavaScript:;" id="okButton">确认</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" style="display: none" href="JavaScript:;" id="rechargeButton">充值</a>
+            </p>
+            <p class="neir_pBtn2">
+                <a class="p_buyka" style="display: none" href="JavaScript:;" id="transferButton">转入</a>
+            </p>
+        </div>
+    </template>
+</div>
+
+<article id="recharge" style="display: none">
+    <div id="rechargepage" style="display: none">
+        <div class="charge-explain">可通过微信、支付宝充值；充值成功后2小时即可使用。</div>
+        <li class="mine_zuli" id="z" style="cursor: hand">
+            <img src="" alt="" id="src" class="mine_img1" style="height: 3.71875rem;">
+            <div class="xuanze_leftdiv">
+                <span class="xuanze_leftsp" id="name"></span>
+                <span class="xuanze_leftsp" id="no"></span>
+                <br>
+                <span class="xuanzeuli_span">余<i class="xuanzeuli_spani" id="money"></i>金豆</span>
+            </div>
+        </li>
+        <div class="charge-main">
+            <!-- charge-area -->
+            <p class="main_ptxt">1元=10金豆</p>
+            <ul class="rain-drop-ul">
+                <li class="rain-drop-li cur"><span class="rain_lispan">10</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">15</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">20</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">30</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">35</span>元</li>
+                <li class="rain-drop-li"><span class="rain_lispan">40</span>元</li>
+            </ul>
+            <div class="srinput_div">
+                <span class="srinput_span">其他金额：</span>
+                <input class="srinput_input" type="number" placeholder="请输入5的倍数，最小金额10元">
+            </div>
+            <div class="count_div">小计：
+                <span>￥<i class="count_spani1">15</i></span>
+            </div>
+        </div>
+        <div class="count_div">合计：
+            <span>￥<i class="count_spani2">10.50</i></span>
+            <br>
+            <span class="count_span">在线支付享<i class="count_spani3">7</i>折优惠</span>
+        </div>
+        <!-- pay-btn -->
+        <div class="pay_btn">
+            <div class="wechat-btn">
+                <span class="wechat-span"></span>
+                微信支付
+            </div>
+            <div class="alipay-btn">
+                <span class="alipay-span"></span>
+                支付宝支付
+            </div>
+        </div>
+    </div>
+</article>
+
+<div>
+    <ul class="wrap xuanze_baodiv" style="display: none" id="to|from">
+        <li>
+            <div id="account"></div>
+        </li>
+        <li>
+            <ul id="cards"></ul>
+        </li>
+    </ul>
+
+    <template id="card-template">
+        <div>
+            <div class="xuanze_zuli" data-id="${id}" data-amount="${amount}" data-subject="${subjectId}" data-img="${image}" data-no="${no}" style="cursor:hand">
+                <img class="xuanze_img1" src="${image}" alt="">
+                <div class="xuanze_leftdiv" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}" data-no="${no}">
+                    <span class="xuanze_leftsp">${subjectId}</span>
+                    <span class="xuanze_leftsp">${no}</span><br>
+                    <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="user-template">
+        <div>
+            <div class="xuanze_zuli" data-id="${id}" data-name="${name}" data-amount="${amount}" data-img="${image}" style="cursor:hand">
+                <img class="xuanze_img1" src="${image}" alt="">
+                <div class="xuanze_leftdiv">
+                    <span class="xuanze_leftsp">${name}</span>
+                    <span class="xuanze_leftsp"></span><br>
+                    <span class="xuanzeuli_span">余<i class="xuanzeuli_spani">${amount}</i>金豆</span>
+                </div>
+            </div>
+        </div>
+    </template>
+</div>

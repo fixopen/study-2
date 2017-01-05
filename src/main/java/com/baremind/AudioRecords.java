@@ -3,11 +3,15 @@ package com.baremind;
 import com.baremind.data.AudioRecord;
 import com.baremind.data.Book;
 import com.baremind.data.EnglishBook;
+import com.baremind.data.Session;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
@@ -18,10 +22,24 @@ import java.util.Map;
  */
 @Path("audio-records")
 public class AudioRecords {
+    Long getUserId(HttpServletRequest request) {
+        Long userId = null;
+        for (Cookie c : request.getCookies()) {
+            if (c.getName().equals("sessionId")) {
+                Session s = JPAEntry.getSession(c.getValue());
+                if (s != null) {
+                    userId = s.getUserId();
+                }
+                break;
+            }
+        }
+        return userId;
+    }
+
     @GET
     @Path("/{subjectNo}/{gradeNo}/{bookNo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response queryBook(@PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
+    public Response queryBook(@Context HttpServletRequest request, @PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
         Response result = Response.status(404).build();
         Map<String, Object> conditions = new HashMap<>();
         conditions.put("subjectNo", subjectNo);
@@ -29,7 +47,8 @@ public class AudioRecords {
         conditions.put("bookNo", bookNo);
         Book english = JPAEntry.getObject(Book.class, conditions);
         if (english != null) {
-            result = Response.ok(new Gson().toJson(Book.convertToMap(english))).build();
+            Long userId = getUserId(request);
+            result = Response.ok(new Gson().toJson(Book.convertToMap(english, userId))).build();
         }
         return result;
     }
@@ -37,7 +56,7 @@ public class AudioRecords {
     @GET
     @Path("/{subjectNo}/{gradeNo}/{bookNo}/{pageNo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response queryBook(@PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo, @PathParam("pageNo") String pageNo) {
+    public Response queryBook(@Context HttpServletRequest request, @PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo, @PathParam("pageNo") String pageNo) {
         Response result = Response.status(404).build();
         Map<String, Object> conditions = new HashMap<>();
         conditions.put("subjectNo", subjectNo);
@@ -45,7 +64,8 @@ public class AudioRecords {
         conditions.put("bookNo", bookNo);
         Book english = JPAEntry.getObject(Book.class, conditions);
         if (english != null) {
-            result = Response.ok(new Gson().toJson(Book.convertToMap(english, pageNo))).build();
+            Long userId = getUserId(request);
+            result = Response.ok(new Gson().toJson(Book.convertToMap(english, pageNo, userId))).build();
         }
         return result;
     }
