@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title></title>
     <meta name="screen-orientation" content="landscape"/>
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="introduce.css">
     <style>
         ul, li {
             list-style: none;
@@ -172,7 +176,32 @@
     </style>
 </head>
 <body>
-<article id="content"></article>
+<article id="introduce"></article>
+<article id="content" style="display: none;"></article>
+<template id="introduce-template">
+    <div class="wrap">
+        <div class="daodu-div">
+            <div class="daodu-top">
+                <img class="daodu-top-flower" src="img/read-flower.png" alt="">
+                <p class="daodu-top-txt">小雨教材中心参考国际智能化教材的分级阅读体系，精心编排了从AA级以及A-Z不断提升的共27级英语绘本。图书内容生动有趣，贴近儿童生活，图文并茂，融故事性、趣味性、知识性、科学性、权威性于一体。</p>
+                <img class="daodu-top-car" src="img/read-car.png" alt="">
+            </div>
+            <div class="daodu-center">
+                <img class="daodu-center-book" src="img/read-book.png" alt="">
+                <div class="daodu-center-left">
+                    <img class="${bookImg}" src="img/english01.png" alt="">
+                </div>
+                <div class="daodu-center-right">
+                    <h3 class="daodu-center-rightH3">${bookNo}</h3>
+                    <p class="daodu-center-rightP">${description}</p>
+                </div>
+            </div>
+            <div class="daodu-center-bottom">
+                <a class="daodu-center-bottomBtn" href="javascript:void(0)" data-article="content">开始学习</a>
+            </div>
+        </div>
+    </div>
+</template>
 <template id="audio-template">
     <div class="wrap" data-ext-point="units">
         <audio id="player" src="p-zhibo-0420/${bookNo}/${pageNo}${unitNo}.mp3" autoplay></audio>
@@ -262,10 +291,97 @@
         <video src="p-zhibo-0420/${bookNo}.mp4" controls autoplay style="width: 100%; height: 100%;"></video>
     </div>
 </template>
+
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
+
+    var state = {
+        currentArticle: document.getElementById('introduce'),
+        init: function () {
+//            var userId = g.getUrlParameter('userid')
+//            g.setCookie('userId', userId)
+            var bookNo = g.getUrlParameter('book');
+            var pageNo = g.getUrlParameter('page');
+            var unitNo = g.getUrlParameter('unit');
+
+
+
+            var switchTo = function (id) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/p-zhibo-0420.html#' + id)
+                state[id].init()
+            }
+
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article;
+                switchTo(id);
+                state[id].changeId(e.target.dataset.id)
+            })
+
+
+            window.addEventListener('hashchange', function (e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            }, false)
+        },
+        introduce:{
+            init: function () {
+            },
+            changeId: function () {
+
+                state.introduce.show();
+
+            },
+            value: null,
+            show: function () {
+                $('#introduce').html("");
+
+
+                proc({
+                    containerId: 'introduce',
+                    data: {},
+                    templateId: 'introduce-template'
+                })
+
+
+
+            },
+        },
+        content:{
+            parentId: 0,
+            init: function () {
+
+            },
+            changeId: function () {
+
+                state.content.show();
+
+            },
+            value: null,
+            show: function () {
+
+                    $('#content').html("");
+
+
+                    proc({
+                        containerId: 'content',
+                        data: {},
+                        templateId: 'video-template'
+                    })
+
+
+                }
+            },
+        }
+    }
+
+    state.init()
+
     var bookNo = g.getUrlParameter('book');
     var pageNo = g.getUrlParameter('page');
     var unitNo = g.getUrlParameter('unit');

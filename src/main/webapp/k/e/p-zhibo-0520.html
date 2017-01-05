@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title></title>
     <meta name="screen-orientation" content="landscape"/>
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="introduce.css">
     <style>
         ul, li {
             list-style: none;
@@ -172,7 +176,32 @@
     </style>
 </head>
 <body>
-<article id="content"></article>
+<article id="introduce"></article>
+<article id="content" style="display: none;"></article>
+<template id="introduce-template">
+    <div class="wrap">
+        <div class="daodu-div">
+            <div class="daodu-top">
+                <img class="daodu-top-flower" src="img/read-flower.png" alt="">
+                <p class="daodu-top-txt">英语自然拼读法通过直接学习26个字母及字母组合在单词中的发音规则，建立字母及字母组合与发音的感知，让学生在轻松愉快的氛围中，了解和学习英语字母组合的奥妙，掌握英语拼读规律。</p>
+                <img class="daodu-top-car" src="img/read-car.png" alt="">
+            </div>
+            <div class="daodu-center">
+                <img class="daodu-center-book" src="img/read-book.png" alt="">
+                <div class="daodu-center-left">
+                    <img class="${bookImg}" src="img/english01.png" alt="">
+                </div>
+                <div class="daodu-center-right">
+                    <h3 class="daodu-center-rightH3">${bookNo}</h3>
+                    <p class="daodu-center-rightP">${description}</p>
+                </div>
+            </div>
+            <div class="daodu-center-bottom">
+                <a class="daodu-center-bottomBtn" href="javascript:void(0)" data-article="content">开始学习</a>
+            </div>
+        </div>
+    </div>
+</template>
 <template id="audio-template">
     <div class="wrap" data-ext-point="units">
         <audio id="player" src="p-zhibo-0520/${bookNo}/${pageNo}${unitNo}.mp3" autoplay></audio>
@@ -266,6 +295,92 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
+
+    var state = {
+        currentArticle: document.getElementById('introduce'),
+        init: function () {
+//            var userId = g.getUrlParameter('userid')
+//            g.setCookie('userId', userId)
+            var bookNo = g.getUrlParameter('book');
+            var pageNo = g.getUrlParameter('page');
+            var unitNo = g.getUrlParameter('unit');
+
+
+
+            var switchTo = function (id) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block'
+                history.pushState(null, null, '/p-zhibo-0520.html#' + id)
+                state[id].init()
+            }
+
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article;
+                switchTo(id);
+                state[id].changeId(e.target.dataset.id)
+            })
+
+
+            window.addEventListener('hashchange', function (e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            }, false)
+        },
+        introduce:{
+            init: function () {
+            },
+            changeId: function () {
+
+                state.introduce.show();
+
+            },
+            value: null,
+            show: function () {
+                $('#introduce').html("");
+
+
+                proc({
+                    containerId: 'introduce',
+                    data: {},
+                    templateId: 'introduce-template'
+                })
+
+
+
+            },
+        },
+        content:{
+            parentId: 0,
+            init: function () {
+
+            },
+            changeId: function () {
+
+                state.content.show();
+
+            },
+            value: null,
+            show: function () {
+
+                $('#content').html("");
+
+
+                proc({
+                    containerId: 'content',
+                    data: {},
+                    templateId: 'video-template'
+                })
+
+
+            }
+        },
+    }
+    }
+
+    state.init()
+
     var bookNo = g.getUrlParameter('book');
     var pageNo = g.getUrlParameter('page');
     var unitNo = g.getUrlParameter('unit');
