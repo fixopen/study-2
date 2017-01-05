@@ -1121,8 +1121,7 @@
 <template id="pastLiveVideos-chine-template">
     <li class="all_uli">
         <div class="all_liplay">
-            <a class="all_aBtn live" href="javascript:void(0)" data-id="${id}" data-article="videoDetail"
-               data-endTime="${endTime}">
+            <a class="all_aBtn live" href="javascript:void(0)" data-id="${id}" data-endTime="${endTime}">
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div1">${subjectId}</div>
                 <div class="yuwen_div2">
@@ -1176,7 +1175,7 @@
 <template id="pastLiveVideos-math-template">
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
-            <div class="all_aBtn live" data-article="videoDetail" data-id="${id}" data-endTime="${endTime}">
+            <div class="all_aBtn live"data-id="${id}" data-endTime="${endTime}">
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">${subjectId}</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
@@ -1276,7 +1275,7 @@
         <p class="liveDetails-txt">${content}</p>
     </li>
 </template>
-
+<div id="container"></div>
 <!--*****************************video*****************************-->
 <!--<div id="container"></div>-->
 <!-- 引入js -->
@@ -2752,7 +2751,7 @@
                             user.objectType = "scheduler";
                             user.objectId = e.currentTarget.dataset.id;
                             user.showType = "video";
-                           /* var t = _$_(user)
+                            var t = _$_(user)
                             t.getContent(function (e) {
                                 alert(JSON.stringify(e))
                                 if (e.contentLink != '') {
@@ -2793,7 +2792,7 @@
                                                 }
                                             }, false)
 
-                                            //!*************************comments**************************
+                                            //*************************comments**************************
                                             var btn = document.getElementById('btn');
                                             btn.addEventListener('click', submit, false);
                                             function submit(e) {
@@ -2831,12 +2830,12 @@
                                         }
                                     }
                                 }
-                            })*/
+                            })
                         } else {
                             user.objectType = "scheduler";
                             user.objectId = e.currentTarget.dataset.id;
                             user.showType = "liveVideo";
-                          /*  var t = _$_(user)
+                            var t = _$_(user)
                             t.getContent(function (e) {
                                 alert(JSON.stringify(e))
                                 if (e.directLink != '') {
@@ -2846,7 +2845,7 @@
                                         document.getElementsByClassName("b").setAttribute("href", subjects[i].playing[j].directLink);
                                     }
                                 }
-                            })*/
+                            })
                         }
 
                     })
