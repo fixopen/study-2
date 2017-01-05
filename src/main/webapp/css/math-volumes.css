@@ -43,8 +43,10 @@
     width: 2.125rem;
     height: 1.9375rem;
     position: relative;
+    /*top: -4.0625rem;*/
+    /*left: -3.1875rem;*/
     top: -4.0625rem;
-    left: -3.1875rem;
+    left: -1.0rem;
 }
 
 .neir_div0 {
