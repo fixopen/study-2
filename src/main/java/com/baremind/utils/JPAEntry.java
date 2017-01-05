@@ -186,7 +186,11 @@ public class JPAEntry {
         return genericDelete(type, conditions);
     }
 
-    public static boolean isLogining(String userId) {
+    public static Session getSession(String sessionId) {
+        return getObject(Session.class, "identity", sessionId);
+    }
+
+    public static boolean isLogining (String userId) {
         final Map<String, Boolean> r = new HashMap<>();
         r.put("value", false);
         isLogining(userId, a -> {

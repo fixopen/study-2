@@ -21,6 +21,7 @@
 	font-size: 0.9375rem;
 	text-indent: 2em;
     padding: 0.9375rem;
+	margin: 0;
     border: 1px dashed #f69b9b;
     border-radius: 0.625rem;
 }
