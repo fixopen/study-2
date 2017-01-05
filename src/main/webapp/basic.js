@@ -434,17 +434,18 @@ var transaction = function (params) {
         })
     }
 
+    var self = this
     if (!this.user) {
         $.ajax({
             type: 'get',
             url: '/api/users/self',
             success: function (u) {
-                this.user = u
+                self.user = u
                 $.ajax({
                     type: 'get',
                     url: '/api/users/self/cards',
                     success: function (cs) {
-                        this.cards = cs
+                        self.cards = cs
                     }
                 })
             }
@@ -454,7 +455,7 @@ var transaction = function (params) {
             type: 'get',
             url: '/api/users/self/cards',
             success: function (cs) {
-                this.cards = cs
+                self.cards = cs
             }
         })
     }
