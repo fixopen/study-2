@@ -5,6 +5,7 @@
     <title>大屏-直播课</title>
     <link rel="stylesheet" type="text/css" href="base.css">
     <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="schedule.css">
     <style>
         .live_item:nth-child(4n+1) {
             margin-left: 0;
@@ -17,6 +18,7 @@
         <a href="index.html" class="logo" title="小雨知时">小雨知时</a>
     </h1>
     <div class="today_live">
+        <div data-article="scheduler" class="course_btn">本周课表</div>
         <h3 class="today_live_title">今日直播</h3>
         <ul class="live_list" id="videoContainer"></ul>
     </div>
@@ -65,6 +67,65 @@
     <div class="wait">
         <p class="wait_tip">直播未开始，请耐心等待！</p>
         <p class="start_time" id="startTime"></p>
+    </div>
+</article>
+<article id="scheduler" style="display: none;">
+    <div class="schedule">
+        <table class="schedule_table">
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tr>
+                <td rowspan="2">星期一<span class="week-span">（2016-10-24）</span></td>
+                <td>18:00-18:30</td>
+                <td>1年级</td>
+                <td><div class="content_td">找路线走一走</div></td>
+            </tr>
+            <tr>
+                <td>18:35-19:05</td>
+                <td>2年级</td>
+                <td><div class="content_td">画图推理</div></td>
+            </tr>
+            <tr class="single_tr">
+                <td>星期二<span class="week-span">（2016-10-25）</span></td>
+                <td>18:00-18:00</td>
+                <td>1-3年级</td>
+                <td><div class="content_td">写人作文之写作指导</div></td>
+            </tr>
+            <tr>
+                <td rowspan="2">星期三<span class="week-span">（2016-10-24）</span></td>
+                <td>18:00-18:30</td>
+                <td>1年级</td>
+                <td><div class="content_td">找路线走一走</div></td>
+            </tr>
+            <tr>
+                <td>18:35-19:05</td>
+                <td>2年级</td>
+                <td><div class="content_td">画图推理</div></td>
+            </tr>
+            <tr class="single_tr">
+                <td>星期四<span class="week-span">（2016-10-25）</span></td>
+                <td>18:00-18:00</td>
+                <td>1-3年级</td>
+                <td><div class="content_td">写人作文之写作指导</div></td>
+            </tr>
+            <tr>
+                <td rowspan="2">星期五<span class="week-span">（2016-10-24）</span></td>
+                <td>18:00-18:30</td>
+                <td>1年级</td>
+                <td><div class="content_td">找路线走一走</div></td>
+            </tr>
+            <tr>
+                <td>18:35-19:05</td>
+                <td>2年级</td>
+                <td><div class="content_td">画图推理</div></td>
+            </tr>
+        </table>
     </div>
 </article>
 

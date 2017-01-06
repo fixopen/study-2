@@ -1,0 +1,79 @@
+/*
+* @Author: zhaoxq
+* @Date:   2017-01-05 16:02:40
+* @Last Modified by:   User
+* @Last Modified time: 2017-01-05 17:31:07
+*/
+.schedule{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -400px 0 0 -600px;
+	padding: 92px 39px 40px 36px;
+	width: 1125px;
+	height: 498px;
+	background: url('images/schedule_bg.png') no-repeat center top;
+	overflow: hidden;
+}
+
+.schedule_table{
+	width: 100%;
+	background-color: #ffd5ce;
+	border-bottom: 3px solid #ea875f;
+}
+.schedule_table tr{
+	height: 47px;
+	border-top: 3px solid #ea875f;
+}
+.schedule_table tbody tr:first-child{
+	border-top: none;
+}
+.schedule_table thead tr{
+	height: 58px;
+	background-color: #fff;
+	border-bottom: 4px solid #ea875f;
+}
+
+.schedule_table thead th, .schedule_table td {
+    border-left: 3px solid #ea875f;
+}
+.schedule_table td:first-child {
+    border-left: none;
+}
+.schedule_table td{
+	text-align: center;
+	font-size: 22px;
+	color: #371f1f;
+}
+
+.schedule_table th:nth-child(1){
+	width: 154px;
+	background: url('images/week.png') no-repeat center center;
+	border-left: none;
+}
+.schedule_table th:nth-child(2){
+	width: 183px;
+	background: url('images/time.png') no-repeat center center;
+}
+.schedule_table th:nth-child(3){
+	width: 190px;
+	background: url('images/grade.png') no-repeat center center;
+}
+.schedule_table th:nth-child(4){
+	background: url('images/content.png') no-repeat center center;
+}
+.schedule_table .single_tr{
+	height: 80px;
+	background-color: #fff;
+}
+.week-span {
+    display: block;
+    font-size: 20px;
+}
+.content_td{
+	display: inline-block;
+	max-width: 550px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
