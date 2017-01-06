@@ -70,61 +70,28 @@
     </div>
 </article>
 <article id="scheduler" style="display: none;">
-    <div class="schedule">
-        <table class="schedule_table">
+    <div class="convenient">
+        <div class="week">
+            第<span id="week"></span>周
+        </div>
+        <table class="schedule-table">
             <thead>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+            <tr style="background-color: #fff; border-bottom: 1px solid #ea875f;">
+                <th style="width: 20%;" class="th"></th>
+                <th style="width: 80%; font-size: smaller">
+                    <table style="width: 100%; height: 100%;  border-spacing: 0; border-collapse: collapse;">
+                        <tr style="width: 100%; height: 100%;">
+                            <th style="width: 28%; height: 100%;text-align: center;">时间</th>
+                            <th style="width: 22%; height: 100%; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;text-align: center;">
+                                授课年级
+                            </th>
+                            <th style="width: 50%; height: 100%;text-align: center;">授课内容</th>
+                        </tr>
+                    </table>
+                </th>
             </tr>
             </thead>
-            <tr>
-                <td rowspan="2">星期一<span class="week-span">（2016-10-24）</span></td>
-                <td>18:00-18:30</td>
-                <td>1年级</td>
-                <td><div class="content_td">找路线走一走</div></td>
-            </tr>
-            <tr>
-                <td>18:35-19:05</td>
-                <td>2年级</td>
-                <td><div class="content_td">画图推理</div></td>
-            </tr>
-            <tr class="single_tr">
-                <td>星期二<span class="week-span">（2016-10-25）</span></td>
-                <td>18:00-18:00</td>
-                <td>1-3年级</td>
-                <td><div class="content_td">写人作文之写作指导</div></td>
-            </tr>
-            <tr>
-                <td rowspan="2">星期三<span class="week-span">（2016-10-24）</span></td>
-                <td>18:00-18:30</td>
-                <td>1年级</td>
-                <td><div class="content_td">找路线走一走</div></td>
-            </tr>
-            <tr>
-                <td>18:35-19:05</td>
-                <td>2年级</td>
-                <td><div class="content_td">画图推理</div></td>
-            </tr>
-            <tr class="single_tr">
-                <td>星期四<span class="week-span">（2016-10-25）</span></td>
-                <td>18:00-18:00</td>
-                <td>1-3年级</td>
-                <td><div class="content_td">写人作文之写作指导</div></td>
-            </tr>
-            <tr>
-                <td rowspan="2">星期五<span class="week-span">（2016-10-24）</span></td>
-                <td>18:00-18:30</td>
-                <td>1年级</td>
-                <td><div class="content_td">找路线走一走</div></td>
-            </tr>
-            <tr>
-                <td>18:35-19:05</td>
-                <td>2年级</td>
-                <td><div class="content_td">画图推理</div></td>
-            </tr>
+            <tbody id="day"></tbody>
         </table>
     </div>
 </article>
@@ -292,12 +259,39 @@
     <span>${year}-${month}-${date} ${hour}:${minute}:00开讲</span>
 </template>
 
+<template id="day-template">
+    <tr class="color">
+        <td style="width: 20%; border-right: 1px solid #ea875f;">星期${day}<br>(${date})</td>
+        <td style="width: 80%;">
+            <table style="width: 100%; height: 100%; border: none; border-spacing: 0; border-collapse: collapse;">
+                <tbody data-ext-point="items" class="data"></tbody>
+            </table>
+        </td>
+    </tr>
+</template>
+<template id="item-template">
+    <tr>
+        <td style="width: 28%;">${st}-${et}</td>
+        <td style="width: 22%; border-top: none; border-bottom: none; border-left: 1px solid #ea875f; border-right: 1px solid #ea875f;">
+            ${grade}
+        </td>
+        <td style="width: 50%;">${name}</td>
+    </tr>
+</template>
+
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/basic.js"></script>
 <script>
     var lives = []
     var futures = []
     var subjects = []
+    var courseTable = [
+        {day: '一', date: '', items: []},
+        {day: '二', date: '', items: []},
+        {day: '三', date: '', items: []},
+        {day: '四', date: '', items: []},
+        {day: '五', date: '', items: []}
+    ]
     var state = {
         pager: function (container, total, pageSize, currentPage, handler) {
             var pageIndexContainer = document.getElementById(id)
@@ -379,6 +373,15 @@
                                 type: 'get',
                                 url: '/api/schedulers',
                                 success: function (d) {
+                                    var nowTime = Date.now()
+                                    var monday = new Date(nowTime)
+                                    var year = monday.getFullYear()
+                                    var m = moment(nowTime)
+                                    var week = m.week()
+                                    var weekDay = m.day()
+                                    if (weekDay > 1) {
+                                        monday = new Date(nowTime - (weekDay - 1) * 24 * 60 * 60 * 1000)
+                                    }
                                     for (var i = 0; i < d.length; ++i) {
                                         for (var j = 0; j < d[i].length; ++j) {
                                             var item = d[i][j]
@@ -396,6 +399,44 @@
                                             item.type = 'normal'
                                             if (i == 0) {
                                                 item.type = 'live'
+                                            }
+                                            if (item.year == year && item.week == week) {
+                                                switch (item.day) {
+                                                    case 1:
+                                                        if (courseTable[0].date == '') {
+                                                            courseTable[0].date = year + '-' + (monday.getMonth() + 1) + '-' + monday.getDate()
+                                                        }
+                                                        courseTable[0].items.push(item)
+                                                        break
+                                                    case 2:
+                                                        if (courseTable[1].date == '') {
+                                                            var tuesday = new Date(+monday + 24 * 60 * 60 * 1000)
+                                                            courseTable[1].date = year + '-' + (tuesday.getMonth() + 1) + '-' + tuesday.getDate()
+                                                        }
+                                                        courseTable[1].items.push(item)
+                                                        break
+                                                    case 3:
+                                                        if (courseTable[2].date == '') {
+                                                            var wednesday = new Date(+monday + 2 * 24 * 60 * 60 * 1000)
+                                                            courseTable[2].date = year + '-' + (wednesday.getMonth() + 1) + '-' + wednesday.getDate()
+                                                        }
+                                                        courseTable[2].items.push(item)
+                                                        break
+                                                    case 4:
+                                                        if (courseTable[3].date == '') {
+                                                            var thursday = new Date(+monday + 3 * 24 * 60 * 60 * 1000)
+                                                            courseTable[3].date = year + '-' + (thursday.getMonth() + 1) + '-' + thursday.getDate()
+                                                        }
+                                                        courseTable[3].items.push(item)
+                                                        break
+                                                    case 5:
+                                                        if (courseTable[4].date == '') {
+                                                            var friday = new Date(+monday + 4 * 24 * 60 * 60 * 1000)
+                                                            courseTable[4].date = year + '-' + (friday.getMonth() + 1) + '-' + friday.getDate()
+                                                        }
+                                                        courseTable[4].items.push(item)
+                                                        break
+                                                }
                                             }
                                         }
                                     }
@@ -811,6 +852,31 @@
                     state.wait.isInit = false
                 }
             }
+        },
+        scheduler: {
+            isInit: false,
+            enter: function () {
+                if (!state.scheduler.isInit) {
+                    var now = new Date()
+                    var m = moment(now)
+                    var week = m.week()
+                    state.scheduler.weekElement.innerHTML = week
+
+                    proc({
+                        containerId: 'day',
+                        data: courseTable,
+                        templateId: 'day-template',
+                        next: {
+                            dataSelector: 'items',
+                            dataFieldName: 'items',
+                            templateId: 'item-template'
+                        }
+                    })
+
+                    state.scheduler.isInit = true
+                }
+            },
+            weekElement: document.getElementById("week")
         }
     }
 
