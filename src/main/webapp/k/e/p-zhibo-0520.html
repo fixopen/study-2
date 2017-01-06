@@ -64,7 +64,7 @@
             width: 95%;
             margin: 0 auto;
             line-height: 1.875rem;
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-family: "苹方", "Microsoft YaHei";
             overflow: auto;
         }
@@ -381,7 +381,7 @@
             $(document).on('click', '[data-article]', function (e) {
                 var id = e.target.dataset.article;
                 switchTo(id);
-                state[id].changeId(e.target.dataset.id)
+                //  state[id].changeId(e.target.dataset.id)
             })
 
 
@@ -394,9 +394,17 @@
         introduce: {
             init: function () {
                 $('#introduce').html("");
+                var bookImg = state.getBookImg(state.bookNo);
+                var name = data.name;
+                var description = data.description;
                 proc({
                     containerId: 'introduce',
-                    data: data,
+//                    data: data,
+                    data: {
+                        bookImg: bookImg,
+                        name: name,
+                        description: description
+                    },
                     templateId: 'introduce-template'
                 })
             }
@@ -452,6 +460,11 @@
                     mask.style.display = 'none'
                 }, false)
 
+                proc({
+                    data: value.comments,
+                    container: comments,
+                    templateId: 'comment-template'
+                })
                 // message---------
                 //留言
                 var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
@@ -460,10 +473,10 @@
                     }, false)
                     submitButton.addEventListener('click', function (e) {
                         state.content.submit(e.target, commentContent, function (c) {
-                            state.content.value.comments.push(c)
+                            value.comments.push(c)
                             commentsContainer.innerHTML = ''
                             proc({
-                                data: state.content.value.comments,
+                                data: value.comments,
                                 container: comments,
                                 templateId: 'comment-template'
                             })
@@ -478,7 +491,7 @@
                 commentEventBind(createComment, panel, btn, commentContent, commentContainer);
 
                 // likes---点赞
-                var likeProc = function (container, data, iconName, likeTemplate, unlikeTemplate, apiUrl) {
+                var likeProc = function (container, data, iconName, likeTemplate, unlikeTemplate) {
                     if (data.liked) {
                         proc({
                             container: container,
@@ -487,11 +500,11 @@
                         })
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
-                            state.content.unlike(apiUrl, data.id)
+                            state.content.unlike()
                             data.likeCount--
                             data.liked = false
                             container.innerHTML = '';
-                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate)
                         }, false)
                     } else {
                         proc({
@@ -501,11 +514,11 @@
                         })
                         var button = container.querySelector(iconName)
                         button.addEventListener('click', function (e) {
-                            state.content.like(apiUrl, data.id)
+                            state.content.like()
                             data.likeCount++
                             data.liked = true
                             container.innerHTML = '';
-                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate)
                         }, false)
                     }
                 }
@@ -513,8 +526,7 @@
                 var iconName = '#icon';
                 var likeTemplate = 'readLike-like-template';
                 var unlikeTemplate = 'readLike-unlike-template';
-                var apiUrl = '/api/audio-records/05/20/';
-                likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                likeProc(container, value, iconName, likeTemplate, unlikeTemplate)
 
 
                 for (var i = 0; i < value.records.length; ++i) {
@@ -541,19 +553,19 @@
                     }, false)
                 }
             },
-            unlike: function (apiUrl, id) {
+            unlike: function () {
                 $.ajax({
                     type: "put",
-                    url: apiUrl + id + '/unlike',
+                    url: '/api/audio-records/05/20/' + state.bookNo + '/unlike',
                     data: JSON.stringify({}),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
                 })
             },
-            like: function (apiUrl, id) {
+            like: function () {
                 $.ajax({
                     type: "put",
-                    url: apiUrl + id + '/like',
+                    url: '/api/audio-records/05/20/' + state.bookNo + '/like',
                     data: JSON.stringify({}),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8"
@@ -568,7 +580,7 @@
                 commentContent.value = '';
                 $.ajax({
                     type: "post",
-                    url: "/api/audio-records/05/20/",
+                    url: "/api/comments",
                     data: JSON.stringify({
                         objectType: 'book',
                         objectId: data.id,
@@ -646,6 +658,60 @@
                     break;
                 case '150':
                     result.previousPageNo = '140';
+                    break
+            }
+            return result
+        },
+        getBookImg: function (bookNo) {
+            var result = '';
+            switch (bookNo) {
+                case '01':
+                    result = '../images/MyFirstPhonicsBook1.jpg';
+                    break;
+                case '02':
+                    result = '../images/MyFirstPhonicsBook2.jpg';
+                    break;
+                case '03':
+                    result = '../images/MyFirstPhonicsBook3.jpg';
+                    break;
+                case '04':
+                    result = '../images/MyFirstPhonicsBook4.jpg';
+                    break;
+                case '05':
+                    result = '../images/MyFirstPhonicsBook5.jpg';
+                    break;
+                case '06':
+                    result = '../images/MyFirstPhonicsBook6.jpg';
+                    break;
+                case '07':
+                    result = '../images/MyFirstPhonicsBook7.jpg';
+                    break;
+                case '08':
+                    result = '../images/MyFirstPhonicsBook8.jpg';
+                    break;
+                case '09':
+                    result = '../images/MyFirstPhonicsBook9.jpg';
+                    break;
+                case '10':
+                    result = '../images/MyFirstPhonicsBook10.jpg';
+                    break;
+                case '11':
+                    result = '../images/MyFirstPhonicsBook11.jpg';
+                    break;
+                case '12':
+                    result = '../images/MyFirstPhonicsBook12.jpg';
+                    break;
+                case '13':
+                    result = '../images/MyFirstPhonicsBook13.jpg';
+                    break;
+                case '14':
+                    result = '../images/MyFirstPhonicsBook14.jpg';
+                    break;
+                case '15':
+                    result = '../images/MyFirstPhonicsBook15.jpg';
+                    break;
+                case '16':
+                    result = '../images/MyFirstPhonicsBook16.jpg';
                     break
             }
             return result

@@ -243,8 +243,8 @@ public class Scheduler {
     public static Long findUntypedItem(List<Object[]> container, Long id) {
         Long result = 0L;
         for (Object[] item : container) {
-            if (((Long)item[0]).longValue() == id.longValue()) {
-                result = (Long)item[1];
+            if (((Long) item[0]).longValue() == id.longValue()) {
+                result = (Long) item[1];
                 break;
             }
         }
@@ -252,7 +252,7 @@ public class Scheduler {
     }
 
     public static List<Object[]> findUntypedItems(List<Object[]> container, Long id) {
-        return container.stream().filter((item) -> ((Long)item[0]).longValue() == id.longValue()).collect(Collectors.toList());
+        return container.stream().filter((item) -> ((Long) item[0]).longValue() == id.longValue()).collect(Collectors.toList());
     }
 
     public static Map<String, Object> convertToMap(Scheduler scheduler, List<User> teachers, List<Image> covers, List<Object[]> likeCount, List<Object[]> likedCount, List<Object[]> readCount, List<Comment> comments) {
