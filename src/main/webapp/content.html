@@ -21,8 +21,6 @@
     <link rel="stylesheet" href="css/english-detail.css">
     <link rel="stylesheet" href="css/catalog.css">
 
-    <link rel="stylesheet" href="myUser/css/Popup.css">
-    <link rel="stylesheet" href="myUser/css/global.css">
     <script src="zu/zu.js"></script>
 
 </head>
@@ -31,7 +29,7 @@
 <article id="volumes"><!--课程封皮--></article>
 <article id="knowledgePoints" style="display: none;"><!--课程目录--></article>
 <article id="knowledgePoint" style="display: none;"></article>
-
+<div id="container"></div>
 <!--------------------------volumes--------------------------->
 <template id="chinese-structure"><!--课程封皮：学习-语文-->
     <div>
@@ -104,25 +102,25 @@
             <div class="tab-content">
                 <ol role="tabpanel" class="tab-pane active volumes_bg" id="low">
                     <li>
-                        <a class="textbook" href="/k/e/p-zhibo-0420.html?book=01&page=00">
+                        <a class="textbook" href="/k/e/p-zhibo-0420.html?book=01&page=00&a=intro">
                             <!--<span class="textbook_num">${newCount}</span>-->
                             <img src="images_version2/yingyu1.png" data-id="${id}" data-name="${title}" alt="">
                         </a>
                     </li>
                     <li>
-                        <a class="textbook" href="/k/e/p-zhibo-0420.html?book=02&page=00">
+                        <a class="textbook" href="/k/e/p-zhibo-0420.html?book=02&page=00&a=intro">
                             <!--<span class="textbook_num">${newCount}</span>-->
                             <img src="images_version2/yingyu2.png" data-id="${id}" data-name="${title}" alt="">
                         </a>
                     </li>
                     <li>
-                        <a class="textbook" href="/k/e/p-zhibo-0420.html?book=04&page=00">
+                        <a class="textbook" href="/k/e/p-zhibo-0420.html?book=04&page=00&a=intro">
                             <!--<span class="textbook_num">16</span>-->
                             <img src="images_version2/yingyu3.png" data-id="${id}" data-name="${title}" alt="">
                         </a>
                     </li>
                     <li>
-                        <a class="textbook" href="/k/e/p-zhibo-0420.html?book=04&page=00">
+                        <a class="textbook" href="/k/e/p-zhibo-0420.html?book=04&page=00&a=intro">
                             <span class="textbook_num">16</span>
                             <img src="images_version2/yingyu4.png" data-id="${id}" data-name="${title}" alt="">
                         </a>
@@ -135,25 +133,25 @@
                 </ol>
                 <ol role="tabpanel" class="tab-pane volumes_bg" id="high">
                     <li>
-                        <a class="textbook" href="/k/e/p-zhibo-0520.html?book=01&page=00">
+                        <a class="textbook" href="/k/e/p-zhibo-0520.html?book=01&page=00&a=intro">
                             <!--<span class="textbook_num">${newCount}</span>-->
                             <img src="images_version2/MyFirstPhonicsBook1.jpg" data-id="${id}" data-name="${title}" alt="">
                         </a>
                     </li>
                     <li>
-                        <a class="textbook" href="/k/e/p-zhibo-0520.html?book=02&page=00">
+                        <a class="textbook" href="/k/e/p-zhibo-0520.html?book=02&page=00&a=intro">
                             <!--<span class="textbook_num">${newCount}</span>-->
                             <img src="images_version2/MyFirstPhonicsBook2.jpg" data-id="${id}" data-name="${title}" alt="">
                         </a>
                     </li>
                     <li>
-                        <a class="textbook" href="/k/e/p-zhibo-0520.html?book=03&page=00">
+                        <a class="textbook" href="/k/e/p-zhibo-0520.html?book=03&page=00&a=intro">
                             <!--<span class="textbook_num">16</span>-->
                             <img src="images_version2/MyFirstPhonicsBook3.jpg" data-id="${id}" data-name="${title}" alt="">
                         </a>
                     </li>
                     <li>
-                        <a class="textbook" href="/k/e/p-zhibo-0520.html?book=04&page=00">
+                        <a class="textbook" href="/k/e/p-zhibo-0520.html?book=04&page=00&a=intro">
                             <span class="textbook_num">16</span>
                             <img src="images_version2/MyFirstPhonicsBook4.jpg" data-id="${id}" data-name="${title}" alt="">
                         </a>
@@ -1009,7 +1007,6 @@
         </div>
     </div>
 </template>
-
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/bootstrap/bootstrap.min.js"></script>
 <script src="/util.js"></script>
