@@ -3,8 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="format-detection" content="telphone=no"/>
     <meta name="screen-orientation" content="landscape"/>
+    <!-- 引入样式表 -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="introduce.css">
     <style>
+        ul, li {
+            list-style: none;
+        }
+
         .wrap {
             position: absolute;
             top: 0;
@@ -13,7 +25,7 @@
             right: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
         }
 
         .abs {
@@ -30,8 +42,8 @@
             -ms-transform: translate(-50%, -50%);
             -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
-            width: 660px;
-            height: 720px;
+            width: 20.625rem;
+            height: 22.5rem;
             margin: auto;
             background-color: white;
             border-radius: 20px;
@@ -40,17 +52,163 @@
         }
 
         .videoBook-Image {
-            width: 369px;
-            height: 81px;
+            width: 11.53125rem;
+            height: 2.53125rem;
             position: absolute;
             z-index: 50;
-            top: 30px;
-            right: 30px;
+            top: 0.9375rem;
+            right: 0.9375rem;
+        }
+
+        .message {
+            width: 95%;
+            margin: 0 auto;
+            line-height: 1.875rem;
+            font-size: 1.25rem;
+            font-family: "苹方", "Microsoft YaHei";
+            overflow: auto;
+        }
+
+        .ul01_flet {
+            color: #aaa;
+            float: left;
+        }
+
+        .ul01_flet li {
+            float: left;
+        }
+
+        .ul01_fli {
+            margin-right: 0.9375rem;
+        }
+
+        .english-message-noMargin {
+            margin-right: 0;
+        }
+
+        .ul01_count {
+            margin-left: 0.3125rem;
+        }
+
+        .ul01_imgzan {
+            width: 1.1875rem;
+            height: 1.1875rem;
+        }
+
+        .ul01_riht {
+            float: right;
+        }
+
+        .ul01_riht li {
+            float: left;
+        }
+
+        .mulu_botBtn {
+            color: #24cbd1;
+            font-size: 1.25rem;
+            font-family: "苹方", "Microsoft YaHei";
+            float: right;
+            padding-right: 1.25rem;
+            text-decoration: none;
+            background: url('../../img/write.png') right center no-repeat;
+            background-size: 0.9375rem 0.9375rem;
+        }
+
+        /*写留言*/
+        .textarea {
+            width: 100%;
+            padding: 0.9375rem;
+            margin-top: 0.9375rem;
+            border-radius: 0.3125rem;
+        }
+
+        .sub-btn {
+            width: 100%;
+            height: 2rem;
+            line-height: 2rem;
+            background-color: #0BB20C;
+            color: #ffffff;
+            text-align: center;
+            margin-top: 0.9375rem;
+            border-radius: 0.3125rem;
+        }
+
+        .muluBn_center {
+            margin: 1.5625rem 0 0.9375rem;
+            overflow: hidden;
+        }
+
+        .liuyan_li {
+            float: left;
+            margin-left: 0.625rem;
+        }
+
+        .lion_01 {
+            width: 16%;
+        }
+
+        .lion_01 img {
+            width: 100%;
+            text-align: center;
+        }
+
+        .lion_02 {
+            width: 77%;
+        }
+
+        .topUl {
+            overflow: hidden;
+        }
+
+        .topUl_top {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .litop_fleft {
+            color: #aaa;
+            float: left;
+        }
+
+        .litop_friht {
+            color: #aaa;
+            float: right;
+        }
+
+        .tcmar_top {
+            margin-top: 0.3125rem;
         }
     </style>
 </head>
 <body>
-<article id="content"></article>
+<article id="introduce"></article>
+<article id="content" style="display: none;"></article>
+<template id="introduce-template">
+    <div class="wrap">
+        <div class="daodu-div">
+            <div class="daodu-top">
+                <img class="daodu-top-flower" src="/k/e/read-flower.png" alt="">
+                <p class="daodu-top-txt">
+                    小雨教材中心参考国际智能化教材的分级阅读体系，精心编排了从AA级以及A-Z不断提升的共27级英语绘本。图书内容生动有趣，贴近儿童生活，图文并茂，融故事性、趣味性、知识性、科学性、权威性于一体。</p>
+                <img class="daodu-top-car" src="/k/e/read-car.png" alt="">
+            </div>
+            <div class="daodu-center">
+                <img class="daodu-center-book" src="/k/e/read-book.png" alt="">
+                <div class="daodu-center-left">
+                    <img class="daodu-center-leftImg" src="${bookImg}" alt="">
+                </div>
+                <div class="daodu-center-right">
+                    <h3 class="daodu-center-rightH3">${name}</h3>
+                    <p class="daodu-center-rightP">${description}</p>
+                </div>
+            </div>
+            <div class="daodu-center-bottom">
+                <a class="daodu-center-bottomBtn" href="javascript:void(0)" data-article="content"
+                   data-id="${id}">开始学习</a>
+            </div>
+        </div>
+    </div>
+</template>
 <template id="audio-template">
     <div class="wrap" data-ext-point="units">
         <audio id="player" src="p-zhibo-0420/${bookNo}/${pageNo}${unitNo}.mp3" autoplay></audio>
@@ -58,41 +216,95 @@
         <a id="videoBook" href="p-zhibo-0420.html?book=${bookNo}">
             <img src="videoBook.png" alt="" class="videoBook-Image">
         </a>
-        <div data-ext-point="records"></div>
+        <div data-ext-point="operation-panel" id="operation-panel"></div>
         <div>
-            <a id="previous" class="abs" style="bottom: 90px;  right: 240px;"
+            <a id="previous" class="abs" style="bottom: 2.8125rem;  right: 7.5rem;"
                href="p-zhibo-0420.html?book=${bookNo}&page=${previousPageNo}&unit=${previousUnitNo}">
-                <img src="previousOff.png" alt="" style="width: 159px; height: 57px;">
+                <img src="previousOff.png" alt="" style="width: 4.96875rem; height: 1.78125rem;">
             </a>
-            <a id="next" class="abs" style="bottom: 90px; right: 30px;"
+            <a id="next" class="abs" style="bottom: 2.8125rem; right: 0.9375rem;"
                href="p-zhibo-0420.html?book=${bookNo}&page=${nextPageNo}&unit=${nextUnitNo}">
-                <img src="nextOff.png" alt="" style="width: 159px; height: 57px;">
+                <img src="nextOff.png" alt="" style="width: 4.96875rem; height: 1.78125rem;}">
             </a>
+        </div>
+        <div class="message">
+            <div class="ul01_flet" id="readLike"></div>
+            <ul class="ul01_riht">
+                <li class="ul01_fli english-message-noMargin"><span class="mulu_botBtn" id="createComment">写留言</span>
+                </li>
+            </ul>
+            <div id="commentPanl" style="display: none">
+                <textarea name="message" id="textarea" cols="30" rows="5" class="textarea"></textarea>
+                <button type="submit" class="sub-btn" id="submitBtn">提交</button>
+            </div>
+            <span id="comments" data-ext-point="comments"></span>
         </div>
         <div id="mask"
              style="display: none; position: absolute; z-index: 50; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: 0.6;"></div>
         <div id="dialog" class="dialog">
-            <img src="dialogIcon.png" alt="" style="position: relative; top: -105px; left:-6px; width: 370px;">
-            <img id="tanClose" src="mask.png" alt="" style="position: absolute; top: -120px; right:0; width: 74px;">
+            <img src="dialogIcon.png" alt=""
+                 style="position: relative; top: -3.28125rem; left:-0.1875rem; width: 11.5625rem;">
+            <img id="tanClose" src="mask.png" alt=""
+                 style="position: absolute; top: -3.75rem; right:0; width: 2.3125rem;">
             <!--<div style="word-wrap: break-word;">-->
             <pre id="chinese"
-                 style="color: #131212; font-size: 2.5em; font-family: '微软雅黑'; margin: 0; padding:0 40px; height:300px;overflow-y: auto;
-                     white-space: pre-wrap;word-wrap: break-word;"></pre>
+                 style="color: #131212; font-size: 1.25rem; font-family: '微软雅黑'; margin: 0; padding:1.25rem; height:11.375rem;overflow-y: auto;
+                     white-space: pre-wrap;word-wrap: break-word;position: relative;top:-2.75rem;"></pre>
             <!--</div>-->
-            <div class="bottomBtn" style="width:100%;text-align: center;position: absolute; bottom: 40px;">
+            <div class="bottomBtn" style="width:100%;text-align: center;position: absolute; bottom: 1.25rem;">
                 <button id="closeTranslator" style="margin: auto; display: block; border:none; background: none;"><img
-                        src="okOff.png" alt="" style="width:360px; height: 103.2px;"></button>
+                        src="okOff.png" alt="" style="width:11.25rem; height: 3.225rem;"></button>
             </div>
         </div>
     </div>
+</template>
+<template id="readLike-like-template">
+    <ul>
+        <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+        <li><img class="ul01_imgzan" src="../../img/zan-over.png" alt="" id="icon"><span
+                class="ul01_count">${likeCount}</span>
+        </li>
+    </ul>
+</template>
+<template id="readLike-unlike-template">
+    <ul>
+        <li class="ul01_fli">阅读<span class="ul01_count">${readCount}</span></li>
+        <li><img class="ul01_imgzan" src="../../img/zan.png" alt="" id="icon"><span
+                class="ul01_count">${likeCount}</span>
+        </li>
+    </ul>
+</template>
+<template id="comment-template">
+    <ul class="muluBn_center">
+        <li class="liuyan_li lion_01">
+            <img src="${userAvatar}" alt="">
+        </li>
+        <li class="liuyan_li lion_02">
+            <ul class="topUl">
+                <li class="topUl_top">
+                    <div class="litop_fleft">${userName}</div>
+                    <!--<div class="litop_friht" data-id="${id}">-->
+                    <!--<img class="ul01_imgzan_" src="img/zan.png" alt="">-->
+                    <!--<span class="ul01_count">${likeCount}</span>-->
+                    <!--</div>-->
+                </li>
+                <li class="topUl_center tcmar_top">
+                    ${content}
+                </li>
+                <li class="topUl_bottom tcmar_top">
+                    <div class="litop_fleft">${createTime}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </template>
 <template id="operation-panel-template">
     <section>
         <div class="abs" style="top: ${top}%; left: ${left}%; width: ${width}%; height: ${height}%;">
             <div id="play${unitNo}" data-unit="${unitNo}" class="abs"
-                 style="bottom: 0; left: 0px; width: 117px; height: 117px; background: url('amplifierOff.png') no-repeat center; background-size: contain;"></div>
+                 style="bottom: 0; left: 0px; width: 3.65625rem; height: 3.65625rem; background: url('amplifierOff.png') no-repeat center; background-size: contain;"></div>
             <div id="translator${unitNo}" data-unit="${unitNo}" class="abs"
-                 style="bottom: 0; margin-left: 180px; width: 117px; height: 117px; background: url('translatorOff.png') no-repeat center; background-size: contain;"></div>
+                 style="bottom: 0; margin-left: 4.625rem; width: 3.65625rem; height: 3.65625rem; background: url('translatorOff.png') no-repeat center; background-size: contain;"></div>
         </div>
     </section>
 </template>
@@ -101,142 +313,123 @@
         <video src="p-zhibo-0420/${bookNo}.mp4" controls autoplay style="width: 100%; height: 100%;"></video>
     </div>
 </template>
+
 <script src="/jquery/jquery-3.1.1.min.js"></script>
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    var bookNo = g.getUrlParameter('book');
-    var pageNo = g.getUrlParameter('page');
-    var unitNo = g.getUrlParameter('unit');
-    if (pageNo == null && unitNo == null) {
-        $.ajax({
-            type: 'get',
-            url: '/api/audio-records/04/20/' + bookNo + '/name',
-            success: function (n) {
-                document.title = n.name
-                proc({
-                    templateId: 'video-template',
-                    data: {bookNo: bookNo},
-                    containerId: 'content'
+    var data = {};
+
+    var state = {
+        bookNo: g.getUrlParameter('book'),
+        pageNo: g.getUrlParameter('page'),
+        unitNo: g.getUrlParameter('unit'),
+        intro: g.getUrlParameter('a'),
+        currentArticle: document.getElementById('introduce'),
+        init: function () {
+
+            var switchTo = function (id) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block';
+                history.pushState(null, null, '/k/e/p-zhibo-0420.html#' + id)
+                state[id].init()
+            }
+
+            if (state.pageNo == null && state.unitNo == null) {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/audio-records/04/20/' + state.bookNo + '/name',
+                    success: function (n) {
+                        document.title = n.name;
+                        data = n;
+                        proc({
+                            templateId: 'video-template',
+                            data: {bookNo: state.bookNo},
+                            containerId: 'content'
+                        })
+                        if (!state.intro) {
+                            switchTo('content')
+                        }
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/audio-records/04/20/' + state.bookNo + '/' + state.pageNo,
+                    success: function (n) {
+                        //alert(JSON.stringify(n));
+                        document.title = n.name;
+                        data = n;
+
+                        for (var i = 0; i < data.records.length; ++i) {
+                            var r = data.records[i];
+                            r.width = (r.right - r.left) / 100;
+                            r.left = r.left / 100;
+                            r.right = r.right / 100;
+
+                            r.height = (r.bottom - r.top) / 100;
+                            r.top = r.top / 100;
+                            r.bottom = r.bottom / 100;
+                        }
+                        if (!state.intro) {
+                            switchTo('content')
+                        } else {
+                            switchTo('introduce')
+                        }
+                    }
                 })
             }
-        })
-    } else {
-        $.ajax({
-            type: 'get',
-            url: '/api/audio-records/04/20/' + bookNo + '/' + pageNo,
-            success: function (n) {
-                document.title = n.name;
-                var getNavigatorInfo = function (pageNo) {
-                    var result = {};
-                    switch (pageNo) {
-                        case '00':
-                            result.nextPageNo = '10';
-                            break;
-                        case '10':
-                            result.previousPageNo = '00';
-                            result.nextPageNo = '20';
-                            break;
-                        case '20':
-                            result.previousPageNo = '10';
-                            result.nextPageNo = '30';
-                            break;
-                        case '30':
-                            result.previousPageNo = '20';
-                            result.nextPageNo = '40';
-                            break;
-                        case '40':
-                            result.previousPageNo = '30';
-                            result.nextPageNo = '50';
-                            break;
-                        case '50':
-                            result.previousPageNo = '40';
-                            result.nextPageNo = '60';
-                            break;
-                        case '60':
-                            result.previousPageNo = '50';
-                            result.nextPageNo = '70';
-                            break;
-                        case '70':
-                            result.previousPageNo = '60';
-                            result.nextPageNo = '80';
-                            break;
-                        case '80':
-                            result.previousPageNo = '70';
-                            result.nextPageNo = '90';
-                            break;
-                        case '90':
-                            result.previousPageNo = '80';
-                            result.nextPageNo = '100';
-                            break;
-                        case '100':
-                            result.previousPageNo = '90';
-                            result.nextPageNo = '110';
-                            break;
-                        case '110':
-                            result.previousPageNo = '100';
-                            result.nextPageNo = '120';
-                            break;
-                        case '120':
-                            result.previousPageNo = '110';
-                            result.nextPageNo = '130';
-                            break;
-                        case '130':
-                            result.previousPageNo = '120';
-                            result.nextPageNo = '140';
-                            break;
-                        case '140':
-                            result.previousPageNo = '130';
-                            result.nextPageNo = '150';
-                            break;
-                        case '150':
-                            result.previousPageNo = '140';
-                            break
-                    }
-                    return result
-                }
 
-                for (var i = 0; i < n.records.length; ++i) {
-                    var r = n.records[i];
-                    r.width = (r.right - r.left) / 100;
-                    r.left = r.left / 100;
-                    r.right = r.right / 100;
+            $(document).on('click', '[data-article]', function (e) {
+                var id = e.target.dataset.article;
+                switchTo(id);
+                state[id].changeId(e.target.dataset.id)
+            })
 
-                    r.height = (r.bottom - r.top) / 100;
-                    r.top = r.top / 100;
-                    r.bottom = r.bottom / 100;
-                }
 
-                var navigatorInfo = getNavigatorInfo(pageNo);
-
+            window.addEventListener('hashchange', function (e) {
+                var hashPos = e.newURL.indexOf('#')
+                var hash = e.newURL.substring(hashPos + 1)
+                switchTo(hash)
+            }, false)
+        },
+        introduce: {
+            init: function () {
+                $('#introduce').html("");
                 proc({
-                    templateId: 'audio-template',
-                    data: {
-                        bookNo: bookNo,
-                        pageNo: pageNo,
-                        unitNo: unitNo,
-                        records: n.records,
-                        previousPageNo: navigatorInfo.previousPageNo,
-                        previousUnitNo: '10',
-                        nextPageNo: navigatorInfo.nextPageNo,
-                        nextUnitNo: '10',
-                    },
-                    containerId: 'content',
-                    next: {
-                        templateId: 'operation-panel-template'
-                    }
+                    containerId: 'introduce',
+                    data: data,
+                    templateId: 'introduce-template'
                 })
+            }
+        },
+        content: {
+            init: function () {
+                $('#content').html("");
 
-                var player = document.getElementById('player');
+                var value = data;
+                var navigatorInfo = state.getNavigatorInfo(state.pageNo);
+                value.previousPageNo = navigatorInfo.previousPageNo;
+                value.nextPageNo = navigatorInfo.nextPageNo;
+                value.previousUnitNo = 10;
+                value.nextUnitNo = 10;
+                proc({
+                    containerId: 'content',
+                    data: value,
+                    templateId: 'audio-template'
+                })
+                proc({
+                    templateId: 'operation-panel-template',
+                    data: value.records,
+                    containerId: 'operation-panel'
+                });
+
+                state.content.readLike = document.getElementById('readLike');
+                state.content.comments = document.getElementById('comments');
 
                 var previous = document.getElementById('previous');
-                previous.addEventListener('click', function (e) {
-                    player.pause()
-                }, false)
                 var next = document.getElementById('next');
-                next.addEventListener('click', function (e) {
-                    player.pause()
-                }, false)
 
                 if (navigatorInfo.previousPageNo == null) {
                     previous.style.display = 'none'
@@ -246,6 +439,7 @@
                     next.style.display = 'none'
                 }
 
+                var player = document.getElementById('player');
                 var dialog = document.getElementById('dialog');
                 var mask = document.getElementById('mask');
                 var chinese = document.getElementById('chinese');
@@ -261,20 +455,85 @@
                     mask.style.display = 'none'
                 }, false)
 
-                for (var i = 0; i < n.records.length; ++i) {
-                    var play = document.getElementById('play' + n.records[i].unitNo);
+                // message---------
+                //留言
+                var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
+                    toggleButton.addEventListener('click', function (e) {
+                        $(commentContentPanel).toggle()
+                    }, false)
+                    submitButton.addEventListener('click', function (e) {
+                        state.content.submit(e.target, commentContent, function (c) {
+                            state.content.value.comments.push(c)
+                            commentsContainer.innerHTML = ''
+                            proc({
+                                data: state.content.value.comments,
+                                container: comments,
+                                templateId: 'comment-template'
+                            })
+                        })
+                    }, false)
+                };
+                var createComment = document.getElementById('createComment');
+                var panel = document.getElementById('commentPanl');
+                var btn = document.getElementById('submitBtn');
+                var commentContent = document.getElementById('textarea');
+                var commentContainer = document.getElementById('comments');
+                commentEventBind(createComment, panel, btn, commentContent, commentContainer);
+
+                // likes---点赞
+                var likeProc = function (container, data, iconName, likeTemplate, unlikeTemplate, apiUrl) {
+                    if (data.liked) {
+                        proc({
+                            container: container,
+                            data: data,
+                            templateId: likeTemplate
+                        })
+                        var button = container.querySelector(iconName)
+                        button.addEventListener('click', function (e) {
+                            state.content.unlike(apiUrl, data.id)
+                            data.likeCount--
+                            data.liked = false
+                            container.innerHTML = '';
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                        }, false)
+                    } else {
+                        proc({
+                            container: container,
+                            data: data,
+                            templateId: unlikeTemplate
+                        })
+                        var button = container.querySelector(iconName)
+                        button.addEventListener('click', function (e) {
+                            state.content.like(apiUrl, data.id)
+                            data.likeCount++
+                            data.liked = true
+                            container.innerHTML = '';
+                            likeProc(container, data, iconName, likeTemplate, unlikeTemplate, apiUrl)
+                        }, false)
+                    }
+                }
+                var container = state.content.readLike;
+                var iconName = '#icon';
+                var likeTemplate = 'readLike-like-template';
+                var unlikeTemplate = 'readLike-unlike-template';
+                var apiUrl = '/api/audio-records/04/20/';
+                likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
+
+
+                for (var i = 0; i < value.records.length; ++i) {
+                    var play = document.getElementById('play' + value.records[i].unitNo);
                     play.addEventListener('click', function (e) {
-                        player.src = 'p-zhibo-0420/' + bookNo + '/' + pageNo + e.target.dataset.unit + '.mp3';
+                        player.src = 'p-zhibo-0420/' + state.bookNo + '/' + state.pageNo + e.target.dataset.unit + '.mp3';
                         player.currentTime = 0;
                         player.play()
                     }, false)
 
-                    var translator = document.getElementById('translator' + n.records[i].unitNo);
+                    var translator = document.getElementById('translator' + value.records[i].unitNo);
                     translator.addEventListener('click', function (e) {
                         var content = '';
-                        for (var j = 0; j < n.records.length; ++j) {
-                            if (n.records[j].unitNo == e.target.dataset.unit) {
-                                content = n.records[j].chinese
+                        for (var j = 0; j < value.records.length; ++j) {
+                            if (value.records[j].unitNo == e.target.dataset.unit) {
+                                content = value.records[j].chinese
                             }
                         }
                         //show content via dialog
@@ -284,9 +543,119 @@
                         e.target.style.backgroundImage = new Image('translatorOff.png')
                     }, false)
                 }
+            },
+            unlike: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/unlike',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            like: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/like',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            submit: function (submitButton, commentContent, callback) {
+                submitButton.style.color = '#f5f5f5';
+                var value = commentContent.value;
+                if (value.length < 1) {
+                    return false;
+                }
+                commentContent.value = '';
+                $.ajax({
+                    type: "post",
+                    url: "/api/audio-records/04/20/",
+                    data: JSON.stringify({
+                        objectType: 'book',
+                        objectId: data.id,
+                        content: value
+                    }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        callback(data)
+                    }
+                })
             }
-        })
+        },
+        getNavigatorInfo: function (pageNo) {
+            var result = {};
+            switch (pageNo) {
+                case '00':
+                    result.nextPageNo = '10';
+                    break;
+                case '10':
+                    result.previousPageNo = '00';
+                    result.nextPageNo = '20';
+                    break;
+                case '20':
+                    result.previousPageNo = '10';
+                    result.nextPageNo = '30';
+                    break;
+                case '30':
+                    result.previousPageNo = '20';
+                    result.nextPageNo = '40';
+                    break;
+                case '40':
+                    result.previousPageNo = '30';
+                    result.nextPageNo = '50';
+                    break;
+                case '50':
+                    result.previousPageNo = '40';
+                    result.nextPageNo = '60';
+                    break;
+                case '60':
+                    result.previousPageNo = '50';
+                    result.nextPageNo = '70';
+                    break;
+                case '70':
+                    result.previousPageNo = '60';
+                    result.nextPageNo = '80';
+                    break;
+                case '80':
+                    result.previousPageNo = '70';
+                    result.nextPageNo = '90';
+                    break;
+                case '90':
+                    result.previousPageNo = '80';
+                    result.nextPageNo = '100';
+                    break;
+                case '100':
+                    result.previousPageNo = '90';
+                    result.nextPageNo = '110';
+                    break;
+                case '110':
+                    result.previousPageNo = '100';
+                    result.nextPageNo = '120';
+                    break;
+                case '120':
+                    result.previousPageNo = '110';
+                    result.nextPageNo = '130';
+                    break;
+                case '130':
+                    result.previousPageNo = '120';
+                    result.nextPageNo = '140';
+                    break;
+                case '140':
+                    result.previousPageNo = '130';
+                    result.nextPageNo = '150';
+                    break;
+                case '150':
+                    result.previousPageNo = '140';
+                    break
+            }
+            return result
+        }
     }
+
+    state.init()
 </script>
 </body>
 </html>
