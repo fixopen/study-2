@@ -862,6 +862,24 @@
         </div>
     </div>
 </article>
+<article id="videoDetail" style="display: none;">
+    <div class="wrap">
+        <div class="rain-main live-details">
+            <div id="live-details-video" class="live-details-video"></div>
+            <div class="liveDetails-comment">
+                <div class="liveDetails-center">
+                    <h3 class="liveDetails-h3">评论</h3>
+                    <ul id="comment-area" class="liveDetails-ul"></ul>
+                </div>
+            </div>
+            <div class="liveDetails-message">
+                <input class="liveDetails-messageTxt" type="text" placeholder="留言" id="textarea">
+                <button class="liveDetails-messageBtn" id="btn">发送</button>
+            </div>
+        </div>
+    </div>
+</article>
+
 <template id="consume-template">
     <li class="balance_zuli">
         <p class="balance_leftsp">${timestamp}</p>
@@ -1103,7 +1121,7 @@
 <template id="pastLiveVideos-chine-template">
     <li class="all_uli">
         <div class="all_liplay">
-            <a class="all_aBtn" href="javascript:void(0)" data-id="${id}" data-article="videoDetail">
+            <a class="all_aBtn live" href="javascript:void(0)" data-id="${id}" data-endTime="${endTime}">
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div1">${subjectId}</div>
                 <div class="yuwen_div2">
@@ -1157,7 +1175,7 @@
 <template id="pastLiveVideos-math-template">
     <li class="all_uli">
         <div class="all_liplay shuxue_play">
-            <div class="all_aBtn" data-article="videoDetail" data-id="${id}">
+            <div class="all_aBtn live"data-id="${id}" data-endTime="${endTime}">
                 <div class="yuwen_div0"><span>${price}</span>金豆</div>
                 <div class="yuwen_div1 shuxue_div1">${subjectId}</div>
                 <div class="yuwen_div2 shuxue_div2" id="subjectImg">
@@ -1228,6 +1246,37 @@
         <li class="set-unbundling-li set-unbundling-litou"><span>${nickname}</span>（主微信号）</li>
     </ul>
 </template>
+<!--*****************************video*****************************-->
+<template id="live-video-template">
+    <div>
+        <div class="live-details-videoPlay">
+            <video src="${contentLink}" controls="controls" autoplay="autoplay"></video>
+            <div class="live-details-label" id="bookMark"></div>
+            <div class="live-details-videoTxt">${name}</div>
+        </div>
+        <div class="course-intro">
+            <div class="course_xiaqing">
+                <div class="course_dianzan">
+                    <p class="course_xqpsee"><span>${readCount}</span>人观看过</p>
+                    <a href="javascript:void(0)" class="course_xqpzan">
+                        <img class="dianzanImg" id="icon" alt="">
+                        赞
+                        <span class="xqpZan">${likeCount}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="video-comment-template">
+    <li class="liveDetails-li">
+        <span class="liveDetails-name">${userName}</span>
+        <span class="liveDetails-time">${createTime}</span>
+        <p class="liveDetails-txt">${content}</p>
+    </li>
+</template>
+<div id="container"></div>
+<!--*****************************video*****************************-->
 <!--<div id="container"></div>-->
 <!-- 引入js -->
 <script src="/jquery/jquery-3.1.1.min.js"></script>
@@ -2631,6 +2680,16 @@
             currentTab: $('[data-content="chineLiveVideos"]')[0],
             init: function () {
                 if (!state.pastLiveVideos.isPastLiveVidos) {
+                    if(user.cards == null || user.cards == undefined ){
+                        $.ajax({
+                            type: 'get',
+                            url: '/api/users/self/cards',
+                            success: function (ss) {
+                                user.cards = ss
+                            }
+                        })
+                    }
+                    user.user = user
                     user.chinepastschedulers = []
                     user.mathpastschedulers = []
                     user.chinepastschedulers = user.chinepast.schedulers
@@ -2684,6 +2743,112 @@
                         document.getElementById(state.pastLiveVideos.currentTab.dataset.content).addClass('cur')
                     })
 
+                    $('.live').on('click', function (e) {
+                        var dateValue = new Date(Date.parse(e.currentTarget.dataset.endtime.replace(/-/g, "/")));
+                        var datNow = new Date()
+                        if (dateValue < datNow) {
+//                            alert("在当前日期之前！回放");
+                            user.objectType = "scheduler";
+                            user.objectId = e.currentTarget.dataset.id;
+                            user.showType = "video";
+                            var t = _$_(user)
+                            t.getContent(function (e) {
+                                alert(JSON.stringify(e))
+                                if (e.contentLink != '') {
+                                    for (var i = 0; i < passed.length; i++) {
+                                        if (passed[i].id == object_Id) {
+                                            passed[i].contentLink = e.contentLink
+                                            state.videoDetail.data = passed[i]
+                                            state.switchTo('videoDetail')
+                                            icon.addEventListener('click', function (e) {
+                                                if (state.videoDetail.data.liked) {
+                                                    $.ajax({
+                                                        type: "put",
+                                                        url: '/api/schedulers/' + object_Id + '/unlike',
+                                                        data: JSON.stringify({}),
+                                                        dataType: "json",
+                                                        contentType: "application/json; charset=utf-8",
+                                                        success: function (unlike) {
+                                                            icon.setAttribute('src', '../images/dianzan.png');
+                                                            state.videoDetail.data.likeCount--
+                                                            e.target.nextElementSibling.textContent = state.videoDetail.data.likeCount
+                                                            state.videoDetail.data.liked = false;
+                                                        }
+                                                    })
+                                                } else {
+                                                    $.ajax({
+                                                        type: "put",
+                                                        url: '/api/schedulers/' + object_Id + '/like',
+                                                        data: JSON.stringify({}),
+                                                        dataType: "json",
+                                                        contentType: "application/json; charset=utf-8",
+                                                        success: function (like) {
+                                                            icon.setAttribute('src', '../images/zanover.png');
+                                                            ++state.videoDetail.data.likeCount;
+                                                            e.target.nextElementSibling.textContent = state.videoDetail.data.likeCount
+                                                            state.videoDetail.data.liked = true;
+                                                        }
+                                                    })
+                                                }
+                                            }, false)
+
+                                            //*************************comments**************************
+                                            var btn = document.getElementById('btn');
+                                            btn.addEventListener('click', submit, false);
+                                            function submit(e) {
+                                                var textarea = document.getElementById('textarea');
+                                                var value = textarea.value;
+                                                if (value.length < 1) {
+                                                    return false;
+                                                }
+                                                textarea.value = '';
+                                                e.target.style.color = '#f5f5f5';
+                                                // e.target.style.backgroundColor = '#3e8f3e';
+                                                $.ajax({
+                                                    type: "post",
+                                                    url: "/api/comments",
+                                                    data: JSON.stringify({
+                                                        objectType: 'playback',
+                                                        objectId: object_Id,
+                                                        content: value
+                                                    }),
+                                                    dataType: "json",
+                                                    contentType: "application/json; charset=utf-8",
+                                                    success: function (comment) {
+                                                        state.videoDetail.data.comments.push(comment)
+                                                        //                            location.reload();
+                                                        var c = document.getElementById('comment-area')
+                                                        c.innerHTML = ''
+                                                        proc({
+                                                            container: c,
+                                                            data: state.videoDetail.data.comments,
+                                                            templateId: 'video-comment-template'
+                                                        })
+                                                    }
+                                                })
+                                            }
+                                        }
+                                    }
+                                }
+                            })
+                        } else {
+                            user.objectType = "scheduler";
+                            user.objectId = e.currentTarget.dataset.id;
+                            user.showType = "liveVideo";
+                            var t = _$_(user)
+                            t.getContent(function (e) {
+                                alert(JSON.stringify(e))
+                                if (e.directLink != '') {
+                                    for (var i = 0; i < subjects.length; ++i) {
+                                        for (var j = 0; j < subjects[i].playing.length; ++j)
+                                            subjects[i].playing[j].directLink = e.directLink
+                                        document.getElementsByClassName("b").setAttribute("href", subjects[i].playing[j].directLink);
+                                    }
+                                }
+                            })
+                        }
+
+                    })
                     $(document).on('click', '.passed-detail', function (e) {
                         $('[data-identity="' + e.target.dataset.detail + '"]').toggle()
                         if ($(this).parent().parent().siblings(".course-detail").is(":visible")) {
@@ -2697,6 +2862,43 @@
                     })
                 }
                 state.pastLiveVideos.isPastLiveVidos = true
+            }
+        },
+        videoDetail: {
+            data: null,
+            id: null,
+            init: function () {
+                //var data = state.passed.findById(state.videoDetail.id)
+                var l = document.getElementById('live-details-video')
+                l.innerHTML = ''
+                proc({
+                    container: l,
+                    data: state.videoDetail.data,
+                    templateId: 'live-video-template'
+                })
+                var bookMark = document.getElementById("bookMark")
+                if (state.videoDetail.data.subjectId == 1) {
+                    bookMark.innerHTML = '语文'
+                } else if (state.videoDetail.data.subjectId == 2) {
+                    bookMark.innerHTML = '数学'
+                }
+
+
+                var icon = document.getElementById('icon')
+                if (state.videoDetail.data.liked) {
+                    icon.setAttribute('src', '../images/zanover.png');
+                } else {
+                    icon.setAttribute('src', '../images/dianzan.png');
+                }
+
+
+                var c = document.getElementById('comment-area')
+                c.innerHTML = ''
+                proc({
+                    containerId: 'comment-area',
+                    data: state.videoDetail.data.comments,
+                    templateId: 'video-comment-template'
+                })
             }
         },
         pastKnowledgePoints: {
