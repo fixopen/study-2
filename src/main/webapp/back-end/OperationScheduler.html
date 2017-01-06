@@ -146,6 +146,7 @@
                 //$("input[name='grade']:checked").val(scheduler[i].year),
                 //alert(scheduler.grade)
                 $("#grade" + scheduler.grade).attr("checked", true);
+                coverInput.dataset.storePath = scheduler.cover
 
                 $("#title").attr("value", scheduler.title);
                 //alert(scheduler.description)
