@@ -1,9 +1,6 @@
 package com.baremind;
 
-import com.baremind.data.AudioRecord;
-import com.baremind.data.Book;
-import com.baremind.data.EnglishBook;
-import com.baremind.data.Session;
+import com.baremind.data.*;
 import com.baremind.utils.IdGenerator;
 import com.baremind.utils.JPAEntry;
 import com.google.gson.Gson;
@@ -104,6 +101,39 @@ public class AudioRecords {
         return result;
     }
 
+    @PUT
+    @Path("/{subjectNo}/{gradeNo}/{bookNo}/like")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response like(@Context HttpServletRequest request, @PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
+        Response result = Response.status(404).build();
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("subjectNo", subjectNo);
+        conditions.put("gradeNo", gradeNo);
+        conditions.put("bookNo", bookNo);
+        Book book = JPAEntry.getObject(Book.class, conditions);
+        if (book != null) {
+            Log log = Logs.insert(getUserId(request), "book", book.getId(), "like");
+            result = Response.ok(new Gson().toJson(log)).build();
+        }
+        return result;
+    }
+
+    @PUT
+    @Path("/{subjectNo}/{gradeNo}/{bookNo}/lunike")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unlike(@Context HttpServletRequest request, @PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
+        Response result = Response.status(404).build();
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("subjectNo", subjectNo);
+        conditions.put("gradeNo", gradeNo);
+        conditions.put("bookNo", bookNo);
+        Book book = JPAEntry.getObject(Book.class, conditions);
+        if (book != null) {
+            Long count = Logs.deleteLike(getUserId(request), "book", book.getId());
+            result = Response.ok("{\"state\": \"ok\"}").build();
+        }
+        return result;
+    }
 
     @POST //import
     @Consumes({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN, "application/xml"})
