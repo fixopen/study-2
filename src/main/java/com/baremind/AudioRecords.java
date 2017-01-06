@@ -119,7 +119,7 @@ public class AudioRecords {
     }
 
     @PUT
-    @Path("/{subjectNo}/{gradeNo}/{bookNo}/lunike")
+    @Path("/{subjectNo}/{gradeNo}/{bookNo}/unlike")
     @Produces(MediaType.APPLICATION_JSON)
     public Response unlike(@Context HttpServletRequest request, @PathParam("subjectNo") String subjectNo, @PathParam("gradeNo") String gradeNo, @PathParam("bookNo") String bookNo) {
         Response result = Response.status(404).build();
