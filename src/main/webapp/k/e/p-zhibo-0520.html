@@ -303,7 +303,7 @@
             <div id="play${unitNo}" data-unit="${unitNo}" class="abs"
                  style="bottom: 0; left: 0px; width: 3.65625rem; height: 3.65625rem; background: url('amplifierOff.png') no-repeat center; background-size: contain;"></div>
             <div id="translator${unitNo}" data-unit="${unitNo}" class="abs"
-                 style="bottom: 0; margin-left: 5.625rem; width: 3.65625rem; height: 3.65625rem; background: url('translatorOff.png') no-repeat center; background-size: contain;"></div>
+                 style="bottom: 0; margin-left: 4.625rem; width: 3.65625rem; height: 3.65625rem; background: url('translatorOff.png') no-repeat center; background-size: contain;"></div>
         </div>
     </section>
 </template>
@@ -316,15 +316,22 @@
 <script src="/util.js"></script>
 <script src="/basic.js"></script>
 <script>
-    var data = [];
+    var data = {};
     var state = {
         bookNo: g.getUrlParameter('book'),
         pageNo: g.getUrlParameter('page'),
         unitNo: g.getUrlParameter('unit'),
+        intro: g.getUrlParameter('a'),
         currentArticle: document.getElementById('introduce'),
         init: function () {
-//            var userId = g.getUrlParameter('userid')
-//            g.setCookie('userId', userId)
+
+            var switchTo = function (id) {
+                state.currentArticle.style.display = 'none'
+                state.currentArticle = document.getElementById(id)
+                state.currentArticle.style.display = 'block';
+                history.pushState(null, null, '/k/e/p-zhibo-0520.html#' + id)
+                state[id].init()
+            }
 
             if (state.pageNo == null && state.unitNo == null) {
                 $.ajax({
@@ -335,9 +342,12 @@
                         data = n;
                         proc({
                             templateId: 'video-template',
-                            data: {bookNo: bookNo},
+                            data: {bookNo: state.bookNo},
                             containerId: 'content'
                         })
+                        if (!state.intro) {
+                            switchTo('content')
+                        }
                     }
                 })
             } else {
@@ -345,7 +355,7 @@
                     type: 'get',
                     url: '/api/audio-records/05/20/' + state.bookNo + '/' + state.pageNo,
                     success: function (n) {
-                        alert(JSON.stringify(n));
+                        //alert(JSON.stringify(n));
                         document.title = n.name;
                         data = n;
 
@@ -359,19 +369,13 @@
                             r.top = r.top / 100;
                             r.bottom = r.bottom / 100;
                         }
-
-                        history.pushState(null, null, '/k/e/p-zhibo-0520.html#introduce');
-                        state.introduce.changeId();
+                        if (!state.intro) {
+                            switchTo('content')
+                        } else {
+                            switchTo('introduce')
+                        }
                     }
                 })
-            }
-
-            var switchTo = function (id) {
-                state.currentArticle.style.display = 'none'
-                state.currentArticle = document.getElementById(id)
-                state.currentArticle.style.display = 'block'
-                history.pushState(null, null, '/k/e/p-zhibo-0520.html#' + id)
-                state[id].init()
             }
 
             $(document).on('click', '[data-article]', function (e) {
@@ -389,61 +393,19 @@
         },
         introduce: {
             init: function () {
-            },
-            changeId: function () {
-                state.introduce.value = data;
-                state.introduce.show();
-
-            },
-            value: null,
-            show: function () {
                 $('#introduce').html("");
-                var value = state.introduce.value;
                 proc({
                     containerId: 'introduce',
-                    data: value,
-//                    data: {
-//                        name: name,
-//                        description: description,
-////                        bookImg:bookImg
-//                    },
+                    data: data,
                     templateId: 'introduce-template'
                 })
-            },
+            }
         },
         content: {
-            parentId: 0,
             init: function () {
-
-            },
-            changeId: function () {
-                state.content.value = data;
-                state.content.show();
-
-            },
-            value: null,
-            unlike: function (apiUrl, id) {
-                $.ajax({
-                    type: "put",
-                    url: apiUrl + id + '/unlike',
-                    data: JSON.stringify({}),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8"
-                })
-            },
-            like: function (apiUrl, id) {
-                $.ajax({
-                    type: "put",
-                    url: apiUrl + id + '/like',
-                    data: JSON.stringify({}),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8"
-                })
-            },
-            show: function () {
-
                 $('#content').html("");
-                var value = state.content.value;
+
+                var value = data;
                 var navigatorInfo = state.getNavigatorInfo(state.pageNo);
                 value.previousPageNo = navigatorInfo.previousPageNo;
                 value.nextPageNo = navigatorInfo.nextPageNo;
@@ -490,6 +452,7 @@
                     mask.style.display = 'none'
                 }, false)
 
+                // message---------
                 //留言
                 var commentEventBind = function (toggleButton, commentContentPanel, submitButton, commentContent, commentsContainer) {
                     toggleButton.addEventListener('click', function (e) {
@@ -550,7 +513,7 @@
                 var iconName = '#icon';
                 var likeTemplate = 'readLike-like-template';
                 var unlikeTemplate = 'readLike-unlike-template';
-                var apiUrl = '/api/audio-records/04/20/';
+                var apiUrl = '/api/audio-records/05/20/';
                 likeProc(container, value, iconName, likeTemplate, unlikeTemplate, apiUrl)
 
 
@@ -578,6 +541,24 @@
                     }, false)
                 }
             },
+            unlike: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/unlike',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
+            like: function (apiUrl, id) {
+                $.ajax({
+                    type: "put",
+                    url: apiUrl + id + '/like',
+                    data: JSON.stringify({}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+            },
             submit: function (submitButton, commentContent, callback) {
                 submitButton.style.color = '#f5f5f5';
                 var value = commentContent.value;
@@ -587,10 +568,10 @@
                 commentContent.value = '';
                 $.ajax({
                     type: "post",
-                    url: "/api/audio-records/04/20/",
+                    url: "/api/audio-records/05/20/",
                     data: JSON.stringify({
                         objectType: 'book',
-                        objectId: state.content.value.id,
+                        objectId: data.id,
                         content: value
                     }),
                     dataType: "json",
