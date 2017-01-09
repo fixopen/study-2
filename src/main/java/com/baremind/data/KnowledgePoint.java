@@ -129,7 +129,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         return kpm;
     }
 
-    public static Map<String, Object> convertToMap(KnowledgePoint kp, Long userId, Date now, Date yesterday) {
+    public static Map<String, Object> convertToMap(KnowledgePoint kp, List<Log> logs, Long userId, Date now, Date yesterday) {
         Map<String, Object> kpm = new HashMap<>();
         kpm.put("id", kp.getId());
         kpm.put("volumeId", kp.getVolumeId());
@@ -149,7 +149,14 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         if (readCount != null) {
             kpm.put("readCount", readCount);
         }
-
+        Date createTime = null;
+        for (Log l:logs){
+            if(l.getUserId().longValue() == userId.longValue() && l.getObjectId().longValue() == kp.getId().longValue()){
+                createTime = l.getCreateTime();
+                break;
+            }
+        }
+        kpm.put("readTime", createTime);
         String stateType = "old";
         EntityManager em = JPAEntry.getEntityManager();
         String stats = "SELECT COUNT(l) FROM KnowledgePoint l WHERE l.volumeId = :volumeId AND l.id = :id  AND l.showTime > :yesterday AND l.showTime < :now";
@@ -221,6 +228,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
 
     @Override
     public Map<String, Object> getContent() {
+        boolean isPK = true;
         Map<String, Object> conditions = new HashMap<>();
         conditions.put("knowledgePointId", id);
         Map<String, String> orders = new HashMap<>();
@@ -282,20 +290,10 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         }
         List<Image> problemImages = getList(em, problemImageIds, Image.class);
         List<Video> problemVideos = getList(em, problemVideoIds, Video.class);
-        List<String> videoCoverIds = new ArrayList<>();
-        for (Video v : problemVideos) {
-            if (v.getCover() != null) {
-                videoCoverIds.add(v.getCover().toString());
-            }
-        }
+        List<String> videoCoverIds = problemVideos.stream().filter(v -> v.getCover() != null).map(v -> v.getCover().toString()).collect(Collectors.toList());
         List<Image> videoCovers = getList(em, videoCoverIds, Image.class);
         List<ProblemOption> problemOptionObjects = Resources.getList(em, "problemId", problemIds, ProblemOption.class);
-        List<String> optionImageIds = new ArrayList<>();
-        for (ProblemOption o : problemOptionObjects) {
-            if (o.getImageId() != null) {
-                optionImageIds.add(o.getImageId().toString());
-            }
-        }
+        List<String> optionImageIds = problemOptionObjects.stream().filter(o -> o.getImageId() != null).map(o -> o.getImageId().toString()).collect(Collectors.toList());
         List<Image> optionImages = getList(em, optionImageIds, Image.class);
         List<ProblemStandardAnswer> problemStandardAnswerObjects = Resources.getList(em, "problemId", problemIds, ProblemStandardAnswer.class);
 
@@ -316,6 +314,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
                         Text t = Resources.findItem(textObjects, (Text text) -> text.getId().longValue() == item.getObjectId().longValue());
                         Map<String, Object> tm = Text.convertToMap(t);
                         orderedContents.add(tm);
+                        isPK = false;
                     }
                     break;
                 case "image":
@@ -323,6 +322,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
                         Image i = Resources.findItem(imageObjects, (image) -> image.getId().longValue() == item.getObjectId().longValue());
                         Map<String, Object> im = Image.convertToMap(i);
                         orderedContents.add(im);
+                        isPK = false;
                     }
                     break;
                 case "imageText":
@@ -330,6 +330,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
                         ImageText it = Resources.findItem(imageTextObject, (imageText) -> imageText.getId().longValue() == item.getObjectId().longValue());
                         Map<String, Object> itm = ImageText.convertToMap(it);
                         orderedContents.add(itm);
+                        isPK = false;
                     }
                     break;
                 case "pinyinText":
@@ -337,6 +338,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
                         PinyinText pt = Resources.findItem(pinyinTextObject, (pinyinText) -> pinyinText.getId().longValue() == item.getObjectId().longValue());
                         Map<String, Object> qm = PinyinText.convertToMap(pt);
                         orderedContents.add(qm);
+                        isPK = false;
                     }
                     break;
                 case "problem":
@@ -350,6 +352,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
                     if (quoteObject != null) {
                         Quote q = Resources.findItem(quoteObject, (quote) -> quote.getId().longValue() == item.getObjectId().longValue());
                         orderedQuotes.add(q);
+                        isPK = false;
                     }
                     break;
             }
@@ -357,6 +360,7 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
 
         Map<String, Object> totalResult = new HashMap<>();
         totalResult.put("title", getName());
+        totalResult.put("id", getId());
         totalResult.put("quotes", orderedQuotes);
         totalResult.put("contents", orderedContents);
 
@@ -370,6 +374,8 @@ public class KnowledgePoint implements com.baremind.data.Entity, Resource {
         interaction.put("likeCount", Logs.getStatsCount("knowledge-point", id, "like"));
         interaction.put("readCount", Logs.getStatsCount("knowledge-point", id, "read"));
         totalResult.put("interaction", interaction);
+
+        totalResult.put("type", isPK ? "pk" : "normal");
 
         totalResult.put("problems", orderedProblems);
 

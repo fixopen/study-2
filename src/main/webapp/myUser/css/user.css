@@ -2038,3 +2038,239 @@ a.study_lia{
     color: #ff8067;
     margin: 0 0.9375rem;
 }
+
+
+/* 往期回放视频详情start */
+.live-details {
+    padding: 0;
+    height: 100%;
+}
+
+.live-details-video {
+    background-color: #fff;
+    margin-bottom: 1.0rem;
+}
+
+.live-details-chinaDiv {
+    background: url('../image/yuwen.png') 1.375rem 2.1375rem no-repeat;
+    background-size: 4.59375rem 4.59375rem;
+    padding-top: 1.2rem;
+    position: absolute;
+    top: 0rem;
+    left: 0;
+    z-index: 2;
+}
+
+.live-details-chinaDivh3 {
+    color: #fff;
+    font-size: 2.625rem;
+    font-weight: bold;
+    width: 63%;
+    height: 3rem;
+    margin: 0;
+    margin-top: 20px;
+    margin-left: 7.0rem;
+    text-align: left;
+    overflow: hidden;
+}
+
+.live-details-chinaDivp {
+    color: #fff88c;
+    font-size: 0.9375rem;
+    margin: 0;
+    margin-left: 7.0rem;
+    text-align: left;
+    height: 1.25rem;
+    overflow: hidden;
+}
+
+.live-details-teacher {
+    color: #fff;
+    font-size: 0.8125rem;
+    position: absolute;
+    right: 1.5625rem;
+    bottom: 0.625rem;
+}
+
+.live-details-videoPlay {
+    width: 100%;
+    height: 12rem;
+    position: relative;
+}
+
+.live-details-videoPlay video {
+    width: 100%;
+    height: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.live-details-label {
+    display: inline-block;
+    color: #ff6c00;
+    font-size: 0.9375rem;
+    font-weight: bold;
+    width: 1.25rem;
+    height: 3.03125rem;
+    text-align: center;
+    background: url('../image/shu_qian.png') center no-repeat;
+    background-size: 100% 100%;
+    margin-left: 0.625rem;
+    position: relative;
+    z-index: 4;
+}
+
+.live-details-videoTxt {
+    color: #fff;
+    font-size: 1.0rem;
+    position: absolute;
+    bottom: 25%;
+    left: 5%;
+    z-index: 4;
+}
+
+.course_xiaqing {
+    color: #888;
+    font-size: 1.0rem;
+}
+
+.course_dianzan {
+    line-height: 2.25rem;
+}
+
+.course_xqpsee {
+    display: inline-block;
+    color: #aaa;
+    font-size: 0.8125rem;
+    margin: 0;
+    padding-left: 1.5625rem;
+    background: url('../image/liulan.png') 0 center no-repeat;
+    background-size: 1.21875rem 0.84375rem;
+}
+
+.course_xqpzan {
+    display: inline-block;
+    float: right;
+    color: #aaa;
+    font-size: 0.8125rem;
+}
+
+.dianzanImg {
+    display: inline-block;
+    width: 1.125rem;
+    height: 1.0rem;
+    vertical-align: middle;
+}
+
+.dianzanImg.cur {
+    display: none;
+}
+
+.xqpZan {
+    margin-left: 0.3125rem;
+}
+
+.liveDetails-comment {
+    height: 55%;
+    background-color: #fff;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.liveDetails-center {
+    margin: 0.625rem 0.9375rem;
+    height: 95%;
+    overflow: hidden;
+}
+
+.liveDetails-h3 {
+    color: #444;
+    font-size: 1.125rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #f1f1f1;
+}
+
+.liveDetails-ul {
+    height: 90%;
+    overflow-y: auto;
+}
+
+.liveDetails-li {
+    color: #444;
+    font-size: 0.8125rem;
+    padding: 0.9375rem 0 1.1875rem 0;
+    border-bottom: 1px dashed #f1f1f1;
+}
+
+.liveDetails-name {
+    color: #aaa;
+    font-size: 0.9375rem;
+    margin-right: 0.625rem;
+}
+
+.liveDetails-time {
+    color: #aaa;
+    font-size: 0.8125rem;
+}
+
+.liveDetails-txt {
+    margin-top: 0.78125rem;
+}
+
+.liveDetails-message {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0.625rem 0;
+}
+
+.liveDetails-messageTxt {
+    width: 70%;
+    height: 2.125rem;
+    line-height: 2.1875rem;
+    border: 1px solid #ddd;
+    border-radius: 0.3125rem;
+    padding: 0 0.3125rem;
+    margin: 0 0.3125rem 0 0.9375rem;
+}
+
+.liveDetails-messageBtn {
+    float: right;
+    margin-right: 0.9375rem;
+    color: #fff;
+    font-size: 0.9375rem;
+    width: 3.125rem;
+    height: 2.1875rem;
+    line-height: 2.1875rem;
+    text-align: center;
+    background-color: #ff8067;
+    border-radius: 0.3125rem;
+}
+
+@media screen and (max-width: 320px) {
+    .liveDetails-comment {
+        height: 48%;
+    }
+
+    .liveDetails-center {
+        height: 92%;
+    }
+
+    .liveDetails-messageTxt {
+        width: 65%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .liveDetails-comment {
+        height: 70%;
+    }
+
+    .liveDetails-messageTxt {
+        width: 86%;
+    }
+}
+
+/*往期回放视频详情end*/

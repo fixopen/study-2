@@ -32,7 +32,7 @@
     </style>
 </head>
 <body>
-<article id="sign" style="display: none" data-title="登录">
+<article id="sign" style="display: none">
     <div class="wrap">
         <div class="sign_header">
             <div class="sign_avatar"></div>
@@ -64,15 +64,15 @@
                         <span class="sign_mine_leftsp">密码</span>
                         <!--<input class="sign_mine_rightip" type="password" id="pwd" placeholder="请输入6-16位密码">-->
                         <input class="sign_mine_rightip mima_dd" name="" id="pwd" type="password"
-                               placeholder="请输入6-16位密码" maxlength="16">
+                               placeholder="请输入6-16位密码">
                         <input class="sign_mine_rightip mima_wz" name="" type="text" style="display:none;"
-                               placeholder="请输入6-16位密码" maxlength="16">
+                               placeholder="请输入6-16位密码">
                         <a class="eye" data-show="1" href="javascript:void(0);"></a>
                         <i class="sign_errorTs" id="errorNumber" style="display: none">密码错误</i>
                     </li>
                     <li class="sign_mine_zuli sign_zuli_yzm" id="tu" style="display: none;">
                         <span class="sign_mine_leftsp">验证码</span>
-                        <input class="sign_mine_rightip" id="code" placeholder="请输入验证码" maxlength="4">
+                        <input class="sign_mine_rightip" id="code" placeholder="请输入验证码">
                         <!--<a class="sign_yanZma" id="huan"></a>-->
                         <a class="sign_yanZma" id="huan">点击换一张</a>
                         <!--点击换一张-->
@@ -93,7 +93,7 @@
                     </li>
                     <li class="sign_mine_zuli">
                         <span class="sign_mine_leftsp">密码</span>
-                        <input class="sign_mine_rightip" type="password" id="activationPassword" placeholder="请输入短信密码" maxlength="6">
+                        <input class="sign_mine_rightip" type="password" id="activationPassword" placeholder="请输入短信密码">
                         <a class="sign_famima" id="fapassword">发送密码</a>
                     </li>
                 </ul>
@@ -110,7 +110,7 @@
         </div>
     </div>
 </article>
-<article id="firstActiveCard" style="display: none;"data-title="添加卡号">
+<article id="firstActiveCard" style="display: none;">
     <div class="wrap">
         <section style="overflow: hidden; background-color: #fff; border-top: 1px solid #e5e5e5;">
             <div class="firstActiveCard_li_css public_li_css">
@@ -143,22 +143,19 @@
         <br/>
         <div style="font-size: 0.875rem; color: #fe6568; padding-left: 0.875rem; box-sizing: border-box; line-height: 1.375rem;"
              id="tips">
-            卡片激活码将发送至此手机！
+            欢迎来到激活卡页面!
         </div>
         <br/>
         <button id="save" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
     margin-right: 5%; background-color: #fe6568; border: none">确 认
         </button>
         <br/>
-        <div class="sign_bottom_txt" data-article="sign">
-            <span class="leftline">——</span>已填加过卡号？使用激活手机号可“登录”<span class="leftline">——</span>
-        </div>
         <!--  <button onclick="back()" style="text-decoration: none; color: #fff; height: 3.75rem;  width: 90%; text-align: center; display: block; font-size: 18px;  margin-left: 5%;
       margin-right: 5%; background-color: #fe6568; border: none">返回上一页
           </button>-->
     </div>
-</article >
-<article id="gold" style="display: none" data-title="摇一摇撒金币">
+</article>
+<article id="gold" style="display: none">
     <!--<div class="goldwrap"></div>
     <div class="goldbgImg">
         <div class="goldcloud1"></div>
@@ -192,10 +189,10 @@
         </div>
     </div>
 </article>
-<article id="info" style="display: none;" data-title="我的资料">
+<article id="info" style="display: none;">
 
 </article>
-<article id="changePassword" style="display: none;" data-title="密码设置">
+<article id="changePassword" style="display: none;">
     <div class="wrap">
         <div class="set-password-maindiv">
             <ul class="set-password-ul">
@@ -220,7 +217,7 @@
         </div>
     </div>
 </article>
-<article id="changePhoneNumber" style="display: none" data-title="手机号修改" >
+<article id="changePhoneNumber" style="display: none">
     <div class="wrap">
         <div class="set-password-maindiv">
             <ul class="set-password-ul">
@@ -245,7 +242,7 @@
         </div>
     </div>
 </article>
-<article id="changeWechat" style="display: none"  data-title="微信解绑">
+<article id="changeWechat" style="display: none">
     <div class="tan">
         <div class="window1"><!-- 弹窗 -->
             <a class="windowClose" id="closeWechat"></a>
@@ -278,7 +275,7 @@
         </div>
     </div>
 </article>
-<article id="user" data-title="我的账号">
+<article id="user">
     <div class="tan1" id="usertan"></div>
     <div class="window1" id="userwindow"><!-- 弹窗 -->
         <a class="windowClose" id="closeWaChet"></a>
@@ -303,7 +300,7 @@
         </div>
     </div>
 </article>
-<article id="nickname" style="display: none" data-title="昵称">
+<article id="nickname" style="display: none">
     <div class="wrap">
         <div class="mine_zilo">
             <ul class="mine_zUl" style="border:none;border-radius: 0;">
@@ -316,7 +313,7 @@
         </div>
     </div>
 </article>
-<article id="cards" style="display: none;" data-title="我的学习卡">
+<article id="cards" style="display: none;">
     <div class="wrap">
         <div class="card_header">
             <div class="card_header_l">
@@ -368,9 +365,9 @@
         </div>
     </div>
 </article>
-<article id="head" style="display: none;" data-title="头像">
-</article >
-<article id="study" style="display: none;" data-title="学习记录">
+<article id="head" style="display: none;">
+</article>
+<article id="study" style="display: none;">
     <div class="wrap youBackg">
         <div class="study-record">
             <div class="study_text">
@@ -416,7 +413,7 @@
 <article id="score" style="display: none;">
 
 </article>
-<article id="activeCard" style="display: none;" data-title="添加新卡">
+<article id="activeCard" style="display: none;">
     <!-- 弹窗开始 -->
     <div class="cardtan">
         <div class="window1"><!-- 弹窗 -->
@@ -447,7 +444,7 @@
         </div>
     </div>
 </article>
-<article id="settings" style="display: none;" data-title="设置">
+<article id="settings" style="display: none;">
     <div class="wrap">
         <ul class="public_ul_css setting-marginTop">
             <li class="user_li_css public_li_css" data-article="changePassword">
@@ -471,7 +468,7 @@
         </ul>
     </div>
 </article>
-<article id="help" style="display: none;" data-title="帮助">
+<article id="help" style="display: none;">
     <div class="wrap youBackg">
         <div class="study-record">
             <div class="study_text">
@@ -580,7 +577,7 @@
         </div>
     </div>
 </article>
-<article id="contactUs" style="display: none;" data-title="联系我们">
+<article id="contactUs" style="display: none;">
     <div class="wrap">
         <div class="account-setOur-login">
             <img src="myUser/image/account-setOur-login.png" height="187" width="187"/></div>
@@ -608,7 +605,7 @@
         </div>
     </div>
 </article>
-<article id="pastLiveVideos" style="display: none" data-title="看过的视频">
+<article id="pastLiveVideos" style="display: none">
     <div class="wrap">
         <div class="pastLiveVideos_header">
             <div class="pastLiveVideos_header_l">
@@ -651,7 +648,7 @@
         </div>
     </div>
 </article>
-<article id="pastKnowledgePoints" style="display: none" data-title="学过的知识点">
+<article id="pastKnowledgePoints" style="display: none">
     <div class="wrap">
         <div class="pastLiveVideos_header">
             <div class="pastLiveVideos_header_l">
@@ -697,11 +694,11 @@
     </div>
 </article>
 
-<article id="knowledgePoint" style="display: none" data-title="知识点详情">
+<article id="knowledgePoint" style="display: none">
 
 </article>
 
-<article id="pastTopics" style="display: none" data-title="做过的题">
+<article id="pastTopics" style="display: none">
     <div class="wrap">
         <div class="pastLiveVideos_header">
             <div class="pastLiveVideos_header_l">
@@ -744,7 +741,7 @@
         </div>
     </div>
 </article>
-<article id="recharge" style="display: none" data-title="充值">
+<article id="recharge" style="display: none">
     <div class="wrap">
         <div style="display:none;" id="to">
             <ul class="xuanze_baodiv">
@@ -803,7 +800,7 @@
         </div>
     </div>
 </article>
-<article id="consumes" style="display: none;" data-title="账户余额">
+<article id="consumes" style="display: none;">
     <div class="wrap">
         <div class="balance_jine">
             <div class="balance_top">
@@ -839,7 +836,7 @@
 
         </div>
     </div>
-    <div id="selectOneCard" style="display: none" data-title="转出">
+    <div id="selectOneCard" style="display: none">
         <div class="wrap">
             <ul class="mine_baodiv">
                 <li>
@@ -1126,7 +1123,7 @@
 </template>
 <template id="knowledge-template">
     <div>
-        <li class="all_lifen pastKnowledgePoint" data-id="${id}" data-subject="${subject}" data-liked="${liked}" data-type="${type}">
+        <li class="all_lifen pastKnowledgePoint" data-id="${id}" data-subject="${subject}">
             <div class="lifen_div">
                 <span class="biaoti_left">${name}</span>
                 <span class="biaoti_right">${readTime}</span>
@@ -1646,7 +1643,6 @@
             state.currentArticle = document.getElementById(id)
             history.pushState(null, null, '/user.html#' + id)
             state.currentArticle.style.display = 'block'
-            document.title=state.currentArticle.dataset.title
             state.hiden()
             state[id].init()
         },
@@ -1763,14 +1759,13 @@
             currentTab: $('[data-content="username"]')[0],
             type: 'telephone',
             init: function () {
-                if (state.sign.isSign) {
-                } else {
+                if (!state.sign.isSign) {
                     var fapassword = document.getElementById('fapassword');
-//                    fapassword.disabled = false
-                    fapassword.addEventListener('click', function (e) {
-//                        if (fapassword.disabled == false) {
-                        state.firstActiveCard.activeCode(e, 0)
-//                        }
+                    fapassword.disabled = false
+                    fapassword.addEventListener('click', function () {
+                        if (fapassword.disabled == false) {
+                            state.firstActiveCard.activeCode(0)
+                        }
                     }, false);
 
                     var pwd = document.getElementById('pwd');
@@ -1836,17 +1831,9 @@
                                 }
                                 break
                             case 'validationCode':
-                                loginInfo.info = $('#activationNumber').val();
-                                loginInfo.key = $("#activationPassword").val();
-                                var ap = document.getElementById("activationPassword");
-                                ap.addEventListener('blur',function (e) {
-                                    this.value=this.value.replace(/\D/g,'')
-                                })
-                                if($("#activationPassword").val().length !=6 ){
-                                    alert("请输入6位密码");
-                                }else{
-                                    send(loginInfo)
-                                }
+                                loginInfo.info = $('#activationNumber').val()
+                                loginInfo.key = $("#activationPassword").val()
+                                send(loginInfo)
                                 break
                             default:
                                 break
@@ -1890,11 +1877,9 @@
                                     element.innerHTML = '图形验证码错误'
                                     break;
                                 case 410:
-                                if(element.id == 'zhanghaoerror'){
-                                        state.sign.GraphicCode();
-                                        document.getElementById("tu").style.display = "block"
-                                        element.innerHTML = '错误次数超过五次，请输入图形码'
-                                    }
+                                    state.sign.GraphicCode();
+                                    document.getElementById("tu").style.display = "block"
+                                    element.innerHTML = '错误次数超过五次，请输入图形码'
                                     break;
                                 default:
                                     break
@@ -2818,11 +2803,11 @@
                 }
 
                 var activeCodeButton = document.getElementById('activeCode');
-//                activeCodeButton.disabled = false
-                activeCodeButton.addEventListener('click', function (e) {
-//                    if (activeCodeButton.disabled == false) {
-                        state.firstActiveCard.activeCode(e,1)
-//                    }
+                activeCodeButton.disabled = false
+                activeCodeButton.addEventListener('click', function () {
+                    if (activeCodeButton.disabled == false) {
+                        state.firstActiveCard.activeCode(1)
+                    }
                 }, false);
 
                 var saveButton = document.getElementById('save');
@@ -2841,31 +2826,27 @@
                 }, false)
             },
 
-            activeCode: function (a,e) {
-                if(a.target.disabled != true){
-                    a.target.disabled = false
-                }
+            activeCode: function (e) {
                 var timeoutId;
                 var an;
                 var error;
-                if (e == 1 && a.target.disabled== false) {
+                if (e == 1) {
                     var phoneNumber = document.getElementById("phoneNumber").value
                     an = "activeCode";
                     error = "tips";
-                    daojishi(a,e)
-                } else if (e == 0 && a.target.disabled == false) {
+                    daojishi(e)
+                } else if (e == 0) {
                     var phoneNumber = document.getElementById("activationNumber").value
                     an = "fapassword";
                     error = "errorfamima";
-                    daojishi(a,e)
-                } else if (e == 2 && a.target.disabled == false) {
+                    daojishi(e)
+                } else if (e == 2) {
                     var phoneNumber = document.getElementById("newPhone").value
                     an = "sendcode";
                     error = "newError";
-                    daojishi(a,e)
+                    daojishi(e)
                 }
-                function daojishi(b,e) {
-                    a.target.disabled = true
+                function daojishi(e) {
                     if (phoneNumber != "") {
                         var tips = document.getElementById(error);
                         $.ajax({
@@ -2879,22 +2860,22 @@
                                     var proc = function () {
                                         document.getElementById(an).value = ' (' + timeoutCount + ')  秒后\n重新发送';
                                         --timeoutCount;
-                                        b.target.disabled = true
+                                        document.getElementById(an).disabled = true
                                         if (timeoutCount <= 0) {
                                             document.getElementById(an).value = ' 重新发送 ';
                                             clearInterval(timeoutId);
-                                            b.target.disabled = false
+                                            document.getElementById(an).disabled = false
                                         }
                                     }
                                 } else {
                                     var proc = function () {
                                         document.getElementById(an).innerHTML = ' (' + timeoutCount + ')  秒后\n重新发送';
                                         --timeoutCount;
-                                        b.target.disabled = true
+                                        document.getElementById(an).disabled = true
                                         if (timeoutCount <= 0) {
                                             document.getElementById(an).innerHTML = ' 重新发送 ';
                                             clearInterval(timeoutId);
-                                            b.target.disabled = false
+                                            document.getElementById(an).disabled = false
                                         }
                                     }
                                 }
@@ -2911,22 +2892,22 @@
                                     var proc = function () {
                                         document.getElementById(an).value = ' (' + timeoutCount + ')  秒后\n重新发送';
                                         --timeoutCount;
-                                        b.target.disabled = true
+                                        document.getElementById(an).disabled = true
                                         if (timeoutCount <= 0) {
                                             document.getElementById(an).value = ' 重新发送 ';
                                             clearInterval(timeoutId);
-                                            b.target.disabled = false
+                                            document.getElementById(an).disabled = false
                                         }
                                     }
                                 } else {
                                     var proc = function () {
                                         document.getElementById(an).innerHTML = ' (' + timeoutCount + ')  秒后\n重新发送';
                                         --timeoutCount;
-                                        b.target.disabled = true
+                                        document.getElementById(an).disabled = true
                                         if (timeoutCount <= 0) {
                                             document.getElementById(an).innerHTML = ' 重新发送 ';
                                             clearInterval(timeoutId);
-                                            b.target.disabled = false
+                                            document.getElementById(an).disabled = false
                                         }
                                     }
                                 }
@@ -2997,11 +2978,11 @@
                             put(data)
                         }
                     }, false);
-//                    sendcode.disabled = false;
-                    sendcode.addEventListener('click', function (e) {
-//                        if (sendcode.disabled == false) {
-                            state.firstActiveCard.activeCode(e,2)
-//                        }
+                    sendcode.disabled = false;
+                    sendcode.addEventListener('click', function () {
+                        if (sendcode.disabled == false) {
+                            state.firstActiveCard.activeCode(2)
+                        }
                     })
                     newPhone.addEventListener('blur', function () {
                         if ($("#newPhone").val().length != 11) {
@@ -3370,8 +3351,6 @@
                     $('.pastKnowledgePoint').on('click', function (e) {
                         user.objectType = 'knowledge-point';
                         user.objectId = e.currentTarget.dataset.id
-                        user.liked = e.currentTarget.dataset.liked
-                        user.type = e.currentTarget.dataset.type
                         user.showType = 'knowledge-point';
                         var sub = e.currentTarget.dataset.subject
                         var t = _$_(user)
@@ -3555,15 +3534,15 @@
                         break
                     case '数学':
                         switch (state.knowledgePoint.data.type) {
-                           /* case 'normalNewLike':
+                            case 'normalNewLike':
                             case 'normalNewUnlike':
                             case 'normalOldLike':
                             case 'normalOldUnlike':
                             case 'normalOldUnlikeFree':
                             case 'normalOldLikeFree':
                             case 'normalNewLikeFree':
-                            case 'normalNewUnlikeFree':*/
-                            case 'normal':
+                            case 'normalNewUnlikeFree':
+
                                 proc({
                                     containerId: 'knowledgePoint',
                                     data: {},
@@ -3651,14 +3630,14 @@
 
                                 break
 
-                            case 'pk':
-                           /* case 'pkNewUnlike':
+                            case 'pkNewLike':
+                            case 'pkNewUnlike':
                             case 'pkOldLike':
                             case 'pkOldUnlike':
                             case 'pkOldUnlikeFree':
                             case 'pkOldLikeFree':
                             case 'pkNewLikeFree':
-                            case 'pkNewUnlikeFree':*/
+                            case 'pkNewUnlikeFree':
 
                                 proc({
                                     containerId: 'knowledgePoint',

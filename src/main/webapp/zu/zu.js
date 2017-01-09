@@ -71,12 +71,22 @@ var _$_ = function (params) {
                             var a = this.cards[i].subjectId
                             if (this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price != 0) {
                                 //第二步：你有其他科目下的卡&&卡余额>资源价格:弹出3床
-                                var subject_card = t.transformation(a);
-                                if (a == 1) {
-                                    var object_card = t.transformation(2);
-                                } else if (a == 2) {
-                                    var object_card = t.transformation(1);
+                                if(a != 1 && a != 2){
+                                    var subject_card = a
+                                    if (a == "语文") {
+                                        var object_card = "数学"
+                                    } else if (a == "数学") {
+                                        var object_card = "语文"
+                                    }
+                                }else{
+                                    var subject_card = t.transformation(a);
+                                    if (a == 1) {
+                                        var object_card = t.transformation(2);
+                                    } else if (a == 2) {
+                                        var object_card = t.transformation(1);
+                                    }
                                 }
+
                                 var object_Type = t.transformationType(params.showType);
                                 document.getElementById("p13").innerHTML = "您没有" + object_card + "卡";
                                 document.getElementById("p23").innerHTML = "确认要扣" + subject_card + "卡" + this.price + "金豆吗？";
@@ -108,12 +118,22 @@ var _$_ = function (params) {
                             }
                             if (this.cards[i].subjectId != this.subject && am < this.price && biao != 1) {
                                 //第二步：你有其他科目下的卡&&卡余额<资源价格:弹出4床
-                                var subject_card = t.transformation(a);
-                                if (a == 1) {
-                                    var object_card = t.transformation(2);
-                                } else if (a == 2) {
-                                    var object_card = t.transformation(1);
+                                if(a != 1 && a != 2){
+                                    var subject_card = a
+                                    if (a == "语文") {
+                                        var object_card = "数学"
+                                    } else if (a == "数学") {
+                                        var object_card = "语文"
+                                    }
+                                }else{
+                                    var subject_card = t.transformation(a);
+                                    if (a == 1) {
+                                        var object_card = t.transformation(2);
+                                    } else if (a == 2) {
+                                        var object_card = t.transformation(1);
+                                    }
                                 }
+
                                 var object_Type = t.transformationType(params.showType);
                                 document.getElementById("p14").innerHTML = "您没有" + object_card + "卡";
                                 document.getElementById("p24").innerHTML = "您的" + subject_card + "卡余额不足";
@@ -149,38 +169,38 @@ var _$_ = function (params) {
                         var recharge1 = document.getElementById("a21")
                         recharge1.addEventListener('click', function (e) {
                             document.getElementById("1").style.display = "none"
-                            t.rechargePage(t.cards, "c")
+                            t.rechargePage(t.cards, "c",1)
                         })
 
 
                         var recharge2 = document.getElementById("a12")
                         recharge2.addEventListener('click', function (e) {
                             document.getElementById("2").style.display = "none"
-                            t.rechargePage(t.cards, "c")
+                            t.rechargePage(t.cards, "c",2)
                         })
 
                         var recharge3 = document.getElementById("a23")
                         recharge3.addEventListener('click', function (e) {
                             document.getElementById("3").style.display = "none"
-                            t.rechargePage(t.cards, "c")
+                            t.rechargePage(t.cards, "c",3)
                         })
 
                         var recharge4 = document.getElementById("a14")
                         recharge4.addEventListener('click', function (e) {
                             document.getElementById("4").style.display = "none"
-                            t.rechargePage(t.cards, 'c')
+                            t.rechargePage(t.cards, 'c',4)
                         })
 
                         var turnOut1 = document.getElementById("a22")
                         turnOut1.addEventListener('click', function (e) {
                             document.getElementById("2").style.display = "none"
-                            t.rechargePage(t.cards, 'z')
+                            t.rechargePage(t.cards, 'z',2)
                         })
 
                         var turnOut2 = document.getElementById("a24")
                         turnOut2.addEventListener('click', function (e) {
                             document.getElementById("4").style.display = "none"
-                            t.rechargePage(t.cards, 'z')
+                            t.rechargePage(t.cards, 'z',4)
                         })
 
                         var close1 = document.getElementById("close1")
@@ -265,6 +285,9 @@ var _$_ = function (params) {
             if (none == 4) {
                 document.getElementById("4").style.display = "none"
             }
+            if (none == 5) {
+                document.getElementById("5").style.display = "none"
+            }
         },
         getSubjectNameById: function (subjects) {
             var result = ''
@@ -279,9 +302,9 @@ var _$_ = function (params) {
             }
             return result
         },
-        rechargePage: function (cards, T) {
+        rechargePage: function (cards, T,non) {
             this.user = params.user
-            $("#to").val(T)
+            $("#tozu").val(T)
             for (var i = 0; i < cards.length; i++) {
                 if (cards[i].subjectId == 1 || cards[i].subjectId == "语文") {
                     cards[i].image = "keBiao.png"
@@ -297,8 +320,8 @@ var _$_ = function (params) {
                 }
             }
             if (T == "c") {
-                document.getElementById("oneCard").innerHTML = ""
-                document.getElementById("account").innerHTML = ""
+                document.getElementById("oneCardzu").innerHTML = ""
+                document.getElementById("accountzu").innerHTML = ""
                 var ua = this.user.amount
                 if (ua == 0) {
                     ua = "0"
@@ -310,40 +333,79 @@ var _$_ = function (params) {
                     image: "yueBiao.png",
                 }
                 proc({
-                    containerId: 'account',
+                    containerId: 'accountzu',
                     data: uc,
-                    templateId: 'userCard-template'
+                    templateId: 'userCardzu-template'
                 })
                 proc({
-                    containerId: 'oneCard',
+                    containerId: 'oneCardzu',
                     data: cards,
-                    templateId: 'selectCard-template'
+                    templateId: 'selectCardzu-template'
                 })
-                document.getElementById("rechargepage").style.display = "block"
-                document.getElementById("to").style.display = "block"
-                // document.getElementById("rechargepage").style.display="none"
+                document.getElementById("rechargezu").style.display = "block"
+                document.getElementById("tozu").style.display = "block"
+                document.getElementById("rechargepagezu").style.display = "none"
+
             } else if (T == "z") {
-                // document.getElementById("recharge").style.display="block"
-                document.getElementById("rechargepage").style.display = "none"
-                document.getElementById("to").style.display = "none"
-                document.getElementById("converted").innerHTML = ""
+                document.getElementById("rechargezu").style.display="none"
+                document.getElementById("rechargepagezu").style.display = "none"
+                document.getElementById("tozu").style.display = "none"
+                document.getElementById("convertedzu").innerHTML = ""
                 proc({
-                    containerId: 'converted',
+                    containerId: 'convertedzu',
                     data: cards,
-                    templateId: 'selectCard-template'
+                    templateId: 'selectCardzu-template'
                 })
+                document.getElementById("transferzu").style.display = "block"
             }
-            $('.xuanze_zuli').on('click', function (e) {
-                document.getElementById("to").style.display = "block"
-                var element = e.target
+            $('.zu').on('click', function (e) {
+                // document.getElementById("rechargepagezu").style.display = "block"
+                var element = e.currentTarget
                 var id = element.dataset.id;
                 var amount = element.dataset.amount;
                 var no = element.dataset.no;
                 var subject = element.dataset.subject;
                 var name = element.dataset.name;
                 var img = element.dataset.img;
-                t.switchRecharge(id, amount, no, subject, name, img, $("#to").val())
+                t.switchRechargezu(id, amount, no, subject, name, img, $("#tozu").val())
             })
+            var z = document.getElementById("zzu")
+            if (!z.dataset.bind) {
+                eventRegisters()
+            }
+            var submitTransferzu = document.getElementById("submitTransferzu")
+            if (!submitTransferzu.dataset.bind) {
+                eventRegisterss()
+            }
+            function eventRegisters() {
+                var z = document.getElementById("zzu")
+                z.dataset.bind = true
+                z.addEventListener('click', function (e) {
+                    t.rechargePage(params.cards,'c')
+                })
+            }
+            function eventRegisterss() {
+                var submitTransferzu = document.getElementById("submitTransferzu")
+                submitTransferzu.dataset.bind = true
+                submitTransferzu.addEventListener('click', function (e) {
+                   var a = document.getElementById("convertedNumberzu").value;
+                    if(a != null && a != "" && checkRate("convertedNumberzu") != false){
+                        t.atom(params.id, "user", $("#cardidzu").val(), "card", null, $("#convertedNumberzu").val(),non,function (e) {
+                            alert("成功"+JSON.stringify(e))
+                        })
+                    }
+                })
+            }
+            function checkRate(input) {
+                var nubmer = parseInt(document.getElementById(input).value);
+                if (isNaN(nubmer) || nubmer <= 0 || !(/^\d+$/.test(nubmer))) {
+                    {
+                        alert("请输入正确的数值,只允许输入整数!");
+                        document.getElementById(input).value = "";
+                        return false;
+                    }
+                }
+            }
         },
         switchRecharge: function (id, amount, no, subject, name, img, T) {
             if (T == "z") {
@@ -368,15 +430,45 @@ var _$_ = function (params) {
                     document.getElementById("money").innerHTML = amount
                     document.getElementById("src").src = img
                 }
+                document.getElementById("tozu").style.display = "none"
+                document.getElementById("rechargepagezu").style.display = "block"
+
                 document.getElementById("to").style.display = "none"
                 document.getElementById("rechargepage").style.display = "block"
             }
         },
-        atom: function (sourceId, sourceType, object_Id, object_Type, count, money, none) {
+        switchRechargezu: function (id, amount, no, subject, name, img, T) {
+            if (T == "z") {
+                document.getElementById("convertedzu").innerHTML = ""
+                document.getElementById("zazu").innerHTML = amount
+                document.getElementById("tishizu").innerHTML = t.user.amount
+                document.getElementById("znzu").innerHTML = no
+                document.getElementById("zszu").innerHTML = subject
+                $("#cardidzu").val(id)
+                document.getElementById("imagezu").src = img
+                document.getElementById("selectOneCardzu").style.display = "block"
+            } else if (T == "c") {
+                if (id == params.user.id) {
+                    document.getElementById("namezu").innerHTML = name
+                    document.getElementById("nozu").innerHTML = ""
+                    document.getElementById("moneyzu").innerHTML = amount
+                    document.getElementById("srczu").src = img
+                    src
+                } else {
+                    document.getElementById("namezu").innerHTML = subject
+                    document.getElementById("nozu").innerHTML = no
+                    document.getElementById("moneyzu").innerHTML = amount
+                    document.getElementById("srczu").src = img
+                }
+                document.getElementById("tozu").style.display = "none"
+                document.getElementById("rechargepagezu").style.display = "block"
+            }
+        },
+        atom: function (sourceId, sourceType, object_Id, object_Type, count, money, none,ac) {
             var result;
             var filter = {}
             if (money == null && count == null) {
-                filter = { // 充值rechargeFilter
+                /*filter = { // 充值rechargeFilter
                     sourceType: sourceType,
                     objectId: objectId,
                     objectType: objectType,
@@ -408,7 +500,7 @@ var _$_ = function (params) {
                                 break;
                         }
                     }
-                })
+                })*/
             } else if (count == null) {
                 filter = { //转账transferFilter
                     sourceId: sourceId,
@@ -424,20 +516,20 @@ var _$_ = function (params) {
                     data: JSON.stringify(filter),
                     contentType: "application/json; charset=utf-8",
                     success: function (e) {
-                        alert("转账成功")
                         t.nones(none)
+                        easd()
+                        ac(e)
                     },
                     error: function (e) {
                         result = e;
-                        // alert(JSON.stringify(e))
                         switch (JSON.stringify(e.status)) {
                             case "408":
                                 alert("余额不足")
-                                nones(none)
+                                t.nones(none)
                                 break;
                             case "200":
-                                alert("购买成功")
-                                nones(none)
+                                alert("转账成功")
+                                t.nones(none)
                                 break;
                         }
                     }
@@ -460,6 +552,7 @@ var _$_ = function (params) {
                     success: function (e) {
                         alert("购买成功")
                         t.nones(none)
+                        easd()
                         t.getContent(params.action);
                     },
                     error: function (e) {
@@ -468,17 +561,23 @@ var _$_ = function (params) {
                         switch (JSON.stringify(e.status)) {
                             case "408":
                                 alert("余额不足")
-                                nones(none)
+                                t.nones(none)
                                 break;
                             case "200":
                                 alert("购买成功")
-                                nones(none)
+                                t.nones(none)
                                 break;
                         }
                     }
                 })
             }
-
+            function easd() {
+                document.getElementById("rechargezu").style.display="none"
+                document.getElementById("tozu").style.display="none"
+                document.getElementById("transferzu").style.display="none"
+                document.getElementById("selectOneCardzu").style.display="none"
+                document.getElementById("rechargepagezu").style.display="none"
+            }
             return result;
         },
     }

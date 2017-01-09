@@ -1700,11 +1700,11 @@
                     state.knowledgePoint.parentId = knowledgePointId
                     state.knowledgePoint.value = state.knowledgePoint.getById(state.knowledgePoint.parentId)
                     if (!state.knowledgePoint.value.contents) {
-                        params.objectType = 'knowledge-point';
-                        params.objectId = state.knowledgePoint.value.id;
-                        params.showType = 'knowledge-point';
-                        var t = _$_(params)
-                        t.getContent(function (e) {
+                            params.objectType = 'knowledge-point';
+                            params.objectId = state.knowledgePoint.value.id;
+                            params.showType = 'knowledge-point';
+                            var t = _$_(params)
+                            t.getContent(function (e) {
                             //  选项ABCD
                             for (var i = 0; i < e.problems.length; ++i) {
                                 var p = e.problems[i];

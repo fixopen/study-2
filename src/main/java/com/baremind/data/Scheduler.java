@@ -277,7 +277,7 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         return schedulerMap;
     }
 
-    public static Map<String, Object> convertToMap(Scheduler scheduler, Long userId) {
+    public static Map<String, Object> convertToMap(Scheduler scheduler, Long userId,List<Comment> comments, List<User> commentOwners) {
         Map<String, Object> schedulerMap = new HashMap<>();
         schedulerMap.put("id", scheduler.getId());
         schedulerMap.put("year", scheduler.getYear());
@@ -292,6 +292,9 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("outline", scheduler.getOutline());
         schedulerMap.put("prepare", scheduler.getPrepare());
         schedulerMap.put("description", scheduler.getDescription());
+        List<Comment> schedulerComments = Resources.findItems(comments, c -> c.getObjectId() == scheduler.getId());
+        List<Map<String, Object>> schedulerCommentMaps = schedulerComments.stream().map(item -> Comment.convertToMap(item, commentOwners)).collect(Collectors.toList());
+        schedulerMap.put("comments", schedulerCommentMaps);
         Long teacherId = scheduler.getTeacherId();
 
         if (teacherId != null) {
@@ -348,4 +351,47 @@ public class Scheduler implements com.baremind.data.Entity, Resource {
         schedulerMap.put("directLink", getDirectLink());
         return schedulerMap;
     }
+
+    public static Map<String,Object> convertToMap(Scheduler scheduler, Long userId) {
+        Map<String, Object> schedulerMap = new HashMap<>();
+        schedulerMap.put("id", scheduler.getId());
+        schedulerMap.put("year", scheduler.getYear());
+        schedulerMap.put("week", scheduler.getWeek());
+        schedulerMap.put("day", scheduler.getDay());
+        schedulerMap.put("startTime", scheduler.getStartTime());
+        schedulerMap.put("endTime", scheduler.getEndTime());
+        schedulerMap.put("subjectId", scheduler.getSubjectId());
+        schedulerMap.put("grade", scheduler.getGrade());
+        schedulerMap.put("name", scheduler.getName());
+        schedulerMap.put("abstraction", scheduler.getAbstraction());
+        schedulerMap.put("outline", scheduler.getOutline());
+        schedulerMap.put("prepare", scheduler.getPrepare());
+        schedulerMap.put("description", scheduler.getDescription());
+        Long teacherId = scheduler.getTeacherId();
+        if (teacherId != null) {
+            User teacher = JPAEntry.getObject(User.class, "id", teacherId);
+            if (teacher != null) {
+                schedulerMap.put("teacher", teacher.getName());
+                schedulerMap.put("teacherDescription", teacher.getDescription());
+            }
+        }
+        schedulerMap.put("price", scheduler.getPrice());
+        schedulerMap.put("discount", scheduler.getDiscount());
+        //schedulerMap.put("price", scheduler.getAmount());
+        schedulerMap.put("likeCount", 0);
+        Long likeCount = Logs.getStatsCount("scheduler", scheduler.getId(), "like");
+        if (likeCount != null) {
+            schedulerMap.put("likeCount", likeCount);
+        }
+        schedulerMap.put("liked", Logs.has(userId, "scheduler", scheduler.getId(), "like"));
+        schedulerMap.put("readCount", 0);
+        Long readCount = Logs.getStatsCount("scheduler", scheduler.getId(), "read");
+        if (readCount != null) {
+            schedulerMap.put("readCount", readCount);
+        }
+        return schedulerMap;
+    }
+
+
+
 }
