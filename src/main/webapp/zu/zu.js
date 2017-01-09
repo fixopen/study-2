@@ -15,117 +15,121 @@ var _$_ = function (params) {
                     this.userAmount = params.user.amount;
                     this.subject = info.subjectId;
                     this.price = info.price
-                    for (var i = 0; i < this.cards.length; i++) {
-                        var a = this.cards[i].subjectId
-                        if (this.cards[i].subjectId == this.subject && this.cards[i].amount >= this.price && this.price != 0) {
-                            //第二步：你有这个科目下的卡&&卡余额>资源价格:弹出1床
-                            var subject_card = t.transformation(a);
-                            var object_Type = t.transformationType(params.showType);
-                            document.getElementById("p11").innerHTML = "" + object_Type + "需要" + this.price + "金豆";
-                            document.getElementById("p21").innerHTML = "确认要扣" + subject_card + "卡" + this.price + "金豆吗？";
-                            document.getElementById("a11").innerHTML = "确认";
-                            document.getElementById("a21").innerHTML = "充值";
-                            document.getElementById("1").style.display = "block"
-                            biao = 1
-                            info.cardId = this.cards[i].id
-                            /* card = cards[i];
-                             object_Id = objectId;
-                             object_Types = objectType;*/
-                            break;
-
-                        } else if (this.cards[i].subjectId == this.subject && this.cards[i].amount >= this.price && this.price == 0) {
-                            na(this.objectType, this.objectId)
-                            biao = 1;
-                            break;
-                        }
-                    }
-                    if (biao != 1) {
+                    if(this.cards == undefined){
+                        document.getElementById("5").style.display="block"
+                    }else{
                         for (var i = 0; i < this.cards.length; i++) {
                             var a = this.cards[i].subjectId
-                            var money = parseInt(this.userAmount) + 0 + parseInt(this.cards[i].amount);
-                            var mp = "false";
-                            if (money > this.price || money == this.price) {
-                                mp = "true";
-                            }
-                            if (this.cards[i].subjectId == this.subject && this.cards[i].amount < this.price && biao != 1) {
-                                //第三步：你有这个科目下的卡&&卡余额<资源价格:弹出2床
+                            if (this.cards[i].subjectId == this.subject && this.cards[i].amount >= this.price && this.price != 0) {
+                                //第二步：你有这个科目下的卡&&卡余额>资源价格:弹出1床
                                 var subject_card = t.transformation(a);
                                 var object_Type = t.transformationType(params.showType);
-                                document.getElementById("p12").innerHTML = "" + object_Type + "需要" + this.price + "金豆";
-                                document.getElementById("p22").innerHTML = "您的" + subject_card + "卡余额不足";
-                                document.getElementById("a12").innerHTML = "充值";
-                                if (mp == "true") {
-                                    document.getElementById("a22").innerHTML = "转入";
-                                } else if (mp == "false") {
-                                    document.getElementById("a22").innerHTML = "";
-                                }
-
-                                document.getElementById("2").style.display = "block"
-                                biao = 1;
-                                break;
-                            }
-                        }
-                    }
-                    if (biao != 1) {
-                        for (var i = 0; i < this.cards.length; i++) {
-                            var a = this.cards[i].subjectId
-                            if (this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price != 0) {
-                                //第二步：你有其他科目下的卡&&卡余额>资源价格:弹出3床
-                                var subject_card = t.transformation(a);
-                                if (a == 1) {
-                                    var object_card = t.transformation(2);
-                                } else if (a == 2) {
-                                    var object_card = t.transformation(1);
-                                }
-                                var object_Type = t.transformationType(params.showType);
-                                document.getElementById("p13").innerHTML = "您没有" + object_card + "卡";
-                                document.getElementById("p23").innerHTML = "确认要扣" + subject_card + "卡" + this.price + "金豆吗？";
-                                document.getElementById("a13").innerHTML = "确认";
-                                document.getElementById("a23").innerHTML = "充值";
-                                document.getElementById("3").style.display = "block"
-                                biao = 1;
+                                document.getElementById("p11").innerHTML = "" + object_Type + "需要" + this.price + "金豆";
+                                document.getElementById("p21").innerHTML = "确认要扣" + subject_card + "卡" + this.price + "金豆吗？";
+                                document.getElementById("a11").innerHTML = "确认";
+                                document.getElementById("a21").innerHTML = "充值";
+                                document.getElementById("1").style.display = "block"
+                                biao = 1
                                 info.cardId = this.cards[i].id
                                 /* card = cards[i];
                                  object_Id = objectId;
                                  object_Types = objectType;*/
                                 break;
-                            } else if (this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price == 0) {
-                                biao = 1;
+
+                            } else if (this.cards[i].subjectId == this.subject && this.cards[i].amount >= this.price && this.price == 0) {
                                 na(this.objectType, this.objectId)
+                                biao = 1;
                                 break;
                             }
                         }
-                    }
-                    if (biao != 1) {
-                        for (var i = 0; i < this.cards.length; i++) {
-                            var a = this.cards[i].subjectId
-                            // var iYear=parseInt(iYear);
-                            var money = parseInt(this.userAmount) + 0 + parseInt(this.cards[i].amount);
-                            var am = parseInt(this.cards[i].amount)
-                            var mp = "false";
-                            if (money > this.price || money == this.price) {
-                                mp = "true";
+                        if (biao != 1) {
+                            for (var i = 0; i < this.cards.length; i++) {
+                                var a = this.cards[i].subjectId
+                                var money = parseInt(this.userAmount) + 0 + parseInt(this.cards[i].amount);
+                                var mp = "false";
+                                if (money > this.price || money == this.price) {
+                                    mp = "true";
+                                }
+                                if (this.cards[i].subjectId == this.subject && this.cards[i].amount < this.price && biao != 1) {
+                                    //第三步：你有这个科目下的卡&&卡余额<资源价格:弹出2床
+                                    var subject_card = t.transformation(a);
+                                    var object_Type = t.transformationType(params.showType);
+                                    document.getElementById("p12").innerHTML = "" + object_Type + "需要" + this.price + "金豆";
+                                    document.getElementById("p22").innerHTML = "您的" + subject_card + "卡余额不足";
+                                    document.getElementById("a12").innerHTML = "充值";
+                                    if (mp == "true") {
+                                        document.getElementById("a22").innerHTML = "转入";
+                                    } else if (mp == "false") {
+                                        document.getElementById("a22").innerHTML = "";
+                                    }
+
+                                    document.getElementById("2").style.display = "block"
+                                    biao = 1;
+                                    break;
+                                }
                             }
-                            if (this.cards[i].subjectId != this.subject && am < this.price && biao != 1) {
-                                //第二步：你有其他科目下的卡&&卡余额<资源价格:弹出4床
-                                var subject_card = t.transformation(a);
-                                if (a == 1) {
-                                    var object_card = t.transformation(2);
-                                } else if (a == 2) {
-                                    var object_card = t.transformation(1);
+                        }
+                        if (biao != 1) {
+                            for (var i = 0; i < this.cards.length; i++) {
+                                var a = this.cards[i].subjectId
+                                if (this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price != 0) {
+                                    //第二步：你有其他科目下的卡&&卡余额>资源价格:弹出3床
+                                    var subject_card = t.transformation(a);
+                                    if (a == 1) {
+                                        var object_card = t.transformation(2);
+                                    } else if (a == 2) {
+                                        var object_card = t.transformation(1);
+                                    }
+                                    var object_Type = t.transformationType(params.showType);
+                                    document.getElementById("p13").innerHTML = "您没有" + object_card + "卡";
+                                    document.getElementById("p23").innerHTML = "确认要扣" + subject_card + "卡" + this.price + "金豆吗？";
+                                    document.getElementById("a13").innerHTML = "确认";
+                                    document.getElementById("a23").innerHTML = "充值";
+                                    document.getElementById("3").style.display = "block"
+                                    biao = 1;
+                                    info.cardId = this.cards[i].id
+                                    /* card = cards[i];
+                                     object_Id = objectId;
+                                     object_Types = objectType;*/
+                                    break;
+                                } else if (this.cards[i].subjectId != this.subject && this.cards[i].amount >= this.price && biao != 1 && this.price == 0) {
+                                    biao = 1;
+                                    na(this.objectType, this.objectId)
+                                    break;
                                 }
-                                var object_Type = t.transformationType(params.showType);
-                                document.getElementById("p14").innerHTML = "您没有" + object_card + "卡";
-                                document.getElementById("p24").innerHTML = "您的" + subject_card + "卡余额不足";
-                                document.getElementById("a14").innerHTML = "充值";
-                                if (mp == "true") {
-                                    document.getElementById("a24").innerHTML = "转入";
-                                } else if (mp == "false") {
-                                    document.getElementById("a24").innerHTML = "";
+                            }
+                        }
+                        if (biao != 1) {
+                            for (var i = 0; i < this.cards.length; i++) {
+                                var a = this.cards[i].subjectId
+                                // var iYear=parseInt(iYear);
+                                var money = parseInt(this.userAmount) + 0 + parseInt(this.cards[i].amount);
+                                var am = parseInt(this.cards[i].amount)
+                                var mp = "false";
+                                if (money > this.price || money == this.price) {
+                                    mp = "true";
                                 }
-                                document.getElementById("4").style.display = "block"
-                                biao = 1;
-                                break;
+                                if (this.cards[i].subjectId != this.subject && am < this.price && biao != 1) {
+                                    //第二步：你有其他科目下的卡&&卡余额<资源价格:弹出4床
+                                    var subject_card = t.transformation(a);
+                                    if (a == 1) {
+                                        var object_card = t.transformation(2);
+                                    } else if (a == 2) {
+                                        var object_card = t.transformation(1);
+                                    }
+                                    var object_Type = t.transformationType(params.showType);
+                                    document.getElementById("p14").innerHTML = "您没有" + object_card + "卡";
+                                    document.getElementById("p24").innerHTML = "您的" + subject_card + "卡余额不足";
+                                    document.getElementById("a14").innerHTML = "充值";
+                                    if (mp == "true") {
+                                        document.getElementById("a24").innerHTML = "转入";
+                                    } else if (mp == "false") {
+                                        document.getElementById("a24").innerHTML = "";
+                                    }
+                                    document.getElementById("4").style.display = "block"
+                                    biao = 1;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -203,8 +207,11 @@ var _$_ = function (params) {
                             document.getElementById("4").style.display = "none"
                         })
 
+                        var close5 = document.getElementById("close5")
+                        close5.addEventListener('click', function (e) {
+                            document.getElementById("5").style.display = "none"
+                        })
                     }
-
                     var purchase1 = document.getElementById("a11")
                     if (!purchase1.dataset.bind) {
                         eventRegister()

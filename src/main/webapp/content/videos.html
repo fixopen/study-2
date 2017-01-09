@@ -148,13 +148,13 @@
 
             <!-- Tab panes -->
             <div role="tabpanel" class="nei_rong tab-pane" id="zero">
-                <div class="tab-zhibo">
+                <div class="tab-zhibo neir-fu-marbot">
                     <div id="zeroPlaying"></div>
                     <div id="zeroFuture"></div>
                 </div>
             </div>
             <div role="tabpanel" class="nei_rong tab-pane" id="one">
-                <div class="tab-zhibo">
+                <div class="tab-zhibo neir-fu-marbot">
                     <div id="onePlaying"></div>
                     <div id="oneFuture"></div>
                 </div>
@@ -295,8 +295,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail detail" data-detail="${id}">详情
-                        <img src="../images/xiala.png" alt="">
-                        <img src="../images/xiala_sq.png" alt="">
+                        <img src="../images/xiala_yw.png" alt="">
+                        <img src="../images/xiala_sqyw.png" alt="">
                     </div>
                 </div>
             </div>
@@ -351,8 +351,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail detail" data-detail="${id}">详情
-                        <img src="../images/xiala.png" alt="">
-                        <img src="/images/xiala_sq.png" alt="">
+                        <img src="../images/xiala_yw.png" alt="">
+                        <img src="/images/xiala_sqyw.png" alt="">
                     </div>
                 </div>
             </div>
@@ -518,8 +518,8 @@
                 <div class="xiaq_div">
                     <p>${outline}</p>
                     <div class="course_detail passed-detail" data-detail="${id}">详情
-                        <img src="/images/xiala.png" alt="">
-                        <img src="/images/xiala_sq.png" alt="">
+                        <img src="/images/xiala_yw.png" alt="">
+                        <img src="/images/xiala_sqyw.png" alt="">
                     </div>
                 </div>
             </div>
@@ -743,26 +743,6 @@
             }
             return result
         },
-//        containTeacher: function (subject, teacher) {
-//            var result = false
-//            for (var i = 0; i < subject.teachers.length; ++i) {
-//                if (subject.teachers[i] == teacher) {
-//                    result = true
-//                    break
-//                }
-//            }
-//            return result
-//        },
-//        containGrade: function (subject, grade) {
-//            var result = false
-//            for (var i = 0; i < subject.grades.length; ++i) {
-//                if (subject.grades[i] == grade) {
-//                    result = true
-//                    break
-//                }
-//            }
-//            return result
-//        },
         init: function () {
 //            var userId = g.getUrlParameter('userid')
 //            g.setCookie('userId', userId)
@@ -934,22 +914,23 @@
 
                     $(document).on('click', ".b", function (e) {
 //                        alert(e.currentTarget.dataset.id);
-
                         params.objectType = "scheduler";
                         params.objectId = e.currentTarget.dataset.id;
                         params.showType = "liveVideo";
                         var t = _$_(params)
                         t.getContent(function (e) {
                             alert(JSON.stringify(e))
-                            if (e.directLink!='') {
+                            if (e.directLink != '') {
                                 for (var i = 0; i < subjects.length; ++i) {
-                                    for( var j=0; j<subjects[i].playing.length; ++j)
-                                        subjects[i].playing[j].directLink = e.directLink
-                                    document.getElementsByClassName("b").setAttribute("href",subjects[i].playing[j].directLink);
+                                    for (var j = 0; j < subjects[i].playing.length; ++j)
+                                        if (subjects[i].playing[j].id == params.objectId) {
+                                            subjects[i].playing[j].directLink = e.directLink
+                                            document.getElementsByClassName("b").setAttribute("href", subjects[i].playing[j].directLink);
+                                        }
                                 }
                             }
                         })
-                       // xiao(e.currentTarget.dataset.id, "scheduler", "liveVideo")
+                        // xiao(e.currentTarget.dataset.id, "scheduler", "liveVideo")
                     });
 
                     state.main.zeroFuture.data = subjects[0].futures
@@ -1218,12 +1199,12 @@
                         params.showType = "video";
                         var t = _$_(params)
                         t.getContent(function (e) {
-                            alert(JSON.stringify(e))
-                            if (e.contentLink!='') {
+//                            alert(JSON.stringify(e))
+                            if (e.contentLink != '') {
                                 for (var i = 0; i < passed.length; i++) {
                                     if (passed[i].id == params.objectId) {
                                         passed[i].contentLink = e.contentLink
-                                        state.videoDetail.data=passed[i]
+                                        state.videoDetail.data = passed[i]
                                         state.switchTo('videoDetail')
                                         icon.addEventListener('click', function (e) {
                                             if (state.videoDetail.data.liked) {
