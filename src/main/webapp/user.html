@@ -789,7 +789,7 @@
         </div>
     </div>
 </article>
-<article id="consumes" style="display: none;">
+<article id="consumes" style="display: none;" data-title="xiaofeijilu">
     <div class="wrap">
         <div class="balance_jine">
             <div class="balance_top">
@@ -1296,6 +1296,8 @@
             state.currentArticle = document.getElementById(id)
             history.pushState(null, null, '/user.html#' + id)
             state.currentArticle.style.display = 'block'
+            //document.title = state[id].title
+            document.title = state.currentArticle.dataset.title
             state[id].init()
         },
         switchToFront: function (id) {
@@ -1397,6 +1399,7 @@
             return result
         },
         sign: {
+            title: '...',
             isSign: false,
             currentTab: $('[data-content="username"]')[0],
             type: 'telephone',
