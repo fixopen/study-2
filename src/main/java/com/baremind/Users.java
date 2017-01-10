@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
@@ -675,6 +676,10 @@ public class Users {
             List<KnowledgePointContentMap> knowledgePointContentMaps = Resources.getList(em, "objectId", problemIds, KnowledgePointContentMap.class);
             List<String> knowledgePointIds = knowledgePointContentMaps.stream().map(m -> m.getKnowledgePointId().toString()).collect(Collectors.toList());
 
+           // List<Scheduler> r = JPAEntry.getList(Scheduler.class, Impl.getFilters(filter));
+            List<String> ids = new ArrayList<>();
+
+
             List<String> schedulerIds = new ArrayList<>();
             Map<String, Object> condition = new HashMap<>();
             condition.put("userId", userId);
@@ -697,13 +702,20 @@ public class Users {
             List<Image> covers = Resources.getList(em, coverIds, Image.class);
             List<String> subjectIds = volumes.stream().map(volume -> volume.getSubjectId().toString()).collect(Collectors.toList());
             List<Scheduler> schedulers = Resources.getList(em, schedulerIds, Scheduler.class);
+
+            ids.addAll(schedulers.stream().map(scheduler -> scheduler.getId().toString()).collect(Collectors.toList()));
+
+            List<Comment> comments = Resources.getList(em, "objectId", ids, Comment.class);
+            List<String> commentOwnerIds = comments.stream().map(c -> c.getUserId().toString()).collect(Collectors.toList());
+            List<User> commentOwners = Resources.getList(em, commentOwnerIds, User.class);
+
             subjectIds.addAll(schedulers.stream().map(scheduler -> scheduler.getSubjectId().toString()).collect(Collectors.toList()));
             List<Subject> subjects = Resources.getList(em, subjectIds, Subject.class);
             Date now = new Date();
             final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
             List<Map<String, Object>> r = new ArrayList<>();
             for (Subject subject: subjects) {
-                List<Map<String, Object>> ss = schedulers.stream().filter(scheduler -> scheduler.getSubjectId().longValue() == subject.getId().longValue()).map(scheduler -> Scheduler.convertToMap(scheduler, userId)).collect(Collectors.toList());
+                List<Map<String, Object>> ss = schedulers.stream().filter(scheduler -> scheduler.getSubjectId().longValue() == subject.getId().longValue()).map(scheduler -> Scheduler.convertToMap(scheduler, userId,comments,commentOwners)).collect(Collectors.toList());
                 Map<String, Object> s = Subject.convertToMap(subject);
                 s.put("schedulers", ss);
                 List<Map<String, Object>> vs = new ArrayList<>();
@@ -721,7 +733,7 @@ public class Users {
                                 }
                             }
                         }
-                        Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint, logs,userId);
+                        Map<String, Object> km = KnowledgePoint.convertToMap(knowledgePoint,logs,userId,now,yesterday);
                         km.put("problems", ps);
                         ks.add(km);
                     });

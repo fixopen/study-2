@@ -71,7 +71,7 @@ public class KnowledgePoints {
     public Response getById(@CookieParam("sessionId") String sessionId, @PathParam("id") Long id) {
         final Date now = new Date();
         final Date yesterday = Date.from(now.toInstant().plusSeconds(-24 * 3600));
-        return Impl.getById(sessionId, id, KnowledgePoint.class, (knowledgePoint) -> KnowledgePoint.convertToMap(knowledgePoint, JPAEntry.getLoginUser(sessionId).getId(), now, yesterday));
+        return Impl.getById(sessionId, id, KnowledgePoint.class, (knowledgePoint) -> KnowledgePoint.convertToMap(knowledgePoint,null, JPAEntry.getLoginUser(sessionId).getId(), now, yesterday));
     }
 
     @POST

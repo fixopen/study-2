@@ -45,6 +45,10 @@
     background-color: #fff;
 }
 
+.neir-fu-marbot{
+    margin-bottom: 3.5rem;
+}
+
 .tab_switch {
     width: 90%;
     margin: 0 auto;
@@ -808,7 +812,7 @@ li.active > a.tab_toggle {
 }
 
 .liveDetails-comment {
-    height: 55%;
+    height: 53%;
     background-color: #fff;
     border-top: 1px solid #e5e5e5;
     border-bottom: 1px solid #e5e5e5;
@@ -816,7 +820,7 @@ li.active > a.tab_toggle {
 
 .liveDetails-center {
     margin: 0.625rem 0.9375rem;
-    height: 95%;
+    height: 92%;
     overflow: hidden;
 }
 
@@ -828,7 +832,7 @@ li.active > a.tab_toggle {
 }
 
 .liveDetails-ul {
-    height: 90%;
+    height: 80%;
     overflow-y: auto;
 }
 
@@ -933,7 +937,7 @@ li.active > a.tab_toggle {
     font-weight: bold;
     text-align: center;
     position: absolute;
-    top: 21%;
+    top: 22.5%;
     left: 50%;
     margin: 0;
     -webkit-transform: translateX(-50%);
@@ -955,7 +959,7 @@ li.active > a.tab_toggle {
     .waitTime {
         font-size: 2rem;
         width: 53%;
-        top: 28%;
+        top: 30%;
     }
 
     .goBack {

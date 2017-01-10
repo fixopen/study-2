@@ -1,14 +1,15 @@
 package com.baremind.data;
 
 import com.baremind.Logs;
+import com.baremind.Resources;
 import com.baremind.utils.JPAEntry;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by fixopen on 15/11/2016.
@@ -105,7 +106,12 @@ public class Book implements Resource {
         Map<String, Object> commentCondition = new HashMap<>();
         commentCondition.put("objectType", "book");
         commentCondition.put("objectId", book.getId());
-        vm.put("comments", JPAEntry.getList(Comment.class, commentCondition));
+        List<Comment> comments = JPAEntry.getList(Comment.class, commentCondition);
+        List<String> ownerIds = comments.stream().map(c -> c.getUserId().toString()).collect(Collectors.toList());
+        EntityManager em = JPAEntry.getEntityManager();
+        List<User> owners = Resources.getList(em, ownerIds, User.class);
+        List<Map<String, Object>> commentsMap = comments.stream().map(c -> Comment.convertToMap(c, owners)).collect(Collectors.toList());
+        vm.put("comments", commentsMap);
         return vm;
     }
 
@@ -131,7 +137,12 @@ public class Book implements Resource {
         Map<String, Object> commentCondition = new HashMap<>();
         commentCondition.put("objectType", "book");
         commentCondition.put("objectId", book.getId());
-        vm.put("comments", JPAEntry.getList(Comment.class, commentCondition));
+        List<Comment> comments = JPAEntry.getList(Comment.class, commentCondition);
+        List<String> ownerIds = comments.stream().map(c -> c.getUserId().toString()).collect(Collectors.toList());
+        EntityManager em = JPAEntry.getEntityManager();
+        List<User> owners = Resources.getList(em, ownerIds, User.class);
+        List<Map<String, Object>> commentsMap = comments.stream().map(c -> Comment.convertToMap(c, owners)).collect(Collectors.toList());
+        vm.put("comments", commentsMap);
         return vm;
     }
 
