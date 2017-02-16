@@ -78,14 +78,41 @@
 
 .volumes_bg li {
     display: inline-block;
-    width: 32%;
+    /*width: 32%;*/
     text-align: center;
+    margin: 0.45rem 0.185rem;
+}
+
+@media screen and (min-width: 320px) and (max-width: 359px) {
+    .volumes_bg li{
+        margin: 0.45rem 1.15rem;
+    }
+}
+@media screen and (min-width: 360px) and (max-width: 374px) {
+    .volumes_bg li{
+        margin: 0.45rem 1.75rem;
+    }
+}
+@media screen and (min-width: 412px) and (max-width: 767px) {
+    .volumes_bg li{
+        margin: 0.45rem 0.585rem;
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .volumes_bg li{
+        margin: 0.75rem 1.175rem;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .volumes_bg li{
+        margin: 0.75rem 1.75rem;
+    }
 }
 
 .textbook {
     display: inline-block;
     text-align: center;
-    margin: 0.46875rem;
+    vertical-align: top;
     position: relative;
 }
 
@@ -105,6 +132,7 @@
 }
 
 .textbook img {
+    display: block;
     width: 6.1875rem;
     border: 3px solid #fff;
     box-shadow: 0.5px 0.5px 10px #909090;
